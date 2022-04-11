@@ -16,12 +16,13 @@ const stateNone = 0;
 const stateA = 1;
 const stateB = 2;
 
-const colors = {
-  '-1': {fill: 'gray', stroke: 'black'},
-  1: {fill: 'pink', stroke: 'red'},
-  2: {fill: 'pink', stroke: 'red'},
-  3: {fill: 'pink', stroke: 'red'},
-};
+const kWall = -1;
+
+const colors = {};
+colors[kWall] = {fill: '#333', stroke: 'black'};
+for (let i = 1; i < 9; i++) {
+  colors[i] = {fill: 'pink', stroke: 'red'};
+}
 
 const colorNone = 'white';
 const colorA = 'pink';
@@ -113,13 +114,21 @@ function applyBlockStr(e, str) {
       states[y][x] = stateNone;
     }
   }
-  let y = 0;
-  let x = 0;
+  for (let y = 1; y < height - 1; ++y) {
+    states[y][1] = kWall;
+    states[y][width - 2] = kWall;
+  }
+  for (let x = 2; x < width - 2; ++x) {
+    states[1][x] = kWall;
+    states[height - 2][x] = kWall;
+  }
+  let y = 2;
+  let x = 2;
   for (const c of str) {
     if (c == '-') {
       y++;
-      if (y == height) break;
-      x = 0;
+      if (y == height - 2) break;
+      x = 2;
     } else {
       states[y][x] = c;
       x++;
@@ -129,8 +138,8 @@ function applyBlockStr(e, str) {
 }
 
 function setSize(w, h) {
-  width = w;
-  height = h;
+  width = w + 4;
+  height = h + 4;
   elemSvg.setAttribute('width', blockSize * width);
   elemSvg.setAttribute('height', blockSize * height);
   elemWidth.value = w;
