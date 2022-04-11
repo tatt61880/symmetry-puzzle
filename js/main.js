@@ -114,21 +114,21 @@ function applyBlockStr(e, str) {
       states[y][x] = stateNone;
     }
   }
-  for (let y = 1; y < height - 1; ++y) {
-    states[y][1] = kWall;
-    states[y][width - 2] = kWall;
+  for (let y = 0; y < height; ++y) {
+    states[y][0] = kWall;
+    states[y][width - 1] = kWall;
   }
-  for (let x = 2; x < width - 2; ++x) {
-    states[1][x] = kWall;
-    states[height - 2][x] = kWall;
+  for (let x = 1; x < width - 1; ++x) {
+    states[0][x] = kWall;
+    states[height - 1][x] = kWall;
   }
-  let y = 2;
-  let x = 2;
+  let y = 1;
+  let x = 1;
   for (const c of str) {
     if (c == '-') {
       y++;
-      if (y == height - 2) break;
-      x = 2;
+      if (y == height - 1) break;
+      x = 1;
     } else {
       states[y][x] = c;
       x++;
@@ -138,8 +138,8 @@ function applyBlockStr(e, str) {
 }
 
 function setSize(w, h) {
-  width = w + 4;
-  height = h + 4;
+  width = w + 2;
+  height = h + 2;
   elemSvg.setAttribute('width', blockSize * width);
   elemSvg.setAttribute('height', blockSize * height);
   elemWidth.value = w;
@@ -259,7 +259,7 @@ function drawFrame(g) {
     line.setAttribute('stroke-dasharray', '1, 3');
     g.appendChild(line);
   }
-  // 中央部
+  // 外枠
   {
     const rect = createRect({x: 0, y: 0, width: width, height: height});
     rect.setAttribute('fill', 'none');
