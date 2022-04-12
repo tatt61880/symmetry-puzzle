@@ -15,15 +15,15 @@ let height = 6;
 const stateNone = 0;
 const stateA = 1;
 
-const kWall = -1; // 壁
-const kHero = 9; // 自機
+const stateWall = -1; // 壁
+const stateHero = 9; // 自機
 
 const colors = {};
-colors[kWall] = {fill: '#222', stroke: '#333'};
+colors[stateWall] = {fill: '#222', stroke: '#333'};
 for (let i = 1; i < 9; i++) {
   colors[i] = {fill: 'pink', stroke: 'red'};
 }
-colors[kHero] = {fill: 'aqua', stroke: 'blue'};
+colors[stateHero] = {fill: 'aqua', stroke: 'blue'};
 
 const colorNone = 'white';
 const colorA = 'pink';
@@ -43,6 +43,13 @@ const sizeSelected = 6;
 const sizeCenterB = 6;
 
 const blockSize = 28;
+
+const Dir = {
+  ArrowUp: 0,
+  ArrowRight: 1,
+  ArrowDown: 2,
+  ArrowLeft: 3
+};
 
 const dys = [-1, 0, 1, 0];
 const dxs = [0, 1, 0, -1];
@@ -121,12 +128,12 @@ function applyBlockStr(e, str) {
   // 枠
   {
     for (let y = 1; y < height - 1; ++y) {
-      states[y][1] = kWall;
-      states[y][width - 2] = kWall;
+      states[y][1] = stateWall;
+      states[y][width - 2] = stateWall;
     }
     for (let x = 2; x < width - 2; ++x) {
-      states[1][x] = kWall;
-      states[height - 2][x] = kWall;
+      states[1][x] = stateWall;
+      states[height - 2][x] = stateWall;
     }
   }
   let y = 2;
@@ -138,9 +145,9 @@ function applyBlockStr(e, str) {
       x = 2;
     } else {
       if (c == 's') {
-        states[y][x] = kHero;
+        states[y][x] = stateHero;
       } else if (c == 'x') {
-        states[y][x] = kWall;
+        states[y][x] = stateWall;
       } else {
         states[y][x] = c;
       }
@@ -170,20 +177,45 @@ function changeSize(e) {
 let keyFlag = true;
 let lastTime = 0;
 
+function move(dir) {
+  const dx = dxs[dir];
+  const dy = dys[dir];
+  let sx;
+  let sy;
+  for (let y = 2; y < height - 2; ++y) {
+    for (let x = 2; x < width - 2; ++x) {
+      if (states[y][x] == stateHero) {
+        sx = x;
+        sy = y;
+        x = width;
+        y = height;
+        break;
+      }
+    }
+  }
+  if (states[sy + dy][sx + dx] == stateNone) {
+    states[sy + dy][sx + dx] = stateHero;
+    states[sy][sx] = stateNone;
+  }
+}
+
 function keydown(e) {
   const now = Date.now();
   const key = e.key;
   if (keyFlag || now > lastTime + 300) {
     keyFlag = false;
     lastTime = now;
-    console.log(key);
+    const dir = Dir[key];
+    if (dir !== undefined) {
+      move(dir);
+      draw(e);
+    }
   }
   return false; 
 }
 
 function keyup(e) {
   keyFlag = true;
-  console.log('keyup');
   return false; 
 }
 
