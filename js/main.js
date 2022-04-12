@@ -11,6 +11,12 @@ let drawingState;
 let drawingFlag = false;
 let width = 6;
 let height = 6;
+let upEnd = 2;
+let rightEnd = width - 1;
+let downEnd = height - 1;
+let leftEnd = 2;
+
+const keyInputMsec = 100// キー入力間隔(ミリ秒)
 
 const stateNone = 0;
 const stateA = 1;
@@ -160,6 +166,10 @@ function applyBlockStr(e, str) {
 function setSize(w, h) {
   width = w + 4;
   height = h + 4;
+  upEnd = 2;
+  rightEnd = width - 1;
+  downEnd = height - 1;
+  leftEnd = 2;
   elemSvg.setAttribute('width', blockSize * width);
   elemSvg.setAttribute('height', blockSize * height);
   elemWidth.value = w;
@@ -182,8 +192,8 @@ function move(dir) {
   const dy = dys[dir];
   let sx;
   let sy;
-  for (let y = 2; y < height - 2; ++y) {
-    for (let x = 2; x < width - 2; ++x) {
+  for (let y = upEnd; y <= downEnd; ++y) {
+    for (let x = leftEnd; x <= rightEnd; ++x) {
       if (states[y][x] == stateHero) {
         sx = x;
         sy = y;
@@ -193,16 +203,32 @@ function move(dir) {
       }
     }
   }
+
   if (states[sy + dy][sx + dx] == stateNone) {
     states[sy + dy][sx + dx] = stateHero;
     states[sy][sx] = stateNone;
+  } else if (states[sy + dy][sx + dx] != stateWall) {
+    const moveState = {}; // 移動予定の状態番号
+    moveState[stateHero] = true;
+
+    const st = new Stack(); // 移動可能か検証必要な状態番号
+    st.push(stateHero);
+    let flag = true; // 移動フラグ。
+    while (!st.empty) {
+      const state = st.pop();
+    }
+
+    if (flag) {
+      states[sy + dy][sx + dx] = stateHero;
+      states[sy][sx] = stateNone;
+    }
   }
 }
 
 function keydown(e) {
   const now = Date.now();
   const key = e.key;
-  if (keyFlag || now > lastTime + 300) {
+  if (keyFlag || now > lastTime + keyInputMsec) {
     keyFlag = false;
     lastTime = now;
     const dir = Dir[key];
@@ -374,7 +400,7 @@ function draw(e) {
         let flag2 = true;
         let flag3 = true;
         let flag4 = true;
-        if (y == 0 || states[y - 1][x] != state) {
+        if (states[y - 1][x] != state) {
           flag1 = false;
           const line = createLine({x1: x, y1: y + paddingWidthHalf, x2: x + 1, y2: y + paddingWidthHalf});
           line.setAttribute('stroke', color.stroke);
@@ -382,7 +408,7 @@ function draw(e) {
           g.appendChild(line);
         }
         // 右側
-        if (x == width - 1 || states[y][x + 1] != state) {
+        if (states[y][x + 1] != state) {
           flag2 = false;
           const line = createLine({x1: x + 1 - paddingWidthHalf, y1: y, x2: x + 1 - paddingWidthHalf, y2: y + 1});
           line.setAttribute('stroke', color.stroke);
@@ -390,7 +416,7 @@ function draw(e) {
           g.appendChild(line);
         }
         // 下側
-        if (y == height - 1 || states[y + 1][x] != state) {
+        if (states[y + 1][x] != state) {
           flag3 = false;
           const line = createLine({x1: x, y1: y + 1 - paddingWidthHalf, x2: x + 1, y2: y + 1 - paddingWidthHalf});
           line.setAttribute('stroke', color.stroke);
@@ -398,7 +424,7 @@ function draw(e) {
           g.appendChild(line);
         }
         // 左側
-        if (x == 0 || states[y][x - 1] != state) {
+        if (states[y][x - 1] != state) {
           flag4 = false;
           const line = createLine({x1: x + paddingWidthHalf, y1: y, x2: x + paddingWidthHalf, y2: y + 1});
           line.setAttribute('stroke', color.stroke);
