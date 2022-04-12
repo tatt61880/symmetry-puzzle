@@ -149,33 +149,51 @@ function move(dir) {
     }
   }
 
-  if (states[sy + dy][sx + dx] == stateNone) {
-    states[sy + dy][sx + dx] = stateHero;
-    states[sy][sx] = stateNone;
-  } else if (states[sy + dy][sx + dx] != stateWall) {
+  {
     const moveState = {}; // 移動予定の状態番号
     moveState[stateHero] = true;
-
     const st = new Stack(); // 移動可能か検証必要な状態番号
     st.push(stateHero);
     let flag = true; // 移動フラグ。
-    while (!st.empty) {
+    while (!st.empty()) {
       const state = st.pop();
       loop:
       for (let y = upEnd; y <= downEnd; ++y) {
         for (let x = leftEnd; x <= rightEnd; ++x) {
-          if (states[sy + dy][sx + dx] == stateWall) {
+          if (states[y][x] != state) continue;
+          const neighborState = states[y + dy][x + dx];
+          if (neighborState == stateNone) continue;
+          if (neighborState == stateWall) {
             flag = false;
-
             break loop;
+          } else if (!moveState[neighborState]) {
+            moveState[neighborState] = true;
+            st.push(neighborState);
           }
         }
       }
     }
 
     if (flag) {
-      states[sy + dy][sx + dx] = stateHero;
-      states[sy][sx] = stateNone;
+      const statesTemp = new Array(height);
+      for (let y = 0; y < height; ++y) {
+        statesTemp[y] = states[y].slice();
+      }
+
+      for (let y = upEnd; y <= downEnd; ++y) {
+        for (let x = leftEnd; x <= rightEnd; ++x) {
+          if (moveState[states[y][x]]) {
+            states[y][x] = stateNone;
+          }
+        }
+      }
+      for (let y = upEnd; y <= downEnd; ++y) {
+        for (let x = leftEnd; x <= rightEnd; ++x) {
+          if (moveState[statesTemp[y - dy][x - dx]]) {
+            states[y][x] = statesTemp[y - dy][x - dx];
+          }
+        }
+      }
     }
   }
 }
