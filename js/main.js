@@ -287,6 +287,7 @@ function draw(e) {
     // 図形
     for (let y = 0; y < height; ++y) {
       for (let x = 0; x < width; ++x) {
+        const state = states[y][x];
         if (states[y][x] != '0') {
           const color = colors[states[y][x]];
           {
@@ -331,21 +332,25 @@ function draw(e) {
             line.setAttribute('stroke-width', 0.16 * blockSize);
             g.appendChild(line);
           }
+          // 右上
           if (flag1 && flag2 && states[y - 1][x + 1] != states[y][x]) {
             const rect = createRect({x: x + 1 - 0.16, y: y, width: 0.16, height: 0.16});
             rect.setAttribute('fill', color.stroke);
             g.appendChild(rect);
           }
+          // 右下
           if (flag2 && flag3 && states[y + 1][x + 1] != states[y][x]) {
             const rect = createRect({x: x + 1 - 0.16, y: y + 1 - 0.16, width: 0.16, height: 0.16});
             rect.setAttribute('fill', color.stroke);
             g.appendChild(rect);
           }
+          // 左上
           if (flag3 && flag4 && states[y + 1][x - 1] != states[y][x]) {
             const rect = createRect({x: x, y: y + 1 - 0.16, width: 0.16, height: 0.16});
             rect.setAttribute('fill', color.stroke);
             g.appendChild(rect);
           }
+          // 左下
           if (flag4 && flag1 && states[y - 1][x - 1] != states[y][x]) {
             const rect = createRect({x: x, y: y, width: 0.16, height: 0.16});
             rect.setAttribute('fill', color.stroke);
