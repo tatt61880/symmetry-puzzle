@@ -1,14 +1,10 @@
 'use strict';
-const version = 'Version: 2022.04.11';
+const version = 'Version: 2022.04.13';
 
-const debug = false;
 window.addEventListener('load', init, false);
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
-let prev = {x: -1, y: -1};
-let drawingState;
-let drawingFlag = false;
 let width = 6;
 let height = 6;
 let upEnd = 2;
@@ -16,10 +12,9 @@ let rightEnd = width - 1;
 let downEnd = height - 1;
 let leftEnd = 2;
 
-const keyInputMsec = 100// キー入力間隔(ミリ秒)
+const keyInputMsec = 100;// キー入力間隔(ミリ秒)
 
 const stateNone = 0;
-const stateA = 1;
 
 const stateWall = -1; // 壁
 const stateHero = 9; // 自機
@@ -32,21 +27,7 @@ for (let i = 1; i < 9; i++) {
 colors[stateHero] = {fill: 'aqua', stroke: 'blue'};
 
 const colorNone = 'white';
-const colorA = 'pink';
-const colorB = 'aqua';
-
-const colorNormalMode = 'white';
-const colorSizeMode = '#ffffaa';
-
 const colorLine = '#333';
-
-const colorNormal = 'red';
-const colorSelected = 'darkviolet';
-const colorCenterB = 'blue';
-
-const sizeNormal = 3;
-const sizeSelected = 6;
-const sizeCenterB = 6;
 
 const blockSize = 28;
 
@@ -59,19 +40,12 @@ const Dir = {
 
 const dys = [-1, 0, 1, 0];
 const dxs = [0, 1, 0, -1];
-const dys2 = [-1, 1, 1, -1];
-const dxs2 = [1, 1, -1, -1];
 
 let states = [];
 
-let elemSizeInfo;
 let elemWidth;
 let elemHeight;
-let elemSizeModeButton;
 let elemSvg;
-let elemUrlInfo;
-let elemModeNameInfo;
-let elemModeInfo;
 
 function analyzeUrl() {
   const res = {
@@ -99,28 +73,6 @@ function analyzeUrl() {
     }
   }
   return res;
-}
-
-function getUrlInfo() {
-  return location.href.split('?')[0] + `?w=${width}&h=${height}&s=${getBlockStr()}`;
-}
-
-function updateUrlInfo() {
-  const url = getUrlInfo();
-  elemUrlInfo.innerHTML = `↓現在の盤面のURL↓<br><a href="${url}">${url}</a>`;
-}
-
-function getBlockStr() {
-  let res = '';
-  for (let y = 0; y < height; ++y) {
-    let line = '';
-    for (let x = 0; x < width; ++x) {
-      line += states[y][x];
-    }
-    res += line.replace(/0+$/, '');
-    res += '-';
-  }
-  return res.replace(/-+$/, '');
 }
 
 function applyBlockStr(e, str) {
@@ -160,7 +112,7 @@ function applyBlockStr(e, str) {
       x++;
     }
   }
-  update(e);
+  draw();
 }
 
 function setSize(w, h) {
@@ -176,14 +128,6 @@ function setSize(w, h) {
   elemHeight.value = h;
 }
 
-function changeSize(e) {
-  const blockStr = getBlockStr();
-  const w = Number(elemWidth.value);
-  const h = Number(elemHeight.value);
-  setSize(w, h);
-  applyBlockStr(e, blockStr);
-}
-
 let keyFlag = true;
 let lastTime = 0;
 
@@ -192,14 +136,15 @@ function move(dir) {
   const dy = dys[dir];
   let sx;
   let sy;
-  for (let y = upEnd; y <= downEnd; ++y) {
-    for (let x = leftEnd; x <= rightEnd; ++x) {
-      if (states[y][x] == stateHero) {
-        sx = x;
-        sy = y;
-        x = width;
-        y = height;
-        break;
+  {
+    loop:
+    for (let y = upEnd; y <= downEnd; ++y) {
+      for (let x = leftEnd; x <= rightEnd; ++x) {
+        if (states[y][x] == stateHero) {
+          sx = x;
+          sy = y;
+          break loop;
+        }
       }
     }
   }
@@ -216,6 +161,16 @@ function move(dir) {
     let flag = true; // 移動フラグ。
     while (!st.empty) {
       const state = st.pop();
+      loop:
+      for (let y = upEnd; y <= downEnd; ++y) {
+        for (let x = leftEnd; x <= rightEnd; ++x) {
+          if (states[sy + dy][sx + dx] == stateWall) {
+            flag = false;
+
+            break loop;
+          }
+        }
+      }
     }
 
     if (flag) {
@@ -234,13 +189,13 @@ function keydown(e) {
     const dir = Dir[key];
     if (dir !== undefined) {
       move(dir);
-      draw(e);
+      draw();
     }
   }
   return false; 
 }
 
-function keyup(e) {
+function keyup() {
   keyFlag = true;
   return false; 
 }
@@ -248,15 +203,10 @@ function keyup(e) {
 function init(e) {
   document.getElementById('versionInfo').innerText = version;
 
-  elemSizeInfo = document.getElementById('sizeInfo');
   elemWidth = document.getElementById('widthVal');
   elemHeight = document.getElementById('heightVal');
 
   elemSvg = document.getElementById('svgBoard');
-  elemUrlInfo = document.getElementById('urlInfo');
-
-  elemModeNameInfo = document.getElementById('modeNameInfo');
-  elemModeInfo = document.getElementById('modeInfo');
 
   const res = analyzeUrl();
   setSize(res.width, res.height);
@@ -266,43 +216,6 @@ function init(e) {
     document.addEventListener('keydown', keydown, false);
     document.addEventListener('keyup', keyup, false);
   }
-
-  {
-    if (window.ontouchstart === undefined) {
-      elemSvg.addEventListener('mousedown', pointerdown, false);
-    } else {
-      elemSvg.addEventListener('touchstart', pointerdown, false);
-    }
-    if (window.ontouchmove === undefined) {
-      elemSvg.addEventListener('mousemove', pointermove, false);
-    } else {
-      elemSvg.addEventListener('touchmove', pointermove, false);
-    }
-    if (window.ontouchend === undefined) {
-      elemSvg.addEventListener('mouseup', pointerup, false);
-      document.addEventListener('mouseup', pointerup, false);
-    } else {
-      elemSvg.addEventListener('touchend', pointerup, false);
-      document.addEventListener('touchend', pointerup, false);
-    }
-
-    elemWidth.addEventListener('change', changeSize, false);
-    elemHeight.addEventListener('change', changeSize, false);
-  }
-}
-
-function getCursorPos(elem, e) {
-  const bcRect = elem.getBoundingClientRect();
-  let cursorX;
-  let cursorY;
-  if (e.touches !== undefined) {
-    cursorX = e.touches[0].clientX - bcRect.left;
-    cursorY = e.touches[0].clientY - bcRect.top;
-  } else {
-    cursorX = e.clientX - bcRect.left;
-    cursorY = e.clientY - bcRect.top;
-  }
-  return {x: cursorX, y: cursorY};
 }
 
 function createLine(param) {
@@ -314,14 +227,6 @@ function createLine(param) {
   return line;
 }
 
-function createCircle(param) {
-  const circle = document.createElementNS(SVG_NS, 'circle');
-  circle.setAttribute('cx', blockSize * param.cx);
-  circle.setAttribute('cy', blockSize * param.cy);
-  circle.setAttribute('r', param.r);
-  return circle;
-}
-
 function createRect(param) {
   const rect = document.createElementNS(SVG_NS, 'rect');
   rect.setAttribute('x', blockSize * param.x);
@@ -329,15 +234,6 @@ function createRect(param) {
   rect.setAttribute('width', blockSize * param.width);
   rect.setAttribute('height', blockSize * param.height);
   return rect;
-}
-
-function createText(param) {
-  const text = document.createElementNS(SVG_NS, 'text');
-  text.setAttribute('x', blockSize * param.x);
-  text.setAttribute('y', blockSize * param.y);
-  text.setAttribute('font-size', `${Math.floor(blockSize * 0.4)}px`);
-  text.textContent = param.text;
-  return text;
 }
 
 function drawFrame(g) {
@@ -364,7 +260,7 @@ function drawFrame(g) {
   }
 }
 
-function draw(e) {
+function draw() {
   while (elemSvg.firstChild) {
     elemSvg.removeChild(elemSvg.firstChild);
   }
@@ -498,83 +394,14 @@ function draw(e) {
   elemSvg.appendChild(g);
 }
 
-function clamp(val, min, max) {
-  if (val < min) return min;
-  if (val > max) return max;
-  return val;
-}
-
-// カーソル位置の座標を得る
-function getCurXY(e) {
-  const cursorPos = getCursorPos(elemSvg, e);
-  const x = clamp(Math.floor(cursorPos.x / blockSize), 0, width - 1);
-  const y = clamp(Math.floor(cursorPos.y / blockSize), 0, height - 1);
-  return {x: x, y: y};
-}
-
-function pointerup() {
-  if (debug) window.console.log('pointerup');
-
-  drawingFlag = false;
-}
-
-// タッチ環境において、画面端付近か否か。
-function isTouchScreenNearEdge(e) {
-  if (e.touches === undefined) return false;
-  const x = e.touches[0].clientX;
-  return x < 30; // 画面の左端付近ならtrue
-}
-
-function pointerdown(e) {
-  if (debug) window.console.log('pointerdown');
-
-  const touches = e.changedTouches;
-  if (touches !== undefined && touches.length > 1) {
-    return;
-  }
-  if (isTouchScreenNearEdge(e)) {
-    draw(e);
-    return;
-  }
-
-  e.preventDefault();
-
-  const cur = getCurXY(e);
-
-  drawingState = stateA;
-  drawingFlag = true;
-
-  prev = {x: -1, y: -1};
-  pointermove(e);
-}
-
-function pointermove(e) {
-  if (debug) window.console.log('pointermove');
-
-  if (!drawingFlag) {
-    draw(e);
-    return;
-  }
-
-  const cur = getCurXY(e);
-  e.preventDefault();
-
-  if (cur.x == prev.x && cur.y == prev.y) return;
-  prev.x = cur.x;
-  prev.y = cur.y;
-  states[cur.y][cur.x] = drawingState;
-
-  update(e);
-}
-
 // 図形が点対称か否か。
 function isPointSymmetry(isX) {
   let minX = width;
   let maxX = 0;
   let minY = height;
   let maxY = 0;
-  for (let y = 0; y < height; ++y) {
-    for (let x = 0; x < width; ++x) {
+  for (let y = upEnd; y <= downEnd; ++y) {
+    for (let x = leftEnd; x <= rightEnd; ++x) {
       if (isX(states[y][x])) {
         minX = Math.min(minX, x);
         maxX = Math.max(maxX, x);
@@ -601,8 +428,8 @@ function isConnected(isX) {
   }
   let x0;
   let y0;
-  for (let y = 0; y < height; ++y) {
-    for (let x = 0; x < width; ++x) {
+  for (let y = upEnd; y <= downEnd; ++y) {
+    for (let x = leftEnd; x <= rightEnd; ++x) {
       if (isX(statesTemp[y][x])) {
         x0 = x;
         y0 = y;
@@ -619,10 +446,6 @@ function isConnected(isX) {
     for (let i = 0; i < 4; i++) {
       const xx = xy[0] + dxs[i];
       const yy = xy[1] + dys[i];
-      if (xx == -1) continue;
-      if (yy == -1) continue;
-      if (xx == width) continue;
-      if (yy == height) continue;
       if (isX(statesTemp[yy][xx])) {
         statesTemp[yy][xx] = stateNone;
         st.push([xx, yy]);
@@ -654,23 +477,6 @@ function getCenter(isX) {
     }
   }
   return {x: minX + maxX + 1, y: minY + maxY + 1};
-}
-
-function count(isX) {
-  let cnt = 0;
-  for (let y = 0; y < height; ++y) {
-    for (let x = 0; x < width; ++x) {
-      if (isX(states[y][x])) cnt++;
-    }
-  }
-  return cnt;
-}
-
-function update(e) {
-  if (debug) window.console.log('update');
-
-  draw(e);
-  return;
 }
 
 // {{{ Stack
