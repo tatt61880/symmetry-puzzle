@@ -14,16 +14,16 @@ let height = 6;
 
 const stateNone = 0;
 const stateA = 1;
-const stateB = 2;
 
-const kWall = -1;
+const kWall = -1; // 壁
+const kHero = 9; // 自機
 
 const colors = {};
 colors[kWall] = {fill: '#222', stroke: '#333'};
 for (let i = 1; i < 9; i++) {
   colors[i] = {fill: 'pink', stroke: 'red'};
 }
-colors[9] = {fill: 'aqua', stroke: 'blue'};
+colors[kHero] = {fill: 'aqua', stroke: 'blue'};
 
 const colorNone = 'white';
 const colorA = 'pink';
@@ -138,9 +138,9 @@ function applyBlockStr(e, str) {
       x = 2;
     } else {
       if (c == 's') {
-        states[y][x] = 9;
+        states[y][x] = kHero;
       } else if (c == 'x') {
-        states[y][x] = -1;
+        states[y][x] = kWall;
       } else {
         states[y][x] = c;
       }
@@ -167,6 +167,26 @@ function changeSize(e) {
   applyBlockStr(e, blockStr);
 }
 
+let keyFlag = true;
+let lastTime = 0;
+
+function keydown(e) {
+  const now = Date.now();
+  const key = e.key;
+  if (keyFlag || now > lastTime + 300) {
+    keyFlag = false;
+    lastTime = now;
+    console.log(key);
+  }
+  return false; 
+}
+
+function keyup(e) {
+  keyFlag = true;
+  console.log('keyup');
+  return false; 
+}
+
 function init(e) {
   document.getElementById('versionInfo').innerText = version;
 
@@ -183,6 +203,11 @@ function init(e) {
   const res = analyzeUrl();
   setSize(res.width, res.height);
   applyBlockStr(e, res.blockStr);
+
+  {
+    document.addEventListener('keydown', keydown, false);
+    document.addEventListener('keyup', keyup, false);
+  }
 
   {
     if (window.ontouchstart === undefined) {
@@ -458,8 +483,7 @@ function pointerdown(e) {
 
   const cur = getCurXY(e);
 
-  const targetState = stateA;
-  drawingState = states[cur.y][cur.x] == targetState ? stateNone : targetState;
+  drawingState = stateA;
   drawingFlag = true;
 
   prev = {x: -1, y: -1};
@@ -483,18 +507,6 @@ function pointermove(e) {
   states[cur.y][cur.x] = drawingState;
 
   update(e);
-}
-
-function isAorB(x) {
-  return x != stateNone;
-}
-
-function isA(x) {
-  return x == stateA;
-}
-
-function isB(x) {
-  return x == stateB;
 }
 
 // 図形が点対称か否か。
