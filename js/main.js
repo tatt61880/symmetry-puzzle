@@ -19,7 +19,7 @@ const stateB = 2;
 const kWall = -1;
 
 const colors = {};
-colors[kWall] = {fill: '#333', stroke: 'black'};
+colors[kWall] = {fill: '#333', stroke: '#555'};
 for (let i = 1; i < 9; i++) {
   colors[i] = {fill: 'pink', stroke: 'red'};
 }
@@ -368,31 +368,33 @@ function draw(e) {
 
   drawFrame(g);
 
+  const paddingWidth = 1.3;
+  const paddingColor = '#753';
   // 上側
   {
-    const rect = createRect({x: 0, y: 0, width: width, height: 1.5});
-    rect.setAttribute('fill', '#aaa');
+    const rect = createRect({x: 0, y: 0, width: width, height: paddingWidth});
+    rect.setAttribute('fill', paddingColor);
     rect.setAttribute('stroke', 'none');
     g.appendChild(rect);
   }
   // 右側
   {
-    const rect = createRect({x: width - 1.5, y: 0, width: width, height: height});
-    rect.setAttribute('fill', '#aaa');
+    const rect = createRect({x: width - paddingWidth, y: 0, width: width, height: height});
+    rect.setAttribute('fill', paddingColor);
     rect.setAttribute('stroke', 'none');
     g.appendChild(rect);
   }
   // 下側
   {
-    const rect = createRect({x: 0, y: height - 1.5, width: width, height: height});
-    rect.setAttribute('fill', '#aaa');
+    const rect = createRect({x: 0, y: height - paddingWidth, width: width, height: height});
+    rect.setAttribute('fill', paddingColor);
     rect.setAttribute('stroke', 'none');
     g.appendChild(rect);
   }
   // 左側
   {
-    const rect = createRect({x: 0, y: 0, width: 1.5, height: height});
-    rect.setAttribute('fill', '#aaa');
+    const rect = createRect({x: 0, y: 0, width: paddingWidth, height: height});
+    rect.setAttribute('fill', paddingColor);
     rect.setAttribute('stroke', 'none');
     g.appendChild(rect);
   }
