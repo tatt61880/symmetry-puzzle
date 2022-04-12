@@ -23,6 +23,7 @@ colors[kWall] = {fill: '#222', stroke: '#333'};
 for (let i = 1; i < 9; i++) {
   colors[i] = {fill: 'pink', stroke: 'red'};
 }
+colors[9] = {fill: 'aqua', stroke: 'blue'};
 
 const colorNone = 'white';
 const colorA = 'pink';
@@ -136,7 +137,13 @@ function applyBlockStr(e, str) {
       if (y == height - 2) break;
       x = 2;
     } else {
-      states[y][x] = c;
+      if (c == 's') {
+        states[y][x] = 9;
+      } else if (c == 'x') {
+        states[y][x] = -1;
+      } else {
+        states[y][x] = c;
+      }
       x++;
     }
   }
