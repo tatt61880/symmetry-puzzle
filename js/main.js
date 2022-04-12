@@ -43,8 +43,10 @@ const sizeCenterB = 6;
 
 const blockSize = 28;
 
-const dys = [1, 0, -1, 0];
+const dys = [-1, 0, 1, 0];
 const dxs = [0, 1, 0, -1];
+const dys2 = [-1, 1, 1, -1];
+const dxs2 = [1, 1, -1, -1];
 
 let states = [];
 
@@ -108,27 +110,31 @@ function getBlockStr() {
 }
 
 function applyBlockStr(e, str) {
+  // 初期化
   for (let y = 0; y < height; ++y) {
     states[y] = [];
     for (let x = 0; x < width; ++x) {
       states[y][x] = stateNone;
     }
   }
-  for (let y = 0; y < height; ++y) {
-    states[y][0] = kWall;
-    states[y][width - 1] = kWall;
+  // 枠
+  {
+    for (let y = 1; y < height - 1; ++y) {
+      states[y][1] = kWall;
+      states[y][width - 2] = kWall;
+    }
+    for (let x = 2; x < width - 2; ++x) {
+      states[1][x] = kWall;
+      states[height - 2][x] = kWall;
+    }
   }
-  for (let x = 1; x < width - 1; ++x) {
-    states[0][x] = kWall;
-    states[height - 1][x] = kWall;
-  }
-  let y = 1;
-  let x = 1;
+  let y = 2;
+  let x = 2;
   for (const c of str) {
     if (c == '-') {
       y++;
-      if (y == height - 1) break;
-      x = 1;
+      if (y == height - 2) break;
+      x = 2;
     } else {
       states[y][x] = c;
       x++;
@@ -138,8 +144,8 @@ function applyBlockStr(e, str) {
 }
 
 function setSize(w, h) {
-  width = w + 2;
-  height = h + 2;
+  width = w + 4;
+  height = h + 4;
   elemSvg.setAttribute('width', blockSize * width);
   elemSvg.setAttribute('height', blockSize * height);
   elemWidth.value = w;
@@ -288,80 +294,108 @@ function draw(e) {
     for (let y = 0; y < height; ++y) {
       for (let x = 0; x < width; ++x) {
         const state = states[y][x];
-        if (states[y][x] != '0') {
-          const color = colors[states[y][x]];
-          {
-            const rect = createRect({x: x, y: y, width: 1, height: 1});
-            rect.setAttribute('fill', color.fill);
-            rect.setAttribute('stroke', 'none');
-            g.appendChild(rect);
-          }
-          let flag1 = true;
-          let flag2 = true;
-          let flag3 = true;
-          let flag4 = true;
-          // 上側
-          if (y == 0 || states[y - 1][x] != states[y][x]) {
-            flag1 = false;
-            const line = createLine({x1: x, y1: y + 0.08, x2: x + 1, y2: y + 0.08});
-            line.setAttribute('stroke', color.stroke);
-            line.setAttribute('stroke-width', 0.16 * blockSize);
-            g.appendChild(line);
-          }
-          // 右側
-          if (x == width - 1 || states[y][x + 1] != states[y][x]) {
-            flag2 = false;
-            const line = createLine({x1: x + 1 - 0.08, y1: y, x2: x + 1 - 0.08, y2: y + 1});
-            line.setAttribute('stroke', color.stroke);
-            line.setAttribute('stroke-width', 0.16 * blockSize);
-            g.appendChild(line);
-          }
-          // 下側
-          if (y == height - 1 || states[y + 1][x] != states[y][x]) {
-            flag3 = false;
-            const line = createLine({x1: x, y1: y + 1 - 0.08, x2: x + 1, y2: y + 1 - 0.08});
-            line.setAttribute('stroke', color.stroke);
-            line.setAttribute('stroke-width', 0.16 * blockSize);
-            g.appendChild(line);
-          }
-          // 左側
-          if (x == 0 || states[y][x - 1] != states[y][x]) {
-            flag4 = false;
-            const line = createLine({x1: x + 0.08, y1: y, x2: x + 0.08, y2: y + 1});
-            line.setAttribute('stroke', color.stroke);
-            line.setAttribute('stroke-width', 0.16 * blockSize);
-            g.appendChild(line);
-          }
-          // 右上
-          if (flag1 && flag2 && states[y - 1][x + 1] != states[y][x]) {
-            const rect = createRect({x: x + 1 - 0.16, y: y, width: 0.16, height: 0.16});
-            rect.setAttribute('fill', color.stroke);
-            g.appendChild(rect);
-          }
-          // 右下
-          if (flag2 && flag3 && states[y + 1][x + 1] != states[y][x]) {
-            const rect = createRect({x: x + 1 - 0.16, y: y + 1 - 0.16, width: 0.16, height: 0.16});
-            rect.setAttribute('fill', color.stroke);
-            g.appendChild(rect);
-          }
-          // 左上
-          if (flag3 && flag4 && states[y + 1][x - 1] != states[y][x]) {
-            const rect = createRect({x: x, y: y + 1 - 0.16, width: 0.16, height: 0.16});
-            rect.setAttribute('fill', color.stroke);
-            g.appendChild(rect);
-          }
-          // 左下
-          if (flag4 && flag1 && states[y - 1][x - 1] != states[y][x]) {
-            const rect = createRect({x: x, y: y, width: 0.16, height: 0.16});
-            rect.setAttribute('fill', color.stroke);
-            g.appendChild(rect);
-          }
+        if (state == 0) continue;
+
+        const color = colors[state];
+        {
+          const rect = createRect({x: x, y: y, width: 1, height: 1});
+          rect.setAttribute('fill', color.fill);
+          rect.setAttribute('stroke', 'none');
+          g.appendChild(rect);
+        }
+        let flag1 = true;
+        let flag2 = true;
+        let flag3 = true;
+        let flag4 = true;
+        if (y == 0 || states[y - 1][x] != state) {
+          flag1 = false;
+          const line = createLine({x1: x, y1: y + 0.08, x2: x + 1, y2: y + 0.08});
+          line.setAttribute('stroke', color.stroke);
+          line.setAttribute('stroke-width', 0.16 * blockSize);
+          g.appendChild(line);
+        }
+        // 右側
+        if (x == width - 1 || states[y][x + 1] != state) {
+          flag2 = false;
+          const line = createLine({x1: x + 1 - 0.08, y1: y, x2: x + 1 - 0.08, y2: y + 1});
+          line.setAttribute('stroke', color.stroke);
+          line.setAttribute('stroke-width', 0.16 * blockSize);
+          g.appendChild(line);
+        }
+        // 下側
+        if (y == height - 1 || states[y + 1][x] != state) {
+          flag3 = false;
+          const line = createLine({x1: x, y1: y + 1 - 0.08, x2: x + 1, y2: y + 1 - 0.08});
+          line.setAttribute('stroke', color.stroke);
+          line.setAttribute('stroke-width', 0.16 * blockSize);
+          g.appendChild(line);
+        }
+        // 左側
+        if (x == 0 || states[y][x - 1] != state) {
+          flag4 = false;
+          const line = createLine({x1: x + 0.08, y1: y, x2: x + 0.08, y2: y + 1});
+          line.setAttribute('stroke', color.stroke);
+          line.setAttribute('stroke-width', 0.16 * blockSize);
+          g.appendChild(line);
+        }
+        // 右上
+        if (flag1 && flag2 && states[y - 1][x + 1] != state) {
+          const rect = createRect({x: x + 1 - 0.16, y: y, width: 0.16, height: 0.16});
+          rect.setAttribute('fill', color.stroke);
+          g.appendChild(rect);
+        }
+        // 右下
+        if (flag2 && flag3 && states[y + 1][x + 1] != state) {
+          const rect = createRect({x: x + 1 - 0.16, y: y + 1 - 0.16, width: 0.16, height: 0.16});
+          rect.setAttribute('fill', color.stroke);
+          g.appendChild(rect);
+        }
+        // 左上
+        if (flag3 && flag4 && states[y + 1][x - 1] != state) {
+          const rect = createRect({x: x, y: y + 1 - 0.16, width: 0.16, height: 0.16});
+          rect.setAttribute('fill', color.stroke);
+          g.appendChild(rect);
+        }
+        // 左下
+        if (flag4 && flag1 && states[y - 1][x - 1] != state) {
+          const rect = createRect({x: x, y: y, width: 0.16, height: 0.16});
+          rect.setAttribute('fill', color.stroke);
+          g.appendChild(rect);
         }
       }
     }
   }
 
   drawFrame(g);
+
+  // 上側
+  {
+    const rect = createRect({x: 0, y: 0, width: width, height: 1.5});
+    rect.setAttribute('fill', '#aaa');
+    rect.setAttribute('stroke', 'none');
+    g.appendChild(rect);
+  }
+  // 右側
+  {
+    const rect = createRect({x: width - 1.5, y: 0, width: width, height: height});
+    rect.setAttribute('fill', '#aaa');
+    rect.setAttribute('stroke', 'none');
+    g.appendChild(rect);
+  }
+  // 下側
+  {
+    const rect = createRect({x: 0, y: height - 1.5, width: width, height: height});
+    rect.setAttribute('fill', '#aaa');
+    rect.setAttribute('stroke', 'none');
+    g.appendChild(rect);
+  }
+  // 左側
+  {
+    const rect = createRect({x: 0, y: 0, width: 1.5, height: height});
+    rect.setAttribute('fill', '#aaa');
+    rect.setAttribute('stroke', 'none');
+    g.appendChild(rect);
+  }
 
   elemSvg.appendChild(g);
 }
