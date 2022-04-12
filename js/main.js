@@ -8,8 +8,8 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 let width = 6;
 let height = 6;
 let upEnd = 2;
-let rightEnd = width - 1;
-let downEnd = height - 1;
+let rightEnd = width - 3;
+let downEnd = height - 3;
 let leftEnd = 2;
 
 const keyInputMsec = 100;// キー入力間隔(ミリ秒)
@@ -119,8 +119,8 @@ function setSize(w, h) {
   width = w + 4;
   height = h + 4;
   upEnd = 2;
-  rightEnd = width - 1;
-  downEnd = height - 1;
+  rightEnd = width - 3;
+  downEnd = height - 3;
   leftEnd = 2;
   elemSvg.setAttribute('width', blockSize * width);
   elemSvg.setAttribute('height', blockSize * height);
