@@ -7,10 +7,10 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 
 let width = 6;
 let height = 6;
-let upEnd = 2;
+const upEnd = 2;
 let rightEnd = width - 3;
 let downEnd = height - 3;
-let leftEnd = 2;
+const leftEnd = 2;
 
 const keyInputMsec = 100;// キー入力間隔(ミリ秒)
 
@@ -21,7 +21,7 @@ const stateHero = 9; // 自機
 
 const colors = {};
 colors[stateWall] = {fill: '#222', stroke: '#333'};
-for (let i = 1; i < 9; i++) {
+for (let i = 1; i < 9; ++i) {
   colors[i] = {fill: 'pink', stroke: 'red'};
 }
 colors[stateHero] = {fill: 'aqua', stroke: 'blue'};
@@ -43,8 +43,6 @@ const dxs = [0, 1, 0, -1];
 
 let states = [];
 
-let elemWidth;
-let elemHeight;
 let elemSvg;
 
 function analyzeUrl() {
@@ -118,14 +116,10 @@ function applyBlockStr(e, str) {
 function setSize(w, h) {
   width = w + 4;
   height = h + 4;
-  upEnd = 2;
   rightEnd = width - 3;
   downEnd = height - 3;
-  leftEnd = 2;
   elemSvg.setAttribute('width', blockSize * width);
   elemSvg.setAttribute('height', blockSize * height);
-  elemWidth.value = w;
-  elemHeight.value = h;
 }
 
 let keyFlag = true;
@@ -134,64 +128,48 @@ let lastTime = 0;
 function move(dir) {
   const dx = dxs[dir];
   const dy = dys[dir];
-  let sx;
-  let sy;
-  {
+
+  const moveState = {}; // 移動予定の状態番号
+  moveState[stateHero] = true;
+  const st = new Stack(); // 移動可能か検証必要な状態番号
+  st.push(stateHero);
+  let flag = true; // 移動フラグ。
+  while (!st.empty()) {
+    const state = st.pop();
     loop:
     for (let y = upEnd; y <= downEnd; ++y) {
       for (let x = leftEnd; x <= rightEnd; ++x) {
-        if (states[y][x] == stateHero) {
-          sx = x;
-          sy = y;
+        if (states[y][x] != state) continue;
+        const neighborState = states[y + dy][x + dx];
+        if (neighborState == stateNone) continue;
+        if (neighborState == stateWall) {
+          flag = false;
           break loop;
+        } else if (!moveState[neighborState]) {
+          moveState[neighborState] = true;
+          st.push(neighborState);
         }
       }
     }
   }
 
-  {
-    const moveState = {}; // 移動予定の状態番号
-    moveState[stateHero] = true;
-    const st = new Stack(); // 移動可能か検証必要な状態番号
-    st.push(stateHero);
-    let flag = true; // 移動フラグ。
-    while (!st.empty()) {
-      const state = st.pop();
-      loop:
-      for (let y = upEnd; y <= downEnd; ++y) {
-        for (let x = leftEnd; x <= rightEnd; ++x) {
-          if (states[y][x] != state) continue;
-          const neighborState = states[y + dy][x + dx];
-          if (neighborState == stateNone) continue;
-          if (neighborState == stateWall) {
-            flag = false;
-            break loop;
-          } else if (!moveState[neighborState]) {
-            moveState[neighborState] = true;
-            st.push(neighborState);
-          }
+  if (flag) {
+    const statesTemp = new Array(height);
+    for (let y = 0; y < height; ++y) {
+      statesTemp[y] = states[y].slice();
+    }
+
+    for (let y = upEnd; y <= downEnd; ++y) {
+      for (let x = leftEnd; x <= rightEnd; ++x) {
+        if (moveState[states[y][x]]) {
+          states[y][x] = stateNone;
         }
       }
     }
-
-    if (flag) {
-      const statesTemp = new Array(height);
-      for (let y = 0; y < height; ++y) {
-        statesTemp[y] = states[y].slice();
-      }
-
-      for (let y = upEnd; y <= downEnd; ++y) {
-        for (let x = leftEnd; x <= rightEnd; ++x) {
-          if (moveState[states[y][x]]) {
-            states[y][x] = stateNone;
-          }
-        }
-      }
-      for (let y = upEnd; y <= downEnd; ++y) {
-        for (let x = leftEnd; x <= rightEnd; ++x) {
-          if (moveState[statesTemp[y - dy][x - dx]]) {
-            states[y][x] = statesTemp[y - dy][x - dx];
-          }
+    for (let y = upEnd; y <= downEnd; ++y) {
+      for (let x = leftEnd; x <= rightEnd; ++x) {
+        if (moveState[statesTemp[y - dy][x - dx]]) {
+          states[y][x] = statesTemp[y - dy][x - dx];
         }
       }
     }
@@ -220,9 +198,6 @@ function keyup() {
 
 function init(e) {
   document.getElementById('versionInfo').innerText = version;
-
-  elemWidth = document.getElementById('widthVal');
-  elemHeight = document.getElementById('heightVal');
 
   elemSvg = document.getElementById('svgBoard');
 
@@ -294,7 +269,7 @@ function draw() {
       g.appendChild(rect);
     }
 
-    const paddingWidth = 0.2;
+    const paddingWidth = 0.12;
     const paddingWidthHalf = paddingWidth / 2;
 
     // 図形
@@ -378,7 +353,7 @@ function draw() {
   // 額縁
   {
     const paddingWidth = 1.3;
-    const paddingColor = '#753';
+    const paddingColor = isOk(isTarget) ? '#8d5' : '#753';
     // 上側
     {
       const rect = createRect({x: 0, y: 0, width: width, height: paddingWidth});
@@ -410,6 +385,16 @@ function draw() {
   }
 
   elemSvg.appendChild(g);
+}
+
+function isTarget(x) {
+  return 0 < x && x < 9;
+}
+
+function isOk(isX) {
+  if (!isConnected(isX)) return false;
+  if (!isPointSymmetry(isX)) return false;
+  return true;
 }
 
 // 図形が点対称か否か。
@@ -446,12 +431,13 @@ function isConnected(isX) {
   }
   let x0;
   let y0;
+  loop:
   for (let y = upEnd; y <= downEnd; ++y) {
     for (let x = leftEnd; x <= rightEnd; ++x) {
       if (isX(statesTemp[y][x])) {
         x0 = x;
         y0 = y;
-        break;
+        break loop;
       }
     }
   }
@@ -477,24 +463,6 @@ function isConnected(isX) {
     }
   }
   return true;
-}
-
-function getCenter(isX) {
-  let minX = width;
-  let maxX = 0;
-  let minY = height;
-  let maxY = 0;
-  for (let y = 0; y < height; ++y) {
-    for (let x = 0; x < width; ++x) {
-      if (isX(states[y][x])) {
-        minX = Math.min(minX, x);
-        maxX = Math.max(maxX, x);
-        minY = Math.min(minY, y);
-        maxY = Math.max(maxY, y);
-      }
-    }
-  }
-  return {x: minX + maxX + 1, y: minY + maxY + 1};
 }
 
 // {{{ Stack
