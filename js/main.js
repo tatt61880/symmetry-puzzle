@@ -1,6 +1,17 @@
 'use strict';
 const version = 'Version: 2022.04.13';
 
+const levels = [
+  {width: 6, height: 6, stateStr: 's-00022-0002-0010-011'},
+  {width: 6, height: 6, stateStr: 's-00022-0012-0011-011'},
+  {width: 5, height: 6, stateStr: 'sx--01-011-1122-002'},
+  {width: 6, height: 6, stateStr: 'sx0x--01000x-011-1122-x02'},
+];
+let levelId = 1;
+
+const undos = [];
+let undoIdx = 0;
+
 window.addEventListener('load', init, false);
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -45,14 +56,6 @@ const dxs = [0, 1, 0, -1];
 
 let states = [];
 
-const levels = [
-  {width: 6, height: 6, stateStr: 's-00022-0002-0010-011'},
-  {width: 6, height: 6, stateStr: 's-00022-0012-0011-011'},
-  {width: 5, height: 6, stateStr: 'sx--01-011-1122-002'},
-  {width: 6, height: 6, stateStr: 'sx0x--01000x-011-1122-x02'},
-];
-let levelId = 1;
-
 let elemLevelPrev;
 let elemLevelId;
 let elemLevelNext;
@@ -89,7 +92,27 @@ function analyzeUrl() {
   return res;
 }
 
-function applyBlockStr(stateStr) {
+function getStateStr(stateStr) {
+  let res = '';
+  for (let y = upEnd; y <= downEnd; ++y) {
+    let line = '';
+    for (let x = leftEnd; x <= rightEnd; ++x) {
+      switch (states[y][x]) {
+      case stateHero:
+        line += 's';
+        break;
+      default:
+        line += states[y][x];
+        break;
+      }
+    }
+    res += line.replace(/0+$/, '');
+    res += '-';
+  }
+  return res;
+}
+
+function applyStateStr(stateStr) {
   // 初期化
   for (let y = 0; y < height; ++y) {
     states[y] = [];
@@ -168,6 +191,7 @@ function move(dir) {
   }
 
   if (flag) {
+    undos[undoIdx++] = getStateStr();
     const statesTemp = new Array(height);
     for (let y = 0; y < height; ++y) {
       statesTemp[y] = states[y].slice();
@@ -195,6 +219,10 @@ function keydown(e) {
   const key = e.key;
   if (key == 'r') {
     changeLevel(levelId);
+  } else if (key == 'z') {
+    if (undoIdx != 0) {
+      applyStateStr(undos[--undoIdx]);
+    }
   } else if (e.shiftKey || e.ctrlKey) {
     if (key == 'ArrowLeft') {
       gotoPrevLevel();
@@ -220,10 +248,11 @@ function keyup() {
 
 function applyLevel(levelObj) {
   setSize(levelObj.width, levelObj.height);
-  applyBlockStr(levelObj.stateStr);
+  applyStateStr(levelObj.stateStr);
 }
 
 function changeLevel(id) {
+  undoIdx = 0;
   levelId = id;
   if (levelId < 1) levelId = 1;
   if (levelId > levels.length) levelId = levels.length;
@@ -239,11 +268,15 @@ function setButtonVisibility() {
 }
 
 function gotoPrevLevel() {
-  changeLevel(levelId - 1);
+  if (levelId > 1) {
+    changeLevel(levelId - 1);
+  }
 }
 
 function gotoNextLevel() {
-  changeLevel(levelId + 1);
+  if (levelId < levels.length) {
+    changeLevel(levelId + 1);
+  }
 }
 
 function init() {
@@ -453,9 +486,20 @@ function isTarget(x) {
 }
 
 function isOk(isX) {
+  if (count(isX) == 0) return false;
   if (!isConnected(isX)) return false;
   if (!isPointSymmetry(isX)) return false;
   return true;
+}
+
+function count(isX) {
+  let cnt = 0;
+  for (let y = upEnd; y <= downEnd; ++y) {
+    for (let x = leftEnd; x <= rightEnd; ++x) {
+      if (isX(states[y][x])) cnt++;
+    }
+  }
+  return cnt;
 }
 
 // 図形が点対称か否か。
