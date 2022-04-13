@@ -46,10 +46,10 @@ const dxs = [0, 1, 0, -1];
 let states = [];
 
 const levels = [
-  {width: 6, height: 6, stateStr: "s-00022-0002-0010-011"},
-  {width: 6, height: 6, stateStr: "s-00022-0012-0011-011"},
-  {width: 5, height: 6, stateStr: "sx--01-011-1122-002"},
-  {width: 6, height: 6, stateStr: "sx0x--01000x-011-1122-x02"},
+  {width: 6, height: 6, stateStr: 's-00022-0002-0010-011'},
+  {width: 6, height: 6, stateStr: 's-00022-0012-0011-011'},
+  {width: 5, height: 6, stateStr: 'sx--01-011-1122-002'},
+  {width: 6, height: 6, stateStr: 'sx0x--01000x-011-1122-x02'},
 ];
 let levelId = 1;
 
@@ -239,7 +239,7 @@ function gotoNextLevel() {
   changeLevel(levelId);
 }
 
-function init(e) {
+function init() {
   document.getElementById('versionInfo').innerText = version;
 
   elemLevelPrev = document.getElementById('levelPrev');
