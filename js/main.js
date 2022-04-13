@@ -193,7 +193,9 @@ function move(dir) {
 function keydown(e) {
   const now = Date.now();
   const key = e.key;
-  if (keyFlag || now > lastTime + keyInputMsec) {
+  if (key == 'r') {
+    changeLevel(levelId);
+  } else if (keyFlag || now > lastTime + keyInputMsec) {
     keyFlag = false;
     lastTime = now;
     const dir = Dir[key];
@@ -215,7 +217,8 @@ function applyLevel(levelObj) {
   applyBlockStr(levelObj.stateStr);
 }
 
-function changeLevel(levelId) {
+function changeLevel(id) {
+  levelId = id;
   if (levelId < 1) levelId = 1;
   if (levelId > levels.length) levelId = levels.length;
   setButtonVisibility();
@@ -230,13 +233,11 @@ function setButtonVisibility() {
 }
 
 function gotoPrevLevel() {
-  if (levelId != 1) levelId--;
-  changeLevel(levelId);
+  changeLevel(levelId - 1);
 }
 
 function gotoNextLevel() {
-  if (levelId != levels.length) levelId++;
-  changeLevel(levelId);
+  changeLevel(levelId + 1);
 }
 
 function init() {
