@@ -195,6 +195,12 @@ function keydown(e) {
   const key = e.key;
   if (key == 'r') {
     changeLevel(levelId);
+  } else if (e.shiftKey || e.ctrlKey) {
+    if (key == 'ArrowLeft') {
+      gotoPrevLevel();
+    } else if (key == 'ArrowRight') {
+      gotoNextLevel();
+    }
   } else if (keyFlag || now > lastTime + keyInputMsec) {
     keyFlag = false;
     lastTime = now;
