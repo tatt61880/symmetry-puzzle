@@ -18,10 +18,12 @@ const stateNone = 0;
 
 const stateWall = -1; // 壁
 const stateHero = 9; // 自機
+const stateTargetMin = 1;
+const stateTargetMax = 8;
 
 const colors = {};
 colors[stateWall] = {fill: '#222', stroke: '#333'};
-for (let i = 1; i < 9; ++i) {
+for (let i = stateTargetMin; i <= stateTargetMax; ++i) {
   colors[i] = {fill: 'pink', stroke: 'red'};
 }
 colors[stateHero] = {fill: 'aqua', stroke: 'blue'};
@@ -43,13 +45,27 @@ const dxs = [0, 1, 0, -1];
 
 let states = [];
 
+const levels = [
+  {width: 6, height: 6, stateStr: "s-00022-0002-0010-011"},
+  {width: 6, height: 6, stateStr: "s-00022-0012-0011-011"},
+  {width: 5, height: 6, stateStr: "sx--01-011-1122-002"},
+  {width: 6, height: 6, stateStr: "sx0x--01000x-011-1122-x02"},
+];
+let levelId = 1;
+
+let elemLevelPrev;
+let elemLevelId;
+let elemLevelNext;
 let elemSvg;
+
+let keyFlag = true;
+let lastTime = 0;
 
 function analyzeUrl() {
   const res = {
     width: width, 
     height: height,
-    blockStr: '',
+    stateStr: '',
   };
   const queryStrs = location.href.split('?')[1];
   if (queryStrs == null) return res;
@@ -66,14 +82,14 @@ function analyzeUrl() {
       res.height = Number(paramVal);
       break;
     case 's':
-      res.blockStr = paramVal;
+      res.stateStr = paramVal;
       break;
     }
   }
   return res;
 }
 
-function applyBlockStr(e, str) {
+function applyBlockStr(stateStr) {
   // 初期化
   for (let y = 0; y < height; ++y) {
     states[y] = [];
@@ -94,12 +110,13 @@ function applyBlockStr(e, str) {
   }
   let y = 2;
   let x = 2;
-  for (const c of str) {
+  for (const c of stateStr) {
     if (c == '-') {
       y++;
       if (y == height - 2) break;
       x = 2;
     } else {
+      if (x > width - 3) continue;
       if (c == 's') {
         states[y][x] = stateHero;
       } else if (c == 'x') {
@@ -121,9 +138,6 @@ function setSize(w, h) {
   elemSvg.setAttribute('width', blockSize * width);
   elemSvg.setAttribute('height', blockSize * height);
 }
-
-let keyFlag = true;
-let lastTime = 0;
 
 function move(dir) {
   const dx = dxs[dir];
@@ -196,18 +210,58 @@ function keyup() {
   return false; 
 }
 
+function applyLevel(levelObj) {
+  setSize(levelObj.width, levelObj.height);
+  applyBlockStr(levelObj.stateStr);
+}
+
+function changeLevel(levelId) {
+  if (levelId < 1) levelId = 1;
+  if (levelId > levels.length) levelId = levels.length;
+  setButtonVisibility();
+  elemLevelId.innerText = levelId;
+  const level = levelId - 1;
+  applyLevel(levels[level]);
+}
+
+function setButtonVisibility() {
+  elemLevelPrev.style.visibility = levelId == 1 ? 'hidden' : 'visible';
+  elemLevelNext.style.visibility = levelId == levels.length ? 'hidden' : 'visible';
+}
+
+function gotoPrevLevel() {
+  if (levelId != 1) levelId--;
+  changeLevel(levelId);
+}
+
+function gotoNextLevel() {
+  if (levelId != levels.length) levelId++;
+  changeLevel(levelId);
+}
+
 function init(e) {
   document.getElementById('versionInfo').innerText = version;
+
+  elemLevelPrev = document.getElementById('levelPrev');
+  elemLevelId = document.getElementById('levelId');
+  elemLevelNext = document.getElementById('levelNext');
 
   elemSvg = document.getElementById('svgBoard');
 
   const res = analyzeUrl();
-  setSize(res.width, res.height);
-  applyBlockStr(e, res.blockStr);
+
+  if (res.stateStr == '') {
+    changeLevel(levelId);
+  } else {
+    applyLevel(res);
+  }
 
   {
     document.addEventListener('keydown', keydown, false);
     document.addEventListener('keyup', keyup, false);
+
+    elemLevelPrev.addEventListener('click', gotoPrevLevel, false);
+    elemLevelNext.addEventListener('click', gotoNextLevel, false);
   }
 }
 
@@ -388,7 +442,7 @@ function draw() {
 }
 
 function isTarget(x) {
-  return 0 < x && x < 9;
+  return stateTargetMin <= x && x <= stateTargetMax;
 }
 
 function isOk(isX) {
