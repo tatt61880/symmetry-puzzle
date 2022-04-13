@@ -2,7 +2,7 @@
 const version = 'Version: 2022.04.13';
 
 const levels = [
-  {width: 6, height: 6, stateStr: 's-00022-0002-0010-011'},
+  {width: 6, height: 6, stateStr: 'sa-00022-0002-001b-011'},
   {width: 6, height: 6, stateStr: 's-00022-0012-0011-011'},
   {width: 5, height: 6, stateStr: 'sx--01-011-1122-002'},
   {width: 6, height: 6, stateStr: 'sx0x--01000x-011-1122-x02'},
@@ -25,19 +25,41 @@ const leftEnd = 2;
 
 const keyInputMsec = 100;// キー入力間隔(ミリ秒)
 
-const stateNone = 0;
-
+const stateHero = -2; // 自機
 const stateWall = -1; // 壁
-const stateHero = 9; // 自機
+const stateNone = 0;
 const stateTargetMin = 1;
-const stateTargetMax = 8;
+const stateTargetMax = 9;
+const stateOtherMin = 10;
+const stateOtherMax = 35;
+
+const stateToChar = {};
+const charToState = {};
+
+stateToChar[stateHero] = 's';
+stateToChar[stateWall] = 'x';
+stateToChar[stateNone] = '0';
+for (let i = stateTargetMin; i <= stateTargetMax; ++i) {
+  stateToChar[i] = `${i}`;
+}
+for (let i = stateOtherMin; i <= stateOtherMax; ++i) {
+  stateToChar[i] = `${String.fromCharCode(97 + i - stateOtherMin)}`;
+}
+
+for (const key in stateToChar) {
+  const val = stateToChar[key];
+  charToState[val] = key;
+}
 
 const colors = {};
+colors[stateHero] = {fill: 'aqua', stroke: 'blue'};
 colors[stateWall] = {fill: '#222', stroke: '#333'};
 for (let i = stateTargetMin; i <= stateTargetMax; ++i) {
   colors[i] = {fill: 'pink', stroke: 'red'};
 }
-colors[stateHero] = {fill: 'aqua', stroke: 'blue'};
+for (let i = stateOtherMin; i <= stateOtherMax; ++i) {
+  colors[i] = {fill: 'limegreen', stroke: 'green'};
+}
 
 const colorNone = 'white';
 const colorLine = '#333';
@@ -97,14 +119,7 @@ function getStateStr(stateStr) {
   for (let y = upEnd; y <= downEnd; ++y) {
     let line = '';
     for (let x = leftEnd; x <= rightEnd; ++x) {
-      switch (states[y][x]) {
-      case stateHero:
-        line += 's';
-        break;
-      default:
-        line += states[y][x];
-        break;
-      }
+      line += stateToChar[states[y][x]];
     }
     res += line.replace(/0+$/, '');
     res += '-';
@@ -140,13 +155,7 @@ function applyStateStr(stateStr) {
       x = 2;
     } else {
       if (x > width - 3) continue;
-      if (c == 's') {
-        states[y][x] = stateHero;
-      } else if (c == 'x') {
-        states[y][x] = stateWall;
-      } else {
-        states[y][x] = c;
-      }
+      states[y][x] = charToState[c];
       x++;
     }
   }
@@ -347,6 +356,7 @@ function drawFrame(g) {
   }
 }
 
+// 描画
 function draw() {
   while (elemSvg.firstChild) {
     elemSvg.removeChild(elemSvg.firstChild);
