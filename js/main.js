@@ -2,10 +2,20 @@
 const version = 'Version: 2022.04.13';
 
 const levels = [
+  {width: 5, height: 5, stateStr: 's-011-01--00002'},
+  {width: 5, height: 5, stateStr: 's--00002-0110x-01'},
+  {width: 5, height: 5, stateStr: 's--2-x011-001'},
+  {width: 5, height: 5, stateStr: 's3-2--x011-001'},
+  {width: 5, height: 5, stateStr: 's02-0040x-011-00103'},
+
   {width: 6, height: 6, stateStr: 'sa-00022-0002-001b-011'},
   {width: 6, height: 6, stateStr: 's-00022-0012-0011-011'},
+
   {width: 5, height: 6, stateStr: 'sx--01-011-1122-002'},
   {width: 6, height: 6, stateStr: 'sx0x--01000x-011-1122-x02'},
+
+  {width: 4, height: 5, stateStr: 's-02-xx-111-003'},
+  {width: 4, height: 5, stateStr: 's---111-003'},
 ];
 let levelId = 1;
 
@@ -58,7 +68,7 @@ for (let i = stateTargetMin; i <= stateTargetMax; ++i) {
   colors[i] = {fill: 'pink', stroke: 'red'};
 }
 for (let i = stateOtherMin; i <= stateOtherMax; ++i) {
-  colors[i] = {fill: 'limegreen', stroke: 'green'};
+  colors[i] = {fill: '#ddd', stroke: '#aaa'};
 }
 
 const colorNone = 'white';
