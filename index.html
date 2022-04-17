@@ -9,21 +9,32 @@
   <meta charset="UTF-8">
 </head>
 
-<body id="body" class="text-regular;">
-  <div style="text-align:center;">
-    <div style="width: 500px;">
-      <h3>点対称 倉庫番</h3>
-      <p id="versionInfo"><br></p>
+<body>
+<div id="contents">
+  <div style="width: 500px;">
+    <h1>点対称 倉庫番</h1>
+    <p id="versionInfo"><br></p>
+    <div>
       <div>
-        <div>
-        LEVEL
-        </div>
-        <a id="levelPrev" class="button">　◀　</a>
-        <span id="levelId"></span>
-        <a id="levelNext" class="button">　▶　</a>
-      <div>
-    </div>
+      LEVEL
+      </div>
+      <a id="levelPrev" class="button">　◀　</a>
+      <span id="levelId"></span>
+      <a id="levelNext" class="button">　▶　</a>
+    <div>
+
     <svg id="svgBoard" width="500" height="500"></svg>
+
+    <div>
+      <svg width="60" height="60">
+        <g id="buttonUndo">
+          <circle cx="30" cy="30" r="28" fill="lightgreen" stroke="green" stroke-width="4" />
+          <path d="M 16 30 A 14 14 0 1 0 25 18" fill="none" stroke="green" stroke-width="4" />
+          <path d="M 29 10 L 18 21 L 33 24 Z" fill="green" stroke="none" stroke-width="4" />
+        </g>
+      </svg>
+    </div>
   </div>
+</div>
 </body>
 </html>

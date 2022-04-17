@@ -6,15 +6,17 @@ body {
   margin: 0px;
 }
 
-div {
+#contents {
   margin: auto;
-  user-select: none;
+  padding: 0px;
+  max-width: 500px;
+  text-align: center;
 }
 
-h3 {
+h1 {
   margin: 0px;
-  background-color: #BFF;
-  font-weight: bold;
+  font-size: 18px;
+  background-color: pink;
 }
 
 a.button {
@@ -33,11 +35,18 @@ a.button {
   user-select: none;
 }
 
+#buttonUndo {
+  margin: 15px;
+  display: inline-block;
+  border-radius: 100%;
+  width: 60px;
+  height: 60px;
+  user-select: none;
+  cursor: pointer;
+}
+
 svg {
   margin: 5px 15px 2px;
   padding: 0px;
-}
-
-g {
-  pointer-events: none;
+  user-select: none;
 }
