@@ -124,7 +124,7 @@ function analyzeUrl() {
   return res;
 }
 
-function getStateStr(stateStr) {
+function getStateStr() {
   let res = '';
   for (let y = upEnd; y <= downEnd; ++y) {
     let line = '';
