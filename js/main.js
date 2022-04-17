@@ -5,7 +5,7 @@
   const levels = [
     {width: 5, height: 5, stateStr: 's00bb-0110b-0100b-a-a0002'},
     {width: 5, height: 5, stateStr: 's-000bb-aa002-a110x-a1'},
-    {width: 5, height: 5, stateStr: 'sb00x-0b-20d-xc11-001'},
+    {width: 5, height: 5, stateStr: 'sbb0x-0b-20d-xc11-001'},
     {width: 5, height: 5, stateStr: 's30a-20b-0000c-x011-001'},
     {width: 5, height: 5, stateStr: 's02-0040x-011-00103'},
 
