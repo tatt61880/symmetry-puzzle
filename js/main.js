@@ -2,9 +2,9 @@
 const version = 'Version: 2022.04.13';
 
 const levels = [
-  {width: 5, height: 5, stateStr: 's-011-01--00002'},
-  {width: 5, height: 5, stateStr: 's--00002-0110x-01'},
-  {width: 5, height: 5, stateStr: 's--2-x011-001'},
+  {width: 5, height: 5, stateStr: 's-011-01--a0002'},
+  {width: 5, height: 5, stateStr: 's-000bb-00002-0110x-a1'},
+  {width: 5, height: 5, stateStr: 's-0b-2b-x011a-001'},
   {width: 5, height: 5, stateStr: 's3-2--x011-001'},
   {width: 5, height: 5, stateStr: 's02-0040x-011-00103'},
 
