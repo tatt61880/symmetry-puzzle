@@ -251,6 +251,7 @@
   }
 
   function pointerdown(e) {
+    e.preventDefault();
     for (let y = upEnd; y <= downEnd; ++y) {
       for (let x = leftEnd; x <= rightEnd; ++x) {
         if (states[y][x] == stateHero) {
