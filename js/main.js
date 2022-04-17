@@ -1,5 +1,5 @@
 'use strict';
-const version = 'Version: 2022.04.13';
+const version = 'Version: 2022.04.17';
 
 const levels = [
   {width: 5, height: 5, stateStr: 's00bb-0110b-0100b--a0002'},
