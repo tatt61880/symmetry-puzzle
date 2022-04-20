@@ -12,10 +12,10 @@
 
     {width: 5, height: 5, stateStr: 's-a2-0x-1111-x003'},
     {width: 5, height: 5, stateStr: 's00b-0a0b-0aa-1111-0003'},
-/*
+    /*
     {width: 6, height: 6, stateStr: 'sa-00022-0002-001b-011'},
     {width: 6, height: 6, stateStr: 's-00022-0012-0011-011'},
-*/
+    */
     {width: 5, height: 6, stateStr: 'sx--01-011-1122-002'},
     {width: 6, height: 6, stateStr: 'sx0x--01000x-011-1122-x02'},
 
@@ -96,7 +96,6 @@
   let elemLevelId;
   let elemLevelNext;
   let elemSvg;
-  let elemController;
   let elemUndo;
   let elemStick;
 
@@ -363,7 +362,7 @@
     elemLevelNext = document.getElementById('levelNext');
 
     elemSvg = document.getElementById('svgBoard');
-    elemController = document.getElementById('svgController');
+
     elemUndo = document.getElementById('buttonUndo');
     elemStick = document.getElementById('stick');
 
