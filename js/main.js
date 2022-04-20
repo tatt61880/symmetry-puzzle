@@ -3,7 +3,7 @@
   const version = 'Version: 2022.04.17';
 
   const levels = [
-    {width: 5, height: 5, stateStr: 's0bb-011b-010b-0x-00002'},
+    {width: 5, height: 5, stateStr: 's0bb-011b-010b-0x-0a002'},
     {width: 5, height: 5, stateStr: 's0bbb-0110b-0100b-a-a0d02'},
     {width: 5, height: 5, stateStr: 's-000bb-aa002-a110x-a1'},
     {width: 5, height: 5, stateStr: 'sbb0x-0b-20d-xc11-001'},
@@ -83,7 +83,8 @@
     ArrowUp: 0,
     ArrowRight: 1,
     ArrowDown: 2,
-    ArrowLeft: 3
+    ArrowLeft: 3,
+    ArrowNone: 4
   };
 
   const dys = [-1, 0, 1, 0];
@@ -95,7 +96,9 @@
   let elemLevelId;
   let elemLevelNext;
   let elemSvg;
+  let elemController;
   let elemUndo;
+  let elemStick;
 
   let keyFlag = true;
   let lastTime = 0;
@@ -185,7 +188,19 @@
     elemSvg.setAttribute('height', blockSize * height);
   }
 
+  function updateController(dir) {
+    const transforms = [
+      'scale(1.0, 0.7) translate(0, -30)',
+      'scale(0.7, 1.0) translate(30, 0)',
+      'scale(1.0, 0.7) translate(0, 30)',
+      'scale(0.7, 1.0) translate(-30, 0)',
+      'scale(1.0, 1.0) translate(0, 0)',
+    ];
+    elemStick.setAttribute('transform', transforms[dir]);
+  }
+
   function move(dir) {
+    updateController(dir);
     const dx = dxs[dir];
     const dy = dys[dir];
 
@@ -302,6 +317,7 @@
   }
 
   function keyup() {
+    updateController(Dir.ArrowNone);
     keyFlag = true;
     return false; 
   }
@@ -347,7 +363,9 @@
     elemLevelNext = document.getElementById('levelNext');
 
     elemSvg = document.getElementById('svgBoard');
+    elemController = document.getElementById('svgController');
     elemUndo = document.getElementById('buttonUndo');
+    elemStick = document.getElementById('stick');
 
     const res = analyzeUrl();
 
@@ -516,7 +534,7 @@
 
     // 額縁
     {
-      const paddingWidth = 1.3;
+      const paddingWidth = 1.15;
       const paddingColor = isOk(isTarget) ? '#8d5' : '#753';
       // 上側
       {

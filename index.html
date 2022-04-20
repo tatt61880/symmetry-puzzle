@@ -26,15 +26,21 @@
 
     <svg id="svgBoard" width="500" height="500"></svg>
 
-    <div>
-      <svg width="60" height="60">
-        <g id="buttonUndo">
-          <circle cx="30" cy="30" r="28" fill="lightgreen" stroke="green" stroke-width="4" />
-          <path d="M 16 30 A 14 14 0 1 0 25 18" fill="none" stroke="green" stroke-width="4" />
-          <path d="M 29 10 L 18 21 L 33 24 Z" fill="green" stroke="none" stroke-width="4" />
+    <svg id="svgController" width="300" height="100">
+      <g id="buttonUndo" transform="translate(30,20)">
+        <circle cx="30" cy="30" r="28" fill="lightgray" stroke="gray" stroke-width="4" />
+        <path d="M 16 30 A 14 14 0 1 0 25 18" fill="none" stroke="gray" stroke-width="4" />
+        <path d="M 29 10 L 18 21 L 33 24 Z" fill="gray" stroke="none" stroke-width="4" />
+      </g>
+      <g transform="translate(240,50)">
+        <circle cx="0" cy="0" r="14" fill="lightgray" stroke="gray" stroke-width="3" />
+        <g id="stick">
+          <circle cx="0" cy="0" r="28" fill="lightgray" stroke="gray" stroke-width="4" />
+          <circle cx="0" cy="0" r="18" fill="none" stroke="gray" stroke-width="4" />
+          <circle cx="0" cy="0" r="8" fill="none" stroke="gray" stroke-width="4" />
         </g>
-      </svg>
-    </div>
+      </g>
+    </svg>
   </div>
 </div>
 </body>
