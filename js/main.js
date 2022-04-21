@@ -294,7 +294,6 @@
   }
 
   function pointerup(e) {
-    e.preventDefault();
     inputFlag = false;
     inputDir = Dir.ArrowNone;
     updateController(inputDir);
