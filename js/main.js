@@ -101,7 +101,6 @@
   let inputCount = 0;
   let inputDir;
   let inputDirPrev = Dir.ArrowNone;
-  let lastTime = 0;
 
   function analyzeUrl() {
     const res = {
@@ -292,7 +291,6 @@
   }
 
   function keydown(e) {
-    const now = Date.now();
     const key = e.key;
     if (key == 'r') {
       changeLevel(levelId);
@@ -319,7 +317,7 @@
     return false; 
   }
 
-  function keyup(e) {
+  function keyup() {
     updateController(Dir.ArrowNone);
     inputFlag = false;
     return false; 
@@ -394,7 +392,7 @@
       elemUndo.addEventListener('click', undo, false);
     }
 
-    setInterval(function() {
+    window.setInterval(function() {
       if (inputFlag) {
         if (inputCount == 0) {
           move(inputDir);
