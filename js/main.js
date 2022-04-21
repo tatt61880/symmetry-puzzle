@@ -101,6 +101,7 @@
   let inputCount = 0;
   let inputDir;
   let inputDirPrev = Dir.ArrowNone;
+  const inputKeys = {};
 
   function analyzeUrl() {
     const res = {
@@ -311,15 +312,19 @@
           inputDirPrev = inputDir;
           inputCount = 0;
         }
+        inputKeys[key] = true;
         updateController(inputDir);
       }
     }
     return false; 
   }
 
-  function keyup() {
-    updateController(Dir.ArrowNone);
-    inputFlag = false;
+  function keyup(e) {
+    delete inputKeys[e.key];
+    if (Object.keys(inputKeys).length == 0) {
+      updateController(Dir.ArrowNone);
+      inputFlag = false;
+    }
     return false; 
   }
 
@@ -398,7 +403,7 @@
           move(inputDir);
         }
         inputCount++;
-        inputCount %= 10;
+        inputCount %= 20;
       } else {
         inputCount = 0;
       }
