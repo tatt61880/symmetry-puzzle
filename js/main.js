@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.04.17';
+  const version = 'Version: 2022.04.22';
 
   const levels = [
     {width: 5, height: 5, stateStr: 's0bb-011b-010b-0x-0a002'},
@@ -96,10 +96,11 @@
   let elemSvg;
   let elemUndo;
   let elemStick;
+  let elemStickBase;
 
   let inputFlag = false;
   let inputCount = 0;
-  let inputDir;
+  let inputDir = Dir.ArrowNone;
   let inputDirPrev = Dir.ArrowNone;
   const inputKeys = {};
 
@@ -268,21 +269,35 @@
 
   function pointerdown(e) {
     e.preventDefault();
-    for (let y = upEnd; y <= downEnd; ++y) {
-      for (let x = leftEnd; x <= rightEnd; ++x) {
-        if (states[y][x] == stateHero) {
-          const cursorPos = getCursorPos(elemSvg, e);
-          const ax = cursorPos.x - (x + 0.5) * blockSize;
-          const ay = cursorPos.y - (y + 0.5) * blockSize;
-          if (Math.abs(ax) > Math.abs(ay)) {
-            move(ax < 0 ? Dir.ArrowLeft : Dir.ArrowRight);
-          } else {
-            move(ay < 0 ? Dir.ArrowUp : Dir.ArrowDown);
-          }
-          return;
-        }
-      }
+    inputFlag = true;
+    pointermove(e);
+  }
+
+  function pointermove(e) {
+    e.preventDefault();
+    if (!inputFlag) return;
+    const cursorPos = getCursorPos(elemStickBase, e);
+    const ax = cursorPos.x - 50.0;
+    const ay = cursorPos.y - 50.0;
+    const minDist = 10;
+    if (Math.abs(ax) < minDist && Math.abs(ay) < minDist) return;
+    if (Math.abs(ax) > Math.abs(ay)) {
+      inputDir = ax < 0 ? Dir.ArrowLeft : Dir.ArrowRight;
+    } else {
+      inputDir = ay < 0 ? Dir.ArrowUp : Dir.ArrowDown;
     }
+    if (inputDirPrev != inputDir) {
+      inputDirPrev = inputDir;
+      inputCount = 0;
+    }
+    updateController(inputDir);
+  }
+
+  function pointerup(e) {
+    e.preventDefault();
+    inputFlag = false;
+    inputDir = Dir.ArrowNone;
+    updateController(inputDir);
   }
 
   function undo() {
@@ -312,8 +327,8 @@
           inputDirPrev = inputDir;
           inputCount = 0;
         }
-        inputKeys[key] = true;
         updateController(inputDir);
+        inputKeys[key] = true;
       }
     }
     return false; 
@@ -368,10 +383,11 @@
     elemLevelId = document.getElementById('levelId');
     elemLevelNext = document.getElementById('levelNext');
 
-    elemSvg = document.getElementById('svgBoard');
+    elemSvg = document.getElementById('svgMain');
 
     elemUndo = document.getElementById('buttonUndo');
     elemStick = document.getElementById('stick');
+    elemStickBase = document.getElementById('stickBase');
 
     const res = analyzeUrl();
 
@@ -389,9 +405,15 @@
       elemLevelNext.addEventListener('click', gotoNextLevel, false);
 
       if (window.ontouchstart === undefined) {
-        elemSvg.addEventListener('mousedown', pointerdown, false);
+        elemStickBase.addEventListener('mousedown', pointerdown, false);
+        elemStickBase.addEventListener('mousemove', pointermove, false);
+        elemStickBase.addEventListener('mouseup', pointerup, false);
+        document.addEventListener('mouseup', pointerup, false);
       } else {
-        elemSvg.addEventListener('touchstart', pointerdown, false);
+        elemStickBase.addEventListener('touchstart', pointerdown, false);
+        elemStickBase.addEventListener('touchmove', pointermove, false);
+        elemStickBase.addEventListener('touchend', pointerup, false);
+        document.addEventListener('touchend', pointerup, false);
       }
 
       elemUndo.addEventListener('click', undo, false);
@@ -399,7 +421,7 @@
 
     window.setInterval(function() {
       if (inputFlag) {
-        if (inputCount == 0) {
+        if (inputCount == 0 && inputDir != Dir.ArrowNone) {
           move(inputDir);
         }
         inputCount++;
