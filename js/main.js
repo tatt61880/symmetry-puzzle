@@ -36,8 +36,6 @@
   let downEnd = height - 3;
   const leftEnd = 2;
 
-  const keyInputMsec = 100;// キー入力間隔(ミリ秒)
-
   const stateHero = -2; // 自機
   const stateWall = -1; // 壁
   const stateNone = 0;
@@ -99,7 +97,10 @@
   let elemUndo;
   let elemStick;
 
-  let keyFlag = true;
+  let inputFlag = false;
+  let inputCount = 0;
+  let inputDir;
+  let inputDirPrev = Dir.ArrowNone;
   let lastTime = 0;
 
   function analyzeUrl() {
@@ -199,7 +200,6 @@
   }
 
   function move(dir) {
-    updateController(dir);
     const dx = dxs[dir];
     const dy = dys[dir];
 
@@ -304,20 +304,24 @@
       } else if (key == 'ArrowRight') {
         gotoNextLevel();
       }
-    } else if (keyFlag || now > lastTime + keyInputMsec) {
-      keyFlag = false;
-      lastTime = now;
+    } else {
       const dir = Dir[key];
       if (dir !== undefined) {
-        move(dir);
+        inputFlag = true;
+        inputDir = dir;
+        if (inputDirPrev != inputDir) {
+          inputDirPrev = inputDir;
+          inputCount = 0;
+        }
+        updateController(inputDir);
       }
     }
     return false; 
   }
 
-  function keyup() {
+  function keyup(e) {
     updateController(Dir.ArrowNone);
-    keyFlag = true;
+    inputFlag = false;
     return false; 
   }
 
@@ -389,6 +393,18 @@
 
       elemUndo.addEventListener('click', undo, false);
     }
+
+    setInterval(function() {
+      if (inputFlag) {
+        if (inputCount == 0) {
+          move(inputDir);
+        }
+        inputCount++;
+        inputCount %= 10;
+      } else {
+        inputCount = 0;
+      }
+    }, 10);
   }
 
   function createLine(param) {
