@@ -100,8 +100,9 @@
 
   let inputFlag = false;
   let inputCount = 0;
+  const inputInterval = 20;
+  let inputCountPrev = -inputInterval;
   let inputDir = Dir.ArrowNone;
-  let inputDirPrev = Dir.ArrowNone;
   const inputKeys = {};
 
   function analyzeUrl() {
@@ -287,10 +288,6 @@
     } else {
       inputDir = ay < 0 ? Dir.ArrowUp : Dir.ArrowDown;
     }
-    if (inputDirPrev != inputDir) {
-      inputDirPrev = inputDir;
-      inputCount = 0;
-    }
     updateController(inputDir);
   }
 
@@ -323,10 +320,6 @@
       if (dir !== undefined) {
         inputFlag = true;
         inputDir = dir;
-        if (inputDirPrev != inputDir) {
-          inputDirPrev = inputDir;
-          inputCount = 0;
-        }
         updateController(inputDir);
         inputKeys[key] = true;
       }
@@ -420,14 +413,15 @@
     }
 
     window.setInterval(function() {
+      inputCount++;
       if (inputFlag) {
-        if (inputCount == 0 && inputDir != Dir.ArrowNone) {
-          move(inputDir);
+        if (inputDir != Dir.ArrowNone) {
+          if (inputCount >= inputCountPrev + inputInterval) {
+            move(inputDir);
+            inputCount = 0;
+            inputCountPrev = 0;
+          }
         }
-        inputCount++;
-        inputCount %= 20;
-      } else {
-        inputCount = 0;
       }
     }, 10);
   }
