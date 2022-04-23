@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.04.22';
+  const version = 'Version: 2022.04.23';
 
   const levels = [
     {width: 5, height: 5, stateStr: 's0bb-011b-010b-0x-0a002'},
@@ -277,11 +277,12 @@
     e.preventDefault();
     if (!inputFlag) return;
     const cursorPos = getCursorPos(elemStickBase, e);
-    const ax = cursorPos.x - 50.0;
-    const ay = cursorPos.y - 50.0;
-    const minDist = 10;
-    if (Math.abs(ax) < minDist && Math.abs(ay) < minDist) return;
-    if (Math.abs(ax) > Math.abs(ay)) {
+    const ax = cursorPos.x - 100.0;
+    const ay = cursorPos.y - 100.0;
+    const minDist = 30;
+    if (Math.abs(ax) < minDist && Math.abs(ay) < minDist) {
+      inputDir = Dir.ArrowNone;
+    } else if (Math.abs(ax) > Math.abs(ay)) {
       inputDir = ax < 0 ? Dir.ArrowLeft : Dir.ArrowRight;
     } else {
       inputDir = ay < 0 ? Dir.ArrowUp : Dir.ArrowDown;
