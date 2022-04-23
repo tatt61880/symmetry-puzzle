@@ -585,14 +585,14 @@
       }
       // 右側
       {
-        const rect = createRect({x: width - paddingWidth, y: 0, width: width, height: height});
+        const rect = createRect({x: width - paddingWidth, y: 0, width: paddingWidth, height: height});
         rect.setAttribute('fill', paddingColor);
         rect.setAttribute('stroke', 'none');
         g.appendChild(rect);
       }
       // 下側
       {
-        const rect = createRect({x: 0, y: height - paddingWidth, width: width, height: height});
+        const rect = createRect({x: 0, y: height - paddingWidth, width: width, height: paddingWidth});
         rect.setAttribute('fill', paddingColor);
         rect.setAttribute('stroke', 'none');
         g.appendChild(rect);
