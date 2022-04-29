@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.04.23';
+  const version = 'Version: 2022.04.29';
 
   const levels = [
     {width: 5, height: 5, stateStr: 's0bb-011b-010b-0x-0a002'},
@@ -444,27 +444,27 @@
     return rect;
   }
 
-  function drawFrame(g) {
+  function drawFrame(elem) {
     // 横線
     for (let y = 0; y <= height; ++y) {
       const line = createLine({x1: 0, y1: y, x2: width, y2: y});
       line.setAttribute('stroke', colorLine);
       line.setAttribute('stroke-dasharray', '1, 3');
-      g.appendChild(line);
+      elem.appendChild(line);
     }
     // 縦線
     for (let x = 0; x <= width; ++x) {
       const line = createLine({x1: x, y1: 0, x2: x, y2: height});
       line.setAttribute('stroke', colorLine);
       line.setAttribute('stroke-dasharray', '1, 3');
-      g.appendChild(line);
+      elem.appendChild(line);
     }
     // 外枠
     {
       const rect = createRect({x: 0, y: 0, width: width, height: height});
       rect.setAttribute('fill', 'none');
       rect.setAttribute('stroke', colorLine);
-      g.appendChild(rect);
+      elem.appendChild(rect);
     }
   }
 
@@ -473,16 +473,17 @@
     while (elemSvg.firstChild) {
       elemSvg.removeChild(elemSvg.firstChild);
     }
-    const g = document.createElementNS(SVG_NS, 'g');
 
     // 図形の描画
     {
       // 背景
       {
+        const g = document.createElementNS(SVG_NS, 'g');
         const rect = createRect({x: 0, y: 0, width: width, height: height});
         rect.setAttribute('fill', colorNone);
         rect.setAttribute('stroke', 'none');
         g.appendChild(rect);
+        elemSvg.appendChild(g);
       }
 
       const paddingWidth = 0.12;
@@ -494,6 +495,7 @@
           const state = states[y][x];
           if (state == 0) continue;
 
+          const g = document.createElementNS(SVG_NS, 'g');
           const color = colors[state];
           {
             const rect = createRect({x: x, y: y, width: 1, height: 1});
@@ -560,14 +562,16 @@
             rect.setAttribute('fill', color.stroke);
             g.appendChild(rect);
           }
+          elemSvg.appendChild(g);
         }
       }
     }
 
-    drawFrame(g);
+    drawFrame(elemSvg);
 
     // 額縁
     {
+      const g = document.createElementNS(SVG_NS, 'g');
       const paddingWidth = 1.15;
       const paddingColor = isOk(isTarget) ? '#8d5' : '#753';
       // 上側
@@ -598,9 +602,8 @@
         rect.setAttribute('stroke', 'none');
         g.appendChild(rect);
       }
+      elemSvg.appendChild(g);
     }
-
-    elemSvg.appendChild(g);
   }
 
   function isTarget(x) {
