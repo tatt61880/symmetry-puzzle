@@ -13,7 +13,7 @@
     //{width: 5, height: 5, stateStr: 's30a-20b-d000c-d011-001'},
     //{width: 5, height: 5, stateStr: 's02-004cx-011-0a103-000b'},
 
-    {width: 5, height: 5, stateStr: 's-a2-0x-1111-x003'},
+    {width: 5, height: 5, stateStr: 's00c-a2b-0x-1111-x003'},
     {width: 5, height: 5, stateStr: 's00b-0a0b-0aa-1111-0003'},
 
     /*
