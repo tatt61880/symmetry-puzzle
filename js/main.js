@@ -623,7 +623,9 @@
             }
           }
           if (moveFlags[y][x]) {
-            const ratio = Math.sin(0.5 * Math.PI * moveCount / inputInterval);
+            let ratio0 = moveCount / inputInterval * 1.2;
+            ratio0 = Math.min(ratio0, 1.0);
+            const ratio = Math.sin(0.5 * Math.PI * ratio0) ** 0.5;
             const dx = moveDx * blockSize * ratio;
             const dy = moveDy * blockSize * ratio;
             if (dx + dy != 0) {
