@@ -107,9 +107,9 @@
   let elemStickBase;
 
   let inputFlag = false;
-  let inputCount = 0;
-  const inputInterval = 20;
-  let inputCountPrev = -inputInterval;
+  const inputInterval = 10;
+  let inputCountPrev = 0;
+  let inputCount = inputInterval;
   let inputDir = Dir.ArrowNone;
   const inputKeys = {};
 
@@ -473,7 +473,7 @@
         }
         draw();
       }
-    }, 10);
+    }, 20);
   }
 
   function createG(param) {
@@ -623,7 +623,7 @@
             }
           }
           if (moveFlags[y][x]) {
-            let ratio0 = moveCount / inputInterval * 1.2;
+            let ratio0 = moveCount / inputInterval * 1.1;
             ratio0 = Math.min(ratio0, 1.0);
             const ratio = Math.sin(0.5 * Math.PI * ratio0) ** 0.5;
             const dx = moveDx * blockSize * ratio;
