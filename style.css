@@ -19,19 +19,26 @@ h1 {
   background-color: pink;
 }
 
+h2 {
+  margin: 0px;
+  background-color: skyblue;
+  font-size: 18px;
+}
+
 a.button {
   margin: 5px 10px;
   padding: 10px 10px;
+  border: 3px solid;
+  border-radius: 30px;
   display: inline-block;
   text-align: center;
   vertical-align: middle;
   font-size: 28px;
   font-weight: bold;
-  cursor: pointer;
   text-decoration: none;
-  color: black;
-  border: 2px solid;
-  border-radius: 30px;
+  background-color: #aaf;
+  color: #338;
+  cursor: pointer;
   user-select: none;
 }
 
@@ -51,7 +58,16 @@ svg {
   user-select: none;
 }
 
+div.inner {
+  margin: 5px;
+}
+
 div.pink {
   margin-bottom: 5px;
   border: solid 5px pink;
+}
+
+div.skyblue {
+  margin-bottom: 5px;
+  border: solid 5px skyblue;
 }

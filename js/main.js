@@ -106,7 +106,7 @@
   let elemStickBase;
 
   let inputFlag = false;
-  const inputInterval = 10;
+  const inputInterval = 8;
   let inputCountPrev = 0;
   let inputCount = inputInterval;
   let inputDir = Dir.ArrowNone;
