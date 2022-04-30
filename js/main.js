@@ -279,7 +279,6 @@
     }
     moveDx = 0;
     moveDy = 0;
-    draw();
   }
 
   function getCursorPos(elem, e) {
@@ -332,12 +331,15 @@
         moveFlags[y][x] = false;
       }
     }
+    moveCount = 0;
+    moveFlag = false;
   }
 
   function undo() {
     if (undoIdx != 0) {
       applyStateStr(undos[--undoIdx]);
     }
+    resetDirs();
   }
 
   function keydown(e) {
@@ -453,7 +455,7 @@
       if (inputCount < inputCountPrev + inputInterval) {
         inputCount++;
       }
-      if (inputFlag) {
+      if (!moveFlag && inputFlag) {
         if (inputDir != Dir.ArrowNone) {
           if (inputCount >= inputCountPrev + inputInterval) {
             move(inputDir);
@@ -464,12 +466,12 @@
       }
       if (moveFlag) {
         moveCount++;
-        draw();
         if (moveCount == inputInterval) {
           moveCount = 0;
           moveFlag = false;
           moveUpdate();
         }
+        draw();
       }
     }, 10);
   }
@@ -621,8 +623,9 @@
             }
           }
           if (moveFlags[y][x]) {
-            const dx = moveDx * blockSize * moveCount / inputInterval;
-            const dy = moveDy * blockSize * moveCount / inputInterval;
+            const ratio = Math.sin(0.5 * Math.PI * moveCount / inputInterval);
+            const dx = moveDx * blockSize * ratio;
+            const dy = moveDy * blockSize * ratio;
             if (dx + dy != 0) {
               g.setAttribute('transform', `translate(${dx},${dy})`);
             }
