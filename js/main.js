@@ -3,6 +3,8 @@
   const version = 'Version: 2022.04.30';
 
   const levels = [
+    {width: 8, height: 6, stateStr: 's-001-0011-0110022-000002'},
+
     {width: 5, height: 5, stateStr: 's0bb-011b-010b-0x-0a002'},
     {width: 5, height: 5, stateStr: 's0bbb-0110b-0100b-a-a0d02'},
     {width: 5, height: 5, stateStr: 's-000bb-aa002-a110x-a1'},
