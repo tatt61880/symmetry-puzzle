@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.04.30';
+  const version = 'Version: 2022.05.01';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00002-001122-00122'},
@@ -88,11 +88,15 @@
     ArrowNone: 4
   };
 
-  const dys = [-1, 0, 1, 0];
-  const dxs = [0, 1, 0, -1];
+  const dys = [-1, 0, 1, 0, 0];
+  const dxs = [0, 1, 0, -1, 0];
 
   let states = [];
-  let dirs = [];
+  let moveFlags = [];
+  let moveCount = 0;
+  let moveFlag = false;
+  let moveDx = 0;
+  let moveDy = 0;
 
   let elemLevelPrev;
   let elemLevelId;
@@ -158,6 +162,8 @@
         states[y][x] = stateNone;
       }
     }
+    resetDirs();
+
     // 枠
     {
       for (let y = 1; y < height - 1; ++y) {
@@ -235,27 +241,45 @@
 
     if (flag) {
       undos[undoIdx++] = getStateStr();
-      const statesTemp = new Array(height);
-      for (let y = 0; y < height; ++y) {
-        statesTemp[y] = states[y].slice();
-      }
 
       for (let y = upEnd; y <= downEnd; ++y) {
         for (let x = leftEnd; x <= rightEnd; ++x) {
           if (moveState[states[y][x]]) {
-            states[y][x] = stateNone;
+            moveFlags[y][x] = true;
           }
         }
       }
-      for (let y = upEnd; y <= downEnd; ++y) {
-        for (let x = leftEnd; x <= rightEnd; ++x) {
-          if (moveState[statesTemp[y - dy][x - dx]]) {
-            states[y][x] = statesTemp[y - dy][x - dx];
-          }
-        }
-      }
-      draw();
+      moveDx = dxs[dir];
+      moveDy = dys[dir];
+      moveFlag = true;
+      moveCount = 0;
     }
+  }
+
+  function moveUpdate() {
+    const statesTemp = new Array(height);
+    for (let y = 0; y < height; ++y) {
+      statesTemp[y] = states[y].slice();
+    }
+
+    for (let y = upEnd; y <= downEnd; ++y) {
+      for (let x = leftEnd; x <= rightEnd; ++x) {
+        if (moveFlags[y][x]) {
+          states[y][x] = stateNone;
+        }
+      }
+    }
+    for (let y = upEnd; y <= downEnd; ++y) {
+      for (let x = leftEnd; x <= rightEnd; ++x) {
+        if (moveFlags[y - moveDy][x - moveDx]) {
+          states[y][x] = statesTemp[y - moveDy][x - moveDx];
+          moveFlags[y - moveDy][x - moveDx] = false;
+        }
+      }
+    }
+    moveDx = 0;
+    moveDy = 0;
+    draw();
   }
 
   function getCursorPos(elem, e) {
@@ -299,6 +323,15 @@
     inputFlag = false;
     inputDir = Dir.ArrowNone;
     updateController(inputDir);
+  }
+
+  function resetDirs() {
+    for (let y = 0; y < height; ++y) {
+      moveFlags[y] = [];
+      for (let x = 0; x < width; ++x) {
+        moveFlags[y][x] = false;
+      }
+    }
   }
 
   function undo() {
@@ -427,6 +460,15 @@
             inputCount = 0;
             inputCountPrev = 0;
           }
+        }
+      }
+      if (moveFlag) {
+        moveCount++;
+        draw();
+        if (moveCount == inputInterval) {
+          moveCount = 0;
+          moveFlag = false;
+          moveUpdate();
         }
       }
     }, 10);
@@ -576,6 +618,13 @@
               const rect = createRect({x: x, y: y, width: paddingWidth, height: paddingWidth});
               rect.setAttribute('fill', color.stroke);
               g.appendChild(rect);
+            }
+          }
+          if (moveFlags[y][x]) {
+            const dx = moveDx * blockSize * moveCount / inputInterval;
+            const dy = moveDy * blockSize * moveCount / inputInterval;
+            if (dx + dy != 0) {
+              g.setAttribute('transform', `translate(${dx},${dy})`);
             }
           }
           elemSvg.appendChild(g);
