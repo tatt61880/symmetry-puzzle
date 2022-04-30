@@ -93,10 +93,9 @@
 
   let states = [];
   let moveFlags = [];
-  let moveCount = 0;
   let moveFlag = false;
-  let moveDx = 0;
-  let moveDy = 0;
+  let moveCount = 0;
+  let moveDir = Dir.ArrowNone;
 
   let elemLevelPrev;
   let elemLevelId;
@@ -249,8 +248,7 @@
           }
         }
       }
-      moveDx = dxs[dir];
-      moveDy = dys[dir];
+      moveDir = dir;
       moveFlag = true;
       moveCount = 0;
     }
@@ -271,14 +269,15 @@
     }
     for (let y = upEnd; y <= downEnd; ++y) {
       for (let x = leftEnd; x <= rightEnd; ++x) {
-        if (moveFlags[y - moveDy][x - moveDx]) {
-          states[y][x] = statesTemp[y - moveDy][x - moveDx];
-          moveFlags[y - moveDy][x - moveDx] = false;
+        const dx = dxs[moveDir];
+        const dy = dys[moveDir];
+        if (moveFlags[y - dy][x - dx]) {
+          states[y][x] = statesTemp[y - dy][x - dx];
+          moveFlags[y - dy][x - dx] = false;
         }
       }
     }
-    moveDx = 0;
-    moveDy = 0;
+    moveDir = Dir.ArrowNone;
   }
 
   function getCursorPos(elem, e) {
@@ -626,8 +625,8 @@
             let ratio0 = moveCount / inputInterval * 1.1;
             ratio0 = Math.min(ratio0, 1.0);
             const ratio = Math.sin(0.5 * Math.PI * ratio0) ** 0.5;
-            const dx = moveDx * blockSize * ratio;
-            const dy = moveDy * blockSize * ratio;
+            const dx = dxs[moveDir] * blockSize * ratio;
+            const dy = dys[moveDir] * blockSize * ratio;
             if (dx + dy != 0) {
               g.setAttribute('transform', `translate(${dx},${dy})`);
             }
