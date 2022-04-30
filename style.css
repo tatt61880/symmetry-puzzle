@@ -50,3 +50,8 @@ svg {
   padding: 0px;
   user-select: none;
 }
+
+div.pink {
+  margin-bottom: 5px;
+  border: solid 3px pink;
+}

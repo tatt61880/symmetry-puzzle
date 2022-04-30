@@ -89,6 +89,7 @@
   const dxs = [0, 1, 0, -1];
 
   let states = [];
+  let dirs = [];
 
   let elemLevelPrev;
   let elemLevelId;
@@ -413,7 +414,9 @@
     }
 
     window.setInterval(function() {
-      inputCount++;
+      if (inputCount < inputCountPrev + inputInterval) {
+        inputCount++;
+      }
       if (inputFlag) {
         if (inputDir != Dir.ArrowNone) {
           if (inputCount >= inputCountPrev + inputInterval) {
