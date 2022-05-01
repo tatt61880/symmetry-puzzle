@@ -14,12 +14,16 @@ body {
 }
 
 h1 {
+  position: relative;
+  top: -5px;
   margin: 0px;
   font-size: 18px;
   background-color: pink;
 }
 
 h2 {
+  position: relative;
+  top: -5px;
   margin: 0px;
   background-color: skyblue;
   font-size: 18px;
