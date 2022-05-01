@@ -4,26 +4,20 @@
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00002-001122-00122'},
-    //{width: 8, height: 6, stateStr: 's-001-0011-0110022-000002'},
 
-    //{width: 5, height: 5, stateStr: 's0bb-011b-010b-0x-0a002'},
-    //{width: 5, height: 5, stateStr: 's0bbb-0110b-0100b-a-a0d02'},
+    {width: 5, height: 5, stateStr: 's0bb-011b-010b-0x-0a002'},
+    {width: 5, height: 5, stateStr: 's0bbb-0110b-0100b-a-a0d02'},
     {width: 5, height: 5, stateStr: 's-000bb-aa002-a110x-a1'},
-    //{width: 5, height: 5, stateStr: 'sbb0x-0b-20d-xc11-001'},
-    //{width: 5, height: 5, stateStr: 's30a-20b-d000c-d011-001'},
-    //{width: 5, height: 5, stateStr: 's02-004cx-011-0a103-000b'},
+    {width: 5, height: 5, stateStr: 'sbb0x-0b-20d-xc11-001'},
+    {width: 5, height: 5, stateStr: 's30a-20b-d000c-d011-001'},
+    {width: 5, height: 5, stateStr: 's02-004cx-011-0a103-000b'},
 
-    {width: 5, height: 5, stateStr: 's00c-a2b-0x-1111-x003'},
+    {width: 5, height: 5, stateStr: 's00c-a2bc-0d-1111-x003'},
     {width: 5, height: 5, stateStr: 's00b-0a0b-0aa-1111-0003'},
 
-    /*
-    {width: 6, height: 6, stateStr: 'sa-00022-0002-001b-011'},
-    {width: 6, height: 6, stateStr: 's-00022-0012-0011-011'},
-    */
 
-    //{width: 5, height: 6, stateStr: 'sx--01-011-1122-002'},
-    //{width: 6, height: 6, stateStr: 'sx0x--01000x-011-1122-x02'},
-
+    {width: 5, height: 6, stateStr: 'sx--01-011-1122-002'},
+    {width: 6, height: 6, stateStr: 'sx0x--01000x-011-1122-x02'},
   ];
   let levelId = 1;
 
