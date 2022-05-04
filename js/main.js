@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.01';
+  const version = 'Version: 2022.05.04';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00002-001122-00122'},
@@ -15,11 +15,11 @@
     {width: 5, height: 5, stateStr: 's00c-a2bc-0d-1111-x003'},
     {width: 5, height: 5, stateStr: 's00b-0a0b-0aa-1111-0003'},
 
-
     {width: 5, height: 6, stateStr: 'sx--01-011-1122-002'},
     {width: 6, height: 6, stateStr: 'sx0x--01000x-011-1122-x02'},
   ];
-  let levelId = 1;
+  let levelId;
+  let levelObj;
 
   const undos = [];
   let undoIdx = 0;
@@ -98,6 +98,7 @@
   let elemLevelNext;
   let elemSvg;
   let elemUndo;
+  let elemResetLevel;
   let elemStick;
   let elemStickBase;
 
@@ -314,10 +315,18 @@
     updateController(inputDir);
   }
 
-  function pointerup(e) {
+  function pointerup() {
     inputFlag = false;
     inputDir = Dir.ArrowNone;
     updateController(inputDir);
+  }
+
+  function resetLevel() {
+    if (levelId != 0) {
+      changeLevel(levelId);
+    } else {
+      applyLevel(levelObj);
+    }
   }
 
   function resetDirs() {
@@ -374,6 +383,7 @@
   function applyLevel(levelObj) {
     setSize(levelObj.width, levelObj.height);
     applyStateStr(levelObj.stateStr);
+    setButtonVisibility();
   }
 
   function changeLevel(id) {
@@ -388,8 +398,8 @@
   }
 
   function setButtonVisibility() {
-    elemLevelPrev.style.visibility = levelId == 1 ? 'hidden' : 'visible';
-    elemLevelNext.style.visibility = levelId == levels.length ? 'hidden' : 'visible';
+    elemLevelPrev.style.visibility = levelId <= 1 ? 'hidden' : 'visible';
+    elemLevelNext.style.visibility = levelId % levels.length == 0 ? 'hidden' : 'visible';
   }
 
   function gotoPrevLevel() {
@@ -414,15 +424,17 @@
     elemSvg = document.getElementById('svgMain');
 
     elemUndo = document.getElementById('buttonUndo');
+    elemResetLevel = document.getElementById('buttonResetLevel');
     elemStick = document.getElementById('stick');
     elemStickBase = document.getElementById('stickBase');
 
-    const res = analyzeUrl();
-
-    if (res.stateStr == '') {
+    levelObj = analyzeUrl();
+    if (levelObj.stateStr == '') {
+      levelId = 1;
       changeLevel(levelId);
     } else {
-      applyLevel(res);
+      levelId = 0;
+      applyLevel(levelObj);
     }
 
     {
@@ -445,6 +457,7 @@
       }
 
       elemUndo.addEventListener('click', undo, false);
+      elemResetLevel.addEventListener('click', resetLevel, false);
     }
 
     window.setInterval(function() {
@@ -472,7 +485,7 @@
     }, 20);
   }
 
-  function createG(param) {
+  function createG() {
     const g = document.createElementNS(SVG_NS, 'g');
     return g;
   }
@@ -495,7 +508,7 @@
     return rect;
   }
 
-  function drawFrame(elem) {
+  function drawFrame() {
     const g = createG();
     // 横線
     for (let y = 0; y <= height; ++y) {

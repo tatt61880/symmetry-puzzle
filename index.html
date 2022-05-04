@@ -7,9 +7,9 @@
   <link rel="icon" type="image/x-icon" href="./images/apple-touch-icon.png">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="./style.css?2022.05.01">
+  <link rel="stylesheet" href="./style.css?2022.05.04">
 
-  <script src="./js/main.js?2022.05.01"></script>
+  <script src="./js/main.js?2022.05.04"></script>
 </head>
 
 <body>
@@ -23,9 +23,20 @@
       <div class="inner skyblue">
         <h2>LEVEL</h2>
         <div class="inner">
-          <a id="levelPrev" class="button">　◀　</a>
-          <span id="levelId" style="font-size: 40px; vertical-align: middle;"></span>
-          <a id="levelNext" class="button">　▶　</a>
+          <svg width="60" height="70" style="vertical-align: middle; float: left;">
+            <g id="buttonResetLevel" transform="translate(30,40)">
+              <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
+              <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#87ceeb" stroke-width="4" />
+              <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#87ceeb" stroke="none" stroke-width="4" />
+            </g>
+          </svg>
+          <span style="margin: 0 10px;">
+            <a id="levelPrev" class="button">◀</a>
+            <span id="levelId" style="font-size: 40px; vertical-align: middle;"></span>
+            <a id="levelNext" class="button">▶</a>
+          </span>
+          <svg width="60" height="70" style="vertical-align: middle;">
+          </svg>
         </div>
       </div>
     </div>
