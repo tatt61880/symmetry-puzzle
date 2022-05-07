@@ -81,11 +81,22 @@
     ArrowRight: 1,
     ArrowDown: 2,
     ArrowLeft: 3,
-    ArrowNone: 4
+    ArrowNone: 8
   };
 
-  const dys = [-1, 0, 1, 0, 0];
-  const dxs = [0, 1, 0, -1, 0];
+  const dirs = {
+    u: 0,
+    r: 1,
+    d: 2,
+    l: 3,
+    ur: 4,
+    dr: 5,
+    dl: 6,
+    ul: 7,
+  };
+
+  const dys = [-1, 0, 1, 0, -1, 1, 1, -1, 0];
+  const dxs = [0, 1, 0, -1, 1, 1, -1, -1, 0];
 
   let states = [];
   let moveFlags = [];
@@ -203,6 +214,10 @@
       'scale(0.7, 1.0) translate(30, 0)',
       'scale(1.0, 0.7) translate(0, 30)',
       'scale(0.7, 1.0) translate(-30, 0)',
+      '',
+      '',
+      '',
+      '',
       'scale(1.0, 1.0) translate(0, 0)',
     ];
     elemStick.setAttribute('transform', transforms[dir]);
@@ -556,8 +571,8 @@
       const paddingWidthHalf = paddingWidth / 2;
 
       // 図形
-      for (let y = 0; y < height; ++y) {
-        for (let x = 0; x < width; ++x) {
+      for (let y = 1; y < height - 1; ++y) {
+        for (let x = 1; x < width - 1; ++x) {
           const state = states[y][x];
           if (state == 0) continue;
 
@@ -570,62 +585,58 @@
             g.appendChild(rect);
           }
           {
-            let flag1 = true;
-            let flag2 = true;
-            let flag3 = true;
-            let flag4 = true;
+            const flags = [];
+            for (let dir = 0; dir < 8; ++dir) {
+              flags[dir] = states[y + dys[dir]][x + dxs[dir]] == state;
+            }
             // 上側
-            if (states[y - 1][x] != state) {
-              flag1 = false;
+            if (!flags[dirs.u]) {
               const line = createLine({x1: x, y1: y + paddingWidthHalf, x2: x + 1, y2: y + paddingWidthHalf});
               line.setAttribute('stroke', color.stroke);
               line.setAttribute('stroke-width', paddingWidth * blockSize);
               g.appendChild(line);
             }
             // 右側
-            if (states[y][x + 1] != state) {
-              flag2 = false;
+            if (!flags[dirs.r]) {
               const line = createLine({x1: x + 1 - paddingWidthHalf, y1: y, x2: x + 1 - paddingWidthHalf, y2: y + 1});
               line.setAttribute('stroke', color.stroke);
               line.setAttribute('stroke-width', paddingWidth * blockSize);
               g.appendChild(line);
             }
             // 下側
-            if (states[y + 1][x] != state) {
-              flag3 = false;
+            if (!flags[dirs.d]) {
               const line = createLine({x1: x, y1: y + 1 - paddingWidthHalf, x2: x + 1, y2: y + 1 - paddingWidthHalf});
               line.setAttribute('stroke', color.stroke);
               line.setAttribute('stroke-width', paddingWidth * blockSize);
               g.appendChild(line);
             }
             // 左側
-            if (states[y][x - 1] != state) {
-              flag4 = false;
+            if (!flags[dirs.l]) {
               const line = createLine({x1: x + paddingWidthHalf, y1: y, x2: x + paddingWidthHalf, y2: y + 1});
               line.setAttribute('stroke', color.stroke);
               line.setAttribute('stroke-width', paddingWidth * blockSize);
               g.appendChild(line);
             }
             // 右上
-            if (flag1 && flag2 && states[y - 1][x + 1] != state) {
+            if (flags[dirs.u] && flags[dirs.r] && !flags[dirs.ur]) {
               const rect = createRect({x: x + 1 - paddingWidth, y: y, width: paddingWidth, height: paddingWidth});
               rect.setAttribute('fill', color.stroke);
               g.appendChild(rect);
             }
             // 右下
-            if (flag2 && flag3 && states[y + 1][x + 1] != state) {
+            if (flags[dirs.d] && flags[dirs.r] && !flags[dirs.dr]) {
               const rect = createRect({x: x + 1 - paddingWidth, y: y + 1 - paddingWidth, width: paddingWidth, height: paddingWidth});
               rect.setAttribute('fill', color.stroke);
               g.appendChild(rect);
             }
-            // 左上
-            if (flag3 && flag4 && states[y + 1][x - 1] != state) {
+            // 左下
+            if (flags[dirs.d] && flags[dirs.l] && !flags[dirs.dl]) {
               const rect = createRect({x: x, y: y + 1 - paddingWidth, width: paddingWidth, height: paddingWidth});
               rect.setAttribute('fill', color.stroke);
               g.appendChild(rect);
             }
-            // 左下
-            if (flag4 && flag1 && states[y - 1][x - 1] != state) {
+            // 左上
+            if (flags[dirs.u] && flags[dirs.l] && !flags[dirs.ul]) {
               const rect = createRect({x: x, y: y, width: paddingWidth, height: paddingWidth});
               rect.setAttribute('fill', color.stroke);
               g.appendChild(rect);
