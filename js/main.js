@@ -74,15 +74,7 @@
   const colorNone = 'white';
   const colorLine = '#333';
 
-  let blockSize = 28;
-
-  const Dir = {
-    ArrowUp: 0,
-    ArrowRight: 1,
-    ArrowDown: 2,
-    ArrowLeft: 3,
-    ArrowNone: 8
-  };
+  let blockSize;
 
   const dirs = {
     u: 0,
@@ -93,6 +85,11 @@
     dr: 5,
     dl: 6,
     ul: 7,
+    neutral: 8,
+    ArrowUp: 0,
+    ArrowRight: 1,
+    ArrowDown: 2,
+    ArrowLeft: 3,
   };
 
   const dys = [-1, 0, 1, 0, -1, 1, 1, -1, 0];
@@ -102,7 +99,7 @@
   let moveFlags = [];
   let moveFlag = false;
   let moveCount = 0;
-  let moveDir = Dir.ArrowNone;
+  let moveDir = dirs.neutral;
 
   let elemLevelPrev;
   let elemLevelId;
@@ -117,7 +114,7 @@
   const inputInterval = 8;
   let inputCountPrev = 0;
   let inputCount = inputInterval;
-  let inputDir = Dir.ArrowNone;
+  let inputDir = dirs.neutral;
   const inputKeys = {};
 
   function analyzeUrl() {
@@ -161,15 +158,14 @@
     return res;
   }
 
-  function applyStateStr(stateStr) {
-    // 初期化
+  // 初期化
+  function initStates() {
     for (let y = 0; y < height; ++y) {
       states[y] = [];
       for (let x = 0; x < width; ++x) {
         states[y][x] = stateNone;
       }
     }
-    resetDirs();
 
     // 枠
     {
@@ -182,6 +178,12 @@
         states[height - 2][x] = stateWall;
       }
     }
+  }
+
+  function applyStateStr(stateStr) {
+    initStates();
+    resetDirs();
+
     let y = 2;
     let x = 2;
     for (const c of stateStr) {
@@ -290,7 +292,7 @@
         }
       }
     }
-    moveDir = Dir.ArrowNone;
+    moveDir = dirs.neutral;
   }
 
   function getCursorPos(elem, e) {
@@ -321,27 +323,33 @@
     const ay = cursorPos.y - 100.0;
     const minDist = 60;
     if (ax ** 2 + ay ** 2 < minDist ** 2) {
-      inputDir = Dir.ArrowNone;
+      inputDir = dirs.neutral;
     } else if (Math.abs(ax) > Math.abs(ay)) {
-      inputDir = ax < 0 ? Dir.ArrowLeft : Dir.ArrowRight;
+      inputDir = ax < 0 ? dirs.ArrowLeft : dirs.ArrowRight;
     } else {
-      inputDir = ay < 0 ? Dir.ArrowUp : Dir.ArrowDown;
+      inputDir = ay < 0 ? dirs.ArrowUp : dirs.ArrowDown;
     }
     updateController(inputDir);
   }
 
   function pointerup() {
     inputFlag = false;
-    inputDir = Dir.ArrowNone;
+    inputDir = dirs.neutral;
     updateController(inputDir);
   }
 
   function resetLevel() {
-    if (levelId != 0) {
-      changeLevel(levelId);
-    } else {
-      applyLevel(levelObj);
-    }
+    elemSvg.textContent = '';
+    initStates();
+    draw();
+
+    window.setTimeout(function() {
+      if (levelId != 0) {
+        changeLevel(levelId);
+      } else {
+        applyLevel(levelObj);
+      }
+    }, 50);
   }
 
   function resetDirs() {
@@ -365,7 +373,7 @@
   function keydown(e) {
     const key = e.key;
     if (key == 'r') {
-      changeLevel(levelId);
+      resetLevel();
     } else if (key == 'z') {
       undo();
     } else if (e.shiftKey || e.ctrlKey) {
@@ -375,7 +383,7 @@
         gotoNextLevel();
       }
     } else {
-      const dir = Dir[key];
+      const dir = dirs[key];
       if (dir !== undefined) {
         inputFlag = true;
         inputDir = dir;
@@ -389,7 +397,7 @@
   function keyup(e) {
     delete inputKeys[e.key];
     if (Object.keys(inputKeys).length == 0) {
-      updateController(Dir.ArrowNone);
+      updateController(dirs.neutral);
       inputFlag = false;
     }
     return false; 
@@ -480,7 +488,7 @@
         inputCount++;
       }
       if (!moveFlag && inputFlag) {
-        if (inputDir != Dir.ArrowNone) {
+        if (inputDir != dirs.neutral) {
           if (inputCount >= inputCountPrev + inputInterval) {
             move(inputDir);
             inputCount = 0;
@@ -547,13 +555,47 @@
       g.appendChild(rect);
     }
     elemSvg.appendChild(g);
+
+    // 額縁
+    {
+      const g = createG();
+      const paddingWidth = 1.15;
+      const paddingColor = isOk(isTarget) ? '#8d5' : '#753';
+      // 上側
+      {
+        const rect = createRect({x: 0, y: 0, width: width, height: paddingWidth});
+        rect.setAttribute('fill', paddingColor);
+        rect.setAttribute('stroke', 'none');
+        g.appendChild(rect);
+      }
+      // 右側
+      {
+        const rect = createRect({x: width - paddingWidth, y: 0, width: paddingWidth, height: height});
+        rect.setAttribute('fill', paddingColor);
+        rect.setAttribute('stroke', 'none');
+        g.appendChild(rect);
+      }
+      // 下側
+      {
+        const rect = createRect({x: 0, y: height - paddingWidth, width: width, height: paddingWidth});
+        rect.setAttribute('fill', paddingColor);
+        rect.setAttribute('stroke', 'none');
+        g.appendChild(rect);
+      }
+      // 左側
+      {
+        const rect = createRect({x: 0, y: 0, width: paddingWidth, height: height});
+        rect.setAttribute('fill', paddingColor);
+        rect.setAttribute('stroke', 'none');
+        g.appendChild(rect);
+      }
+      elemSvg.appendChild(g);
+    }
   }
 
   // 描画
   function draw() {
-    while (elemSvg.firstChild) {
-      elemSvg.removeChild(elemSvg.firstChild);
-    }
+    elemSvg.textContent = '';
 
     // 図形の描画
     {
@@ -658,42 +700,6 @@
     }
 
     drawFrame(elemSvg);
-
-    // 額縁
-    {
-      const g = createG();
-      const paddingWidth = 1.15;
-      const paddingColor = isOk(isTarget) ? '#8d5' : '#753';
-      // 上側
-      {
-        const rect = createRect({x: 0, y: 0, width: width, height: paddingWidth});
-        rect.setAttribute('fill', paddingColor);
-        rect.setAttribute('stroke', 'none');
-        g.appendChild(rect);
-      }
-      // 右側
-      {
-        const rect = createRect({x: width - paddingWidth, y: 0, width: paddingWidth, height: height});
-        rect.setAttribute('fill', paddingColor);
-        rect.setAttribute('stroke', 'none');
-        g.appendChild(rect);
-      }
-      // 下側
-      {
-        const rect = createRect({x: 0, y: height - paddingWidth, width: width, height: paddingWidth});
-        rect.setAttribute('fill', paddingColor);
-        rect.setAttribute('stroke', 'none');
-        g.appendChild(rect);
-      }
-      // 左側
-      {
-        const rect = createRect({x: 0, y: 0, width: paddingWidth, height: height});
-        rect.setAttribute('fill', paddingColor);
-        rect.setAttribute('stroke', 'none');
-        g.appendChild(rect);
-      }
-      elemSvg.appendChild(g);
-    }
   }
 
   function isTarget(x) {
