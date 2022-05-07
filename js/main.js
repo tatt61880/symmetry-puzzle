@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.04';
+  const version = 'Version: 2022.05.06';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00002-001122-00122'},
@@ -319,8 +319,8 @@
     const cursorPos = getCursorPos(elemStickBase, e);
     const ax = cursorPos.x - 100.0;
     const ay = cursorPos.y - 100.0;
-    const minDist = 30;
-    if (Math.abs(ax) < minDist && Math.abs(ay) < minDist) {
+    const minDist = 60;
+    if (ax ** 2 + ay ** 2 < minDist ** 2) {
       inputDir = Dir.ArrowNone;
     } else if (Math.abs(ax) > Math.abs(ay)) {
       inputDir = ax < 0 ? Dir.ArrowLeft : Dir.ArrowRight;
@@ -574,7 +574,7 @@
       for (let y = 1; y < height - 1; ++y) {
         for (let x = 1; x < width - 1; ++x) {
           const state = states[y][x];
-          if (state == 0) continue;
+          if (state == stateNone) continue;
 
           const g = createG();
           const color = colors[state];
