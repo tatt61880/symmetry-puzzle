@@ -210,10 +210,10 @@
 
   function updateController(dir) {
     const transforms = [
-      'scale(1.0, 0.7) translate(0, -30)',
-      'scale(0.7, 1.0) translate(30, 0)',
-      'scale(1.0, 0.7) translate(0, 30)',
-      'scale(0.7, 1.0) translate(-30, 0)',
+      'scale(1.0, 0.7) translate(0, -27)',
+      'scale(0.7, 1.0) translate(27, 0)',
+      'scale(1.0, 0.7) translate(0, 27)',
+      'scale(0.7, 1.0) translate(-27, 0)',
       '',
       '',
       '',
