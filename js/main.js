@@ -258,6 +258,7 @@
 
     if (flag) {
       undos[undoIdx++] = getStateStr();
+      elemUndo.style.display = 'block';
 
       for (let y = upEnd; y <= downEnd; ++y) {
         for (let x = leftEnd; x <= rightEnd; ++x) {
@@ -377,6 +378,9 @@
     if (undoIdx != 0) {
       applyStateStr(undos[--undoIdx]);
     }
+    if (undoIdx == 0) {
+      resetUndo();
+    }
     resetDirs();
   }
 
@@ -424,8 +428,13 @@
     setButtonVisibility();
   }
 
-  function changeLevel(id) {
+  function resetUndo() {
     undoIdx = 0;
+    elemUndo.style.display = 'none';
+  }
+
+  function changeLevel(id) {
+    resetUndo();
     levelId = id;
     if (levelId < 1) levelId = 1;
     if (levelId > levels.length) levelId = levels.length;
