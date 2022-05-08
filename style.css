@@ -4,6 +4,8 @@ html {
 
 body {
   margin: 0px;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 #contents {
@@ -64,7 +66,7 @@ svg {
 }
 
 div.inner {
-  margin: 5px;
+  margin: 10px;
 }
 
 div.pink {
