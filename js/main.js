@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.06';
+  const version = 'Version: 2022.05.08';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00002-001122-00122'},
@@ -23,6 +23,8 @@
 
   const undos = [];
   let undoIdx = 0;
+  let undoFlag = false;
+  let undoCount = 0;
 
   window.addEventListener('load', init, false);
 
@@ -112,6 +114,7 @@
 
   let inputFlag = false;
   const inputInterval = 8;
+  const undoInterval = 6;
   let inputCountPrev = 0;
   let inputCount = inputInterval;
   let inputDir = dirs.neutral;
@@ -295,6 +298,12 @@
     moveDir = dirs.neutral;
   }
 
+  function undodown(e) {
+    e.preventDefault();
+    undoFlag = true;
+    undoCount = undoInterval;
+  }
+
   function getCursorPos(elem, e) {
     const bcRect = elem.getBoundingClientRect();
     let cursorX;
@@ -333,6 +342,7 @@
   }
 
   function pointerup() {
+    undoFlag = false;
     inputFlag = false;
     inputDir = dirs.neutral;
     updateController(inputDir);
@@ -371,24 +381,26 @@
   }
 
   function keydown(e) {
-    const key = e.key;
-    if (key == 'r') {
-      resetLevel();
-    } else if (key == 'z') {
-      undo();
-    } else if (e.shiftKey || e.ctrlKey) {
-      if (key == 'ArrowLeft') {
+    if (e.shiftKey || e.ctrlKey) {
+      if (e.key == 'ArrowLeft') {
         gotoPrevLevel();
-      } else if (key == 'ArrowRight') {
+      } else if (e.key == 'ArrowRight') {
         gotoNextLevel();
       }
+    } else if (e.key == 'r') {
+      resetLevel();
+    } else if (e.key == 'z') {
+      if (!undoFlag) {
+        undoFlag = true;
+        undoCount = undoInterval;
+      }
     } else {
-      const dir = dirs[key];
+      const dir = dirs[e.key];
       if (dir !== undefined) {
         inputFlag = true;
         inputDir = dir;
         updateController(inputDir);
-        inputKeys[key] = true;
+        inputKeys[e.key] = true;
       }
     }
     return false; 
@@ -399,6 +411,9 @@
     if (Object.keys(inputKeys).length == 0) {
       updateController(dirs.neutral);
       inputFlag = false;
+    }
+    if (e.key == 'z') {
+      undoFlag = false;
     }
     return false; 
   }
@@ -464,23 +479,21 @@
       document.addEventListener('keydown', keydown, false);
       document.addEventListener('keyup', keyup, false);
 
+      elemResetLevel.addEventListener('click', resetLevel, false);
       elemLevelPrev.addEventListener('click', gotoPrevLevel, false);
       elemLevelNext.addEventListener('click', gotoNextLevel, false);
 
-      if (window.ontouchstart === undefined) {
-        elemStickBase.addEventListener('mousedown', pointerdown, false);
-        elemStickBase.addEventListener('mousemove', pointermove, false);
-        elemStickBase.addEventListener('mouseup', pointerup, false);
-        document.addEventListener('mouseup', pointerup, false);
-      } else {
-        elemStickBase.addEventListener('touchstart', pointerdown, false);
-        elemStickBase.addEventListener('touchmove', pointermove, false);
-        elemStickBase.addEventListener('touchend', pointerup, false);
-        document.addEventListener('touchend', pointerup, false);
-      }
+      const touchDevice = window.ontouchstart !== undefined;
+      const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
+      const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
+      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
-      elemUndo.addEventListener('click', undo, false);
-      elemResetLevel.addEventListener('click', resetLevel, false);
+      elemStickBase.addEventListener(pointerdownEventName, pointerdown, false);
+      elemStickBase.addEventListener(pointermoveEventName, pointermove, false);
+      elemStickBase.addEventListener(pointerupEventName, pointerup, false);
+      document.addEventListener(pointerupEventName, pointerup, false);
+
+      elemUndo.addEventListener(pointerdownEventName, undodown, false);
     }
 
     window.setInterval(function() {
@@ -504,6 +517,13 @@
           moveUpdate();
         }
         draw();
+      }
+      if (undoFlag) {
+        if (undoCount == undoInterval) {
+          undoCount = 0;
+          undo();
+        }
+        undoCount++;
       }
     }, 20);
   }
