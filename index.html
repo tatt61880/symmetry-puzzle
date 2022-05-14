@@ -42,33 +42,33 @@
 
     <svg id="svgMain" width="500" height="500" style="margin: 10px;"></svg>
 
-    <div class="inner noselect" style="height: 220px">
-      <svg id="svgController" width="470" height="220">
-        <rect x="0" y="0" width="470" height="220" fill="#eee" stroke="none" />
+    <div class="inner noselect" style="height: 250px">
+      <svg id="svgController" width="470" height="250">
+        <rect x="0" y="0" width="470" height="250" fill="#eee" stroke="none" />
 
-        <g id="buttonUndo" transform="translate(110,110) scale(2,2)">
+        <g id="buttonUndo" transform="translate(110,125) scale(2,2)">
           <circle cx="0" cy="0" r="28" fill="lightgray" stroke="gray" stroke-width="4" />
           <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="gray" stroke-width="4" />
           <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="gray" stroke="none" stroke-width="4" />
         </g>
 
-        <g id="stickBase" transform="translate(360,110) scale(2,2)">
+        <g id="stickBase" transform="translate(345,125) scale(2,2)">
           <!-- 範囲 -->
-          <rect x="-50" y="-50" width="100" height="100" fill="lightgray" stroke="none" />
+          <rect x="-60" y="-60" width="120" height="120" fill="lightgray" stroke="none" />
           <!-- 軸 -->
           <circle cx="0" cy="0" r="14" fill="#aaa" stroke="gray" stroke-width="3" />
           <!-- 線 -->
           <g>
             <circle cx="0" cy="0" r="30" fill="none" stroke="#555" stroke-width="1" />
-            <line x1="21.21" y1="-21.21" x2="50" y2="-50" fill="none" stroke="#555" stroke-width="1" />
-            <line x1="21.21" y1="21.21" x2="50" y2="50" fill="none" stroke="#555" stroke-width="1" />
-            <line x1="-21.21" y1="21.21" x2="-50" y2="50" fill="none" stroke="#555" stroke-width="1" />
-            <line x1="-21.21" y1="-21.21" x2="-50" y2="-50" fill="none" stroke="#555" stroke-width="1" />
-            <text x="0" y="-38.5" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px">↑</text>
-            <text x="40" y="1.5" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px">→</text>
-            <text x="0" y="41.5" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px">↓</text>
-            <text x="-40" y="1.5" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px">←</text>
-            <rect x="-50" y="-50" width="100" height="100" fill="none" stroke="#555" />
+            <line x1="21.21" y1="-21.21" x2="60" y2="-60" fill="none" stroke="#555" stroke-width="1" />
+            <line x1="21.21" y1="21.21" x2="60" y2="60" fill="none" stroke="#555" stroke-width="1" />
+            <line x1="-21.21" y1="21.21" x2="-60" y2="60" fill="none" stroke="#555" stroke-width="1" />
+            <line x1="-21.21" y1="-21.21" x2="-60" y2="-60" fill="none" stroke="#555" stroke-width="1" />
+            <text x="0" y="-43.5" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px">↑</text>
+            <text x="45" y="1.5" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px">→</text>
+            <text x="0" y="46.5" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px">↓</text>
+            <text x="-45" y="1.5" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px">←</text>
+            <rect x="-60" y="-60" width="120" height="120" fill="none" stroke="#555" />
           </g>
           <!-- スティック本体 -->
           <g id="stick">
