@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.08';
+  const version = 'Version: 2022.05.27';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00002-001122-00122'},
@@ -560,6 +560,14 @@
     return rect;
   }
 
+  function createText(param) {
+    const text = document.createElementNS(SVG_NS, 'text');
+    text.setAttribute('x', blockSize * param.x);
+    text.setAttribute('y', blockSize * param.y);
+    text.textContent = param.text;
+    return text;
+  }
+
   function drawFrame() {
     const g = createG();
     // 横線
@@ -589,7 +597,8 @@
     {
       const g = createG();
       const paddingWidth = 1.15;
-      const paddingColor = isOk(isTarget) ? '#8d5' : '#753';
+      const isCleared = isOk(isTarget);
+      const paddingColor = isCleared ? '#8d5' : '#753';
       // 上側
       {
         const rect = createRect({x: 0, y: 0, width: width, height: paddingWidth});
@@ -617,6 +626,16 @@
         rect.setAttribute('fill', paddingColor);
         rect.setAttribute('stroke', 'none');
         g.appendChild(rect);
+      }
+      // クリアメッセージ
+      if (isCleared) {
+        const text = createText({x: width * 0.5, y: height * (height - 0.5) / height, text: 'CLEAR'});
+        text.setAttribute('font-size', `${blockSize * 0.8}px`);
+        text.setAttribute('font-weight', 'bold');
+        text.setAttribute('dominant-baseline', 'middle');
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('fill', 'blue');
+        g.appendChild(text);
       }
       elemSvg.appendChild(g);
     }
