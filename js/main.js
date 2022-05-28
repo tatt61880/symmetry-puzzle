@@ -1,19 +1,19 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.27';
+  const version = 'Version: 2022.05.28';
 
   const levels = [
-    {width: 6, height: 6, stateStr: 's---00002-001122-00122'},
+    {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
 
-    {width: 5, height: 5, stateStr: 's0bb-011b-010b-0x-0a002'},
-    {width: 5, height: 5, stateStr: 's0bbb-0110b-0100b-a-a0d02'},
-    {width: 5, height: 5, stateStr: 's-000bb-aa002-a110x-a1'},
-    {width: 5, height: 5, stateStr: 'sbb0x-0b-20d-xc11-001'},
-    {width: 5, height: 5, stateStr: 's30a-20b-d000c-d011-001'},
-    {width: 5, height: 5, stateStr: 's02-004cx-011-0a103-000b'},
+    {width: 5, height: 5, stateStr: 's0aa-011a-010a-0x-0b002'},
+    {width: 5, height: 5, stateStr: 's0aaa-0110a-0100a-b-b0c02'},
+    {width: 5, height: 5, stateStr: 's-000aa-bb001-b220x-b2'},
+    {width: 5, height: 5, stateStr: 'saa0x-0a-10b-xc22-002'},
+    {width: 5, height: 5, stateStr: 's10a-20b-c000d-c033-003'},
+    {width: 5, height: 5, stateStr: 's01-002ax-033-0b304-000c'},
 
-    {width: 5, height: 5, stateStr: 's00c-a2bc-0d-1111-x003'},
-    {width: 5, height: 5, stateStr: 's00b-0a0b-0aa-1111-0003'},
+    {width: 5, height: 5, stateStr: 's00a-b1ca-0d-2222-x003'},
+    {width: 5, height: 5, stateStr: 's00a-0b0a-0bb-1111-0002'},
 
     {width: 5, height: 6, stateStr: 'sx--01-011-1122-002'},
     {width: 6, height: 6, stateStr: 'sx0x--01000x-011-1122-x02'},
@@ -25,6 +25,9 @@
   let undoIdx = 0;
   let undoFlag = false;
   let undoCount = 0;
+
+  const debugMode = false;
+  let debugFlag = false;
 
   window.addEventListener('load', init, false);
 
@@ -43,7 +46,7 @@
   const stateTargetMin = 1;
   const stateTargetMax = 9;
   const stateOtherMin = 10;
-  const stateOtherMax = 35;
+  const stateOtherMax = 15;
 
   const stateToChar = {};
   const charToState = {};
@@ -52,10 +55,10 @@
   stateToChar[stateWall] = 'x';
   stateToChar[stateNone] = '0';
   for (let i = stateTargetMin; i <= stateTargetMax; ++i) {
-    stateToChar[i] = `${i}`;
+    stateToChar[i] = `${i}`; // '1' ～
   }
   for (let i = stateOtherMin; i <= stateOtherMax; ++i) {
-    stateToChar[i] = `${String.fromCharCode(97 + i - stateOtherMin)}`;
+    stateToChar[i] = `${String.fromCharCode(97 + i - stateOtherMin)}`; // 'a' ～
   }
 
   for (const key in stateToChar) {
@@ -391,6 +394,12 @@
       } else if (e.key == 'ArrowRight') {
         gotoNextLevel();
       }
+    } else if (e.key == ' ') {
+      debugFlag = true;
+      draw();
+    } else if (e.key == 'u') {
+    } else if (e.key == 'd') {
+    } else if (e.key == 'l') {
     } else if (e.key == 'r') {
       resetLevel();
     } else if (e.key == 'z') {
@@ -411,6 +420,7 @@
   }
 
   function keyup(e) {
+    debugFlag = false;
     delete inputKeys[e.key];
     if (Object.keys(inputKeys).length == 0) {
       updateController(dirs.neutral);
@@ -563,8 +573,10 @@
   function createText(param) {
     const text = document.createElementNS(SVG_NS, 'text');
     text.setAttribute('x', blockSize * param.x);
-    text.setAttribute('y', blockSize * param.y);
+    text.setAttribute('y', blockSize * (param.y + 0.5));
     text.textContent = param.text;
+    text.setAttribute('dominant-baseline', 'middle');
+    text.setAttribute('text-anchor', 'middle');
     return text;
   }
 
@@ -629,11 +641,9 @@
       }
       // クリアメッセージ
       if (isCleared) {
-        const text = createText({x: width * 0.5, y: height * (height - 0.5) / height, text: 'CLEAR'});
+        const text = createText({x: width * 0.5, y: height - 1, text: 'CLEAR'});
         text.setAttribute('font-size', `${blockSize * 0.8}px`);
         text.setAttribute('font-weight', 'bold');
-        text.setAttribute('dominant-baseline', 'middle');
-        text.setAttribute('text-anchor', 'middle');
         text.setAttribute('fill', 'blue');
         g.appendChild(text);
       }
@@ -742,6 +752,10 @@
               g.setAttribute('transform', `translate(${dx},${dy})`);
             }
           }
+          if (debugMode || debugFlag) {
+            const text = createText({x: x + 0.5, y: y, text: stateToChar[state]});
+            g.appendChild(text);
+          }
           elemSvg.appendChild(g);
         }
       }
@@ -839,25 +853,25 @@
     return true;
   }
 
-  // {{{ Stack
-  function Stack() {
-    this.data = [];
+  class Stack {
+    constructor() {
+      this.data = [];
+    }
+    push(val) {
+      this.data.push(val);
+      return val;
+    }
+    pop() {
+      return this.data.pop();
+    }
+    top() {
+      return this.data[this.data.length - 1];
+    }
+    size() {
+      return this.data.length;
+    }
+    empty() {
+      return this.data.length == 0;
+    }
   }
-  Stack.prototype.push = function(val) {
-    this.data.push(val);
-    return val;
-  };
-  Stack.prototype.pop = function() {
-    return this.data.pop();
-  };
-  Stack.prototype.top = function() {
-    return this.data[this.data.length - 1];
-  };
-  Stack.prototype.size = function() {
-    return this.data.length;
-  };
-  Stack.prototype.empty = function() {
-    return this.data.length == 0;
-  };
-  // }}}
 })();
