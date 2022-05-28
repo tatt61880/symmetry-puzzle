@@ -398,8 +398,11 @@
       debugFlag = true;
       draw();
     } else if (e.key == 'u') {
+      return false;
     } else if (e.key == 'd') {
+      return false;
     } else if (e.key == 'l') {
+      return false;
     } else if (e.key == 'r') {
       resetLevel();
     } else if (e.key == 'z') {
