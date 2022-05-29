@@ -388,7 +388,7 @@
   }
 
   function keydown(e) {
-    if (e.shiftKey || e.ctrlKey) {
+    if (e.shiftKey) {
       if (e.key == 'ArrowLeft') {
         gotoPrevLevel();
       } else if (e.key == 'ArrowRight') {
