@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.30-j';
+  const version = 'Version: 2022.05.30-k';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
@@ -225,6 +225,7 @@
       }
     }
     draw();
+    updateUrl();
   }
 
   function setSize(w, h) {
@@ -327,9 +328,7 @@
     }
     moveDir = dirs.neutral;
 
-    if (editMode) {
-      updateUrl();
-    }
+    updateUrl();
   }
 
   function undodown(e) {
@@ -385,7 +384,6 @@
   function resetLevel() {
     elemSvg.textContent = '';
     initStates();
-    draw();
 
     window.setTimeout(function() {
       applyLevel(levelObj);
@@ -524,13 +522,13 @@
   }
 
   function updateUrl() {
+    if (!editMode) return;
     const url = getUrlStr();
     elemUrl.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
   }
 
   function updateEditLevel() {
     if (editMode) {
-      updateUrl();
       elemUrl.style.display = 'block';
       elemEditbox.style.display = 'block';
     } else {
@@ -538,6 +536,7 @@
       elemEditbox.style.display = 'none';
     }
     draw();
+    updateUrl();
   }
 
   function toggleEditLevel() {
