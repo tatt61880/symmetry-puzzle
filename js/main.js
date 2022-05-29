@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.30-c';
+  const version = 'Version: 2022.05.30-d';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
@@ -16,7 +16,7 @@
     {width: 5, height: 5, stateStr: 's00a-0b0a-0bb-1111-0002'},
 
     {width: 5, height: 6, stateStr: 'sx-000a-01-011-1122-002'},
-    {width: 6, height: 6, stateStr: 'sx0x-01-01100x-11-ab22-0x2'},
+    {width: 6, height: 6, stateStr: '0x0x-a1-s1100x-11-bc22-0x2'},
   ];
   let levelId;
   let levelObj;
@@ -28,6 +28,7 @@
 
   const debugMode = false;
   let debugFlag = false;
+  let editMode = false;
 
   window.addEventListener('load', init, false);
 
@@ -106,12 +107,17 @@
   let moveCount = 0;
   let moveDir = dirs.neutral;
 
+  let elemResetLevel;
   let elemLevelPrev;
   let elemLevelId;
   let elemLevelNext;
+  let elemEditLevel;
+
+  let elemUrl;
+
   let elemSvg;
+
   let elemUndo;
-  let elemResetLevel;
   let elemStick;
   let elemStickBase;
 
@@ -151,6 +157,10 @@
     return res;
   }
 
+  function getUrlStr() {
+    return `${location.href.split('?')[0]}?w=${rightEnd - leftEnd + 1}&h=${downEnd - upEnd + 1}&s=${getStateStr()}`;
+  }
+
   function getStateStr() {
     let res = '';
     for (let y = upEnd; y <= downEnd; ++y) {
@@ -161,7 +171,7 @@
       res += line.replace(/0+$/, '');
       res += '-';
     }
-    return res;
+    return res.replace(/-+$/, '');
   }
 
   // 初期化
@@ -239,7 +249,7 @@
     moveState[stateHero] = true;
     const st = new Stack(); // 移動可能か検証必要な状態番号
     st.push(stateHero);
-    let flag = true; // 移動フラグ。
+    let flag = true; // 移動フラグ
     while (!st.empty()) {
       const state = st.pop();
       loop:
@@ -259,6 +269,7 @@
       }
     }
 
+    // 各座標に移動フラグを設定
     if (flag) {
       undos[undoIdx++] = getStateStr();
       elemUndo.style.display = 'block';
@@ -276,7 +287,8 @@
     }
   }
 
-  function moveUpdate() {
+  // 盤面を更新
+  function stateUpdate() {
     const statesTemp = new Array(height);
     for (let y = 0; y < height; ++y) {
       statesTemp[y] = states[y].slice();
@@ -300,6 +312,8 @@
       }
     }
     moveDir = dirs.neutral;
+
+    updateUrl();
   }
 
   function undodown(e) {
@@ -358,10 +372,10 @@
     draw();
 
     window.setTimeout(function() {
-      if (levelId != 0) {
-        changeLevel(levelId);
-      } else {
+      if (levelId == null) {
         applyLevel(levelObj);
+      } else {
+        changeLevel(levelId);
       }
     }, 50);
   }
@@ -436,6 +450,7 @@
     setSize(levelObj.width, levelObj.height);
     applyStateStr(levelObj.stateStr);
     setButtonVisibility();
+    resetUndo();
   }
 
   function resetUndo() {
@@ -455,33 +470,62 @@
   }
 
   function setButtonVisibility() {
-    elemLevelPrev.style.visibility = levelId <= 1 ? 'hidden' : 'visible';
-    elemLevelNext.style.visibility = levelId % levels.length == 0 ? 'hidden' : 'visible';
+    if (levelId == null) {
+      elemLevelPrev.style.visibility = 'hidden';
+      elemLevelNext.style.visibility = 'hidden';
+    } else {
+      elemLevelPrev.style.visibility = levelId == 1 ? 'hidden' : 'visible';
+      elemLevelNext.style.visibility = levelId == levels.length ? 'hidden' : 'visible';
+    }
   }
 
   function gotoPrevLevel() {
+    if (levelId == null) return;
     if (levelId > 1) {
       changeLevel(levelId - 1);
     }
   }
 
   function gotoNextLevel() {
+    if (levelId == null) return;
     if (levelId < levels.length) {
       changeLevel(levelId + 1);
     }
   }
 
+  function updateUrl() {
+    const url = getUrlStr();
+    elemUrl.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
+  }
+
+  function updateEditLevel() {
+    updateUrl();
+    if (editMode) {
+      elemUrl.style.display = 'block';
+    } else {
+      elemUrl.style.display = 'none';
+    }
+  }
+
+  function toggleEditLevel() {
+    editMode = !editMode;
+    updateEditLevel();
+  }
+
   function init() {
     document.getElementById('versionInfo').innerText = version;
 
+    elemResetLevel = document.getElementById('buttonResetLevel');
     elemLevelPrev = document.getElementById('levelPrev');
     elemLevelId = document.getElementById('levelId');
     elemLevelNext = document.getElementById('levelNext');
+    elemEditLevel = document.getElementById('buttonEditLevel');
+
+    elemUrl = document.getElementById('url');
 
     elemSvg = document.getElementById('svgMain');
 
     elemUndo = document.getElementById('buttonUndo');
-    elemResetLevel = document.getElementById('buttonResetLevel');
     elemStick = document.getElementById('stick');
     elemStickBase = document.getElementById('stickBase');
 
@@ -489,10 +533,12 @@
     if (levelObj.stateStr == '') {
       levelId = 1;
       changeLevel(levelId);
+      elemEditLevel.style.display = 'none';
     } else {
-      levelId = 0;
+      levelId = null;
       applyLevel(levelObj);
     }
+    updateEditLevel();
 
     {
       document.addEventListener('keydown', keydown, false);
@@ -501,6 +547,7 @@
       elemResetLevel.addEventListener('click', resetLevel, false);
       elemLevelPrev.addEventListener('click', gotoPrevLevel, false);
       elemLevelNext.addEventListener('click', gotoNextLevel, false);
+      elemEditLevel.addEventListener('click', toggleEditLevel, false);
 
       const touchDevice = window.ontouchstart !== undefined;
       const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
@@ -533,7 +580,7 @@
         if (moveCount == inputInterval) {
           moveCount = 0;
           moveFlag = false;
-          moveUpdate();
+          stateUpdate();
         }
         draw();
       }
