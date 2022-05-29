@@ -16,7 +16,7 @@
     {width: 5, height: 5, stateStr: 's00a-0b0a-0bb-1111-0002'},
 
     {width: 5, height: 6, stateStr: 'sx-000a-01-011-1122-002'},
-    {width: 6, height: 6, stateStr: '0x0x-a1-s1100x-11-bc22-0x2'},
+    {width: 6, height: 6, stateStr: '0x0x-a100bb-s1100x-11-cd22-0x2'},
   ];
   let levelId;
   let levelObj;
