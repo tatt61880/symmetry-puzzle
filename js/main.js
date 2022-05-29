@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.30-g';
+  const version = 'Version: 2022.05.30-h';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
@@ -28,7 +28,6 @@
   let undoIdx = 0;
   let undoFlag = false;
   let undoCount = 0;
-
 
   window.addEventListener('load', init, false);
 
@@ -70,14 +69,14 @@
   }
 
   const colors = {};
-  colors[stateNone] = {fill: 'white', stroke: '#e2e2e2'};
-  colors[stateHero] = {fill: 'aqua', stroke: 'blue'};
-  colors[stateWall] = {fill: '#222', stroke: '#333'};
+  colors[stateNone] = {fill: 'white', stroke: '#aaa', text: '#ccc'};
+  colors[stateHero] = {fill: 'aqua', stroke: 'blue', text: 'black'};
+  colors[stateWall] = {fill: '#222', stroke: '#333', text: 'white'};
   for (let i = stateTargetMin; i <= stateTargetMax; ++i) {
-    colors[i] = {fill: 'pink', stroke: 'red'};
+    colors[i] = {fill: 'pink', stroke: 'red', text: 'black'};
   }
   for (let i = stateOtherMin; i <= stateOtherMax; ++i) {
-    colors[i] = {fill: '#e5e5e5', stroke: '#aaa'};
+    colors[i] = {fill: '#e5e5e5', stroke: '#aaa', text: 'black'};
   }
 
   const colorNone = 'white';
@@ -540,10 +539,9 @@
     elemLevelNext = document.getElementById('levelNext');
     elemEditLevel = document.getElementById('buttonEditLevel');
 
-    elemUrl = document.getElementById('url');
-    elemEditbox = document.getElementById('editbox');
-
     elemSvg = document.getElementById('svgMain');
+    elemEditbox = document.getElementById('editbox');
+    elemUrl = document.getElementById('url');
 
     elemUndo = document.getElementById('buttonUndo');
     elemStick = document.getElementById('stick');
@@ -571,6 +569,7 @@
           elemEditShape.setAttribute('fill', colors[state].fill);
           elemEditShape.setAttribute('stroke', colors[state].stroke);
           elemEditState.textContent = char;
+          elemEditState.setAttribute('fill', colors[state].text);
           drawingState = state;
         };
         elem.addEventListener('click', f, false);
@@ -882,6 +881,8 @@
           }
           if (editMode ^ debugFlag) {
             const text = createText({x: x + 0.5, y: y, text: stateToChar[state]});
+            text.setAttribute('fill', colors[state].text);
+            text.setAttribute('font-weight', 'bold');
             g.appendChild(text);
           }
           elemSvg.appendChild(g);
@@ -999,6 +1000,10 @@
 
     if (states[y][x] != drawingState) {
       states[y][x] = drawingState;
+      draw();
+      updateUrl();
+    } else if (states[y][x] != stateNone) {
+      states[y][x] = stateNone;
       draw();
       updateUrl();
     }
