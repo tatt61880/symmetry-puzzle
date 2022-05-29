@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.28';
+  const version = 'Version: 2022.05.29';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
@@ -397,12 +397,6 @@
     } else if (e.key == ' ') {
       debugFlag = true;
       draw();
-    } else if (e.key == 'u') {
-      return false;
-    } else if (e.key == 'd') {
-      return false;
-    } else if (e.key == 'l') {
-      return false;
     } else if (e.key == 'r') {
       resetLevel();
     } else if (e.key == 'z') {
@@ -410,7 +404,7 @@
         undoFlag = true;
         undoCount = undoInterval;
       }
-    } else {
+    } else if (e.key.length > 2) {
       const dir = dirs[e.key];
       if (dir !== undefined) {
         inputFlag = true;
@@ -423,7 +417,10 @@
   }
 
   function keyup(e) {
-    debugFlag = false;
+    if (debugFlag && e.key == ' ') {
+      debugFlag = false;
+      draw();
+    }
     delete inputKeys[e.key];
     if (Object.keys(inputKeys).length == 0) {
       updateController(dirs.neutral);
@@ -573,6 +570,17 @@
     return rect;
   }
 
+  function createPolygon(param) {
+    const polygon = document.createElementNS(SVG_NS, 'polygon');
+    let points = '';
+    for (const point of param.points) {
+      if (points != '') points += ' ';
+      points += `${blockSize * point[0]},${blockSize * point[1]}`;
+    }
+    polygon.setAttribute('points', points);
+    return polygon;
+  }
+
   function createText(param) {
     const text = document.createElementNS(SVG_NS, 'text');
     text.setAttribute('x', blockSize * param.x);
@@ -613,7 +621,7 @@
       const g = createG();
       const paddingWidth = 1.15;
       const isCleared = isOk(isTarget);
-      const paddingColor = isCleared ? '#8d5' : '#753';
+      const paddingColor = isCleared ? '#8f8' : '#753';
       // 上側
       {
         const rect = createRect({x: 0, y: 0, width: width, height: paddingWidth});
@@ -743,6 +751,34 @@
               const rect = createRect({x: x, y: y, width: paddingWidth, height: paddingWidth});
               rect.setAttribute('fill', color.stroke);
               g.appendChild(rect);
+            }
+
+            if (state == stateHero) {
+              const size = 0.35;
+              // 右上
+              if (!flags[dirs.u] && !flags[dirs.r]) {
+                const polygon = createPolygon({points: [[x + 1 - size, y], [x + 1, y], [x + 1, y + size]]});
+                polygon.setAttribute('fill', color.stroke);
+                g.appendChild(polygon);
+              }
+              // 右下
+              if (!flags[dirs.d] && !flags[dirs.r]) {
+                const polygon = createPolygon({points: [[x + 1, y + 1 - size], [x + 1, y + 1], [x + 1 - size, y + 1]]});
+                polygon.setAttribute('fill', color.stroke);
+                g.appendChild(polygon);
+              }
+              // 左下
+              if (!flags[dirs.d] && !flags[dirs.l]) {
+                const polygon = createPolygon({points: [[x, y + 1 - size], [x + size, y + 1], [x, y + 1]]});
+                polygon.setAttribute('fill', color.stroke);
+                g.appendChild(polygon);
+              }
+              // 左上
+              if (!flags[dirs.u] && !flags[dirs.l]) {
+                const polygon = createPolygon({points: [[x, y], [x + size, y], [x, y + size]]});
+                polygon.setAttribute('fill', color.stroke);
+                g.appendChild(polygon);
+              }
             }
           }
           if (moveFlags[y][x]) {
