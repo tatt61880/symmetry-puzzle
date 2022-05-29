@@ -1,14 +1,17 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.30-h';
+  const version = 'Version: 2022.05.30-i';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
+
     {width: 5, height: 5, stateStr: 's0aa-011a-010a-0x-0b002'},
     {width: 5, height: 5, stateStr: 's0aaa-0110a-0100a-b-b0c02'},
     {width: 5, height: 5, stateStr: 'sa-000bb-cc001-c220x-c2'},
     {width: 5, height: 5, stateStr: 'saa0x-0a-10b-xc22-002'},
-    {width: 5, height: 5, stateStr: 's10a-20b-c000d-c033-003'},
+
+    {width: 5, height: 5, stateStr: 's10a-20b-c000d-0e33-003'},
+
     {width: 5, height: 5, stateStr: 's01-002ax-033-0b304-000c'},
 
     {width: 5, height: 5, stateStr: 's00a-b1ca-0d-2222-e0f3'},
@@ -412,10 +415,17 @@
 
   function keydown(e) {
     if (e.shiftKey) {
-      if (e.key == 'ArrowLeft') {
-        gotoPrevLevel();
-      } else if (e.key == 'ArrowRight') {
-        gotoNextLevel();
+      if (e.key == 'E') {
+        // 強制editモード (Shift + e)
+        levelId = null;
+        setLevelVisibility();
+        toggleEditLevel();
+      } else {
+        if (e.key == 'ArrowLeft') {
+          gotoPrevLevel();
+        } else if (e.key == 'ArrowRight') {
+          gotoNextLevel();
+        }
       }
     } else if (e.key == ' ') {
       e.preventDefault();
@@ -464,7 +474,7 @@
   function applyLevel(levelObj) {
     setSize(levelObj.width, levelObj.height);
     applyStateStr(levelObj.stateStr);
-    setButtonVisibility();
+    setLevelVisibility();
     resetUndo();
   }
 
@@ -478,19 +488,21 @@
     levelId = id;
     if (levelId < 1) levelId = 1;
     if (levelId > levels.length) levelId = levels.length;
-    setButtonVisibility();
+    setLevelVisibility();
     elemLevelId.textContent = levelId;
     const level = levelId - 1;
     applyLevel(levels[level]);
   }
 
-  function setButtonVisibility() {
+  function setLevelVisibility() {
     if (levelId == null) {
       elemLevelPrev.style.visibility = 'hidden';
       elemLevelNext.style.visibility = 'hidden';
+      elemLevelId.style.visibility = 'hidden';
     } else {
       elemLevelPrev.style.visibility = levelId == 1 ? 'hidden' : 'visible';
       elemLevelNext.style.visibility = levelId == levels.length ? 'hidden' : 'visible';
+      elemLevelId.style.visibility = 'visible';
     }
   }
 
