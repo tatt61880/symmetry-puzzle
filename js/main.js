@@ -52,6 +52,7 @@
   const stateOtherMax = 15;
 
   let drawingState = stateNone;
+  const editboxFunctions = {};
 
   const stateToChar = {};
   const charToState = {};
@@ -450,6 +451,8 @@
         updateController(inputDir);
         inputKeys[e.key] = true;
       }
+    } else if (editMode && editboxFunctions[e.key]) {
+      editboxFunctions[e.key]();
     }
     return false; 
   }
@@ -576,7 +579,7 @@
       const elemEditState = document.getElementById('edit_drawing_state');
       for (const char in charToState) {
         const elem = document.getElementById(`edit_${char}`);
-        const f = function() {
+        const func = function() {
           const state = charToState[char];
           elemEditShape.setAttribute('fill', colors[state].fill);
           elemEditShape.setAttribute('stroke', colors[state].stroke);
@@ -584,11 +587,10 @@
           elemEditState.setAttribute('fill', colors[state].text);
           drawingState = state;
         };
-        elem.addEventListener('click', f, false);
-        if (char == '0') {
-          f();
-        }
+        editboxFunctions[char] = func;
+        elem.addEventListener('click', func, false);
       }
+      editboxFunctions[stateToChar[stateNone]]();
     }
 
     {
