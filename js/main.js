@@ -1,10 +1,9 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.30-d';
+  const version = 'Version: 2022.05.30-e';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
-
     {width: 5, height: 5, stateStr: 's0aa-011a-010a-0x-0b002'},
     {width: 5, height: 5, stateStr: 's0aaa-0110a-0100a-b-b0c02'},
     {width: 5, height: 5, stateStr: 's-000aa-bb001-b220x-b2'},
@@ -26,7 +25,6 @@
   let undoFlag = false;
   let undoCount = 0;
 
-  const debugMode = false;
   let debugFlag = false;
   let editMode = false;
 
@@ -49,6 +47,8 @@
   const stateOtherMin = 10;
   const stateOtherMax = 15;
 
+  let drawingState = stateNone;
+
   const stateToChar = {};
   const charToState = {};
 
@@ -68,13 +68,14 @@
   }
 
   const colors = {};
+  colors[stateNone] = {fill: 'white', stroke: '#e2e2e2'};
   colors[stateHero] = {fill: 'aqua', stroke: 'blue'};
   colors[stateWall] = {fill: '#222', stroke: '#333'};
   for (let i = stateTargetMin; i <= stateTargetMax; ++i) {
     colors[i] = {fill: 'pink', stroke: 'red'};
   }
   for (let i = stateOtherMin; i <= stateOtherMax; ++i) {
-    colors[i] = {fill: '#ddd', stroke: '#aaa'};
+    colors[i] = {fill: '#e5e5e5', stroke: '#aaa'};
   }
 
   const colorNone = 'white';
@@ -114,6 +115,7 @@
   let elemEditLevel;
 
   let elemUrl;
+  let elemEditbox;
 
   let elemSvg;
 
@@ -158,7 +160,11 @@
   }
 
   function getUrlStr() {
-    return `${location.href.split('?')[0]}?w=${rightEnd - leftEnd + 1}&h=${downEnd - upEnd + 1}&s=${getStateStr()}`;
+    const w = rightEnd - leftEnd + 1;
+    const h = downEnd - upEnd + 1;
+    const s = getStateStr();
+    console.log(`{width: ${w}, height: ${h}, stateStr: '${s}'},`);
+    return `${location.href.split('?')[0]}?h=${h}&w=${w}&s=${s}`;
   }
 
   function getStateStr() {
@@ -313,7 +319,9 @@
     }
     moveDir = dirs.neutral;
 
-    updateUrl();
+    if (editMode) {
+      updateUrl();
+    }
   }
 
   function undodown(e) {
@@ -409,6 +417,7 @@
         gotoNextLevel();
       }
     } else if (e.key == ' ') {
+      e.preventDefault();
       debugFlag = true;
       draw();
     } else if (e.key == 'r') {
@@ -421,6 +430,7 @@
     } else if (e.key.length > 2) {
       const dir = dirs[e.key];
       if (dir !== undefined) {
+        e.preventDefault()
         inputFlag = true;
         inputDir = dir;
         updateController(inputDir);
@@ -499,12 +509,15 @@
   }
 
   function updateEditLevel() {
-    updateUrl();
     if (editMode) {
+      updateUrl();
       elemUrl.style.display = 'block';
+      elemEditbox.style.display = 'block';
     } else {
       elemUrl.style.display = 'none';
+      elemEditbox.style.display = 'none';
     }
+    draw();
   }
 
   function toggleEditLevel() {
@@ -522,6 +535,7 @@
     elemEditLevel = document.getElementById('buttonEditLevel');
 
     elemUrl = document.getElementById('url');
+    elemEditbox = document.getElementById('editbox');
 
     elemSvg = document.getElementById('svgMain');
 
@@ -540,6 +554,26 @@
     }
     updateEditLevel();
 
+    // editモード用
+    {
+      const elemEditShape = document.getElementById('edit_drawing_shape');
+      const elemEditState = document.getElementById('edit_drawing_state');
+      for (const char in charToState) {
+        const elem = document.getElementById(`edit_${char}`);
+        const f = function() {
+          const state = charToState[char];
+          elemEditShape.setAttribute('fill', colors[state].fill);
+          elemEditShape.setAttribute('stroke', colors[state].stroke);
+          elemEditState.textContent = char;
+          drawingState = state;
+        }
+        elem.addEventListener('click', f, false);
+        if (char == '0') {
+          f();
+        }
+      }
+    }
+
     {
       document.addEventListener('keydown', keydown, false);
       document.addEventListener('keyup', keyup, false);
@@ -553,6 +587,8 @@
       const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
+
+      elemSvg.addEventListener(pointerdownEventName, editSvg, false);
 
       elemStickBase.addEventListener(pointerdownEventName, pointerdown, false);
       elemStickBase.addEventListener(pointermoveEventName, pointermove, false);
@@ -838,7 +874,7 @@
               g.setAttribute('transform', `translate(${dx},${dy})`);
             }
           }
-          if (debugMode || debugFlag) {
+          if (editMode ^ debugFlag) {
             const text = createText({x: x + 0.5, y: y, text: stateToChar[state]});
             g.appendChild(text);
           }
@@ -937,6 +973,23 @@
       }
     }
     return true;
+  }
+
+  // カーソル位置の座標を得る
+  function getCurXY(e) {
+    const cursorPos = getCursorPos(elemSvg, e);
+    const x = Math.floor(cursorPos.x / blockSize);
+    const y = Math.floor(cursorPos.y / blockSize);
+    return {x: x, y: y};
+  }
+  function editSvg(e) {
+    const curXY = getCurXY(e);
+    const x = curXY.x;
+    const y = curXY.y;
+    if (x < leftEnd || rightEnd < x) return;
+    if (y < upEnd || downEnd < y) return;
+    states[y][x] = drawingState;
+    draw();
   }
 
   class Stack {
