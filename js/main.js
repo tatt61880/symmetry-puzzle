@@ -1,22 +1,26 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.30-f';
+  const version = 'Version: 2022.05.30-g';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
     {width: 5, height: 5, stateStr: 's0aa-011a-010a-0x-0b002'},
     {width: 5, height: 5, stateStr: 's0aaa-0110a-0100a-b-b0c02'},
-    {width: 5, height: 5, stateStr: 's-000aa-bb001-b220x-b2'},
+    {width: 5, height: 5, stateStr: 'sa-000bb-cc001-c220x-c2'},
     {width: 5, height: 5, stateStr: 'saa0x-0a-10b-xc22-002'},
     {width: 5, height: 5, stateStr: 's10a-20b-c000d-c033-003'},
     {width: 5, height: 5, stateStr: 's01-002ax-033-0b304-000c'},
 
-    {width: 5, height: 5, stateStr: 's00a-b1ca-0d-2222-x003'},
+    {width: 5, height: 5, stateStr: 's00a-b1ca-0d-2222-e0f3'},
     {width: 5, height: 5, stateStr: 's00a-0b0a-0bb-1111-0002'},
 
     {width: 5, height: 6, stateStr: 'sx-000a-01-011-1122-002'},
     {width: 6, height: 6, stateStr: '0x0x-a100bb-s1100x-11-cd22-0x2'},
   ];
+
+  let debugFlag = false;
+  let editMode = false;
+
   let levelId;
   let levelObj;
 
@@ -25,8 +29,6 @@
   let undoFlag = false;
   let undoCount = 0;
 
-  let debugFlag = false;
-  let editMode = false;
 
   window.addEventListener('load', init, false);
 
@@ -420,6 +422,10 @@
       e.preventDefault();
       debugFlag = true;
       draw();
+    } else if (e.key == 'e') {
+      if (levelId == null) {
+        toggleEditLevel();
+      }
     } else if (e.key == 'r') {
       resetLevel();
     } else if (e.key == 'z') {
