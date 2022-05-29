@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.30-e';
+  const version = 'Version: 2022.05.30-f';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
