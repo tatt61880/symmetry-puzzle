@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.30-i';
+  const version = 'Version: 2022.05.30-j';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
@@ -258,8 +258,11 @@
     const moveState = {}; // 移動予定の状態番号
     moveState[stateHero] = true;
     const st = new Stack(); // 移動可能か検証必要な状態番号
-    st.push(stateHero);
-    let flag = true; // 移動フラグ
+    let flag = false; // 移動フラグ
+    if (count(isHero)) {
+      st.push(stateHero);
+      flag = true;
+    }
     while (!st.empty()) {
       const state = st.pop();
       loop:
@@ -384,11 +387,7 @@
     draw();
 
     window.setTimeout(function() {
-      if (levelId == null) {
-        applyLevel(levelObj);
-      } else {
-        changeLevel(levelId);
-      }
+      applyLevel(levelObj);
     }, 50);
   }
 
@@ -415,8 +414,8 @@
 
   function keydown(e) {
     if (e.shiftKey) {
-      if (e.key == 'E') {
-        // 強制editモード (Shift + e)
+      if (e.key == 'T') {
+        // 強制editモード (Shift + t)
         levelId = null;
         setLevelVisibility();
         toggleEditLevel();
@@ -431,7 +430,7 @@
       e.preventDefault();
       debugFlag = true;
       draw();
-    } else if (e.key == 'e') {
+    } else if (e.key == 't') {
       if (levelId == null) {
         toggleEditLevel();
       }
@@ -491,7 +490,8 @@
     setLevelVisibility();
     elemLevelId.textContent = levelId;
     const level = levelId - 1;
-    applyLevel(levels[level]);
+    levelObj = levels[level]; // リセット用にここで代入します。
+    applyLevel(levelObj);
   }
 
   function setLevelVisibility() {
@@ -907,6 +907,10 @@
 
   function isTarget(x) {
     return stateTargetMin <= x && x <= stateTargetMax;
+  }
+
+  function isHero(x) {
+    return x == stateHero;
   }
 
   function isOk(isX) {
