@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.30';
+  const version = 'Version: 2022.05.30-b';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
@@ -449,7 +449,7 @@
     if (levelId < 1) levelId = 1;
     if (levelId > levels.length) levelId = levels.length;
     setButtonVisibility();
-    elemLevelId.innerText = levelId;
+    elemLevelId.textContent = levelId;
     const level = levelId - 1;
     applyLevel(levels[level]);
   }

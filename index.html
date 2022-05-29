@@ -9,7 +9,7 @@
 
   <link rel="stylesheet" href="./style.css?2022.05.29">
 
-  <script src="./js/main.js?2022.05.30"></script>
+  <script src="./js/main.js?2022.05.30-b"></script>
 </head>
 
 <body>
@@ -19,21 +19,27 @@
 
     <div class="inner skyblue noselect">
       <h2>LEVEL</h2>
-      <div class="inner">
-        <svg width="60" height="90" style="vertical-align: middle; float: left;">
-          <g id="buttonResetLevel" transform="translate(30,40)" style="cursor: pointer;">
+      <div>
+        <svg width="440" height="80">
+          <g id="buttonResetLevel" transform="translate(30,30)" style="cursor: pointer;">
             <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
             <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#87ceeb" stroke-width="4" />
             <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#87ceeb" stroke="none" stroke-width="4" />
-            <text x="0" y="39" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="gray">r</text>
+            <text x="0" y="41" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="gray">r</text>
           </g>
-        </svg>
-        <span style="margin: 0 10px;">
-          <a id="levelPrev" class="button">◀</a>
-          <span id="levelId" style="font-size: 40px; vertical-align: middle;"></span>
-          <a id="levelNext" class="button">▶</a>
-        </span>
-        <svg width="60" height="70" style="vertical-align: middle;">
+          <g id="levelPrev" transform="translate(90,2)" style="cursor: pointer;">
+            <rect x="0" y="0" rx="28" ry="28" width="80" height="56" border-radius="30" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
+            <text x="40" y="30" fill="#87ceeb" dominant-baseline="middle" text-anchor="middle" font-size="30">◀</text>
+            <text x="40" y="73" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="12px" fill="gray">Shift + ←</text>
+          </g>
+          <g transform="translate(220,35)" style="cursor: pointer;">
+            <text id="levelId" x="0" y="0" fill="black" dominant-baseline="middle" text-anchor="middle" font-size="40" />
+          </g>
+          <g id="levelNext" transform="translate(270,2)" style="cursor: pointer;">
+            <rect x="0" y="0" rx="28" ry="28" width="80" height="56" border-radius="30" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
+            <text x="40" y="30" fill="#87ceeb" dominant-baseline="middle" text-anchor="middle" font-size="30">▶</text>
+            <text x="40" y="73" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="12px" fill="gray">Shift + →</text>
+          </g>
         </svg>
       </div>
     </div>
