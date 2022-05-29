@@ -983,13 +983,19 @@
     return {x: x, y: y};
   }
   function editSvg(e) {
+    if (!editMode) return;
+
     const curXY = getCurXY(e);
     const x = curXY.x;
     const y = curXY.y;
     if (x < leftEnd || rightEnd < x) return;
     if (y < upEnd || downEnd < y) return;
-    states[y][x] = drawingState;
-    draw();
+
+    if (states[y][x] != drawingState) {
+      states[y][x] = drawingState;
+      draw();
+      updateUrl();
+    }
   }
 
   class Stack {
