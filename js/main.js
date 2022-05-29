@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.29';
+  const version = 'Version: 2022.05.30';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
@@ -16,7 +16,7 @@
     {width: 5, height: 5, stateStr: 's00a-0b0a-0bb-1111-0002'},
 
     {width: 5, height: 6, stateStr: 'sx--01-011-1122-002'},
-    {width: 6, height: 6, stateStr: 'sx0x--01000x-011-1122-x02'},
+    {width: 6, height: 6, stateStr: 'sx0x-01-01100x-11-0a22-0x2'},
   ];
   let levelId;
   let levelObj;
