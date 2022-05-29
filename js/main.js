@@ -163,7 +163,7 @@
     const w = rightEnd - leftEnd + 1;
     const h = downEnd - upEnd + 1;
     const s = getStateStr();
-    console.log(`{width: ${w}, height: ${h}, stateStr: '${s}'},`);
+    window.console.log(`{width: ${w}, height: ${h}, stateStr: '${s}'},`); // eslint-disable-line no-console
     return `${location.href.split('?')[0]}?h=${h}&w=${w}&s=${s}`;
   }
 
@@ -430,7 +430,7 @@
     } else if (e.key.length > 2) {
       const dir = dirs[e.key];
       if (dir !== undefined) {
-        e.preventDefault()
+        e.preventDefault();
         inputFlag = true;
         inputDir = dir;
         updateController(inputDir);
@@ -566,7 +566,7 @@
           elemEditShape.setAttribute('stroke', colors[state].stroke);
           elemEditState.textContent = char;
           drawingState = state;
-        }
+        };
         elem.addEventListener('click', f, false);
         if (char == '0') {
           f();
