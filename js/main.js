@@ -1021,6 +1021,7 @@
     if (x < leftEnd || rightEnd < x) return;
     if (y < upEnd || downEnd < y) return;
 
+    e.preventDefault();
     if (states[y][x] != drawingState) {
       states[y][x] = drawingState;
       draw();
