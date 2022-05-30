@@ -9,7 +9,7 @@
 
   <link rel="stylesheet" href="./style.css?2022.05.30">
 
-  <script src="./js/main.js?2022.05.30-k"></script>
+  <script src="./js/main.js?2022.05.31"></script>
 </head>
 
 <body>
@@ -52,92 +52,93 @@
         </svg>
       </div>
     </div>
-    <p><span style="margin: 3px; padding: 2px 5px; color: red; background-color: pink; font-weight: bold; border: solid 2px red;">赤色の図形</span>を1つながりの点対称図形にしてください。</p>
+
+    <div style="margin: 10px 0 0"><span style="margin: 3px; padding: 1px 4px; color: red; background-color: pink; font-weight: bold; border: solid 2px red;">赤色の図形</span>を1つながりの点対称図形にしてください。</div>
 
     <svg id="svgMain" width="500" height="500" style="margin: 10px;"></svg>
 
-    <div id="editbox" style="margin: 15px 0 0;">
+    <div id="editbox">
       <svg width="470" height="170">
         <rect x="2" y="2" width="466" height="166" fill="#def" stroke="skyblue" stroke-width="4"/>
 
         <!-- 0 -->
         <g id="edit_0" class="button" transform="translate(20,20)">
           <rect x="0" y="0" width="30" height="30" fill="white" stroke="#aaa" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="#ccc">0</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="#ccc">0</text>
         </g>
         <!-- x -->
         <g id="edit_x" class="button" transform="translate(70,20)">
           <rect x="0" y="0" width="30" height="30" fill="#222" stroke="#333" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="white">x</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="white">x</text>
         </g>
         <!-- s -->
         <g id="edit_s" class="button" transform="translate(120,20)">
           <rect x="0" y="0" width="30" height="30" fill="aqua" stroke="blue" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">s</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">s</text>
         </g>
 
         <!-- a-f -->
         <g id="edit_a" class="button" transform="translate(170,20)">
           <rect x="0" y="0" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">a</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">a</text>
         </g>
         <g id="edit_b" class="button" transform="translate(220,20)">
           <rect x="0" y="0" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">b</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">b</text>
         </g>
         <g id="edit_c" class="button" transform="translate(270,20)">
           <rect x="0" y="0" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">c</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">c</text>
         </g>
         <g id="edit_d" class="button" transform="translate(320,20)">
           <rect x="0" y="0" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">d</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">d</text>
         </g>
         <g id="edit_e" class="button" transform="translate(370,20)">
           <rect x="0" y="0" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">e</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">e</text>
         </g>
         <g id="edit_f" class="button" transform="translate(420,20)">
           <rect x="0" y="0" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">f</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">f</text>
         </g>
 
         <!-- 1-9 -->
         <g id="edit_1" class="button" transform="translate(20,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">1</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">1</text>
         </g>
         <g id="edit_2" class="button" transform="translate(70,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">2</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">2</text>
         </g>
         <g id="edit_3" class="button" transform="translate(120,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">3</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">3</text>
         </g>
         <g id="edit_4" class="button" transform="translate(170,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">4</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">4</text>
         </g>
         <g id="edit_5" class="button" transform="translate(220,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">5</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">5</text>
         </g>
         <g id="edit_6" class="button" transform="translate(270,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">6</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">6</text>
         </g>
         <g id="edit_7" class="button" transform="translate(320,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">7</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">7</text>
         </g>
         <g id="edit_8" class="button" transform="translate(370,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">8</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">8</text>
         </g>
         <g id="edit_9" class="button" transform="translate(420,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
-          <text x="15" y="15" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">9</text>
+          <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">9</text>
         </g>
 
         <g transform="translate(235,135)">

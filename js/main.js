@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.30-k';
+  const version = 'Version: 2022.05.31';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
@@ -75,7 +75,7 @@
   const colors = {};
   colors[stateNone] = {fill: 'white', stroke: '#aaa', text: '#ccc'};
   colors[stateHero] = {fill: 'aqua', stroke: 'blue', text: 'black'};
-  colors[stateWall] = {fill: '#222', stroke: '#333', text: 'white'};
+  colors[stateWall] = {fill: '#222', stroke: '#555', text: 'white'};
   for (let i = stateTargetMin; i <= stateTargetMax; ++i) {
     colors[i] = {fill: 'pink', stroke: 'red', text: 'black'};
   }
@@ -84,7 +84,7 @@
   }
 
   const colorNone = 'white';
-  const colorLine = '#333';
+  const colorLine = '#555';
 
   let blockSize;
 
@@ -194,15 +194,19 @@
       }
     }
 
-    // 枠
+    // 枠(外周2マス分)
     {
-      for (let y = 1; y < height - 1; ++y) {
+      for (let y = 0; y < height; ++y) {
+        states[y][0] = stateWall;
         states[y][1] = stateWall;
         states[y][width - 2] = stateWall;
+        states[y][width - 1] = stateWall;
       }
       for (let x = 2; x < width - 2; ++x) {
+        states[0][x] = stateWall;
         states[1][x] = stateWall;
         states[height - 2][x] = stateWall;
+        states[height - 1][x] = stateWall;
       }
     }
   }
@@ -498,12 +502,14 @@
   function setLevelVisibility() {
     if (levelId == null) {
       elemLevelPrev.style.visibility = 'hidden';
-      elemLevelNext.style.visibility = 'hidden';
       elemLevelId.style.visibility = 'hidden';
+      elemLevelNext.style.visibility = 'hidden';
+      elemEditLevel.style.visibility = 'visible';
     } else {
       elemLevelPrev.style.visibility = levelId == 1 ? 'hidden' : 'visible';
-      elemLevelNext.style.visibility = levelId == levels.length ? 'hidden' : 'visible';
       elemLevelId.style.visibility = 'visible';
+      elemLevelNext.style.visibility = levelId == levels.length ? 'hidden' : 'visible';
+      elemEditLevel.style.visibility = 'hidden';
     }
   }
 
@@ -565,7 +571,6 @@
     if (levelObj.stateStr == '') {
       levelId = 1;
       changeLevel(levelId);
-      elemEditLevel.style.display = 'none';
     } else {
       levelId = null;
       applyLevel(levelObj);
@@ -720,7 +725,7 @@
     // 額縁
     {
       const g = createG();
-      const paddingWidth = 1.15;
+      const paddingWidth = 1.0;
       const isCleared = isOk(isTarget);
       const paddingColor = isCleared ? '#8f8' : '#753';
       // 上側
@@ -753,7 +758,7 @@
       }
       // クリアメッセージ
       if (isCleared) {
-        const text = createText({x: width * 0.5, y: height - 1, text: 'CLEAR'});
+        const text = createText({x: width * 0.5, y: height - 0.95, text: 'CLEAR'});
         text.setAttribute('font-size', `${blockSize * 0.8}px`);
         text.setAttribute('font-weight', 'bold');
         text.setAttribute('fill', 'blue');
@@ -893,8 +898,9 @@
             }
           }
           if (editMode ^ debugFlag) {
-            const text = createText({x: x + 0.5, y: y, text: stateToChar[state]});
+            const text = createText({x: x + 0.5, y: y + 0.05, text: stateToChar[state]});
             text.setAttribute('fill', colors[state].text);
+            text.setAttribute('font-size', `${blockSize * 0.7}px`);
             text.setAttribute('font-weight', 'bold');
             g.appendChild(text);
           }
