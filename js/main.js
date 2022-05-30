@@ -1029,9 +1029,10 @@
     if (x < leftEnd || rightEnd < x) return;
     if (y < upEnd || downEnd < y) return;
 
-    if (!isTouchScreenNearEdge(e)) {
-      e.preventDefault();
-    }
+    // 画面端付近はスワイプ操作できるように編集操作を無効にします。
+    if (isTouchScreenNearEdge(e)) return;
+
+    e.preventDefault();
     if (states[y][x] != drawingState) {
       states[y][x] = drawingState;
       draw();
