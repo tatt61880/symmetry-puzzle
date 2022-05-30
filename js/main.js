@@ -1005,6 +1005,13 @@
     return true;
   }
 
+  // タッチ環境において、画面端付近か否か。
+  function isTouchScreenNearEdge(e) {
+    if (e.touches === undefined) return false;
+    const x = e.touches[0].clientX;
+    return x < 30; // 画面の左端付近ならtrue
+  }
+
   // カーソル位置の座標を得る
   function getCurXY(e) {
     const cursorPos = getCursorPos(elemSvg, e);
@@ -1012,6 +1019,7 @@
     const y = Math.floor(cursorPos.y / blockSize);
     return {x: x, y: y};
   }
+
   function editSvg(e) {
     if (!editMode) return;
 
@@ -1021,7 +1029,9 @@
     if (x < leftEnd || rightEnd < x) return;
     if (y < upEnd || downEnd < y) return;
 
-    e.preventDefault();
+    if (!isTouchScreenNearEdge(e)) {
+      e.preventDefault();
+    }
     if (states[y][x] != drawingState) {
       states[y][x] = drawingState;
       draw();
