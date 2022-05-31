@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.05.31';
+  const version = 'Version: 2022.06.01';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
@@ -336,7 +336,6 @@
   }
 
   function undodown(e) {
-    e.preventDefault();
     undoFlag = true;
     undoCount = undoInterval;
   }
