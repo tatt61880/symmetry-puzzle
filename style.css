@@ -39,6 +39,19 @@ h2 {
   user-select: none;
 }
 
+.active-hover:active:hover {
+  filter: contrast(60%);
+}
+
+.active:active {
+  filter: contrast(60%);
+}
+
+.stick {
+  cursor: pointer;
+  user-select: none;
+}
+
 svg {
   margin: 0px;
   padding: 0px;

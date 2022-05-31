@@ -7,7 +7,7 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="./style.css?2022.05.30">
+  <link rel="stylesheet" href="./style.css?2022.05.31">
 
   <script src="./js/main.js?2022.05.31"></script>
 </head>
@@ -22,7 +22,7 @@
       <div>
         <svg width="440" height="80">
           <!-- Reset -->
-          <g id="buttonResetLevel" class="button" transform="translate(30,30)">
+          <g id="buttonResetLevel" class="button active-hover" transform="translate(30,30)">
             <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
             <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#87ceeb" stroke-width="4" />
             <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#87ceeb" stroke="none" stroke-width="4" />
@@ -30,7 +30,7 @@
           </g>
 
           <!-- Level -->
-          <g id="levelPrev" class="button" transform="translate(90,2)">
+          <g id="levelPrev" class="button active-hover" transform="translate(90,2)">
             <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
             <text x="40" y="30" fill="#87ceeb" dominant-baseline="middle" text-anchor="middle" font-size="30">◀</text>
             <text x="40" y="73" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="12px" fill="gray">Shift + ←</text>
@@ -38,14 +38,14 @@
           <g transform="translate(220,35)">
             <text id="levelId" x="0" y="0" fill="black" dominant-baseline="middle" text-anchor="middle" font-size="40" />
           </g>
-          <g id="levelNext" class="button" transform="translate(270,2)">
+          <g id="levelNext" class="button active-hover" transform="translate(270,2)">
             <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
             <text x="40" y="30" fill="#87ceeb" dominant-baseline="middle" text-anchor="middle" font-size="30">▶</text>
             <text x="40" y="73" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="12px" fill="gray">Shift + →</text>
           </g>
 
           <!-- Edit -->
-          <g id="buttonEditLevel" class="button" transform="translate(410,30)">
+          <g id="buttonEditLevel" class="button active-hover" transform="translate(410,30)">
             <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
             <text x="0" y="41" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="gray">t</text>
           </g>
@@ -62,81 +62,81 @@
         <rect x="2" y="2" width="466" height="166" fill="#def" stroke="skyblue" stroke-width="4"/>
 
         <!-- 0 -->
-        <g id="edit_0" class="button" transform="translate(20,20)">
+        <g id="edit_0" class="button active-hover" transform="translate(20,20)">
           <rect x="0" y="0" width="30" height="30" fill="white" stroke="#aaa" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="#ccc">0</text>
         </g>
         <!-- x -->
-        <g id="edit_x" class="button" transform="translate(70,20)">
+        <g id="edit_x" class="button active-hover" transform="translate(70,20)">
           <rect x="0" y="0" width="30" height="30" fill="#222" stroke="#333" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="white">x</text>
         </g>
         <!-- s -->
-        <g id="edit_s" class="button" transform="translate(120,20)">
+        <g id="edit_s" class="button active-hover" transform="translate(120,20)">
           <rect x="0" y="0" width="30" height="30" fill="aqua" stroke="blue" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">s</text>
         </g>
 
         <!-- a-f -->
-        <g id="edit_a" class="button" transform="translate(170,20)">
+        <g id="edit_a" class="button active-hover" transform="translate(170,20)">
           <rect x="0" y="0" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">a</text>
         </g>
-        <g id="edit_b" class="button" transform="translate(220,20)">
+        <g id="edit_b" class="button active-hover" transform="translate(220,20)">
           <rect x="0" y="0" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">b</text>
         </g>
-        <g id="edit_c" class="button" transform="translate(270,20)">
+        <g id="edit_c" class="button active-hover" transform="translate(270,20)">
           <rect x="0" y="0" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">c</text>
         </g>
-        <g id="edit_d" class="button" transform="translate(320,20)">
+        <g id="edit_d" class="button active-hover" transform="translate(320,20)">
           <rect x="0" y="0" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">d</text>
         </g>
-        <g id="edit_e" class="button" transform="translate(370,20)">
+        <g id="edit_e" class="button active-hover" transform="translate(370,20)">
           <rect x="0" y="0" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">e</text>
         </g>
-        <g id="edit_f" class="button" transform="translate(420,20)">
+        <g id="edit_f" class="button active-hover" transform="translate(420,20)">
           <rect x="0" y="0" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">f</text>
         </g>
 
         <!-- 1-9 -->
-        <g id="edit_1" class="button" transform="translate(20,70)">
+        <g id="edit_1" class="button active-hover" transform="translate(20,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">1</text>
         </g>
-        <g id="edit_2" class="button" transform="translate(70,70)">
+        <g id="edit_2" class="button active-hover" transform="translate(70,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">2</text>
         </g>
-        <g id="edit_3" class="button" transform="translate(120,70)">
+        <g id="edit_3" class="button active-hover" transform="translate(120,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">3</text>
         </g>
-        <g id="edit_4" class="button" transform="translate(170,70)">
+        <g id="edit_4" class="button active-hover" transform="translate(170,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">4</text>
         </g>
-        <g id="edit_5" class="button" transform="translate(220,70)">
+        <g id="edit_5" class="button active-hover" transform="translate(220,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">5</text>
         </g>
-        <g id="edit_6" class="button" transform="translate(270,70)">
+        <g id="edit_6" class="button active-hover" transform="translate(270,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">6</text>
         </g>
-        <g id="edit_7" class="button" transform="translate(320,70)">
+        <g id="edit_7" class="button active-hover" transform="translate(320,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">7</text>
         </g>
-        <g id="edit_8" class="button" transform="translate(370,70)">
+        <g id="edit_8" class="button active-hover" transform="translate(370,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">8</text>
         </g>
-        <g id="edit_9" class="button" transform="translate(420,70)">
+        <g id="edit_9" class="button active-hover" transform="translate(420,70)">
           <rect x="0" y="0" width="30" height="30" fill="pink" stroke="red" stroke-width="4" />
           <text x="15" y="16" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="black">9</text>
         </g>
@@ -154,14 +154,14 @@
       <svg id="svgController" width="470" height="250">
         <rect x="0" y="0" width="470" height="250" fill="#eee" stroke="none" />
 
-        <g id="buttonUndo" class="button" transform="translate(110,125) scale(2,2)">
+        <g id="buttonUndo" class="button active" transform="translate(110,125) scale(2,2)">
           <circle cx="0" cy="0" r="28" fill="lightgray" stroke="gray" stroke-width="4" />
           <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="gray" stroke-width="4" />
           <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="gray" stroke="none" stroke-width="4" />
           <text x="0" y="45" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="gray">z</text>
         </g>
 
-        <g id="stickBase" class="button" transform="translate(345,125) scale(2,2)">
+        <g id="stickBase" class="stick" transform="translate(345,125) scale(2,2)">
           <!-- 範囲 -->
           <rect x="-60" y="-60" width="120" height="120" fill="lightgray" stroke="none" />
           <!-- 軸 -->
