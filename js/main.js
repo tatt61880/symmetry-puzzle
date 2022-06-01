@@ -350,7 +350,8 @@
     }
   }
 
-  function undodown() {
+  function undodown(e) {
+    e.preventDefault();
     undoStart();
   }
 
