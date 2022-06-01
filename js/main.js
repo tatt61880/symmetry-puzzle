@@ -1,24 +1,24 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.06.01-d';
+  const version = 'Version: 2022.06.02';
 
   const levels = [
-    {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
+    {w: 6, h: 6, s: 's---00001-002211-00211', r: '111112223122302333001233001110012'},
 
-    {width: 5, height: 5, stateStr: 's0aa-011a-010a-0x-0b002'},
-    {width: 5, height: 5, stateStr: 's0aaa-0110a-0100a-b-b0c02'},
-    {width: 5, height: 5, stateStr: 'sa-000bb-cc001-c220x-c2'},
-    {width: 5, height: 5, stateStr: 'saa0x-0a-10b-xc22-002'},
+    {w: 5, h: 5, s: 's0aa-011a-010a-0x-0b002', r: '21012233221'},
+    {w: 5, h: 5, s: 's0aaa-0110a-0100a-b-b0c02', r: '12112223100033321012321'},
+    {w: 5, h: 5, s: 'sa-000bb-cc001-c220x-c2'},
+    {w: 5, h: 5, s: 'saa0x-0a-10b-xc22-002'},
 
-    {width: 5, height: 5, stateStr: 's10a-20b-c000d-0e33-003'},
+    {w: 5, h: 5, s: 's10a-20b-c000d-0e33-003'},
 
-    {width: 5, height: 5, stateStr: 's01-002ax-033-0b304-000c'},
+    {w: 5, h: 5, s: 's01-002ax-033-0b304-000c'},
 
-    {width: 5, height: 5, stateStr: 's00a-b1ca-0d-2222-e0f3'},
-    {width: 5, height: 5, stateStr: 's00a-0b0a-0bb-1111-0002'},
+    {w: 5, h: 5, s: 's00a-b1ca-0d-2222-e0f3'},
+    {w: 5, h: 5, s: 's00a-0b0a-0bb-1111-0002'},
 
-    {width: 5, height: 6, stateStr: 'sx--010a-011b-1122-002'},
-    {width: 6, height: 6, stateStr: '0x0x-a100bb-s1100x-11-cd22-0x2'},
+    {w: 5, h: 6, s: 'sx--010a-011b-1122-002'},
+    {w: 6, h: 6, s: '0x0x-a100bb-s1100x-11-cd22-0x2'},
   ];
 
   let debugFlag = false;
@@ -27,7 +27,7 @@
   let levelId;
   let levelObj;
 
-  const undos = [];
+  const undoArray = [];
   let undoIdx = 0;
   let undoFlag = false;
   let undoCount = 0;
@@ -138,9 +138,9 @@
 
   function analyzeUrl() {
     const res = {
-      width: width, 
-      height: height,
-      stateStr: '',
+      w: width, 
+      h: height,
+      s: '',
     };
     const queryStrs = location.href.split('?')[1];
     if (queryStrs == null) return res;
@@ -151,24 +151,32 @@
       const paramVal = paramArray[1];
       switch (paramName) {
       case 'w':
-        res.width = Number(paramVal);
+        res.w = Number(paramVal);
         break;
       case 'h':
-        res.height = Number(paramVal);
+        res.h = Number(paramVal);
         break;
       case 's':
-        res.stateStr = paramVal;
+        res.s = paramVal;
         break;
       }
     }
     return res;
   }
 
+  function getW() {
+    return rightEnd - leftEnd + 1;
+  }
+
+  function getH() {
+    return downEnd - upEnd + 1;
+  }
+
   function getUrlStr() {
-    const w = rightEnd - leftEnd + 1;
-    const h = downEnd - upEnd + 1;
+    const w = getW();
+    const h = getH();
     const s = getStateStr();
-    window.console.log(`{width: ${w}, height: ${h}, stateStr: '${s}'},`); // eslint-disable-line no-console
+    window.console.log(`{w: ${w}, h: ${h}, s: '${s}'},`); // eslint-disable-line no-console
     return `${location.href.split('?')[0]}?h=${h}&w=${w}&s=${s}`;
   }
 
@@ -290,7 +298,7 @@
 
     // 各座標に移動フラグを設定
     if (flag) {
-      undos[undoIdx++] = getStateStr();
+      addUndo(dir);
       elemUndo.style.display = 'block';
 
       for (let y = upEnd; y <= downEnd; ++y) {
@@ -419,9 +427,20 @@
     moveFlag = false;
   }
 
+  function addUndo(dir) {
+    undoArray[undoIdx++] = {
+      dir: dir,
+      w: getW(),
+      h: getH(),
+      s: getStateStr(),
+    };
+  }
+
   function undo() {
     if (undoIdx != 0) {
-      applyStateStr(undos[--undoIdx]);
+      const undoInfo = undoArray[--undoIdx];
+      setSize(undoInfo.w, undoInfo.h);
+      applyStateStr(undoInfo.s);
     }
     if (undoIdx == 0) {
       resetUndo();
@@ -487,8 +506,8 @@
   }
 
   function applyLevel(levelObj) {
-    setSize(levelObj.width, levelObj.height);
-    applyStateStr(levelObj.stateStr);
+    setSize(levelObj.w, levelObj.h);
+    applyStateStr(levelObj.s);
     setLevelVisibility();
     resetUndo();
   }
@@ -579,7 +598,7 @@
     elemStickBase = document.getElementById('stickBase');
 
     levelObj = analyzeUrl();
-    if (levelObj.stateStr == '') {
+    if (levelObj.s == '') {
       levelId = 1;
       changeLevel(levelId);
     } else {
@@ -788,9 +807,25 @@
         text.setAttribute('font-weight', 'bold');
         text.setAttribute('fill', 'blue');
         g.appendChild(text);
+        if (!moveFlag) {
+          const w = levelObj.w;
+          const h = levelObj.h;
+          const s = levelObj.s;
+          const replayStr = getReplayStr();
+          window.console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`); // eslint-disable-line no-console
+          window.console.log(`undoIdx: ${undoIdx}`); // eslint-disable-line no-console
+        }
       }
       elemSvg.appendChild(g);
     }
+  }
+
+  function getReplayStr() {
+    let replayStr = '';
+    for (let i = 0; i < undoIdx; ++i) {
+      replayStr += undoArray[i].dir;
+    }
+    return replayStr;
   }
 
   // 描画
