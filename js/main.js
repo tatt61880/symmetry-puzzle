@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.06.01';
+  const version = 'Version: 2022.06.01-b';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
@@ -335,9 +335,23 @@
     updateUrl();
   }
 
-  function undodown(e) {
-    undoFlag = true;
-    undoCount = undoInterval;
+  function undoStart() {
+    if (!undoFlag) {
+      undoFlag = true;
+      elemUndo.style.filter = 'contrast(60%)';
+      undoCount = undoInterval;
+    }
+  }
+
+  function undoEnd() {
+    if (undoFlag) {
+      undoFlag = false;
+      elemUndo.style.filter = 'contrast(100%)';
+    }
+  }
+
+  function undodown() {
+    undoStart();
   }
 
   function getCursorPos(elem, e) {
@@ -378,17 +392,19 @@
   }
 
   function pointerup() {
-    undoFlag = false;
+    undoEnd();
     inputFlag = false;
     inputDir = dirs.neutral;
     updateController(inputDir);
   }
 
   function resetLevel() {
+    elemResetLevel.style.filter = 'contrast(60%)';
     elemSvg.textContent = '';
     initStates();
 
     window.setTimeout(function() {
+      elemResetLevel.style.filter = 'contrast(100%)';
       applyLevel(levelObj);
     }, 50);
   }
@@ -439,10 +455,7 @@
     } else if (e.key == 'r') {
       resetLevel();
     } else if (e.key == 'z') {
-      if (!undoFlag) {
-        undoFlag = true;
-        undoCount = undoInterval;
-      }
+      undoStart();
     } else if (e.key.length > 2) {
       const dir = dirs[e.key];
       if (dir !== undefined) {
@@ -469,7 +482,7 @@
       inputFlag = false;
     }
     if (e.key == 'z') {
-      undoFlag = false;
+      undoEnd();
     }
     return false; 
   }

@@ -43,10 +43,6 @@ h2 {
   filter: contrast(60%);
 }
 
-.active:active {
-  filter: contrast(60%);
-}
-
 .stick {
   cursor: pointer;
   user-select: none;
