@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.06.01-c';
+  const version = 'Version: 2022.06.01-d';
 
   const levels = [
     {width: 6, height: 6, stateStr: 's---00001-002211-00211'},
@@ -345,7 +345,7 @@
   function undoEnd() {
     if (!undoFlag) return;
     undoFlag = false;
-    elemUndo.style.filter = 'contrast(100%)';
+    elemUndo.style.filter = 'none';
   }
 
   function undodown(e) {
@@ -403,7 +403,7 @@
     initStates();
 
     window.setTimeout(function() {
-      elemResetLevel.style.filter = 'contrast(100%)';
+      elemResetLevel.style.filter = 'none';
       applyLevel(levelObj);
     }, 50);
   }
@@ -592,10 +592,11 @@
     {
       const elemEditShape = document.getElementById('edit_drawing_shape');
       const elemEditState = document.getElementById('edit_drawing_state');
+
       for (const char in charToState) {
+        const state = charToState[char];
         const elem = document.getElementById(`edit_${char}`);
         const func = function() {
-          const state = charToState[char];
           elemEditShape.setAttribute('fill', colors[state].fill);
           elemEditShape.setAttribute('stroke', colors[state].stroke);
           elemEditState.textContent = char;
@@ -604,6 +605,19 @@
         };
         editboxFunctions[char] = func;
         elem.addEventListener('click', func, false);
+
+        {
+          const text = document.createElementNS(SVG_NS, 'text');
+          text.setAttribute('x', 15);
+          text.setAttribute('y', 17);
+          text.setAttribute('dominant-baseline', 'middle');
+          text.setAttribute('text-anchor', 'middle');
+          text.setAttribute('font-weight', 'bold');
+          text.setAttribute('font-size', '18px');
+          text.setAttribute('fill', colors[state].text);
+          text.textContent = char;
+          elem.appendChild(text);
+        }
       }
       editboxFunctions[stateToChar[stateNone]]();
     }
