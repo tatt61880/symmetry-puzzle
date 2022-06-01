@@ -336,18 +336,16 @@
   }
 
   function undoStart() {
-    if (!undoFlag) {
-      undoFlag = true;
-      elemUndo.style.filter = 'contrast(60%)';
-      undoCount = undoInterval;
-    }
+    if (undoFlag) return;
+    undoFlag = true;
+    elemUndo.style.filter = 'contrast(60%)';
+    undoCount = undoInterval;
   }
 
   function undoEnd() {
-    if (undoFlag) {
-      undoFlag = false;
-      elemUndo.style.filter = 'contrast(100%)';
-    }
+    if (!undoFlag) return;
+    undoFlag = false;
+    elemUndo.style.filter = 'contrast(100%)';
   }
 
   function undodown(e) {
