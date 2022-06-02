@@ -20,7 +20,7 @@
     // LEVEL11～
     {w: 6, h: 6, s: '0x0x-a100bb-s1100x-11-cd22-0x2', r: '132210111122302330133300012200112312221103003'},
     {w: 6, h: 6, s: 's---00112-001022-00122', r: '1111122231223000100322230003332222103011121223000'},
-    {w: 6, h: 6, s: '0aa-012-01222b-022cdd-0seee', r: '21111032333300000111211220033033322212103300012232111330012'},
+    {w: 6, h: 6, s: '0aa-012-01222b-022cde-0sfff', r: '3000011211123303013332222210301300012232221100110332223301210'},
     {w: 6, h: 6, s: 'x-000111-0021aa-s221a--x0000x', r: '2111030032321132211100103100312222332303301210'},
   ];
 
@@ -825,6 +825,9 @@
               window.console.log(`新記録!\n${bestRecord} → ${steps} (${steps - bestRecord} 手)`); // eslint-disable-line no-console
             } else {
               window.console.log(`過去最高記録は ${bestRecord} 手です。\n(差: ${steps - bestRecord} 手)`); // eslint-disable-line no-console
+              if (replayStr == levels[levelId - 1].r) {
+                window.console.log('(完全に同じ手順です。)'); // eslint-disable-line no-console
+              }
             }
           }
         }
