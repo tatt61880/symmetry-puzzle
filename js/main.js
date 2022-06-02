@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.06.02-d';
+  const version = 'Version: 2022.06.03';
 
   const levels = [
     // LEVEL1～
@@ -527,8 +527,7 @@
     if (levelId > levels.length) levelId = levels.length;
     setLevelVisibility();
     elemLevelId.textContent = levelId;
-    const level = levelId - 1;
-    levelObj = levels[level]; // リセット用にここで代入します。
+    levelObj = levels[levelId - 1]; // リセット用にここで代入します。
     applyLevel(levelObj);
   }
 
@@ -816,7 +815,18 @@
           const s = levelObj.s;
           const replayStr = getReplayStr();
           window.console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`); // eslint-disable-line no-console
-          window.console.log(`undoIdx: ${undoIdx}`); // eslint-disable-line no-console
+          const steps = undoIdx;
+          window.console.log(`${steps} 手`); // eslint-disable-line no-console
+          if (levelId === null || levels[levelId - 1].r === undefined) {
+            window.console.log('過去記録はありません！'); // eslint-disable-line no-console
+          } else {
+            const bestRecord = levels[levelId - 1].r.length;
+            if (steps < bestRecord) {
+              window.console.log(`新記録!\n${bestRecord} → ${steps} (${steps - bestRecord} 手)`); // eslint-disable-line no-console
+            } else {
+              window.console.log(`最高記録は ${bestRecord} 手です。\n(差: ${steps - bestRecord} 手)`); // eslint-disable-line no-console
+            }
+          }
         }
       }
       elemSvg.appendChild(g);
