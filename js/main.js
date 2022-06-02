@@ -818,13 +818,13 @@
           const steps = undoIdx;
           window.console.log(`${steps} 手`); // eslint-disable-line no-console
           if (levelId === null || levels[levelId - 1].r === undefined) {
-            window.console.log('過去記録はありません！'); // eslint-disable-line no-console
+            window.console.log('過去最高記録の情報がありません！'); // eslint-disable-line no-console
           } else {
             const bestRecord = levels[levelId - 1].r.length;
             if (steps < bestRecord) {
               window.console.log(`新記録!\n${bestRecord} → ${steps} (${steps - bestRecord} 手)`); // eslint-disable-line no-console
             } else {
-              window.console.log(`最高記録は ${bestRecord} 手です。\n(差: ${steps - bestRecord} 手)`); // eslint-disable-line no-console
+              window.console.log(`過去最高記録は ${bestRecord} 手です。\n(差: ${steps - bestRecord} 手)`); // eslint-disable-line no-console
             }
           }
         }
