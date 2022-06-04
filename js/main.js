@@ -567,15 +567,6 @@
     elems.url.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
   }
 
-  function showElem(elem) {
-    if (elem === undefined) return;
-    elem.style.display = 'block';
-  }
-  function hideElem(elem) {
-    if (elem === undefined) return;
-    elem.style.display = 'none';
-  }
-
   function updateEditLevel() {
     if (editMode) {
       showElem(elems.url);
@@ -1129,6 +1120,16 @@
       draw();
       updateUrl();
     }
+  }
+
+  function showElem(elem) {
+    if (elem === undefined) return;
+    elem.style.display = 'block';
+  }
+
+  function hideElem(elem) {
+    if (elem === undefined) return;
+    elem.style.display = 'none';
   }
 
   class Stack {
