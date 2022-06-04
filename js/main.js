@@ -303,7 +303,7 @@
     // 各座標に移動フラグを設定
     if (flag) {
       addUndo(dir);
-      elemUndo.style.display = 'block';
+      showElem(elemUndo);
 
       for (let y = upEnd; y <= downEnd; ++y) {
         for (let x = leftEnd; x <= rightEnd; ++x) {
@@ -511,7 +511,7 @@
 
   function resetUndo() {
     undoIdx = 0;
-    elemUndo.style.display = 'none';
+    hideElem(elemUndo);
   }
 
   function loadLevel(levelObj) {
@@ -534,15 +534,15 @@
 
   function setLevelVisibility() {
     if (levelId == null) {
-      elemLevelPrev.style.visibility = 'hidden';
-      elemLevelId.style.visibility = 'hidden';
-      elemLevelNext.style.visibility = 'hidden';
-      elemEditLevel.style.visibility = 'visible';
+      hideElem(elemLevelPrev);
+      hideElem(elemLevelId);
+      hideElem(elemLevelNext);
+      showElem(elemEditLevel);
     } else {
-      elemLevelPrev.style.visibility = levelId == 1 ? 'hidden' : 'visible';
-      elemLevelId.style.visibility = 'visible';
-      elemLevelNext.style.visibility = levelId == levels.length ? 'hidden' : 'visible';
-      elemEditLevel.style.visibility = 'hidden';
+      (levelId == 1 ? hideElem : showElem)(elemLevelPrev);
+      showElem(elemLevelId);
+      (levelId == levels.length ? hideElem : showElem)(elemLevelNext);
+      hideElem(elemEditLevel);
     }
   }
 
@@ -566,13 +566,22 @@
     elemUrl.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
   }
 
+  function showElem(elem) {
+    if (elem === undefined) return;
+    elem.style.display = 'block';
+  }
+  function hideElem(elem) {
+    if (elem === undefined) return;
+    elem.style.display = 'none';
+  }
+
   function updateEditLevel() {
     if (editMode) {
-      elemUrl.style.display = 'block';
-      elemEditbox.style.display = 'block';
+      showElem(elemUrl);
+      showElem(elemEditbox);
     } else {
-      elemUrl.style.display = 'none';
-      elemEditbox.style.display = 'none';
+      hideElem(elemUrl);
+      hideElem(elemEditbox);
     }
     draw();
     updateUrl();
