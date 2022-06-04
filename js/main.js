@@ -416,7 +416,7 @@
 
     window.setTimeout(function() {
       elemResetLevel.style.filter = 'none';
-      applyLevel(levelObj);
+      loadLevel(levelObj);
     }, 50);
   }
 
@@ -509,19 +509,19 @@
     return false; 
   }
 
-  function applyLevel(levelObj) {
+  function resetUndo() {
+    undoIdx = 0;
+    elemUndo.style.display = 'none';
+  }
+
+  function loadLevel(levelObj) {
     setSize(levelObj.w, levelObj.h);
     applyStateStr(levelObj.s);
     setLevelVisibility();
     resetUndo();
   }
 
-  function resetUndo() {
-    undoIdx = 0;
-    elemUndo.style.display = 'none';
-  }
-
-  function changeLevel(id) {
+  function loadLevelById(id) {
     resetUndo();
     levelId = id;
     if (levelId < 1) levelId = 1;
@@ -529,7 +529,7 @@
     setLevelVisibility();
     elemLevelId.textContent = levelId;
     levelObj = levels[levelId - 1]; // リセット用にここで代入します。
-    applyLevel(levelObj);
+    loadLevel(levelObj);
   }
 
   function setLevelVisibility() {
@@ -549,14 +549,14 @@
   function gotoPrevLevel() {
     if (levelId == null) return;
     if (levelId > 1) {
-      changeLevel(levelId - 1);
+      loadLevelById(levelId - 1);
     }
   }
 
   function gotoNextLevel() {
     if (levelId == null) return;
     if (levelId < levels.length) {
-      changeLevel(levelId + 1);
+      loadLevelById(levelId + 1);
     }
   }
 
@@ -603,10 +603,10 @@
     levelObj = analyzeUrl();
     if (levelObj.s == '') {
       levelId = 1;
-      changeLevel(levelId);
+      loadLevelById(levelId);
     } else {
       levelId = null;
-      applyLevel(levelObj);
+      loadLevel(levelObj);
     }
     updateEditLevel();
 
