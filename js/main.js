@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.06.03';
+  const version = 'Version: 2022.06.04';
 
   const levels = [
     // LEVEL1～
@@ -117,20 +117,23 @@
   let moveCount = 0;
   let moveDir = dirs.neutral;
 
-  let elems = {
-    resetLevel: undefined,
-    levelPrev: undefined,
-    levelId: undefined,
-    levelNext: undefined,
-    editLevel: undefined,
+  const elems = {};
+  const elemIds = {
+    resetLevel: 'buttonResetLevel',
+    levelPrev: 'levelPrev',
+    levelId: 'levelId',
+    levelNext: 'levelNext',
+    editLevel: 'buttonEditLevel',
 
-    svg: undefined,
-    editbox: undefined,
-    url: undefined,
+    svg: 'svgMain',
+    editbox: 'editbox',
+    editShape: 'edit_drawing_shape',
+    editState: 'edit_drawing_state',
+    url: 'url',
 
-    undo: undefined,
-    stick: undefined,
-    stickBase: undefined,
+    undo: 'buttonUndo',
+    stick: 'stick',
+    stickBase: 'stickBase',
   };
 
   let inputFlag = false;
@@ -587,19 +590,9 @@
   function init() {
     document.getElementById('versionInfo').innerText = version;
 
-    elems.resetLevel = document.getElementById('buttonResetLevel');
-    elems.levelPrev = document.getElementById('levelPrev');
-    elems.levelId = document.getElementById('levelId');
-    elems.levelNext = document.getElementById('levelNext');
-    elems.editLevel = document.getElementById('buttonEditLevel');
-
-    elems.svg = document.getElementById('svgMain');
-    elems.editbox = document.getElementById('editbox');
-    elems.url = document.getElementById('url');
-
-    elems.undo = document.getElementById('buttonUndo');
-    elems.stick = document.getElementById('stick');
-    elems.stickBase = document.getElementById('stickBase');
+    for (const elemName in elemIds) {
+      elems[elemName] = document.getElementById(elemIds[elemName]);
+    }
 
     levelObj = analyzeUrl();
     if (levelObj.s == '') {
@@ -613,17 +606,14 @@
 
     // editモード用
     {
-      const elemEditShape = document.getElementById('edit_drawing_shape');
-      const elemEditState = document.getElementById('edit_drawing_state');
-
       for (const char in charToState) {
         const state = charToState[char];
         const elem = document.getElementById(`edit_${char}`);
         const func = function() {
-          elemEditShape.setAttribute('fill', colors[state].fill);
-          elemEditShape.setAttribute('stroke', colors[state].stroke);
-          elemEditState.textContent = char;
-          elemEditState.setAttribute('fill', colors[state].text);
+          elems.editShape.setAttribute('fill', colors[state].fill);
+          elems.editShape.setAttribute('stroke', colors[state].stroke);
+          elems.editState.textContent = char;
+          elems.editState.setAttribute('fill', colors[state].text);
           drawingState = state;
         };
         editboxFunctions[char] = func;
