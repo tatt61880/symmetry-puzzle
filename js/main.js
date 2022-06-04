@@ -745,8 +745,9 @@
     return text;
   }
 
-  function drawFrame() {
+  function createFrame() {
     const g = createG();
+
     // 横線
     for (let y = 0; y <= height; ++y) {
       const line = createLine({x1: 0, y1: y, x2: width, y2: y});
@@ -761,18 +762,9 @@
       line.setAttribute('stroke-dasharray', '1, 3');
       g.appendChild(line);
     }
-    // 外枠
-    {
-      const rect = createRect({x: 0, y: 0, width: width, height: height});
-      rect.setAttribute('fill', 'none');
-      rect.setAttribute('stroke', colorLine);
-      g.appendChild(rect);
-    }
-    elems.svg.appendChild(g);
 
     // 額縁
     {
-      const g = createG();
       const paddingWidth = 1.0;
       const isCleared = isOk(isTarget);
       const paddingColor = isCleared ? '#8f8' : '#753';
@@ -834,8 +826,8 @@
           }
         }
       }
-      elems.svg.appendChild(g);
     }
+    return g;
   }
 
   function getReplayStr() {
@@ -987,7 +979,7 @@
       }
     }
 
-    drawFrame(elems.svg);
+    elems.svg.appendChild(createFrame());
   }
 
   function isTarget(x) {
