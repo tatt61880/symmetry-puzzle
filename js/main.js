@@ -435,6 +435,11 @@
     moveFlag = false;
   }
 
+  function resetUndo() {
+    undoIdx = 0;
+    hideElem(elems.undo);
+  }
+
   function addUndo(dir) {
     undoArray[undoIdx++] = {
       dir: dir,
@@ -511,11 +516,6 @@
       undoEnd();
     }
     return false; 
-  }
-
-  function resetUndo() {
-    undoIdx = 0;
-    hideElem(elems.undo);
   }
 
   function loadLevel(levelObj) {
