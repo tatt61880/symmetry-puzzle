@@ -117,20 +117,21 @@
   let moveCount = 0;
   let moveDir = dirs.neutral;
 
-  let elemResetLevel;
-  let elemLevelPrev;
-  let elemLevelId;
-  let elemLevelNext;
-  let elemEditLevel;
+  let elems = {
+    resetLevel: undefined,
+    levelPrev: undefined,
+    levelId: undefined,
+    levelNext: undefined,
+    editLevel: undefined,
 
-  let elemUrl;
-  let elemEditbox;
+    svg: undefined,
+    editbox: undefined,
+    url: undefined,
 
-  let elemSvg;
-
-  let elemUndo;
-  let elemStick;
-  let elemStickBase;
+    undo: undefined,
+    stick: undefined,
+    stickBase: undefined,
+  };
 
   let inputFlag = false;
   const inputInterval = 8;
@@ -250,8 +251,8 @@
     blockSize = 250 / height;
     rightEnd = width - 3;
     downEnd = height - 3;
-    elemSvg.setAttribute('width', blockSize * width);
-    elemSvg.setAttribute('height', blockSize * height);
+    elems.svg.setAttribute('width', blockSize * width);
+    elems.svg.setAttribute('height', blockSize * height);
   }
 
   function updateController(dir) {
@@ -266,7 +267,7 @@
       '',
       'scale(1.0, 1.0) translate(0, 0)',
     ];
-    elemStick.setAttribute('transform', transforms[dir]);
+    elems.stick.setAttribute('transform', transforms[dir]);
   }
 
   function move(dir) {
@@ -303,7 +304,7 @@
     // 各座標に移動フラグを設定
     if (flag) {
       addUndo(dir);
-      showElem(elemUndo);
+      showElem(elems.undo);
 
       for (let y = upEnd; y <= downEnd; ++y) {
         for (let x = leftEnd; x <= rightEnd; ++x) {
@@ -350,14 +351,14 @@
   function undoStart() {
     if (undoFlag) return;
     undoFlag = true;
-    elemUndo.style.filter = 'contrast(60%)';
+    elems.undo.style.filter = 'contrast(60%)';
     undoCount = undoInterval;
   }
 
   function undoEnd() {
     if (!undoFlag) return;
     undoFlag = false;
-    elemUndo.style.filter = 'none';
+    elems.undo.style.filter = 'none';
   }
 
   function undodown(e) {
@@ -388,7 +389,7 @@
   function pointermove(e) {
     e.preventDefault();
     if (!inputFlag) return;
-    const cursorPos = getCursorPos(elemStickBase, e);
+    const cursorPos = getCursorPos(elems.stickBase, e);
     const ax = cursorPos.x - 100.0;
     const ay = cursorPos.y - 100.0;
     const minDist = 60;
@@ -410,12 +411,12 @@
   }
 
   function resetLevel() {
-    elemResetLevel.style.filter = 'contrast(60%)';
-    elemSvg.textContent = '';
+    elems.resetLevel.style.filter = 'contrast(60%)';
+    elems.svg.textContent = '';
     initStates();
 
     window.setTimeout(function() {
-      elemResetLevel.style.filter = 'none';
+      elems.resetLevel.style.filter = 'none';
       loadLevel(levelObj);
     }, 50);
   }
@@ -511,7 +512,7 @@
 
   function resetUndo() {
     undoIdx = 0;
-    hideElem(elemUndo);
+    hideElem(elems.undo);
   }
 
   function loadLevel(levelObj) {
@@ -527,22 +528,22 @@
     if (levelId < 1) levelId = 1;
     if (levelId > levels.length) levelId = levels.length;
     setLevelVisibility();
-    elemLevelId.textContent = levelId;
+    elems.levelId.textContent = levelId;
     levelObj = levels[levelId - 1]; // リセット用にここで代入します。
     loadLevel(levelObj);
   }
 
   function setLevelVisibility() {
     if (levelId == null) {
-      hideElem(elemLevelPrev);
-      hideElem(elemLevelId);
-      hideElem(elemLevelNext);
-      showElem(elemEditLevel);
+      hideElem(elems.levelPrev);
+      hideElem(elems.levelId);
+      hideElem(elems.levelNext);
+      showElem(elems.editLevel);
     } else {
-      (levelId == 1 ? hideElem : showElem)(elemLevelPrev);
-      showElem(elemLevelId);
-      (levelId == levels.length ? hideElem : showElem)(elemLevelNext);
-      hideElem(elemEditLevel);
+      (levelId == 1 ? hideElem : showElem)(elems.levelPrev);
+      showElem(elems.levelId);
+      (levelId == levels.length ? hideElem : showElem)(elems.levelNext);
+      hideElem(elems.editLevel);
     }
   }
 
@@ -563,7 +564,7 @@
   function updateUrl() {
     if (!editMode) return;
     const url = getUrlStr();
-    elemUrl.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
+    elems.url.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
   }
 
   function showElem(elem) {
@@ -577,11 +578,11 @@
 
   function updateEditLevel() {
     if (editMode) {
-      showElem(elemUrl);
-      showElem(elemEditbox);
+      showElem(elems.url);
+      showElem(elems.editbox);
     } else {
-      hideElem(elemUrl);
-      hideElem(elemEditbox);
+      hideElem(elems.url);
+      hideElem(elems.editbox);
     }
     draw();
     updateUrl();
@@ -595,19 +596,19 @@
   function init() {
     document.getElementById('versionInfo').innerText = version;
 
-    elemResetLevel = document.getElementById('buttonResetLevel');
-    elemLevelPrev = document.getElementById('levelPrev');
-    elemLevelId = document.getElementById('levelId');
-    elemLevelNext = document.getElementById('levelNext');
-    elemEditLevel = document.getElementById('buttonEditLevel');
+    elems.resetLevel = document.getElementById('buttonResetLevel');
+    elems.levelPrev = document.getElementById('levelPrev');
+    elems.levelId = document.getElementById('levelId');
+    elems.levelNext = document.getElementById('levelNext');
+    elems.editLevel = document.getElementById('buttonEditLevel');
 
-    elemSvg = document.getElementById('svgMain');
-    elemEditbox = document.getElementById('editbox');
-    elemUrl = document.getElementById('url');
+    elems.svg = document.getElementById('svgMain');
+    elems.editbox = document.getElementById('editbox');
+    elems.url = document.getElementById('url');
 
-    elemUndo = document.getElementById('buttonUndo');
-    elemStick = document.getElementById('stick');
-    elemStickBase = document.getElementById('stickBase');
+    elems.undo = document.getElementById('buttonUndo');
+    elems.stick = document.getElementById('stick');
+    elems.stickBase = document.getElementById('stickBase');
 
     levelObj = analyzeUrl();
     if (levelObj.s == '') {
@@ -657,24 +658,24 @@
       document.addEventListener('keydown', keydown, false);
       document.addEventListener('keyup', keyup, false);
 
-      elemResetLevel.addEventListener('click', resetLevel, false);
-      elemLevelPrev.addEventListener('click', gotoPrevLevel, false);
-      elemLevelNext.addEventListener('click', gotoNextLevel, false);
-      elemEditLevel.addEventListener('click', toggleEditLevel, false);
+      elems.resetLevel.addEventListener('click', resetLevel, false);
+      elems.levelPrev.addEventListener('click', gotoPrevLevel, false);
+      elems.levelNext.addEventListener('click', gotoNextLevel, false);
+      elems.editLevel.addEventListener('click', toggleEditLevel, false);
 
       const touchDevice = window.ontouchstart !== undefined;
       const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
-      elemSvg.addEventListener(pointerdownEventName, editSvg, false);
+      elems.svg.addEventListener(pointerdownEventName, editSvg, false);
 
-      elemStickBase.addEventListener(pointerdownEventName, pointerdown, false);
-      elemStickBase.addEventListener(pointermoveEventName, pointermove, false);
-      elemStickBase.addEventListener(pointerupEventName, pointerup, false);
+      elems.stickBase.addEventListener(pointerdownEventName, pointerdown, false);
+      elems.stickBase.addEventListener(pointermoveEventName, pointermove, false);
+      elems.stickBase.addEventListener(pointerupEventName, pointerup, false);
       document.addEventListener(pointerupEventName, pointerup, false);
 
-      elemUndo.addEventListener(pointerdownEventName, undodown, false);
+      elems.undo.addEventListener(pointerdownEventName, undodown, false);
     }
 
     window.setInterval(function() {
@@ -776,7 +777,7 @@
       rect.setAttribute('stroke', colorLine);
       g.appendChild(rect);
     }
-    elemSvg.appendChild(g);
+    elems.svg.appendChild(g);
 
     // 額縁
     {
@@ -842,7 +843,7 @@
           }
         }
       }
-      elemSvg.appendChild(g);
+      elems.svg.appendChild(g);
     }
   }
 
@@ -856,7 +857,7 @@
 
   // 描画
   function draw() {
-    elemSvg.textContent = '';
+    elems.svg.textContent = '';
 
     // 図形の描画
     {
@@ -867,7 +868,7 @@
         rect.setAttribute('fill', colorNone);
         rect.setAttribute('stroke', 'none');
         g.appendChild(rect);
-        elemSvg.appendChild(g);
+        elems.svg.appendChild(g);
       }
 
       const paddingWidth = 0.12;
@@ -990,12 +991,12 @@
             text.setAttribute('font-weight', 'bold');
             g.appendChild(text);
           }
-          elemSvg.appendChild(g);
+          elems.svg.appendChild(g);
         }
       }
     }
 
-    drawFrame(elemSvg);
+    drawFrame(elems.svg);
   }
 
   function isTarget(x) {
@@ -1100,7 +1101,7 @@
 
   // カーソル位置の座標を得る
   function getCurXY(e) {
-    const cursorPos = getCursorPos(elemSvg, e);
+    const cursorPos = getCursorPos(elems.svg, e);
     const x = Math.floor(cursorPos.x / blockSize);
     const y = Math.floor(cursorPos.y / blockSize);
     return {x: x, y: y};
