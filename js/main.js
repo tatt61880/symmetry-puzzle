@@ -413,54 +413,6 @@
     updateController(inputDir);
   }
 
-  function resetLevel() {
-    elems.resetLevel.style.filter = 'contrast(60%)';
-    elems.svg.textContent = '';
-    initStates();
-
-    window.setTimeout(function() {
-      elems.resetLevel.style.filter = 'none';
-      loadLevel(levelObj);
-    }, 50);
-  }
-
-  function resetDirs() {
-    for (let y = 0; y < height; ++y) {
-      moveFlags[y] = [];
-      for (let x = 0; x < width; ++x) {
-        moveFlags[y][x] = false;
-      }
-    }
-    moveCount = 0;
-    moveFlag = false;
-  }
-
-  function resetUndo() {
-    undoIdx = 0;
-    hideElem(elems.undo);
-  }
-
-  function addUndo(dir) {
-    undoArray[undoIdx++] = {
-      dir: dir,
-      w: getW(),
-      h: getH(),
-      s: getStateStr(),
-    };
-  }
-
-  function undo() {
-    if (undoIdx != 0) {
-      const undoInfo = undoArray[--undoIdx];
-      setSize(undoInfo.w, undoInfo.h);
-      applyStateStr(undoInfo.s);
-    }
-    if (undoIdx == 0) {
-      resetUndo();
-    }
-    resetDirs();
-  }
-
   function keydown(e) {
     if (e.shiftKey) {
       if (e.key == 'T') {
@@ -516,6 +468,54 @@
       undoEnd();
     }
     return false; 
+  }
+
+  function resetLevel() {
+    elems.resetLevel.style.filter = 'contrast(60%)';
+    elems.svg.textContent = '';
+    initStates();
+
+    window.setTimeout(function() {
+      elems.resetLevel.style.filter = 'none';
+      loadLevel(levelObj);
+    }, 50);
+  }
+
+  function resetDirs() {
+    for (let y = 0; y < height; ++y) {
+      moveFlags[y] = [];
+      for (let x = 0; x < width; ++x) {
+        moveFlags[y][x] = false;
+      }
+    }
+    moveCount = 0;
+    moveFlag = false;
+  }
+
+  function resetUndo() {
+    undoIdx = 0;
+    hideElem(elems.undo);
+  }
+
+  function addUndo(dir) {
+    undoArray[undoIdx++] = {
+      dir: dir,
+      w: getW(),
+      h: getH(),
+      s: getStateStr(),
+    };
+  }
+
+  function undo() {
+    if (undoIdx != 0) {
+      const undoInfo = undoArray[--undoIdx];
+      setSize(undoInfo.w, undoInfo.h);
+      applyStateStr(undoInfo.s);
+    }
+    if (undoIdx == 0) {
+      resetUndo();
+    }
+    resetDirs();
   }
 
   function loadLevel(levelObj) {
