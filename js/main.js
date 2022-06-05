@@ -527,7 +527,12 @@
     applyStateStr(levelObj.s);
     setLevelVisibility();
     resetUndo();
+
     autoStep = 0;
+    resetDirs();
+    inputDir = dirs.neutral;
+    inputCount = inputInterval;
+    inputCountPrev = 0;
   }
 
   function loadLevelById(id) {
