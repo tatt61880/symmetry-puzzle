@@ -40,11 +40,11 @@
 
   const SVG_NS = 'http://www.w3.org/2000/svg';
 
-  let width = 6;
-  let height = 6;
+  let width;
+  let height;
   const upEnd = 2;
-  let rightEnd = width - 3;
-  let downEnd = height - 3;
+  let rightEnd;
+  let downEnd;
   const leftEnd = 2;
 
   const stateHero = -2; // 自機
@@ -146,8 +146,8 @@
 
   function analyzeUrl() {
     const res = {
-      w: width, 
-      h: height,
+      w: 6,
+      h: 6,
       s: '',
     };
     const queryStrs = location.href.split('?')[1];
@@ -225,37 +225,6 @@
         states[height - 1][x] = stateWall;
       }
     }
-  }
-
-  function applyStateStr(stateStr) {
-    initStates();
-    resetDirs();
-
-    let y = 2;
-    let x = 2;
-    for (const c of stateStr) {
-      if (c == '-') {
-        y++;
-        if (y == height - 2) break;
-        x = 2;
-      } else {
-        if (x > width - 3) continue;
-        states[y][x] = charToState[c];
-        x++;
-      }
-    }
-    draw();
-    updateUrl();
-  }
-
-  function setSize(w, h) {
-    width = w + 4;
-    height = h + 4;
-    blockSize = 250 / height;
-    rightEnd = width - 3;
-    downEnd = height - 3;
-    elems.svg.setAttribute('width', blockSize * width);
-    elems.svg.setAttribute('height', blockSize * height);
   }
 
   function updateController(dir) {
@@ -475,7 +444,7 @@
     elems.svg.textContent = '';
     initStates();
 
-    window.setTimeout(function() {
+    window.setTimeout(() => {
       elems.resetLevel.style.filter = 'none';
       loadLevel(levelObj);
     }, 50);
@@ -506,10 +475,41 @@
     };
   }
 
+  function applySize(w, h) {
+    width = w + 4;
+    height = h + 4;
+    blockSize = 250 / height;
+    rightEnd = width - 3;
+    downEnd = height - 3;
+    elems.svg.setAttribute('width', blockSize * width);
+    elems.svg.setAttribute('height', blockSize * height);
+  }
+
+  function applyStateStr(stateStr) {
+    initStates();
+    resetDirs();
+
+    let y = 2;
+    let x = 2;
+    for (const c of stateStr) {
+      if (c == '-') {
+        y++;
+        if (y == height - 2) break;
+        x = 2;
+      } else {
+        if (x > width - 3) continue;
+        states[y][x] = charToState[c];
+        x++;
+      }
+    }
+    draw();
+    updateUrl();
+  }
+
   function undo() {
     if (undoIdx != 0) {
       const undoInfo = undoArray[--undoIdx];
-      setSize(undoInfo.w, undoInfo.h);
+      applySize(undoInfo.w, undoInfo.h);
       applyStateStr(undoInfo.s);
     }
     if (undoIdx == 0) {
@@ -519,7 +519,7 @@
   }
 
   function loadLevel(levelObj) {
-    setSize(levelObj.w, levelObj.h);
+    applySize(levelObj.w, levelObj.h);
     applyStateStr(levelObj.s);
     setLevelVisibility();
     resetUndo();
@@ -609,7 +609,7 @@
       for (const char in charToState) {
         const state = charToState[char];
         const elem = document.getElementById(`edit_${char}`);
-        const func = function() {
+        const func = () => {
           elems.editShape.setAttribute('fill', colors[state].fill);
           elems.editShape.setAttribute('stroke', colors[state].stroke);
           elems.editState.textContent = char;
@@ -659,7 +659,7 @@
       elems.undo.addEventListener(pointerdownEventName, undodown, false);
     }
 
-    window.setInterval(function() {
+    window.setInterval(() => {
       if (inputCount < inputCountPrev + inputInterval) {
         inputCount++;
       }
