@@ -27,7 +27,7 @@
 
   let debugFlag = false;
   let editMode = false;
-  const autoMode = false;
+  let autoMode = false;
   let autoStep;
 
   let levelId;
@@ -156,7 +156,6 @@
     if (queryStrs == null) return res;
     for (const queryStr of queryStrs.split('&')) {
       const paramArray = queryStr.split('=');
-      if (paramArray.length != 2) continue;
       const paramName = paramArray[0];
       const paramVal = paramArray[1];
       switch (paramName) {
@@ -168,6 +167,9 @@
         break;
       case 's':
         res.s = paramVal;
+        break;
+      case 'auto':
+        autoMode = true;
         break;
       }
     }
