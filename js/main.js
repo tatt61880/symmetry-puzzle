@@ -27,6 +27,8 @@
 
   let debugFlag = false;
   let editMode = false;
+  const autoMode = false;
+  let autoStep;
 
   let levelId;
   let levelObj;
@@ -523,6 +525,7 @@
     applyStateStr(levelObj.s);
     setLevelVisibility();
     resetUndo();
+    autoStep = 0;
   }
 
   function loadLevelById(id) {
@@ -674,13 +677,20 @@
       if (inputCount < inputCountPrev + inputInterval) {
         inputCount++;
       }
-      if (!moveFlag && inputFlag) {
+      if (autoMode && levelObj.r !== undefined && inputDir == dirs.neutral && autoStep < levelObj.r.length) {
+        inputDir = levelObj.r[autoStep++];
+      }
+
+      if (!moveFlag && (inputFlag || autoMode)) {
         if (inputDir != dirs.neutral) {
           if (inputCount >= inputCountPrev + inputInterval) {
             move(inputDir);
             inputCount = 0;
             inputCountPrev = 0;
           }
+        }
+        if (autoMode) {
+          inputDir = dirs.neutral;
         }
       }
       if (moveFlag) {
