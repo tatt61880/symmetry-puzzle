@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.06.04';
+  const version = 'Version: 2022.06.05';
 
   const levels = [
     // LEVEL1～
@@ -619,6 +619,17 @@
         editboxFunctions[char] = func;
         elem.addEventListener('click', func, false);
 
+        {
+          const rect = document.createElementNS(SVG_NS, 'rect');
+          rect.setAttribute('x', 0);
+          rect.setAttribute('y', 0);
+          rect.setAttribute('width', 30);
+          rect.setAttribute('height', 30);
+          rect.setAttribute('fill', colors[state].fill);
+          rect.setAttribute('stroke', colors[state].stroke);
+          rect.setAttribute('stroke-width', 4);
+          elem.appendChild(rect);
+        }
         {
           const text = document.createElementNS(SVG_NS, 'text');
           text.setAttribute('x', 15);
