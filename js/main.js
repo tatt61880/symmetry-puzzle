@@ -489,15 +489,15 @@
     initStates();
     resetDirs();
 
-    let y = 2;
-    let x = 2;
+    let y = upEnd;
+    let x = leftEnd;
     for (const c of stateStr) {
       if (c == '-') {
         y++;
-        if (y == height - 2) break;
-        x = 2;
+        if (y > downEnd) break;
+        x = leftEnd;
       } else {
-        if (x > width - 3) continue;
+        if (x > rightEnd) continue;
         states[y][x] = charToState[c];
         x++;
       }
