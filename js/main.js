@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.06.06';
+  const version = 'Version: 2022.06.07';
 
   const levels = [
     // LEVEL 1～
@@ -826,6 +826,9 @@
       }
       // クリアメッセージ
       if (isCleared) {
+        if (autoMode) {
+          setTimeout(gotoNextLevel, 1000);
+        }
         const text = createText({x: width * 0.5, y: height - 0.95, text: 'CLEAR'});
         text.setAttribute('font-size', `${blockSize * 0.8}px`);
         text.setAttribute('font-weight', 'bold');
