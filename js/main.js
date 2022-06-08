@@ -91,7 +91,7 @@
   const colors = {};
   colors[stateNone] = {fill: 'white', stroke: '#aaa', text: '#ccc'};
   colors[stateHero] = {fill: 'aqua', stroke: 'blue', text: 'black'};
-  colors[stateWall] = {fill: '#222', stroke: '#555', text: 'white'};
+  colors[stateWall] = {fill: '#222', stroke: '#666', text: 'white'};
   for (let i = stateTargetMin; i <= stateTargetMax; ++i) {
     colors[i] = {fill: 'pink', stroke: 'red', text: 'black'};
   }
@@ -100,7 +100,7 @@
   }
 
   const colorNone = 'white';
-  const colorLine = '#555';
+  const colorLine = '#888';
 
   let blockSize;
 
@@ -773,86 +773,53 @@
     return text;
   }
 
-  function createFrame() {
+  function createBackground() {
     const g = createG();
 
-    // 横線
-    for (let y = 0; y <= height; ++y) {
-      const line = createLine({x1: 0, y1: y, x2: width, y2: y});
-      line.setAttribute('stroke', colorLine);
-      line.setAttribute('stroke-dasharray', '1, 3');
-      g.appendChild(line);
+    const isCleared = isOk(isTarget);
+    const paddingColor = isCleared ? '#8f8' : '#753';
+
+    {
+      const rect = createRect({x: 0, y: 0, width: width, height: height});
+      rect.setAttribute('fill', paddingColor);
+      rect.setAttribute('stroke', 'none');
+      g.appendChild(rect);
     }
-    // 縦線
-    for (let x = 0; x <= width; ++x) {
-      const line = createLine({x1: x, y1: 0, x2: x, y2: height});
-      line.setAttribute('stroke', colorLine);
-      line.setAttribute('stroke-dasharray', '1, 3');
-      g.appendChild(line);
+    {
+      const rect = createRect({x: 1, y: 1, width: width - 2, height: height - 2});
+      rect.setAttribute('fill', colorNone);
+      rect.setAttribute('stroke', 'none');
+      g.appendChild(rect);
     }
 
-    // 額縁
-    {
-      const paddingWidth = 1.0;
-      const isCleared = isOk(isTarget);
-      const paddingColor = isCleared ? '#8f8' : '#753';
-      // 上側
-      {
-        const rect = createRect({x: 0, y: 0, width: width, height: paddingWidth});
-        rect.setAttribute('fill', paddingColor);
-        rect.setAttribute('stroke', 'none');
-        g.appendChild(rect);
+    // クリアメッセージ
+    if (isCleared) {
+      if (autoMode) {
+        setTimeout(gotoNextLevel, 1000);
       }
-      // 右側
-      {
-        const rect = createRect({x: width - paddingWidth, y: 0, width: paddingWidth, height: height});
-        rect.setAttribute('fill', paddingColor);
-        rect.setAttribute('stroke', 'none');
-        g.appendChild(rect);
-      }
-      // 下側
-      {
-        const rect = createRect({x: 0, y: height - paddingWidth, width: width, height: paddingWidth});
-        rect.setAttribute('fill', paddingColor);
-        rect.setAttribute('stroke', 'none');
-        g.appendChild(rect);
-      }
-      // 左側
-      {
-        const rect = createRect({x: 0, y: 0, width: paddingWidth, height: height});
-        rect.setAttribute('fill', paddingColor);
-        rect.setAttribute('stroke', 'none');
-        g.appendChild(rect);
-      }
-      // クリアメッセージ
-      if (isCleared) {
-        if (autoMode) {
-          setTimeout(gotoNextLevel, 1000);
-        }
-        const text = createText({x: width * 0.5, y: height - 0.95, text: 'CLEAR'});
-        text.setAttribute('font-size', `${blockSize * 0.8}px`);
-        text.setAttribute('font-weight', 'bold');
-        text.setAttribute('fill', 'blue');
-        g.appendChild(text);
-        if (!moveFlag) {
-          const w = levelObj.w;
-          const h = levelObj.h;
-          const s = levelObj.s;
-          const replayStr = getReplayStr();
-          window.console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`); // eslint-disable-line no-console
-          const steps = undoIdx;
-          window.console.log(`${steps} 手`); // eslint-disable-line no-console
-          if (levelId === null || levels[levelId - 1].r === undefined) {
-            window.console.log('過去最高記録の情報がありません！'); // eslint-disable-line no-console
+      const text = createText({x: width * 0.5, y: height - 0.95, text: 'CLEAR'});
+      text.setAttribute('font-size', `${blockSize * 0.8}px`);
+      text.setAttribute('font-weight', 'bold');
+      text.setAttribute('fill', 'blue');
+      g.appendChild(text);
+      if (!moveFlag) {
+        const w = levelObj.w;
+        const h = levelObj.h;
+        const s = levelObj.s;
+        const replayStr = getReplayStr();
+        window.console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`); // eslint-disable-line no-console
+        const steps = undoIdx;
+        window.console.log(`${steps} 手`); // eslint-disable-line no-console
+        if (levelId === null || levels[levelId - 1].r === undefined) {
+          window.console.warn('過去最高記録の情報がありません！'); // eslint-disable-line no-console
+        } else {
+          const bestRecord = levels[levelId - 1].r.length;
+          if (steps < bestRecord) {
+            window.console.log(`新記録!\n${bestRecord} → ${steps} (${steps - bestRecord} 手)`); // eslint-disable-line no-console
           } else {
-            const bestRecord = levels[levelId - 1].r.length;
-            if (steps < bestRecord) {
-              window.console.log(`新記録!\n${bestRecord} → ${steps} (${steps - bestRecord} 手)`); // eslint-disable-line no-console
-            } else {
-              window.console.log(`過去最高記録は ${bestRecord} 手です。\n(差: ${steps - bestRecord} 手)`); // eslint-disable-line no-console
-              if (replayStr == levels[levelId - 1].r) {
-                window.console.log('(完全に同じ手順です。)'); // eslint-disable-line no-console
-              }
+            window.console.log(`過去最高記録は ${bestRecord} 手です。\n(差: ${steps - bestRecord} 手)`); // eslint-disable-line no-console
+            if (replayStr == levels[levelId - 1].r) {
+              window.console.log('(完全に同じ手順です。)'); // eslint-disable-line no-console
             }
           }
         }
@@ -878,10 +845,7 @@
       // 背景
       {
         const g = createG();
-        const rect = createRect({x: 0, y: 0, width: width, height: height});
-        rect.setAttribute('fill', colorNone);
-        rect.setAttribute('stroke', 'none');
-        g.appendChild(rect);
+        g.appendChild(createBackground());
         elems.svg.appendChild(g);
       }
 
@@ -1027,7 +991,25 @@
       }
     }
 
-    elems.svg.appendChild(createFrame());
+    // 点線
+    {
+      const g = createG();
+      // 横線
+      for (let y = 2; y < height - 1; ++y) {
+        const line = createLine({x1: 1, y1: y, x2: width - 1, y2: y});
+        line.setAttribute('stroke', colorLine);
+        line.setAttribute('stroke-dasharray', '1, 3');
+        g.appendChild(line);
+      }
+      // 縦線
+      for (let x = 2; x < width - 1; ++x) {
+        const line = createLine({x1: x, y1: 1, x2: x, y2: height - 1});
+        line.setAttribute('stroke', colorLine);
+        line.setAttribute('stroke-dasharray', '1, 3');
+        g.appendChild(line);
+      }
+      elems.svg.appendChild(g);
+    }
   }
 
   function isTarget(x) {
