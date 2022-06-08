@@ -992,6 +992,23 @@
             let ratio0 = moveCount / inputInterval * 1.1;
             ratio0 = Math.min(ratio0, 1.0);
             const ratio = Math.sin(0.5 * Math.PI * ratio0) ** 0.5;
+
+            // 移動時のエフェクト
+            {
+              const g2 = createG();
+              {
+                const size = 0.6;
+                const rect = createRect({x: x + 0.5 - size / 2, y: y + 0.5 - size / 2, width: size, height: size});
+                rect.setAttribute('fill', color.fill);
+                rect.setAttribute('fill-opacity', 0.5);
+                const dx = dxs[moveDir] * blockSize * ratio * (moveCount / inputInterval) ** 2;
+                const dy = dys[moveDir] * blockSize * ratio * (moveCount / inputInterval) ** 2;
+                rect.setAttribute('transform', `translate(${dx},${dy})`);
+                g2.appendChild(rect);
+              }
+              elems.svg.appendChild(g2);
+            }
+
             const dx = dxs[moveDir] * blockSize * ratio;
             const dy = dys[moveDir] * blockSize * ratio;
             if (dx + dy != 0) {
