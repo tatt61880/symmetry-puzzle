@@ -861,7 +861,8 @@
           const g = createG();
           const color = colors[state];
           {
-            const rect = createRect({x: x, y: y, width: 1, height: 1});
+            const eps = 0.01; // サイズを少し大きくすることで、隙間をなくします。
+            const rect = createRect({x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2});
             rect.setAttribute('fill', color.fill);
             rect.setAttribute('stroke', 'none');
             g.appendChild(rect);
@@ -1001,19 +1002,20 @@
 
     // 点線
     {
+      const dasharray = '1, 4';
       const g = createG();
       // 横線
       for (let y = 2; y < height - 1; ++y) {
         const line = createLine({x1: 1, y1: y, x2: width - 1, y2: y});
         line.setAttribute('stroke', colorLine);
-        line.setAttribute('stroke-dasharray', '1, 3');
+        line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
       // 縦線
       for (let x = 2; x < width - 1; ++x) {
         const line = createLine({x1: x, y1: 1, x2: x, y2: height - 1});
         line.setAttribute('stroke', colorLine);
-        line.setAttribute('stroke-dasharray', '1, 3');
+        line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
       elems.svg.appendChild(g);
