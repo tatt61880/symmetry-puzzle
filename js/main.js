@@ -29,10 +29,10 @@
     {w: 6, h: 5, s: '-s11222-01122', r: '01112033322210301122211103330'},
     {w: 6, h: 6, s: 's0000x-0112-00122-00344-0334-x0000x', r: '21011123223223011000033321012220033211'},
     {w: 5, h: 5, s: '-01s2-0303-0333-00x', r: '0332213001222000111232330101222003321'},
-    {w: 6, h: 6, s: '-aaa11-as202b-00222b-0x03', r: '0112330112101223223000033211103322210'},
+    {w: 6, h: 6, s: '000aa-0x0sa-0022a-03201-00221-00bb', r: '1223001223212330330111100322210033321'},
 
     // LEVEL 21～
-    {w: 6, h: 6, s: '-aaa11-0s2b2c-00222c-0x03', r: '322211012110033230221100'},
+    {w: 6, h: 6, s: '0000a-0x0sa-0022a-032b1-00221-00cc', r: '033322123221100301332211'},
   ];
 
   let debugFlag = false;
@@ -58,6 +58,7 @@
   let rightEnd;
   let downEnd;
   const leftEnd = 2;
+  let rotateNum = 0;
 
   const stateHero = -2; // 自機
   const stateWall = -1; // 壁
@@ -85,7 +86,7 @@
 
   for (const key in stateToChar) {
     const val = stateToChar[key];
-    charToState[val] = key;
+    charToState[val] = Number(key);
   }
 
   const colors = {};
@@ -181,6 +182,9 @@
       case 'auto':
         autoMode = true;
         break;
+      case 'rotate':
+        rotateNum = Number(paramVal) % 4;
+        break;
       }
     }
     return res;
@@ -197,12 +201,12 @@
   function getUrlStr() {
     const w = getW();
     const h = getH();
-    const s = getStateStr();
+    const s = getStateStr(states, upEnd, rightEnd, downEnd, leftEnd);
     window.console.log(`{w: ${w}, h: ${h}, s: '${s}'},`); // eslint-disable-line no-console
     return `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}`;
   }
 
-  function getStateStr() {
+  function getStateStr(states, upEnd, rightEnd, downEnd, leftEnd) {
     let res = '';
     for (let y = upEnd; y <= downEnd; ++y) {
       let line = '';
@@ -485,7 +489,7 @@
       dir: dir,
       w: getW(),
       h: getH(),
-      s: getStateStr(),
+      s: getStateStr(states, upEnd, rightEnd, downEnd, leftEnd),
     };
   }
 
@@ -545,6 +549,46 @@
     inputCountPrev = 0;
   }
 
+  // 時計回りに90度×num回 回転する。
+  function rotateLevel(rotateNum) {
+    for (let i = 0; i < rotateNum; ++i) {
+      const w = levelObj.h; // 90度回転後
+      const h = levelObj.w; // 90度回転後
+      const stateStr = levelObj.s;
+      const statesTemp = [];
+      for (let y = 0; y < h; ++y) {
+        statesTemp[y] = [];
+        for (let x = 0; x < w; ++x) {
+          statesTemp[y][x] = stateNone;
+        }
+      }
+
+      let x = w - 1;
+      let y = 0;
+      for (const c of stateStr) {
+        if (c == '-') {
+          x--;
+          if (x < 0) break;
+          y = 0;
+        } else {
+          if (y == h) continue;
+          statesTemp[y][x] = charToState[c];
+          y++;
+        }
+      }
+      let r = levelObj.r;
+      if (r !== undefined) {
+        let rotatedR = '';
+        for (const c of r) {
+          rotatedR += (Number(c) + 1) % 4;
+        }
+        r = rotatedR;
+      }
+      const s = getStateStr(statesTemp, 0, w - 1, h - 1, 0);
+      levelObj = {w: w, h: h, s: s, r: r};
+    }
+  }
+
   function loadLevelById(id) {
     resetUndo();
     levelId = id;
@@ -553,6 +597,9 @@
     setLevelVisibility();
     elems.levelId.textContent = levelId;
     levelObj = levels[levelId - 1]; // リセット用にここで代入します。
+
+    rotateLevel(rotateNum);
+
     loadLevel(levelObj);
   }
 
@@ -810,15 +857,16 @@
         window.console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`); // eslint-disable-line no-console
         const steps = undoIdx;
         window.console.log(`${steps} 手`); // eslint-disable-line no-console
-        if (levelId === null || levels[levelId - 1].r === undefined) {
+        const r = levelObj.r;
+        if (levelId === null || r === undefined) {
           window.console.warn('過去最高記録の情報がありません！'); // eslint-disable-line no-console
         } else {
-          const bestRecord = levels[levelId - 1].r.length;
+          const bestRecord = r.length;
           if (steps < bestRecord) {
             window.console.log(`新記録!\n${bestRecord} → ${steps} (${steps - bestRecord} 手)`); // eslint-disable-line no-console
           } else {
             window.console.log(`過去最高記録は ${bestRecord} 手です。\n(差: ${steps - bestRecord} 手)`); // eslint-disable-line no-console
-            if (replayStr == levels[levelId - 1].r) {
+            if (replayStr == r) {
               window.console.log('(完全に同じ手順です。)'); // eslint-disable-line no-console
             }
           }
