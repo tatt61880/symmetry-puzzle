@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.06.07';
+  const version = 'Version: 2022.06.010';
 
   const levels = [
     // LEVEL 1～
@@ -59,6 +59,7 @@
   let downEnd;
   const leftEnd = 2;
   let rotateNum = 0;
+  let mirrorFlag = false;
 
   const stateHero = -2; // 自機
   const stateWall = -1; // 壁
@@ -184,6 +185,9 @@
         break;
       case 'rotate':
         rotateNum = Number(paramVal) % 4;
+        break;
+      case 'mirror':
+        mirrorFlag = true;
         break;
       }
     }
@@ -549,6 +553,44 @@
     inputCountPrev = 0;
   }
 
+  // 左右反転する。
+  function mirrorLevel() {
+    const w = levelObj.w;
+    const h = levelObj.h;
+    const stateStr = levelObj.s;
+    const statesTemp = [];
+    for (let y = 0; y < h; ++y) {
+      statesTemp[y] = [];
+      for (let x = 0; x < w; ++x) {
+        statesTemp[y][x] = stateNone;
+      }
+    }
+
+    let x = w - 1;
+    let y = 0;
+    for (const c of stateStr) {
+      if (c == '-') {
+        y++;
+        if (y == h) break;
+        x = w - 1;
+      } else {
+        if (x == -1) continue;
+        statesTemp[y][x] = charToState[c];
+        x--;
+      }
+    }
+    let r = levelObj.r;
+    if (r !== undefined) {
+      let rotatedR = '';
+      for (const c of r) {
+        rotatedR += (4 - Number(c)) % 4;
+      }
+      r = rotatedR;
+    }
+    const s = getStateStr(statesTemp, 0, w - 1, h - 1, 0);
+    levelObj = {w: w, h: h, s: s, r: r};
+  }
+
   // 時計回りに90度×num回 回転する。
   function rotateLevel(rotateNum) {
     for (let i = 0; i < rotateNum; ++i) {
@@ -598,6 +640,7 @@
     elems.levelId.textContent = levelId;
     levelObj = levels[levelId - 1]; // リセット用にここで代入します。
 
+    if (mirrorFlag) mirrorLevel();
     rotateLevel(rotateNum);
 
     loadLevel(levelObj);
