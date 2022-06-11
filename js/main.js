@@ -48,8 +48,6 @@
   let undoFlag = false;
   let undoCount = 0;
 
-  window.addEventListener('load', init, false);
-
   const SVG_NS = 'http://www.w3.org/2000/svg';
 
   let width;
@@ -157,6 +155,8 @@
   let inputCount = inputInterval;
   let inputDir = dirs.neutral;
   const inputKeys = {};
+
+  window.addEventListener('load', init, false);
 
   function analyzeUrl() {
     const res = {
