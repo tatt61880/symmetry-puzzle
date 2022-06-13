@@ -278,8 +278,7 @@
     }
     while (!st.empty()) {
       const state = st.pop();
-      loop:
-      for (let y = upEnd; y <= downEnd; ++y) {
+      loop: for (let y = upEnd; y <= downEnd; ++y) {
         for (let x = leftEnd; x <= rightEnd; ++x) {
           if (states[y][x] != state) continue;
           const neighborState = states[y + dy][x + dx];
@@ -442,7 +441,7 @@
     } else if (editMode && editboxFunctions[e.key]) {
       editboxFunctions[e.key]();
     }
-    return false; 
+    return false;
   }
 
   function keyup(e) {
@@ -458,7 +457,7 @@
     if (e.key == 'z') {
       undoEnd();
     }
-    return false; 
+    return false;
   }
 
   function resetLevel() {
@@ -1020,25 +1019,49 @@
               const size = 0.35;
               // 右上
               if (!flags[dirs.u] && !flags[dirs.r]) {
-                const polygon = createPolygon({points: [[x + 1 - size, y], [x + 1, y], [x + 1, y + size]]});
+                const polygon = createPolygon({
+                  points: [
+                    [x + 1 - size, y],
+                    [x + 1, y],
+                    [x + 1, y + size],
+                  ],
+                });
                 polygon.setAttribute('fill', color.stroke);
                 g.appendChild(polygon);
               }
               // 右下
               if (!flags[dirs.d] && !flags[dirs.r]) {
-                const polygon = createPolygon({points: [[x + 1, y + 1 - size], [x + 1, y + 1], [x + 1 - size, y + 1]]});
+                const polygon = createPolygon({
+                  points: [
+                    [x + 1, y + 1 - size],
+                    [x + 1, y + 1],
+                    [x + 1 - size, y + 1],
+                  ],
+                });
                 polygon.setAttribute('fill', color.stroke);
                 g.appendChild(polygon);
               }
               // 左下
               if (!flags[dirs.d] && !flags[dirs.l]) {
-                const polygon = createPolygon({points: [[x, y + 1 - size], [x + size, y + 1], [x, y + 1]]});
+                const polygon = createPolygon({
+                  points: [
+                    [x, y + 1 - size],
+                    [x + size, y + 1],
+                    [x, y + 1],
+                  ],
+                });
                 polygon.setAttribute('fill', color.stroke);
                 g.appendChild(polygon);
               }
               // 左上
               if (!flags[dirs.u] && !flags[dirs.l]) {
-                const polygon = createPolygon({points: [[x, y], [x + size, y], [x, y + size]]});
+                const polygon = createPolygon({
+                  points: [
+                    [x, y],
+                    [x + size, y],
+                    [x, y + size],
+                  ],
+                });
                 polygon.setAttribute('fill', color.stroke);
                 g.appendChild(polygon);
               }
@@ -1172,8 +1195,7 @@
     }
     let x0;
     let y0;
-    loop:
-    for (let y = upEnd; y <= downEnd; ++y) {
+    loop: for (let y = upEnd; y <= downEnd; ++y) {
       for (let x = leftEnd; x <= rightEnd; ++x) {
         if (isX(statesTemp[y][x])) {
           x0 = x;
