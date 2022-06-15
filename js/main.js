@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.06.15';
+  const version = 'Version: 2022.06.15-b';
 
   const levels = [
     // LEVEL 1～
@@ -33,6 +33,7 @@
 
     // LEVEL 21～
     {w: 6, h: 6, s: '0000a-0x0sa-0022a-032b1-00221-00cc', r: '033322123221100301332211'},
+    {w: 6, h: 6, s: 's-t--0001-02211-0211', r: '2221121011230012222302333001230011112'},
   ];
 
   let debugFlag = false;
@@ -59,13 +60,14 @@
   let rotateNum = 0;
   let mirrorFlag = false;
 
-  const stateHero = -2; // 自機
   const stateWall = -1; // 壁
   const stateNone = 0;
   const stateTargetMin = 1;
   const stateTargetMax = 9;
   const stateOtherMin = 10;
   const stateOtherMax = 15;
+  const stateUserMin = 100; // 自機
+  const stateUserMax = 102; // 自機
 
   let drawingState = stateNone;
   const editboxFunctions = {};
@@ -73,14 +75,16 @@
   const stateToChar = {};
   const charToState = {};
 
-  stateToChar[stateHero] = 's';
   stateToChar[stateWall] = 'x';
   stateToChar[stateNone] = '0';
   for (let i = stateTargetMin; i <= stateTargetMax; ++i) {
     stateToChar[i] = `${i}`; // '1' ～
   }
   for (let i = stateOtherMin; i <= stateOtherMax; ++i) {
-    stateToChar[i] = `${String.fromCharCode(97 + i - stateOtherMin)}`; // 'a' ～
+    stateToChar[i] = `${String.fromCharCode(0x61 + i - stateOtherMin)}`; // 'a' ～
+  }
+  for (let i = stateUserMin; i <= stateUserMax; ++i) {
+    stateToChar[i] = `${String.fromCharCode(0x73 + i - stateUserMin)}`; // 's' ～
   }
 
   for (const key in stateToChar) {
@@ -90,13 +94,15 @@
 
   const colors = {};
   colors[stateNone] = {fill: 'white', stroke: '#aaa', text: '#ccc'};
-  colors[stateHero] = {fill: 'aqua', stroke: 'blue', text: 'black'};
   colors[stateWall] = {fill: '#222', stroke: '#666', text: 'white'};
   for (let i = stateTargetMin; i <= stateTargetMax; ++i) {
     colors[i] = {fill: 'pink', stroke: 'red', text: 'black'};
   }
   for (let i = stateOtherMin; i <= stateOtherMax; ++i) {
     colors[i] = {fill: '#e5e5e5', stroke: '#aaa', text: 'black'};
+  }
+  for (let i = stateUserMin; i <= stateUserMax; ++i) {
+    colors[i] = {fill: 'aqua', stroke: 'blue', text: 'black'};
   }
 
   const colorNone = 'white';
@@ -268,47 +274,51 @@
     const dx = dxs[dir];
     const dy = dys[dir];
 
-    const moveState = {}; // 移動予定の状態番号
-    moveState[stateHero] = true;
-    const st = new Stack(); // 移動可能か検証必要な状態番号
-    let flag = false; // 移動フラグ
-    if (count(isHero)) {
-      st.push(stateHero);
-      flag = true;
-    }
-    while (!st.empty()) {
-      const state = st.pop();
-      loop: for (let y = upEnd; y <= downEnd; ++y) {
-        for (let x = leftEnd; x <= rightEnd; ++x) {
-          if (states[y][x] != state) continue;
-          const neighborState = states[y + dy][x + dx];
-          if (neighborState == stateNone) continue;
-          if (neighborState == stateWall) {
-            flag = false;
-            break loop;
-          } else if (!moveState[neighborState]) {
-            moveState[neighborState] = true;
-            st.push(neighborState);
+    for (let i = stateUserMin; i <= stateUserMax; ++i) {
+      const moveState = {}; // 移動予定の状態番号
+      moveState[i] = true;
+      const st = new Stack(); // 移動可能か検証必要な状態番号
+      let flag = false; // 移動フラグ
+      if (count((x)=>{ return x == i; })) {
+        st.push(i);
+        flag = true;
+      }
+      while (!st.empty()) {
+        const state = st.pop();
+        loop: for (let y = upEnd; y <= downEnd; ++y) {
+          for (let x = leftEnd; x <= rightEnd; ++x) {
+            if (states[y][x] != state) continue;
+            const neighborState = states[y + dy][x + dx];
+            if (neighborState == stateNone) continue;
+            if (neighborState == stateWall) {
+              flag = false;
+              break loop;
+            } else if (!moveState[neighborState]) {
+              moveState[neighborState] = true;
+              st.push(neighborState);
+            }
           }
         }
       }
-    }
 
-    // 各座標に移動フラグを設定
-    if (flag) {
+      // 各座標に移動フラグを設定
+      if (flag) {
+        showElem(elems.undo);
+
+        for (let y = upEnd; y <= downEnd; ++y) {
+          for (let x = leftEnd; x <= rightEnd; ++x) {
+            if (moveState[states[y][x]]) {
+              moveFlags[y][x] = true;
+            }
+          }
+        }
+        moveDir = dir;
+        moveFlag = true;
+        moveCount = 0;
+      }
+    }
+    if (moveFlag) {
       addUndo(dir);
-      showElem(elems.undo);
-
-      for (let y = upEnd; y <= downEnd; ++y) {
-        for (let x = leftEnd; x <= rightEnd; ++x) {
-          if (moveState[states[y][x]]) {
-            moveFlags[y][x] = true;
-          }
-        }
-      }
-      moveDir = dir;
-      moveFlag = true;
-      moveCount = 0;
     }
   }
 
@@ -718,6 +728,7 @@
       for (const char in charToState) {
         const state = charToState[char];
         const elem = document.getElementById(`edit_${char}`);
+        if (elem === null) continue;
         const func = () => {
           elems.editShape.setAttribute('fill', colors[state].fill);
           elems.editShape.setAttribute('stroke', colors[state].stroke);
@@ -1015,7 +1026,7 @@
               g.appendChild(rect);
             }
 
-            if (state == stateHero) {
+            if (stateUserMin <= state && state <= stateUserMax) {
               const size = 0.35;
               // 右上
               if (!flags[dirs.u] && !flags[dirs.r]) {
@@ -1146,10 +1157,6 @@
 
   function isTarget(x) {
     return stateTargetMin <= x && x <= stateTargetMax;
-  }
-
-  function isHero(x) {
-    return x == stateHero;
   }
 
   function isOk(isX) {
