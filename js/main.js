@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.06.010';
+  const version = 'Version: 2022.06.15';
 
   const levels = [
     // LEVEL 1～
@@ -1071,18 +1071,26 @@
               ratio0 = Math.min(ratio0, 1.0);
               const ratio = Math.sin(0.5 * Math.PI * ratio0) ** 0.5;
 
-              // 移動時のエフェクト
+              // 移動時のエフェクト（残像）
               {
                 const g2 = createG();
                 {
                   const dd = 0.2;
+                  const ddd = 0.1;
                   let rectArg = {x: x, y: y, width: 1, height: 1};
-                  if (!flags[dirs.l]) rectArg.x += dd;
-                  if (!flags[dirs.l]) rectArg.width -= dd;
-                  if (!flags[dirs.r]) rectArg.width -= dd;
-                  if (!flags[dirs.u]) rectArg.y += dd;
-                  if (!flags[dirs.u]) rectArg.height -= dd;
-                  if (!flags[dirs.d]) rectArg.height -= dd;
+                  if (moveDir == dirs.ArrowUp || moveDir == dirs.ArrowDown) {
+                    if (!flags[dirs.l]) rectArg.x += dd;
+                    if (!flags[dirs.l]) rectArg.width -= dd;
+                    if (!flags[dirs.r]) rectArg.width -= dd;
+                    rectArg.y -= ddd;
+                    rectArg.height += ddd * 2;
+                  } else {
+                    if (!flags[dirs.u]) rectArg.y += dd;
+                    if (!flags[dirs.u]) rectArg.height -= dd;
+                    if (!flags[dirs.d]) rectArg.height -= dd;
+                    rectArg.x -= ddd;
+                    rectArg.width += ddd * 2;
+                  }
 
                   const rect = createRect(rectArg);
                   rect.setAttribute('fill', color.fill);
