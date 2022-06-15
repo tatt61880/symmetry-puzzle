@@ -275,14 +275,14 @@
     const dy = dys[dir];
 
     for (let i = stateUserMin; i <= stateUserMax; ++i) {
+      if (count((x)=>{ return x == i; }) == 0) continue;
+
       const moveState = {}; // 移動予定の状態番号
       moveState[i] = true;
+
+      let flag = true;
       const st = new Stack(); // 移動可能か検証必要な状態番号
-      let flag = false; // 移動フラグ
-      if (count((x)=>{ return x == i; })) {
-        st.push(i);
-        flag = true;
-      }
+      st.push(i);
       while (!st.empty()) {
         const state = st.pop();
         loop: for (let y = upEnd; y <= downEnd; ++y) {
