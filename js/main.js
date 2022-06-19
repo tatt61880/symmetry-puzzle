@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.06.16';
+  const version = 'Version: 2022.06.17';
 
   const levels = [
     // LEVEL 1～
@@ -1083,7 +1083,7 @@
               const ratio = Math.sin(0.5 * Math.PI * ratio0) ** 0.5;
 
               // 移動時のエフェクト（残像）
-              {
+              if (!moveFlags[y - dys[moveDir]][x - dxs[moveDir]]) {
                 const g2 = createG();
                 {
                   const dd = 0.2;
