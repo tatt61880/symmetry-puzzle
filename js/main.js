@@ -44,7 +44,7 @@
   let levelId;
   let levelObj;
 
-  let undo;
+  let undoInfo;
   let undoFlag = false;
   let undoCount = 0;
 
@@ -318,7 +318,7 @@
       }
     }
     if (moveFlag) {
-      undo.addUndo(dir, {
+      undoInfo.pushData({
         dir: dir,
         w: getW(),
         h: getH(),
@@ -499,7 +499,7 @@
 
   function resetUndo() {
     clearFlag = false;
-    undo.reset();
+    undoInfo = new UndoInfo();
     hideElem(elems.undo);
   }
 
@@ -535,13 +535,13 @@
   }
 
   function execUndo() {
-    if (undo.isUndoable()) {
-      const undoInfo = undo.undo();
-      applySize(undoInfo.w, undoInfo.h);
-      applyStateStr(undoInfo.s);
+    if (undoInfo.isUndoable()) {
+      const data = undoInfo.undo();
+      applySize(data.w, data.h);
+      applyStateStr(data.s);
     }
 
-    if (undo.getIndex() == 0) {
+    if (undoInfo.getIndex() == 0) {
       resetUndo();
     }
     resetDirs();
@@ -711,8 +711,6 @@
     for (const elemName in elemIds) {
       elems[elemName] = document.getElementById(elemIds[elemName]);
     }
-
-    undo = new Undo();
 
     levelObj = analyzeUrl();
     if (levelObj.s == '') {
@@ -908,9 +906,9 @@
         const w = levelObj.w;
         const h = levelObj.h;
         const s = levelObj.s;
-        const replayStr = undo.getReplayStr();
+        const replayStr = undoInfo.getReplayStr();
         window.console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`); // eslint-disable-line no-console
-        const steps = undo.getIndex();
+        const steps = undoInfo.getIndex();
         window.console.log(`${steps} 手`); // eslint-disable-line no-console
         const r = levelObj.r;
         if (levelId === null || r === undefined) {
@@ -1288,22 +1286,19 @@
     elem.style.display = 'none';
   }
 
-  class Undo {
+  class UndoInfo {
     constructor() {
       this.undoArray = [];
       this.undoIdx = 0;
+    }
+    pushData(data) {
+      this.undoArray[this.undoIdx++] = data;
     }
     isUndoable() {
       return this.undoIdx != 0;
     }
     undo() {
       return this.undoArray[--this.undoIdx];
-    }
-    reset() {
-      this.undoIdx = 0;
-    }
-    addUndo(undo, data) {
-      this.undoArray[this.undoIdx++] = data;
     }
     getIndex() {
       return this.undoIdx;
