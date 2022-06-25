@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.06.25';
+  const version = 'Version: 2022.06.25-b';
 
   const levels = [
     // LEVEL 1～
@@ -44,8 +44,7 @@
   let levelId;
   let levelObj;
 
-  const undoArray = [];
-  let undoIdx = 0;
+  let undo;
   let undoFlag = false;
   let undoCount = 0;
 
@@ -232,7 +231,6 @@
 
   // 初期化
   function initStates() {
-    clearFlag = false;
     for (let y = 0; y < height; ++y) {
       states[y] = [];
       for (let x = 0; x < width; ++x) {
@@ -320,7 +318,12 @@
       }
     }
     if (moveFlag) {
-      addUndo(dir);
+      undo.addUndo(dir, {
+        dir: dir,
+        w: getW(),
+        h: getH(),
+        s: getStateStr(states, upEnd, rightEnd, downEnd, leftEnd),
+      });
     }
   }
 
@@ -495,17 +498,9 @@
   }
 
   function resetUndo() {
-    undoIdx = 0;
+    clearFlag = false;
+    undo.reset();
     hideElem(elems.undo);
-  }
-
-  function addUndo(dir) {
-    undoArray[undoIdx++] = {
-      dir: dir,
-      w: getW(),
-      h: getH(),
-      s: getStateStr(states, upEnd, rightEnd, downEnd, leftEnd),
-    };
   }
 
   function applySize(w, h) {
@@ -539,13 +534,14 @@
     updateUrl();
   }
 
-  function undo() {
-    if (undoIdx != 0) {
-      const undoInfo = undoArray[--undoIdx];
+  function execUndo() {
+    if (undo.isUndoable()) {
+      const undoInfo = undo.undo();
       applySize(undoInfo.w, undoInfo.h);
       applyStateStr(undoInfo.s);
     }
-    if (undoIdx == 0) {
+
+    if (undo.getIndex() == 0) {
       resetUndo();
     }
     resetDirs();
@@ -715,6 +711,8 @@
       elems[elemName] = document.getElementById(elemIds[elemName]);
     }
 
+    undo = new Undo();
+
     levelObj = analyzeUrl();
     if (levelObj.s == '') {
       levelId = 1;
@@ -824,7 +822,7 @@
       if (undoFlag) {
         if (undoCount == undoInterval) {
           undoCount = 0;
-          undo();
+          execUndo();
         }
         undoCount++;
       }
@@ -909,9 +907,9 @@
         const w = levelObj.w;
         const h = levelObj.h;
         const s = levelObj.s;
-        const replayStr = getReplayStr();
+        const replayStr = undo.getReplayStr();
         window.console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`); // eslint-disable-line no-console
-        const steps = undoIdx;
+        const steps = undo.getIndex();
         window.console.log(`${steps} 手`); // eslint-disable-line no-console
         const r = levelObj.r;
         if (levelId === null || r === undefined) {
@@ -930,14 +928,6 @@
       }
     }
     return g;
-  }
-
-  function getReplayStr() {
-    let replayStr = '';
-    for (let i = 0; i < undoIdx; ++i) {
-      replayStr += undoArray[i].dir;
-    }
-    return replayStr;
   }
 
   // 描画
@@ -1294,6 +1284,35 @@
   function hideElem(elem) {
     if (elem === undefined) return;
     elem.style.display = 'none';
+  }
+
+  class Undo {
+    constructor() {
+      this.undoArray = [];
+      this.undoIdx = 0;
+    }
+    isUndoable() {
+      return this.undoIdx != 0;
+    }
+    undo() {
+      return this.undoArray[--this.undoIdx];
+    }
+    reset() {
+      this.undoIdx = 0;
+    }
+    addUndo(undo, data) {
+      this.undoArray[this.undoIdx++] = data;
+    }
+    getIndex() {
+      return this.undoIdx;
+    }
+    getReplayStr() {
+      let replayStr = '';
+      for (let i = 0; i < this.undoIdx; ++i) {
+        replayStr += this.undoArray[i].dir;
+      }
+      return replayStr;
+    }
   }
 
   class Stack {
