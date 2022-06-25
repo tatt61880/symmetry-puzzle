@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.06.17';
+  const version = 'Version: 2022.06.25';
 
   const levels = [
     // LEVEL 1～
@@ -59,6 +59,7 @@
   const leftEnd = 2;
   let rotateNum = 0;
   let mirrorFlag = false;
+  let clearFlag = false;
 
   const stateWall = -1; // 壁
   const stateNone = 0;
@@ -162,7 +163,7 @@
   let inputDir = dirs.neutral;
   const inputKeys = {};
 
-  window.addEventListener('load', init, false);
+  window.addEventListener('load', onload, false);
 
   function analyzeUrl() {
     const res = {
@@ -231,6 +232,7 @@
 
   // 初期化
   function initStates() {
+    clearFlag = false;
     for (let y = 0; y < height; ++y) {
       states[y] = [];
       for (let x = 0; x < width; ++x) {
@@ -706,7 +708,7 @@
     updateEditLevel();
   }
 
-  function init() {
+  function onload() {
     document.getElementById('versionInfo').innerText = version;
 
     for (const elemName in elemIds) {
@@ -902,7 +904,8 @@
       text.setAttribute('font-weight', 'bold');
       text.setAttribute('fill', 'blue');
       g.appendChild(text);
-      if (!moveFlag) {
+      if (!clearFlag && !moveFlag) {
+        clearFlag = true;
         const w = levelObj.w;
         const h = levelObj.h;
         const s = levelObj.s;
