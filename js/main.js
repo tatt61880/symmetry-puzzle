@@ -423,7 +423,7 @@
       if (e.key == 'T') {
         // 強制editモード (Shift + t)
         levelId = null;
-        setLevelVisibility();
+        updateLevelVisibility();
         toggleEditLevel();
       } else {
         if (e.key == 'ArrowLeft') {
@@ -550,7 +550,7 @@
   function loadLevel(levelObj) {
     applySize(levelObj.w, levelObj.h);
     applyStateStr(levelObj.s);
-    setLevelVisibility();
+    updateLevelVisibility();
     resetUndo();
 
     autoStep = 0;
@@ -560,49 +560,25 @@
     inputCountPrev = 0;
   }
 
-  // 左右反転する。
-  function mirrorLevel() {
-    const w = levelObj.w;
-    const h = levelObj.h;
-    const stateStr = levelObj.s;
-    const statesTemp = [];
-    for (let y = 0; y < h; ++y) {
-      statesTemp[y] = [];
-      for (let x = 0; x < w; ++x) {
-        statesTemp[y][x] = stateNone;
-      }
-    }
+  function loadLevelById(id) {
+    resetUndo();
+    levelId = id;
+    if (levelId < 1) levelId = 1;
+    if (levelId > levels.length) levelId = levels.length;
+    updateLevelVisibility();
+    elems.levelId.textContent = levelId;
+    levelObj = levels[levelId - 1]; // リセット用にここで代入します。
 
-    let x = w - 1;
-    let y = 0;
-    for (const c of stateStr) {
-      if (c == '-') {
-        y++;
-        if (y == h) break;
-        x = w - 1;
-      } else {
-        if (x == -1) continue;
-        statesTemp[y][x] = charToState[c];
-        x--;
-      }
-    }
-    let r = levelObj.r;
-    if (r !== undefined) {
-      let rotatedR = '';
-      for (const c of r) {
-        rotatedR += (4 - Number(c)) % 4;
-      }
-      r = rotatedR;
-    }
-    const s = getStateStr(statesTemp, 0, w - 1, h - 1, 0);
-    levelObj = {w: w, h: h, s: s, r: r};
-  }
+    if (mirrorFlag) mirrorLevel();
+    rotateLevel(rotateNum);
 
-  // 時計回りに90度×num回 回転する。
-  function rotateLevel(rotateNum) {
-    for (let i = 0; i < rotateNum; ++i) {
-      const w = levelObj.h; // 90度回転後
-      const h = levelObj.w; // 90度回転後
+    loadLevel(levelObj);
+    return;
+
+    // 左右反転する。
+    function mirrorLevel() {
+      const w = levelObj.w;
+      const h = levelObj.h;
       const stateStr = levelObj.s;
       const statesTemp = [];
       for (let y = 0; y < h; ++y) {
@@ -616,44 +592,69 @@
       let y = 0;
       for (const c of stateStr) {
         if (c == '-') {
-          x--;
-          if (x < 0) break;
-          y = 0;
-        } else {
-          if (y == h) continue;
-          statesTemp[y][x] = charToState[c];
           y++;
+          if (y == h) break;
+          x = w - 1;
+        } else {
+          if (x == -1) continue;
+          statesTemp[y][x] = charToState[c];
+          x--;
         }
       }
       let r = levelObj.r;
       if (r !== undefined) {
         let rotatedR = '';
         for (const c of r) {
-          rotatedR += (Number(c) + 1) % 4;
+          rotatedR += (4 - Number(c)) % 4;
         }
         r = rotatedR;
       }
       const s = getStateStr(statesTemp, 0, w - 1, h - 1, 0);
       levelObj = {w: w, h: h, s: s, r: r};
     }
+
+    // 時計回りに90度×num回 回転する。
+    function rotateLevel(rotateNum) {
+      for (let i = 0; i < rotateNum; ++i) {
+        const w = levelObj.h; // 90度回転後
+        const h = levelObj.w; // 90度回転後
+        const stateStr = levelObj.s;
+        const statesTemp = [];
+        for (let y = 0; y < h; ++y) {
+          statesTemp[y] = [];
+          for (let x = 0; x < w; ++x) {
+            statesTemp[y][x] = stateNone;
+          }
+        }
+
+        let x = w - 1;
+        let y = 0;
+        for (const c of stateStr) {
+          if (c == '-') {
+            x--;
+            if (x < 0) break;
+            y = 0;
+          } else {
+            if (y == h) continue;
+            statesTemp[y][x] = charToState[c];
+            y++;
+          }
+        }
+        let r = levelObj.r;
+        if (r !== undefined) {
+          let rotatedR = '';
+          for (const c of r) {
+            rotatedR += (Number(c) + 1) % 4;
+          }
+          r = rotatedR;
+        }
+        const s = getStateStr(statesTemp, 0, w - 1, h - 1, 0);
+        levelObj = {w: w, h: h, s: s, r: r};
+      }
+    }
   }
 
-  function loadLevelById(id) {
-    resetUndo();
-    levelId = id;
-    if (levelId < 1) levelId = 1;
-    if (levelId > levels.length) levelId = levels.length;
-    setLevelVisibility();
-    elems.levelId.textContent = levelId;
-    levelObj = levels[levelId - 1]; // リセット用にここで代入します。
-
-    if (mirrorFlag) mirrorLevel();
-    rotateLevel(rotateNum);
-
-    loadLevel(levelObj);
-  }
-
-  function setLevelVisibility() {
+  function updateLevelVisibility() {
     if (levelId == null) {
       hideElem(elems.levelPrev);
       hideElem(elems.levelId);
@@ -1259,6 +1260,7 @@
       draw();
       updateUrl();
     }
+    return;
 
     // タッチ環境において、画面端付近か否か。
     function isTouchScreenNearEdge(e) {
