@@ -1158,6 +1158,73 @@
     if (!isConnected(isX)) return false;
     if (!isPointSymmetry(isX)) return false;
     return true;
+
+    // 図形が連結か否か。
+    function isConnected(isX) {
+      const statesTemp = new Array(height);
+      for (let y = 0; y < height; ++y) {
+        statesTemp[y] = states[y].slice();
+      }
+      let x0;
+      let y0;
+      loop: for (let y = upEnd; y <= downEnd; ++y) {
+        for (let x = leftEnd; x <= rightEnd; ++x) {
+          if (isX(statesTemp[y][x])) {
+            x0 = x;
+            y0 = y;
+            break loop;
+          }
+        }
+      }
+
+      const st = new Stack();
+      st.push([x0, y0]);
+      statesTemp[y0][x0] = stateNone;
+      while (!st.empty()) {
+        const xy = st.pop();
+        for (let i = 0; i < 4; i++) {
+          const xx = xy[0] + dxs[i];
+          const yy = xy[1] + dys[i];
+          if (isX(statesTemp[yy][xx])) {
+            statesTemp[yy][xx] = stateNone;
+            st.push([xx, yy]);
+          }
+        }
+      }
+
+      for (let y = 0; y < height; ++y) {
+        for (let x = 0; x < width; ++x) {
+          if (isX(statesTemp[y][x])) return false;
+        }
+      }
+      return true;
+    }
+
+    // 図形が点対称か否か。
+    function isPointSymmetry(isX) {
+      let minX = width;
+      let maxX = 0;
+      let minY = height;
+      let maxY = 0;
+      for (let y = upEnd; y <= downEnd; ++y) {
+        for (let x = leftEnd; x <= rightEnd; ++x) {
+          if (isX(states[y][x])) {
+            minX = Math.min(minX, x);
+            maxX = Math.max(maxX, x);
+            minY = Math.min(minY, y);
+            maxY = Math.max(maxY, y);
+          }
+        }
+      }
+      for (let y = minY; y <= maxY; ++y) {
+        for (let x = minX; x <= maxX; ++x) {
+          if (isX(states[y][x]) && !isX(states[minY + maxY - y][minX + maxX - x])) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
   }
 
   function count(isX) {
@@ -1168,88 +1235,6 @@
       }
     }
     return cnt;
-  }
-
-  // 図形が点対称か否か。
-  function isPointSymmetry(isX) {
-    let minX = width;
-    let maxX = 0;
-    let minY = height;
-    let maxY = 0;
-    for (let y = upEnd; y <= downEnd; ++y) {
-      for (let x = leftEnd; x <= rightEnd; ++x) {
-        if (isX(states[y][x])) {
-          minX = Math.min(minX, x);
-          maxX = Math.max(maxX, x);
-          minY = Math.min(minY, y);
-          maxY = Math.max(maxY, y);
-        }
-      }
-    }
-    for (let y = minY; y <= maxY; ++y) {
-      for (let x = minX; x <= maxX; ++x) {
-        if (isX(states[y][x]) && !isX(states[minY + maxY - y][minX + maxX - x])) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-  // 図形が連結か否か。
-  function isConnected(isX) {
-    const statesTemp = new Array(height);
-    for (let y = 0; y < height; ++y) {
-      statesTemp[y] = states[y].slice();
-    }
-    let x0;
-    let y0;
-    loop: for (let y = upEnd; y <= downEnd; ++y) {
-      for (let x = leftEnd; x <= rightEnd; ++x) {
-        if (isX(statesTemp[y][x])) {
-          x0 = x;
-          y0 = y;
-          break loop;
-        }
-      }
-    }
-
-    const st = new Stack();
-    st.push([x0, y0]);
-    statesTemp[y0][x0] = stateNone;
-    while (!st.empty()) {
-      const xy = st.pop();
-      for (let i = 0; i < 4; i++) {
-        const xx = xy[0] + dxs[i];
-        const yy = xy[1] + dys[i];
-        if (isX(statesTemp[yy][xx])) {
-          statesTemp[yy][xx] = stateNone;
-          st.push([xx, yy]);
-        }
-      }
-    }
-
-    for (let y = 0; y < height; ++y) {
-      for (let x = 0; x < width; ++x) {
-        if (isX(statesTemp[y][x])) return false;
-      }
-    }
-    return true;
-  }
-
-  // タッチ環境において、画面端付近か否か。
-  function isTouchScreenNearEdge(e) {
-    if (e.touches === undefined) return false;
-    const x = e.touches[0].clientX;
-    return x < 30; // 画面の左端付近ならtrue
-  }
-
-  // カーソル位置の座標を得る
-  function getCurXY(e) {
-    const cursorPos = getCursorPos(elems.svg, e);
-    const x = Math.floor(cursorPos.x / blockSize);
-    const y = Math.floor(cursorPos.y / blockSize);
-    return {x: x, y: y};
   }
 
   function editSvg(e) {
@@ -1273,6 +1258,21 @@
       states[y][x] = stateNone;
       draw();
       updateUrl();
+    }
+
+    // タッチ環境において、画面端付近か否か。
+    function isTouchScreenNearEdge(e) {
+      if (e.touches === undefined) return false;
+      const x = e.touches[0].clientX;
+      return x < 30; // 画面の左端付近ならtrue
+    }
+
+    // カーソル位置の座標を得る
+    function getCurXY(e) {
+      const cursorPos = getCursorPos(elems.svg, e);
+      const x = Math.floor(cursorPos.x / blockSize);
+      const y = Math.floor(cursorPos.y / blockSize);
+      return {x: x, y: y};
     }
   }
 
