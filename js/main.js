@@ -105,7 +105,6 @@
     colors[i] = {fill: 'aqua', stroke: 'blue', text: 'black'};
   }
 
-  const colorNone = 'white';
   const colorLine = '#888';
 
   let blockSize;
@@ -881,13 +880,11 @@
     {
       const rect = createRect({x: 0, y: 0, width: width, height: height});
       rect.setAttribute('fill', paddingColor);
-      rect.setAttribute('stroke', 'none');
       g.appendChild(rect);
     }
     {
       const rect = createRect({x: 1, y: 1, width: width - 2, height: height - 2});
-      rect.setAttribute('fill', colorNone);
-      rect.setAttribute('stroke', 'none');
+      rect.setAttribute('fill', 'white');
       g.appendChild(rect);
     }
 
@@ -957,7 +954,6 @@
             const eps = 0.01; // サイズを少し大きくすることで、隙間をなくします。
             const rect = createRect({x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2});
             rect.setAttribute('fill', color.fill);
-            rect.setAttribute('stroke', 'none');
             g.appendChild(rect);
           }
           {
