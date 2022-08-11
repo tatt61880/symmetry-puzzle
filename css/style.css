@@ -3,25 +3,24 @@ html {
 }
 
 body {
-  margin: 0px;
+  margin: 0;
 }
 
 div.noselect {
   user-select: none;
-  -webkit-user-select: none;
 }
 
 #contents {
   max-width: 500px;
   margin: auto;
-  padding: 0px;
+  padding: 0;
   text-align: center;
 }
 
 h1 {
   position: relative;
   top: -5px;
-  margin: 0px;
+  margin: 0;
   font-size: 18px;
   background-color: pink;
 }
@@ -29,7 +28,7 @@ h1 {
 h2 {
   position: relative;
   top: -5px;
-  margin: 0px;
+  margin: 0;
   background-color: skyblue;
   font-size: 18px;
 }
@@ -49,8 +48,8 @@ h2 {
 }
 
 svg {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   user-select: none;
 }
 
