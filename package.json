@@ -26,6 +26,9 @@
     "stylelint-config-standard": "^26.0.0"
   },
   "stylelint": {
-    "extends": "stylelint-config-standard"
+    "extends": "stylelint-config-standard",
+    "rules": {
+      "color-hex-length": "long"
+    }
   }
 }
