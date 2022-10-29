@@ -128,8 +128,8 @@
   const dys = [-1, 0, 1, 0, -1, 1, 1, -1, 0];
   const dxs = [0, 1, 0, -1, 1, 1, -1, -1, 0];
 
-  let states = [];
-  let moveFlags = [];
+  const states = [];
+  const moveFlags = [];
   let moveFlag = false;
   let moveCount = 0;
   let moveDir = dirs.neutral;
@@ -1077,7 +1077,7 @@
                 {
                   const dd = 0.2;
                   const ddd = 0.1;
-                  let rectArg = {x: x, y: y, width: 1, height: 1};
+                  const rectArg = {x: x, y: y, width: 1, height: 1};
                   if (moveDir == dirs.ArrowUp || moveDir == dirs.ArrowDown) {
                     if (!flags[dirs.l]) rectArg.x += dd;
                     if (!flags[dirs.l]) rectArg.width -= dd;
