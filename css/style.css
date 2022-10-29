@@ -4,6 +4,7 @@ html {
 
 body {
   margin: 0;
+  background-color: #ccffff;
 }
 
 div.noselect {
@@ -15,6 +16,7 @@ div.noselect {
   margin: auto;
   padding: 0;
   text-align: center;
+  background-color: white;
 }
 
 h1 {
