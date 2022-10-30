@@ -21,7 +21,6 @@ div.noselect {
 
 h1 {
   position: relative;
-  top: -5px;
   margin: 0;
   font-size: 18px;
   background-color: pink;
@@ -55,13 +54,12 @@ svg {
   user-select: none;
 }
 
-div.inner {
-  margin: 10px;
+div {
+  padding-bottom: 5px;
 }
 
-div.pink {
-  margin-bottom: 5px;
-  border: solid 5px pink;
+div.inner {
+  margin: 10px;
 }
 
 div.skyblue {
