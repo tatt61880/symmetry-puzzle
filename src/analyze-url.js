@@ -1,0 +1,41 @@
+function analyzeUrl() { // eslint-disable-line no-unused-vars
+  'use strict';
+  const res = {
+    levelObj: {
+      w: 6,
+      h: 6,
+      s: '',
+    },
+    autoMode: false,
+    rotateNum: 0,
+    mirrorFlag: false,
+  };
+  const queryStrs = location.href.split('?')[1];
+  if (queryStrs == null) return res;
+  for (const queryStr of queryStrs.split('&')) {
+    const paramArray = queryStr.split('=');
+    const paramName = paramArray[0];
+    const paramVal = paramArray[1];
+    switch (paramName) {
+    case 'w':
+      res.levelObj.w = Number(paramVal);
+      break;
+    case 'h':
+      res.levelObj.h = Number(paramVal);
+      break;
+    case 's':
+      res.levelObj.s = paramVal;
+      break;
+    case 'auto':
+      res.autoMode = true;
+      break;
+    case 'rotate':
+      res.rotateNum = Number(paramVal) % 4;
+      break;
+    case 'mirror':
+      res.mirrorFlag = true;
+      break;
+    }
+  }
+  return res;
+}

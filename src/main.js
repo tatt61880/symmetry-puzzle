@@ -36,9 +36,12 @@
     {w: 6, h: 5, s: 's-t-0001-02211-0211', r: '22101111230122230012223302300130'},
   ];
 
+  let autoMode = false;
+  let rotateNum = 0;
+  let mirrorFlag = false;
+
   let debugFlag = false;
   let editMode = false;
-  let autoMode = false;
   let autoStep;
 
   let levelId;
@@ -56,8 +59,6 @@
   let rightEnd;
   let downEnd;
   const leftEnd = 2;
-  let rotateNum = 0;
-  let mirrorFlag = false;
   let clearFlag = false;
 
   const stateWall = -1; // 壁
@@ -162,42 +163,6 @@
   const inputKeys = {};
 
   window.addEventListener('load', onload, false);
-
-  function analyzeUrl() {
-    const res = {
-      w: 6,
-      h: 6,
-      s: '',
-    };
-    const queryStrs = location.href.split('?')[1];
-    if (queryStrs == null) return res;
-    for (const queryStr of queryStrs.split('&')) {
-      const paramArray = queryStr.split('=');
-      const paramName = paramArray[0];
-      const paramVal = paramArray[1];
-      switch (paramName) {
-      case 'w':
-        res.w = Number(paramVal);
-        break;
-      case 'h':
-        res.h = Number(paramVal);
-        break;
-      case 's':
-        res.s = paramVal;
-        break;
-      case 'auto':
-        autoMode = true;
-        break;
-      case 'rotate':
-        rotateNum = Number(paramVal) % 4;
-        break;
-      case 'mirror':
-        mirrorFlag = true;
-        break;
-      }
-    }
-    return res;
-  }
 
   function getW() {
     return rightEnd - leftEnd + 1;
@@ -711,7 +676,11 @@
       elems[elemName] = document.getElementById(elemIds[elemName]);
     }
 
-    levelObj = analyzeUrl();
+    const res = window.analyzeUrl();
+    autoMode = res.autoMode;
+    rotateNum = res.rotateNum;
+    mirrorFlag = res.mirrorFlag;
+    levelObj = res.levelObj;
     if (levelObj.s == '') {
       levelId = 1;
       loadLevelById(levelId);
