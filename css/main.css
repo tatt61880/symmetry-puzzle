@@ -14,7 +14,7 @@ div.noselect {
 #contents {
   max-width: 500px;
   padding: 0;
-  margin: auto;
+  margin: 0 auto;
   text-align: center;
   background-color: white;
 }
