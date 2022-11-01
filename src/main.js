@@ -211,7 +211,7 @@
     const w = getW();
     const h = getH();
     const s = getStateStr(states, upEnd, rightEnd, downEnd, leftEnd);
-    console.log(`{w: ${w}, h: ${h}, s: '${s}'},`); // eslint-disable-line no-console
+    console.log(`{w: ${w}, h: ${h}, s: '${s}'},`);
     return `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}`;
   }
 
@@ -904,20 +904,20 @@
         const h = levelObj.h;
         const s = levelObj.s;
         const replayStr = undoInfo.getReplayStr();
-        console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`); // eslint-disable-line no-console
+        console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`);
         const steps = undoInfo.getIndex();
-        console.log(`${steps} 手`); // eslint-disable-line no-console
+        console.log(`${steps} 手`);
         const r = levelObj.r;
         if (levelId === null || r === undefined) {
-          console.warn('過去最高記録の情報がありません！'); // eslint-disable-line no-console
+          console.warn('過去最高記録の情報がありません！');
         } else {
           const bestRecord = r.length;
           if (steps < bestRecord) {
-            console.log(`新記録!\n${bestRecord} → ${steps} (${steps - bestRecord} 手)`); // eslint-disable-line no-console
+            console.log(`新記録!\n${bestRecord} → ${steps} (${steps - bestRecord} 手)`);
           } else {
-            console.log(`過去最高記録は ${bestRecord} 手です。\n(差: ${steps - bestRecord} 手)`); // eslint-disable-line no-console
+            console.log(`過去最高記録は ${bestRecord} 手です。\n(差: ${steps - bestRecord} 手)`);
             if (replayStr == r) {
-              console.log('(完全に同じ手順です。)'); // eslint-disable-line no-console
+              console.log('(完全に同じ手順です。)');
             }
           }
         }
