@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.08.11';
+  const version = 'Version: 2022.11.02';
 
   const levels = [
     // LEVEL 1～

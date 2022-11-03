@@ -7,13 +7,9 @@ body {
   background-color: #ccffff;
 }
 
-div.noselect {
-  user-select: none;
-}
-
 #contents {
   max-width: 500px;
-  padding: 0;
+  padding-bottom: 5px;
   margin: 0 auto;
   text-align: center;
   background-color: white;
@@ -28,10 +24,21 @@ h1 {
 
 h2 {
   position: relative;
-  top: -5px;
-  margin: 0;
+  margin: 0 0 5px;
   font-size: 18px;
   background-color: skyblue;
+}
+
+div.noselect {
+  user-select: none;
+}
+
+div.inner {
+  margin: 10px;
+}
+
+div.level {
+  background-color: #cceeff;
 }
 
 .button {
@@ -52,19 +59,6 @@ svg {
   padding: 0;
   margin: 0;
   user-select: none;
-}
-
-div {
-  padding-bottom: 5px;
-}
-
-div.inner {
-  margin: 10px;
-}
-
-div.skyblue {
-  margin-bottom: 5px;
-  border: solid 5px skyblue;
 }
 
 text {
