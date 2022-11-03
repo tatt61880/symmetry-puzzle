@@ -162,7 +162,7 @@
   let inputDir = dirs.neutral;
   const inputKeys = {};
 
-  window.addEventListener('load', onload, false);
+  document.addEventListener('DOMContentLoaded', onload, false);
 
   function getW() {
     return rightEnd - leftEnd + 1;
@@ -444,7 +444,7 @@
     elems.svg.textContent = '';
     initStates();
 
-    window.setTimeout(() => {
+    setTimeout(() => {
       elems.resetLevel.style.filter = 'none';
       loadLevel(levelObj);
     }, 50);
@@ -742,7 +742,7 @@
       elems.levelNext.addEventListener('click', gotoNextLevel, false);
       elems.editLevel.addEventListener('click', toggleEditLevel, false);
 
-      const touchDevice = window.ontouchstart !== undefined;
+      const touchDevice = document.ontouchstart !== undefined;
       const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
@@ -757,7 +757,7 @@
       elems.undo.addEventListener(pointerdownEventName, undodown, false);
     }
 
-    window.setInterval(() => {
+    setInterval(() => {
       if (inputCount < inputCountPrev + inputInterval) {
         inputCount++;
       }
@@ -1274,28 +1274,6 @@
         replayStr += this.undoArray[i].dir;
       }
       return replayStr;
-    }
-  }
-
-  class Stack {
-    constructor() {
-      this.data = [];
-    }
-    push(val) {
-      this.data.push(val);
-      return val;
-    }
-    pop() {
-      return this.data.pop();
-    }
-    top() {
-      return this.data[this.data.length - 1];
-    }
-    size() {
-      return this.data.length;
-    }
-    empty() {
-      return this.data.length == 0;
     }
   }
 })();
