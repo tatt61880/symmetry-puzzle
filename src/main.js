@@ -163,6 +163,8 @@
   const inputKeys = {};
 
   document.addEventListener('DOMContentLoaded', onload, false);
+  return;
+  // ==========================================================================
 
   function getW() {
     return rightEnd - leftEnd + 1;
@@ -245,7 +247,7 @@
       moveState[i] = true;
 
       let flag = true;
-      const st = new Stack(); // 移動可能か検証必要な状態番号
+      const st = window.Stack(); // 移動可能か検証必要な状態番号
       st.push(i);
       while (!st.empty()) {
         const state = st.pop();
@@ -463,7 +465,7 @@
 
   function resetUndo() {
     clearFlag = false;
-    undoInfo = new UndoInfo();
+    undoInfo = window.UndoInfo();
     hideElem(elems.undo);
   }
 
@@ -1141,7 +1143,7 @@
         }
       }
 
-      const st = new Stack();
+      const st = window.Stack();
       st.push([x0, y0]);
       statesTemp[y0][x0] = stateNone;
       while (!st.empty()) {
@@ -1249,31 +1251,5 @@
   function hideElem(elem) {
     if (elem === undefined) return;
     elem.style.display = 'none';
-  }
-
-  class UndoInfo {
-    constructor() {
-      this.undoArray = [];
-      this.undoIdx = 0;
-    }
-    pushData(data) {
-      this.undoArray[this.undoIdx++] = data;
-    }
-    isUndoable() {
-      return this.undoIdx != 0;
-    }
-    undo() {
-      return this.undoArray[--this.undoIdx];
-    }
-    getIndex() {
-      return this.undoIdx;
-    }
-    getReplayStr() {
-      let replayStr = '';
-      for (let i = 0; i < this.undoIdx; ++i) {
-        replayStr += this.undoArray[i].dir;
-      }
-      return replayStr;
-    }
   }
 })();
