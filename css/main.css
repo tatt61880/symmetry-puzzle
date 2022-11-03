@@ -1,4 +1,5 @@
 html {
+  font-size: 16px;
   touch-action: manipulation;
 }
 
@@ -9,23 +10,33 @@ body {
 
 #contents {
   max-width: 500px;
-  padding-bottom: 5px;
   margin: 0 auto;
   text-align: center;
   background-color: white;
 }
 
-h1 {
+header {
   position: relative;
-  margin: 0;
-  font-size: 18px;
+  font-size: 1.1rem;
   background-color: pink;
+}
+
+footer {
+  position: relative;
+  font-size: 1rem;
+  color: #aa8888;
+  background-color: pink;
+}
+
+#version-info {
+  font-size: 0.8rem;
+  color: #aa8888;
 }
 
 h2 {
   position: relative;
   margin: 0 0 5px;
-  font-size: 18px;
+  font-size: 1.1rem;
   background-color: skyblue;
 }
 

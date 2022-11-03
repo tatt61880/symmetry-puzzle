@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const versionText = 'Version: 2022.11.03';
+  const versionText = 'v2022.11.03';
 
   let autoMode = false;
   let rotateNum = 0;
@@ -595,7 +595,7 @@
   }
 
   function onload() {
-    document.getElementById('versionInfo').innerText = versionText;
+    document.getElementById('version-info').innerText = versionText;
 
     for (const elemName in elemIds) {
       elems[elemName] = document.getElementById(elemIds[elemName]);

@@ -8,7 +8,7 @@
   window.showkoban.svg.createG = () => {
     const g = document.createElementNS(SVG_NS, 'g');
     return g;
-  }
+  };
 
   window.showkoban.svg.createLine = (blockSize, param) => {
     const line = document.createElementNS(SVG_NS, 'line');
@@ -17,7 +17,7 @@
     line.setAttribute('x2', blockSize * param.x2);
     line.setAttribute('y2', blockSize * param.y2);
     return line;
-  }
+  };
 
   window.showkoban.svg.createRect = (blockSize, param) => {
     const rect = document.createElementNS(SVG_NS, 'rect');
@@ -26,7 +26,7 @@
     rect.setAttribute('width', blockSize * param.width);
     rect.setAttribute('height', blockSize * param.height);
     return rect;
-  }
+  };
 
   window.showkoban.svg.createPolygon = (blockSize, param) => {
     const polygon = document.createElementNS(SVG_NS, 'polygon');
@@ -37,7 +37,7 @@
     }
     polygon.setAttribute('points', points);
     return polygon;
-  }
+  };
 
   window.showkoban.svg.createText = (blockSize, param) => {
     const text = document.createElementNS(SVG_NS, 'text');
@@ -47,5 +47,5 @@
     text.setAttribute('dominant-baseline', 'middle');
     text.setAttribute('text-anchor', 'middle');
     return text;
-  }
+  };
 })();
