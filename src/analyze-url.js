@@ -1,6 +1,8 @@
 (function() {
   'use strict';
-  window.analyzeUrl = () => {
+  window.showkoban = window.showkoban || {};
+
+  window.showkoban.analyzeUrl = () => {
     const res = {
       levelObj: {
         w: 6,

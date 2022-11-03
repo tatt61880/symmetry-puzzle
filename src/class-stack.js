@@ -1,6 +1,8 @@
 (function() {
   'use strict';
-  window.Stack = () => {
+  window.showkoban = window.showkoban || {};
+
+  window.showkoban.Stack = () => {
     return new class {
       constructor() {
         this.data = [];

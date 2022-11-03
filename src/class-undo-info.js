@@ -1,6 +1,8 @@
 (function() {
   'use strict';
-  window.UndoInfo = () => {
+  window.showkoban = window.showkoban || {};
+
+  window.showkoban.UndoInfo = () => {
     return new class {
       constructor() {
         this.undoArray = [];

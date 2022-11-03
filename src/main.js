@@ -1,40 +1,6 @@
 (function() {
   'use strict';
-  const versionText = 'Version: 2022.11.02';
-
-  const levels = [
-    // LEVEL 1～
-    {w: 6, h: 6, s: 's---00001-002211-00211', r: '111112223122302333001233001110012'},
-    {w: 5, h: 5, s: 's0aa-011b-010b-0x-0c002', r: '21012233221'},
-    {w: 5, h: 5, s: 'saaa-0110b-c100b-c-00d02', r: '12112223100033321012321'},
-    {w: 5, h: 5, s: 'sa-000bb-cc001-c220x-c2', r: '12121223023301210301'},
-    {w: 5, h: 5, s: 'saa-0a-10b-xc22-002', r: '12220110331112232300'},
-
-    // LEVEL 6～
-    {w: 5, h: 5, s: 's10a-20b-c000d-0e33-003', r: '122110311223230011003'},
-    {w: 5, h: 5, s: 's01-002ax-033-0b304-000c', r: '22221110003122233300130012120332111333221100'},
-    {w: 5, h: 5, s: 's00a-b1ca-0d-2222-e0f3', r: '111223311003321211223'},
-    {w: 5, h: 5, s: 's00a-0b0a-0bb-1111-0002', r: '112312112230332110100322'},
-    {w: 6, h: 5, s: '001sa-00111x-2201-02bc', r: '3112222333301211110033112230002323233012110112333303001232111210'},
-
-    // LEVEL 11～
-    {w: 6, h: 6, s: '001sa-xb111x-c001-22-0200d-000xd', r: '203321222233011300010311123311223022323301110'},
-    {w: 6, h: 6, s: '00000s--111-201-222-02', r: '2222233302330111211033301110003333210122232330111'},
-    {w: 6, h: 6, s: '0aa-012-01222b-022cde-0sfff', r: '3000011211123303013332222210301300012232221100110332223301210'},
-    {w: 6, h: 6, s: 'x-000111-0021aa-s221a--x0000x', r: '2111030032321132211100103100312222332303301210'},
-    {w: 6, h: 6, s: '001s0a-b011-bc12de-00220e-f022', r: '1212230222333000022212103010310032212223330100012321'},
-
-    // LEVEL 16～
-    {w: 6, h: 4, s: '-0112s-0012', r: '0333232100111122230103333221021103'},
-    {w: 6, h: 5, s: '-s11222-01122', r: '01112033322210301122211103330'},
-    {w: 6, h: 6, s: 's0000x-0112-00122-00344-0334-x0000x', r: '21011123223223011000033321012220033211'},
-    {w: 5, h: 5, s: '-01s2-0303-0333-00x', r: '0332213001222000111232330101222003321'},
-    {w: 6, h: 6, s: '000aa-0x0sa-0011a-02103-00113-00bb', r: '1223001223212330330111100322210033321'},
-
-    // LEVEL 21～
-    {w: 6, h: 6, s: '0000a-0x0sa-0011a-021b3-00113-00cc', r: '033322123221100301332211'},
-    {w: 6, h: 5, s: 's-t-0001-02211-0211', r: '22101111230122230012223302300130'},
-  ];
+  const versionText = 'Version: 2022.11.03';
 
   let autoMode = false;
   let rotateNum = 0;
@@ -247,11 +213,12 @@
       moveState[i] = true;
 
       let flag = true;
-      const st = window.Stack(); // 移動可能か検証必要な状態番号
+      const st = showkoban.Stack(); // 移動可能か検証必要な状態番号
       st.push(i);
       while (!st.empty()) {
         const state = st.pop();
-        loop: for (let y = upEnd; y <= downEnd; ++y) {
+        loop:
+        for (let y = upEnd; y <= downEnd; ++y) {
           for (let x = leftEnd; x <= rightEnd; ++x) {
             if (states[y][x] != state) continue;
             const neighborState = states[y + dy][x + dx];
@@ -465,7 +432,7 @@
 
   function resetUndo() {
     clearFlag = false;
-    undoInfo = window.UndoInfo();
+    undoInfo = showkoban.UndoInfo();
     hideElem(elems.undo);
   }
 
@@ -530,10 +497,10 @@
     resetUndo();
     levelId = id;
     if (levelId < 1) levelId = 1;
-    if (levelId > levels.length) levelId = levels.length;
+    if (levelId > showkoban.levels.length) levelId = showkoban.levels.length;
     updateLevelVisibility();
     elems.levelId.textContent = levelId;
-    levelObj = levels[levelId - 1]; // リセット用にここで代入します。
+    levelObj = showkoban.levels[levelId - 1]; // リセット用にここで代入します。
 
     if (mirrorFlag) mirrorLevel();
     rotateLevel(rotateNum);
@@ -629,7 +596,7 @@
     } else {
       (levelId == 1 ? hideElem : showElem)(elems.levelPrev);
       showElem(elems.levelId);
-      (levelId == levels.length ? hideElem : showElem)(elems.levelNext);
+      (levelId == showkoban.levels.length ? hideElem : showElem)(elems.levelNext);
       hideElem(elems.editLevel);
     }
   }
@@ -643,7 +610,7 @@
 
   function gotoNextLevel() {
     if (levelId == null) return;
-    if (levelId < levels.length) {
+    if (levelId < showkoban.levels.length) {
       loadLevelById(levelId + 1);
     }
   }
@@ -678,7 +645,7 @@
       elems[elemName] = document.getElementById(elemIds[elemName]);
     }
 
-    const res = window.analyzeUrl();
+    const res = showkoban.analyzeUrl();
     autoMode = res.autoMode;
     rotateNum = res.rotateNum;
     mirrorFlag = res.mirrorFlag;
@@ -869,7 +836,7 @@
       text.setAttribute('font-weight', 'bold');
       text.setAttribute('fill', 'blue');
       g.appendChild(text);
-      if (!clearFlag && !moveFlag) {
+      if (!clearFlag && !moveFlag && undoInfo) {
         clearFlag = true;
         const w = levelObj.w;
         const h = levelObj.h;
@@ -1133,7 +1100,8 @@
       }
       let x0;
       let y0;
-      loop: for (let y = upEnd; y <= downEnd; ++y) {
+      loop:
+      for (let y = upEnd; y <= downEnd; ++y) {
         for (let x = leftEnd; x <= rightEnd; ++x) {
           if (isX(statesTemp[y][x])) {
             x0 = x;
@@ -1143,7 +1111,7 @@
         }
       }
 
-      const st = window.Stack();
+      const st = showkoban.Stack();
       st.push([x0, y0]);
       statesTemp[y0][x0] = stateNone;
       while (!st.empty()) {
