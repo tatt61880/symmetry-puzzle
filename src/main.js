@@ -27,50 +27,8 @@
   const leftEnd = 2;
   let clearFlag = false;
 
-  const stateWall = -1; // 壁
-  const stateNone = 0;
-  const stateTargetMin = 1;
-  const stateTargetMax = 9;
-  const stateOtherMin = 10;
-  const stateOtherMax = 15;
-  const stateUserMin = 100; // 自機
-  const stateUserMax = 102; // 自機
-
-  let drawingState = stateNone;
+  let drawingState = showkoban.states.none;
   const editboxFunctions = {};
-
-  const stateToChar = {};
-  const charToState = {};
-
-  stateToChar[stateWall] = 'x';
-  stateToChar[stateNone] = '0';
-  for (let i = stateTargetMin; i <= stateTargetMax; ++i) {
-    stateToChar[i] = `${i}`; // '1' ～
-  }
-  for (let i = stateOtherMin; i <= stateOtherMax; ++i) {
-    stateToChar[i] = `${String.fromCharCode(0x61 + i - stateOtherMin)}`; // 'a' ～
-  }
-  for (let i = stateUserMin; i <= stateUserMax; ++i) {
-    stateToChar[i] = `${String.fromCharCode(0x73 + i - stateUserMin)}`; // 's' ～
-  }
-
-  for (const key in stateToChar) {
-    const val = stateToChar[key];
-    charToState[val] = Number(key);
-  }
-
-  const colors = {};
-  colors[stateNone] = {fill: 'white', stroke: '#aaa', text: '#ccc'};
-  colors[stateWall] = {fill: '#222', stroke: '#666', text: 'white'};
-  for (let i = stateTargetMin; i <= stateTargetMax; ++i) {
-    colors[i] = {fill: 'pink', stroke: 'red', text: 'black'};
-  }
-  for (let i = stateOtherMin; i <= stateOtherMax; ++i) {
-    colors[i] = {fill: '#e5e5e5', stroke: '#aaa', text: 'black'};
-  }
-  for (let i = stateUserMin; i <= stateUserMax; ++i) {
-    colors[i] = {fill: 'aqua', stroke: 'blue', text: 'black'};
-  }
 
   const colorLine = '#888';
 
@@ -153,7 +111,7 @@
     for (let y = upEnd; y <= downEnd; ++y) {
       let line = '';
       for (let x = leftEnd; x <= rightEnd; ++x) {
-        line += stateToChar[states[y][x]];
+        line += showkoban.states.stateToChar[states[y][x]];
       }
       res += line.replace(/0+$/, '');
       res += '-';
@@ -166,23 +124,23 @@
     for (let y = 0; y < height; ++y) {
       states[y] = [];
       for (let x = 0; x < width; ++x) {
-        states[y][x] = stateNone;
+        states[y][x] = showkoban.states.none;
       }
     }
 
     // 枠(外周2マス分)
     {
       for (let y = 0; y < height; ++y) {
-        states[y][0] = stateWall;
-        states[y][1] = stateWall;
-        states[y][width - 2] = stateWall;
-        states[y][width - 1] = stateWall;
+        states[y][0] = showkoban.states.wall;
+        states[y][1] = showkoban.states.wall;
+        states[y][width - 2] = showkoban.states.wall;
+        states[y][width - 1] = showkoban.states.wall;
       }
       for (let x = 2; x < width - 2; ++x) {
-        states[0][x] = stateWall;
-        states[1][x] = stateWall;
-        states[height - 2][x] = stateWall;
-        states[height - 1][x] = stateWall;
+        states[0][x] = showkoban.states.wall;
+        states[1][x] = showkoban.states.wall;
+        states[height - 2][x] = showkoban.states.wall;
+        states[height - 1][x] = showkoban.states.wall;
       }
     }
   }
@@ -206,7 +164,7 @@
     const dx = dxs[dir];
     const dy = dys[dir];
 
-    for (let i = stateUserMin; i <= stateUserMax; ++i) {
+    for (let i = showkoban.states.userMin; i <= showkoban.states.userMax; ++i) {
       if (count((x)=>{ return x == i; }) == 0) continue;
 
       const moveState = []; // 移動予定の状態番号
@@ -222,8 +180,8 @@
           for (let x = leftEnd; x <= rightEnd; ++x) {
             if (states[y][x] != state) continue;
             const neighborState = states[y + dy][x + dx];
-            if (neighborState == stateNone) continue;
-            if (neighborState == stateWall) {
+            if (neighborState == showkoban.states.none) continue;
+            if (neighborState == showkoban.states.wall) {
               flag = false;
               break loop;
             } else if (!moveState[neighborState]) {
@@ -270,7 +228,7 @@
     for (let y = upEnd; y <= downEnd; ++y) {
       for (let x = leftEnd; x <= rightEnd; ++x) {
         if (moveFlags[y][x]) {
-          states[y][x] = stateNone;
+          states[y][x] = showkoban.states.none;
         }
       }
     }
@@ -459,7 +417,7 @@
         x = leftEnd;
       } else {
         if (x > rightEnd) continue;
-        states[y][x] = charToState[c];
+        states[y][x] = showkoban.states.charToState[c];
         x++;
       }
     }
@@ -517,7 +475,7 @@
       for (let y = 0; y < h; ++y) {
         statesTemp[y] = [];
         for (let x = 0; x < w; ++x) {
-          statesTemp[y][x] = stateNone;
+          statesTemp[y][x] = showkoban.states.none;
         }
       }
 
@@ -530,7 +488,7 @@
           x = w - 1;
         } else {
           if (x == -1) continue;
-          statesTemp[y][x] = charToState[c];
+          statesTemp[y][x] = showkoban.states.charToState[c];
           x--;
         }
       }
@@ -556,7 +514,7 @@
         for (let y = 0; y < h; ++y) {
           statesTemp[y] = [];
           for (let x = 0; x < w; ++x) {
-            statesTemp[y][x] = stateNone;
+            statesTemp[y][x] = showkoban.states.none;
           }
         }
 
@@ -569,7 +527,7 @@
             y = 0;
           } else {
             if (y == h) continue;
-            statesTemp[y][x] = charToState[c];
+            statesTemp[y][x] = showkoban.states.charToState[c];
             y++;
           }
         }
@@ -661,15 +619,15 @@
 
     // editモード用
     {
-      for (const char in charToState) {
-        const state = charToState[char];
+      for (const char in showkoban.states.charToState) {
+        const state = showkoban.states.charToState[char];
         const elem = document.getElementById(`edit_${char}`);
         if (elem === null) continue;
         const func = () => {
-          elems.editShape.setAttribute('fill', colors[state].fill);
-          elems.editShape.setAttribute('stroke', colors[state].stroke);
+          elems.editShape.setAttribute('fill', showkoban.colors[state].fill);
+          elems.editShape.setAttribute('stroke', showkoban.colors[state].stroke);
           elems.editState.textContent = char;
-          elems.editState.setAttribute('fill', colors[state].text);
+          elems.editState.setAttribute('fill', showkoban.colors[state].text);
           drawingState = state;
         };
         editboxFunctions[char] = func;
@@ -681,8 +639,8 @@
           rect.setAttribute('y', 0);
           rect.setAttribute('width', 30);
           rect.setAttribute('height', 30);
-          rect.setAttribute('fill', colors[state].fill);
-          rect.setAttribute('stroke', colors[state].stroke);
+          rect.setAttribute('fill', showkoban.colors[state].fill);
+          rect.setAttribute('stroke', showkoban.colors[state].stroke);
           rect.setAttribute('stroke-width', 4);
           elem.appendChild(rect);
         }
@@ -694,12 +652,12 @@
           text.setAttribute('text-anchor', 'middle');
           text.setAttribute('font-weight', 'bold');
           text.setAttribute('font-size', '18px');
-          text.setAttribute('fill', colors[state].text);
+          text.setAttribute('fill', showkoban.colors[state].text);
           text.textContent = char;
           elem.appendChild(text);
         }
       }
-      editboxFunctions[stateToChar[stateNone]]();
+      editboxFunctions[showkoban.states.stateToChar[showkoban.states.none]]();
     }
 
     {
@@ -884,10 +842,10 @@
       for (let y = 1; y < height - 1; ++y) {
         for (let x = 1; x < width - 1; ++x) {
           const state = states[y][x];
-          if (state == stateNone) continue;
+          if (state == showkoban.states.none) continue;
 
           const g = createG();
-          const color = colors[state];
+          const color = showkoban.colors[state];
           {
             const eps = 0.01; // サイズを少し大きくすることで、隙間をなくします。
             const rect = createRect({x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2});
@@ -952,7 +910,7 @@
               g.appendChild(rect);
             }
 
-            if (stateUserMin <= state && state <= stateUserMax) {
+            if (showkoban.states.userMin <= state && state <= showkoban.states.userMax) {
               const size = 0.35;
               // 右上
               if (!flags[dirs.u] && !flags[dirs.r]) {
@@ -1049,8 +1007,8 @@
             }
           }
           if (editMode ^ debugFlag) {
-            const text = createText({x: x + 0.5, y: y + 0.05, text: stateToChar[state]});
-            text.setAttribute('fill', colors[state].text);
+            const text = createText({x: x + 0.5, y: y + 0.05, text: showkoban.states.stateToChar[state]});
+            text.setAttribute('fill', showkoban.colors[state].text);
             text.setAttribute('font-size', `${blockSize * 0.7}px`);
             text.setAttribute('font-weight', 'bold');
             g.appendChild(text);
@@ -1083,7 +1041,7 @@
   }
 
   function isTarget(x) {
-    return stateTargetMin <= x && x <= stateTargetMax;
+    return showkoban.states.targetMin <= x && x <= showkoban.states.targetMax;
   }
 
   function isOk(isX) {
@@ -1113,14 +1071,14 @@
 
       const st = showkoban.Stack();
       st.push([x0, y0]);
-      statesTemp[y0][x0] = stateNone;
+      statesTemp[y0][x0] = showkoban.states.none;
       while (!st.empty()) {
         const xy = st.pop();
         for (let i = 0; i < 4; i++) {
           const xx = xy[0] + dxs[i];
           const yy = xy[1] + dys[i];
           if (isX(statesTemp[yy][xx])) {
-            statesTemp[yy][xx] = stateNone;
+            statesTemp[yy][xx] = showkoban.states.none;
             st.push([xx, yy]);
           }
         }
@@ -1188,8 +1146,8 @@
       states[y][x] = drawingState;
       draw();
       updateUrl();
-    } else if (states[y][x] != stateNone) {
-      states[y][x] = stateNone;
+    } else if (states[y][x] != showkoban.states.none) {
+      states[y][x] = showkoban.states.none;
       draw();
       updateUrl();
     }
