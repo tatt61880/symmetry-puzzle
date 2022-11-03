@@ -17,8 +17,6 @@
   let undoFlag = false;
   let undoCount = 0;
 
-  const SVG_NS = 'http://www.w3.org/2000/svg';
-
   let width;
   let height;
   const upEnd = 2;
@@ -634,26 +632,19 @@
         elem.addEventListener('click', func, false);
 
         {
-          const rect = document.createElementNS(SVG_NS, 'rect');
-          rect.setAttribute('x', 0);
-          rect.setAttribute('y', 0);
-          rect.setAttribute('width', 30);
-          rect.setAttribute('height', 30);
+          const rect = showkoban.svg.createRect(30, {x: 0, y: 0, width: 1, height: 1});
           rect.setAttribute('fill', showkoban.colors[state].fill);
           rect.setAttribute('stroke', showkoban.colors[state].stroke);
           rect.setAttribute('stroke-width', 4);
           elem.appendChild(rect);
         }
         {
-          const text = document.createElementNS(SVG_NS, 'text');
-          text.setAttribute('x', 15);
-          text.setAttribute('y', 17);
+          const text = showkoban.svg.createText(30, {x: 0.5, y: 0, text: char});
           text.setAttribute('dominant-baseline', 'middle');
           text.setAttribute('text-anchor', 'middle');
           text.setAttribute('font-weight', 'bold');
           text.setAttribute('font-size', '18px');
           text.setAttribute('fill', showkoban.colors[state].text);
-          text.textContent = char;
           elem.appendChild(text);
         }
       }
@@ -723,63 +714,19 @@
     }, 20);
   }
 
-  function createG() {
-    const g = document.createElementNS(SVG_NS, 'g');
-    return g;
-  }
-
-  function createLine(param) {
-    const line = document.createElementNS(SVG_NS, 'line');
-    line.setAttribute('x1', blockSize * param.x1);
-    line.setAttribute('y1', blockSize * param.y1);
-    line.setAttribute('x2', blockSize * param.x2);
-    line.setAttribute('y2', blockSize * param.y2);
-    return line;
-  }
-
-  function createRect(param) {
-    const rect = document.createElementNS(SVG_NS, 'rect');
-    rect.setAttribute('x', blockSize * param.x);
-    rect.setAttribute('y', blockSize * param.y);
-    rect.setAttribute('width', blockSize * param.width);
-    rect.setAttribute('height', blockSize * param.height);
-    return rect;
-  }
-
-  function createPolygon(param) {
-    const polygon = document.createElementNS(SVG_NS, 'polygon');
-    let points = '';
-    for (const point of param.points) {
-      if (points != '') points += ' ';
-      points += `${blockSize * point[0]},${blockSize * point[1]}`;
-    }
-    polygon.setAttribute('points', points);
-    return polygon;
-  }
-
-  function createText(param) {
-    const text = document.createElementNS(SVG_NS, 'text');
-    text.setAttribute('x', blockSize * param.x);
-    text.setAttribute('y', blockSize * (param.y + 0.5));
-    text.textContent = param.text;
-    text.setAttribute('dominant-baseline', 'middle');
-    text.setAttribute('text-anchor', 'middle');
-    return text;
-  }
-
   function createBackground() {
-    const g = createG();
+    const g = showkoban.svg.createG();
 
     const isCleared = isOk(isTarget);
     const paddingColor = isCleared ? '#8f8' : '#753';
 
     {
-      const rect = createRect({x: 0, y: 0, width: width, height: height});
+      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: 0, width: width, height: height});
       rect.setAttribute('fill', paddingColor);
       g.appendChild(rect);
     }
     {
-      const rect = createRect({x: 1, y: 1, width: width - 2, height: height - 2});
+      const rect = showkoban.svg.createRect(blockSize, {x: 1, y: 1, width: width - 2, height: height - 2});
       rect.setAttribute('fill', 'white');
       g.appendChild(rect);
     }
@@ -789,7 +736,7 @@
       if (autoMode) {
         setTimeout(gotoNextLevel, 1000);
       }
-      const text = createText({x: width * 0.5, y: height - 0.95, text: 'CLEAR'});
+      const text = showkoban.svg.createText(blockSize, {x: width * 0.5, y: height - 1, text: 'CLEAR'});
       text.setAttribute('font-size', `${blockSize * 0.8}px`);
       text.setAttribute('font-weight', 'bold');
       text.setAttribute('fill', 'blue');
@@ -830,7 +777,7 @@
     {
       // 背景
       {
-        const g = createG();
+        const g = showkoban.svg.createG();
         g.appendChild(createBackground());
         elems.svg.appendChild(g);
       }
@@ -844,11 +791,11 @@
           const state = states[y][x];
           if (state == showkoban.states.none) continue;
 
-          const g = createG();
+          const g = showkoban.svg.createG();
           const color = showkoban.colors[state];
           {
             const eps = 0.01; // サイズを少し大きくすることで、隙間をなくします。
-            const rect = createRect({x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2});
+            const rect = showkoban.svg.createRect(blockSize, {x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2});
             rect.setAttribute('fill', color.fill);
             g.appendChild(rect);
           }
@@ -859,53 +806,53 @@
             }
             // 上側
             if (!flags[dirs.u]) {
-              const line = createLine({x1: x, y1: y + paddingWidthHalf, x2: x + 1, y2: y + paddingWidthHalf});
+              const line = showkoban.svg.createLine(blockSize, {x1: x, y1: y + paddingWidthHalf, x2: x + 1, y2: y + paddingWidthHalf});
               line.setAttribute('stroke', color.stroke);
               line.setAttribute('stroke-width', paddingWidth * blockSize);
               g.appendChild(line);
             }
             // 右側
             if (!flags[dirs.r]) {
-              const line = createLine({x1: x + 1 - paddingWidthHalf, y1: y, x2: x + 1 - paddingWidthHalf, y2: y + 1});
+              const line = showkoban.svg.createLine(blockSize, {x1: x + 1 - paddingWidthHalf, y1: y, x2: x + 1 - paddingWidthHalf, y2: y + 1});
               line.setAttribute('stroke', color.stroke);
               line.setAttribute('stroke-width', paddingWidth * blockSize);
               g.appendChild(line);
             }
             // 下側
             if (!flags[dirs.d]) {
-              const line = createLine({x1: x, y1: y + 1 - paddingWidthHalf, x2: x + 1, y2: y + 1 - paddingWidthHalf});
+              const line = showkoban.svg.createLine(blockSize, {x1: x, y1: y + 1 - paddingWidthHalf, x2: x + 1, y2: y + 1 - paddingWidthHalf});
               line.setAttribute('stroke', color.stroke);
               line.setAttribute('stroke-width', paddingWidth * blockSize);
               g.appendChild(line);
             }
             // 左側
             if (!flags[dirs.l]) {
-              const line = createLine({x1: x + paddingWidthHalf, y1: y, x2: x + paddingWidthHalf, y2: y + 1});
+              const line = showkoban.svg.createLine(blockSize, {x1: x + paddingWidthHalf, y1: y, x2: x + paddingWidthHalf, y2: y + 1});
               line.setAttribute('stroke', color.stroke);
               line.setAttribute('stroke-width', paddingWidth * blockSize);
               g.appendChild(line);
             }
             // 右上
             if (flags[dirs.u] && flags[dirs.r] && !flags[dirs.ur]) {
-              const rect = createRect({x: x + 1 - paddingWidth, y: y, width: paddingWidth, height: paddingWidth});
+              const rect = showkoban.svg.createRect(blockSize, {x: x + 1 - paddingWidth, y: y, width: paddingWidth, height: paddingWidth});
               rect.setAttribute('fill', color.stroke);
               g.appendChild(rect);
             }
             // 右下
             if (flags[dirs.d] && flags[dirs.r] && !flags[dirs.dr]) {
-              const rect = createRect({x: x + 1 - paddingWidth, y: y + 1 - paddingWidth, width: paddingWidth, height: paddingWidth});
+              const rect = showkoban.svg.createRect(blockSize, {x: x + 1 - paddingWidth, y: y + 1 - paddingWidth, width: paddingWidth, height: paddingWidth});
               rect.setAttribute('fill', color.stroke);
               g.appendChild(rect);
             }
             // 左下
             if (flags[dirs.d] && flags[dirs.l] && !flags[dirs.dl]) {
-              const rect = createRect({x: x, y: y + 1 - paddingWidth, width: paddingWidth, height: paddingWidth});
+              const rect = showkoban.svg.createRect(blockSize, {x: x, y: y + 1 - paddingWidth, width: paddingWidth, height: paddingWidth});
               rect.setAttribute('fill', color.stroke);
               g.appendChild(rect);
             }
             // 左上
             if (flags[dirs.u] && flags[dirs.l] && !flags[dirs.ul]) {
-              const rect = createRect({x: x, y: y, width: paddingWidth, height: paddingWidth});
+              const rect = showkoban.svg.createRect(blockSize, {x: x, y: y, width: paddingWidth, height: paddingWidth});
               rect.setAttribute('fill', color.stroke);
               g.appendChild(rect);
             }
@@ -914,7 +861,7 @@
               const size = 0.35;
               // 右上
               if (!flags[dirs.u] && !flags[dirs.r]) {
-                const polygon = createPolygon({
+                const polygon = showkoban.svg.createPolygon(blockSize, {
                   points: [
                     [x + 1 - size, y],
                     [x + 1, y],
@@ -926,7 +873,7 @@
               }
               // 右下
               if (!flags[dirs.d] && !flags[dirs.r]) {
-                const polygon = createPolygon({
+                const polygon = showkoban.svg.createPolygon(blockSize, {
                   points: [
                     [x + 1, y + 1 - size],
                     [x + 1, y + 1],
@@ -938,7 +885,7 @@
               }
               // 左下
               if (!flags[dirs.d] && !flags[dirs.l]) {
-                const polygon = createPolygon({
+                const polygon = showkoban.svg.createPolygon(blockSize, {
                   points: [
                     [x, y + 1 - size],
                     [x + size, y + 1],
@@ -950,7 +897,7 @@
               }
               // 左上
               if (!flags[dirs.u] && !flags[dirs.l]) {
-                const polygon = createPolygon({
+                const polygon = showkoban.svg.createPolygon(blockSize, {
                   points: [
                     [x, y],
                     [x + size, y],
@@ -969,7 +916,7 @@
 
               // 移動時のエフェクト（残像）
               if (!moveFlags[y - dys[moveDir]][x - dxs[moveDir]]) {
-                const g2 = createG();
+                const g2 = showkoban.svg.createG();
                 {
                   const dd = 0.2;
                   const ddd = 0.1;
@@ -988,7 +935,7 @@
                     rectArg.width += ddd * 2;
                   }
 
-                  const rect = createRect(rectArg);
+                  const rect = window.showkoban.svg.createRect(blockSize, rectArg);
                   rect.setAttribute('fill', color.fill);
                   rect.setAttribute('fill-opacity', 0.5);
                   const dx = dxs[moveDir] * blockSize * ratio * (moveCount / inputInterval) ** 2;
@@ -1007,7 +954,7 @@
             }
           }
           if (editMode ^ debugFlag) {
-            const text = createText({x: x + 0.5, y: y + 0.05, text: showkoban.states.stateToChar[state]});
+            const text = showkoban.svg.createText(blockSize, {x: x + 0.5, y: y, text: showkoban.states.stateToChar[state]});
             text.setAttribute('fill', showkoban.colors[state].text);
             text.setAttribute('font-size', `${blockSize * 0.7}px`);
             text.setAttribute('font-weight', 'bold');
@@ -1021,17 +968,17 @@
     // 点線
     {
       const dasharray = '1, 4';
-      const g = createG();
+      const g = showkoban.svg.createG();
       // 横線
       for (let y = 2; y < height - 1; ++y) {
-        const line = createLine({x1: 1, y1: y, x2: width - 1, y2: y});
+        const line = showkoban.svg.createLine(blockSize, {x1: 1, y1: y, x2: width - 1, y2: y});
         line.setAttribute('stroke', colorLine);
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
       // 縦線
       for (let x = 2; x < width - 1; ++x) {
-        const line = createLine({x1: x, y1: 1, x2: x, y2: height - 1});
+        const line = showkoban.svg.createLine(blockSize, {x1: x, y1: 1, x2: x, y2: height - 1});
         line.setAttribute('stroke', colorLine);
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
