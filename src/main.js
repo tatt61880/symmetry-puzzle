@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  const version = 'Version: 2022.11.02';
+  const versionText = 'Version: 2022.11.02';
 
   const levels = [
     // LEVEL 1～
@@ -241,7 +241,7 @@
     for (let i = stateUserMin; i <= stateUserMax; ++i) {
       if (count((x)=>{ return x == i; }) == 0) continue;
 
-      const moveState = {}; // 移動予定の状態番号
+      const moveState = []; // 移動予定の状態番号
       moveState[i] = true;
 
       let flag = true;
@@ -670,7 +670,7 @@
   }
 
   function onload() {
-    document.getElementById('versionInfo').innerText = version;
+    document.getElementById('versionInfo').innerText = versionText;
 
     for (const elemName in elemIds) {
       elems[elemName] = document.getElementById(elemIds[elemName]);
