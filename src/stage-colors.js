@@ -20,5 +20,8 @@
     colors[i] = {fill: 'aqua', stroke: 'blue', text: 'black'};
   }
 
+  colors.line = '#888';
+
+  Object.freeze(colors);
   showkoban.colors = colors;
 })();

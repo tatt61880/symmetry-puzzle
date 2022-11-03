@@ -48,4 +48,6 @@
     text.setAttribute('text-anchor', 'middle');
     return text;
   };
+
+  Object.freeze(window.showkoban.svg);
 })();

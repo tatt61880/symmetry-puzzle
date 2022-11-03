@@ -32,6 +32,10 @@
     charToState[val] = Number(key);
   }
 
+  Object.freeze(stateToChar);
+  Object.freeze(charToState);
   showkoban.states.stateToChar = stateToChar;
   showkoban.states.charToState = charToState;
+
+  Object.freeze(showkoban.states);
 })();

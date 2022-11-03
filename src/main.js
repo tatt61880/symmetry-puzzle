@@ -1,6 +1,8 @@
 (function() {
   'use strict';
-  const versionText = 'v2022.11.03';
+  Object.freeze(showkoban);
+
+  const versionText = 'v2022.11.06';
 
   let autoMode = false;
   let rotateNum = 0;
@@ -28,8 +30,6 @@
   let drawingState = showkoban.states.none;
   const editboxFunctions = {};
 
-  const colorLine = '#888';
-
   let blockSize;
 
   const dirs = {
@@ -56,25 +56,6 @@
   let moveFlag = false;
   let moveCount = 0;
   let moveDir = dirs.neutral;
-
-  const elems = {};
-  const elemIds = {
-    resetLevel: 'buttonResetLevel',
-    levelPrev: 'levelPrev',
-    levelId: 'levelId',
-    levelNext: 'levelNext',
-    editLevel: 'buttonEditLevel',
-
-    svg: 'svgMain',
-    editbox: 'editbox',
-    editShape: 'edit_drawing_shape',
-    editState: 'edit_drawing_state',
-    url: 'url',
-
-    undo: 'buttonUndo',
-    stick: 'stick',
-    stickBase: 'stickBase',
-  };
 
   let inputFlag = false;
   const inputInterval = 8;
@@ -155,7 +136,7 @@
       '',
       'scale(1.0, 1.0) translate(0, 0)',
     ];
-    elems.stick.setAttribute('transform', transforms[dir]);
+    showkoban.elems.stick.setAttribute('transform', transforms[dir]);
   }
 
   function move(dir) {
@@ -192,7 +173,7 @@
 
       // 各座標に移動フラグを設定
       if (flag) {
-        showElem(elems.undo);
+        showElem(showkoban.elems.undo);
 
         for (let y = upEnd; y <= downEnd; ++y) {
           for (let x = leftEnd; x <= rightEnd; ++x) {
@@ -248,14 +229,14 @@
   function undoStart() {
     if (undoFlag) return;
     undoFlag = true;
-    elems.undo.style.filter = 'contrast(60%)';
+    showkoban.elems.undo.style.filter = 'contrast(60%)';
     undoCount = undoInterval;
   }
 
   function undoEnd() {
     if (!undoFlag) return;
     undoFlag = false;
-    elems.undo.style.filter = 'none';
+    showkoban.elems.undo.style.filter = 'none';
   }
 
   function undodown(e) {
@@ -286,7 +267,7 @@
   function pointermove(e) {
     e.preventDefault();
     if (!inputFlag) return;
-    const cursorPos = getCursorPos(elems.stickBase, e);
+    const cursorPos = getCursorPos(showkoban.elems.stickBase, e);
     const ax = cursorPos.x - 100.0;
     const ay = cursorPos.y - 100.0;
     const minDist = 60;
@@ -365,12 +346,12 @@
   }
 
   function resetLevel() {
-    elems.resetLevel.style.filter = 'contrast(60%)';
-    elems.svg.textContent = '';
+    showkoban.elems.resetLevel.style.filter = 'contrast(60%)';
+    showkoban.elems.svg.textContent = '';
     initStates();
 
     setTimeout(() => {
-      elems.resetLevel.style.filter = 'none';
+      showkoban.elems.resetLevel.style.filter = 'none';
       loadLevel(levelObj);
     }, 50);
   }
@@ -389,7 +370,7 @@
   function resetUndo() {
     clearFlag = false;
     undoInfo = showkoban.UndoInfo();
-    hideElem(elems.undo);
+    hideElem(showkoban.elems.undo);
   }
 
   function applySize(w, h) {
@@ -398,8 +379,8 @@
     blockSize = 250 / height;
     rightEnd = width - 3;
     downEnd = height - 3;
-    elems.svg.setAttribute('width', blockSize * width);
-    elems.svg.setAttribute('height', blockSize * height);
+    showkoban.elems.svg.setAttribute('width', blockSize * width);
+    showkoban.elems.svg.setAttribute('height', blockSize * height);
   }
 
   function applyStateStr(stateStr) {
@@ -455,7 +436,7 @@
     if (levelId < 1) levelId = 1;
     if (levelId > showkoban.levels.length) levelId = showkoban.levels.length;
     updateLevelVisibility();
-    elems.levelId.textContent = levelId;
+    showkoban.elems.levelId.textContent = levelId;
     levelObj = showkoban.levels[levelId - 1]; // リセット用にここで代入します。
 
     if (mirrorFlag) mirrorLevel();
@@ -545,15 +526,15 @@
 
   function updateLevelVisibility() {
     if (levelId == null) {
-      hideElem(elems.levelPrev);
-      hideElem(elems.levelId);
-      hideElem(elems.levelNext);
-      showElem(elems.editLevel);
+      hideElem(showkoban.elems.levelPrev);
+      hideElem(showkoban.elems.levelId);
+      hideElem(showkoban.elems.levelNext);
+      showElem(showkoban.elems.editLevel);
     } else {
-      (levelId == 1 ? hideElem : showElem)(elems.levelPrev);
-      showElem(elems.levelId);
-      (levelId == showkoban.levels.length ? hideElem : showElem)(elems.levelNext);
-      hideElem(elems.editLevel);
+      (levelId == 1 ? hideElem : showElem)(showkoban.elems.levelPrev);
+      showElem(showkoban.elems.levelId);
+      (levelId == showkoban.levels.length ? hideElem : showElem)(showkoban.elems.levelNext);
+      hideElem(showkoban.elems.editLevel);
     }
   }
 
@@ -574,16 +555,16 @@
   function updateUrl() {
     if (!editMode) return;
     const url = getUrlStr();
-    elems.url.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
+    showkoban.elems.url.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
   }
 
   function updateEditLevel() {
     if (editMode) {
-      showElem(elems.url);
-      showElem(elems.editbox);
+      showElem(showkoban.elems.url);
+      showElem(showkoban.elems.editbox);
     } else {
-      hideElem(elems.url);
-      hideElem(elems.editbox);
+      hideElem(showkoban.elems.url);
+      hideElem(showkoban.elems.editbox);
     }
     draw();
     updateUrl();
@@ -595,11 +576,8 @@
   }
 
   function onload() {
-    document.getElementById('version-info').innerText = versionText;
-
-    for (const elemName in elemIds) {
-      elems[elemName] = document.getElementById(elemIds[elemName]);
-    }
+    showkoban.initElems();
+    showkoban.elems.versionInfo.innerText = versionText;
 
     const res = showkoban.analyzeUrl();
     autoMode = res.autoMode;
@@ -622,10 +600,10 @@
         const elem = document.getElementById(`edit_${char}`);
         if (elem === null) continue;
         const func = () => {
-          elems.editShape.setAttribute('fill', showkoban.colors[state].fill);
-          elems.editShape.setAttribute('stroke', showkoban.colors[state].stroke);
-          elems.editState.textContent = char;
-          elems.editState.setAttribute('fill', showkoban.colors[state].text);
+          showkoban.elems.editShape.setAttribute('fill', showkoban.colors[state].fill);
+          showkoban.elems.editShape.setAttribute('stroke', showkoban.colors[state].stroke);
+          showkoban.elems.editState.textContent = char;
+          showkoban.elems.editState.setAttribute('fill', showkoban.colors[state].text);
           drawingState = state;
         };
         editboxFunctions[char] = func;
@@ -655,24 +633,24 @@
       document.addEventListener('keydown', keydown, false);
       document.addEventListener('keyup', keyup, false);
 
-      elems.resetLevel.addEventListener('click', resetLevel, false);
-      elems.levelPrev.addEventListener('click', gotoPrevLevel, false);
-      elems.levelNext.addEventListener('click', gotoNextLevel, false);
-      elems.editLevel.addEventListener('click', toggleEditLevel, false);
+      showkoban.elems.resetLevel.addEventListener('click', resetLevel, false);
+      showkoban.elems.levelPrev.addEventListener('click', gotoPrevLevel, false);
+      showkoban.elems.levelNext.addEventListener('click', gotoNextLevel, false);
+      showkoban.elems.editLevel.addEventListener('click', toggleEditLevel, false);
 
       const touchDevice = document.ontouchstart !== undefined;
       const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
-      elems.svg.addEventListener(pointerdownEventName, editSvg, false);
+      showkoban.elems.svg.addEventListener(pointerdownEventName, editSvg, false);
 
-      elems.stickBase.addEventListener(pointerdownEventName, pointerdown, false);
-      elems.stickBase.addEventListener(pointermoveEventName, pointermove, false);
-      elems.stickBase.addEventListener(pointerupEventName, pointerup, false);
+      showkoban.elems.stickBase.addEventListener(pointerdownEventName, pointerdown, false);
+      showkoban.elems.stickBase.addEventListener(pointermoveEventName, pointermove, false);
+      showkoban.elems.stickBase.addEventListener(pointerupEventName, pointerup, false);
       document.addEventListener(pointerupEventName, pointerup, false);
 
-      elems.undo.addEventListener(pointerdownEventName, undodown, false);
+      showkoban.elems.undo.addEventListener(pointerdownEventName, undodown, false);
     }
 
     setInterval(() => {
@@ -771,7 +749,7 @@
 
   // 描画
   function draw() {
-    elems.svg.textContent = '';
+    showkoban.elems.svg.textContent = '';
 
     // 図形の描画
     {
@@ -779,7 +757,7 @@
       {
         const g = showkoban.svg.createG();
         g.appendChild(createBackground());
-        elems.svg.appendChild(g);
+        showkoban.elems.svg.appendChild(g);
       }
 
       const paddingWidth = 0.12;
@@ -943,7 +921,7 @@
                   rect.setAttribute('transform', `translate(${dx},${dy})`);
                   g2.appendChild(rect);
                 }
-                elems.svg.appendChild(g2);
+                showkoban.elems.svg.appendChild(g2);
               }
 
               const dx = dxs[moveDir] * blockSize * ratio;
@@ -960,7 +938,7 @@
             text.setAttribute('font-weight', 'bold');
             g.appendChild(text);
           }
-          elems.svg.appendChild(g);
+          showkoban.elems.svg.appendChild(g);
         }
       }
     }
@@ -972,18 +950,18 @@
       // 横線
       for (let y = 2; y < height - 1; ++y) {
         const line = showkoban.svg.createLine(blockSize, {x1: 1, y1: y, x2: width - 1, y2: y});
-        line.setAttribute('stroke', colorLine);
+        line.setAttribute('stroke', showkoban.colors.line);
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
       // 縦線
       for (let x = 2; x < width - 1; ++x) {
         const line = showkoban.svg.createLine(blockSize, {x1: x, y1: 1, x2: x, y2: height - 1});
-        line.setAttribute('stroke', colorLine);
+        line.setAttribute('stroke', showkoban.colors.line);
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
-      elems.svg.appendChild(g);
+      showkoban.elems.svg.appendChild(g);
     }
   }
 
@@ -1109,7 +1087,7 @@
 
     // カーソル位置の座標を得る
     function getCurXY(e) {
-      const cursorPos = getCursorPos(elems.svg, e);
+      const cursorPos = getCursorPos(showkoban.elems.svg, e);
       const x = Math.floor(cursorPos.x / blockSize);
       const y = Math.floor(cursorPos.y / blockSize);
       return {x: x, y: y};

@@ -12,16 +12,17 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="./css/main.css?2022.11.04">
+  <link rel="stylesheet" href="./css/main.css?2022.11.06">
 
-  <script src="./src/svg.js?2022.11.05"></script>
-  <script src="./src/analyze-url.js?2022.11.05"></script>
-  <script src="./src/class-stack.js?2022.11.05"></script>
-  <script src="./src/class-undo-info.js?2022.11.05"></script>
-  <script src="./src/stage-states.js?2022.11.05"></script>
-  <script src="./src/stage-colors.js?2022.11.05"></script>
-  <script src="./src/stage-levels.js?2022.11.05"></script>
-  <script src="./src/main.js?2022.11.05b"></script>
+  <script src="./src/svg.js?2022.11.06"></script>
+  <script src="./src/analyze-url.js?2022.11.06"></script>
+  <script src="./src/class-stack.js?2022.11.06"></script>
+  <script src="./src/class-undo-info.js?2022.11.06"></script>
+  <script src="./src/stage-states.js?2022.11.06"></script>
+  <script src="./src/stage-colors.js?2022.11.06"></script>
+  <script src="./src/stage-levels.js?2022.11.06"></script>
+  <script src="./src/elems.js?2022.11.06"></script>
+  <script src="./src/main.js?2022.11.06"></script>
 </head>
 
 <body>
@@ -36,7 +37,7 @@
     <div>
       <svg width="440" height="80">
         <!-- Reset -->
-        <g id="buttonResetLevel" class="button" transform="translate(30,30)">
+        <g id="button-reset-level" class="button" transform="translate(30,30)">
           <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
           <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#87ceeb" stroke-width="4" />
           <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#87ceeb" stroke="none" stroke-width="4" />
@@ -44,22 +45,22 @@
         </g>
 
         <!-- Level -->
-        <g id="levelPrev" class="button active-hover" transform="translate(90,2)">
+        <g id="level-prev" class="button active-hover" transform="translate(90,2)">
           <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
           <text x="40" y="30" fill="#87ceeb" dominant-baseline="middle" text-anchor="middle" font-size="30">◀</text>
           <text x="40" y="73" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="12px" fill="gray">Shift + ←</text>
         </g>
         <g transform="translate(220,35)">
-          <text id="levelId" x="0" y="0" fill="black" dominant-baseline="middle" text-anchor="middle" font-size="40" />
+          <text id="level-id" x="0" y="0" fill="black" dominant-baseline="middle" text-anchor="middle" font-size="40" />
         </g>
-        <g id="levelNext" class="button active-hover" transform="translate(270,2)">
+        <g id="level-next" class="button active-hover" transform="translate(270,2)">
           <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
           <text x="40" y="30" fill="#87ceeb" dominant-baseline="middle" text-anchor="middle" font-size="30">▶</text>
           <text x="40" y="73" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="12px" fill="gray">Shift + →</text>
         </g>
 
         <!-- Edit -->
-        <g id="buttonEditLevel" class="button active-hover" transform="translate(410,30)">
+        <g id="button-edit-level" class="button active-hover" transform="translate(410,30)">
           <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
           <text x="0" y="41" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="gray">t</text>
         </g>
@@ -69,7 +70,7 @@
 
   <div style="margin: 10px 0 0"><span style="margin: 3px; padding: 1px 4px; color: red; background-color: pink; font-weight: bold; border: solid 2px red;">赤色の図形</span>を1つながりの点対称図形にしてください。</div>
 
-  <svg id="svgMain" width="500" height="500" style="margin: 10px;"></svg>
+  <svg id="svg-main" width="500" height="500" style="margin: 10px;"></svg>
 
   <div id="editbox">
     <svg width="470" height="170">
@@ -106,8 +107,8 @@
       <g id="edit_6" class="button active-hover" transform="translate(420,70)"></g>
 
       <g transform="translate(235,135)">
-        <rect id="edit_drawing_shape" x="-20" y="-20" width="40" height="40" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
-        <text id="edit_drawing_state" x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="28px" fill="gray" />
+        <rect id="edit-drawing-shape" x="-20" y="-20" width="40" height="40" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
+        <text id="edit-drawing-state" x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="28px" fill="gray" />
       </g>
     </svg>
   </div>
@@ -115,17 +116,17 @@
   <div><span id="url"></span></div>
 
   <div class="inner noselect" style="height: 250px">
-    <svg id="svgController" width="470" height="250">
+    <svg id="svg-controller" width="470" height="250">
       <rect x="0" y="0" width="470" height="250" fill="#eee" stroke="none" />
 
-      <g id="buttonUndo" class="button" transform="translate(110,125) scale(2,2)">
+      <g id="button-undo" class="button" transform="translate(110,125) scale(2,2)">
         <circle cx="0" cy="0" r="28" fill="lightgray" stroke="gray" stroke-width="4" />
         <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="gray" stroke-width="4" />
         <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="gray" stroke="none" stroke-width="4" />
         <text x="0" y="45" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="gray">z</text>
       </g>
 
-      <g id="stickBase" class="stick" transform="translate(345,125) scale(2,2)">
+      <g id="stick-base" class="stick" transform="translate(345,125) scale(2,2)">
         <!-- 範囲 -->
         <rect x="-60" y="-60" width="120" height="120" fill="lightgray" stroke="none" />
         <!-- 軸 -->

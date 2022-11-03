@@ -36,5 +36,9 @@
     {w: 6, h: 5, s: 's-t-0001-02211-0211', r: '22101111230122230012223302300130'},
   ];
 
+  Object.freeze(levels);
+  for (const level of levels) {
+    Object.freeze(level);
+  }
   window.showkoban.levels = levels;
 })();
