@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.06';
+  const versionText = 'v2022.11.05b';
 
   let autoMode = false;
   let rotateNum = 0;
@@ -19,12 +19,6 @@
   let undoFlag = false;
   let undoCount = 0;
 
-  let width;
-  let height;
-  const upEnd = 2;
-  let rightEnd;
-  let downEnd;
-  const leftEnd = 2;
   let clearFlag = false;
 
   let drawingState = showkoban.states.none;
@@ -51,7 +45,7 @@
   const dys = [-1, 0, 1, 0, -1, 1, 1, -1, 0];
   const dxs = [0, 1, 0, -1, 1, 1, -1, -1, 0];
 
-  const states = [];
+  const stage = showkoban.Stage();
   const moveFlags = [];
   let moveFlag = false;
   let moveCount = 0;
@@ -69,59 +63,12 @@
   return;
   // ==========================================================================
 
-  function getW() {
-    return rightEnd - leftEnd + 1;
-  }
-
-  function getH() {
-    return downEnd - upEnd + 1;
-  }
-
   function getUrlStr() {
-    const w = getW();
-    const h = getH();
-    const s = getStateStr(states, upEnd, rightEnd, downEnd, leftEnd);
+    const w = stage.getW();
+    const h = stage.getH();
+    const s = stage.getStateStr();
     console.log(`{w: ${w}, h: ${h}, s: '${s}'},`);
     return `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}`;
-  }
-
-  function getStateStr(states, upEnd, rightEnd, downEnd, leftEnd) {
-    let res = '';
-    for (let y = upEnd; y <= downEnd; ++y) {
-      let line = '';
-      for (let x = leftEnd; x <= rightEnd; ++x) {
-        line += showkoban.states.stateToChar[states[y][x]];
-      }
-      res += line.replace(/0+$/, '');
-      res += '-';
-    }
-    return res.replace(/-+$/, '');
-  }
-
-  // 初期化
-  function initStates() {
-    for (let y = 0; y < height; ++y) {
-      states[y] = [];
-      for (let x = 0; x < width; ++x) {
-        states[y][x] = showkoban.states.none;
-      }
-    }
-
-    // 枠(外周2マス分)
-    {
-      for (let y = 0; y < height; ++y) {
-        states[y][0] = showkoban.states.wall;
-        states[y][1] = showkoban.states.wall;
-        states[y][width - 2] = showkoban.states.wall;
-        states[y][width - 1] = showkoban.states.wall;
-      }
-      for (let x = 2; x < width - 2; ++x) {
-        states[0][x] = showkoban.states.wall;
-        states[1][x] = showkoban.states.wall;
-        states[height - 2][x] = showkoban.states.wall;
-        states[height - 1][x] = showkoban.states.wall;
-      }
-    }
   }
 
   function updateController(dir) {
@@ -144,7 +91,7 @@
     const dy = dys[dir];
 
     for (let i = showkoban.states.userMin; i <= showkoban.states.userMax; ++i) {
-      if (count((x)=>{ return x == i; }) == 0) continue;
+      if (stage.count((x)=>{ return x == i; }) == 0) continue;
 
       const moveState = []; // 移動予定の状態番号
       moveState[i] = true;
@@ -155,10 +102,10 @@
       while (!st.empty()) {
         const state = st.pop();
         loop:
-        for (let y = upEnd; y <= downEnd; ++y) {
-          for (let x = leftEnd; x <= rightEnd; ++x) {
-            if (states[y][x] != state) continue;
-            const neighborState = states[y + dy][x + dx];
+        for (let y = stage.upEnd; y <= stage.downEnd; ++y) {
+          for (let x = stage.leftEnd; x <= stage.rightEnd; ++x) {
+            if (stage.getState(x, y) != state) continue;
+            const neighborState = stage.getState(x + dx, y + dy);
             if (neighborState == showkoban.states.none) continue;
             if (neighborState == showkoban.states.wall) {
               flag = false;
@@ -175,9 +122,9 @@
       if (flag) {
         showElem(showkoban.elems.undo);
 
-        for (let y = upEnd; y <= downEnd; ++y) {
-          for (let x = leftEnd; x <= rightEnd; ++x) {
-            if (moveState[states[y][x]]) {
+        for (let y = stage.upEnd; y <= stage.downEnd; ++y) {
+          for (let x = stage.leftEnd; x <= stage.rightEnd; ++x) {
+            if (moveState[stage.getState(x, y)]) {
               moveFlags[y][x] = true;
             }
           }
@@ -190,33 +137,30 @@
     if (moveFlag) {
       undoInfo.pushData({
         dir: dir,
-        w: getW(),
-        h: getH(),
-        s: getStateStr(states, upEnd, rightEnd, downEnd, leftEnd),
+        w: stage.getW(),
+        h: stage.getH(),
+        s: stage.getStateStr(),
       });
     }
   }
 
   // 盤面を更新
   function stateUpdate() {
-    const statesTemp = new Array(height);
-    for (let y = 0; y < height; ++y) {
-      statesTemp[y] = states[y].slice();
-    }
+    const statesTemp = stage.copyStates();
 
-    for (let y = upEnd; y <= downEnd; ++y) {
-      for (let x = leftEnd; x <= rightEnd; ++x) {
+    for (let y = stage.upEnd; y <= stage.downEnd; ++y) {
+      for (let x = stage.leftEnd; x <= stage.rightEnd; ++x) {
         if (moveFlags[y][x]) {
-          states[y][x] = showkoban.states.none;
+          stage.setState(x, y, showkoban.states.none);
         }
       }
     }
-    for (let y = upEnd; y <= downEnd; ++y) {
-      for (let x = leftEnd; x <= rightEnd; ++x) {
+    for (let y = stage.upEnd; y <= stage.downEnd; ++y) {
+      for (let x = stage.leftEnd; x <= stage.rightEnd; ++x) {
         const dx = dxs[moveDir];
         const dy = dys[moveDir];
         if (moveFlags[y - dy][x - dx]) {
-          states[y][x] = statesTemp[y - dy][x - dx];
+          stage.setState(x, y, statesTemp[y - dy][x - dx]);
           moveFlags[y - dy][x - dx] = false;
         }
       }
@@ -348,7 +292,7 @@
   function resetLevel() {
     showkoban.elems.resetLevel.style.filter = 'contrast(60%)';
     showkoban.elems.svg.textContent = '';
-    initStates();
+    stage.initStates();
 
     setTimeout(() => {
       showkoban.elems.resetLevel.style.filter = 'none';
@@ -357,9 +301,9 @@
   }
 
   function resetDirs() {
-    for (let y = 0; y < height; ++y) {
+    for (let y = 0; y < stage.getHeight(); ++y) {
       moveFlags[y] = [];
-      for (let x = 0; x < width; ++x) {
+      for (let x = 0; x < stage.getWidth(); ++x) {
         moveFlags[y][x] = false;
       }
     }
@@ -374,32 +318,17 @@
   }
 
   function applySize(w, h) {
-    width = w + 4;
-    height = h + 4;
-    blockSize = 250 / height;
-    rightEnd = width - 3;
-    downEnd = height - 3;
-    showkoban.elems.svg.setAttribute('width', blockSize * width);
-    showkoban.elems.svg.setAttribute('height', blockSize * height);
+    stage.applySize(w, h);
+    blockSize = 250 / stage.getHeight();
+    showkoban.elems.svg.setAttribute('width', blockSize * stage.getWidth());
+    showkoban.elems.svg.setAttribute('height', blockSize * stage.getHeight());
   }
 
   function applyStateStr(stateStr) {
-    initStates();
+    stage.initStates();
+    stage.applyStateStr(stateStr);
     resetDirs();
 
-    let y = upEnd;
-    let x = leftEnd;
-    for (const c of stateStr) {
-      if (c == '-') {
-        y++;
-        if (y > downEnd) break;
-        x = leftEnd;
-      } else {
-        if (x > rightEnd) continue;
-        states[y][x] = showkoban.states.charToState[c];
-        x++;
-      }
-    }
     draw();
     updateUrl();
   }
@@ -479,7 +408,7 @@
         }
         r = rotatedR;
       }
-      const s = getStateStr(statesTemp, 0, w - 1, h - 1, 0);
+      const s = stage.getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
       levelObj = {w: w, h: h, s: s, r: r};
     }
 
@@ -518,7 +447,7 @@
           }
           r = rotatedR;
         }
-        const s = getStateStr(statesTemp, 0, w - 1, h - 1, 0);
+        const s = stage.getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
         levelObj = {w: w, h: h, s: s, r: r};
       }
     }
@@ -695,16 +624,16 @@
   function createBackground() {
     const g = showkoban.svg.createG();
 
-    const isCleared = isOk(isTarget);
+    const isCleared = stage.isOk(isTarget);
     const paddingColor = isCleared ? '#8f8' : '#753';
 
     {
-      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: 0, width: width, height: height});
+      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: 0, width: stage.getWidth(), height: stage.getHeight()});
       rect.setAttribute('fill', paddingColor);
       g.appendChild(rect);
     }
     {
-      const rect = showkoban.svg.createRect(blockSize, {x: 1, y: 1, width: width - 2, height: height - 2});
+      const rect = showkoban.svg.createRect(blockSize, {x: 1, y: 1, width: stage.getWidth() - 2, height: stage.getHeight() - 2});
       rect.setAttribute('fill', 'white');
       g.appendChild(rect);
     }
@@ -714,7 +643,7 @@
       if (autoMode) {
         setTimeout(gotoNextLevel, 1000);
       }
-      const text = showkoban.svg.createText(blockSize, {x: width * 0.5, y: height - 1, text: 'CLEAR'});
+      const text = showkoban.svg.createText(blockSize, {x: stage.getWidth() * 0.5, y: stage.getHeight() - 1, text: 'CLEAR'});
       text.setAttribute('font-size', `${blockSize * 0.8}px`);
       text.setAttribute('font-weight', 'bold');
       text.setAttribute('fill', 'blue');
@@ -764,9 +693,9 @@
       const paddingWidthHalf = paddingWidth / 2;
 
       // 図形
-      for (let y = 1; y < height - 1; ++y) {
-        for (let x = 1; x < width - 1; ++x) {
-          const state = states[y][x];
+      for (let y = 1; y < stage.getHeight() - 1; ++y) {
+        for (let x = 1; x < stage.getWidth() - 1; ++x) {
+          const state = stage.getState(x, y);
           if (state == showkoban.states.none) continue;
 
           const g = showkoban.svg.createG();
@@ -780,7 +709,7 @@
           {
             const flags = [];
             for (let dir = 0; dir < 8; ++dir) {
-              flags[dir] = states[y + dys[dir]][x + dxs[dir]] == state;
+              flags[dir] = stage.getState(x + dxs[dir], y + dys[dir]) == state;
             }
             // 上側
             if (!flags[dirs.u]) {
@@ -948,15 +877,15 @@
       const dasharray = '1, 4';
       const g = showkoban.svg.createG();
       // 横線
-      for (let y = 2; y < height - 1; ++y) {
-        const line = showkoban.svg.createLine(blockSize, {x1: 1, y1: y, x2: width - 1, y2: y});
+      for (let y = 2; y < stage.getHeight() - 1; ++y) {
+        const line = showkoban.svg.createLine(blockSize, {x1: 1, y1: y, x2: stage.getWidth() - 1, y2: y});
         line.setAttribute('stroke', showkoban.colors.line);
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
       // 縦線
-      for (let x = 2; x < width - 1; ++x) {
-        const line = showkoban.svg.createLine(blockSize, {x1: x, y1: 1, x2: x, y2: height - 1});
+      for (let x = 2; x < stage.getWidth() - 1; ++x) {
+        const line = showkoban.svg.createLine(blockSize, {x1: x, y1: 1, x2: x, y2: stage.getHeight() - 1});
         line.setAttribute('stroke', showkoban.colors.line);
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
@@ -969,110 +898,24 @@
     return showkoban.states.targetMin <= x && x <= showkoban.states.targetMax;
   }
 
-  function isOk(isX) {
-    if (count(isX) == 0) return false;
-    if (!isConnected(isX)) return false;
-    if (!isPointSymmetry(isX)) return false;
-    return true;
-
-    // 図形が連結か否か。
-    function isConnected(isX) {
-      const statesTemp = new Array(height);
-      for (let y = 0; y < height; ++y) {
-        statesTemp[y] = states[y].slice();
-      }
-      let x0;
-      let y0;
-      loop:
-      for (let y = upEnd; y <= downEnd; ++y) {
-        for (let x = leftEnd; x <= rightEnd; ++x) {
-          if (isX(statesTemp[y][x])) {
-            x0 = x;
-            y0 = y;
-            break loop;
-          }
-        }
-      }
-
-      const st = showkoban.Stack();
-      st.push([x0, y0]);
-      statesTemp[y0][x0] = showkoban.states.none;
-      while (!st.empty()) {
-        const xy = st.pop();
-        for (let i = 0; i < 4; i++) {
-          const xx = xy[0] + dxs[i];
-          const yy = xy[1] + dys[i];
-          if (isX(statesTemp[yy][xx])) {
-            statesTemp[yy][xx] = showkoban.states.none;
-            st.push([xx, yy]);
-          }
-        }
-      }
-
-      for (let y = 0; y < height; ++y) {
-        for (let x = 0; x < width; ++x) {
-          if (isX(statesTemp[y][x])) return false;
-        }
-      }
-      return true;
-    }
-
-    // 図形が点対称か否か。
-    function isPointSymmetry(isX) {
-      let minX = width;
-      let maxX = 0;
-      let minY = height;
-      let maxY = 0;
-      for (let y = upEnd; y <= downEnd; ++y) {
-        for (let x = leftEnd; x <= rightEnd; ++x) {
-          if (isX(states[y][x])) {
-            minX = Math.min(minX, x);
-            maxX = Math.max(maxX, x);
-            minY = Math.min(minY, y);
-            maxY = Math.max(maxY, y);
-          }
-        }
-      }
-      for (let y = minY; y <= maxY; ++y) {
-        for (let x = minX; x <= maxX; ++x) {
-          if (isX(states[y][x]) && !isX(states[minY + maxY - y][minX + maxX - x])) {
-            return false;
-          }
-        }
-      }
-      return true;
-    }
-  }
-
-  function count(isX) {
-    let cnt = 0;
-    for (let y = upEnd; y <= downEnd; ++y) {
-      for (let x = leftEnd; x <= rightEnd; ++x) {
-        if (isX(states[y][x])) cnt++;
-      }
-    }
-    return cnt;
-  }
-
   function editSvg(e) {
     if (!editMode) return;
 
     const curXY = getCurXY(e);
     const x = curXY.x;
     const y = curXY.y;
-    if (x < leftEnd || rightEnd < x) return;
-    if (y < upEnd || downEnd < y) return;
+    if (!stage.isInside(x, y)) return;
 
     // 画面端付近はスワイプ操作できるように編集操作を無効にします。
     if (isTouchScreenNearEdge(e)) return;
 
     e.preventDefault();
-    if (states[y][x] != drawingState) {
-      states[y][x] = drawingState;
+    if (stage.getState(x, y) != drawingState) {
+      stage.setState(x, y, drawingState);
       draw();
       updateUrl();
-    } else if (states[y][x] != showkoban.states.none) {
-      states[y][x] = showkoban.states.none;
+    } else if (stage.getState(x, y) != showkoban.states.none) {
+      stage.setState(x, y, showkoban.states.none);
       draw();
       updateUrl();
     }
