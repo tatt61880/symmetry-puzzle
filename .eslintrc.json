@@ -1,7 +1,11 @@
 {
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
-    "parser": "@babel/eslint-parser",
     "requireConfigFile": false
+  },
+  "env": {
+    "browser": true,
+    "es2021": true
   },
   "extends": "eslint:recommended",
   "globals": {
@@ -23,8 +27,9 @@
     "no-multi-spaces": "error",
     "no-multiple-empty-lines": ["error", {"max": 1, "maxEOF": 0}],
     "no-trailing-spaces": "error",
-    "no-unneeded-ternary": "error",
     "no-unexpected-multiline": "error",
+    "no-unneeded-ternary": "error",
+    "no-unused-private-class-members": "error",
     "no-var": "error",
     "prefer-const": "error",
     "quotes": ["error", "single"],
@@ -33,9 +38,5 @@
     "space-before-function-paren": ["error", "never"],
     "space-in-parens": ["error", "never"],
     "space-infix-ops": "error"
-  },
-  "env": {
-    "browser": true,
-    "es2021": true
   }
 }
