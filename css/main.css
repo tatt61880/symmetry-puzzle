@@ -28,6 +28,11 @@ footer {
   background-color: pink;
 }
 
+#title {
+  font-weight: bold;
+  color: #553333;
+}
+
 #version-info {
   font-size: 0.8rem;
   color: #aa8888;

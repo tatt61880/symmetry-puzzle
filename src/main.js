@@ -4,9 +4,11 @@
 
   const versionText = 'v2022.11.05b';
 
-  let autoMode = false;
-  let rotateNum = 0;
-  let mirrorFlag = false;
+  let settings = {
+    autoMode: false,
+    rotateNum: 0,
+    mirrorFlag: false,
+  };
 
   let debugFlag = false;
   let editMode = false;
@@ -292,7 +294,6 @@
   function resetLevel() {
     showkoban.elems.resetLevel.style.filter = 'contrast(60%)';
     showkoban.elems.svg.textContent = '';
-    stage.initStates();
 
     setTimeout(() => {
       showkoban.elems.resetLevel.style.filter = 'none';
@@ -317,27 +318,21 @@
     hideElem(showkoban.elems.undo);
   }
 
-  function applySize(w, h) {
-    stage.applySize(w, h);
+  function applyObj(obj) {
+    stage.applyObj(obj);
+    resetDirs();
+    updateUrl();
+
     blockSize = 250 / stage.getHeight();
     showkoban.elems.svg.setAttribute('width', blockSize * stage.getWidth());
     showkoban.elems.svg.setAttribute('height', blockSize * stage.getHeight());
-  }
-
-  function applyStateStr(stateStr) {
-    stage.initStates();
-    stage.applyStateStr(stateStr);
-    resetDirs();
-
     draw();
-    updateUrl();
   }
 
   function execUndo() {
     if (undoInfo.isUndoable()) {
       const data = undoInfo.undo();
-      applySize(data.w, data.h);
-      applyStateStr(data.s);
+      applyObj(data);
     }
 
     if (undoInfo.getIndex() == 0) {
@@ -347,8 +342,7 @@
   }
 
   function loadLevel(levelObj) {
-    applySize(levelObj.w, levelObj.h);
-    applyStateStr(levelObj.s);
+    applyObj(levelObj);
     updateLevelVisibility();
     resetUndo();
 
@@ -361,21 +355,21 @@
 
   function loadLevelById(id) {
     resetUndo();
+    if (id < 1) id = 1;
+    if (id > showkoban.levels.length) id = showkoban.levels.length;
     levelId = id;
-    if (levelId < 1) levelId = 1;
-    if (levelId > showkoban.levels.length) levelId = showkoban.levels.length;
     updateLevelVisibility();
     showkoban.elems.levelId.textContent = levelId;
     levelObj = showkoban.levels[levelId - 1]; // リセット用にここで代入します。
 
-    if (mirrorFlag) mirrorLevel();
-    rotateLevel(rotateNum);
+    if (settings.mirrorFlag) levelObj = mirrorLevel(levelObj);
+    levelObj = rotateLevel(levelObj, settings.rotateNum);
 
     loadLevel(levelObj);
     return;
 
     // 左右反転する。
-    function mirrorLevel() {
+    function mirrorLevel(levelObj) {
       const w = levelObj.w;
       const h = levelObj.h;
       const stateStr = levelObj.s;
@@ -410,10 +404,11 @@
       }
       const s = stage.getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
       levelObj = {w: w, h: h, s: s, r: r};
+      return levelObj;
     }
 
     // 時計回りに90度×num回 回転する。
-    function rotateLevel(rotateNum) {
+    function rotateLevel(levelObj, rotateNum) {
       for (let i = 0; i < rotateNum; ++i) {
         const w = levelObj.h; // 90度回転後
         const h = levelObj.w; // 90度回転後
@@ -450,6 +445,7 @@
         const s = stage.getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
         levelObj = {w: w, h: h, s: s, r: r};
       }
+      return levelObj;
     }
   }
 
@@ -506,12 +502,10 @@
 
   function onload() {
     showkoban.initElems();
-    showkoban.elems.versionInfo.innerText = versionText;
+    showkoban.elems.versionInfo.textContent = versionText;
 
     const res = showkoban.analyzeUrl();
-    autoMode = res.autoMode;
-    rotateNum = res.rotateNum;
-    mirrorFlag = res.mirrorFlag;
+    settings = res.settings;
     levelObj = res.levelObj;
     if (levelObj.s == '') {
       levelId = 1;
@@ -586,11 +580,11 @@
       if (inputCount < inputCountPrev + inputInterval) {
         inputCount++;
       }
-      if (autoMode && levelObj.r !== undefined && inputDir == dirs.neutral && autoStep < levelObj.r.length) {
+      if (settings.autoMode && levelObj.r !== undefined && inputDir == dirs.neutral && autoStep < levelObj.r.length) {
         inputDir = levelObj.r[autoStep++];
       }
 
-      if (!moveFlag && (inputFlag || autoMode)) {
+      if (!moveFlag && (inputFlag || settings.autoMode)) {
         if (inputDir != dirs.neutral) {
           if (inputCount >= inputCountPrev + inputInterval) {
             move(inputDir);
@@ -598,7 +592,7 @@
             inputCountPrev = 0;
           }
         }
-        if (autoMode) {
+        if (settings.autoMode) {
           inputDir = dirs.neutral;
         }
       }
@@ -640,7 +634,7 @@
 
     // クリアメッセージ
     if (isCleared) {
-      if (autoMode) {
+      if (settings.autoMode) {
         setTimeout(gotoNextLevel, 1000);
       }
       const text = showkoban.svg.createText(blockSize, {x: stage.getWidth() * 0.5, y: stage.getHeight() - 1, text: 'CLEAR'});

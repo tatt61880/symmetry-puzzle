@@ -9,9 +9,11 @@
         h: 6,
         s: '',
       },
-      autoMode: false,
-      rotateNum: 0,
-      mirrorFlag: false,
+      settings: {
+        autoMode: false,
+        rotateNum: 0,
+        mirrorFlag: false,
+      },
     };
 
     const queryStrs = location.href.split('?')[1];
@@ -32,13 +34,13 @@
         res.levelObj.s = paramVal;
         break;
       case 'auto':
-        res.autoMode = true;
+        res.settings.autoMode = true;
         break;
       case 'rotate':
-        res.rotateNum = Number(paramVal) % 4;
+        res.settings.rotateNum = Number(paramVal) % 4;
         break;
       case 'mirror':
-        res.mirrorFlag = true;
+        res.settings.mirrorFlag = true;
         break;
       }
     }

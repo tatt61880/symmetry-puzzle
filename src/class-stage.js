@@ -53,14 +53,12 @@
       return res;
     }
 
-    applySize(w, h) {
-      this.#width = w + 4;
-      this.#height = h + 4;
+    applyObj(obj) {
+      this.#width = obj.w + 4;
+      this.#height = obj.h + 4;
       this.rightEnd = this.#width - 3;
       this.downEnd = this.#height - 3;
-    }
 
-    initStates() {
       for (let y = 0; y < this.#height; ++y) {
         this.#states[y] = [];
         for (let x = 0; x < this.#width; ++x) {
@@ -83,12 +81,10 @@
           this.#states[this.#height - 1][x] = showkoban.states.wall;
         }
       }
-    }
 
-    applyStateStr(stateStr) {
       let y = this.upEnd;
       let x = this.leftEnd;
-      for (const c of stateStr) {
+      for (const c of obj.s) {
         if (c == '-') {
           y++;
           if (y > this.downEnd) break;
