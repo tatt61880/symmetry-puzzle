@@ -208,5 +208,50 @@
       }
       return true;
     }
+
+    move(dx, dy, moveFlags) {
+      let moveFlag = false;
+      for (let i = showkoban.states.userMin; i <= showkoban.states.userMax; ++i) {
+        if (this.count((x)=>{ return x == i; }) == 0) continue;
+
+        const moveState = []; // 移動予定の状態番号
+        moveState[i] = true;
+
+        let flag = true;
+        const st = showkoban.Stack(); // 移動可能か検証必要な状態番号
+        st.push(i);
+        while (!st.empty()) {
+          const state = st.pop();
+          loop:
+          for (let y = this.upEnd; y <= this.downEnd; ++y) {
+            for (let x = this.leftEnd; x <= this.rightEnd; ++x) {
+              if (this.getState(x, y) != state) continue;
+              const neighborState = this.getState(x + dx, y + dy);
+              if (neighborState == showkoban.states.none) continue;
+              if (neighborState == showkoban.states.wall) {
+                flag = false;
+                break loop;
+              } else if (!moveState[neighborState]) {
+                moveState[neighborState] = true;
+                st.push(neighborState);
+              }
+            }
+          }
+        }
+
+        // 各座標に移動フラグを設定
+        if (flag) {
+          for (let y = this.upEnd; y <= this.downEnd; ++y) {
+            for (let x = this.leftEnd; x <= this.rightEnd; ++x) {
+              if (moveState[this.getState(x, y)]) {
+                moveFlags[y][x] = true;
+              }
+            }
+          }
+          moveFlag = true;
+        }
+      }
+      return moveFlag;
+    }
   }
 })();
