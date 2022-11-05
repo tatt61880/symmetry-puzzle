@@ -56,7 +56,7 @@
   let moveDir = dirs.neutral;
 
   let inputFlag = false;
-  const intervalMsec = 30;
+  const intervalMsec = 35;
   const inputInterval = 5;
   const undoInterval = 6;
   let inputCountPrev = 0;
@@ -833,19 +833,17 @@
                   if (!flags[dirs.l]) rectArg.x += dd;
                   if (!flags[dirs.l]) rectArg.width -= dd;
                   if (!flags[dirs.r]) rectArg.width -= dd;
+                  rectArg.height -= ddd;
                   if (moveDir === dirs.ArrowDown) {
                     rectArg.y += ddd;
-                  } else {
-                    rectArg.y -= ddd;
                   }
                 } else {
                   if (!flags[dirs.u]) rectArg.y += dd;
                   if (!flags[dirs.u]) rectArg.height -= dd;
                   if (!flags[dirs.d]) rectArg.height -= dd;
+                  rectArg.width -= ddd;
                   if (moveDir === dirs.ArrowRight) {
                     rectArg.x += ddd;
-                  } else {
-                    rectArg.x -= ddd;
                   }
                 }
 

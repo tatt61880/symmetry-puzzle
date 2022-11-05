@@ -96,12 +96,12 @@ text {
 }
 
 .anim-block {
-  animation: anim-block forwards;
+  animation: anim-block cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   animation-duration: var(--animation-duration);
 }
 
 .anim-shadow {
-  animation: anim-shadow forwards;
+  animation: anim-shadow linear forwards;
   animation-duration: var(--animation-duration-shadow);
 }
 
@@ -121,7 +121,7 @@ text {
   }
 
   50% {
-    opacity: 0.7;
+    opacity: 0.5;
   }
 
   100% {
