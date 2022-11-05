@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.06b';
+  const versionText = 'v2022.11.06d';
 
   let settings = {
     autoMode: false,
@@ -22,6 +22,8 @@
   let undoCount = 0;
 
   let clearFlag = false;
+  let clearStep = null;
+  let bestRecord = null;
 
   let drawingState = showkoban.states.none;
   const editboxFunctions = {};
@@ -616,27 +618,44 @@
       g.appendChild(text);
       if (!clearFlag && !moveFlag && undoInfo) {
         clearFlag = true;
+        clearStep = undoInfo.getIndex();
         const w = levelObj.w;
         const h = levelObj.h;
         const s = levelObj.s;
         const replayStr = undoInfo.getReplayStr();
         console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`);
-        const steps = undoInfo.getIndex();
-        console.log(`${steps} 手`);
         const r = levelObj.r;
         if (levelId === null || r === undefined) {
           console.warn('過去最高記録の情報がありません！');
+          bestRecord = null;
         } else {
-          const bestRecord = r.length;
-          if (steps < bestRecord) {
-            console.log(`新記録!\n${bestRecord} → ${steps} (${steps - bestRecord} 手)`);
+          bestRecord = r.length;
+          if (clearStep < bestRecord) {
+            console.log(`新記録!\n${bestRecord} → ${clearStep} (${clearStep - bestRecord} 手)`);
           } else {
-            console.log(`過去最高記録は ${bestRecord} 手です。\n(差: ${steps - bestRecord} 手)`);
+            console.log(`過去最高記録は ${bestRecord} 手です。\n(差: ${clearStep - bestRecord} 手)`);
             if (replayStr === r) {
               console.log('(完全に同じ手順です。)');
             }
           }
         }
+      }
+      if (clearFlag) {
+        const text = showkoban.svg.createText(blockSize, {x: stage.getWidth() * 0.5, y: 0, text: `${clearStep} steps`});
+        text.setAttribute('font-size', `${blockSize * 0.6}px`);
+        if (bestRecord === null) {
+          text.setAttribute('fill', 'black');
+          text.setAttribute('font-weight', 'bold');
+        } else if (clearStep > bestRecord) {
+          text.setAttribute('fill', 'green');
+        } else if (clearStep === bestRecord) {
+          text.setAttribute('fill', 'orange');
+          text.setAttribute('font-weight', 'bold');
+        } else {
+          text.setAttribute('fill', 'red');
+          text.setAttribute('font-weight', 'bold');
+        }
+        g.appendChild(text);
       }
     }
 
