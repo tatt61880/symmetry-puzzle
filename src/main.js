@@ -458,13 +458,13 @@
       hideElem(showkoban.elems.url);
       hideElem(showkoban.elems.editbox);
     }
-    draw();
     updateUrl();
   }
 
   function toggleEditLevel() {
     editMode = !editMode;
     updateEditLevel();
+    draw();
   }
 
   function onload() {
