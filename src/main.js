@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.06d';
+  const versionText = 'v2022.11.06e';
 
   let settings = {
     autoMode: false,
@@ -24,6 +24,7 @@
   let clearFlag = false;
   let clearStep = null;
   let bestRecord = null;
+  let clearMessageFlag = false;
 
   let drawingState = showkoban.states.none;
   const editboxFunctions = {};
@@ -111,6 +112,11 @@
     }
   }
 
+  function clearCheck() {
+    clearFlag = stage.isOk(isTarget);
+    clearMessageFlag = clearFlag;
+  }
+
   // 盤面を更新
   function stateUpdate() {
     const statesTemp = stage.copyStates();
@@ -133,7 +139,6 @@
       }
     }
     moveDir = dirs.neutral;
-
     updateUrl();
   }
 
@@ -277,13 +282,13 @@
   }
 
   function resetUndo() {
-    clearFlag = false;
     undoInfo = showkoban.UndoInfo();
     hideElem(showkoban.elems.undo);
   }
 
   function applyObj(obj) {
     stage.applyObj(obj);
+    clearCheck();
     resetDirs();
     updateUrl();
 
@@ -546,9 +551,14 @@
       if (settings.autoMode && levelObj.r !== undefined && inputDir === dirs.neutral && autoStep < levelObj.r.length) {
         inputDir = Number(levelObj.r[autoStep]);
       }
-      if (!moveFlag && (inputFlag || settings.autoMode)) {
-        if (inputDir !== dirs.neutral) {
-          if (inputCount >= inputCountPrev + inputInterval) {
+      if (!moveFlag && (clearFlag || inputFlag || settings.autoMode)) {
+        if (inputCount >= inputCountPrev + inputInterval) {
+          if (clearFlag) {
+            if (clearMessageFlag) {
+              clearMessageFlag = false;
+              draw();
+            }
+          } else if (inputDir !== dirs.neutral) {
             autoStep++;
             move(inputDir);
             inputCount = 0;
@@ -563,7 +573,7 @@
         moveFlag = false;
         draw();
         stateUpdate();
-        drawFrame();
+        clearCheck();
       }
       if (undoFlag) {
         if (undoCount === undoInterval) {
@@ -580,8 +590,7 @@
   }
 
   function drawFrame() {
-    const isCleared = stage.isOk(isTarget);
-    const paddingColor = isCleared ? '#8f8' : '#753';
+    const paddingColor = clearFlag ? '#8f8' : '#753';
 
     const g = showkoban.svg.createG();
 
@@ -607,17 +616,13 @@
     }
 
     // クリアメッセージ
-    if (isCleared) {
-      if (settings.autoMode) {
-        setTimeout(gotoNextLevel, 1000);
-      }
+    if (clearFlag) {
       const text = showkoban.svg.createText(blockSize, {x: stage.getWidth() * 0.5, y: stage.getHeight() - 1, text: 'CLEAR'});
       text.setAttribute('font-size', `${blockSize * 0.8}px`);
       text.setAttribute('font-weight', 'bold');
       text.setAttribute('fill', 'blue');
       g.appendChild(text);
-      if (!clearFlag && !moveFlag && undoInfo) {
-        clearFlag = true;
+      if (undoInfo) {
         clearStep = undoInfo.getIndex();
         const w = levelObj.w;
         const h = levelObj.h;
@@ -640,7 +645,8 @@
           }
         }
       }
-      if (clearFlag) {
+
+      {
         const text = showkoban.svg.createText(blockSize, {x: stage.getWidth() * 0.5, y: 0, text: `${clearStep} steps`});
         text.setAttribute('font-size', `${blockSize * 0.6}px`);
         if (bestRecord === null) {
@@ -656,6 +662,9 @@
           text.setAttribute('font-weight', 'bold');
         }
         g.appendChild(text);
+      }
+      if (settings.autoMode) {
+        setTimeout(gotoNextLevel, 1000);
       }
     }
 
@@ -900,11 +909,13 @@
     if ((e.button === 0 || e.button === undefined) && stage.getState(x, y) !== drawingState) {
       stage.setState(x, y, drawingState);
       draw();
+      clearCheck();
       updateUrl();
     } else if (stage.getState(x, y) !== showkoban.states.none) {
       if (e.button !== 0) {
         stage.setState(x, y, showkoban.states.none);
         draw();
+        clearCheck();
         updateUrl();
       }
     }
