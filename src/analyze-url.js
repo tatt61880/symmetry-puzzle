@@ -17,7 +17,7 @@
     };
 
     const queryStrs = location.href.split('?')[1];
-    if (queryStrs == null) return res;
+    if (queryStrs === undefined) return res;
 
     for (const queryStr of queryStrs.split('&')) {
       const paramArray = queryStr.split('=');

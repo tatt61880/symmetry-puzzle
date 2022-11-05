@@ -24,7 +24,7 @@
       return this.data.length;
     }
     empty() {
-      return this.data.length == 0;
+      return this.data.length === 0;
     }
   }
 })();

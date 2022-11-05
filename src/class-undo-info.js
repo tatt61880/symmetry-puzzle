@@ -15,7 +15,7 @@
       this.undoArray[this.undoIdx++] = data;
     }
     isUndoable() {
-      return this.undoIdx != 0;
+      return this.undoIdx !== 0;
     }
     undo() {
       return this.undoArray[--this.undoIdx];

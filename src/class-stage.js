@@ -85,7 +85,7 @@
       let y = this.upEnd;
       let x = this.leftEnd;
       for (const c of obj.s) {
-        if (c == '-') {
+        if (c === '-') {
           y++;
           if (y > this.downEnd) break;
           x = this.leftEnd;
@@ -133,7 +133,7 @@
     }
 
     isOk(isX) {
-      if (this.count(isX) == 0) return false;
+      if (this.count(isX) === 0) return false;
       if (!this.#isConnected(isX)) return false;
       if (!this.#isPointSymmetry(isX)) return false;
       return true;
@@ -212,7 +212,7 @@
     move(dx, dy, moveFlags) {
       let moveFlag = false;
       for (let i = showkoban.states.userMin; i <= showkoban.states.userMax; ++i) {
-        if (this.count((x)=>{ return x == i; }) == 0) continue;
+        if (this.count((x)=>{ return x === i; }) === 0) continue;
 
         const moveState = []; // 移動予定の状態番号
         moveState[i] = true;
@@ -225,10 +225,10 @@
           loop:
           for (let y = this.upEnd; y <= this.downEnd; ++y) {
             for (let x = this.leftEnd; x <= this.rightEnd; ++x) {
-              if (this.getState(x, y) != state) continue;
+              if (this.getState(x, y) !== state) continue;
               const neighborState = this.getState(x + dx, y + dy);
-              if (neighborState == showkoban.states.none) continue;
-              if (neighborState == showkoban.states.wall) {
+              if (neighborState === showkoban.states.none) continue;
+              if (neighborState === showkoban.states.wall) {
                 flag = false;
                 break loop;
               } else if (!moveState[neighborState]) {

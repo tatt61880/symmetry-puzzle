@@ -32,7 +32,7 @@
     const polygon = document.createElementNS(SVG_NS, 'polygon');
     let points = '';
     for (const point of param.points) {
-      if (points != '') points += ' ';
+      if (points !== '') points += ' ';
       points += `${blockSize * point[0]},${blockSize * point[1]}`;
     }
     polygon.setAttribute('points', points);

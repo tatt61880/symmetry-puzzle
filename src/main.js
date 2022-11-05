@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.05b';
+  const versionText = 'v2022.11.05e';
 
   let settings = {
     autoMode: false,
@@ -14,7 +14,7 @@
   let editMode = false;
   let autoStep;
 
-  let levelId;
+  let levelId = null;
   let levelObj;
 
   let undoInfo;
@@ -197,29 +197,29 @@
 
   function keydown(e) {
     if (e.shiftKey) {
-      if (e.key == 'T') {
+      if (e.key === 'T') {
         // 強制editモード (Shift + t)
         levelId = null;
         updateLevelVisibility();
         toggleEditLevel();
       } else {
-        if (e.key == 'ArrowLeft') {
+        if (e.key === 'ArrowLeft') {
           gotoPrevLevel();
-        } else if (e.key == 'ArrowRight') {
+        } else if (e.key === 'ArrowRight') {
           gotoNextLevel();
         }
       }
-    } else if (e.key == ' ') {
+    } else if (e.key === ' ') {
       e.preventDefault();
       debugFlag = true;
       draw();
-    } else if (e.key == 't') {
-      if (levelId == null) {
+    } else if (e.key === 't') {
+      if (levelId === null) {
         toggleEditLevel();
       }
-    } else if (e.key == 'r') {
+    } else if (e.key === 'r') {
       resetLevel();
-    } else if (e.key == 'z') {
+    } else if (e.key === 'z') {
       undoStart();
     } else if (e.key.length > 2) {
       const dir = dirs[e.key];
@@ -237,16 +237,16 @@
   }
 
   function keyup(e) {
-    if (debugFlag && e.key == ' ') {
+    if (debugFlag && e.key === ' ') {
       debugFlag = false;
       draw();
     }
     delete inputKeys[e.key];
-    if (Object.keys(inputKeys).length == 0) {
+    if (Object.keys(inputKeys).length === 0) {
       updateController(dirs.neutral);
       inputFlag = false;
     }
-    if (e.key == 'z') {
+    if (e.key === 'z') {
       undoEnd();
     }
     return false;
@@ -296,7 +296,7 @@
       applyObj(data);
     }
 
-    if (undoInfo.getIndex() == 0) {
+    if (undoInfo.getIndex() === 0) {
       resetUndo();
     }
   }
@@ -343,12 +343,12 @@
       let x = w - 1;
       let y = 0;
       for (const c of stateStr) {
-        if (c == '-') {
+        if (c === '-') {
           y++;
-          if (y == h) break;
+          if (y === h) break;
           x = w - 1;
         } else {
-          if (x == -1) continue;
+          if (x === -1) continue;
           statesTemp[y][x] = showkoban.states.charToState[c];
           x--;
         }
@@ -383,12 +383,12 @@
         let x = w - 1;
         let y = 0;
         for (const c of stateStr) {
-          if (c == '-') {
+          if (c === '-') {
             x--;
             if (x < 0) break;
             y = 0;
           } else {
-            if (y == h) continue;
+            if (y === h) continue;
             statesTemp[y][x] = showkoban.states.charToState[c];
             y++;
           }
@@ -409,28 +409,28 @@
   }
 
   function updateLevelVisibility() {
-    if (levelId == null) {
+    if (levelId === null) {
       hideElem(showkoban.elems.levelPrev);
       hideElem(showkoban.elems.levelId);
       hideElem(showkoban.elems.levelNext);
       showElem(showkoban.elems.editLevel);
     } else {
-      (levelId == 1 ? hideElem : showElem)(showkoban.elems.levelPrev);
+      (levelId === 1 ? hideElem : showElem)(showkoban.elems.levelPrev);
       showElem(showkoban.elems.levelId);
-      (levelId == showkoban.levels.length ? hideElem : showElem)(showkoban.elems.levelNext);
+      (levelId === showkoban.levels.length ? hideElem : showElem)(showkoban.elems.levelNext);
       hideElem(showkoban.elems.editLevel);
     }
   }
 
   function gotoPrevLevel() {
-    if (levelId == null) return;
+    if (levelId === null) return;
     if (levelId > 1) {
       loadLevelById(levelId - 1);
     }
   }
 
   function gotoNextLevel() {
-    if (levelId == null) return;
+    if (levelId === null) return;
     if (levelId < showkoban.levels.length) {
       loadLevelById(levelId + 1);
     }
@@ -466,7 +466,7 @@
     const res = showkoban.analyzeUrl();
     settings = res.settings;
     levelObj = res.levelObj;
-    if (levelObj.s == '') {
+    if (levelObj.s === '') {
       levelId = 1;
       loadLevelById(levelId);
     } else {
@@ -540,12 +540,12 @@
       if (inputCount < inputCountPrev + inputInterval) {
         inputCount++;
       }
-      if (settings.autoMode && levelObj.r !== undefined && inputDir == dirs.neutral && autoStep < levelObj.r.length) {
+      if (settings.autoMode && levelObj.r !== undefined && inputDir === dirs.neutral && autoStep < levelObj.r.length) {
         inputDir = levelObj.r[autoStep++];
       }
 
       if (!moveFlag && (inputFlag || settings.autoMode)) {
-        if (inputDir != dirs.neutral) {
+        if (inputDir !== dirs.neutral) {
           if (inputCount >= inputCountPrev + inputInterval) {
             move(inputDir);
             inputCount = 0;
@@ -558,7 +558,7 @@
       }
       if (moveFlag) {
         moveCount++;
-        if (moveCount == inputInterval) {
+        if (moveCount === inputInterval) {
           moveCount = 0;
           moveFlag = false;
           stateUpdate();
@@ -566,7 +566,7 @@
         draw();
       }
       if (undoFlag) {
-        if (undoCount == undoInterval) {
+        if (undoCount === undoInterval) {
           undoCount = 0;
           execUndo();
         }
@@ -624,7 +624,7 @@
             console.log(`新記録!\n${bestRecord} → ${steps} (${steps - bestRecord} 手)`);
           } else {
             console.log(`過去最高記録は ${bestRecord} 手です。\n(差: ${steps - bestRecord} 手)`);
-            if (replayStr == r) {
+            if (replayStr === r) {
               console.log('(完全に同じ手順です。)');
             }
           }
@@ -654,7 +654,7 @@
       for (let y = 1; y < stage.getHeight() - 1; ++y) {
         for (let x = 1; x < stage.getWidth() - 1; ++x) {
           const state = stage.getState(x, y);
-          if (state == showkoban.states.none) continue;
+          if (state === showkoban.states.none) continue;
 
           const g = showkoban.svg.createG();
           const color = showkoban.colors[state];
@@ -667,7 +667,7 @@
           {
             const flags = [];
             for (let dir = 0; dir < 8; ++dir) {
-              flags[dir] = stage.getState(x + dxs[dir], y + dys[dir]) == state;
+              flags[dir] = stage.getState(x + dxs[dir], y + dys[dir]) === state;
             }
             // 上側
             if (!flags[dirs.u]) {
@@ -785,7 +785,7 @@
                   const dd = 0.2;
                   const ddd = 0.1;
                   const rectArg = {x: x, y: y, width: 1, height: 1};
-                  if (moveDir == dirs.ArrowUp || moveDir == dirs.ArrowDown) {
+                  if (moveDir === dirs.ArrowUp || moveDir === dirs.ArrowDown) {
                     if (!flags[dirs.l]) rectArg.x += dd;
                     if (!flags[dirs.l]) rectArg.width -= dd;
                     if (!flags[dirs.r]) rectArg.width -= dd;
@@ -812,7 +812,7 @@
 
               const dx = dxs[moveDir] * blockSize * ratio;
               const dy = dys[moveDir] * blockSize * ratio;
-              if (dx + dy != 0) {
+              if (dx + dy !== 0) {
                 g.setAttribute('transform', `translate(${dx},${dy})`);
               }
             }
@@ -863,11 +863,11 @@
     if (isTouchScreenNearEdge(e)) return;
 
     e.preventDefault();
-    if (e.button == 0 && stage.getState(x, y) != drawingState) {
+    if (e.button === 0 && stage.getState(x, y) !== drawingState) {
       stage.setState(x, y, drawingState);
       draw();
       updateUrl();
-    } else if (e.button != 0 && stage.getState(x, y) != showkoban.states.none) {
+    } else if (e.button !== 0 && stage.getState(x, y) !== showkoban.states.none) {
       stage.setState(x, y, showkoban.states.none);
       draw();
       updateUrl();
