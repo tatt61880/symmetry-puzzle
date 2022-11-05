@@ -80,3 +80,11 @@ svg {
 text {
   pointer-events: none;
 }
+
+.hide {
+  display: none;
+}
+
+.low-contrast {
+  filter: contrast(60%);
+}

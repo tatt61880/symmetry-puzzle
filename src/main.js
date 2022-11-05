@@ -136,14 +136,14 @@
   function undoStart() {
     if (undoFlag) return;
     undoFlag = true;
-    showkoban.elems.undo.style.filter = 'contrast(60%)';
+    showkoban.elems.undo.classList.add('low-contrast');
     undoCount = undoInterval;
   }
 
   function undoEnd() {
     if (!undoFlag) return;
     undoFlag = false;
-    showkoban.elems.undo.style.filter = 'none';
+    showkoban.elems.undo.classList.remove('low-contrast');
   }
 
   function undodown(e) {
@@ -892,11 +892,11 @@
 
   function showElem(elem) {
     if (elem === undefined) return;
-    elem.style.display = 'block';
+    elem.classList.remove('hide');
   }
 
   function hideElem(elem) {
     if (elem === undefined) return;
-    elem.style.display = 'none';
+    elem.classList.add('hide');
   }
 })();
