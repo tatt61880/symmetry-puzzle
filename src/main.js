@@ -338,7 +338,6 @@
     if (undoInfo.getIndex() == 0) {
       resetUndo();
     }
-    resetDirs();
   }
 
   function loadLevel(levelObj) {
@@ -347,7 +346,6 @@
     resetUndo();
 
     autoStep = 0;
-    resetDirs();
     inputDir = dirs.neutral;
     inputCount = inputInterval;
     inputCountPrev = 0;
