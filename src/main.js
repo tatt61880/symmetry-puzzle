@@ -526,6 +526,7 @@
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
       showkoban.elems.svg.addEventListener(pointerdownEventName, editSvg, false);
+      showkoban.elems.svg.oncontextmenu = function() {return false;};
 
       showkoban.elems.stickBase.addEventListener(pointerdownEventName, pointerdown, false);
       showkoban.elems.stickBase.addEventListener(pointermoveEventName, pointermove, false);
@@ -774,8 +775,7 @@
             }
             // 移動モーション
             if (moveFlags[y][x]) {
-              let ratio0 = moveCount / inputInterval * 1.1;
-              ratio0 = Math.min(ratio0, 1.0);
+              const ratio0 = Math.min(1, moveCount / inputInterval * 1.1);
               const ratio = Math.sin(0.5 * Math.PI * ratio0) ** 0.5;
 
               // 移動時のエフェクト（残像）
@@ -863,11 +863,11 @@
     if (isTouchScreenNearEdge(e)) return;
 
     e.preventDefault();
-    if (stage.getState(x, y) != drawingState) {
+    if (e.button == 0 && stage.getState(x, y) != drawingState) {
       stage.setState(x, y, drawingState);
       draw();
       updateUrl();
-    } else if (stage.getState(x, y) != showkoban.states.none) {
+    } else if (e.button != 0 && stage.getState(x, y) != showkoban.states.none) {
       stage.setState(x, y, showkoban.states.none);
       draw();
       updateUrl();
