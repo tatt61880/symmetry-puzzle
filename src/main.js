@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.05g';
+  const versionText = 'v2022.11.06b';
 
   let settings = {
     autoMode: false,
@@ -542,12 +542,12 @@
         inputCount++;
       }
       if (settings.autoMode && levelObj.r !== undefined && inputDir === dirs.neutral && autoStep < levelObj.r.length) {
-        inputDir = levelObj.r[autoStep++];
+        inputDir = Number(levelObj.r[autoStep]);
       }
-
       if (!moveFlag && (inputFlag || settings.autoMode)) {
         if (inputDir !== dirs.neutral) {
           if (inputCount >= inputCountPrev + inputInterval) {
+            autoStep++;
             move(inputDir);
             inputCount = 0;
             inputCountPrev = 0;
