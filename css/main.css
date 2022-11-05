@@ -3,6 +3,12 @@ html {
   touch-action: manipulation;
 }
 
+:root {
+  --move-param: none;
+  --animation-duration: none;
+  --animation-duration-shadow: none;
+}
+
 body {
   margin: 0;
   background-color: #ccffff;
@@ -87,4 +93,38 @@ text {
 
 .low-contrast {
   filter: contrast(60%);
+}
+
+.anim-block {
+  animation: anim-block forwards;
+  animation-duration: var(--animation-duration);
+}
+
+.anim-shadow {
+  animation: anim-shadow forwards;
+  animation-duration: var(--animation-duration-shadow);
+}
+
+@keyframes anim-block {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: var(--move-param);
+  }
+}
+
+@keyframes anim-shadow {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }

@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.05e';
+  const versionText = 'v2022.11.05g';
 
   let settings = {
     autoMode: false,
@@ -50,11 +50,11 @@
   const stage = showkoban.Stage();
   const moveFlags = [];
   let moveFlag = false;
-  let moveCount = 0;
   let moveDir = dirs.neutral;
 
   let inputFlag = false;
-  const inputInterval = 8;
+  const intervalMsec = 30;
+  const inputInterval = 5;
   const undoInterval = 6;
   let inputCountPrev = 0;
   let inputCount = inputInterval;
@@ -95,9 +95,11 @@
     moveFlag = stage.move(dx, dy, moveFlags);
 
     if (moveFlag) {
+      document.documentElement.style.setProperty('--move-param', `translate(${dx * blockSize}px, ${dy * blockSize}px)`);
+      document.documentElement.style.setProperty('--animation-duration', `${inputInterval * intervalMsec}ms`);
+      document.documentElement.style.setProperty('--animation-duration-shadow', `${inputInterval * intervalMsec * 2}ms`);
       showElem(showkoban.elems.undo);
       moveDir = dir;
-      moveCount = 0;
       undoInfo.pushData({
         dir: dir,
         w: stage.getW(),
@@ -269,7 +271,6 @@
         moveFlags[y][x] = false;
       }
     }
-    moveCount = 0;
     moveFlag = false;
   }
 
@@ -526,7 +527,7 @@
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
       showkoban.elems.svg.addEventListener(pointerdownEventName, editSvg, false);
-      showkoban.elems.svg.oncontextmenu = function() {return false;};
+      //showkoban.elems.svg.oncontextmenu = function() {return false;};
 
       showkoban.elems.stickBase.addEventListener(pointerdownEventName, pointerdown, false);
       showkoban.elems.stickBase.addEventListener(pointermoveEventName, pointermove, false);
@@ -557,13 +558,10 @@
         }
       }
       if (moveFlag) {
-        moveCount++;
-        if (moveCount === inputInterval) {
-          moveCount = 0;
-          moveFlag = false;
-          stateUpdate();
-        }
+        moveFlag = false;
         draw();
+        stateUpdate();
+        drawFrame();
       }
       if (undoFlag) {
         if (undoCount === undoInterval) {
@@ -572,27 +570,37 @@
         }
         undoCount++;
       }
-    }, 20);
+    }, intervalMsec);
   }
 
   function isTarget(x) {
     return showkoban.states.targetMin <= x && x <= showkoban.states.targetMax;
   }
 
-  function createBackground() {
-    const g = showkoban.svg.createG();
-
+  function drawFrame() {
     const isCleared = stage.isOk(isTarget);
     const paddingColor = isCleared ? '#8f8' : '#753';
 
+    const g = showkoban.svg.createG();
+
     {
-      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: 0, width: stage.getWidth(), height: stage.getHeight()});
+      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: 0, width: stage.getWidth(), height: 1});
       rect.setAttribute('fill', paddingColor);
       g.appendChild(rect);
     }
     {
-      const rect = showkoban.svg.createRect(blockSize, {x: 1, y: 1, width: stage.getWidth() - 2, height: stage.getHeight() - 2});
-      rect.setAttribute('fill', 'white');
+      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: 0, width: 1, height: stage.getHeight()});
+      rect.setAttribute('fill', paddingColor);
+      g.appendChild(rect);
+    }
+    {
+      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: stage.getHeight() - 1, width: stage.getWidth(), height: 1});
+      rect.setAttribute('fill', paddingColor);
+      g.appendChild(rect);
+    }
+    {
+      const rect = showkoban.svg.createRect(blockSize, {x: stage.getWidth() - 1, y: 0, width: 1, height: stage.getHeight()});
+      rect.setAttribute('fill', paddingColor);
       g.appendChild(rect);
     }
 
@@ -630,6 +638,18 @@
           }
         }
       }
+    }
+
+    showkoban.elems.svg.appendChild(g);
+  }
+
+  function createBackground() {
+    const g = showkoban.svg.createG();
+
+    {
+      const rect = showkoban.svg.createRect(blockSize, {x: 1, y: 1, width: stage.getWidth() - 2, height: stage.getHeight() - 2});
+      rect.setAttribute('fill', 'white');
+      g.appendChild(rect);
     }
     return g;
   }
@@ -775,45 +795,45 @@
             }
             // 移動モーション
             if (moveFlags[y][x]) {
-              const ratio0 = Math.min(1, moveCount / inputInterval * 1.1);
-              const ratio = Math.sin(0.5 * Math.PI * ratio0) ** 0.5;
+              const dx = dxs[moveDir];
+              const dy = dys[moveDir];
+              g.classList.add('anim-block');
 
               // 移動時のエフェクト（残像）
               if (!moveFlags[y - dys[moveDir]][x - dxs[moveDir]]) {
                 const g2 = showkoban.svg.createG();
                 {
                   const dd = 0.2;
-                  const ddd = 0.1;
+                  const ddd = 0.15;
                   const rectArg = {x: x, y: y, width: 1, height: 1};
                   if (moveDir === dirs.ArrowUp || moveDir === dirs.ArrowDown) {
                     if (!flags[dirs.l]) rectArg.x += dd;
                     if (!flags[dirs.l]) rectArg.width -= dd;
                     if (!flags[dirs.r]) rectArg.width -= dd;
-                    rectArg.y -= ddd;
-                    rectArg.height += ddd * 2;
+                    if (moveDir === dirs.ArrowDown) {
+                      rectArg.y += ddd;
+                    } else {
+                      rectArg.y -= ddd;
+                    }
                   } else {
                     if (!flags[dirs.u]) rectArg.y += dd;
                     if (!flags[dirs.u]) rectArg.height -= dd;
                     if (!flags[dirs.d]) rectArg.height -= dd;
-                    rectArg.x -= ddd;
-                    rectArg.width += ddd * 2;
+                    if (moveDir === dirs.ArrowRight) {
+                      rectArg.x += ddd;
+                    } else {
+                      rectArg.x -= ddd;
+                    }
                   }
 
                   const rect = window.showkoban.svg.createRect(blockSize, rectArg);
                   rect.setAttribute('fill', color.fill);
-                  rect.setAttribute('fill-opacity', 0.5);
-                  const dx = dxs[moveDir] * blockSize * ratio * (moveCount / inputInterval) ** 2;
-                  const dy = dys[moveDir] * blockSize * ratio * (moveCount / inputInterval) ** 2;
+                  rect.setAttribute('fill-opacity', 1);
                   rect.setAttribute('transform', `translate(${dx},${dy})`);
                   g2.appendChild(rect);
                 }
                 showkoban.elems.svg.appendChild(g2);
-              }
-
-              const dx = dxs[moveDir] * blockSize * ratio;
-              const dy = dys[moveDir] * blockSize * ratio;
-              if (dx + dy !== 0) {
-                g.setAttribute('transform', `translate(${dx},${dy})`);
+                g2.classList.add('anim-shadow');
               }
             }
           }
@@ -849,6 +869,7 @@
       }
       showkoban.elems.svg.appendChild(g);
     }
+    drawFrame();
   }
 
   function editSvg(e) {
