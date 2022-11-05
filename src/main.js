@@ -613,6 +613,10 @@
     }, 20);
   }
 
+  function isTarget(x) {
+    return showkoban.states.targetMin <= x && x <= showkoban.states.targetMax;
+  }
+
   function createBackground() {
     const g = showkoban.svg.createG();
 
@@ -884,10 +888,6 @@
       }
       showkoban.elems.svg.appendChild(g);
     }
-  }
-
-  function isTarget(x) {
-    return showkoban.states.targetMin <= x && x <= showkoban.states.targetMax;
   }
 
   function editSvg(e) {
