@@ -527,7 +527,7 @@
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
       showkoban.elems.svg.addEventListener(pointerdownEventName, editSvg, false);
-      //showkoban.elems.svg.oncontextmenu = function() {return false;};
+      showkoban.elems.svg.oncontextmenu = function() {return !editMode;};
 
       showkoban.elems.stickBase.addEventListener(pointerdownEventName, pointerdown, false);
       showkoban.elems.stickBase.addEventListener(pointermoveEventName, pointermove, false);
@@ -878,14 +878,16 @@
     if (isTouchScreenNearEdge(e)) return;
 
     e.preventDefault();
-    if (e.button === 0 && stage.getState(x, y) !== drawingState) {
+    if ((e.button === 0 || e.button === undefined) && stage.getState(x, y) !== drawingState) {
       stage.setState(x, y, drawingState);
       draw();
       updateUrl();
-    } else if (e.button !== 0 && stage.getState(x, y) !== showkoban.states.none) {
-      stage.setState(x, y, showkoban.states.none);
-      draw();
-      updateUrl();
+    } else if (stage.getState(x, y) !== showkoban.states.none) {
+      if (e.button !== 0) {
+        stage.setState(x, y, showkoban.states.none);
+        draw();
+        updateUrl();
+      }
     }
     return;
 
