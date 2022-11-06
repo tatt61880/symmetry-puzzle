@@ -6,15 +6,38 @@
     return new Level();
   };
 
+  const dirs = {
+    u: 0,
+    r: 1,
+    d: 2,
+    l: 3,
+    ur: 4,
+    dr: 5,
+    dl: 6,
+    ul: 7,
+  };
+
+  const dys = [-1, 0, 1, 0, -1, 1, 1, -1];
+  const dxs = [0, 1, 0, -1, 1, 1, -1, -1];
+
+  const blockBorderWidth = 0.12;
+  const blockBorderWidthHalf = blockBorderWidth / 2;
+
   class Level {
     #states;
     #width;
     #height;
+    #moveFlags;
+    #moveDx;
+    #moveDy;
 
     constructor() {
       this.#states = [];
       this.#width = null;
       this.#height = null;
+      this.#moveFlags = [];
+      this.#moveDx = null;
+      this.#moveDy = null;
       this.upEnd = 2;
       this.leftEnd = 2;
       this.downEnd = null;
@@ -218,8 +241,25 @@
       return {x: (minX + maxX + 1) * 0.5, y: (minY + maxY + 1) * 0.5};
     }
 
-    move(dx, dy, moveFlags) {
+    resetMoveFlags() {
+      for (let y = 0; y < this.getHeight(); ++y) {
+        this.#moveFlags[y] = [];
+        for (let x = 0; x < this.getWidth(); ++x) {
+          this.#moveFlags[y][x] = false;
+        }
+      }
+    }
+
+    updateMoveFlags(dx, dy) {
       let moveFlag = false;
+
+      for (let y = 0; y < this.getHeight(); ++y) {
+        this.#moveFlags[y] = [];
+        for (let x = 0; x < this.getWidth(); ++x) {
+          this.#moveFlags[y][x] = false;
+        }
+      }
+
       for (let i = showkoban.states.userMin; i <= showkoban.states.userMax; ++i) {
         if (this.count((x)=>{ return x === i; }) === 0) continue;
 
@@ -253,14 +293,216 @@
           for (let y = this.upEnd; y <= this.downEnd; ++y) {
             for (let x = this.leftEnd; x <= this.rightEnd; ++x) {
               if (moveState[this.getState(x, y)]) {
-                moveFlags[y][x] = true;
+                this.#moveFlags[y][x] = true;
               }
             }
           }
           moveFlag = true;
         }
       }
+      if (moveFlag) {
+        this.#moveDx = dx;
+        this.#moveDy = dy;
+      }
       return moveFlag;
+    }
+
+    move() {
+      const statesTemp = this.copyStates();
+      const dx = this.#moveDx;
+      const dy = this.#moveDy;
+
+      for (let y = this.upEnd; y <= this.downEnd; ++y) {
+        for (let x = this.leftEnd; x <= this.rightEnd; ++x) {
+          if (this.#moveFlags[y][x]) {
+            this.setState(x, y, showkoban.states.none);
+          }
+        }
+      }
+      for (let y = this.upEnd; y <= this.downEnd; ++y) {
+        for (let x = this.leftEnd; x <= this.rightEnd; ++x) {
+          if (this.#moveFlags[y - dy][x - dx]) {
+            this.setState(x, y, statesTemp[y - dy][x - dx]);
+            this.#moveFlags[y - dy][x - dx] = false;
+          }
+        }
+      }
+    }
+
+    createBlock(x, y, blockSize, clearFlag, showCharsFlag) {
+      const state = this.getState(x, y);
+      const g = showkoban.svg.createG();
+      const color = showkoban.colors[state];
+      {
+        const eps = 0.01; // サイズを少し大きくすることで、隙間をなくします。
+        const rect = showkoban.svg.createRect(blockSize, {x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2});
+        rect.setAttribute('fill', color.fill);
+        g.appendChild(rect);
+      }
+      {
+        const flags = [];
+        for (let dir = 0; dir < 8; ++dir) {
+          flags[dir] = this.getState(x + dxs[dir], y + dys[dir]) === state;
+        }
+        // 上側
+        if (!flags[dirs.u]) {
+          const line = showkoban.svg.createLine(blockSize, {x1: x, y1: y + blockBorderWidthHalf, x2: x + 1, y2: y + blockBorderWidthHalf});
+          line.setAttribute('stroke', color.stroke);
+          line.setAttribute('stroke-width', blockBorderWidth * blockSize);
+          g.appendChild(line);
+        }
+        // 右側
+        if (!flags[dirs.r]) {
+          const line = showkoban.svg.createLine(blockSize, {x1: x + 1 - blockBorderWidthHalf, y1: y, x2: x + 1 - blockBorderWidthHalf, y2: y + 1});
+          line.setAttribute('stroke', color.stroke);
+          line.setAttribute('stroke-width', blockBorderWidth * blockSize);
+          g.appendChild(line);
+        }
+        // 下側
+        if (!flags[dirs.d]) {
+          const line = showkoban.svg.createLine(blockSize, {x1: x, y1: y + 1 - blockBorderWidthHalf, x2: x + 1, y2: y + 1 - blockBorderWidthHalf});
+          line.setAttribute('stroke', color.stroke);
+          line.setAttribute('stroke-width', blockBorderWidth * blockSize);
+          g.appendChild(line);
+        }
+        // 左側
+        if (!flags[dirs.l]) {
+          const line = showkoban.svg.createLine(blockSize, {x1: x + blockBorderWidthHalf, y1: y, x2: x + blockBorderWidthHalf, y2: y + 1});
+          line.setAttribute('stroke', color.stroke);
+          line.setAttribute('stroke-width', blockBorderWidth * blockSize);
+          g.appendChild(line);
+        }
+        // 右上
+        if (flags[dirs.u] && flags[dirs.r] && !flags[dirs.ur]) {
+          const rect = showkoban.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y: y, width: blockBorderWidth, height: blockBorderWidth});
+          rect.setAttribute('fill', color.stroke);
+          g.appendChild(rect);
+        }
+        // 右下
+        if (flags[dirs.d] && flags[dirs.r] && !flags[dirs.dr]) {
+          const rect = showkoban.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth});
+          rect.setAttribute('fill', color.stroke);
+          g.appendChild(rect);
+        }
+        // 左下
+        if (flags[dirs.d] && flags[dirs.l] && !flags[dirs.dl]) {
+          const rect = showkoban.svg.createRect(blockSize, {x: x, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth});
+          rect.setAttribute('fill', color.stroke);
+          g.appendChild(rect);
+        }
+        // 左上
+        if (flags[dirs.u] && flags[dirs.l] && !flags[dirs.ul]) {
+          const rect = showkoban.svg.createRect(blockSize, {x: x, y: y, width: blockBorderWidth, height: blockBorderWidth});
+          rect.setAttribute('fill', color.stroke);
+          g.appendChild(rect);
+        }
+
+        if (showkoban.states.userMin <= state && state <= showkoban.states.userMax) {
+          const size = blockBorderWidth * 3;
+          // 右上
+          if (!flags[dirs.u] && !flags[dirs.r]) {
+            const polygon = showkoban.svg.createPolygon(blockSize, {
+              points: [
+                [x + 1 - size, y],
+                [x + 1, y],
+                [x + 1, y + size],
+              ],
+            });
+            polygon.setAttribute('fill', color.stroke);
+            g.appendChild(polygon);
+          }
+          // 右下
+          if (!flags[dirs.d] && !flags[dirs.r]) {
+            const polygon = showkoban.svg.createPolygon(blockSize, {
+              points: [
+                [x + 1, y + 1 - size],
+                [x + 1, y + 1],
+                [x + 1 - size, y + 1],
+              ],
+            });
+            polygon.setAttribute('fill', color.stroke);
+            g.appendChild(polygon);
+          }
+          // 左下
+          if (!flags[dirs.d] && !flags[dirs.l]) {
+            const polygon = showkoban.svg.createPolygon(blockSize, {
+              points: [
+                [x, y + 1 - size],
+                [x + size, y + 1],
+                [x, y + 1],
+              ],
+            });
+            polygon.setAttribute('fill', color.stroke);
+            g.appendChild(polygon);
+          }
+          // 左上
+          if (!flags[dirs.u] && !flags[dirs.l]) {
+            const polygon = showkoban.svg.createPolygon(blockSize, {
+              points: [
+                [x, y],
+                [x + size, y],
+                [x, y + size],
+              ],
+            });
+            polygon.setAttribute('fill', color.stroke);
+            g.appendChild(polygon);
+          }
+        }
+        if (clearFlag) {
+          if (showkoban.states.isTarget(state)) {
+            g.classList.add('animation-rotation');
+          }
+        }
+        // 移動モーション
+        if (this.#moveFlags[y][x]) {
+          const dx = this.#moveDx;
+          const dy = this.#moveDy;
+          g.classList.add('animation-block');
+
+          // 移動時のエフェクト（残像）
+          if (!this.#moveFlags[y - dy][x - dx]) {
+            const g2 = showkoban.svg.createG();
+            {
+              const dd = 0.2;
+              const ddd = 0.15;
+              const rectArg = {x: x, y: y, width: 1, height: 1};
+              if (dx == 0) {
+                if (!flags[dirs.l]) rectArg.x += dd;
+                if (!flags[dirs.l]) rectArg.width -= dd;
+                if (!flags[dirs.r]) rectArg.width -= dd;
+                rectArg.height -= ddd;
+                if (dy === 1) {
+                  rectArg.y += ddd;
+                }
+              } else {
+                if (!flags[dirs.u]) rectArg.y += dd;
+                if (!flags[dirs.u]) rectArg.height -= dd;
+                if (!flags[dirs.d]) rectArg.height -= dd;
+                rectArg.width -= ddd;
+                if (dx === 1) {
+                  rectArg.x += ddd;
+                }
+              }
+
+              const rect = window.showkoban.svg.createRect(blockSize, rectArg);
+              rect.setAttribute('fill', color.fill);
+              rect.setAttribute('fill-opacity', 1);
+              rect.setAttribute('transform', `translate(${dx},${dy})`);
+              g2.appendChild(rect);
+            }
+            showkoban.elems.svg.appendChild(g2);
+            g2.classList.add('animation-shadow');
+          }
+        }
+      }
+      if (showCharsFlag) {
+        const text = showkoban.svg.createText(blockSize, {x: x + 0.5, y: y, text: showkoban.states.stateToChar[state]});
+        text.setAttribute('fill', showkoban.colors[state].text);
+        text.setAttribute('font-size', `${blockSize * 0.7}px`);
+        text.setAttribute('font-weight', 'bold');
+        g.appendChild(text);
+      }
+      return g;
     }
   }
 })();
