@@ -537,8 +537,8 @@
         moveFlag = false;
         draw();
         level.move();
-        updateUrl();
         clearCheck();
+        updateUrl();
       }
       if (undoFlag) {
         if (undoCount === undoInterval) {
@@ -712,14 +712,14 @@
     if ((e.button === 0 || e.button === undefined) && level.getState(x, y) !== drawingState) {
       level.setState(x, y, drawingState);
       clearCheck();
-      draw();
       updateUrl();
+      draw();
     } else if (level.getState(x, y) !== showkoban.states.none) {
       if (e.button !== 0) {
         level.setState(x, y, showkoban.states.none);
         clearCheck();
-        draw();
         updateUrl();
+        draw();
       }
     }
     return;
