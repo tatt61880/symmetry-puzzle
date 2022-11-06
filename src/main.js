@@ -50,7 +50,7 @@
   const dys = [-1, 0, 1, 0, -1, 1, 1, -1, 0];
   const dxs = [0, 1, 0, -1, 1, 1, -1, -1, 0];
 
-  const stage = showkoban.Stage();
+  const level = showkoban.Level();
   const moveFlags = [];
   let moveFlag = false;
   let moveDir = dirs.neutral;
@@ -73,9 +73,9 @@
   // ==========================================================================
 
   function getUrlStr() {
-    const w = stage.getW();
-    const h = stage.getH();
-    const s = stage.getStateStr();
+    const w = level.getW();
+    const h = level.getH();
+    const s = level.getStateStr();
     console.log(`{w: ${w}, h: ${h}, s: '${s}'},`);
     return `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}`;
   }
@@ -99,7 +99,7 @@
     const dx = dxs[dir];
     const dy = dys[dir];
 
-    moveFlag = stage.move(dx, dy, moveFlags);
+    moveFlag = level.move(dx, dy, moveFlags);
 
     if (moveFlag) {
       document.documentElement.style.setProperty('--animation-transform', `translate(${dx * blockSize}px, ${dy * blockSize}px)`);
@@ -107,15 +107,15 @@
       moveDir = dir;
       undoInfo.pushData({
         dir: dir,
-        w: stage.getW(),
-        h: stage.getH(),
-        s: stage.getStateStr(),
+        w: level.getW(),
+        h: level.getH(),
+        s: level.getStateStr(),
       });
     }
   }
 
   function clearCheck() {
-    const center = stage.getRotateCenter(showkoban.states.isTarget);
+    const center = level.getRotateCenter(showkoban.states.isTarget);
     clearFlag = center !== null;
     clearMessageFlag = clearFlag;
     if (clearFlag) {
@@ -125,21 +125,21 @@
 
   // 盤面を更新
   function stateUpdate() {
-    const statesTemp = stage.copyStates();
+    const statesTemp = level.copyStates();
 
-    for (let y = stage.upEnd; y <= stage.downEnd; ++y) {
-      for (let x = stage.leftEnd; x <= stage.rightEnd; ++x) {
+    for (let y = level.upEnd; y <= level.downEnd; ++y) {
+      for (let x = level.leftEnd; x <= level.rightEnd; ++x) {
         if (moveFlags[y][x]) {
-          stage.setState(x, y, showkoban.states.none);
+          level.setState(x, y, showkoban.states.none);
         }
       }
     }
-    for (let y = stage.upEnd; y <= stage.downEnd; ++y) {
-      for (let x = stage.leftEnd; x <= stage.rightEnd; ++x) {
+    for (let y = level.upEnd; y <= level.downEnd; ++y) {
+      for (let x = level.leftEnd; x <= level.rightEnd; ++x) {
         const dx = dxs[moveDir];
         const dy = dys[moveDir];
         if (moveFlags[y - dy][x - dx]) {
-          stage.setState(x, y, statesTemp[y - dy][x - dx]);
+          level.setState(x, y, statesTemp[y - dy][x - dx]);
           moveFlags[y - dy][x - dx] = false;
         }
       }
@@ -278,9 +278,9 @@
   }
 
   function resetDirs() {
-    for (let y = 0; y < stage.getHeight(); ++y) {
+    for (let y = 0; y < level.getHeight(); ++y) {
       moveFlags[y] = [];
-      for (let x = 0; x < stage.getWidth(); ++x) {
+      for (let x = 0; x < level.getWidth(); ++x) {
         moveFlags[y][x] = false;
       }
     }
@@ -293,14 +293,14 @@
   }
 
   function applyObj(obj) {
-    stage.applyObj(obj);
-    blockSize = 250 / stage.getHeight();
+    level.applyObj(obj);
+    blockSize = 250 / level.getHeight();
     clearCheck();
     resetDirs();
     updateUrl();
 
-    showkoban.elems.svg.setAttribute('width', blockSize * stage.getWidth());
-    showkoban.elems.svg.setAttribute('height', blockSize * stage.getHeight());
+    showkoban.elems.svg.setAttribute('width', blockSize * level.getWidth());
+    showkoban.elems.svg.setAttribute('height', blockSize * level.getHeight());
     draw();
   }
 
@@ -377,7 +377,7 @@
         }
         r = rotatedR;
       }
-      const s = stage.getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
+      const s = level.getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
       levelObj = {w: w, h: h, s: s, r: r};
       return levelObj;
     }
@@ -417,7 +417,7 @@
           }
           r = rotatedR;
         }
-        const s = stage.getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
+        const s = level.getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
         levelObj = {w: w, h: h, s: s, r: r};
       }
       return levelObj;
@@ -598,29 +598,29 @@
     const g = showkoban.svg.createG();
 
     {
-      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: 0, width: stage.getWidth(), height: 1});
+      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: 0, width: level.getWidth(), height: 1});
       rect.setAttribute('fill', paddingColor);
       g.appendChild(rect);
     }
     {
-      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: 0, width: 1, height: stage.getHeight()});
+      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: 0, width: 1, height: level.getHeight()});
       rect.setAttribute('fill', paddingColor);
       g.appendChild(rect);
     }
     {
-      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: stage.getHeight() - 1, width: stage.getWidth(), height: 1});
+      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: level.getHeight() - 1, width: level.getWidth(), height: 1});
       rect.setAttribute('fill', paddingColor);
       g.appendChild(rect);
     }
     {
-      const rect = showkoban.svg.createRect(blockSize, {x: stage.getWidth() - 1, y: 0, width: 1, height: stage.getHeight()});
+      const rect = showkoban.svg.createRect(blockSize, {x: level.getWidth() - 1, y: 0, width: 1, height: level.getHeight()});
       rect.setAttribute('fill', paddingColor);
       g.appendChild(rect);
     }
 
     // クリアメッセージ
     if (clearFlag) {
-      const text = showkoban.svg.createText(blockSize, {x: stage.getWidth() * 0.5, y: stage.getHeight() - 1, text: 'CLEAR'});
+      const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: 'CLEAR'});
       text.setAttribute('font-size', `${blockSize * 0.8}px`);
       text.setAttribute('font-weight', 'bold');
       text.setAttribute('fill', 'blue');
@@ -650,7 +650,7 @@
       }
 
       {
-        const text = showkoban.svg.createText(blockSize, {x: stage.getWidth() * 0.5, y: 0, text: `${clearStep} steps`});
+        const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${clearStep} steps`});
         text.setAttribute('font-size', `${blockSize * 0.6}px`);
         if (bestRecord === null) {
           text.setAttribute('fill', 'black');
@@ -676,7 +676,7 @@
 
   function createBackground() {
     const g = showkoban.svg.createG();
-    const rect = showkoban.svg.createRect(blockSize, {x: 1, y: 1, width: stage.getWidth() - 2, height: stage.getHeight() - 2});
+    const rect = showkoban.svg.createRect(blockSize, {x: 1, y: 1, width: level.getWidth() - 2, height: level.getHeight() - 2});
     rect.setAttribute('fill', 'white');
     g.appendChild(rect);
     return g;
@@ -697,9 +697,9 @@
     const paddingWidthHalf = paddingWidth / 2;
 
     // ターゲット以外を作成し、追加する。（描画順のためにターゲットは後で追加します。）
-    for (let y = 1; y < stage.getHeight() - 1; ++y) {
-      for (let x = 1; x < stage.getWidth() - 1; ++x) {
-        const state = stage.getState(x, y);
+    for (let y = 1; y < level.getHeight() - 1; ++y) {
+      for (let x = 1; x < level.getWidth() - 1; ++x) {
+        const state = level.getState(x, y);
         if (state === showkoban.states.none) continue;
         if (showkoban.states.isTarget(state)) continue;
         const g = createBlock(x, y, state);
@@ -708,9 +708,9 @@
     }
 
     // ターゲットを作成し、追加する。
-    for (let y = 1; y < stage.getHeight() - 1; ++y) {
-      for (let x = 1; x < stage.getWidth() - 1; ++x) {
-        const state = stage.getState(x, y);
+    for (let y = 1; y < level.getHeight() - 1; ++y) {
+      for (let x = 1; x < level.getWidth() - 1; ++x) {
+        const state = level.getState(x, y);
         if (!showkoban.states.isTarget(state)) continue;
         const g = createBlock(x, y, state);
         showkoban.elems.svg.appendChild(g);
@@ -722,15 +722,15 @@
       const dasharray = '1, 4';
       const g = showkoban.svg.createG();
       // 横線
-      for (let y = 2; y < stage.getHeight() - 1; ++y) {
-        const line = showkoban.svg.createLine(blockSize, {x1: 1, y1: y, x2: stage.getWidth() - 1, y2: y});
+      for (let y = 2; y < level.getHeight() - 1; ++y) {
+        const line = showkoban.svg.createLine(blockSize, {x1: 1, y1: y, x2: level.getWidth() - 1, y2: y});
         line.setAttribute('stroke', showkoban.colors.line);
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
       // 縦線
-      for (let x = 2; x < stage.getWidth() - 1; ++x) {
-        const line = showkoban.svg.createLine(blockSize, {x1: x, y1: 1, x2: x, y2: stage.getHeight() - 1});
+      for (let x = 2; x < level.getWidth() - 1; ++x) {
+        const line = showkoban.svg.createLine(blockSize, {x1: x, y1: 1, x2: x, y2: level.getHeight() - 1});
         line.setAttribute('stroke', showkoban.colors.line);
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
@@ -751,7 +751,7 @@
       {
         const flags = [];
         for (let dir = 0; dir < 8; ++dir) {
-          flags[dir] = stage.getState(x + dxs[dir], y + dys[dir]) === state;
+          flags[dir] = level.getState(x + dxs[dir], y + dys[dir]) === state;
         }
         // 上側
         if (!flags[dirs.u]) {
@@ -921,20 +921,20 @@
     const curXY = getCurXY(e);
     const x = curXY.x;
     const y = curXY.y;
-    if (!stage.isInside(x, y)) return;
+    if (!level.isInside(x, y)) return;
 
     // 画面端付近はスワイプ操作できるように編集操作を無効にします。
     if (isTouchScreenNearEdge(e)) return;
 
     e.preventDefault();
-    if ((e.button === 0 || e.button === undefined) && stage.getState(x, y) !== drawingState) {
-      stage.setState(x, y, drawingState);
+    if ((e.button === 0 || e.button === undefined) && level.getState(x, y) !== drawingState) {
+      level.setState(x, y, drawingState);
       clearCheck();
       draw();
       updateUrl();
-    } else if (stage.getState(x, y) !== showkoban.states.none) {
+    } else if (level.getState(x, y) !== showkoban.states.none) {
       if (e.button !== 0) {
-        stage.setState(x, y, showkoban.states.none);
+        level.setState(x, y, showkoban.states.none);
         clearCheck();
         draw();
         updateUrl();

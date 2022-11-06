@@ -2,11 +2,11 @@
   'use strict';
   window.showkoban = window.showkoban || {};
 
-  window.showkoban.Stage = () => {
-    return new Stage();
+  window.showkoban.Level = () => {
+    return new Level();
   };
 
-  class Stage {
+  class Level {
     #states;
     #width;
     #height;
