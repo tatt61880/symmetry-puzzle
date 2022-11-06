@@ -15,7 +15,7 @@
   let autoStep;
 
   let levelId = null;
-  let levelObj;
+  let currentLevelObj;
 
   let undoInfo;
   let undoFlag = false;
@@ -273,7 +273,7 @@
 
     setTimeout(() => {
       showkoban.elems.resetLevel.style.filter = 'none';
-      loadLevel(levelObj);
+      loadLevelObj(currentLevelObj, true);
     }, 50);
   }
 
@@ -315,17 +315,6 @@
     }
   }
 
-  function loadLevel(levelObj) {
-    applyObj(levelObj);
-    updateLevelVisibility();
-    resetUndo();
-
-    autoStep = 0;
-    inputDir = dirs.neutral;
-    inputCount = inputInterval;
-    inputCountPrev = 0;
-  }
-
   function loadLevelById(id) {
     resetUndo();
     if (id < 1) id = 1;
@@ -333,13 +322,26 @@
     levelId = id;
     updateLevelVisibility();
     showkoban.elems.levelId.textContent = levelId;
-    levelObj = showkoban.levels[levelId - 1]; // リセット用にここで代入します。
+    const levelObj = showkoban.levels[levelId - 1];
 
-    if (settings.mirrorFlag) levelObj = mirrorLevel(levelObj);
-    levelObj = rotateLevel(levelObj, settings.rotateNum);
+    loadLevelObj(levelObj);
+  }
 
-    loadLevel(levelObj);
-    return;
+  function loadLevelObj(LevelObj, isReset = false) {
+    if (!isReset) {
+      if (settings.mirrorFlag) LevelObj = mirrorLevel(LevelObj);
+      LevelObj = rotateLevel(LevelObj, settings.rotateNum);
+    }
+    currentLevelObj = LevelObj;
+
+    applyObj(currentLevelObj);
+    updateLevelVisibility();
+    resetUndo();
+
+    autoStep = 0;
+    inputDir = dirs.neutral;
+    inputCount = inputInterval;
+    inputCountPrev = 0;
 
     // 左右反転する。
     function mirrorLevel(levelObj) {
@@ -479,13 +481,12 @@
 
     const res = showkoban.analyzeUrl();
     settings = res.settings;
-    levelObj = res.levelObj;
-    if (levelObj.s === '') {
+    if (res.levelObj.s === '') {
       levelId = 1;
       loadLevelById(levelId);
     } else {
       levelId = null;
-      loadLevel(levelObj);
+      loadLevelObj(res.levelObj);
     }
     updateEditLevel();
 
@@ -554,8 +555,8 @@
       if (inputCount < inputCountPrev + inputInterval) {
         inputCount++;
       }
-      if (settings.autoMode && levelObj.r !== undefined && inputDir === dirs.neutral && autoStep < levelObj.r.length) {
-        inputDir = Number(levelObj.r[autoStep]);
+      if (settings.autoMode && currentLevelObj.r !== undefined && inputDir === dirs.neutral && autoStep < currentLevelObj.r.length) {
+        inputDir = Number(currentLevelObj.r[autoStep]);
       }
       if (!moveFlag && (clearFlag || inputFlag || settings.autoMode)) {
         if (inputCount >= inputCountPrev + inputInterval) {
@@ -626,12 +627,12 @@
       g.appendChild(text);
       if (undoInfo) {
         clearStep = undoInfo.getIndex();
-        const w = levelObj.w;
-        const h = levelObj.h;
-        const s = levelObj.s;
+        const w = currentLevelObj.w;
+        const h = currentLevelObj.h;
+        const s = currentLevelObj.s;
         const replayStr = undoInfo.getReplayStr();
         console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`);
-        const r = levelObj.r;
+        const r = currentLevelObj.r;
         if (levelId === null || r === undefined) {
           console.warn('過去最高記録の情報がありません！');
           bestRecord = null;
