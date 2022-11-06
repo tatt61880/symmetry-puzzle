@@ -77,6 +77,24 @@ svg {
   user-select: none;
 }
 
+span.red-block {
+  margin: 4px;
+  padding: 0 4px;
+  color: red;
+  background-color: pink;
+  font-weight: bold;
+  border: solid 2px red;
+}
+
+span.blue-block {
+  margin: 4px;
+  padding: 0 4px;
+  color: blue;
+  background-color: cyan;
+  font-weight: bold;
+  border: solid 2px blue;
+}
+
 text {
   pointer-events: none;
 }
