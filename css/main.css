@@ -77,21 +77,37 @@ svg {
   user-select: none;
 }
 
+#main {
+  position: relative;
+  width: 480px;
+  height: 250px;
+  padding: 0;
+  margin: 10px;
+}
+
+#svg-main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  transform: translateY(-50%) translateX(-50%);
+}
+
 span.red-block {
-  margin: 4px;
   padding: 0 4px;
+  margin: 4px;
+  font-weight: bold;
   color: red;
   background-color: pink;
-  font-weight: bold;
   border: solid 2px red;
 }
 
 span.blue-block {
-  margin: 4px;
   padding: 0 4px;
+  margin: 4px;
+  font-weight: bold;
   color: blue;
   background-color: cyan;
-  font-weight: bold;
   border: solid 2px blue;
 }
 

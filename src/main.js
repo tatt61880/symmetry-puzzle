@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.07b';
+  const versionText = 'v2022.11.07c';
 
   let settings = {
     autoMode: false,
@@ -286,7 +286,9 @@
 
   function applyObj(obj) {
     level.applyObj(obj);
-    blockSize = 250 / level.getHeight();
+    const svgMaxWidth = 480;
+    const svgMaxHeight = 250;
+    blockSize = Math.min(svgMaxWidth / level.getWidth(), svgMaxHeight / level.getHeight());
     clearCheck();
     resetDirs();
     updateUrl();
