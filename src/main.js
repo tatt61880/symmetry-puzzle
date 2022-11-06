@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.06j';
+  const versionText = 'v2022.11.07b';
 
   let settings = {
     autoMode: false,
@@ -71,14 +71,6 @@
   document.addEventListener('DOMContentLoaded', onload, false);
   return;
   // ==========================================================================
-
-  function getUrlStr() {
-    const w = level.getW();
-    const h = level.getH();
-    const s = level.getStateStr();
-    console.log(`{w: ${w}, h: ${h}, s: '${s}'},`);
-    return `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}`;
-  }
 
   function updateController(dir) {
     const transforms = [
@@ -454,7 +446,7 @@
 
   function updateUrl() {
     if (!editMode) return;
-    const url = getUrlStr();
+    const url = level.getUrlStr();
     showkoban.elems.url.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
   }
 

@@ -45,6 +45,14 @@
       this.#states[y][x] = state;
     }
 
+    getUrlStr() {
+      const w = this.getW();
+      const h = this.getH();
+      const s = this.getStateStr();
+      console.log(`{w: ${w}, h: ${h}, s: '${s}'},`); // コピペ用
+      return `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}`;
+    }
+
     copyStates() {
       const res = new Array(this.getHeight());
       for (let y = 0; y < this.getHeight(); ++y) {
