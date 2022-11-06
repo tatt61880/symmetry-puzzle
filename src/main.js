@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.06f';
+  const versionText = 'v2022.11.06g';
 
   let settings = {
     autoMode: false,
@@ -115,7 +115,7 @@
   }
 
   function clearCheck() {
-    const center = stage.getRotateCenter(isTarget);
+    const center = stage.getRotateCenter(showkoban.states.isTarget);
     clearFlag = center !== null;
     clearMessageFlag = clearFlag;
     if (clearFlag) {
@@ -591,10 +591,6 @@
     }, intervalMsec);
   }
 
-  function isTarget(x) {
-    return showkoban.states.targetMin <= x && x <= showkoban.states.targetMax;
-  }
-
   function drawFrame() {
     const paddingColor = clearFlag ? '#8f8' : '#753';
 
@@ -699,183 +695,23 @@
     const paddingWidth = 0.12;
     const paddingWidthHalf = paddingWidth / 2;
 
-    // 図形
+    // ターゲット以外を作成し、追加する。（描画順のためにターゲットは後で追加します。）
     for (let y = 1; y < stage.getHeight() - 1; ++y) {
       for (let x = 1; x < stage.getWidth() - 1; ++x) {
         const state = stage.getState(x, y);
         if (state === showkoban.states.none) continue;
+        if (showkoban.states.isTarget(state)) continue;
+        const g = createBlock(x, y, state);
+        showkoban.elems.svg.appendChild(g);
+      }
+    }
 
-        const g = showkoban.svg.createG();
-        const color = showkoban.colors[state];
-        {
-          const eps = 0.01; // サイズを少し大きくすることで、隙間をなくします。
-          const rect = showkoban.svg.createRect(blockSize, {x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2});
-          rect.setAttribute('fill', color.fill);
-          g.appendChild(rect);
-        }
-        {
-          const flags = [];
-          for (let dir = 0; dir < 8; ++dir) {
-            flags[dir] = stage.getState(x + dxs[dir], y + dys[dir]) === state;
-          }
-          // 上側
-          if (!flags[dirs.u]) {
-            const line = showkoban.svg.createLine(blockSize, {x1: x, y1: y + paddingWidthHalf, x2: x + 1, y2: y + paddingWidthHalf});
-            line.setAttribute('stroke', color.stroke);
-            line.setAttribute('stroke-width', paddingWidth * blockSize);
-            g.appendChild(line);
-          }
-          // 右側
-          if (!flags[dirs.r]) {
-            const line = showkoban.svg.createLine(blockSize, {x1: x + 1 - paddingWidthHalf, y1: y, x2: x + 1 - paddingWidthHalf, y2: y + 1});
-            line.setAttribute('stroke', color.stroke);
-            line.setAttribute('stroke-width', paddingWidth * blockSize);
-            g.appendChild(line);
-          }
-          // 下側
-          if (!flags[dirs.d]) {
-            const line = showkoban.svg.createLine(blockSize, {x1: x, y1: y + 1 - paddingWidthHalf, x2: x + 1, y2: y + 1 - paddingWidthHalf});
-            line.setAttribute('stroke', color.stroke);
-            line.setAttribute('stroke-width', paddingWidth * blockSize);
-            g.appendChild(line);
-          }
-          // 左側
-          if (!flags[dirs.l]) {
-            const line = showkoban.svg.createLine(blockSize, {x1: x + paddingWidthHalf, y1: y, x2: x + paddingWidthHalf, y2: y + 1});
-            line.setAttribute('stroke', color.stroke);
-            line.setAttribute('stroke-width', paddingWidth * blockSize);
-            g.appendChild(line);
-          }
-          // 右上
-          if (flags[dirs.u] && flags[dirs.r] && !flags[dirs.ur]) {
-            const rect = showkoban.svg.createRect(blockSize, {x: x + 1 - paddingWidth, y: y, width: paddingWidth, height: paddingWidth});
-            rect.setAttribute('fill', color.stroke);
-            g.appendChild(rect);
-          }
-          // 右下
-          if (flags[dirs.d] && flags[dirs.r] && !flags[dirs.dr]) {
-            const rect = showkoban.svg.createRect(blockSize, {x: x + 1 - paddingWidth, y: y + 1 - paddingWidth, width: paddingWidth, height: paddingWidth});
-            rect.setAttribute('fill', color.stroke);
-            g.appendChild(rect);
-          }
-          // 左下
-          if (flags[dirs.d] && flags[dirs.l] && !flags[dirs.dl]) {
-            const rect = showkoban.svg.createRect(blockSize, {x: x, y: y + 1 - paddingWidth, width: paddingWidth, height: paddingWidth});
-            rect.setAttribute('fill', color.stroke);
-            g.appendChild(rect);
-          }
-          // 左上
-          if (flags[dirs.u] && flags[dirs.l] && !flags[dirs.ul]) {
-            const rect = showkoban.svg.createRect(blockSize, {x: x, y: y, width: paddingWidth, height: paddingWidth});
-            rect.setAttribute('fill', color.stroke);
-            g.appendChild(rect);
-          }
-
-          if (showkoban.states.userMin <= state && state <= showkoban.states.userMax) {
-            const size = 0.35;
-            // 右上
-            if (!flags[dirs.u] && !flags[dirs.r]) {
-              const polygon = showkoban.svg.createPolygon(blockSize, {
-                points: [
-                  [x + 1 - size, y],
-                  [x + 1, y],
-                  [x + 1, y + size],
-                ],
-              });
-              polygon.setAttribute('fill', color.stroke);
-              g.appendChild(polygon);
-            }
-            // 右下
-            if (!flags[dirs.d] && !flags[dirs.r]) {
-              const polygon = showkoban.svg.createPolygon(blockSize, {
-                points: [
-                  [x + 1, y + 1 - size],
-                  [x + 1, y + 1],
-                  [x + 1 - size, y + 1],
-                ],
-              });
-              polygon.setAttribute('fill', color.stroke);
-              g.appendChild(polygon);
-            }
-            // 左下
-            if (!flags[dirs.d] && !flags[dirs.l]) {
-              const polygon = showkoban.svg.createPolygon(blockSize, {
-                points: [
-                  [x, y + 1 - size],
-                  [x + size, y + 1],
-                  [x, y + 1],
-                ],
-              });
-              polygon.setAttribute('fill', color.stroke);
-              g.appendChild(polygon);
-            }
-            // 左上
-            if (!flags[dirs.u] && !flags[dirs.l]) {
-              const polygon = showkoban.svg.createPolygon(blockSize, {
-                points: [
-                  [x, y],
-                  [x + size, y],
-                  [x, y + size],
-                ],
-              });
-              polygon.setAttribute('fill', color.stroke);
-              g.appendChild(polygon);
-            }
-          }
-          if (clearFlag) {
-            if (showkoban.states.targetMin <= state && state <= showkoban.states.targetMax) {
-              g.classList.add('anim-rotation');
-            }
-          }
-          // 移動モーション
-          if (moveFlags[y][x]) {
-            const dx = dxs[moveDir];
-            const dy = dys[moveDir];
-            g.classList.add('anim-block');
-
-            // 移動時のエフェクト（残像）
-            if (!moveFlags[y - dys[moveDir]][x - dxs[moveDir]]) {
-              const g2 = showkoban.svg.createG();
-              {
-                const dd = 0.2;
-                const ddd = 0.15;
-                const rectArg = {x: x, y: y, width: 1, height: 1};
-                if (moveDir === dirs.ArrowUp || moveDir === dirs.ArrowDown) {
-                  if (!flags[dirs.l]) rectArg.x += dd;
-                  if (!flags[dirs.l]) rectArg.width -= dd;
-                  if (!flags[dirs.r]) rectArg.width -= dd;
-                  rectArg.height -= ddd;
-                  if (moveDir === dirs.ArrowDown) {
-                    rectArg.y += ddd;
-                  }
-                } else {
-                  if (!flags[dirs.u]) rectArg.y += dd;
-                  if (!flags[dirs.u]) rectArg.height -= dd;
-                  if (!flags[dirs.d]) rectArg.height -= dd;
-                  rectArg.width -= ddd;
-                  if (moveDir === dirs.ArrowRight) {
-                    rectArg.x += ddd;
-                  }
-                }
-
-                const rect = window.showkoban.svg.createRect(blockSize, rectArg);
-                rect.setAttribute('fill', color.fill);
-                rect.setAttribute('fill-opacity', 1);
-                rect.setAttribute('transform', `translate(${dx},${dy})`);
-                g2.appendChild(rect);
-              }
-              showkoban.elems.svg.appendChild(g2);
-              g2.classList.add('anim-shadow');
-            }
-          }
-        }
-        if (editMode ^ debugFlag) {
-          const text = showkoban.svg.createText(blockSize, {x: x + 0.5, y: y, text: showkoban.states.stateToChar[state]});
-          text.setAttribute('fill', showkoban.colors[state].text);
-          text.setAttribute('font-size', `${blockSize * 0.7}px`);
-          text.setAttribute('font-weight', 'bold');
-          g.appendChild(text);
-        }
+    // ターゲットを作成し、追加する。
+    for (let y = 1; y < stage.getHeight() - 1; ++y) {
+      for (let x = 1; x < stage.getWidth() - 1; ++x) {
+        const state = stage.getState(x, y);
+        if (!showkoban.states.isTarget(state)) continue;
+        const g = createBlock(x, y, state);
         showkoban.elems.svg.appendChild(g);
       }
     }
@@ -901,6 +737,181 @@
       showkoban.elems.svg.appendChild(g);
     }
     drawFrame();
+
+    function createBlock(x, y, state) {
+      const g = showkoban.svg.createG();
+      const color = showkoban.colors[state];
+      {
+        const eps = 0.01; // サイズを少し大きくすることで、隙間をなくします。
+        const rect = showkoban.svg.createRect(blockSize, {x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2});
+        rect.setAttribute('fill', color.fill);
+        g.appendChild(rect);
+      }
+      {
+        const flags = [];
+        for (let dir = 0; dir < 8; ++dir) {
+          flags[dir] = stage.getState(x + dxs[dir], y + dys[dir]) === state;
+        }
+        // 上側
+        if (!flags[dirs.u]) {
+          const line = showkoban.svg.createLine(blockSize, {x1: x, y1: y + paddingWidthHalf, x2: x + 1, y2: y + paddingWidthHalf});
+          line.setAttribute('stroke', color.stroke);
+          line.setAttribute('stroke-width', paddingWidth * blockSize);
+          g.appendChild(line);
+        }
+        // 右側
+        if (!flags[dirs.r]) {
+          const line = showkoban.svg.createLine(blockSize, {x1: x + 1 - paddingWidthHalf, y1: y, x2: x + 1 - paddingWidthHalf, y2: y + 1});
+          line.setAttribute('stroke', color.stroke);
+          line.setAttribute('stroke-width', paddingWidth * blockSize);
+          g.appendChild(line);
+        }
+        // 下側
+        if (!flags[dirs.d]) {
+          const line = showkoban.svg.createLine(blockSize, {x1: x, y1: y + 1 - paddingWidthHalf, x2: x + 1, y2: y + 1 - paddingWidthHalf});
+          line.setAttribute('stroke', color.stroke);
+          line.setAttribute('stroke-width', paddingWidth * blockSize);
+          g.appendChild(line);
+        }
+        // 左側
+        if (!flags[dirs.l]) {
+          const line = showkoban.svg.createLine(blockSize, {x1: x + paddingWidthHalf, y1: y, x2: x + paddingWidthHalf, y2: y + 1});
+          line.setAttribute('stroke', color.stroke);
+          line.setAttribute('stroke-width', paddingWidth * blockSize);
+          g.appendChild(line);
+        }
+        // 右上
+        if (flags[dirs.u] && flags[dirs.r] && !flags[dirs.ur]) {
+          const rect = showkoban.svg.createRect(blockSize, {x: x + 1 - paddingWidth, y: y, width: paddingWidth, height: paddingWidth});
+          rect.setAttribute('fill', color.stroke);
+          g.appendChild(rect);
+        }
+        // 右下
+        if (flags[dirs.d] && flags[dirs.r] && !flags[dirs.dr]) {
+          const rect = showkoban.svg.createRect(blockSize, {x: x + 1 - paddingWidth, y: y + 1 - paddingWidth, width: paddingWidth, height: paddingWidth});
+          rect.setAttribute('fill', color.stroke);
+          g.appendChild(rect);
+        }
+        // 左下
+        if (flags[dirs.d] && flags[dirs.l] && !flags[dirs.dl]) {
+          const rect = showkoban.svg.createRect(blockSize, {x: x, y: y + 1 - paddingWidth, width: paddingWidth, height: paddingWidth});
+          rect.setAttribute('fill', color.stroke);
+          g.appendChild(rect);
+        }
+        // 左上
+        if (flags[dirs.u] && flags[dirs.l] && !flags[dirs.ul]) {
+          const rect = showkoban.svg.createRect(blockSize, {x: x, y: y, width: paddingWidth, height: paddingWidth});
+          rect.setAttribute('fill', color.stroke);
+          g.appendChild(rect);
+        }
+
+        if (showkoban.states.userMin <= state && state <= showkoban.states.userMax) {
+          const size = 0.35;
+          // 右上
+          if (!flags[dirs.u] && !flags[dirs.r]) {
+            const polygon = showkoban.svg.createPolygon(blockSize, {
+              points: [
+                [x + 1 - size, y],
+                [x + 1, y],
+                [x + 1, y + size],
+              ],
+            });
+            polygon.setAttribute('fill', color.stroke);
+            g.appendChild(polygon);
+          }
+          // 右下
+          if (!flags[dirs.d] && !flags[dirs.r]) {
+            const polygon = showkoban.svg.createPolygon(blockSize, {
+              points: [
+                [x + 1, y + 1 - size],
+                [x + 1, y + 1],
+                [x + 1 - size, y + 1],
+              ],
+            });
+            polygon.setAttribute('fill', color.stroke);
+            g.appendChild(polygon);
+          }
+          // 左下
+          if (!flags[dirs.d] && !flags[dirs.l]) {
+            const polygon = showkoban.svg.createPolygon(blockSize, {
+              points: [
+                [x, y + 1 - size],
+                [x + size, y + 1],
+                [x, y + 1],
+              ],
+            });
+            polygon.setAttribute('fill', color.stroke);
+            g.appendChild(polygon);
+          }
+          // 左上
+          if (!flags[dirs.u] && !flags[dirs.l]) {
+            const polygon = showkoban.svg.createPolygon(blockSize, {
+              points: [
+                [x, y],
+                [x + size, y],
+                [x, y + size],
+              ],
+            });
+            polygon.setAttribute('fill', color.stroke);
+            g.appendChild(polygon);
+          }
+        }
+        if (clearFlag) {
+          if (showkoban.states.isTarget(state)) {
+            g.classList.add('anim-rotation');
+          }
+        }
+        // 移動モーション
+        if (moveFlags[y][x]) {
+          const dx = dxs[moveDir];
+          const dy = dys[moveDir];
+          g.classList.add('anim-block');
+
+          // 移動時のエフェクト（残像）
+          if (!moveFlags[y - dys[moveDir]][x - dxs[moveDir]]) {
+            const g2 = showkoban.svg.createG();
+            {
+              const dd = 0.2;
+              const ddd = 0.15;
+              const rectArg = {x: x, y: y, width: 1, height: 1};
+              if (moveDir === dirs.ArrowUp || moveDir === dirs.ArrowDown) {
+                if (!flags[dirs.l]) rectArg.x += dd;
+                if (!flags[dirs.l]) rectArg.width -= dd;
+                if (!flags[dirs.r]) rectArg.width -= dd;
+                rectArg.height -= ddd;
+                if (moveDir === dirs.ArrowDown) {
+                  rectArg.y += ddd;
+                }
+              } else {
+                if (!flags[dirs.u]) rectArg.y += dd;
+                if (!flags[dirs.u]) rectArg.height -= dd;
+                if (!flags[dirs.d]) rectArg.height -= dd;
+                rectArg.width -= ddd;
+                if (moveDir === dirs.ArrowRight) {
+                  rectArg.x += ddd;
+                }
+              }
+
+              const rect = window.showkoban.svg.createRect(blockSize, rectArg);
+              rect.setAttribute('fill', color.fill);
+              rect.setAttribute('fill-opacity', 1);
+              rect.setAttribute('transform', `translate(${dx},${dy})`);
+              g2.appendChild(rect);
+            }
+            showkoban.elems.svg.appendChild(g2);
+            g2.classList.add('anim-shadow');
+          }
+        }
+      }
+      if (editMode ^ debugFlag) {
+        const text = showkoban.svg.createText(blockSize, {x: x + 0.5, y: y, text: showkoban.states.stateToChar[state]});
+        text.setAttribute('fill', showkoban.colors[state].text);
+        text.setAttribute('font-size', `${blockSize * 0.7}px`);
+        text.setAttribute('font-weight', 'bold');
+        g.appendChild(text);
+      }
+      return g;
+    }
   }
 
   function editSvg(e) {

@@ -37,5 +37,9 @@
   showkoban.states.stateToChar = stateToChar;
   showkoban.states.charToState = charToState;
 
+  showkoban.states.isTarget = (state) => {
+    return showkoban.states.targetMin <= state && state <= showkoban.states.targetMax;
+  };
+
   Object.freeze(showkoban.states);
 })();
