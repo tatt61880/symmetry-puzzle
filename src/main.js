@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.06e';
+  const versionText = 'v2022.11.06f';
 
   let settings = {
     autoMode: false,
@@ -29,7 +29,7 @@
   let drawingState = showkoban.states.none;
   const editboxFunctions = {};
 
-  let blockSize;
+  let blockSize = 0;
 
   const dirs = {
     u: 0,
@@ -63,6 +63,10 @@
   let inputCount = inputInterval;
   let inputDir = dirs.neutral;
   const inputKeys = {};
+
+  document.documentElement.style.setProperty('--animation-duration', `${inputInterval * intervalMsec}ms`);
+  document.documentElement.style.setProperty('--animation-duration-shadow', `${inputInterval * intervalMsec * 2}ms`);
+  document.documentElement.style.setProperty('--animation-duration-rotation', `${inputInterval * intervalMsec * 3}ms`);
 
   document.addEventListener('DOMContentLoaded', onload, false);
   return;
@@ -99,8 +103,6 @@
 
     if (moveFlag) {
       document.documentElement.style.setProperty('--move-param', `translate(${dx * blockSize}px, ${dy * blockSize}px)`);
-      document.documentElement.style.setProperty('--animation-duration', `${inputInterval * intervalMsec}ms`);
-      document.documentElement.style.setProperty('--animation-duration-shadow', `${inputInterval * intervalMsec * 2}ms`);
       showElem(showkoban.elems.undo);
       moveDir = dir;
       undoInfo.pushData({
@@ -113,8 +115,12 @@
   }
 
   function clearCheck() {
-    clearFlag = stage.isOk(isTarget);
+    const center = stage.getRotateCenter(isTarget);
+    clearFlag = center !== null;
     clearMessageFlag = clearFlag;
+    if (clearFlag) {
+      document.documentElement.style.setProperty('--animation-origin-rotation', `${blockSize * center.x}px ${blockSize * center.y}px`);
+    }
   }
 
   // 盤面を更新
@@ -288,11 +294,11 @@
 
   function applyObj(obj) {
     stage.applyObj(obj);
+    blockSize = 250 / stage.getHeight();
     clearCheck();
     resetDirs();
     updateUrl();
 
-    blockSize = 250 / stage.getHeight();
     showkoban.elems.svg.setAttribute('width', blockSize * stage.getWidth());
     showkoban.elems.svg.setAttribute('height', blockSize * stage.getHeight());
     draw();
@@ -816,6 +822,11 @@
               g.appendChild(polygon);
             }
           }
+          if (clearFlag) {
+            if (showkoban.states.targetMin <= state && state <= showkoban.states.targetMax) {
+              g.classList.add('anim-rotation');
+            }
+          }
           // 移動モーション
           if (moveFlags[y][x]) {
             const dx = dxs[moveDir];
@@ -906,14 +917,14 @@
     e.preventDefault();
     if ((e.button === 0 || e.button === undefined) && stage.getState(x, y) !== drawingState) {
       stage.setState(x, y, drawingState);
-      draw();
       clearCheck();
+      draw();
       updateUrl();
     } else if (stage.getState(x, y) !== showkoban.states.none) {
       if (e.button !== 0) {
         stage.setState(x, y, showkoban.states.none);
-        draw();
         clearCheck();
+        draw();
         updateUrl();
       }
     }

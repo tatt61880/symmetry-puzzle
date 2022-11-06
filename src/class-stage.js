@@ -132,11 +132,12 @@
       return true;
     }
 
-    isOk(isX) {
-      if (this.count(isX) === 0) return false;
-      if (!this.#isConnected(isX)) return false;
-      if (!this.#isPointSymmetry(isX)) return false;
-      return true;
+    // 回転中心を得る。
+    // 回転中心がなければnullを返す。
+    getRotateCenter(isX) {
+      if (this.count(isX) === 0) return null;
+      if (!this.#isConnected(isX)) return null;
+      return this.#getRotateCenter(isX);
     }
 
     // 図形が連結か否か。
@@ -184,7 +185,7 @@
     }
 
     // 図形が点対称か否か。
-    #isPointSymmetry(isX) {
+    #getRotateCenter(isX) {
       let minX = this.getWidth();
       let maxX = 0;
       let minY = this.getHeight();
@@ -202,11 +203,11 @@
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
           if (isX(this.#states[y][x]) && !isX(this.#states[minY + maxY - y][minX + maxX - x])) {
-            return false;
+            return null;
           }
         }
       }
-      return true;
+      return {x: (minX + maxX + 1) * 0.5, y: (minY + maxY + 1) * 0.5};
     }
 
     move(dx, dy, moveFlags) {
