@@ -466,7 +466,7 @@
               const dd = 0.2;
               const ddd = 0.15;
               const rectArg = {x: x, y: y, width: 1, height: 1};
-              if (dx == 0) {
+              if (dx === 0) {
                 if (!flags[dirs.l]) rectArg.x += dd;
                 if (!flags[dirs.l]) rectArg.width -= dd;
                 if (!flags[dirs.r]) rectArg.width -= dd;

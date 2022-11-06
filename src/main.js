@@ -52,7 +52,6 @@
 
   const level = showkoban.Level();
   let moveFlag = false;
-  let moveDir = dirs.neutral;
 
   let inputFlag = false;
   const intervalMsec = 35;
@@ -95,7 +94,6 @@
     if (moveFlag) {
       document.documentElement.style.setProperty('--animation-transform', `translate(${dx * blockSize}px, ${dy * blockSize}px)`);
       showElem(showkoban.elems.undo);
-      moveDir = dir;
       undoInfo.pushData({
         dir: dir,
         w: level.getW(),
@@ -117,7 +115,6 @@
   // 盤面を更新
   function stateUpdate() {
     level.move();
-    moveDir = dirs.neutral;
     updateUrl();
   }
 
