@@ -112,12 +112,6 @@
     }
   }
 
-  // 盤面を更新
-  function stateUpdate() {
-    level.move();
-    updateUrl();
-  }
-
   function undoStart() {
     if (undoFlag) return;
     undoFlag = true;
@@ -542,7 +536,8 @@
       if (moveFlag) {
         moveFlag = false;
         draw();
-        stateUpdate();
+        level.move();
+        updateUrl();
         clearCheck();
       }
       if (undoFlag) {
