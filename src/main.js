@@ -102,7 +102,7 @@
     moveFlag = stage.move(dx, dy, moveFlags);
 
     if (moveFlag) {
-      document.documentElement.style.setProperty('--move-param', `translate(${dx * blockSize}px, ${dy * blockSize}px)`);
+      document.documentElement.style.setProperty('--animation-transform', `translate(${dx * blockSize}px, ${dy * blockSize}px)`);
       showElem(showkoban.elems.undo);
       moveDir = dir;
       undoInfo.pushData({
@@ -858,14 +858,14 @@
         }
         if (clearFlag) {
           if (showkoban.states.isTarget(state)) {
-            g.classList.add('anim-rotation');
+            g.classList.add('animation-rotation');
           }
         }
         // 移動モーション
         if (moveFlags[y][x]) {
           const dx = dxs[moveDir];
           const dy = dys[moveDir];
-          g.classList.add('anim-block');
+          g.classList.add('animation-block');
 
           // 移動時のエフェクト（残像）
           if (!moveFlags[y - dys[moveDir]][x - dxs[moveDir]]) {
@@ -899,7 +899,7 @@
               g2.appendChild(rect);
             }
             showkoban.elems.svg.appendChild(g2);
-            g2.classList.add('anim-shadow');
+            g2.classList.add('animation-shadow');
           }
         }
       }
