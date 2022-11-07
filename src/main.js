@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.07g';
+  const versionText = 'v2022.11.07h';
 
   let settings = {
     autoMode: false,
@@ -550,7 +550,7 @@
   }
 
   function drawFrame() {
-    const paddingColor = clearFlag ? '#8f8' : '#b5b';
+    const paddingColor = clearFlag ? '#8f8' : '#753';
 
     const g = showkoban.svg.createG();
 
@@ -609,16 +609,16 @@
 
       {
         const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${clearStep} steps`});
-        text.setAttribute('font-size', `${blockSize * 0.6}px`);
+        text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
         if (bestRecord === null) {
-          text.setAttribute('fill', 'black');
+          text.setAttribute('fill', 'gray');
         } else if (clearStep > bestRecord) {
-          text.setAttribute('fill', 'green');
+          text.setAttribute('fill', 'black');
         } else if (clearStep === bestRecord) {
           text.setAttribute('fill', 'orange');
         } else {
-          text.setAttribute('fill', 'red');
+          text.setAttribute('fill', 'white');
         }
         g.appendChild(text);
       }
@@ -634,12 +634,12 @@
         const r = currentLevelObj.r;
         const bestRecord = r === undefined ? null : r.length;
         const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`});
-        text.setAttribute('font-size', `${blockSize * 0.6}px`);
+        text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
         if (bestRecord === null) {
-          text.setAttribute('fill', 'black');
+          text.setAttribute('fill', 'gray');
         } else if (highestScore > bestRecord) {
-          text.setAttribute('fill', 'green');
+          text.setAttribute('fill', 'black');
         } else if (highestScore === bestRecord) {
           text.setAttribute('fill', 'orange');
         } else {
