@@ -794,6 +794,8 @@
   }
 
   function updateResultData(w, h, s, r) {
+    if (levelId === null) return;
+
     const maxStep = 999;
     const step = r.length;
     if (step > maxStep) {
