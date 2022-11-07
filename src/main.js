@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.07d';
+  const versionText = 'v2022.11.07e';
 
   let settings = {
     autoMode: false,
@@ -93,13 +93,7 @@
 
     if (moveFlag) {
       document.documentElement.style.setProperty('--animation-transform', `translate(${dx * blockSize}px, ${dy * blockSize}px)`);
-      showElem(showkoban.elems.undo);
-      undoInfo.pushData({
-        dir: dir,
-        w: level.getW(),
-        h: level.getH(),
-        s: level.getStateStr(),
-      });
+      addUndo(dir);
     }
   }
 
@@ -710,12 +704,14 @@
 
     e.preventDefault();
     if ((e.button === 0 || e.button === undefined) && level.getState(x, y) !== drawingState) {
+      addUndo(null);
       level.setState(x, y, drawingState);
       clearCheck();
       updateUrl();
       draw();
     } else if (level.getState(x, y) !== showkoban.states.none) {
       if (e.button !== 0) {
+        addUndo(null);
         level.setState(x, y, showkoban.states.none);
         clearCheck();
         updateUrl();
@@ -748,5 +744,15 @@
   function hideElem(elem) {
     if (elem === undefined) return;
     elem.classList.add('hide');
+  }
+
+  function addUndo(dir) {
+    showElem(showkoban.elems.undo);
+    undoInfo.pushData({
+      dir: dir,
+      w: level.getW(),
+      h: level.getH(),
+      s: level.getStateStr(),
+    });
   }
 })();

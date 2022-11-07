@@ -26,7 +26,9 @@
     getReplayStr() {
       let replayStr = '';
       for (let i = 0; i < this.undoIdx; ++i) {
-        replayStr += this.undoArray[i].dir;
+        if (this.undoArray[i].dir !== null) {
+          replayStr += this.undoArray[i].dir;
+        }
       }
       return replayStr;
     }
