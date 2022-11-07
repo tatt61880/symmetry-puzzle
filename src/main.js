@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.07f';
+  const versionText = 'v2022.11.07g';
 
   let settings = {
     autoMode: false,
@@ -550,7 +550,7 @@
   }
 
   function drawFrame() {
-    const paddingColor = clearFlag ? '#8f8' : '#753';
+    const paddingColor = clearFlag ? '#8f8' : '#b5b';
 
     const g = showkoban.svg.createG();
 
@@ -588,6 +588,7 @@
         const h = currentLevelObj.h;
         const s = currentLevelObj.s;
         const replayStr = undoInfo.getReplayStr();
+        updateResultData(w, h, s, replayStr);
         console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`);
         const r = currentLevelObj.r;
         if (levelId === null || r === undefined) {
@@ -609,22 +610,42 @@
       {
         const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${clearStep} steps`});
         text.setAttribute('font-size', `${blockSize * 0.6}px`);
+        text.setAttribute('font-weight', 'bold');
         if (bestRecord === null) {
           text.setAttribute('fill', 'black');
-          text.setAttribute('font-weight', 'bold');
         } else if (clearStep > bestRecord) {
           text.setAttribute('fill', 'green');
         } else if (clearStep === bestRecord) {
           text.setAttribute('fill', 'orange');
-          text.setAttribute('font-weight', 'bold');
         } else {
           text.setAttribute('fill', 'red');
-          text.setAttribute('font-weight', 'bold');
         }
         g.appendChild(text);
       }
       if (settings.autoMode) {
         setTimeout(gotoNextLevel, 1000);
+      }
+    }
+
+    // 過去最高記録
+    if (!clearFlag) {
+      const highestScore = getHighestScore();
+      if (highestScore !== null) {
+        const r = currentLevelObj.r;
+        const bestRecord = r === undefined ? null : r.length;
+        const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`});
+        text.setAttribute('font-size', `${blockSize * 0.6}px`);
+        text.setAttribute('font-weight', 'bold');
+        if (bestRecord === null) {
+          text.setAttribute('fill', 'black');
+        } else if (highestScore > bestRecord) {
+          text.setAttribute('fill', 'green');
+        } else if (highestScore === bestRecord) {
+          text.setAttribute('fill', 'orange');
+        } else {
+          text.setAttribute('fill', 'white');
+        }
+        g.appendChild(text);
       }
     }
 
@@ -770,5 +791,32 @@
       h: level.getH(),
       s: level.getStateStr(),
     });
+  }
+
+  function updateResultData(w, h, s, r) {
+    const maxStep = 999;
+    const step = r.length;
+    if (step > maxStep) {
+      r = r.substring(0, maxStep);
+    }
+    const key = getStorageKey(w, h, s);
+    const highestScoreR = localStorage.getItem(key);
+    if (highestScoreR === null || step < highestScoreR.length) {
+      localStorage.setItem(key, r);
+    }
+  }
+
+  function getStorageKey(w, h, s) {
+    const localStorageNamespace = 'tatt61880-showkoban';
+    return `${localStorageNamespace}:w=${w}&h=${h}&s=${s}`;
+  }
+
+  function getHighestScore() {
+    const w = currentLevelObj.w;
+    const h = currentLevelObj.h;
+    const s = currentLevelObj.s;
+    const key = getStorageKey(w, h, s);
+    const r = localStorage.getItem(key);
+    return r === null ? null : r.length;
   }
 })();
