@@ -627,8 +627,8 @@
       }
     }
 
-    // 過去最高記録
-    if (!clearFlag) {
+    // 自己最高記録
+    if (levelId !== null && !clearFlag) {
       const highestScore = getHighestScore();
       if (highestScore !== null) {
         const r = currentLevelObj.r;
