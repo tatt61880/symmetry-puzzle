@@ -16,6 +16,11 @@
     editbox: 'editbox',
     editShape: 'edit-drawing-shape',
     editState: 'edit-drawing-state',
+    wInc: 'w-inc',
+    wDec: 'w-dec',
+    hInc: 'h-inc',
+    hDec: 'h-dec',
+
     url: 'url',
 
     undo: 'button-undo',

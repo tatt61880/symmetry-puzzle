@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.07e';
+  const versionText = 'v2022.11.07f';
 
   let settings = {
     autoMode: false,
@@ -475,6 +475,11 @@
         }
       }
       editboxFunctions[showkoban.states.stateToChar[showkoban.states.none]]();
+
+      showkoban.elems.wDec.addEventListener('click', () => resize(-1, 0), false);
+      showkoban.elems.wInc.addEventListener('click', () => resize(1, 0), false);
+      showkoban.elems.hDec.addEventListener('click', () => resize(0, -1), false);
+      showkoban.elems.hInc.addEventListener('click', () => resize(0, 1), false);
     }
 
     {
@@ -744,6 +749,17 @@
   function hideElem(elem) {
     if (elem === undefined) return;
     elem.classList.add('hide');
+  }
+
+  function resize(dx, dy) {
+    const w = level.getW() + dx;
+    const h = level.getH() + dy;
+    const s = level.getStateStr();
+    if (w < 1) return;
+    if (h < 1) return;
+    const obj = {w, h, s};
+    addUndo(null);
+    applyObj(obj);
   }
 
   function addUndo(dir) {
