@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.07h';
+  const versionText = 'v2022.11.08';
 
   let settings = {
     autoMode: false,
