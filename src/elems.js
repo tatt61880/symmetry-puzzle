@@ -4,7 +4,7 @@
   window.showkoban.elems = {};
 
   const elemIds = {
-    versionInfo: 'version-info',
+    version: 'version',
 
     resetLevel: 'button-reset-level',
     levelPrev: 'level-prev',

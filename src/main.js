@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.08';
+  const versionText = 'v2022.11.09';
 
   let settings = {
     autoMode: false,
@@ -32,19 +32,11 @@
   let blockSize = 0;
 
   const dirs = {
-    u: 0,
-    r: 1,
-    d: 2,
-    l: 3,
-    ur: 4,
-    dr: 5,
-    dl: 6,
-    ul: 7,
-    neutral: 8,
-    ArrowUp: 0,
-    ArrowRight: 1,
-    ArrowDown: 2,
-    ArrowLeft: 3,
+    neutral: 'N',
+    ArrowUp: '0',
+    ArrowRight: '1',
+    ArrowDown: '2',
+    ArrowLeft: '3',
   };
 
   const dys = [-1, 0, 1, 0, -1, 1, 1, -1, 0];
@@ -71,18 +63,14 @@
   // ==========================================================================
 
   function updateController(dir) {
-    const transforms = [
-      'scale(1.0, 0.7) translate(0, -27)',
-      'scale(0.7, 1.0) translate(27, 0)',
-      'scale(1.0, 0.7) translate(0, 27)',
-      'scale(0.7, 1.0) translate(-27, 0)',
-      '',
-      '',
-      '',
-      '',
-      'scale(1.0, 1.0) translate(0, 0)',
-    ];
-    showkoban.elems.stick.setAttribute('transform', transforms[dir]);
+    const transforms = {
+      'N': '',
+      '0': 'rotateX(45deg)',
+      '1': 'rotateY(45deg)',
+      '2': 'rotateX(-45deg)',
+      '3': 'rotateY(-45deg)',
+    };
+    showkoban.elems.stick.style.setProperty('transform', transforms[dir]);
   }
 
   function updateMoveFlags(dir) {
@@ -428,7 +416,7 @@
 
   function onload() {
     showkoban.initElems();
-    showkoban.elems.versionInfo.textContent = versionText;
+    showkoban.elems.version.textContent = versionText;
 
     const res = showkoban.analyzeUrl();
     settings = res.settings;

@@ -33,8 +33,9 @@ footer {
   color: #553333;
 }
 
-#version-info {
-  font-size: 0.8rem;
+#version {
+  font-size: 0.7rem;
+  font-weight: bold;
   color: #aa8888;
 }
 
