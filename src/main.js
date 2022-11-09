@@ -41,8 +41,8 @@
     ArrowLeft: '3',
   };
 
-  const dys = [-1, 0, 1, 0, -1, 1, 1, -1, 0];
-  const dxs = [0, 1, 0, -1, 1, 1, -1, -1, 0];
+  const dys = [-1, 0, 1, 0];
+  const dxs = [0, 1, 0, -1];
 
   const level = showkoban.Level();
   let moveFlag = false;
