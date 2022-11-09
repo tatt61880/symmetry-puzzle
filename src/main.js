@@ -250,6 +250,7 @@
   }
 
   function loadLevelById(id) {
+    id = Number(id);
     resetUndo();
     if (id < 1) id = 1;
     if (id > showkoban.levels.length) id = showkoban.levels.length;
@@ -423,7 +424,7 @@
       g.setAttribute('transform', `translate(${x},${y}) scale(0.2)`);
       g.setAttribute('data-id', id);
       g.addEventListener('click', function() {
-        const id = g.getAttribute('data-id');
+        const id = Number(g.getAttribute('data-id'));
         loadLevelById(id);
         closeLevelsDialog();
       }, false);
