@@ -132,7 +132,7 @@
 
   function pointermove(e) {
     e.preventDefault();
-    if (!inputFlag) return;
+    if (!inputFlag || settings.autoMode) return;
     const cursorPos = getCursorPos(showkoban.elems.stickBase, e);
     const ax = cursorPos.x - 100.0;
     const ay = cursorPos.y - 100.0;
@@ -511,6 +511,9 @@
           }
         } else if (inputFlag) {
           if (inputDir !== dirs.neutral) {
+            if (settings.autoMode) {
+              updateController(inputDir);
+            }
             inputCount = 0;
             const moveFlag = move(inputDir);
             if (moveFlag) {
