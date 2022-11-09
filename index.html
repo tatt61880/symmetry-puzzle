@@ -24,8 +24,8 @@
   <script src="./src/states.js?2022.11.08"></script>
   <script src="./src/colors.js?2022.11.08"></script>
   <script src="./src/levels.js?2022.11.08"></script>
-  <script src="./src/elems.js?2022.11.09"></script>
-  <script src="./src/main.js?2022.11.09h"></script>
+  <script src="./src/elems.js?2022.11.09b"></script>
+  <script src="./src/main.js?2022.11.09i"></script>
 </head>
 
 <body>
@@ -40,7 +40,7 @@
     <div>
       <svg width="440" height="80">
         <!-- Reset -->
-        <g id="button-reset-level" class="button" transform="translate(30,30)">
+        <g id="button-level-reset" class="button" transform="translate(30,30)">
           <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
           <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#87ceeb" stroke-width="4" />
           <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#87ceeb" stroke="none" stroke-width="4" />
@@ -48,7 +48,7 @@
         </g>
 
         <!-- Level -->
-        <g id="level-prev" class="button active-hover" transform="translate(90,2)">
+        <g id="button-level-prev" class="button active-hover" transform="translate(90,2)">
           <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
           <text x="40" y="30" fill="#87ceeb" dominant-baseline="middle" text-anchor="middle" font-size="30">◀</text>
           <text x="40" y="73" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="12px" fill="gray">Shift + ←</text>
@@ -56,22 +56,26 @@
         <g transform="translate(220,35)">
           <text id="level-id" x="0" y="0" fill="black" dominant-baseline="middle" text-anchor="middle" font-size="40" />
         </g>
-        <g id="level-next" class="button active-hover" transform="translate(270,2)">
+        <g id="button-level-next" class="button active-hover" transform="translate(270,2)">
           <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
           <text x="40" y="30" fill="#87ceeb" dominant-baseline="middle" text-anchor="middle" font-size="30">▶</text>
           <text x="40" y="73" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="12px" fill="gray">Shift + →</text>
         </g>
 
         <!-- Edit -->
-        <g id="button-edit-level" class="button active-hover" transform="translate(410,30)">
+        <g id="button-level-edit" class="button active-hover" transform="translate(220,30)">
           <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
           <text x="0" y="41" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="gray">@</text>
+        </g>
+
+        <!-- Levels -->
+        <g id="button-levels" class="button active-hover" transform="translate(410,30)">
         </g>
       </svg>
     </div>
   </div>
 
-  <div style="margin: 10px 0 0">
+  <div>
     【※未完成です。随時、レベルを追加/変更しています。】<br>
     <span class="blue-block">青色の図形</span>を操作し、<br>
     <span class="red-block">赤色の図形</span>を1つながりの点対称図形にしてください。

@@ -6,11 +6,15 @@
   const elemIds = {
     version: 'version',
 
-    resetLevel: 'button-reset-level',
-    levelPrev: 'level-prev',
+    levelReset: 'button-level-reset',
+
+    levelPrev: 'button-level-prev',
     levelId: 'level-id',
-    levelNext: 'level-next',
-    editLevel: 'button-edit-level',
+    levelNext: 'button-level-next',
+
+    levelEdit: 'button-level-edit',
+
+    levels: 'button-levels',
 
     svg: 'svg-main',
     editbox: 'editbox',

@@ -211,11 +211,11 @@
   }
 
   function resetLevel() {
-    showkoban.elems.resetLevel.style.filter = 'contrast(60%)';
+    showkoban.elems.levelReset.style.filter = 'contrast(60%)';
     showkoban.elems.svg.textContent = '';
 
     setTimeout(() => {
-      showkoban.elems.resetLevel.style.filter = 'none';
+      showkoban.elems.levelReset.style.filter = 'none';
       loadLevelObj(currentLevelObj, true);
     }, 50);
   }
@@ -361,12 +361,12 @@
       hideElem(showkoban.elems.levelPrev);
       hideElem(showkoban.elems.levelId);
       hideElem(showkoban.elems.levelNext);
-      showElem(showkoban.elems.editLevel);
+      showElem(showkoban.elems.levelEdit);
     } else {
       (levelId === 1 ? hideElem : showElem)(showkoban.elems.levelPrev);
       showElem(showkoban.elems.levelId);
       (levelId === showkoban.levels.length ? hideElem : showElem)(showkoban.elems.levelNext);
-      hideElem(showkoban.elems.editLevel);
+      hideElem(showkoban.elems.levelEdit);
     }
   }
 
@@ -467,10 +467,10 @@
       document.addEventListener('keydown', keydown, false);
       document.addEventListener('keyup', keyup, false);
 
-      showkoban.elems.resetLevel.addEventListener('click', resetLevel, false);
+      showkoban.elems.levelReset.addEventListener('click', resetLevel, false);
       showkoban.elems.levelPrev.addEventListener('click', gotoPrevLevel, false);
       showkoban.elems.levelNext.addEventListener('click', gotoNextLevel, false);
-      showkoban.elems.editLevel.addEventListener('click', toggleEditLevel, false);
+      showkoban.elems.levelEdit.addEventListener('click', toggleEditLevel, false);
 
       const touchDevice = document.ontouchstart !== undefined;
       const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
