@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.09c';
+  const versionText = 'v2022.11.09d';
 
   const savedata = showkoban.savedata();
 
@@ -507,13 +507,13 @@
         inputFlag = true;
       }
       if (inputCount >= inputInterval) {
-        if (clearFlag || inputFlag) {
-          if (clearFlag) {
-            if (clearMessageFlag) {
-              clearMessageFlag = false;
-              draw(true);
-            }
-          } else if (inputDir !== dirs.neutral) {
+        if (clearFlag) {
+          if (clearMessageFlag) {
+            clearMessageFlag = false;
+            draw(true);
+          }
+        } else if (inputFlag) {
+          if (inputDir !== dirs.neutral) {
             updateMoveFlags(inputDir);
             inputCount = 0;
           }
