@@ -421,7 +421,7 @@
       const levelSvg = level.createSvg(blockSize);
       g.appendChild(levelSvg);
       const x = ((id - 1) % 5) * 90 + 10;
-      const y = Math.floor((id - 1) / 5) * 100 + 10;
+      const y = Math.floor((id - 1) / 5) * 90 + 10;
       {
         const text = showkoban.svg.createText(blockSize, {x: -0.1, y: -0.8, text: id});
         text.setAttribute('dominant-baseline', 'middle');
