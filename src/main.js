@@ -44,7 +44,6 @@
   const dxs = [0, 1, 0, -1];
 
   const level = showkoban.Level();
-  let moveFlag = false;
 
   let inputFlag = false;
   const intervalMsec = 35;
@@ -73,16 +72,17 @@
     showkoban.elems.stick.style.setProperty('transform', transforms[dir]);
   }
 
-  function updateMoveFlags(dir) {
+  function move(dir) {
     const dx = dxs[dir];
     const dy = dys[dir];
 
-    moveFlag = level.updateMoveFlags(dx, dy);
-
+    const moveFlag = level.updateMoveFlags(dx, dy);
     if (moveFlag) {
-      document.documentElement.style.setProperty('--animation-transform', `translate(${dx * blockSize}px, ${dy * blockSize}px)`);
+      document.documentElement.style.setProperty('--animation-transform', `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`);
       addUndo(dir);
+      level.move();
     }
+    return moveFlag;
   }
 
   function clearCheck() {
@@ -235,7 +235,6 @@
     blockSize = Math.min(svgMaxWidth / level.getWidth(), svgMaxHeight / level.getHeight());
     clearCheck();
     level.resetMoveFlags();
-    moveFlag = false;
     updateUrl();
 
     showkoban.elems.svg.setAttribute('width', blockSize * level.getWidth());
@@ -514,19 +513,17 @@
           }
         } else if (inputFlag) {
           if (inputDir !== dirs.neutral) {
-            updateMoveFlags(inputDir);
             inputCount = 0;
+            const moveFlag = move(inputDir);
+            if (moveFlag) {
+              draw();
+              clearCheck();
+              updateUrl();
+            }
           }
         }
       } else {
         inputCount++;
-      }
-      if (moveFlag) {
-        moveFlag = false;
-        draw();
-        level.move();
-        clearCheck();
-        updateUrl();
       }
     }, intervalMsec);
   }
@@ -589,6 +586,7 @@
       showkoban.elems.svg.appendChild(g);
     }
     drawFrame();
+    level.resetMoveFlags();
   }
 
   function drawFrame() {

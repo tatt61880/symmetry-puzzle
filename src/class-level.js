@@ -293,7 +293,7 @@
           for (let y = this.upEnd; y <= this.downEnd; ++y) {
             for (let x = this.leftEnd; x <= this.rightEnd; ++x) {
               if (moveState[this.getState(x, y)]) {
-                this.#moveFlags[y][x] = true;
+                this.#moveFlags[y + dy][x + dx] = true;
               }
             }
           }
@@ -314,16 +314,15 @@
 
       for (let y = this.upEnd; y <= this.downEnd; ++y) {
         for (let x = this.leftEnd; x <= this.rightEnd; ++x) {
-          if (this.#moveFlags[y][x]) {
+          if (this.#moveFlags[y + dy][x + dx]) {
             this.setState(x, y, showkoban.states.none);
           }
         }
       }
       for (let y = this.upEnd; y <= this.downEnd; ++y) {
         for (let x = this.leftEnd; x <= this.rightEnd; ++x) {
-          if (this.#moveFlags[y - dy][x - dx]) {
+          if (this.#moveFlags[y][x]) {
             this.setState(x, y, statesTemp[y - dy][x - dx]);
-            this.#moveFlags[y - dy][x - dx] = false;
           }
         }
       }
@@ -465,7 +464,7 @@
             {
               const dd = 0.2;
               const ddd = 0.15;
-              const rectArg = {x: x, y: y, width: 1, height: 1};
+              const rectArg = {x: x - dx, y: y - dy, width: 1, height: 1};
               if (dx === 0) {
                 if (!flags[dirs.l]) rectArg.x += dd;
                 if (!flags[dirs.l]) rectArg.width -= dd;

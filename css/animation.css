@@ -24,11 +24,11 @@
 
 @keyframes animation-block {
   0% {
-    transform: translate(0, 0);
+    transform: var(--animation-transform);
   }
 
   100% {
-    transform: var(--animation-transform);
+    transform: translate(0, 0);
   }
 }
 
