@@ -539,6 +539,65 @@
     }, intervalMsec);
   }
 
+  // 描画
+  function draw() {
+    showkoban.elems.svg.textContent = '';
+
+    // 背景
+    {
+      const g = showkoban.svg.createG();
+      const rect = showkoban.svg.createRect(blockSize, {x: 1, y: 1, width: level.getWidth() - 2, height: level.getHeight() - 2});
+      rect.setAttribute('fill', 'white');
+      g.appendChild(rect);
+      showkoban.elems.svg.appendChild(g);
+    }
+
+    const showCharsFlag = editMode ^ debugFlag;
+
+    // ターゲット以外を作成し、追加する。（描画順のためにターゲットは後で追加します。）
+    for (let y = 1; y < level.getHeight() - 1; ++y) {
+      for (let x = 1; x < level.getWidth() - 1; ++x) {
+        const state = level.getState(x, y);
+        if (state === showkoban.states.none) continue;
+        if (showkoban.states.isTarget(state)) continue;
+        const g = level.createBlock(x, y, blockSize, clearFlag, showCharsFlag);
+        showkoban.elems.svg.appendChild(g);
+      }
+    }
+
+    // ターゲットを作成し、追加する。
+    for (let y = 1; y < level.getHeight() - 1; ++y) {
+      for (let x = 1; x < level.getWidth() - 1; ++x) {
+        const state = level.getState(x, y);
+        if (!showkoban.states.isTarget(state)) continue;
+        const g = level.createBlock(x, y, blockSize, clearFlag, showCharsFlag);
+        showkoban.elems.svg.appendChild(g);
+      }
+    }
+
+    // 点線
+    {
+      const dasharray = '1, 4';
+      const g = showkoban.svg.createG();
+      // 横線
+      for (let y = 2; y < level.getHeight() - 1; ++y) {
+        const line = showkoban.svg.createLine(blockSize, {x1: 1, y1: y, x2: level.getWidth() - 1, y2: y});
+        line.setAttribute('stroke', showkoban.colors.line);
+        line.setAttribute('stroke-dasharray', dasharray);
+        g.appendChild(line);
+      }
+      // 縦線
+      for (let x = 2; x < level.getWidth() - 1; ++x) {
+        const line = showkoban.svg.createLine(blockSize, {x1: x, y1: 1, x2: x, y2: level.getHeight() - 1});
+        line.setAttribute('stroke', showkoban.colors.line);
+        line.setAttribute('stroke-dasharray', dasharray);
+        g.appendChild(line);
+      }
+      showkoban.elems.svg.appendChild(g);
+    }
+    drawFrame();
+  }
+
   function drawFrame() {
     const paddingColor = clearFlag ? '#8f8' : '#753';
 
@@ -642,71 +701,6 @@
     }
 
     showkoban.elems.svg.appendChild(g);
-  }
-
-  function createBackground() {
-    const g = showkoban.svg.createG();
-    const rect = showkoban.svg.createRect(blockSize, {x: 1, y: 1, width: level.getWidth() - 2, height: level.getHeight() - 2});
-    rect.setAttribute('fill', 'white');
-    g.appendChild(rect);
-    return g;
-  }
-
-  // 描画
-  function draw() {
-    showkoban.elems.svg.textContent = '';
-
-    // 背景
-    {
-      const g = showkoban.svg.createG();
-      g.appendChild(createBackground());
-      showkoban.elems.svg.appendChild(g);
-    }
-
-    const showCharsFlag = editMode ^ debugFlag;
-
-    // ターゲット以外を作成し、追加する。（描画順のためにターゲットは後で追加します。）
-    for (let y = 1; y < level.getHeight() - 1; ++y) {
-      for (let x = 1; x < level.getWidth() - 1; ++x) {
-        const state = level.getState(x, y);
-        if (state === showkoban.states.none) continue;
-        if (showkoban.states.isTarget(state)) continue;
-        const g = level.createBlock(x, y, blockSize, clearFlag, showCharsFlag);
-        showkoban.elems.svg.appendChild(g);
-      }
-    }
-
-    // ターゲットを作成し、追加する。
-    for (let y = 1; y < level.getHeight() - 1; ++y) {
-      for (let x = 1; x < level.getWidth() - 1; ++x) {
-        const state = level.getState(x, y);
-        if (!showkoban.states.isTarget(state)) continue;
-        const g = level.createBlock(x, y, blockSize, clearFlag, showCharsFlag);
-        showkoban.elems.svg.appendChild(g);
-      }
-    }
-
-    // 点線
-    {
-      const dasharray = '1, 4';
-      const g = showkoban.svg.createG();
-      // 横線
-      for (let y = 2; y < level.getHeight() - 1; ++y) {
-        const line = showkoban.svg.createLine(blockSize, {x1: 1, y1: y, x2: level.getWidth() - 1, y2: y});
-        line.setAttribute('stroke', showkoban.colors.line);
-        line.setAttribute('stroke-dasharray', dasharray);
-        g.appendChild(line);
-      }
-      // 縦線
-      for (let x = 2; x < level.getWidth() - 1; ++x) {
-        const line = showkoban.svg.createLine(blockSize, {x1: x, y1: 1, x2: x, y2: level.getHeight() - 1});
-        line.setAttribute('stroke', showkoban.colors.line);
-        line.setAttribute('stroke-dasharray', dasharray);
-        g.appendChild(line);
-      }
-      showkoban.elems.svg.appendChild(g);
-    }
-    drawFrame();
   }
 
   function editSvg(e) {
