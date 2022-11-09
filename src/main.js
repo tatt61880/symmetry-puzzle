@@ -25,7 +25,7 @@
   let clearFlag = false;
   let clearStep = null;
   let bestRecord = null;
-  let clearMessageFlag = false;
+  let redrawFlag = false;
 
   let drawingState = showkoban.states.none;
   const editboxFunctions = {};
@@ -88,7 +88,7 @@
   function clearCheck() {
     const center = level.getRotateCenter(showkoban.states.isTarget);
     clearFlag = center !== null;
-    clearMessageFlag = clearFlag;
+    redrawFlag = clearFlag;
     if (clearFlag) {
       document.documentElement.style.setProperty('--animation-origin-rotation', `${blockSize * center.x}px ${blockSize * center.y}px`);
     }
@@ -507,8 +507,8 @@
       }
       if (inputCount >= inputInterval) {
         if (clearFlag) {
-          if (clearMessageFlag) {
-            clearMessageFlag = false;
+          if (redrawFlag) {
+            redrawFlag = false;
             draw(true);
           }
         } else if (inputFlag) {
