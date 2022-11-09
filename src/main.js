@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.10';
+  const versionText = 'v2022.11.10c';
 
   const savedata = showkoban.savedata();
 
@@ -412,6 +412,7 @@
     showkoban.elems.levelsDialogSvg.innerHTML = '';
     let id = 0;
     for (const levelObj of showkoban.levels) {
+      const blockSize = 30;
       id++;
       const g = showkoban.svg.createG();
       g.classList.add('level-select');
@@ -419,9 +420,17 @@
       level.applyObj(levelObj);
       const levelSvg = level.createSvg(blockSize);
       g.appendChild(levelSvg);
-      const x = ((id - 1) % 5) * 90;
-      const y = Math.floor((id - 1) / 5) * 100;
-      g.setAttribute('transform', `translate(${x},${y}) scale(0.2)`);
+      const x = ((id - 1) % 5) * 90 + 10;
+      const y = Math.floor((id - 1) / 5) * 100 + 10;
+      {
+        const text = showkoban.svg.createText(blockSize, {x: -0.1, y: -0.8, text: id});
+        text.setAttribute('dominant-baseline', 'middle');
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('font-weight', 'bold');
+        text.setAttribute('font-size', '100px');
+        g.appendChild(text);
+      }
+      g.setAttribute('transform', `translate(${x},${y}) scale(0.16)`);
       g.setAttribute('data-id', id);
       g.addEventListener('click', function() {
         const id = Number(g.getAttribute('data-id'));

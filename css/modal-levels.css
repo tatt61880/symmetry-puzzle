@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   box-sizing: border-box;
-  width: 500px;
+  width: 480px;
   height: 400px;
   padding: 0;
   margin: 135px auto;
@@ -11,7 +11,7 @@
 
 #dialog-levels-svg {
   box-sizing: border-box;
-  width: 450px;
+  width: 420px;
   height: 800px;
   margin: 10px;
 }
