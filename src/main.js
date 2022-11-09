@@ -22,6 +22,7 @@
   let undoFlag = false;
   let undoCount = 0;
   let nextLevelTimerId = null;
+  const AUTO_NEXT_LEVEL_TIME = 1000;
 
   let clearFlag = false;
   let redrawFlag = false;
@@ -650,7 +651,7 @@
         g.appendChild(text);
       }
       if (settings.autoMode) {
-        nextLevelTimerId = setTimeout(gotoNextLevel, 1000);
+        nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_TIME);
       }
     }
 
