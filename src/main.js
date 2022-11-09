@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.09f';
+  const versionText = 'v2022.11.09g';
 
   const savedata = showkoban.savedata();
 
@@ -160,17 +160,10 @@
 
   function keydown(e) {
     if (e.shiftKey) {
-      if (e.key === 'T') {
-        // 強制editモード (Shift + t)
-        levelId = null;
-        updateLevelVisibility();
-        toggleEditLevel();
-      } else {
-        if (e.key === 'ArrowLeft') {
-          gotoPrevLevel();
-        } else if (e.key === 'ArrowRight') {
-          gotoNextLevel();
-        }
+      if (e.key === 'ArrowLeft') {
+        gotoPrevLevel();
+      } else if (e.key === 'ArrowRight') {
+        gotoNextLevel();
       }
     } else if (e.key === ' ') {
       if (!temporaryShowCharsFlag) {
@@ -178,10 +171,10 @@
         temporaryShowCharsFlag = true;
         draw();
       }
-    } else if (e.key === 't') {
-      if (levelId === null) {
-        toggleEditLevel();
-      }
+    } else if (e.key === '@') {
+      levelId = null;
+      updateLevelVisibility();
+      toggleEditLevel();
     } else if (e.key === 'r') {
       resetLevel();
     } else if (e.key === 'z') {
