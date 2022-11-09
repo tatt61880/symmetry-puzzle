@@ -15,6 +15,8 @@
     levelEdit: 'button-level-edit',
 
     levels: 'button-levels',
+    levelsDialog: 'dialog-levels',
+    levelsDialogSvg: 'dialog-levels-svg',
 
     svg: 'svg-main',
     editbox: 'editbox',

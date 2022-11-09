@@ -329,14 +329,28 @@
       }
     }
 
-    createBlocks(blockSize, rotateFlag, showCharsFlag, gShadows, gElems) {
+    createSvg(blockSize, rotateFlag = false, showCharsFlag = false) {
+      const g = showkoban.svg.createG();
+
+      // 背景
+      {
+        const rect = showkoban.svg.createRect(blockSize, {x: 1, y: 1, width: this.getWidth() - 2, height: this.getHeight() - 2});
+        rect.setAttribute('fill', 'white');
+        g.appendChild(rect);
+      }
+
+      const gShadows = showkoban.svg.createG();
+      const gElems = showkoban.svg.createG();
+      g.appendChild(gShadows);
+      g.appendChild(gElems);
+
       // ターゲット以外を作成し、追加する。（描画順のためにターゲットは後で追加します。）
       for (let y = 1; y < this.getHeight() - 1; ++y) {
         for (let x = 1; x < this.getWidth() - 1; ++x) {
           const state = this.getState(x, y);
           if (state === showkoban.states.none) continue;
           if (showkoban.states.isTarget(state)) continue;
-          this.createBlock(x, y, blockSize, false, showCharsFlag, gShadows, gElems);
+          this.#addOneBlock(x, y, blockSize, false, showCharsFlag, gShadows, gElems);
         }
       }
 
@@ -345,12 +359,13 @@
         for (let x = 1; x < this.getWidth() - 1; ++x) {
           const state = this.getState(x, y);
           if (!showkoban.states.isTarget(state)) continue;
-          this.createBlock(x, y, blockSize, rotateFlag, showCharsFlag, gShadows, gElems);
+          this.#addOneBlock(x, y, blockSize, rotateFlag, showCharsFlag, gShadows, gElems);
         }
       }
+      return g;
     }
 
-    createBlock(x, y, blockSize, rotateFlag, showCharsFlag, gShadows, gElems) {
+    #addOneBlock(x, y, blockSize, rotateFlag, showCharsFlag, gShadows, gElems) {
       const state = this.getState(x, y);
       const gElem = showkoban.svg.createG();
       const color = showkoban.colors[state];

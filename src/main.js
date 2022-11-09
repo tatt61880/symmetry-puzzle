@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.09h';
+  const versionText = 'v2022.11.10';
 
   const savedata = showkoban.savedata();
 
@@ -407,6 +407,35 @@
     draw();
   }
 
+  function showLevelsDialog() {
+    showkoban.elems.levelsDialogSvg.innerHTML = '';
+    let id = 0;
+    for (const levelObj of showkoban.levels) {
+      id++;
+      const g = showkoban.svg.createG();
+      g.classList.add('level-select');
+      const level = showkoban.Level();
+      level.applyObj(levelObj);
+      const levelSvg = level.createSvg(blockSize);
+      g.appendChild(levelSvg);
+      const x = ((id - 1) % 5) * 90;
+      const y = Math.floor((id - 1) / 5) * 100;
+      g.setAttribute('transform', `translate(${x},${y}) scale(0.2)`);
+      g.setAttribute('data-id', id);
+      g.addEventListener('click', function() {
+        const id = g.getAttribute('data-id');
+        loadLevelById(id);
+        closeLevelsDialog();
+      }, false);
+      showkoban.elems.levelsDialogSvg.appendChild(g);
+    }
+    showkoban.elems.levelsDialog.showModal();
+  }
+
+  function closeLevelsDialog() {
+    showkoban.elems.levelsDialog.close();
+  }
+
   function onload() {
     showkoban.initElems();
     showkoban.elems.version.textContent = versionText;
@@ -471,6 +500,9 @@
       showkoban.elems.levelPrev.addEventListener('click', gotoPrevLevel, false);
       showkoban.elems.levelNext.addEventListener('click', gotoNextLevel, false);
       showkoban.elems.levelEdit.addEventListener('click', toggleEditLevel, false);
+      showkoban.elems.levels.addEventListener('click', showLevelsDialog, false);
+      showkoban.elems.levelsDialog.addEventListener('click', closeLevelsDialog, false);
+      showkoban.elems.levelsDialogSvg.addEventListener('click', (e) => e.stopPropagation(), false);
 
       const touchDevice = document.ontouchstart !== undefined;
       const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
@@ -532,22 +564,10 @@
     rotateFlag &&= clearFlag;
     showkoban.elems.svg.textContent = '';
 
-    // 背景
-    {
-      const g = showkoban.svg.createG();
-      const rect = showkoban.svg.createRect(blockSize, {x: 1, y: 1, width: level.getWidth() - 2, height: level.getHeight() - 2});
-      rect.setAttribute('fill', 'white');
-      g.appendChild(rect);
-      showkoban.elems.svg.appendChild(g);
-    }
-
     {
       const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
-      const g1 = showkoban.svg.createG();
-      const g2 = showkoban.svg.createG();
-      showkoban.elems.svg.appendChild(g1);
-      showkoban.elems.svg.appendChild(g2);
-      level.createBlocks(blockSize, rotateFlag, showCharsFlag, g1, g2);
+      const levelSvg = level.createSvg(blockSize, rotateFlag, showCharsFlag);
+      showkoban.elems.svg.appendChild(levelSvg);
     }
     level.resetMoveFlags();
 

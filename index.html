@@ -13,6 +13,7 @@
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png">
 
   <link rel="stylesheet" href="./css/main.css?2022.11.09">
+  <link rel="stylesheet" href="./css/modal-levels.css?2022.11.09">
   <link rel="stylesheet" href="./css/animation.css?2022.11.09">
 
   <script src="./src/svg.js?2022.11.08"></script>
@@ -20,12 +21,12 @@
   <script src="./src/class-savedata.js?2022.11.09"></script>
   <script src="./src/class-stack.js?2022.11.08"></script>
   <script src="./src/class-undo-info.js?2022.11.08"></script>
-  <script src="./src/class-level.js?2022.11.09d"></script>
+  <script src="./src/class-level.js?2022.11.10"></script>
   <script src="./src/states.js?2022.11.08"></script>
   <script src="./src/colors.js?2022.11.08"></script>
   <script src="./src/levels.js?2022.11.08"></script>
-  <script src="./src/elems.js?2022.11.09b"></script>
-  <script src="./src/main.js?2022.11.09i"></script>
+  <script src="./src/elems.js?2022.11.10"></script>
+  <script src="./src/main.js?2022.11.10"></script>
 </head>
 
 <body>
@@ -70,10 +71,15 @@
 
         <!-- Levels -->
         <g id="button-levels" class="button active-hover" transform="translate(410,30)">
+          <rect x="-28" y="-28" width="56" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
         </g>
       </svg>
     </div>
   </div>
+
+  <dialog id="dialog-levels">
+    <svg id="dialog-levels-svg"></svg>
+  </dialog>
 
   <div>
     【※未完成です。随時、レベルを追加/変更しています。】<br>
