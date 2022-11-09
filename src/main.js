@@ -14,6 +14,7 @@
   };
 
   let editMode = false;
+  let temporaryShowCharsFlag = false;
 
   let levelId = null;
   let currentLevelObj;
@@ -172,9 +173,11 @@
         }
       }
     } else if (e.key === ' ') {
-      e.preventDefault();
-      settings.debugFlag = true;
-      draw();
+      if (!temporaryShowCharsFlag) {
+        e.preventDefault();
+        temporaryShowCharsFlag = true;
+        draw();
+      }
     } else if (e.key === 't') {
       if (levelId === null) {
         toggleEditLevel();
@@ -199,8 +202,8 @@
   }
 
   function keyup(e) {
-    if (settings.debugFlag && e.key === ' ') {
-      settings.debugFlag = false;
+    if (temporaryShowCharsFlag && e.key === ' ') {
+      temporaryShowCharsFlag = false;
       draw();
     }
     delete inputKeys[e.key];
@@ -545,7 +548,7 @@
       showkoban.elems.svg.appendChild(g);
     }
 
-    const showCharsFlag = editMode ^ settings.debugFlag;
+    const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
 
     const elemBlocks = level.createBlocks(blockSize, rotateFlag, showCharsFlag);
     showkoban.elems.svg.appendChild(elemBlocks);
