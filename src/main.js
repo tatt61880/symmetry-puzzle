@@ -14,7 +14,6 @@
 
   let debugFlag = false;
   let editMode = false;
-  let autoStep;
 
   let levelId = null;
   let currentLevelObj;
@@ -279,7 +278,6 @@
     updateLevelVisibility();
     resetUndo();
 
-    autoStep = 0;
     inputDir = dirs.neutral;
     inputCount = inputInterval;
     inputCountPrev = 0;
@@ -498,11 +496,19 @@
     }
 
     setInterval(() => {
+      if (undoFlag) {
+        if (undoCount === undoInterval) {
+          undoCount = 0;
+          execUndo();
+        }
+        undoCount++;
+        return;
+      }
+      if (settings.autoMode && currentLevelObj.r !== undefined) {
+        inputDir = Number(currentLevelObj.r[undoInfo.getIndex()]);
+      }
       if (inputCount < inputCountPrev + inputInterval) {
         inputCount++;
-      }
-      if (settings.autoMode && currentLevelObj.r !== undefined && inputDir === dirs.neutral && autoStep < currentLevelObj.r.length) {
-        inputDir = Number(currentLevelObj.r[autoStep]);
       }
       if (!moveFlag && (clearFlag || inputFlag || settings.autoMode)) {
         if (inputCount >= inputCountPrev + inputInterval) {
@@ -512,7 +518,6 @@
               draw(true);
             }
           } else if (inputDir !== dirs.neutral) {
-            autoStep++;
             updateMoveFlags(inputDir);
             inputCount = 0;
             inputCountPrev = 0;
@@ -528,13 +533,6 @@
         level.move();
         clearCheck();
         updateUrl();
-      }
-      if (undoFlag) {
-        if (undoCount === undoInterval) {
-          undoCount = 0;
-          execUndo();
-        }
-        undoCount++;
       }
     }, intervalMsec);
   }
