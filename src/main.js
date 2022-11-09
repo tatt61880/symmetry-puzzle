@@ -23,7 +23,6 @@
   let undoCount = 0;
 
   let clearFlag = false;
-  let clearStep = null;
   let bestRecord = null;
   let redrawFlag = false;
 
@@ -622,8 +621,8 @@
       text.setAttribute('font-weight', 'bold');
       text.setAttribute('fill', 'blue');
       g.appendChild(text);
+      const clearStep = undoInfo ? undoInfo.getIndex() : null;
       if (undoInfo) {
-        clearStep = undoInfo.getIndex();
         const w = currentLevelObj.w;
         const h = currentLevelObj.h;
         const s = currentLevelObj.s;
