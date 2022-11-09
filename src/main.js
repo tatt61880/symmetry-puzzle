@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.09d';
+  const versionText = 'v2022.11.09f';
 
   const savedata = showkoban.savedata();
 
@@ -21,6 +21,7 @@
   let undoInfo = showkoban.UndoInfo();
   let undoFlag = false;
   let undoCount = 0;
+  let nextLevelTimerId = null;
 
   let clearFlag = false;
   let redrawFlag = false;
@@ -95,6 +96,7 @@
   function undoStart() {
     if (undoFlag) return;
     undoFlag = true;
+    clearTimeout(nextLevelTimerId);
     showkoban.elems.undo.classList.add('low-contrast');
     undoCount = undoInterval;
   }
@@ -232,7 +234,6 @@
     const svgMaxHeight = 250;
     blockSize = Math.min(svgMaxWidth / level.getWidth(), svgMaxHeight / level.getHeight());
     clearCheck();
-    level.resetMoveFlags();
     updateUrl();
 
     showkoban.elems.svg.setAttribute('width', blockSize * level.getWidth());
@@ -545,26 +546,9 @@
 
     const showCharsFlag = editMode ^ settings.debugFlag;
 
-    // ターゲット以外を作成し、追加する。（描画順のためにターゲットは後で追加します。）
-    for (let y = 1; y < level.getHeight() - 1; ++y) {
-      for (let x = 1; x < level.getWidth() - 1; ++x) {
-        const state = level.getState(x, y);
-        if (state === showkoban.states.none) continue;
-        if (showkoban.states.isTarget(state)) continue;
-        const g = level.createBlock(x, y, blockSize, false, showCharsFlag);
-        showkoban.elems.svg.appendChild(g);
-      }
-    }
-
-    // ターゲットを作成し、追加する。
-    for (let y = 1; y < level.getHeight() - 1; ++y) {
-      for (let x = 1; x < level.getWidth() - 1; ++x) {
-        const state = level.getState(x, y);
-        if (!showkoban.states.isTarget(state)) continue;
-        const g = level.createBlock(x, y, blockSize, rotateFlag, showCharsFlag);
-        showkoban.elems.svg.appendChild(g);
-      }
-    }
+    const elemBlocks = level.createBlocks(blockSize, rotateFlag, showCharsFlag);
+    showkoban.elems.svg.appendChild(elemBlocks);
+    level.resetMoveFlags();
 
     // 点線
     {
@@ -587,7 +571,6 @@
       showkoban.elems.svg.appendChild(g);
     }
     drawFrame();
-    level.resetMoveFlags();
   }
 
   function drawFrame() {
@@ -667,7 +650,7 @@
         g.appendChild(text);
       }
       if (settings.autoMode) {
-        setTimeout(gotoNextLevel, 1000);
+        nextLevelTimerId = setTimeout(gotoNextLevel, 1000);
       }
     }
 

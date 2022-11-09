@@ -126,6 +126,7 @@
           x++;
         }
       }
+      this.resetMoveFlags();
     }
 
     count(isX) {
@@ -326,6 +327,33 @@
           }
         }
       }
+    }
+
+    createBlocks(blockSize, rotateFlag, showCharsFlag) {
+      const g = showkoban.svg.createG();
+
+      // ターゲット以外を作成し、追加する。（描画順のためにターゲットは後で追加します。）
+      for (let y = 1; y < this.getHeight() - 1; ++y) {
+        for (let x = 1; x < this.getWidth() - 1; ++x) {
+          const state = this.getState(x, y);
+          if (state === showkoban.states.none) continue;
+          if (showkoban.states.isTarget(state)) continue;
+          const elemBlock = this.createBlock(x, y, blockSize, false, showCharsFlag);
+          g.appendChild(elemBlock);
+        }
+      }
+
+      // ターゲットを作成し、追加する。
+      for (let y = 1; y < this.getHeight() - 1; ++y) {
+        for (let x = 1; x < this.getWidth() - 1; ++x) {
+          const state = this.getState(x, y);
+          if (!showkoban.states.isTarget(state)) continue;
+          const elemBlock = this.createBlock(x, y, blockSize, rotateFlag, showCharsFlag);
+          g.appendChild(elemBlock);
+        }
+      }
+
+      return g;
     }
 
     createBlock(x, y, blockSize, rotateFlag, showCharsFlag) {
