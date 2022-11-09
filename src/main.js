@@ -18,12 +18,11 @@
   let levelId = null;
   let currentLevelObj;
 
-  let undoInfo;
+  let undoInfo = showkoban.UndoInfo();
   let undoFlag = false;
   let undoCount = 0;
 
   let clearFlag = false;
-  let bestRecord = null;
   let redrawFlag = false;
 
   let drawingState = showkoban.states.none;
@@ -621,8 +620,9 @@
       text.setAttribute('font-weight', 'bold');
       text.setAttribute('fill', 'blue');
       g.appendChild(text);
-      const clearStep = undoInfo ? undoInfo.getIndex() : null;
-      if (undoInfo) {
+      const clearStep = undoInfo.getIndex();
+      let bestRecord;
+      {
         const w = currentLevelObj.w;
         const h = currentLevelObj.h;
         const s = currentLevelObj.s;
