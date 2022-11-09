@@ -16,7 +16,6 @@
 
     #load() {
       this.data = JSON.parse(localStorage.getItem(localStorageKey));
-      console.log(this.data);
       if (this.data === null) {
         this.data = {};
       }
@@ -39,8 +38,6 @@
     getHighestScore(w, h, s) {
       const key = this.#getLevelKey(w, h, s);
       const r = this.data[key];
-      console.log(key);
-      console.log(r);
       return r === undefined ? null : r.length;
     }
 
