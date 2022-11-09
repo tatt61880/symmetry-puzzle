@@ -50,7 +50,6 @@
   const intervalMsec = 35;
   const inputInterval = 5;
   const undoInterval = 6;
-  let inputCountPrev = 0;
   let inputCount = inputInterval;
   let inputDir = dirs.neutral;
   const inputKeys = {};
@@ -280,7 +279,6 @@
 
     inputDir = dirs.neutral;
     inputCount = inputInterval;
-    inputCountPrev = 0;
 
     // 左右反転する。
     function mirrorLevel(levelObj) {
@@ -506,12 +504,10 @@
       }
       if (settings.autoMode && currentLevelObj.r !== undefined) {
         inputDir = Number(currentLevelObj.r[undoInfo.getIndex()]);
+        inputFlag = true;
       }
-      if (inputCount < inputCountPrev + inputInterval) {
-        inputCount++;
-      }
-      if (!moveFlag && (clearFlag || inputFlag || settings.autoMode)) {
-        if (inputCount >= inputCountPrev + inputInterval) {
+      if (inputCount >= inputInterval) {
+        if (clearFlag || inputFlag) {
           if (clearFlag) {
             if (clearMessageFlag) {
               clearMessageFlag = false;
@@ -520,12 +516,10 @@
           } else if (inputDir !== dirs.neutral) {
             updateMoveFlags(inputDir);
             inputCount = 0;
-            inputCountPrev = 0;
           }
         }
-        if (settings.autoMode) {
-          inputDir = dirs.neutral;
-        }
+      } else {
+        inputCount++;
       }
       if (moveFlag) {
         moveFlag = false;
