@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.09b';
+  const versionText = 'v2022.11.09c';
 
   const savedata = showkoban.savedata();
 
@@ -509,7 +509,7 @@
           if (clearFlag) {
             if (clearMessageFlag) {
               clearMessageFlag = false;
-              draw();
+              draw(true);
             }
           } else if (inputDir !== dirs.neutral) {
             autoStep++;
@@ -540,7 +540,8 @@
   }
 
   // 描画
-  function draw() {
+  function draw(rotateFlag = false) {
+    rotateFlag &&= clearFlag;
     showkoban.elems.svg.textContent = '';
 
     // 背景
@@ -560,7 +561,7 @@
         const state = level.getState(x, y);
         if (state === showkoban.states.none) continue;
         if (showkoban.states.isTarget(state)) continue;
-        const g = level.createBlock(x, y, blockSize, clearFlag, showCharsFlag);
+        const g = level.createBlock(x, y, blockSize, false, showCharsFlag);
         showkoban.elems.svg.appendChild(g);
       }
     }
@@ -570,7 +571,7 @@
       for (let x = 1; x < level.getWidth() - 1; ++x) {
         const state = level.getState(x, y);
         if (!showkoban.states.isTarget(state)) continue;
-        const g = level.createBlock(x, y, blockSize, clearFlag, showCharsFlag);
+        const g = level.createBlock(x, y, blockSize, rotateFlag, showCharsFlag);
         showkoban.elems.svg.appendChild(g);
       }
     }

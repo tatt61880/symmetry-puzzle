@@ -329,7 +329,7 @@
       }
     }
 
-    createBlock(x, y, blockSize, clearFlag, showCharsFlag) {
+    createBlock(x, y, blockSize, rotateFlag, showCharsFlag) {
       const state = this.getState(x, y);
       const g = showkoban.svg.createG();
       const color = showkoban.colors[state];
@@ -448,7 +448,7 @@
             g.appendChild(polygon);
           }
         }
-        if (clearFlag) {
+        if (rotateFlag) {
           if (showkoban.states.isTarget(state)) {
             g.classList.add('animation-rotation');
           }
