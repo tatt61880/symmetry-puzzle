@@ -11,8 +11,9 @@
       },
       settings: {
         autoMode: false,
-        rotateNum: 0,
+        debugFlag: false,
         mirrorFlag: false,
+        rotateNum: 0,
       },
     };
 
@@ -36,11 +37,14 @@
       case 'auto':
         res.settings.autoMode = true;
         break;
-      case 'rotate':
-        res.settings.rotateNum = Number(paramVal) % 4;
+      case 'debug':
+        res.settings.debugFlag = true;
         break;
       case 'mirror':
         res.settings.mirrorFlag = true;
+        break;
+      case 'rotate':
+        res.settings.rotateNum = Number(paramVal) % 4;
         break;
       }
     }

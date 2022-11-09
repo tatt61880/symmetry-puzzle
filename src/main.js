@@ -8,11 +8,11 @@
 
   let settings = {
     autoMode: false,
-    rotateNum: 0,
+    debugFlag: false,
     mirrorFlag: false,
+    rotateNum: 0,
   };
 
-  let debugFlag = false;
   let editMode = false;
 
   let levelId = null;
@@ -170,7 +170,7 @@
       }
     } else if (e.key === ' ') {
       e.preventDefault();
-      debugFlag = true;
+      settings.debugFlag = true;
       draw();
     } else if (e.key === 't') {
       if (levelId === null) {
@@ -196,8 +196,8 @@
   }
 
   function keyup(e) {
-    if (debugFlag && e.key === ' ') {
-      debugFlag = false;
+    if (settings.debugFlag && e.key === ' ') {
+      settings.debugFlag = false;
       draw();
     }
     delete inputKeys[e.key];
@@ -543,7 +543,7 @@
       showkoban.elems.svg.appendChild(g);
     }
 
-    const showCharsFlag = editMode ^ debugFlag;
+    const showCharsFlag = editMode ^ settings.debugFlag;
 
     // ターゲット以外を作成し、追加する。（描画順のためにターゲットは後で追加します。）
     for (let y = 1; y < level.getHeight() - 1; ++y) {
