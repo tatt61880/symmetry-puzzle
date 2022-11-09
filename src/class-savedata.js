@@ -2,7 +2,7 @@
   'use strict';
   window.showkoban = window.showkoban || {};
 
-  const localStorageKey = 'tatt61880-showkoban';
+  const LOCAL_STORAGE_KEY = 'tatt61880-showkoban';
 
   window.showkoban.savedata = () => {
     return new Savedata();
@@ -15,7 +15,7 @@
     }
 
     #load() {
-      this.data = JSON.parse(localStorage.getItem(localStorageKey));
+      this.data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
       if (this.data === null) {
         this.data = {};
       }
@@ -31,7 +31,7 @@
       const highestScoreR = this.data[key];
       if (highestScoreR === undefined || step < highestScoreR.length) {
         this.data[key] = r;
-        localStorage.setItem(localStorageKey, JSON.stringify(this.data));
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.data));
       }
     }
 
