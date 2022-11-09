@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.09g';
+  const versionText = 'v2022.11.09h';
 
   const savedata = showkoban.savedata();
 
@@ -541,10 +541,14 @@
       showkoban.elems.svg.appendChild(g);
     }
 
-    const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
-
-    const elemBlocks = level.createBlocks(blockSize, rotateFlag, showCharsFlag);
-    showkoban.elems.svg.appendChild(elemBlocks);
+    {
+      const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
+      const g1 = showkoban.svg.createG();
+      const g2 = showkoban.svg.createG();
+      showkoban.elems.svg.appendChild(g1);
+      showkoban.elems.svg.appendChild(g2);
+      level.createBlocks(blockSize, rotateFlag, showCharsFlag, g1, g2);
+    }
     level.resetMoveFlags();
 
     // 点線
