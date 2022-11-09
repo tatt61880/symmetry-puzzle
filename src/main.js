@@ -2,7 +2,9 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.09';
+  const versionText = 'v2022.11.09b';
+
+  const savedata = showkoban.savedata();
 
   let settings = {
     autoMode: false,
@@ -576,7 +578,9 @@
         const h = currentLevelObj.h;
         const s = currentLevelObj.s;
         const replayStr = undoInfo.getReplayStr();
-        updateResultData(w, h, s, replayStr);
+        if (levelId !== null) {
+          savedata.save(w, h, s, replayStr);
+        }
         console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`);
         const r = currentLevelObj.r;
         if (levelId === null || r === undefined) {
@@ -617,7 +621,7 @@
 
     // 自己最高記録
     if (levelId !== null && !clearFlag) {
-      const highestScore = getHighestScore();
+      const highestScore = savedata.getHighestScore(currentLevelObj.w, currentLevelObj.h, currentLevelObj.s);
       if (highestScore !== null) {
         const r = currentLevelObj.r;
         const bestRecord = r === undefined ? null : r.length;
@@ -779,34 +783,5 @@
       h: level.getH(),
       s: level.getStateStr(),
     });
-  }
-
-  function updateResultData(w, h, s, r) {
-    if (levelId === null) return;
-
-    const maxStep = 999;
-    const step = r.length;
-    if (step > maxStep) {
-      r = r.substring(0, maxStep);
-    }
-    const key = getStorageKey(w, h, s);
-    const highestScoreR = localStorage.getItem(key);
-    if (highestScoreR === null || step < highestScoreR.length) {
-      localStorage.setItem(key, r);
-    }
-  }
-
-  function getStorageKey(w, h, s) {
-    const localStorageNamespace = 'tatt61880-showkoban';
-    return `${localStorageNamespace}:w=${w}&h=${h}&s=${s}`;
-  }
-
-  function getHighestScore() {
-    const w = currentLevelObj.w;
-    const h = currentLevelObj.h;
-    const s = currentLevelObj.s;
-    const key = getStorageKey(w, h, s);
-    const r = localStorage.getItem(key);
-    return r === null ? null : r.length;
   }
 })();
