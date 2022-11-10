@@ -413,7 +413,7 @@
     const HEIGHT = 90;
     const WIDTH = 90;
     const COLS = 5;
-    const MARGIN = 10;
+    const MARGIN = 20;
     showkoban.elems.levelsDialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(showkoban.levels.length / COLS)}px`);
 
     let id = 0;

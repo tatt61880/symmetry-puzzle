@@ -10,9 +10,9 @@
 }
 
 #dialog-levels-svg {
+  margin: 0;
   box-sizing: border-box;
-  width: 420px;
-  margin: 10px;
+  width: 450px;
 }
 
 #dialog-levels-svg .level-select {
