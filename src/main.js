@@ -636,6 +636,8 @@
       g.appendChild(rect);
     }
 
+    const r = currentLevelObj.r;
+    const bestRecord = r?.length;
     // クリアメッセージ
     if (clearFlag) {
       const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: 'CLEAR'});
@@ -644,7 +646,6 @@
       text.setAttribute('fill', 'blue');
       g.appendChild(text);
       const clearStep = undoInfo.getIndex();
-      let bestRecord;
       {
         const w = currentLevelObj.w;
         const h = currentLevelObj.h;
@@ -654,19 +655,14 @@
           savedata.save(w, h, s, replayStr);
         }
         console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`);
-        const r = currentLevelObj.r;
-        if (levelId === null || r === undefined) {
+        if (r === undefined) {
           console.warn('過去最高記録の情報がありません！');
-          bestRecord = null;
+        } else if (clearStep < bestRecord) {
+          console.log(`新記録!\n${bestRecord} → ${clearStep} (${clearStep - bestRecord} 手)`);
         } else {
-          bestRecord = r.length;
-          if (clearStep < bestRecord) {
-            console.log(`新記録!\n${bestRecord} → ${clearStep} (${clearStep - bestRecord} 手)`);
-          } else {
-            console.log(`過去最高記録は ${bestRecord} 手です。\n(差: ${clearStep - bestRecord} 手)`);
-            if (replayStr === r) {
-              console.log('(完全に同じ手順です。)');
-            }
+          console.log(`過去最高記録は ${bestRecord} 手です。\n(差: ${clearStep - bestRecord} 手)`);
+          if (replayStr === r) {
+            console.log('(完全に同じ手順です。)');
           }
         }
       }
@@ -675,7 +671,7 @@
         const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${clearStep} steps`});
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
-        if (bestRecord === null) {
+        if (bestRecord === undefined) {
           text.setAttribute('fill', 'gray');
         } else if (clearStep > bestRecord) {
           text.setAttribute('fill', 'black');
@@ -695,12 +691,10 @@
     if (levelId !== null && !clearFlag) {
       const highestScore = savedata.getHighestScore(currentLevelObj.w, currentLevelObj.h, currentLevelObj.s);
       if (highestScore !== null) {
-        const r = currentLevelObj.r;
-        const bestRecord = r === undefined ? null : r.length;
         const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`});
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
-        if (bestRecord === null) {
+        if (bestRecord === undefined) {
           text.setAttribute('fill', 'gray');
         } else if (highestScore > bestRecord) {
           text.setAttribute('fill', 'black');
