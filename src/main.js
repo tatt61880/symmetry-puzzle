@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.10c';
+  const versionText = 'v2022.11.10d';
 
   const savedata = showkoban.savedata();
 
@@ -410,6 +410,12 @@
 
   function showLevelsDialog() {
     showkoban.elems.levelsDialogSvg.innerHTML = '';
+    const HEIGHT = 90;
+    const WIDTH = 90;
+    const COLS = 5;
+    const MARGIN = 10;
+    showkoban.elems.levelsDialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(showkoban.levels.length / COLS)}px`);
+
     let id = 0;
     for (const levelObj of showkoban.levels) {
       const blockSize = 30;
@@ -420,8 +426,8 @@
       level.applyObj(levelObj);
       const levelSvg = level.createSvg(blockSize);
       g.appendChild(levelSvg);
-      const x = ((id - 1) % 5) * 90 + 10;
-      const y = Math.floor((id - 1) / 5) * 90 + 10;
+      const x = ((id - 1) % COLS) * WIDTH + MARGIN;
+      const y = Math.floor((id - 1) / COLS) * HEIGHT + MARGIN;
       {
         const text = showkoban.svg.createText(blockSize, {x: -0.1, y: -0.8, text: id});
         text.setAttribute('dominant-baseline', 'middle');
