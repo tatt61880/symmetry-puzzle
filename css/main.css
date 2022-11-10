@@ -17,18 +17,18 @@ body {
 
 header {
   position: relative;
+  display: flex;
+  align-items: center;
+  height: 32px;
   font-size: 1.1rem;
+  text-align: left;
   background-color: pink;
-}
-
-footer {
-  position: relative;
-  font-size: 1rem;
-  color: #aa8888;
-  background-color: pink;
+  border: 1px solid pink;
 }
 
 #title {
+  margin: 10px;
+  font-size: 1.2rem;
   font-weight: bold;
   color: #553333;
 }
@@ -37,6 +37,13 @@ footer {
   font-size: 0.7rem;
   font-weight: bold;
   color: #aa8888;
+}
+
+footer {
+  position: relative;
+  font-size: 1rem;
+  color: #aa8888;
+  background-color: pink;
 }
 
 h2 {
