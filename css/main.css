@@ -30,19 +30,20 @@ header {
   margin: 10px;
   font-size: 1.2rem;
   font-weight: bold;
-  color: #553333;
+  color: #550000;
 }
 
 #version {
   font-size: 0.7rem;
   font-weight: bold;
-  color: #aa8888;
+  color: #aa7777;
 }
 
 footer {
   position: relative;
   font-size: 1rem;
-  color: #aa8888;
+  font-weight: bold;
+  color: #aa7777;
   background-color: pink;
 }
 
@@ -50,6 +51,7 @@ h2 {
   position: relative;
   margin: 0 0 5px;
   font-size: 1.1rem;
+  color: #335577;
   background-color: skyblue;
 }
 
