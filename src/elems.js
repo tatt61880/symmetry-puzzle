@@ -5,6 +5,8 @@
 
   const elemIds = {
     version: 'version',
+    help: 'button-help',
+    helpDialog: 'dialog-help',
 
     levelReset: 'button-level-reset',
 

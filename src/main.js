@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.12';
+  const versionText = 'v2022.11.12b';
 
   const savedata = showkoban.savedata();
 
@@ -408,6 +408,14 @@
     draw();
   }
 
+  function showHelpDialog() {
+    showkoban.elems.helpDialog.showModal();
+  }
+
+  function closeHelpDialog() {
+    showkoban.elems.helpDialog.close();
+  }
+
   function showLevelsDialog() {
     showkoban.elems.levelsDialogSvg.innerHTML = '';
     const HEIGHT = 90;
@@ -511,6 +519,9 @@
     {
       document.addEventListener('keydown', keydown, false);
       document.addEventListener('keyup', keyup, false);
+
+      showkoban.elems.help.addEventListener('click', showHelpDialog, false);
+      showkoban.elems.helpDialog.addEventListener('click', closeHelpDialog, false);
 
       showkoban.elems.levelReset.addEventListener('click', resetLevel, false);
       showkoban.elems.levelPrev.addEventListener('click', gotoPrevLevel, false);

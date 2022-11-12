@@ -1,0 +1,14 @@
+#dialog-help {
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 480px;
+  height: 160px;
+  padding: 0;
+  margin: 135px auto;
+}
+
+#dialog-help::backdrop {
+  background-color: rgb(0 0 0 / 50%);
+}

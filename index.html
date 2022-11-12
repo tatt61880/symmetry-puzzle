@@ -9,24 +9,25 @@
   <meta property="og:title" content="点対称パズル">
   <meta property="og:description" content="図形を点対称にするパズルです。">
 
-  <link rel="icon" type="image/x-icon" href="./images/favicon.png?2022.11.12">
-  <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2022.11.12">
+  <link rel="icon" type="image/x-icon" href="./images/favicon.png?2022.11.12b">
+  <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2022.11.12b">
 
-  <link rel="stylesheet" href="./css/main.css?2022.11.12">
-  <link rel="stylesheet" href="./css/modal-levels.css?2022.11.12">
-  <link rel="stylesheet" href="./css/animation.css?2022.11.12">
+  <link rel="stylesheet" href="./css/main.css?2022.11.12b">
+  <link rel="stylesheet" href="./css/modal-help.css?2022.11.12b">
+  <link rel="stylesheet" href="./css/modal-levels.css?2022.11.12b">
+  <link rel="stylesheet" href="./css/animation.css?2022.11.12b">
 
-  <script src="./src/svg.js?2022.11.12"></script>
-  <script src="./src/analyze-url.js?2022.11.12"></script>
-  <script src="./src/class-savedata.js?2022.11.12"></script>
-  <script src="./src/class-stack.js?2022.11.12"></script>
-  <script src="./src/class-undo-info.js?2022.11.12"></script>
-  <script src="./src/class-level.js?2022.11.12"></script>
-  <script src="./src/states.js?2022.11.12"></script>
-  <script src="./src/colors.js?2022.11.12"></script>
-  <script src="./src/levels.js?2022.11.12"></script>
-  <script src="./src/elems.js?2022.11.12"></script>
-  <script src="./src/main.js?2022.11.12"></script>
+  <script src="./src/svg.js?2022.11.12b"></script>
+  <script src="./src/analyze-url.js?2022.11.12b"></script>
+  <script src="./src/class-savedata.js?2022.11.12b"></script>
+  <script src="./src/class-stack.js?2022.11.12b"></script>
+  <script src="./src/class-undo-info.js?2022.11.12b"></script>
+  <script src="./src/class-level.js?2022.11.12b"></script>
+  <script src="./src/states.js?2022.11.12b"></script>
+  <script src="./src/colors.js?2022.11.12b"></script>
+  <script src="./src/levels.js?2022.11.12b"></script>
+  <script src="./src/elems.js?2022.11.12b"></script>
+  <script src="./src/main.js?2022.11.12b"></script>
 </head>
 
 <body>
@@ -35,6 +36,12 @@
     <img alt="icon" src="./images/icon.png" />
     <span id="title">点対称パズル</span>
     <span id="version">v2022.XX.XX</span>
+    <svg width="30" height="30" style="margin: 0 5px 0 auto;">
+      <g id="button-help" class="button active-hover">
+        <circle cx="15" cy="15" r="14" fill="#ffdee4" stroke="#ed1c24" stroke-width="2" />
+        <text x="15" y="17" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="20px" fill="#ed1c24">?</text>
+      </g>
+    </svg>
   </header>
 
   <div class="inner level noselect">
@@ -90,12 +97,16 @@
   <dialog id="dialog-levels">
     <svg id="dialog-levels-svg"></svg>
   </dialog>
-
-  <div>
-    【※未完成です。随時、レベルを追加/変更しています。】<br>
-    <span class="blue-block">青色の図形</span>を操作し、<br>
-    <span class="red-block">赤色の図形</span>を1つながりの点対称図形にしてください。
-  </div>
+  <dialog id="dialog-help">
+    <p>
+      <span class="blue-block">青色の図形</span>を操作し、<br>
+      <span class="red-block">赤色の図形</span>を1つながりの点対称図形にしてください。
+    </p>
+    <p>
+      ※未完成です。<br>
+      随時、レベルを追加/変更しています。<br>
+    </p>
+  </dialog>
 
   <div id="main">
     <svg id="svg-main" width="480" height="250"></svg>
