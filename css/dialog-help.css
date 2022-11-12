@@ -33,7 +33,8 @@
 }
 
 .setting-lang-button.active {
-  background-color: #8888ff;
+  color: #eeeeee;
+  background-color: #555555;
 }
 
 .translatable.hidden {
