@@ -481,7 +481,8 @@
         const state = showkoban.states.charToState[char];
         const elem = document.getElementById(`edit_${char}`);
         if (elem === null) continue;
-        const func = () => {
+        const func = (e = null) => {
+          if (e !== null) e.preventDefault();
           showkoban.elems.editShape.setAttribute('fill', showkoban.colors[state].fill);
           showkoban.elems.editShape.setAttribute('stroke', showkoban.colors[state].stroke);
           showkoban.elems.editState.textContent = char;
@@ -489,7 +490,7 @@
           drawingState = state;
         };
         editboxFunctions[char] = func;
-        elem.addEventListener('click', func, false);
+        elem.addEventListener('click', (e) => func(e), false);
 
         {
           const rect = showkoban.svg.createRect(30, {x: 0, y: 0, width: 1, height: 1});
@@ -510,10 +511,10 @@
       }
       editboxFunctions[showkoban.states.stateToChar[showkoban.states.none]]();
 
-      showkoban.elems.wDec.addEventListener('click', () => resize(-1, 0), false);
-      showkoban.elems.wInc.addEventListener('click', () => resize(1, 0), false);
-      showkoban.elems.hDec.addEventListener('click', () => resize(0, -1), false);
-      showkoban.elems.hInc.addEventListener('click', () => resize(0, 1), false);
+      showkoban.elems.wDec.addEventListener('click', (e) => resize(-1, 0, e), false);
+      showkoban.elems.wInc.addEventListener('click', (e) => resize(1, 0, e), false);
+      showkoban.elems.hDec.addEventListener('click', (e) => resize(0, -1, e), false);
+      showkoban.elems.hInc.addEventListener('click', (e) => resize(0, 1, e), false);
     }
 
     {
@@ -773,7 +774,8 @@
     elem.classList.add('hide');
   }
 
-  function resize(dx, dy) {
+  function resize(dx, dy, e = null) {
+    if (e !== null) e.preventDefault();
     const w = level.getW() + dx;
     const h = level.getH() + dy;
     const s = level.getStateStr();
