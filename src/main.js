@@ -637,7 +637,7 @@
     }
 
     const r = currentLevelObj.r;
-    const bestRecord = r?.length;
+    const bestStep = r?.length;
     // クリアメッセージ
     if (clearFlag) {
       const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: 'CLEAR'});
@@ -658,10 +658,10 @@
         console.log(levelObjStr);
         if (r === undefined) {
           console.warn('過去最高記録の情報がありません！');
-        } else if (clearStep < bestRecord) {
-          console.log(`新記録!\n${bestRecord} → ${clearStep} (${clearStep - bestRecord} 手)`);
+        } else if (clearStep < bestStep) {
+          console.log(`新記録!\n${bestStep} → ${clearStep} (${clearStep - bestStep} 手)`);
         } else {
-          console.log(`過去最高記録は ${bestRecord} 手です。\n(差: ${clearStep - bestRecord} 手)`);
+          console.log(`過去最高記録は ${bestStep} 手です。\n(差: ${clearStep - bestStep} 手)`);
           if (replayStr === r) {
             console.log('(完全に同じ手順です。)');
           }
@@ -672,15 +672,7 @@
         const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${clearStep} steps`});
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
-        if (bestRecord === undefined) {
-          text.setAttribute('fill', showkoban.colors.stepUnknown);
-        } else if (clearStep > bestRecord) {
-          text.setAttribute('fill', showkoban.colors.stepLose);
-        } else if (clearStep === bestRecord) {
-          text.setAttribute('fill', showkoban.colors.stepDraw);
-        } else {
-          text.setAttribute('fill', showkoban.colors.stepWin);
-        }
+        text.setAttribute('fill', getStepColor(clearStep, bestStep));
         g.appendChild(text);
       }
       if (settings.autoMode) {
@@ -695,20 +687,24 @@
         const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`});
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
-        if (bestRecord === undefined) {
-          text.setAttribute('fill', showkoban.colors.stepUnknown);
-        } else if (highestScore > bestRecord) {
-          text.setAttribute('fill', showkoban.colors.stepLose);
-        } else if (highestScore === bestRecord) {
-          text.setAttribute('fill', showkoban.colors.stepDraw);
-        } else {
-          text.setAttribute('fill', showkoban.colors.stepWin);
-        }
+        text.setAttribute('fill', getStepColor(highestScore, bestStep));
         g.appendChild(text);
       }
     }
 
     showkoban.elems.svg.appendChild(g);
+
+    function getStepColor(step, bestStep) {
+      if (bestStep === undefined) {
+        return showkoban.colors.stepUnknown;
+      } else if (step > bestStep) {
+        return showkoban.colors.stepLose;
+      } else if (step === bestStep) {
+        return showkoban.colors.stepDraw;
+      } else {
+        return showkoban.colors.stepWin;
+      }
+    }
   }
 
   function editSvg(e) {
