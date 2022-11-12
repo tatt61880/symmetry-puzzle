@@ -4,11 +4,14 @@
   left: 0;
   box-sizing: border-box;
   width: 480px;
-  height: 200px;
+  height: 240px;
   padding: 0;
   margin: 135px auto;
-  cursor: pointer;
   border: none;
+}
+
+#dialog-help .bold {
+  font-weight: bold;
 }
 
 #dialog-help::backdrop {
