@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.12c';
+  const versionText = 'v2022.11.13';
 
   const savedata = showkoban.savedata();
 
@@ -416,6 +416,11 @@
     showkoban.elems.helpDialog.close();
   }
 
+  function changeLang(e, lang) {
+    e.stopPropagation();
+    savedata.saveLang(lang);
+  }
+
   function showLevelsDialog() {
     showkoban.elems.levelsDialogSvg.innerHTML = '';
     const HEIGHT = 90;
@@ -527,6 +532,8 @@
 
       showkoban.elems.help.addEventListener('click', showHelpDialog, false);
       showkoban.elems.helpDialog.addEventListener('click', closeHelpDialog, false);
+      showkoban.elems.langEn.addEventListener('click', (e) => changeLang(e, 'en'), false);
+      showkoban.elems.langJa.addEventListener('click', (e) => changeLang(e, 'ja'), false);
 
       showkoban.elems.levelReset.addEventListener('click', resetLevel, false);
       showkoban.elems.levelPrev.addEventListener('click', gotoPrevLevel, false);
@@ -663,7 +670,7 @@
         const s = currentLevelObj.s;
         const replayStr = undoInfo.getReplayStr();
         if (levelId !== null) {
-          savedata.save(w, h, s, replayStr);
+          savedata.saveSteps(w, h, s, replayStr);
         }
         const levelObjStr = `{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`;
         console.log(levelObjStr);

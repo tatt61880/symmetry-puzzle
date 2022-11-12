@@ -16,13 +16,31 @@
 
     #load() {
       this.data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-      if (this.data === null || this.data.steps === undefined) {
+      if (this.data?.steps === undefined) {
         this.data = {};
         this.data.steps = {};
       }
     }
 
-    save(w, h, s, r) {
+    #save() {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.data));
+    }
+
+    saveLang(lang) {
+      this.data.lang = lang;
+      this.#save();
+    }
+
+    loadLang() {
+      let lang = this.data.lang;
+      if (lang === undefined) {
+        lang = 'ja';
+        this.saveLang(lang);
+      }
+      return lang;
+    }
+
+    saveSteps(w, h, s, r) {
       const maxStep = 999;
       const step = r.length;
       if (step > maxStep) {
@@ -32,7 +50,7 @@
       const highestScoreR = this.data.steps[key];
       if (highestScoreR === undefined || step < highestScoreR.length) {
         this.data.steps[key] = r;
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.data));
+        this.#save();
       }
     }
 

@@ -7,6 +7,8 @@
     version: 'version',
     help: 'button-help',
     helpDialog: 'dialog-help',
+    langEn: 'setting-lang-en',
+    langJa: 'setting-lang-ja',
 
     levelReset: 'button-level-reset',
 
