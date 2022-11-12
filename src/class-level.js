@@ -533,7 +533,11 @@
       }
       if (showCharsFlag) {
         const text = showkoban.svg.createText(blockSize, {x: x + 0.5, y: y, text: showkoban.states.stateToChar[state]});
-        text.setAttribute('fill', showkoban.colors[state].text);
+        if (state === showkoban.states.wall || this.#isConnected((s) => {return s === state;})) {
+          text.setAttribute('fill', showkoban.colors[state].text);
+        } else {
+          text.setAttribute('fill', showkoban.colors[state].error);
+        }
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
         gElem.appendChild(text);
