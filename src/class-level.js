@@ -533,14 +533,17 @@
       }
       if (showCharsFlag) {
         const text = showkoban.svg.createText(blockSize, {x: x + 0.5, y: y, text: showkoban.states.stateToChar[state]});
+        gElem.appendChild(text);
         if (state === showkoban.states.wall || this.#isConnected((s) => {return s === state;})) {
           text.setAttribute('fill', showkoban.colors[state].text);
         } else {
           text.setAttribute('fill', showkoban.colors[state].error);
+          const rect = showkoban.svg.createRect(blockSize, {x: x, y: y, width: 1, height: 1});
+          rect.setAttribute('opacity', 0.3);
+          gElem.appendChild(rect);
         }
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
-        gElem.appendChild(text);
       }
       gElems.appendChild(gElem);
     }
