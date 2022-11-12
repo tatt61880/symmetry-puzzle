@@ -22,16 +22,16 @@
 }
 
 .setting-lang-button {
-  margin: 5px;
   width: 80px;
   height: 30px;
-  border: none;
-  cursor: pointer;
-  user-select: none;
-  outline: none;
+  margin: 5px;
   font-weight: bold;
   color: #505050;
+  cursor: pointer;
+  user-select: none;
   background-color: #dddddd;
+  border: none;
+  outline: none;
 }
 
 .setting-lang-button.active {
