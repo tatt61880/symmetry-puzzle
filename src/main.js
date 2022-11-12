@@ -481,8 +481,7 @@
         const state = showkoban.states.charToState[char];
         const elem = document.getElementById(`edit_${char}`);
         if (elem === null) continue;
-        const func = (e = null) => {
-          if (e !== null) e.preventDefault();
+        const func = () => {
           showkoban.elems.editShape.setAttribute('fill', showkoban.colors[state].fill);
           showkoban.elems.editShape.setAttribute('stroke', showkoban.colors[state].stroke);
           showkoban.elems.editState.textContent = char;
@@ -490,7 +489,7 @@
           drawingState = state;
         };
         editboxFunctions[char] = func;
-        elem.addEventListener('click', (e) => func(e), false);
+        elem.addEventListener('click', func, false);
 
         {
           const rect = showkoban.svg.createRect(30, {x: 0, y: 0, width: 1, height: 1});
@@ -511,13 +510,18 @@
       }
       editboxFunctions[showkoban.states.stateToChar[showkoban.states.none]]();
 
-      showkoban.elems.wDec.addEventListener('click', (e) => resize(-1, 0, e), false);
-      showkoban.elems.wInc.addEventListener('click', (e) => resize(1, 0, e), false);
-      showkoban.elems.hDec.addEventListener('click', (e) => resize(0, -1, e), false);
-      showkoban.elems.hInc.addEventListener('click', (e) => resize(0, 1, e), false);
+      showkoban.elems.wDec.addEventListener('click', () => resize(-1, 0), false);
+      showkoban.elems.wInc.addEventListener('click', () => resize(1, 0), false);
+      showkoban.elems.hDec.addEventListener('click', () => resize(0, -1), false);
+      showkoban.elems.hInc.addEventListener('click', () => resize(0, 1), false);
     }
 
     {
+      const touchDevice = document.ontouchstart !== undefined;
+      const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
+      const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
+      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
+
       document.addEventListener('keydown', keydown, false);
       document.addEventListener('keyup', keyup, false);
 
@@ -531,11 +535,6 @@
       showkoban.elems.levels.addEventListener('click', showLevelsDialog, false);
       showkoban.elems.levelsDialog.addEventListener('click', closeLevelsDialog, false);
       showkoban.elems.levelsDialogSvg.addEventListener('click', (e) => e.stopPropagation(), false);
-
-      const touchDevice = document.ontouchstart !== undefined;
-      const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
-      const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
-      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
       showkoban.elems.svg.addEventListener(pointerdownEventName, editSvg, false);
       showkoban.elems.svg.oncontextmenu = function() {return !editMode;};
@@ -774,8 +773,7 @@
     elem.classList.add('hide');
   }
 
-  function resize(dx, dy, e = null) {
-    if (e !== null) e.preventDefault();
+  function resize(dx, dy) {
     const w = level.getW() + dx;
     const h = level.getH() + dy;
     const s = level.getStateStr();
