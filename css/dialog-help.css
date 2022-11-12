@@ -30,6 +30,8 @@
   user-select: none;
   outline: none;
   font-weight: bold;
+  color: #555555;
+  background-color: #eeeeee;
 }
 
 .setting-lang-button.active {
