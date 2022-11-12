@@ -9,32 +9,33 @@
   <meta property="og:title" content="点対称パズル">
   <meta property="og:description" content="図形を点対称にするパズルです。">
 
-  <link rel="icon" type="image/x-icon" href="./images/favicon.png?2022.11.13">
-  <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2022.11.13">
+  <link rel="icon" type="image/x-icon" href="./images/favicon.png?2022.11.13b">
+  <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2022.11.13b">
 
-  <link rel="stylesheet" href="./css/main.css?2022.11.13">
-  <link rel="stylesheet" href="./css/dialog-help.css?2022.11.13">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2022.11.13">
-  <link rel="stylesheet" href="./css/animation.css?2022.11.13">
+  <link rel="stylesheet" href="./css/main.css?2022.11.13b">
+  <link rel="stylesheet" href="./css/dialog-help.css?2022.11.13b">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2022.11.13b">
+  <link rel="stylesheet" href="./css/animation.css?2022.11.13b">
 
-  <script src="./src/svg.js?2022.11.13"></script>
-  <script src="./src/analyze-url.js?2022.11.13"></script>
-  <script src="./src/class-savedata.js?2022.11.13"></script>
-  <script src="./src/class-stack.js?2022.11.13"></script>
-  <script src="./src/class-undo-info.js?2022.11.13"></script>
-  <script src="./src/class-level.js?2022.11.13"></script>
-  <script src="./src/states.js?2022.11.13"></script>
-  <script src="./src/colors.js?2022.11.13"></script>
-  <script src="./src/levels.js?2022.11.13"></script>
-  <script src="./src/elems.js?2022.11.13"></script>
-  <script src="./src/main.js?2022.11.13"></script>
+  <script src="./src/svg.js?2022.11.13b"></script>
+  <script src="./src/analyze-url.js?2022.11.13b"></script>
+  <script src="./src/class-savedata.js?2022.11.13b"></script>
+  <script src="./src/class-stack.js?2022.11.13b"></script>
+  <script src="./src/class-undo-info.js?2022.11.13b"></script>
+  <script src="./src/class-level.js?2022.11.13b"></script>
+  <script src="./src/states.js?2022.11.13b"></script>
+  <script src="./src/colors.js?2022.11.13b"></script>
+  <script src="./src/levels.js?2022.11.13b"></script>
+  <script src="./src/elems.js?2022.11.13b"></script>
+  <script src="./src/main.js?2022.11.13b"></script>
 </head>
 
 <body>
 <div id="contents">
   <header>
     <img alt="icon" src="./images/icon.png">
-    <span id="title">点対称パズル</span>
+    <span id="title" class="translatable ja">点対称パズル</span>
+    <span id="title" class="translatable en">Point Symmetry Puzzle</span>
     <span id="version">v2022.XX.XX</span>
     <svg width="30" height="30" style="margin: 0 5px 0 auto;">
       <g id="button-help" class="button active-hover">
@@ -98,18 +99,30 @@
     <svg id="dialog-levels-svg"></svg>
   </dialog>
   <dialog id="dialog-help">
-    <div id="setting-lang" style="display: none">
-      <button id="setting-lang-ja" class="setting-lang">日本語</button>
-      <button id="setting-lang-en" class="setting-lang">English</button>
+    <div id="setting-lang">
+      <button id="setting-lang-ja" class="setting-lang-button">日本語</button>
+      <button id="setting-lang-en" class="setting-lang-button">English</button>
     </div>
-    <p>
-      <span class="blue-block">青色の図形</span>を操作し、<br>
-      <span class="red-block">赤色の図形</span>を1つながりの点対称図形にしてください。
-    </p>
-    <p>
-      ※未完成です。<br>
-      随時、レベルを追加/変更しています。<br>
-    </p>
+    <div class="translatable ja">
+      <p>
+        <span class="blue-block">青色の図形</span>を操作し、<br>
+        <span class="red-block">赤色の図形</span>を1つながりの点対称図形にしてください。
+      </p>
+      <p>
+        ※このWebアプリはベータ版（未完成）です。<br>
+        随時、レベルを追加/変更しています。<br>
+      </p>
+    </div>
+    <div class="translatable en">
+      <p>
+        Manipulate <span class="blue-block">Blue</span> to make<br>
+        <span class="red-block">Red</span> a connected point symmetrical one.
+      </p>
+      <p>
+        Note: This web application is beta version.<br>
+        Levels are added/removed as needed.<br>
+      </p>
+    </div>
   </dialog>
 
   <div id="main">

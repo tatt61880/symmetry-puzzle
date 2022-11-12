@@ -16,12 +16,26 @@
   background-color: rgb(0 0 0 / 50%);
 }
 
-button.setting-lang {
+#setting-lang {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.setting-lang-button {
   margin: 5px;
-  width: 100px;
+  width: 80px;
   height: 30px;
   border: none;
   cursor: pointer;
   user-select: none;
   outline: none;
+  font-weight: bold;
+}
+
+.setting-lang-button.active {
+  background-color: #8888ff;
+}
+
+.translatable.hidden {
+  display: none;
 }

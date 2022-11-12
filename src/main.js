@@ -416,7 +416,22 @@
     showkoban.elems.helpDialog.close();
   }
 
-  function changeLang(e, lang) {
+  function applyLang(lang) {
+    for (const elem of document.getElementsByClassName('setting-lang-button')) {
+      elem.classList.remove('active');
+    }
+    const langButton = document.getElementById(`setting-lang-${lang}`);
+    langButton.classList.add('active');
+    for (const elem of document.getElementsByClassName('translatable')) {
+      elem.classList.add('hidden');
+    }
+    for (const elem of document.getElementsByClassName(`translatable ${lang}`)) {
+      elem.classList.remove('hidden');
+    }
+  }
+
+  function selectLang(e, lang) {
+    applyLang(lang);
     e.stopPropagation();
     savedata.saveLang(lang);
   }
@@ -468,6 +483,7 @@
   function onload() {
     showkoban.initElems();
     showkoban.elems.version.textContent = versionText;
+    applyLang(savedata.loadLang());
 
     const res = showkoban.analyzeUrl();
     settings = res.settings;
@@ -532,8 +548,8 @@
 
       showkoban.elems.help.addEventListener('click', showHelpDialog, false);
       showkoban.elems.helpDialog.addEventListener('click', closeHelpDialog, false);
-      showkoban.elems.langEn.addEventListener('click', (e) => changeLang(e, 'en'), false);
-      showkoban.elems.langJa.addEventListener('click', (e) => changeLang(e, 'ja'), false);
+      showkoban.elems.langEn.addEventListener('click', (e) => selectLang(e, 'en'), false);
+      showkoban.elems.langJa.addEventListener('click', (e) => selectLang(e, 'ja'), false);
 
       showkoban.elems.levelReset.addEventListener('click', resetLevel, false);
       showkoban.elems.levelPrev.addEventListener('click', gotoPrevLevel, false);
