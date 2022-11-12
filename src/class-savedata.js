@@ -16,8 +16,9 @@
 
     #load() {
       this.data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-      if (this.data === null) {
+      if (this.data === null || this.data.steps === undefined) {
         this.data = {};
+        this.data.steps = {};
       }
     }
 
@@ -28,16 +29,16 @@
         r = r.substring(0, maxStep);
       }
       const key = this.#getLevelKey(w, h, s);
-      const highestScoreR = this.data[key];
+      const highestScoreR = this.data.steps[key];
       if (highestScoreR === undefined || step < highestScoreR.length) {
-        this.data[key] = r;
+        this.data.steps[key] = r;
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.data));
       }
     }
 
     getHighestScore(w, h, s) {
       const key = this.#getLevelKey(w, h, s);
-      const r = this.data[key];
+      const r = this.data.steps[key];
       return r === undefined ? null : r.length;
     }
 
