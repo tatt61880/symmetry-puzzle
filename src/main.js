@@ -654,7 +654,8 @@
         if (levelId !== null) {
           savedata.save(w, h, s, replayStr);
         }
-        console.log(`{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`);
+        const levelObjStr = `{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`;
+        console.log(levelObjStr);
         if (r === undefined) {
           console.warn('過去最高記録の情報がありません！');
         } else if (clearStep < bestRecord) {
