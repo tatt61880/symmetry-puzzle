@@ -673,13 +673,13 @@
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
         if (bestRecord === undefined) {
-          text.setAttribute('fill', 'gray');
+          text.setAttribute('fill', showkoban.colors.stepUnknown);
         } else if (clearStep > bestRecord) {
-          text.setAttribute('fill', 'black');
+          text.setAttribute('fill', showkoban.colors.stepLose);
         } else if (clearStep === bestRecord) {
-          text.setAttribute('fill', 'orange');
+          text.setAttribute('fill', showkoban.colors.stepDraw);
         } else {
-          text.setAttribute('fill', 'white');
+          text.setAttribute('fill', showkoban.colors.stepWin);
         }
         g.appendChild(text);
       }
@@ -696,13 +696,13 @@
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
         if (bestRecord === undefined) {
-          text.setAttribute('fill', 'gray');
+          text.setAttribute('fill', showkoban.colors.stepUnknown);
         } else if (highestScore > bestRecord) {
-          text.setAttribute('fill', 'black');
+          text.setAttribute('fill', showkoban.colors.stepLose);
         } else if (highestScore === bestRecord) {
-          text.setAttribute('fill', 'orange');
+          text.setAttribute('fill', showkoban.colors.stepDraw);
         } else {
-          text.setAttribute('fill', 'white');
+          text.setAttribute('fill', showkoban.colors.stepWin);
         }
         g.appendChild(text);
       }

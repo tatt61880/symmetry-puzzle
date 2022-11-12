@@ -22,6 +22,11 @@
 
   colors.line = '#888';
 
+  colors.stepWin = 'white';
+  colors.stepDraw = 'orange';
+  colors.stepLose = 'black';
+  colors.stepUnknown = 'gray';
+
   Object.freeze(colors);
   showkoban.colors = colors;
 })();
