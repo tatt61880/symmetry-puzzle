@@ -9,25 +9,25 @@
   <meta property="og:title" content="点対称パズル">
   <meta property="og:description" content="図形を点対称にするパズルです。">
 
-  <link rel="icon" type="image/x-icon" href="./images/favicon.png?2022.11.13d">
-  <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2022.11.13d">
+  <link rel="icon" type="image/x-icon" href="./images/favicon.png?2022.11.13e">
+  <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2022.11.13e">
 
-  <link rel="stylesheet" href="./css/main.css?2022.11.13d">
-  <link rel="stylesheet" href="./css/dialog-help.css?2022.11.13d">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2022.11.13d">
-  <link rel="stylesheet" href="./css/animation.css?2022.11.13d">
+  <link rel="stylesheet" href="./css/main.css?2022.11.13e">
+  <link rel="stylesheet" href="./css/dialog-help.css?2022.11.13e">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2022.11.13e">
+  <link rel="stylesheet" href="./css/animation.css?2022.11.13e">
 
-  <script src="./src/svg.js?2022.11.13d"></script>
-  <script src="./src/analyze-url.js?2022.11.13d"></script>
-  <script src="./src/class-savedata.js?2022.11.13d"></script>
-  <script src="./src/class-stack.js?2022.11.13d"></script>
-  <script src="./src/class-undo-info.js?2022.11.13d"></script>
-  <script src="./src/class-level.js?2022.11.13d"></script>
-  <script src="./src/states.js?2022.11.13d"></script>
-  <script src="./src/colors.js?2022.11.13d"></script>
-  <script src="./src/levels.js?2022.11.13d"></script>
-  <script src="./src/elems.js?2022.11.13d"></script>
-  <script src="./src/main.js?2022.11.13d"></script>
+  <script src="./src/svg.js?2022.11.13e"></script>
+  <script src="./src/analyze-url.js?2022.11.13e"></script>
+  <script src="./src/class-savedata.js?2022.11.13e"></script>
+  <script src="./src/class-stack.js?2022.11.13e"></script>
+  <script src="./src/class-undo-info.js?2022.11.13e"></script>
+  <script src="./src/class-level.js?2022.11.13e"></script>
+  <script src="./src/states.js?2022.11.13e"></script>
+  <script src="./src/colors.js?2022.11.13e"></script>
+  <script src="./src/levels.js?2022.11.13e"></script>
+  <script src="./src/elems.js?2022.11.13e"></script>
+  <script src="./src/main.js?2022.11.13e"></script>
 </head>
 
 <body>
@@ -44,6 +44,35 @@
       </g>
     </svg>
   </header>
+
+  <dialog id="dialog-help">
+    <div id="dialog-help-div">
+      <div id="setting-lang">
+        <button id="setting-lang-ja" class="setting-lang-button">日本語</button>
+        <button id="setting-lang-en" class="setting-lang-button">English</button>
+      </div>
+      <div class="translatable ja">
+        <p>
+          <span class="blue-block">青色の図形</span>を操作し、<br>
+          <span class="red-block">赤色の図形</span>を1つながりの点対称図形にしてください。
+        </p>
+        <p>
+          ※このWebアプリはベータ版（未完成）です。<br>
+          随時、レベルを追加/変更しています。<br>
+        </p>
+      </div>
+      <div class="translatable en">
+        <p>
+          Manipulate <span class="blue-block">Blue</span> to make<br>
+          <span class="red-block">Red</span> a connected point symmetrical one.
+        </p>
+        <p>
+          Note: This web application is in beta version.<br>
+          Levels are added/removed as needed.<br>
+        </p>
+      </div>
+    </div>
+  </dialog>
 
   <div class="inner level noselect">
     <h2>LEVEL</h2>
@@ -96,32 +125,8 @@
   </div>
 
   <dialog id="dialog-levels">
-    <svg id="dialog-levels-svg"></svg>
-  </dialog>
-  <dialog id="dialog-help">
-    <div id="setting-lang">
-      <button id="setting-lang-ja" class="setting-lang-button">日本語</button>
-      <button id="setting-lang-en" class="setting-lang-button">English</button>
-    </div>
-    <div class="translatable ja">
-      <p>
-        <span class="blue-block">青色の図形</span>を操作し、<br>
-        <span class="red-block">赤色の図形</span>を1つながりの点対称図形にしてください。
-      </p>
-      <p>
-        ※このWebアプリはベータ版（未完成）です。<br>
-        随時、レベルを追加/変更しています。<br>
-      </p>
-    </div>
-    <div class="translatable en">
-      <p>
-        Manipulate <span class="blue-block">Blue</span> to make<br>
-        <span class="red-block">Red</span> a connected point symmetrical one.
-      </p>
-      <p>
-        Note: This web application is in beta version.<br>
-        Levels are added/removed as needed.<br>
-      </p>
+    <div id="dialog-levels-div">
+      <svg id="dialog-levels-svg"></svg>
     </div>
   </dialog>
 

@@ -5,8 +5,10 @@
 
   const elemIds = {
     version: 'version',
+
     help: 'button-help',
     helpDialog: 'dialog-help',
+    helpDialogDiv: 'dialog-help-div',
     langEn: 'setting-lang-en',
     langJa: 'setting-lang-ja',
 
@@ -20,6 +22,7 @@
 
     levels: 'button-levels',
     levelsDialog: 'dialog-levels',
+    levelsDialogDiv: 'dialog-levels-div',
     levelsDialogSvg: 'dialog-levels-svg',
 
     svg: 'svg-main',

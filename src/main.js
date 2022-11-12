@@ -546,6 +546,7 @@
       document.addEventListener('keydown', keydown, false);
       document.addEventListener('keyup', keyup, false);
 
+      showkoban.elems.helpDialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
       showkoban.elems.help.addEventListener('click', showHelpDialog, false);
       showkoban.elems.helpDialog.addEventListener('click', closeHelpDialog, false);
       showkoban.elems.langEn.addEventListener('click', (e) => selectLang(e, 'en'), false);
@@ -557,7 +558,7 @@
       showkoban.elems.levelEdit.addEventListener('click', toggleEditLevel, false);
       showkoban.elems.levels.addEventListener('click', showLevelsDialog, false);
       showkoban.elems.levelsDialog.addEventListener('click', closeLevelsDialog, false);
-      showkoban.elems.levelsDialogSvg.addEventListener('click', (e) => e.stopPropagation(), false);
+      showkoban.elems.levelsDialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
 
       showkoban.elems.svg.addEventListener(pointerdownEventName, editSvg, false);
       showkoban.elems.svg.oncontextmenu = function() {return !editMode;};
