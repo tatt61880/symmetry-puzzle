@@ -22,7 +22,8 @@
   let undoFlag = false;
   let undoCount = 0;
   let nextLevelTimerId = null;
-  const AUTO_NEXT_LEVEL_TIME = 1000;
+  const AUTO_NEXT_LEVEL_DELAY = 1000;
+  const RESET_DELAY = 50;
 
   let clearFlag = false;
   let redrawFlag = false;
@@ -212,13 +213,13 @@
   function resetLevel() {
     clearTimeout(nextLevelTimerId);
 
-    showkoban.elems.levelReset.style.filter = 'contrast(60%)';
+    showkoban.elems.levelReset.classList.add('low-contrast');
     showkoban.elems.svg.textContent = '';
 
     setTimeout(() => {
-      showkoban.elems.levelReset.style.filter = 'none';
+      showkoban.elems.levelReset.classList.remove('low-contrast');
       loadLevelObj(level.getLevelObj(), true);
-    }, 50);
+    }, RESET_DELAY);
   }
 
   function resetUndo() {
@@ -724,7 +725,7 @@
         g.appendChild(text);
       }
       if (settings.autoMode) {
-        nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_TIME);
+        nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
       }
     }
 
