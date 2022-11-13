@@ -772,6 +772,7 @@
     if ((e.button === 0 || e.button === undefined) && level.getState(x, y) !== drawingState) {
       addUndo(null);
       level.setState(x, y, drawingState);
+      level.resetLevelObj();
       clearCheck();
       updateUrl();
       draw();
@@ -779,6 +780,7 @@
       if (e.button !== 0) {
         addUndo(null);
         level.setState(x, y, showkoban.states.none);
+        level.resetLevelObj();
         clearCheck();
         updateUrl();
         draw();
@@ -821,6 +823,7 @@
     const obj = {w, h, s};
     addUndo(null);
     applyObj(obj);
+    level.resetLevelObj();
   }
 
   function addUndo(dir) {

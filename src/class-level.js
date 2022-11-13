@@ -67,6 +67,10 @@
       return this.#height - 4;
     }
 
+    resetLevelObj() {
+      this.#levelObj = {w: this.#levelObj.w, h: this.#levelObj.h, s: this.#levelObj.s};
+    }
+
     getLevelObj() {
       return this.#levelObj;
     }
