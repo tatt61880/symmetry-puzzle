@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.13m';
+  const versionText = 'v2022.11.13p';
 
   const savedata = showkoban.savedata();
 
@@ -271,9 +271,9 @@
       LevelObj = rotateLevel(LevelObj, settings.rotateNum);
     }
 
+    resetUndo();
     applyObj(LevelObj, true);
     updateLevelVisibility();
-    resetUndo();
 
     inputDir = dirs.neutral;
     inputCount = inputInterval;
@@ -730,6 +730,7 @@
     } else {
       const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: `${undoInfo.getIndex()} steps`});
       text.setAttribute('font-weight', 'bold');
+      text.setAttribute('fill', 'white');
       g.appendChild(text);
     }
 
