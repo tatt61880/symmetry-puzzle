@@ -467,7 +467,7 @@
         const highestScore = savedata.getHighestScore(levelObj);
         const bestStep = level.getBestStep();
         if (highestScore !== null) {
-          const rect = showkoban.svg.createRect(blockSize, {x: -1, y: 1, width: 1, height: 1});
+          const rect = showkoban.svg.createRect(blockSize, {x: -1.5, y: 1.5, width: 2, height: 2});
           const color = getStepColor(highestScore, bestStep);
           rect.setAttribute('fill', color);
           g.appendChild(rect);
