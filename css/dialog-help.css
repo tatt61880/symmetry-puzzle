@@ -4,9 +4,9 @@
   left: 0;
   box-sizing: border-box;
   width: 480px;
-  height: 240px;
+  height: 420px;
   padding: 0;
-  margin: 135px auto;
+  margin: 44px auto;
   border: none;
 }
 
@@ -44,4 +44,9 @@
 
 .translatable.hidden {
   display: none;
+}
+
+.example-image {
+  width: 380px;
+  height: 140px;
 }
