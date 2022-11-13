@@ -1,8 +1,12 @@
 (function() {
   'use strict';
-  window.showkoban = window.showkoban || {};
 
-  window.showkoban.analyzeUrl = () => {
+  if (typeof window !== 'undefined') {
+    window.showkoban = window.showkoban || {};
+    window.showkoban.analyzeUrl = analyzeUrl;
+  }
+
+  function analyzeUrl() {
     const res = {
       levelObj: {
         w: 6,
@@ -49,5 +53,5 @@
       }
     }
     return res;
-  };
+  }
 })();

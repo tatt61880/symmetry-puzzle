@@ -1,7 +1,11 @@
 (function() {
   'use strict';
-  window.showkoban = window.showkoban || {};
-  window.showkoban.elems = {};
+
+  if (typeof window !== 'undefined') {
+    window.showkoban = window.showkoban || {};
+    window.showkoban.elems = {};
+    window.showkoban.initElems = initElems;
+  }
 
   const elemIds = {
     version: 'version',
@@ -41,7 +45,7 @@
     stickBase: 'stick-base',
   };
 
-  window.showkoban.initElems = () => {
+  function initElems() {
     for (const elemName in elemIds) {
       const elem = document.getElementById(elemIds[elemName]);
       if (elem === null) {
@@ -50,5 +54,5 @@
       window.showkoban.elems[elemName] = elem;
     }
     Object.freeze(window.showkoban.elems);
-  };
+  }
 })();

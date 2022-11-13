@@ -1,12 +1,16 @@
 (function() {
   'use strict';
-  window.showkoban = window.showkoban || {};
+
+  if (typeof window !== 'undefined') {
+    window.showkoban = window.showkoban || {};
+    window.showkoban.savedata = savedata;
+  }
 
   const LOCAL_STORAGE_KEY = 'tatt61880-showkoban';
 
-  window.showkoban.savedata = () => {
+  function savedata() {
     return new Savedata();
-  };
+  }
 
   class Savedata {
     constructor() {

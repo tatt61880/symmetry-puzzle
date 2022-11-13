@@ -1,8 +1,15 @@
 (function() {
   'use strict';
-  window.showkoban = window.showkoban || {};
 
-  const levels = [
+  const levels = [];
+  if (typeof window === 'undefined') {
+    module.exports = levels;
+  } else {
+    window.showkoban = window.showkoban || {};
+    window.showkoban.levels = levels;
+  }
+
+  levels.push(
     {w: 5, h: 3, s: 's001-00211', r: '22110'},
     {w: 5, h: 4, s: 's-10022-0002', r: '2122111033'},
     {w: 5, h: 3, s: '001-0222-00s', r: '11003331112230'},
@@ -43,11 +50,10 @@
     {w: 6, h: 6, s: '000aa-0x0sa-0011a-02103-00113-00bb', r: '1223001223212330330111100322210033321'},
     {w: 6, h: 6, s: '0000a-0x0sa-0011a-021b3-00113-00cc', r: '033322123221100301332211'},
     {w: 6, h: 5, s: 's-t-0001-02211-0211', r: '22101111230122230012223302300130'},
-  ];
+  );
 
   Object.freeze(levels);
   for (const level of levels) {
     Object.freeze(level);
   }
-  window.showkoban.levels = levels;
 })();

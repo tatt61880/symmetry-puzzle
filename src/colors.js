@@ -1,13 +1,17 @@
 (function() {
   'use strict';
-  window.showkoban = window.showkoban || {};
 
-  if (showkoban.states === undefined) {
-    console.error('showkoban.states === undefined');
-    return;
+  let showkoban = {};
+  const colors = {};
+  if (typeof window === 'undefined') {
+    showkoban.states = require('./states.js');
+    module.exports = colors;
+  } else {
+    showkoban = window.showkoban;
+    if (showkoban?.states === undefined) console.error('showkoban.states is undefined.');
+    window.showkoban.colors = colors;
   }
 
-  const colors = {};
   colors[showkoban.states.none] = {fill: '#ffffff', stroke: '#aaaaaa', text: '#888888', error: 'red'};
   colors[showkoban.states.wall] = {fill: '#222222', stroke: '#666666', text: '#bbbbbb', error: 'red'};
   for (let i = showkoban.states.targetMin; i <= showkoban.states.targetMax; ++i) {
@@ -28,5 +32,4 @@
   colors.stepUnknown = 'gray';
 
   Object.freeze(colors);
-  showkoban.colors = colors;
 })();

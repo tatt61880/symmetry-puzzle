@@ -16,7 +16,8 @@
   "scripts": {
     "eslint": "eslint ./src/*.js --fix",
     "htmlhint": "htmlhint ./*.html",
-    "stylelint": "stylelint ./css/*.css --fix"
+    "stylelint": "stylelint ./css/*.css --fix",
+    "test": "node ./src/test.js"
   },
   "devDependencies": {
     "@babel/core": "^7.18.10",

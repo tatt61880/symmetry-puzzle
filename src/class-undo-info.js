@@ -1,10 +1,14 @@
 (function() {
   'use strict';
-  window.showkoban = window.showkoban || {};
 
-  window.showkoban.UndoInfo = () => {
+  if (typeof window !== 'undefined') {
+    window.showkoban = window.showkoban || {};
+    window.showkoban.UndoInfo = undoinfo;
+  }
+
+  function undoinfo() {
     return new UndoInfo();
-  };
+  }
 
   class UndoInfo {
     constructor() {

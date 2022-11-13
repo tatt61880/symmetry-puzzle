@@ -1,10 +1,19 @@
 (function() {
   'use strict';
-  window.showkoban = window.showkoban || {};
 
-  window.showkoban.Level = () => {
-    return new Level();
-  };
+  let showkoban = {};
+  if (typeof window === 'undefined') {
+    showkoban.states = require('./states.js');
+    showkoban.colors = require('./colors.js');
+    showkoban.Stack = require('./class-stack.js');
+    module.exports = level;
+  } else {
+    showkoban = window.showkoban;
+    if (showkoban?.states === undefined) console.error('showkoban.states is undefined.');
+    if (showkoban?.colors === undefined) console.error('showkoban.colors is undefined.');
+    if (showkoban?.Stack === undefined) console.error('showkoban.Stack is undefined.');
+    window.showkoban.Level = level;
+  }
 
   const dirs = {
     u: 0,
@@ -22,6 +31,10 @@
 
   const blockBorderWidth = 0.12;
   const blockBorderWidthHalf = blockBorderWidth / 2;
+
+  function level() {
+    return new Level();
+  }
 
   class Level {
     #levelObj;

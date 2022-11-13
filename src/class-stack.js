@@ -1,10 +1,16 @@
 (function() {
   'use strict';
-  window.showkoban = window.showkoban || {};
 
-  window.showkoban.Stack = () => {
+  if (typeof window === 'undefined') {
+    module.exports = stack;
+  } else {
+    window.showkoban = window.showkoban || {};
+    window.showkoban.Stack = stack;
+  }
+
+  function stack() {
     return new Stack();
-  };
+  }
 
   class Stack {
     constructor() {
