@@ -50,3 +50,9 @@
   width: 380px;
   height: 140px;
 }
+
+.warn {
+  padding: 5px;
+  margin: 20px;
+  background: #ffddbb;
+}
