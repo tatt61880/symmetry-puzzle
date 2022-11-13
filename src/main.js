@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.13k';
+  const versionText = 'v2022.11.13m';
 
   const savedata = showkoban.savedata();
 
@@ -700,7 +700,7 @@
         const s = levelObj.s;
         const r = levelObj.r;
         const replayStr = undoInfo.getReplayStr();
-        if (levelId !== null) {
+        if (bestStep !== undefined) {
           savedata.saveSteps(levelObj, replayStr);
         }
         const levelObjStr = `{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`;
