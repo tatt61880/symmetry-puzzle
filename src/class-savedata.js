@@ -44,13 +44,13 @@
       return lang;
     }
 
-    saveSteps(w, h, s, r) {
+    saveSteps(levelObj, r) {
       const maxStep = 999;
       const step = r.length;
       if (step > maxStep) {
         r = r.substring(0, maxStep);
       }
-      const key = this.#getLevelKey(w, h, s);
+      const key = this.#getLevelKey(levelObj);
       const highestScoreR = this.data.steps[key];
       if (highestScoreR === undefined || step < highestScoreR.length) {
         this.data.steps[key] = r;
@@ -58,14 +58,14 @@
       }
     }
 
-    getHighestScore(w, h, s) {
-      const key = this.#getLevelKey(w, h, s);
+    getHighestScore(levelObj) {
+      const key = this.#getLevelKey(levelObj);
       const r = this.data.steps[key];
       return r === undefined ? null : r.length;
     }
 
-    #getLevelKey(w, h, s) {
-      return `w=${w}&h=${h}&s=${s}`;
+    #getLevelKey(levelObj) {
+      return `w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
     }
   }
 })();

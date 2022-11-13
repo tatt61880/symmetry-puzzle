@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.13';
+  const versionText = 'v2022.11.13k';
 
   const savedata = showkoban.savedata();
 
@@ -447,7 +447,7 @@
 
     let id = 0;
     for (const levelObj of showkoban.levels) {
-      const blockSize = 30;
+      const blockSize = 5;
       id++;
       const g = showkoban.svg.createG();
       g.classList.add('level-select');
@@ -455,17 +455,27 @@
       level.applyObj(levelObj, true);
       const levelSvg = level.createSvg(blockSize);
       g.appendChild(levelSvg);
-      const x = ((id - 1) % COLS) * WIDTH + MARGIN;
-      const y = Math.floor((id - 1) / COLS) * HEIGHT + MARGIN;
       {
         const text = showkoban.svg.createText(blockSize, {x: -0.1, y: -0.8, text: id});
         text.setAttribute('dominant-baseline', 'middle');
         text.setAttribute('text-anchor', 'middle');
         text.setAttribute('font-weight', 'bold');
-        text.setAttribute('font-size', '100px');
+        text.setAttribute('font-size', '16px');
         g.appendChild(text);
       }
-      g.setAttribute('transform', `translate(${x},${y}) scale(0.16)`);
+      {
+        const highestScore = savedata.getHighestScore(levelObj);
+        const bestStep = level.getBestStep();
+        if (highestScore !== null) {
+          const rect = showkoban.svg.createRect(blockSize, {x: -1, y: 1, width: 1, height: 1});
+          const color = getStepColor(highestScore, bestStep);
+          rect.setAttribute('fill', color);
+          g.appendChild(rect);
+        }
+      }
+      const x = ((id - 1) % COLS) * WIDTH + MARGIN;
+      const y = Math.floor((id - 1) / COLS) * HEIGHT + MARGIN;
+      g.setAttribute('transform', `translate(${x},${y})`);
       g.setAttribute('data-id', id);
       g.addEventListener('click', function() {
         const id = Number(g.getAttribute('data-id'));
@@ -690,7 +700,7 @@
         const r = levelObj.r;
         const replayStr = undoInfo.getReplayStr();
         if (levelId !== null) {
-          savedata.saveSteps(w, h, s, replayStr);
+          savedata.saveSteps(levelObj, replayStr);
         }
         const levelObjStr = `{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`;
         console.log(levelObjStr);
@@ -721,7 +731,7 @@
     // 自己最高記録
     if (levelId !== null && !clearFlag) {
       const levelObj = level.getLevelObj();
-      const highestScore = savedata.getHighestScore(levelObj.w, levelObj.h, levelObj.s);
+      const highestScore = savedata.getHighestScore(levelObj);
       if (highestScore !== null) {
         const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`});
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
@@ -732,17 +742,17 @@
     }
 
     showkoban.elems.svg.appendChild(g);
+  }
 
-    function getStepColor(step, bestStep) {
-      if (bestStep === undefined) {
-        return showkoban.colors.stepUnknown;
-      } else if (step > bestStep) {
-        return showkoban.colors.stepLose;
-      } else if (step === bestStep) {
-        return showkoban.colors.stepDraw;
-      } else {
-        return showkoban.colors.stepWin;
-      }
+  function getStepColor(step, bestStep) {
+    if (bestStep === undefined) {
+      return showkoban.colors.stepUnknown;
+    } else if (step > bestStep) {
+      return showkoban.colors.stepLose;
+    } else if (step === bestStep) {
+      return showkoban.colors.stepDraw;
+    } else {
+      return showkoban.colors.stepWin;
     }
   }
 
