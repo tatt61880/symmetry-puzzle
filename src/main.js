@@ -582,7 +582,7 @@
         return;
       }
       const r = level.getLevelObj()?.r;
-      if (settings.autoMode && r !== undefined) {
+      if (!editMode && settings.autoMode && r !== undefined) {
         inputDir = Number(r[undoInfo.getIndex()]);
         inputFlag = true;
       }
