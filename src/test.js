@@ -9,8 +9,11 @@
   const dys = [-1, 0, 1, 0];
   const dxs = [0, 1, 0, -1];
 
+  const levelSet = new Set();
+
   for (const idx in showkoban.levels) {
     const levelObj = showkoban.levels[idx];
+    levelSet.add(`${levelObj.w},${levelObj.h},${levelObj.s}`);
     const levelId = Number(idx) + 1;
     const res = testLevel(levelObj);
     if (!res) {
@@ -18,6 +21,12 @@
       process.exitCode = 1;
       return;
     }
+  }
+
+  if (levelSet.size !== showkoban.levels.length) {
+    console.error('Error: There are same levels.');
+    process.exitCode = 1;
+    return;
   }
 
   process.exitCode = 0;
