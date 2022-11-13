@@ -727,6 +727,10 @@
       if (settings.autoMode) {
         nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
       }
+    } else {
+      const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: `${undoInfo.getIndex()} steps`});
+      text.setAttribute('font-weight', 'bold');
+      g.appendChild(text);
     }
 
     // 自己最高記録
