@@ -24,10 +24,7 @@
   const blockBorderWidthHalf = blockBorderWidth / 2;
 
   class Level {
-    #w;
-    #h;
-    #s;
-    #r;
+    #levelObj;
     #states;
     #width;
     #height;
@@ -36,10 +33,7 @@
     #moveDy;
 
     constructor() {
-      this.#w = null;
-      this.#h = null;
-      this.#s = null;
-      this.#r = null;
+      this.#levelObj = null;
       this.#width = null;
       this.#height = null;
       this.#states = [];
@@ -53,27 +47,19 @@
     }
 
     getW() {
-      return this.#w;
+      return this.#width - 4;
     }
 
     getH() {
-      return this.#h;
-    }
-
-    getS() {
-      return this.#s;
-    }
-
-    getR() {
-      return this.#r;
+      return this.#height - 4;
     }
 
     getLevelObj() {
-      return {w: this.getW(), h: this.getH(), s: this.getS(), r: this.getR()};
+      return this.#levelObj;
     }
 
     getBestStep() {
-      return this.#r?.length;
+      return this.#levelObj?.r?.length;
     }
 
     getWidth() {
@@ -110,10 +96,8 @@
 
     applyObj(obj, isInit = false) {
       if (isInit) {
-        this.#w = obj.w;
-        this.#h = obj.h;
-        this.#s = obj.s;
-        this.#r = obj.r;
+        this.#levelObj = obj;
+        Object.freeze(this.#levelObj);
       }
       this.#width = obj.w + 4;
       this.#height = obj.h + 4;

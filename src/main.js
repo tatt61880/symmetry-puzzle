@@ -581,7 +581,7 @@
         undoCount++;
         return;
       }
-      const r = level.getR();
+      const r = level.getLevelObj()?.r;
       if (settings.autoMode && r !== undefined) {
         inputDir = Number(r[undoInfo.getIndex()]);
         inputFlag = true;
@@ -683,10 +683,11 @@
       g.appendChild(text);
       const clearStep = undoInfo.getIndex();
       {
-        const w = level.getW();
-        const h = level.getH();
-        const s = level.getS();
-        const r = level.getR();
+        const levelObj = level.getLevelObj();
+        const w = levelObj.w;
+        const h = levelObj.h;
+        const s = levelObj.s;
+        const r = levelObj.r;
         const replayStr = undoInfo.getReplayStr();
         if (levelId !== null) {
           savedata.saveSteps(w, h, s, replayStr);
@@ -719,7 +720,8 @@
 
     // 自己最高記録
     if (levelId !== null && !clearFlag) {
-      const highestScore = savedata.getHighestScore(level.getW(), level.getH(), level.getS());
+      const levelObj = level.getLevelObj();
+      const highestScore = savedata.getHighestScore(levelObj.w, levelObj.h, levelObj.s);
       if (highestScore !== null) {
         const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`});
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
