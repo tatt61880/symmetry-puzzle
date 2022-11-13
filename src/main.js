@@ -17,7 +17,6 @@
   let temporaryShowCharsFlag = false;
 
   let levelId = null;
-  let currentLevelObj;
 
   let undoInfo = showkoban.UndoInfo();
   let undoFlag = false;
@@ -211,12 +210,14 @@
   }
 
   function resetLevel() {
+    clearTimeout(nextLevelTimerId);
+
     showkoban.elems.levelReset.style.filter = 'contrast(60%)';
     showkoban.elems.svg.textContent = '';
 
     setTimeout(() => {
       showkoban.elems.levelReset.style.filter = 'none';
-      loadLevelObj(currentLevelObj, true);
+      loadLevelObj(level.getLevelObj(), true);
     }, 50);
   }
 
@@ -225,8 +226,8 @@
     hideElem(showkoban.elems.undo);
   }
 
-  function applyObj(obj) {
-    level.applyObj(obj);
+  function applyObj(obj, isInit = false) {
+    level.applyObj(obj, isInit);
     const svgMaxWidth = 480;
     const svgMaxHeight = 250;
     blockSize = Math.min(svgMaxWidth / level.getWidth(), svgMaxHeight / level.getHeight());
@@ -250,6 +251,7 @@
   }
 
   function loadLevelById(id) {
+    clearTimeout(nextLevelTimerId);
     id = Number(id);
     resetUndo();
     if (id < 1) id = 1;
@@ -267,9 +269,8 @@
       if (settings.mirrorFlag) LevelObj = mirrorLevel(LevelObj);
       LevelObj = rotateLevel(LevelObj, settings.rotateNum);
     }
-    currentLevelObj = LevelObj;
 
-    applyObj(currentLevelObj);
+    applyObj(LevelObj, true);
     updateLevelVisibility();
     resetUndo();
 
@@ -451,7 +452,7 @@
       const g = showkoban.svg.createG();
       g.classList.add('level-select');
       const level = showkoban.Level();
-      level.applyObj(levelObj);
+      level.applyObj(levelObj, true);
       const levelSvg = level.createSvg(blockSize);
       g.appendChild(levelSvg);
       const x = ((id - 1) % COLS) * WIDTH + MARGIN;
@@ -580,8 +581,9 @@
         undoCount++;
         return;
       }
-      if (settings.autoMode && currentLevelObj.r !== undefined) {
-        inputDir = Number(currentLevelObj.r[undoInfo.getIndex()]);
+      const r = level.getR();
+      if (settings.autoMode && r !== undefined) {
+        inputDir = Number(r[undoInfo.getIndex()]);
         inputFlag = true;
       }
       if (inputCount >= inputInterval) {
@@ -671,8 +673,7 @@
       g.appendChild(rect);
     }
 
-    const r = currentLevelObj.r;
-    const bestStep = r?.length;
+    const bestStep = level.getBestStep();
     // クリアメッセージ
     if (clearFlag) {
       const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: 'CLEAR'});
@@ -682,9 +683,10 @@
       g.appendChild(text);
       const clearStep = undoInfo.getIndex();
       {
-        const w = currentLevelObj.w;
-        const h = currentLevelObj.h;
-        const s = currentLevelObj.s;
+        const w = level.getW();
+        const h = level.getH();
+        const s = level.getS();
+        const r = level.getR();
         const replayStr = undoInfo.getReplayStr();
         if (levelId !== null) {
           savedata.saveSteps(w, h, s, replayStr);
@@ -717,7 +719,7 @@
 
     // 自己最高記録
     if (levelId !== null && !clearFlag) {
-      const highestScore = savedata.getHighestScore(currentLevelObj.w, currentLevelObj.h, currentLevelObj.s);
+      const highestScore = savedata.getHighestScore(level.getW(), level.getH(), level.getS());
       if (highestScore !== null) {
         const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`});
         text.setAttribute('font-size', `${blockSize * 0.7}px`);

@@ -24,6 +24,10 @@
   const blockBorderWidthHalf = blockBorderWidth / 2;
 
   class Level {
+    #w;
+    #h;
+    #s;
+    #r;
     #states;
     #width;
     #height;
@@ -32,9 +36,13 @@
     #moveDy;
 
     constructor() {
-      this.#states = [];
+      this.#w = null;
+      this.#h = null;
+      this.#s = null;
+      this.#r = null;
       this.#width = null;
       this.#height = null;
+      this.#states = [];
       this.#moveFlags = [];
       this.#moveDx = null;
       this.#moveDy = null;
@@ -45,11 +53,27 @@
     }
 
     getW() {
-      return this.#width - 4;
+      return this.#w;
     }
 
     getH() {
-      return this.#height - 4;
+      return this.#h;
+    }
+
+    getS() {
+      return this.#s;
+    }
+
+    getR() {
+      return this.#r;
+    }
+
+    getLevelObj() {
+      return {w: this.getW(), h: this.getH(), s: this.getS(), r: this.getR()};
+    }
+
+    getBestStep() {
+      return this.#r?.length;
     }
 
     getWidth() {
@@ -84,7 +108,13 @@
       return res;
     }
 
-    applyObj(obj) {
+    applyObj(obj, isInit = false) {
+      if (isInit) {
+        this.#w = obj.w;
+        this.#h = obj.h;
+        this.#s = obj.s;
+        this.#r = obj.r;
+      }
       this.#width = obj.w + 4;
       this.#height = obj.h + 4;
       this.rightEnd = this.#width - 3;
