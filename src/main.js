@@ -501,7 +501,7 @@
     const res = showkoban.analyzeUrl();
     settings = res.settings;
     if (res.levelObj.s === '') {
-      levelId = 1;
+      levelId = res.id === null ? 1 : res.id;
       loadLevelById(levelId);
     } else {
       levelId = null;
