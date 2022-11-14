@@ -261,6 +261,7 @@
     updateLevelVisibility();
     showkoban.elems.levelId.textContent = levelId;
     const levelObj = showkoban.levels[levelId - 1];
+    console.log(`[LEVEL-${id}]${levelObj.ja !== undefined ? ` ${levelObj.ja}` : ''}`);
 
     loadLevelObj(levelObj);
   }
