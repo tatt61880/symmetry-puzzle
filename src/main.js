@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.14';
+  const versionText = 'v2022.11.14b';
 
   const savedata = showkoban.savedata();
 
