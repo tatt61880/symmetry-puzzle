@@ -67,8 +67,14 @@
       return this.#height - 4;
     }
 
-    resetLevelObj() {
-      this.#levelObj = {w: this.#levelObj.w, h: this.#levelObj.h, s: this.#levelObj.s};
+    removeR() {
+      const obj = {};
+      for (const key in this.#levelObj) {
+        if (key === 'r') continue;
+        obj[key] = this.#levelObj[key];
+      }
+      this.#levelObj = obj;
+      Object.freeze(this.#levelObj);
     }
 
     getLevelObj() {

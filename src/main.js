@@ -714,7 +714,7 @@
         if (bestStep !== undefined) {
           savedata.saveSteps(levelObj, replayStr);
         }
-        const levelObjStr = `{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'},`;
+        const levelObjStr = `{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}', ja: '${levelObj.ja}'},`;
         console.log(levelObjStr);
         if (r === undefined) {
           console.warn('過去最高記録の情報がありません！');
@@ -788,7 +788,7 @@
     if ((e.button === 0 || e.button === undefined) && level.getState(x, y) !== drawingState) {
       addUndo(null);
       level.setState(x, y, drawingState);
-      level.resetLevelObj();
+      level.removeR();
       clearCheck();
       updateUrl();
       draw();
@@ -796,7 +796,7 @@
       if (e.button !== 0) {
         addUndo(null);
         level.setState(x, y, showkoban.states.none);
-        level.resetLevelObj();
+        level.removeR();
         clearCheck();
         updateUrl();
         draw();
@@ -839,7 +839,7 @@
     const obj = {w, h, s};
     addUndo(null);
     applyObj(obj);
-    level.resetLevelObj();
+    level.removeR();
   }
 
   function addUndo(dir) {
