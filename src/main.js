@@ -263,7 +263,17 @@
     const levelObj = showkoban.levels[levelId - 1];
     console.log(`[LEVEL-${id}]${levelObj.ja !== undefined ? ` ${levelObj.ja}` : ''}`);
 
+    replaceUrl();
     loadLevelObj(levelObj);
+
+    function replaceUrl() {
+      const base = location.href.split('?')[0];
+      let url = `${base}?id=${levelId}`;
+      if (settings.autoMode) url += '&auto';
+      if (settings.mirrorFlag) url += '&mirror';
+      if (settings.rotateNum !== 0) url += `&rotate=${settings.rotateNum}`;
+      history.replaceState(null, '', url);
+    }
   }
 
   function loadLevelObj(LevelObj, isReset = false) {
