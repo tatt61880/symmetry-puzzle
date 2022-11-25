@@ -6,11 +6,37 @@
 
   const savedata = showkoban.savedata();
 
+  const dirs = {
+    neutral: 'N',
+    ArrowUp: '0',
+    ArrowRight: '1',
+    ArrowDown: '2',
+    ArrowLeft: '3',
+  };
+
+  const dys = [-1, 0, 1, 0];
+  const dxs = [0, 1, 0, -1];
+
+  let inputFlag = false;
+  const INPUT_INTERVAL_MSEC = 35;
+  const INPUT_INTERVAL_COUNT = 5;
+  const UNDO_INTERVAL_COUNT = 5;
+  let inputCount = INPUT_INTERVAL_COUNT;
+  let inputDir = dirs.neutral;
+  const inputKeys = {};
+
   let settings = {
     autoMode: false,
     debugFlag: false,
     mirrorFlag: false,
     rotateNum: 0,
+  };
+
+  const settingsAuto = {
+    paused: false,
+    interval: INPUT_INTERVAL_COUNT,
+    INTERVAL_MIN: 1,
+    INTERVAL_MAX: INPUT_INTERVAL_COUNT * 3,
   };
 
   let editMode = false;
@@ -33,26 +59,7 @@
 
   let blockSize = 0;
 
-  const dirs = {
-    neutral: 'N',
-    ArrowUp: '0',
-    ArrowRight: '1',
-    ArrowDown: '2',
-    ArrowLeft: '3',
-  };
-
-  const dys = [-1, 0, 1, 0];
-  const dxs = [0, 1, 0, -1];
-
   const level = showkoban.Level();
-
-  let inputFlag = false;
-  const INPUT_INTERVAL_MSEC = 35;
-  const INPUT_INTERVAL_COUNT = 5;
-  const UNDO_INTERVAL_COUNT = 5;
-  let inputCount = INPUT_INTERVAL_COUNT;
-  let inputDir = dirs.neutral;
-  const inputKeys = {};
 
   document.documentElement.style.setProperty('--animation-duration', `${INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC}ms`);
   document.documentElement.style.setProperty('--animation-duration-shadow', `${INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC * 2}ms`);
@@ -508,14 +515,21 @@
     showkoban.elems.version.textContent = VERSION_TEXT;
     applyLang(savedata.loadLang());
 
-    const res = showkoban.analyzeUrl();
-    settings = res.settings;
-    if (res.levelObj.s === '') {
-      levelId = res.id === null ? 1 : res.id;
+    const queryParams = showkoban.analyzeUrl();
+    settings = queryParams.settings;
+    if (settings.autoMode) {
+      showkoban.elems.buttonsAuto.style.setProperty('display', 'block');
+      showkoban.elems.buttonStop.addEventListener('click', onButtonStop);
+      showkoban.elems.buttonStart.addEventListener('click', onButtonStart);
+      showkoban.elems.buttonSpeedDown.addEventListener('click', onButtonSpeedDown);
+      showkoban.elems.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
+    }
+    if (queryParams.levelObj.s === '') {
+      levelId = queryParams.id === null ? 1 : queryParams.id;
       loadLevelById(levelId);
     } else {
       levelId = null;
-      loadLevelObj(res.levelObj);
+      loadLevelObj(queryParams.levelObj);
     }
     updateEditLevel();
 
@@ -605,10 +619,14 @@
       }
       const r = level.getLevelObj()?.r;
       if (!editMode && settings.autoMode && r !== undefined) {
-        inputDir = Number(r[undoInfo.getIndex()]);
-        inputFlag = true;
+        if (settingsAuto.paused) {
+          inputFlag = false;
+        } else {
+          inputDir = Number(r[undoInfo.getIndex()]);
+          inputFlag = true;
+        }
       }
-      if (inputCount >= INPUT_INTERVAL_COUNT) {
+      if (inputCount >= (settings.autoMode ? settingsAuto.interval : INPUT_INTERVAL_COUNT)) {
         if (clearFlag) {
           if (redrawFlag) {
             redrawFlag = false;
@@ -850,5 +868,43 @@
       h: level.getH(),
       s: level.getStateStr(),
     });
+  }
+
+  function updateButtonSpeedDisplay() {
+    showkoban.elems.buttonSpeedDown.style.setProperty('display', settingsAuto.interval === settingsAuto.INTERVAL_MAX ? 'none' : 'block');
+    showkoban.elems.buttonSpeedUp.style.setProperty('display', settingsAuto.interval === settingsAuto.INTERVAL_MIN ? 'none' : 'block');
+  }
+
+  function onButtonStop() {
+    settingsAuto.paused = true;
+    showkoban.elems.buttonStart.style.setProperty('display', 'block');
+    showkoban.elems.buttonStop.style.setProperty('display', 'none');
+    showkoban.elems.buttonSpeedDown.style.setProperty('display', 'none');
+    showkoban.elems.buttonSpeedUp.style.setProperty('display', 'none');
+  }
+
+  function onButtonStart() {
+    settingsAuto.paused = false;
+    showkoban.elems.buttonStart.style.setProperty('display', 'none');
+    showkoban.elems.buttonStop.style.setProperty('display', 'block');
+    updateButtonSpeedDisplay();
+  }
+
+  function onButtonSpeedDown() {
+    showkoban.elems.buttonSpeedUp.style.setProperty('display', 'block');
+    settingsAuto.interval += 2;
+    if (settingsAuto.interval >= settingsAuto.INTERVAL_MAX) {
+      settingsAuto.interval = settingsAuto.INTERVAL_MAX;
+    }
+    updateButtonSpeedDisplay();
+  }
+
+  function onButtonSpeedUp() {
+    showkoban.elems.buttonSpeedDown.style.setProperty('display', 'block');
+    settingsAuto.interval -= 2;
+    if (settingsAuto.interval <= settingsAuto.INTERVAL_MIN) {
+      settingsAuto.interval = settingsAuto.INTERVAL_MIN;
+    }
+    updateButtonSpeedDisplay();
   }
 })();

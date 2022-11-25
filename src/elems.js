@@ -40,6 +40,12 @@
 
     url: 'url',
 
+    buttonsAuto: 'buttons-auto',
+    buttonStop: 'button-stop',
+    buttonStart: 'button-start',
+    buttonSpeedDown: 'button-speed-down',
+    buttonSpeedUp: 'button-speed-up',
+
     undo: 'button-undo',
     stick: 'stick',
     stickBase: 'stick-base',
