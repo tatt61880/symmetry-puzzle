@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const versionText = 'v2022.11.14b';
+  const VERSION_TEXT = 'v2022.11.25';
 
   const savedata = showkoban.savedata();
 
@@ -47,16 +47,16 @@
   const level = showkoban.Level();
 
   let inputFlag = false;
-  const intervalMsec = 35;
-  const inputInterval = 5;
-  const undoInterval = 6;
-  let inputCount = inputInterval;
+  const INPUT_INTERVAL_MSEC = 35;
+  const INPUT_INTERVAL_COUNT = 5;
+  const UNDO_INTERVAL_COUNT = 5;
+  let inputCount = INPUT_INTERVAL_COUNT;
   let inputDir = dirs.neutral;
   const inputKeys = {};
 
-  document.documentElement.style.setProperty('--animation-duration', `${inputInterval * intervalMsec}ms`);
-  document.documentElement.style.setProperty('--animation-duration-shadow', `${inputInterval * intervalMsec * 2}ms`);
-  document.documentElement.style.setProperty('--animation-duration-rotation', `${inputInterval * intervalMsec * 3}ms`);
+  document.documentElement.style.setProperty('--animation-duration', `${INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC}ms`);
+  document.documentElement.style.setProperty('--animation-duration-shadow', `${INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC * 2}ms`);
+  document.documentElement.style.setProperty('--animation-duration-rotation', `${INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC * 3}ms`);
 
   document.addEventListener('DOMContentLoaded', onload, false);
   return;
@@ -100,7 +100,7 @@
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
     showkoban.elems.undo.classList.add('low-contrast');
-    undoCount = undoInterval;
+    undoCount = UNDO_INTERVAL_COUNT;
   }
 
   function undoEnd() {
@@ -287,7 +287,7 @@
     updateLevelVisibility();
 
     inputDir = dirs.neutral;
-    inputCount = inputInterval;
+    inputCount = INPUT_INTERVAL_COUNT;
 
     // 左右反転する。
     function mirrorLevel(levelObj) {
@@ -505,7 +505,7 @@
 
   function onload() {
     showkoban.initElems();
-    showkoban.elems.version.textContent = versionText;
+    showkoban.elems.version.textContent = VERSION_TEXT;
     applyLang(savedata.loadLang());
 
     const res = showkoban.analyzeUrl();
@@ -596,7 +596,7 @@
 
     setInterval(() => {
       if (undoFlag) {
-        if (undoCount === undoInterval) {
+        if (undoCount === UNDO_INTERVAL_COUNT) {
           undoCount = 0;
           execUndo();
         }
@@ -608,7 +608,7 @@
         inputDir = Number(r[undoInfo.getIndex()]);
         inputFlag = true;
       }
-      if (inputCount >= inputInterval) {
+      if (inputCount >= INPUT_INTERVAL_COUNT) {
         if (clearFlag) {
           if (redrawFlag) {
             redrawFlag = false;
@@ -631,7 +631,7 @@
       } else {
         inputCount++;
       }
-    }, intervalMsec);
+    }, INPUT_INTERVAL_MSEC);
   }
 
   // 描画
