@@ -272,15 +272,6 @@
 
     replaceUrl();
     loadLevelObj(levelObj);
-
-    function replaceUrl() {
-      const base = location.href.split('?')[0];
-      let url = `${base}?id=${levelId}`;
-      if (settings.autoMode) url += '&auto';
-      if (settings.mirrorFlag) url += '&mirror';
-      if (settings.rotateNum !== 0) url += `&rotate=${settings.rotateNum}`;
-      history.replaceState(null, '', url);
-    }
   }
 
   function loadLevelObj(LevelObj, isReset = false) {
@@ -518,9 +509,10 @@
     const queryParams = showkoban.analyzeUrl();
     settings = queryParams.settings;
     if (settings.autoMode) {
-      showkoban.elems.buttonsAuto.style.setProperty('display', 'block');
+      showElem(showkoban.elems.buttonsAuto);
       showkoban.elems.buttonStop.addEventListener('click', onButtonStop);
       showkoban.elems.buttonStart.addEventListener('click', onButtonStart);
+      showkoban.elems.buttonPause.addEventListener('click', onButtonPause);
       showkoban.elems.buttonSpeedDown.addEventListener('click', onButtonSpeedDown);
       showkoban.elems.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
     }
@@ -870,28 +862,43 @@
     });
   }
 
+  function replaceUrl() {
+    const base = location.href.split('?')[0];
+    let url = `${base}?id=${levelId}`;
+    if (settings.autoMode) url += '&auto';
+    if (settings.mirrorFlag) url += '&mirror';
+    if (settings.rotateNum !== 0) url += `&rotate=${settings.rotateNum}`;
+    history.replaceState(null, '', url);
+  }
+
   function updateButtonSpeedDisplay() {
-    showkoban.elems.buttonSpeedDown.style.setProperty('display', settingsAuto.interval === settingsAuto.INTERVAL_MAX ? 'none' : 'block');
-    showkoban.elems.buttonSpeedUp.style.setProperty('display', settingsAuto.interval === settingsAuto.INTERVAL_MIN ? 'none' : 'block');
+    (settingsAuto.interval === settingsAuto.INTERVAL_MAX ? hideElem : showElem)(showkoban.elems.buttonSpeedDown);
+    (settingsAuto.interval === settingsAuto.INTERVAL_MIN ? hideElem : showElem)(showkoban.elems.buttonSpeedUp);
   }
 
   function onButtonStop() {
-    settingsAuto.paused = true;
-    showkoban.elems.buttonStart.style.setProperty('display', 'block');
-    showkoban.elems.buttonStop.style.setProperty('display', 'none');
-    showkoban.elems.buttonSpeedDown.style.setProperty('display', 'none');
-    showkoban.elems.buttonSpeedUp.style.setProperty('display', 'none');
+    settings.autoMode = false;
+    hideElem(showkoban.elems.buttonsAuto);
+    replaceUrl();
   }
 
   function onButtonStart() {
     settingsAuto.paused = false;
-    showkoban.elems.buttonStart.style.setProperty('display', 'none');
-    showkoban.elems.buttonStop.style.setProperty('display', 'block');
+    hideElem(showkoban.elems.buttonStart);
+    showElem(showkoban.elems.buttonPause);
     updateButtonSpeedDisplay();
   }
 
+  function onButtonPause() {
+    settingsAuto.paused = true;
+    showElem(showkoban.elems.buttonStart);
+    hideElem(showkoban.elems.buttonPause);
+    hideElem(showkoban.elems.buttonSpeedDown);
+    hideElem(showkoban.elems.buttonSpeedUp);
+  }
+
   function onButtonSpeedDown() {
-    showkoban.elems.buttonSpeedUp.style.setProperty('display', 'block');
+    showElem(showkoban.elems.buttonSpeedUp);
     settingsAuto.interval += 2;
     if (settingsAuto.interval >= settingsAuto.INTERVAL_MAX) {
       settingsAuto.interval = settingsAuto.INTERVAL_MAX;
@@ -900,7 +907,7 @@
   }
 
   function onButtonSpeedUp() {
-    showkoban.elems.buttonSpeedDown.style.setProperty('display', 'block');
+    showElem(showkoban.elems.buttonSpeedDown);
     settingsAuto.interval -= 2;
     if (settingsAuto.interval <= settingsAuto.INTERVAL_MIN) {
       settingsAuto.interval = settingsAuto.INTERVAL_MIN;

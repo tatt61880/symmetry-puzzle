@@ -43,6 +43,7 @@
     buttonsAuto: 'buttons-auto',
     buttonStop: 'button-stop',
     buttonStart: 'button-start',
+    buttonPause: 'button-pause',
     buttonSpeedDown: 'button-speed-down',
     buttonSpeedUp: 'button-speed-up',
 
