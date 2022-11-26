@@ -1,18 +1,18 @@
 (function() {
   'use strict';
 
-  let showkoban = {};
+  let app = {};
   if (typeof window === 'undefined') {
-    showkoban.states = require('./states.js');
-    showkoban.colors = require('./colors.js');
-    showkoban.Stack = require('./class-stack.js');
+    app.states = require('./states.js');
+    app.colors = require('./colors.js');
+    app.Stack = require('./class-stack.js');
     module.exports = level;
   } else {
-    showkoban = window.showkoban;
-    if (showkoban?.states === undefined) console.error('showkoban.states is undefined.');
-    if (showkoban?.colors === undefined) console.error('showkoban.colors is undefined.');
-    if (showkoban?.Stack === undefined) console.error('showkoban.Stack is undefined.');
-    window.showkoban.Level = level;
+    app = window.app;
+    if (app?.states === undefined) console.error('app.states is undefined.');
+    if (app?.colors === undefined) console.error('app.colors is undefined.');
+    if (app?.Stack === undefined) console.error('app.Stack is undefined.');
+    window.app.Level = level;
   }
 
   const dirs = {
@@ -130,23 +130,23 @@
       for (let y = 0; y < this.#height; ++y) {
         this.#states[y] = [];
         for (let x = 0; x < this.#width; ++x) {
-          this.#states[y][x] = showkoban.states.none;
+          this.#states[y][x] = app.states.none;
         }
       }
 
       // 枠(外周2マス分)
       {
         for (let y = 0; y < this.#height; ++y) {
-          this.#states[y][0] = showkoban.states.wall;
-          this.#states[y][1] = showkoban.states.wall;
-          this.#states[y][this.#width - 2] = showkoban.states.wall;
-          this.#states[y][this.#width - 1] = showkoban.states.wall;
+          this.#states[y][0] = app.states.wall;
+          this.#states[y][1] = app.states.wall;
+          this.#states[y][this.#width - 2] = app.states.wall;
+          this.#states[y][this.#width - 1] = app.states.wall;
         }
         for (let x = 2; x < this.#width - 2; ++x) {
-          this.#states[0][x] = showkoban.states.wall;
-          this.#states[1][x] = showkoban.states.wall;
-          this.#states[this.#height - 2][x] = showkoban.states.wall;
-          this.#states[this.#height - 1][x] = showkoban.states.wall;
+          this.#states[0][x] = app.states.wall;
+          this.#states[1][x] = app.states.wall;
+          this.#states[this.#height - 2][x] = app.states.wall;
+          this.#states[this.#height - 1][x] = app.states.wall;
         }
       }
 
@@ -159,7 +159,7 @@
           x = this.leftEnd;
         } else {
           if (x > this.rightEnd) continue;
-          this.#states[y][x] = showkoban.states.charToState[c];
+          this.#states[y][x] = app.states.charToState[c];
           x++;
         }
       }
@@ -185,7 +185,7 @@
       for (let y = upEnd; y <= downEnd; ++y) {
         let line = '';
         for (let x = leftEnd; x <= rightEnd; ++x) {
-          line += showkoban.states.stateToChar[states[y][x]];
+          line += app.states.stateToChar[states[y][x]];
         }
         res += line.replace(/0+$/, '');
         res += '-';
@@ -230,16 +230,16 @@
         }
       }
 
-      const st = showkoban.Stack();
+      const st = app.Stack();
       st.push([x0, y0]);
-      statesTemp[y0][x0] = showkoban.states.none;
+      statesTemp[y0][x0] = app.states.none;
       while (!st.empty()) {
         const xy = st.pop();
         for (let i = 0; i < 4; i++) {
           const xx = xy[0] + dxs[i];
           const yy = xy[1] + dys[i];
           if (isX(statesTemp[yy][xx])) {
-            statesTemp[yy][xx] = showkoban.states.none;
+            statesTemp[yy][xx] = app.states.none;
             st.push([xx, yy]);
           }
         }
@@ -298,14 +298,14 @@
         }
       }
 
-      for (let i = showkoban.states.userMin; i <= showkoban.states.userMax; ++i) {
+      for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
         if (this.count((x)=>{ return x === i; }) === 0) continue;
 
         const moveState = []; // 移動予定の状態番号
         moveState[i] = true;
 
         let flag = true;
-        const st = showkoban.Stack(); // 移動可能か検証必要な状態番号
+        const st = app.Stack(); // 移動可能か検証必要な状態番号
         st.push(i);
         while (!st.empty()) {
           const state = st.pop();
@@ -314,8 +314,8 @@
             for (let x = this.leftEnd; x <= this.rightEnd; ++x) {
               if (this.getState(x, y) !== state) continue;
               const neighborState = this.getState(x + dx, y + dy);
-              if (neighborState === showkoban.states.none) continue;
-              if (neighborState === showkoban.states.wall) {
+              if (neighborState === app.states.none) continue;
+              if (neighborState === app.states.wall) {
                 flag = false;
                 break loop;
               } else if (!moveState[neighborState]) {
@@ -353,7 +353,7 @@
       for (let y = this.upEnd; y <= this.downEnd; ++y) {
         for (let x = this.leftEnd; x <= this.rightEnd; ++x) {
           if (this.#moveFlags[y + dy][x + dx]) {
-            this.setState(x, y, showkoban.states.none);
+            this.setState(x, y, app.states.none);
           }
         }
       }
@@ -367,17 +367,17 @@
     }
 
     createSvg(blockSize, rotateFlag = false, showCharsFlag = false) {
-      const g = showkoban.svg.createG();
+      const g = app.svg.createG();
 
       // 背景
       {
-        const rect = showkoban.svg.createRect(blockSize, {x: 1, y: 1, width: this.getWidth() - 2, height: this.getHeight() - 2});
+        const rect = app.svg.createRect(blockSize, {x: 1, y: 1, width: this.getWidth() - 2, height: this.getHeight() - 2});
         rect.setAttribute('fill', 'white');
         g.appendChild(rect);
       }
 
-      const gShadows = showkoban.svg.createG();
-      const gElems = showkoban.svg.createG();
+      const gShadows = app.svg.createG();
+      const gElems = app.svg.createG();
       g.appendChild(gShadows);
       g.appendChild(gElems);
 
@@ -385,8 +385,8 @@
       for (let y = 1; y < this.getHeight() - 1; ++y) {
         for (let x = 1; x < this.getWidth() - 1; ++x) {
           const state = this.getState(x, y);
-          if (state === showkoban.states.none) continue;
-          if (showkoban.states.isTarget(state)) continue;
+          if (state === app.states.none) continue;
+          if (app.states.isTarget(state)) continue;
           this.#addOneBlock(x, y, blockSize, false, showCharsFlag, gShadows, gElems);
         }
       }
@@ -395,7 +395,7 @@
       for (let y = 1; y < this.getHeight() - 1; ++y) {
         for (let x = 1; x < this.getWidth() - 1; ++x) {
           const state = this.getState(x, y);
-          if (!showkoban.states.isTarget(state)) continue;
+          if (!app.states.isTarget(state)) continue;
           this.#addOneBlock(x, y, blockSize, rotateFlag, showCharsFlag, gShadows, gElems);
         }
       }
@@ -404,11 +404,11 @@
 
     #addOneBlock(x, y, blockSize, rotateFlag, showCharsFlag, gShadows, gElems) {
       const state = this.getState(x, y);
-      const gElem = showkoban.svg.createG();
-      const color = showkoban.colors[state];
+      const gElem = app.svg.createG();
+      const color = app.colors[state];
       {
         const eps = 0.01; // サイズを少し大きくすることで、隙間をなくします。
-        const rect = showkoban.svg.createRect(blockSize, {x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2});
+        const rect = app.svg.createRect(blockSize, {x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2});
         rect.setAttribute('fill', color.fill);
         gElem.appendChild(rect);
       }
@@ -419,62 +419,62 @@
         }
         // 上側
         if (!flags[dirs.u]) {
-          const line = showkoban.svg.createLine(blockSize, {x1: x, y1: y + blockBorderWidthHalf, x2: x + 1, y2: y + blockBorderWidthHalf});
+          const line = app.svg.createLine(blockSize, {x1: x, y1: y + blockBorderWidthHalf, x2: x + 1, y2: y + blockBorderWidthHalf});
           line.setAttribute('stroke', color.stroke);
           line.setAttribute('stroke-width', blockBorderWidth * blockSize);
           gElem.appendChild(line);
         }
         // 右側
         if (!flags[dirs.r]) {
-          const line = showkoban.svg.createLine(blockSize, {x1: x + 1 - blockBorderWidthHalf, y1: y, x2: x + 1 - blockBorderWidthHalf, y2: y + 1});
+          const line = app.svg.createLine(blockSize, {x1: x + 1 - blockBorderWidthHalf, y1: y, x2: x + 1 - blockBorderWidthHalf, y2: y + 1});
           line.setAttribute('stroke', color.stroke);
           line.setAttribute('stroke-width', blockBorderWidth * blockSize);
           gElem.appendChild(line);
         }
         // 下側
         if (!flags[dirs.d]) {
-          const line = showkoban.svg.createLine(blockSize, {x1: x, y1: y + 1 - blockBorderWidthHalf, x2: x + 1, y2: y + 1 - blockBorderWidthHalf});
+          const line = app.svg.createLine(blockSize, {x1: x, y1: y + 1 - blockBorderWidthHalf, x2: x + 1, y2: y + 1 - blockBorderWidthHalf});
           line.setAttribute('stroke', color.stroke);
           line.setAttribute('stroke-width', blockBorderWidth * blockSize);
           gElem.appendChild(line);
         }
         // 左側
         if (!flags[dirs.l]) {
-          const line = showkoban.svg.createLine(blockSize, {x1: x + blockBorderWidthHalf, y1: y, x2: x + blockBorderWidthHalf, y2: y + 1});
+          const line = app.svg.createLine(blockSize, {x1: x + blockBorderWidthHalf, y1: y, x2: x + blockBorderWidthHalf, y2: y + 1});
           line.setAttribute('stroke', color.stroke);
           line.setAttribute('stroke-width', blockBorderWidth * blockSize);
           gElem.appendChild(line);
         }
         // 右上
         if (flags[dirs.u] && flags[dirs.r] && !flags[dirs.ur]) {
-          const rect = showkoban.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y: y, width: blockBorderWidth, height: blockBorderWidth});
+          const rect = app.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y: y, width: blockBorderWidth, height: blockBorderWidth});
           rect.setAttribute('fill', color.stroke);
           gElem.appendChild(rect);
         }
         // 右下
         if (flags[dirs.d] && flags[dirs.r] && !flags[dirs.dr]) {
-          const rect = showkoban.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth});
+          const rect = app.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth});
           rect.setAttribute('fill', color.stroke);
           gElem.appendChild(rect);
         }
         // 左下
         if (flags[dirs.d] && flags[dirs.l] && !flags[dirs.dl]) {
-          const rect = showkoban.svg.createRect(blockSize, {x: x, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth});
+          const rect = app.svg.createRect(blockSize, {x: x, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth});
           rect.setAttribute('fill', color.stroke);
           gElem.appendChild(rect);
         }
         // 左上
         if (flags[dirs.u] && flags[dirs.l] && !flags[dirs.ul]) {
-          const rect = showkoban.svg.createRect(blockSize, {x: x, y: y, width: blockBorderWidth, height: blockBorderWidth});
+          const rect = app.svg.createRect(blockSize, {x: x, y: y, width: blockBorderWidth, height: blockBorderWidth});
           rect.setAttribute('fill', color.stroke);
           gElem.appendChild(rect);
         }
 
-        if (showkoban.states.userMin <= state && state <= showkoban.states.userMax) {
+        if (app.states.userMin <= state && state <= app.states.userMax) {
           const size = blockBorderWidth * 3;
           // 右上
           if (!flags[dirs.u] && !flags[dirs.r]) {
-            const polygon = showkoban.svg.createPolygon(blockSize, {
+            const polygon = app.svg.createPolygon(blockSize, {
               points: [
                 [x + 1 - size, y],
                 [x + 1, y],
@@ -486,7 +486,7 @@
           }
           // 右下
           if (!flags[dirs.d] && !flags[dirs.r]) {
-            const polygon = showkoban.svg.createPolygon(blockSize, {
+            const polygon = app.svg.createPolygon(blockSize, {
               points: [
                 [x + 1, y + 1 - size],
                 [x + 1, y + 1],
@@ -498,7 +498,7 @@
           }
           // 左下
           if (!flags[dirs.d] && !flags[dirs.l]) {
-            const polygon = showkoban.svg.createPolygon(blockSize, {
+            const polygon = app.svg.createPolygon(blockSize, {
               points: [
                 [x, y + 1 - size],
                 [x + size, y + 1],
@@ -510,7 +510,7 @@
           }
           // 左上
           if (!flags[dirs.u] && !flags[dirs.l]) {
-            const polygon = showkoban.svg.createPolygon(blockSize, {
+            const polygon = app.svg.createPolygon(blockSize, {
               points: [
                 [x, y],
                 [x + size, y],
@@ -522,7 +522,7 @@
           }
         }
         if (rotateFlag) {
-          if (showkoban.states.isTarget(state)) {
+          if (app.states.isTarget(state)) {
             gElem.classList.add('animation-rotation');
           }
         }
@@ -534,7 +534,7 @@
 
           // 移動時のエフェクト（残像）
           if (!this.#moveFlags[y - dy][x - dx]) {
-            const gShadow = showkoban.svg.createG();
+            const gShadow = app.svg.createG();
             {
               const dd = 0.2;
               const ddd = 0.15;
@@ -557,7 +557,7 @@
                 }
               }
 
-              const rect = window.showkoban.svg.createRect(blockSize, rectArg);
+              const rect = window.app.svg.createRect(blockSize, rectArg);
               rect.setAttribute('fill', color.fill);
               rect.setAttribute('fill-opacity', 1);
               rect.setAttribute('transform', `translate(${dx},${dy})`);
@@ -569,13 +569,13 @@
         }
       }
       if (showCharsFlag) {
-        const text = showkoban.svg.createText(blockSize, {x: x + 0.5, y: y, text: showkoban.states.stateToChar[state]});
+        const text = app.svg.createText(blockSize, {x: x + 0.5, y: y, text: app.states.stateToChar[state]});
         gElem.appendChild(text);
-        if (state === showkoban.states.wall || this.#isConnected((s) => {return s === state;})) {
-          text.setAttribute('fill', showkoban.colors[state].text);
+        if (state === app.states.wall || this.#isConnected((s) => {return s === state;})) {
+          text.setAttribute('fill', app.colors[state].text);
         } else {
-          text.setAttribute('fill', showkoban.colors[state].error);
-          const rect = showkoban.svg.createRect(blockSize, {x: x, y: y, width: 1, height: 1});
+          text.setAttribute('fill', app.colors[state].error);
+          const rect = app.svg.createRect(blockSize, {x: x, y: y, width: 1, height: 1});
           rect.setAttribute('opacity', 0.3);
           gElem.appendChild(rect);
         }

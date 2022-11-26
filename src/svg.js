@@ -3,8 +3,8 @@
 
   const svg = {};
   if (typeof window !== 'undefined') {
-    window.showkoban = window.showkoban || {};
-    window.showkoban.svg = svg;
+    window.app = window.app || {};
+    window.app.svg = svg;
   }
 
   const SVG_NS = 'http://www.w3.org/2000/svg';

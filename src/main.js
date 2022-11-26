@@ -1,10 +1,10 @@
 (function() {
   'use strict';
-  Object.freeze(showkoban);
+  Object.freeze(app);
 
   const VERSION_TEXT = 'v2022.11.26';
 
-  const savedata = showkoban.savedata();
+  const savedata = app.savedata();
 
   const dirs = {
     neutral: 'N',
@@ -44,7 +44,7 @@
 
   let levelId = null;
 
-  let undoInfo = showkoban.UndoInfo();
+  let undoInfo = app.UndoInfo();
   let undoFlag = false;
   let undoCount = 0;
   let nextLevelTimerId = null;
@@ -54,12 +54,12 @@
   let clearFlag = false;
   let redrawFlag = false;
 
-  let drawingState = showkoban.states.none;
+  let drawingState = app.states.none;
   const editboxFunctions = {};
 
   let blockSize = 0;
 
-  const level = showkoban.Level();
+  const level = app.Level();
 
   document.documentElement.style.setProperty('--animation-duration', `${INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC}ms`);
   document.documentElement.style.setProperty('--animation-duration-shadow', `${INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC * 2}ms`);
@@ -77,7 +77,7 @@
       '2': 'rotateX(-45deg)',
       '3': 'rotateY(-45deg)',
     };
-    showkoban.elems.stick.style.setProperty('transform', transforms[dir]);
+    app.elems.stick.style.setProperty('transform', transforms[dir]);
   }
 
   function move(dir) {
@@ -94,7 +94,7 @@
   }
 
   function clearCheck() {
-    const center = level.getRotateCenter(showkoban.states.isTarget);
+    const center = level.getRotateCenter(app.states.isTarget);
     clearFlag = center !== null;
     redrawFlag = clearFlag;
     if (clearFlag) {
@@ -106,14 +106,14 @@
     if (undoFlag) return;
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
-    showkoban.elems.undo.classList.add('low-contrast');
+    app.elems.undo.classList.add('low-contrast');
     undoCount = UNDO_INTERVAL_COUNT;
   }
 
   function undoEnd() {
     if (!undoFlag) return;
     undoFlag = false;
-    showkoban.elems.undo.classList.remove('low-contrast');
+    app.elems.undo.classList.remove('low-contrast');
   }
 
   function undodown(e) {
@@ -144,7 +144,7 @@
   function pointermove(e) {
     e.preventDefault();
     if (!inputFlag || settings.autoMode) return;
-    const cursorPos = getCursorPos(showkoban.elems.stickBase, e);
+    const cursorPos = getCursorPos(app.elems.stickBase, e);
     const ax = cursorPos.x - 100.0;
     const ay = cursorPos.y - 100.0;
     const minDist = 60;
@@ -220,18 +220,18 @@
   function resetLevel() {
     clearTimeout(nextLevelTimerId);
 
-    showkoban.elems.level.reset.classList.add('low-contrast');
-    showkoban.elems.svg.textContent = '';
+    app.elems.level.reset.classList.add('low-contrast');
+    app.elems.svg.textContent = '';
 
     setTimeout(() => {
-      showkoban.elems.level.reset.classList.remove('low-contrast');
+      app.elems.level.reset.classList.remove('low-contrast');
       loadLevelObj(level.getLevelObj(), true);
     }, RESET_DELAY);
   }
 
   function resetUndo() {
-    undoInfo = showkoban.UndoInfo();
-    hideElem(showkoban.elems.undo);
+    undoInfo = app.UndoInfo();
+    hideElem(app.elems.undo);
   }
 
   function applyObj(obj, isInit = false) {
@@ -242,8 +242,8 @@
     clearCheck();
     updateUrl();
 
-    showkoban.elems.svg.setAttribute('width', blockSize * level.getWidth());
-    showkoban.elems.svg.setAttribute('height', blockSize * level.getHeight());
+    app.elems.svg.setAttribute('width', blockSize * level.getWidth());
+    app.elems.svg.setAttribute('height', blockSize * level.getHeight());
     draw();
   }
 
@@ -263,11 +263,11 @@
     id = Number(id);
     resetUndo();
     if (id < 1) id = 1;
-    if (id > showkoban.levels.length) id = showkoban.levels.length;
+    if (id > app.levels.length) id = app.levels.length;
     levelId = id;
     updateLevelVisibility();
-    showkoban.elems.level.id.textContent = levelId;
-    const levelObj = showkoban.levels[levelId - 1];
+    app.elems.level.id.textContent = levelId;
+    const levelObj = app.levels[levelId - 1];
     console.log(`[LEVEL-${id}]${levelObj.ja !== undefined ? ` ${levelObj.ja}` : ''}`);
 
     replaceUrl();
@@ -296,7 +296,7 @@
       for (let y = 0; y < h; ++y) {
         statesTemp[y] = [];
         for (let x = 0; x < w; ++x) {
-          statesTemp[y][x] = showkoban.states.none;
+          statesTemp[y][x] = app.states.none;
         }
       }
 
@@ -309,7 +309,7 @@
           x = w - 1;
         } else {
           if (x === -1) continue;
-          statesTemp[y][x] = showkoban.states.charToState[c];
+          statesTemp[y][x] = app.states.charToState[c];
           x--;
         }
       }
@@ -336,7 +336,7 @@
         for (let y = 0; y < h; ++y) {
           statesTemp[y] = [];
           for (let x = 0; x < w; ++x) {
-            statesTemp[y][x] = showkoban.states.none;
+            statesTemp[y][x] = app.states.none;
           }
         }
 
@@ -349,7 +349,7 @@
             y = 0;
           } else {
             if (y === h) continue;
-            statesTemp[y][x] = showkoban.states.charToState[c];
+            statesTemp[y][x] = app.states.charToState[c];
             y++;
           }
         }
@@ -370,15 +370,15 @@
 
   function updateLevelVisibility() {
     if (levelId === null) {
-      hideElem(showkoban.elems.level.prev);
-      hideElem(showkoban.elems.level.id);
-      hideElem(showkoban.elems.level.next);
-      showElem(showkoban.elems.level.edit);
+      hideElem(app.elems.level.prev);
+      hideElem(app.elems.level.id);
+      hideElem(app.elems.level.next);
+      showElem(app.elems.level.edit);
     } else {
-      (levelId === 1 ? hideElem : showElem)(showkoban.elems.level.prev);
-      showElem(showkoban.elems.level.id);
-      (levelId === showkoban.levels.length ? hideElem : showElem)(showkoban.elems.level.next);
-      hideElem(showkoban.elems.level.edit);
+      (levelId === 1 ? hideElem : showElem)(app.elems.level.prev);
+      showElem(app.elems.level.id);
+      (levelId === app.levels.length ? hideElem : showElem)(app.elems.level.next);
+      hideElem(app.elems.level.edit);
     }
   }
 
@@ -391,7 +391,7 @@
 
   function gotoNextLevel() {
     if (levelId === null) return;
-    if (levelId < showkoban.levels.length) {
+    if (levelId < app.levels.length) {
       loadLevelById(levelId + 1);
     }
   }
@@ -399,16 +399,16 @@
   function updateUrl() {
     if (!editMode) return;
     const url = level.getUrlStr();
-    showkoban.elems.url.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
+    app.elems.url.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
   }
 
   function updateEditLevel() {
     if (editMode) {
-      showElem(showkoban.elems.url);
-      showElem(showkoban.elems.edit.editbox);
+      showElem(app.elems.url);
+      showElem(app.elems.edit.editbox);
     } else {
-      hideElem(showkoban.elems.url);
-      hideElem(showkoban.elems.edit.editbox);
+      hideElem(app.elems.url);
+      hideElem(app.elems.edit.editbox);
     }
     updateUrl();
   }
@@ -420,11 +420,11 @@
   }
 
   function showHelpDialog() {
-    showkoban.elems.help.dialog.showModal();
+    app.elems.help.dialog.showModal();
   }
 
   function closeHelpDialog() {
-    showkoban.elems.help.dialog.close();
+    app.elems.help.dialog.close();
   }
 
   function applyLang(lang) {
@@ -448,25 +448,25 @@
   }
 
   function showLevelsDialog() {
-    showkoban.elems.levels.dialogSvg.innerHTML = '';
+    app.elems.levels.dialogSvg.innerHTML = '';
     const HEIGHT = 90;
     const WIDTH = 90;
     const COLS = 5;
     const MARGIN = 20;
-    showkoban.elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(showkoban.levels.length / COLS)}px`);
+    app.elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(app.levels.length / COLS)}px`);
 
     let id = 0;
-    for (const levelObj of showkoban.levels) {
+    for (const levelObj of app.levels) {
       const blockSize = 5;
       id++;
-      const g = showkoban.svg.createG();
+      const g = app.svg.createG();
       g.classList.add('level-select');
-      const level = showkoban.Level();
+      const level = app.Level();
       level.applyObj(levelObj, true);
       const levelSvg = level.createSvg(blockSize);
       g.appendChild(levelSvg);
       {
-        const text = showkoban.svg.createText(blockSize, {x: -0.1, y: -0.8, text: id});
+        const text = app.svg.createText(blockSize, {x: -0.1, y: -0.8, text: id});
         text.setAttribute('dominant-baseline', 'middle');
         text.setAttribute('text-anchor', 'middle');
         text.setAttribute('font-weight', 'bold');
@@ -477,7 +477,7 @@
         const highestScore = savedata.getHighestScore(levelObj);
         const bestStep = level.getBestStep();
         if (highestScore !== null) {
-          const rect = showkoban.svg.createRect(blockSize, {x: -1.5, y: 1.5, width: 2, height: 2});
+          const rect = app.svg.createRect(blockSize, {x: -1.5, y: 1.5, width: 2, height: 2});
           const color = getStepColor(highestScore, bestStep);
           rect.setAttribute('fill', color);
           g.appendChild(rect);
@@ -492,29 +492,29 @@
         loadLevelById(id);
         closeLevelsDialog();
       }, false);
-      showkoban.elems.levels.dialogSvg.appendChild(g);
+      app.elems.levels.dialogSvg.appendChild(g);
     }
-    showkoban.elems.levels.dialog.showModal();
+    app.elems.levels.dialog.showModal();
   }
 
   function closeLevelsDialog() {
-    showkoban.elems.levels.dialog.close();
+    app.elems.levels.dialog.close();
   }
 
   function onload() {
-    showkoban.elems.init();
-    showkoban.elems.version.textContent = VERSION_TEXT;
+    app.elems.init();
+    app.elems.version.textContent = VERSION_TEXT;
     applyLang(savedata.loadLang());
 
-    const queryParams = showkoban.analyzeUrl();
+    const queryParams = app.analyzeUrl();
     settings = queryParams.settings;
     if (settings.autoMode) {
-      showElem(showkoban.elems.auto.buttons);
-      showkoban.elems.auto.buttonStop.addEventListener('click', onButtonStop);
-      showkoban.elems.auto.buttonStart.addEventListener('click', onButtonStart);
-      showkoban.elems.auto.buttonPause.addEventListener('click', onButtonPause);
-      showkoban.elems.auto.buttonSpeedDown.addEventListener('click', onButtonSpeedDown);
-      showkoban.elems.auto.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
+      showElem(app.elems.auto.buttons);
+      app.elems.auto.buttonStop.addEventListener('click', onButtonStop);
+      app.elems.auto.buttonStart.addEventListener('click', onButtonStart);
+      app.elems.auto.buttonPause.addEventListener('click', onButtonPause);
+      app.elems.auto.buttonSpeedDown.addEventListener('click', onButtonSpeedDown);
+      app.elems.auto.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
     }
     if (queryParams.levelObj.s === '') {
       levelId = queryParams.id === null ? 1 : queryParams.id;
@@ -527,43 +527,43 @@
 
     // editモード用
     {
-      for (const char in showkoban.states.charToState) {
-        const state = showkoban.states.charToState[char];
+      for (const char in app.states.charToState) {
+        const state = app.states.charToState[char];
         const elem = document.getElementById(`edit_${char}`);
         if (elem === null) continue;
         const func = () => {
-          showkoban.elems.edit.editShape.setAttribute('fill', showkoban.colors[state].fill);
-          showkoban.elems.edit.editShape.setAttribute('stroke', showkoban.colors[state].stroke);
-          showkoban.elems.edit.editState.textContent = char;
-          showkoban.elems.edit.editState.setAttribute('fill', showkoban.colors[state].text);
+          app.elems.edit.editShape.setAttribute('fill', app.colors[state].fill);
+          app.elems.edit.editShape.setAttribute('stroke', app.colors[state].stroke);
+          app.elems.edit.editState.textContent = char;
+          app.elems.edit.editState.setAttribute('fill', app.colors[state].text);
           drawingState = state;
         };
         editboxFunctions[char] = func;
         elem.addEventListener('click', func, false);
 
         {
-          const rect = showkoban.svg.createRect(30, {x: 0, y: 0, width: 1, height: 1});
-          rect.setAttribute('fill', showkoban.colors[state].fill);
-          rect.setAttribute('stroke', showkoban.colors[state].stroke);
+          const rect = app.svg.createRect(30, {x: 0, y: 0, width: 1, height: 1});
+          rect.setAttribute('fill', app.colors[state].fill);
+          rect.setAttribute('stroke', app.colors[state].stroke);
           rect.setAttribute('stroke-width', 4);
           elem.appendChild(rect);
         }
         {
-          const text = showkoban.svg.createText(30, {x: 0.5, y: 0, text: char});
+          const text = app.svg.createText(30, {x: 0.5, y: 0, text: char});
           text.setAttribute('dominant-baseline', 'middle');
           text.setAttribute('text-anchor', 'middle');
           text.setAttribute('font-weight', 'bold');
           text.setAttribute('font-size', '18px');
-          text.setAttribute('fill', showkoban.colors[state].text);
+          text.setAttribute('fill', app.colors[state].text);
           elem.appendChild(text);
         }
       }
-      editboxFunctions[showkoban.states.stateToChar[showkoban.states.none]]();
+      editboxFunctions[app.states.stateToChar[app.states.none]]();
 
-      showkoban.elems.edit.wDec.addEventListener('click', () => resize(-1, 0), false);
-      showkoban.elems.edit.wInc.addEventListener('click', () => resize(1, 0), false);
-      showkoban.elems.edit.hDec.addEventListener('click', () => resize(0, -1), false);
-      showkoban.elems.edit.hInc.addEventListener('click', () => resize(0, 1), false);
+      app.elems.edit.wDec.addEventListener('click', () => resize(-1, 0), false);
+      app.elems.edit.wInc.addEventListener('click', () => resize(1, 0), false);
+      app.elems.edit.hDec.addEventListener('click', () => resize(0, -1), false);
+      app.elems.edit.hInc.addEventListener('click', () => resize(0, 1), false);
     }
 
     {
@@ -575,29 +575,29 @@
       document.addEventListener('keydown', keydown, false);
       document.addEventListener('keyup', keyup, false);
 
-      showkoban.elems.help.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
-      showkoban.elems.help.button.addEventListener('click', showHelpDialog, false);
-      showkoban.elems.help.dialog.addEventListener('click', closeHelpDialog, false);
-      showkoban.elems.help.langEn.addEventListener('click', (e) => selectLang(e, 'en'), false);
-      showkoban.elems.help.langJa.addEventListener('click', (e) => selectLang(e, 'ja'), false);
+      app.elems.help.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
+      app.elems.help.button.addEventListener('click', showHelpDialog, false);
+      app.elems.help.dialog.addEventListener('click', closeHelpDialog, false);
+      app.elems.help.langEn.addEventListener('click', (e) => selectLang(e, 'en'), false);
+      app.elems.help.langJa.addEventListener('click', (e) => selectLang(e, 'ja'), false);
 
-      showkoban.elems.level.reset.addEventListener('click', resetLevel, false);
-      showkoban.elems.level.prev.addEventListener('click', gotoPrevLevel, false);
-      showkoban.elems.level.next.addEventListener('click', gotoNextLevel, false);
-      showkoban.elems.level.edit.addEventListener('click', toggleEditLevel, false);
-      showkoban.elems.levels.button.addEventListener('click', showLevelsDialog, false);
-      showkoban.elems.levels.dialog.addEventListener('click', closeLevelsDialog, false);
-      showkoban.elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
+      app.elems.level.reset.addEventListener('click', resetLevel, false);
+      app.elems.level.prev.addEventListener('click', gotoPrevLevel, false);
+      app.elems.level.next.addEventListener('click', gotoNextLevel, false);
+      app.elems.level.edit.addEventListener('click', toggleEditLevel, false);
+      app.elems.levels.button.addEventListener('click', showLevelsDialog, false);
+      app.elems.levels.dialog.addEventListener('click', closeLevelsDialog, false);
+      app.elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
 
-      showkoban.elems.svg.addEventListener(pointerdownEventName, editSvg, false);
-      showkoban.elems.svg.oncontextmenu = function() {return !editMode;};
+      app.elems.svg.addEventListener(pointerdownEventName, editSvg, false);
+      app.elems.svg.oncontextmenu = function() {return !editMode;};
 
-      showkoban.elems.stickBase.addEventListener(pointerdownEventName, pointerdown, false);
-      showkoban.elems.stickBase.addEventListener(pointermoveEventName, pointermove, false);
-      showkoban.elems.stickBase.addEventListener(pointerupEventName, pointerup, false);
+      app.elems.stickBase.addEventListener(pointerdownEventName, pointerdown, false);
+      app.elems.stickBase.addEventListener(pointermoveEventName, pointermove, false);
+      app.elems.stickBase.addEventListener(pointerupEventName, pointerup, false);
       document.addEventListener(pointerupEventName, pointerup, false);
 
-      showkoban.elems.undo.addEventListener(pointerdownEventName, undodown, false);
+      app.elems.undo.addEventListener(pointerdownEventName, undodown, false);
     }
 
     setInterval(() => {
@@ -647,34 +647,34 @@
   // 描画
   function draw(rotateFlag = false) {
     rotateFlag &&= clearFlag;
-    showkoban.elems.svg.textContent = '';
+    app.elems.svg.textContent = '';
 
     {
       const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
       const levelSvg = level.createSvg(blockSize, rotateFlag, showCharsFlag);
-      showkoban.elems.svg.appendChild(levelSvg);
+      app.elems.svg.appendChild(levelSvg);
     }
     level.resetMoveFlags();
 
     // 点線
     {
       const dasharray = '1, 4';
-      const g = showkoban.svg.createG();
+      const g = app.svg.createG();
       // 横線
       for (let y = 2; y < level.getHeight() - 1; ++y) {
-        const line = showkoban.svg.createLine(blockSize, {x1: 1, y1: y, x2: level.getWidth() - 1, y2: y});
-        line.setAttribute('stroke', showkoban.colors.line);
+        const line = app.svg.createLine(blockSize, {x1: 1, y1: y, x2: level.getWidth() - 1, y2: y});
+        line.setAttribute('stroke', app.colors.line);
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
       // 縦線
       for (let x = 2; x < level.getWidth() - 1; ++x) {
-        const line = showkoban.svg.createLine(blockSize, {x1: x, y1: 1, x2: x, y2: level.getHeight() - 1});
-        line.setAttribute('stroke', showkoban.colors.line);
+        const line = app.svg.createLine(blockSize, {x1: x, y1: 1, x2: x, y2: level.getHeight() - 1});
+        line.setAttribute('stroke', app.colors.line);
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
-      showkoban.elems.svg.appendChild(g);
+      app.elems.svg.appendChild(g);
     }
     drawFrame();
   }
@@ -682,25 +682,25 @@
   function drawFrame() {
     const paddingColor = clearFlag ? '#8f8' : '#753';
 
-    const g = showkoban.svg.createG();
+    const g = app.svg.createG();
 
     {
-      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: 0, width: level.getWidth(), height: 1});
+      const rect = app.svg.createRect(blockSize, {x: 0, y: 0, width: level.getWidth(), height: 1});
       rect.setAttribute('fill', paddingColor);
       g.appendChild(rect);
     }
     {
-      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: 0, width: 1, height: level.getHeight()});
+      const rect = app.svg.createRect(blockSize, {x: 0, y: 0, width: 1, height: level.getHeight()});
       rect.setAttribute('fill', paddingColor);
       g.appendChild(rect);
     }
     {
-      const rect = showkoban.svg.createRect(blockSize, {x: 0, y: level.getHeight() - 1, width: level.getWidth(), height: 1});
+      const rect = app.svg.createRect(blockSize, {x: 0, y: level.getHeight() - 1, width: level.getWidth(), height: 1});
       rect.setAttribute('fill', paddingColor);
       g.appendChild(rect);
     }
     {
-      const rect = showkoban.svg.createRect(blockSize, {x: level.getWidth() - 1, y: 0, width: 1, height: level.getHeight()});
+      const rect = app.svg.createRect(blockSize, {x: level.getWidth() - 1, y: 0, width: 1, height: level.getHeight()});
       rect.setAttribute('fill', paddingColor);
       g.appendChild(rect);
     }
@@ -708,7 +708,7 @@
     const bestStep = level.getBestStep();
     // クリアメッセージ
     if (clearFlag) {
-      const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: 'CLEAR'});
+      const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: 'CLEAR'});
       text.setAttribute('font-size', `${blockSize * 0.8}px`);
       text.setAttribute('font-weight', 'bold');
       text.setAttribute('fill', 'blue');
@@ -739,7 +739,7 @@
       }
 
       {
-        const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${clearStep} steps`});
+        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${clearStep} steps`});
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
         text.setAttribute('fill', getStepColor(clearStep, bestStep));
@@ -749,7 +749,7 @@
         nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
       }
     } else {
-      const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: `${undoInfo.getIndex()} steps`});
+      const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: `${undoInfo.getIndex()} steps`});
       text.setAttribute('font-weight', 'bold');
       text.setAttribute('fill', 'white');
       g.appendChild(text);
@@ -760,7 +760,7 @@
       const levelObj = level.getLevelObj();
       const highestScore = savedata.getHighestScore(levelObj);
       if (highestScore !== null) {
-        const text = showkoban.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`});
+        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`});
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
         text.setAttribute('fill', getStepColor(highestScore, bestStep));
@@ -768,18 +768,18 @@
       }
     }
 
-    showkoban.elems.svg.appendChild(g);
+    app.elems.svg.appendChild(g);
   }
 
   function getStepColor(step, bestStep) {
     if (bestStep === undefined) {
-      return showkoban.colors.stepUnknown;
+      return app.colors.stepUnknown;
     } else if (step > bestStep) {
-      return showkoban.colors.stepLose;
+      return app.colors.stepLose;
     } else if (step === bestStep) {
-      return showkoban.colors.stepDraw;
+      return app.colors.stepDraw;
     } else {
-      return showkoban.colors.stepWin;
+      return app.colors.stepWin;
     }
   }
 
@@ -802,10 +802,10 @@
       clearCheck();
       updateUrl();
       draw();
-    } else if (level.getState(x, y) !== showkoban.states.none) {
+    } else if (level.getState(x, y) !== app.states.none) {
       if (e.button !== 0) {
         addUndo(null);
-        level.setState(x, y, showkoban.states.none);
+        level.setState(x, y, app.states.none);
         level.removeR();
         clearCheck();
         updateUrl();
@@ -823,7 +823,7 @@
 
     // カーソル位置の座標を得る
     function getCurXY(e) {
-      const cursorPos = getCursorPos(showkoban.elems.svg, e);
+      const cursorPos = getCursorPos(app.elems.svg, e);
       const x = Math.floor(cursorPos.x / blockSize);
       const y = Math.floor(cursorPos.y / blockSize);
       return {x: x, y: y};
@@ -853,7 +853,7 @@
   }
 
   function addUndo(dir) {
-    showElem(showkoban.elems.undo);
+    showElem(app.elems.undo);
     undoInfo.pushData({
       dir: dir,
       w: level.getW(),
@@ -872,33 +872,33 @@
   }
 
   function updateButtonSpeedDisplay() {
-    (settingsAuto.interval === settingsAuto.INTERVAL_MAX ? hideElem : showElem)(showkoban.elems.auto.buttonSpeedDown);
-    (settingsAuto.interval === 1 ? hideElem : showElem)(showkoban.elems.auto.buttonSpeedUp);
+    (settingsAuto.interval === settingsAuto.INTERVAL_MAX ? hideElem : showElem)(app.elems.auto.buttonSpeedDown);
+    (settingsAuto.interval === 1 ? hideElem : showElem)(app.elems.auto.buttonSpeedUp);
   }
 
   function onButtonStop() {
     settings.autoMode = false;
-    hideElem(showkoban.elems.auto.buttons);
+    hideElem(app.elems.auto.buttons);
     replaceUrl();
   }
 
   function onButtonStart() {
     settingsAuto.paused = false;
-    hideElem(showkoban.elems.auto.buttonStart);
-    showElem(showkoban.elems.auto.buttonPause);
+    hideElem(app.elems.auto.buttonStart);
+    showElem(app.elems.auto.buttonPause);
     updateButtonSpeedDisplay();
   }
 
   function onButtonPause() {
     settingsAuto.paused = true;
-    showElem(showkoban.elems.auto.buttonStart);
-    hideElem(showkoban.elems.auto.buttonPause);
-    hideElem(showkoban.elems.auto.buttonSpeedDown);
-    hideElem(showkoban.elems.auto.buttonSpeedUp);
+    showElem(app.elems.auto.buttonStart);
+    hideElem(app.elems.auto.buttonPause);
+    hideElem(app.elems.auto.buttonSpeedDown);
+    hideElem(app.elems.auto.buttonSpeedUp);
   }
 
   function onButtonSpeedDown() {
-    showElem(showkoban.elems.auto.buttonSpeedUp);
+    showElem(app.elems.auto.buttonSpeedUp);
     settingsAuto.interval += 2;
     if (settingsAuto.interval >= settingsAuto.INTERVAL_MAX) {
       settingsAuto.interval = settingsAuto.INTERVAL_MAX;
@@ -907,7 +907,7 @@
   }
 
   function onButtonSpeedUp() {
-    showElem(showkoban.elems.auto.buttonSpeedDown);
+    showElem(app.elems.auto.buttonSpeedDown);
     settingsAuto.interval -= 2;
     if (settingsAuto.interval <= settingsAuto.INTERVAL_MIN) {
       settingsAuto.interval = settingsAuto.INTERVAL_MIN;

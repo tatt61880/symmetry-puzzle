@@ -1,18 +1,18 @@
 (function() {
   'use strict';
 
-  const showkoban = {};
-  showkoban.states = require('./states.js');
-  showkoban.levels = require('./levels.js');
-  showkoban.Level = require('./class-level.js');
+  const app = {};
+  app.states = require('./states.js');
+  app.levels = require('./levels.js');
+  app.Level = require('./class-level.js');
 
   const dys = [-1, 0, 1, 0];
   const dxs = [0, 1, 0, -1];
 
   const levelSet = new Set();
 
-  for (const idx in showkoban.levels) {
-    const levelObj = showkoban.levels[idx];
+  for (const idx in app.levels) {
+    const levelObj = app.levels[idx];
     levelSet.add(`${levelObj.w},${levelObj.h},${levelObj.s}`);
     const levelId = Number(idx) + 1;
     const res = testLevel(levelObj);
@@ -23,7 +23,7 @@
     }
   }
 
-  if (levelSet.size !== showkoban.levels.length) {
+  if (levelSet.size !== app.levels.length) {
     console.error('Error: There are same levels.');
     process.exitCode = 1;
     return;
@@ -33,7 +33,7 @@
   return;
 
   function testLevel(levelObj) {
-    const level = showkoban.Level();
+    const level = app.Level();
     level.applyObj(levelObj, true);
 
     const r = level.getLevelObj()?.r;
@@ -47,7 +47,7 @@
         console.error('Error: moveFlag failed.');
         return false;
       }
-      const center = level.getRotateCenter(showkoban.states.isTarget);
+      const center = level.getRotateCenter(app.states.isTarget);
       const clearFlag = center !== null;
       if (clearFlag) {
         console.error('Error: Cleared on the way.');
@@ -55,7 +55,7 @@
       }
       level.move();
     }
-    const center = level.getRotateCenter(showkoban.states.isTarget);
+    const center = level.getRotateCenter(app.states.isTarget);
     const clearFlag = center !== null;
     if (!clearFlag) {
       console.error('Error: clearFlag failed.');

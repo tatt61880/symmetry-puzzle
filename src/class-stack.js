@@ -4,8 +4,8 @@
   if (typeof window === 'undefined') {
     module.exports = stack;
   } else {
-    window.showkoban = window.showkoban || {};
-    window.showkoban.Stack = stack;
+    window.app = window.app || {};
+    window.app.Stack = stack;
   }
 
   function stack() {

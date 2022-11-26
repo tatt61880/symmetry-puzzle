@@ -2,8 +2,8 @@
   'use strict';
 
   if (typeof window !== 'undefined') {
-    window.showkoban = window.showkoban || {};
-    window.showkoban.elems = {
+    window.app = window.app || {};
+    window.app.elems = {
       init: init,
     };
   }
@@ -63,8 +63,8 @@
   };
 
   function init() {
-    initElems(window.showkoban.elems, elems);
-    Object.freeze(window.showkoban.elems);
+    initElems(window.app.elems, elems);
+    Object.freeze(window.app.elems);
 
     function initElems(obj, elems) {
       for (const key in elems) {

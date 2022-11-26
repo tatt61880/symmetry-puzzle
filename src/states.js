@@ -5,8 +5,8 @@
   if (typeof window === 'undefined') {
     module.exports = states;
   } else {
-    window.showkoban = window.showkoban || {};
-    window.showkoban.states = states;
+    window.app = window.app || {};
+    window.app.states = states;
   }
 
   states.wall = -1; // 壁

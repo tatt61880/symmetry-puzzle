@@ -1,26 +1,26 @@
 (function() {
   'use strict';
 
-  let showkoban = {};
+  let app = {};
   const colors = {};
   if (typeof window === 'undefined') {
-    showkoban.states = require('./states.js');
+    app.states = require('./states.js');
     module.exports = colors;
   } else {
-    showkoban = window.showkoban;
-    if (showkoban?.states === undefined) console.error('showkoban.states is undefined.');
-    window.showkoban.colors = colors;
+    app = window.app;
+    if (app?.states === undefined) console.error('app.states is undefined.');
+    window.app.colors = colors;
   }
 
-  colors[showkoban.states.none] = {fill: '#ffffff', stroke: '#aaaaaa', text: '#888888', error: 'red'};
-  colors[showkoban.states.wall] = {fill: '#222222', stroke: '#666666', text: '#bbbbbb', error: 'red'};
-  for (let i = showkoban.states.targetMin; i <= showkoban.states.targetMax; ++i) {
+  colors[app.states.none] = {fill: '#ffffff', stroke: '#aaaaaa', text: '#888888', error: 'red'};
+  colors[app.states.wall] = {fill: '#222222', stroke: '#666666', text: '#bbbbbb', error: 'red'};
+  for (let i = app.states.targetMin; i <= app.states.targetMax; ++i) {
     colors[i] = {fill: 'pink', stroke: 'red', text: '#773333', error: 'red'};
   }
-  for (let i = showkoban.states.otherMin; i <= showkoban.states.otherMax; ++i) {
+  for (let i = app.states.otherMin; i <= app.states.otherMax; ++i) {
     colors[i] = {fill: '#e5e5e5', stroke: '#aaa', text: '#555555', error: 'red'};
   }
-  for (let i = showkoban.states.userMin; i <= showkoban.states.userMax; ++i) {
+  for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
     colors[i] = {fill: 'aqua', stroke: 'blue', text: '#333399', error: 'red'};
   }
 

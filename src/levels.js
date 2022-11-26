@@ -5,8 +5,8 @@
   if (typeof window === 'undefined') {
     module.exports = levels;
   } else {
-    window.showkoban = window.showkoban || {};
-    window.showkoban.levels = levels;
+    window.app = window.app || {};
+    window.app.levels = levels;
   }
 
   levels.push(

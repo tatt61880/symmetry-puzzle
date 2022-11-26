@@ -2,8 +2,8 @@
   'use strict';
 
   if (typeof window !== 'undefined') {
-    window.showkoban = window.showkoban || {};
-    window.showkoban.UndoInfo = undoinfo;
+    window.app = window.app || {};
+    window.app.UndoInfo = undoinfo;
   }
 
   function undoinfo() {

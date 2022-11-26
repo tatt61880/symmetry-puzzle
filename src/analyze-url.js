@@ -2,8 +2,8 @@
   'use strict';
 
   if (typeof window !== 'undefined') {
-    window.showkoban = window.showkoban || {};
-    window.showkoban.analyzeUrl = analyzeUrl;
+    window.app = window.app || {};
+    window.app.analyzeUrl = analyzeUrl;
   }
 
   function analyzeUrl() {

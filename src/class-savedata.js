@@ -2,8 +2,8 @@
   'use strict';
 
   if (typeof window !== 'undefined') {
-    window.showkoban = window.showkoban || {};
-    window.showkoban.savedata = savedata;
+    window.app = window.app || {};
+    window.app.savedata = savedata;
   }
 
   const LOCAL_STORAGE_KEY = 'tatt61880-showkoban';
