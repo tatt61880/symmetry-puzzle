@@ -2,7 +2,7 @@
   'use strict';
   Object.freeze(showkoban);
 
-  const VERSION_TEXT = 'v2022.11.25';
+  const VERSION_TEXT = 'v2022.11.26';
 
   const savedata = showkoban.savedata();
 
@@ -502,19 +502,19 @@
   }
 
   function onload() {
-    showkoban.initElems();
+    showkoban.elems.init();
     showkoban.elems.version.textContent = VERSION_TEXT;
     applyLang(savedata.loadLang());
 
     const queryParams = showkoban.analyzeUrl();
     settings = queryParams.settings;
     if (settings.autoMode) {
-      showElem(showkoban.elems.buttonsAuto);
-      showkoban.elems.buttonStop.addEventListener('click', onButtonStop);
-      showkoban.elems.buttonStart.addEventListener('click', onButtonStart);
-      showkoban.elems.buttonPause.addEventListener('click', onButtonPause);
-      showkoban.elems.buttonSpeedDown.addEventListener('click', onButtonSpeedDown);
-      showkoban.elems.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
+      showElem(showkoban.elems.auto.buttons);
+      showkoban.elems.auto.buttonStop.addEventListener('click', onButtonStop);
+      showkoban.elems.auto.buttonStart.addEventListener('click', onButtonStart);
+      showkoban.elems.auto.buttonPause.addEventListener('click', onButtonPause);
+      showkoban.elems.auto.buttonSpeedDown.addEventListener('click', onButtonSpeedDown);
+      showkoban.elems.auto.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
     }
     if (queryParams.levelObj.s === '') {
       levelId = queryParams.id === null ? 1 : queryParams.id;
@@ -872,33 +872,33 @@
   }
 
   function updateButtonSpeedDisplay() {
-    (settingsAuto.interval === settingsAuto.INTERVAL_MAX ? hideElem : showElem)(showkoban.elems.buttonSpeedDown);
-    (settingsAuto.interval === settingsAuto.INTERVAL_MIN ? hideElem : showElem)(showkoban.elems.buttonSpeedUp);
+    (settingsAuto.interval === settingsAuto.INTERVAL_MAX ? hideElem : showElem)(showkoban.elems.auto.buttonSpeedDown);
+    (settingsAuto.interval === 1 ? hideElem : showElem)(showkoban.elems.auto.buttonSpeedUp);
   }
 
   function onButtonStop() {
     settings.autoMode = false;
-    hideElem(showkoban.elems.buttonsAuto);
+    hideElem(showkoban.elems.auto.buttons);
     replaceUrl();
   }
 
   function onButtonStart() {
     settingsAuto.paused = false;
-    hideElem(showkoban.elems.buttonStart);
-    showElem(showkoban.elems.buttonPause);
+    hideElem(showkoban.elems.auto.buttonStart);
+    showElem(showkoban.elems.auto.buttonPause);
     updateButtonSpeedDisplay();
   }
 
   function onButtonPause() {
     settingsAuto.paused = true;
-    showElem(showkoban.elems.buttonStart);
-    hideElem(showkoban.elems.buttonPause);
-    hideElem(showkoban.elems.buttonSpeedDown);
-    hideElem(showkoban.elems.buttonSpeedUp);
+    showElem(showkoban.elems.auto.buttonStart);
+    hideElem(showkoban.elems.auto.buttonPause);
+    hideElem(showkoban.elems.auto.buttonSpeedDown);
+    hideElem(showkoban.elems.auto.buttonSpeedUp);
   }
 
   function onButtonSpeedDown() {
-    showElem(showkoban.elems.buttonSpeedUp);
+    showElem(showkoban.elems.auto.buttonSpeedUp);
     settingsAuto.interval += 2;
     if (settingsAuto.interval >= settingsAuto.INTERVAL_MAX) {
       settingsAuto.interval = settingsAuto.INTERVAL_MAX;
@@ -907,7 +907,7 @@
   }
 
   function onButtonSpeedUp() {
-    showElem(showkoban.elems.buttonSpeedDown);
+    showElem(showkoban.elems.auto.buttonSpeedDown);
     settingsAuto.interval -= 2;
     if (settingsAuto.interval <= settingsAuto.INTERVAL_MIN) {
       settingsAuto.interval = settingsAuto.INTERVAL_MIN;

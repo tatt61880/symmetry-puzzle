@@ -4,10 +4,10 @@
   if (typeof window !== 'undefined') {
     window.showkoban = window.showkoban || {};
     window.showkoban.elems = {};
-    window.showkoban.initElems = initElems;
+    window.showkoban.elems.init = init;
   }
 
-  const elemIds = {
+  const elems = {
     version: 'version',
 
     help: 'button-help',
@@ -40,26 +40,41 @@
 
     url: 'url',
 
-    buttonsAuto: 'buttons-auto',
-    buttonStop: 'button-stop',
-    buttonStart: 'button-start',
-    buttonPause: 'button-pause',
-    buttonSpeedDown: 'button-speed-down',
-    buttonSpeedUp: 'button-speed-up',
+    auto: {
+      buttons: 'buttons-auto',
+      buttonStop: 'button-stop',
+      buttonStart: 'button-start',
+      buttonPause: 'button-pause',
+      buttonSpeedDown: 'button-speed-down',
+      buttonSpeedUp: 'button-speed-up',
+    },
 
     undo: 'button-undo',
     stick: 'stick',
     stickBase: 'stick-base',
   };
 
-  function initElems() {
-    for (const elemName in elemIds) {
-      const elem = document.getElementById(elemIds[elemName]);
-      if (elem === null) {
-        console.error(`Elem not exist. [id=${elemIds[elemName]}]`);
-      }
-      window.showkoban.elems[elemName] = elem;
-    }
+  function init() {
+    initElems(window.showkoban.elems, elems);
     Object.freeze(window.showkoban.elems);
+
+    function initElems(obj, elems) {
+      for (const key in elems) {
+        const value = elems[key];
+        initElem(obj, key, value);
+      }
+
+      function initElem(obj, key, value) {
+        if (typeof value === 'object') {
+          obj[key] = {};
+          initElems(obj[key], value);
+        } else {
+          obj[key] = document.getElementById(value);
+          if (obj[key] === null) {
+            console.error(`Elem not exist. [id=${value}]`);
+          }
+        }
+      }
+    }
   }
 })();
