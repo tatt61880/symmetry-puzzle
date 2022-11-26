@@ -35,6 +35,15 @@
 
     svg: 'svg-main',
 
+    auto: {
+      buttons: 'buttons-auto',
+      buttonStop: 'button-stop',
+      buttonStart: 'button-start',
+      buttonPause: 'button-pause',
+      buttonSpeedDown: 'button-speed-down',
+      buttonSpeedUp: 'button-speed-up',
+    },
+
     edit: {
       editbox: 'editbox',
       editShape: 'edit-drawing-shape',
@@ -46,15 +55,6 @@
     },
 
     url: 'url',
-
-    auto: {
-      buttons: 'buttons-auto',
-      buttonStop: 'button-stop',
-      buttonStart: 'button-start',
-      buttonPause: 'button-pause',
-      buttonSpeedDown: 'button-speed-down',
-      buttonSpeedUp: 'button-speed-up',
-    },
 
     undo: 'button-undo',
     stick: 'stick',
@@ -68,10 +68,6 @@
     function initElems(obj, elems) {
       for (const key in elems) {
         const value = elems[key];
-        initElem(obj, key, value);
-      }
-
-      function initElem(obj, key, value) {
         if (typeof value === 'object') {
           obj[key] = {};
           initElems(obj[key], value);
