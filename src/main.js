@@ -899,7 +899,6 @@
   }
 
   function onButtonSpeedDown() {
-    showElem(app.elems.auto.buttonSpeedUp);
     settingsAuto.interval += 2;
     if (settingsAuto.interval >= settingsAuto.INTERVAL_MAX) {
       settingsAuto.interval = settingsAuto.INTERVAL_MAX;
@@ -908,7 +907,6 @@
   }
 
   function onButtonSpeedUp() {
-    showElem(app.elems.auto.buttonSpeedDown);
     settingsAuto.interval -= 2;
     if (settingsAuto.interval <= settingsAuto.INTERVAL_MIN) {
       settingsAuto.interval = settingsAuto.INTERVAL_MIN;
