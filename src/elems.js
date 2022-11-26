@@ -10,33 +10,40 @@
   const elems = {
     version: 'version',
 
-    help: 'button-help',
-    helpDialog: 'dialog-help',
-    helpDialogDiv: 'dialog-help-div',
-    langEn: 'setting-lang-en',
-    langJa: 'setting-lang-ja',
+    help: {
+      button: 'button-help',
+      dialog: 'dialog-help',
+      dialogDiv: 'dialog-help-div',
+      langEn: 'setting-lang-en',
+      langJa: 'setting-lang-ja',
+    },
 
-    levelReset: 'button-level-reset',
+    level: {
+      reset: 'button-level-reset',
+      prev: 'button-level-prev',
+      id: 'level-id',
+      next: 'button-level-next',
+      edit: 'button-level-edit',
+    },
 
-    levelPrev: 'button-level-prev',
-    levelId: 'level-id',
-    levelNext: 'button-level-next',
-
-    levelEdit: 'button-level-edit',
-
-    levels: 'button-levels',
-    levelsDialog: 'dialog-levels',
-    levelsDialogDiv: 'dialog-levels-div',
-    levelsDialogSvg: 'dialog-levels-svg',
+    levels: {
+      button: 'button-levels',
+      dialog: 'dialog-levels',
+      dialogDiv: 'dialog-levels-div',
+      dialogSvg: 'dialog-levels-svg',
+    },
 
     svg: 'svg-main',
-    editbox: 'editbox',
-    editShape: 'edit-drawing-shape',
-    editState: 'edit-drawing-state',
-    wInc: 'w-inc',
-    wDec: 'w-dec',
-    hInc: 'h-inc',
-    hDec: 'h-dec',
+
+    edit: {
+      editbox: 'editbox',
+      editShape: 'edit-drawing-shape',
+      editState: 'edit-drawing-state',
+      wDec: 'w-dec',
+      wInc: 'w-inc',
+      hDec: 'h-dec',
+      hInc: 'h-inc',
+    },
 
     url: 'url',
 

@@ -220,11 +220,11 @@
   function resetLevel() {
     clearTimeout(nextLevelTimerId);
 
-    showkoban.elems.levelReset.classList.add('low-contrast');
+    showkoban.elems.level.reset.classList.add('low-contrast');
     showkoban.elems.svg.textContent = '';
 
     setTimeout(() => {
-      showkoban.elems.levelReset.classList.remove('low-contrast');
+      showkoban.elems.level.reset.classList.remove('low-contrast');
       loadLevelObj(level.getLevelObj(), true);
     }, RESET_DELAY);
   }
@@ -266,7 +266,7 @@
     if (id > showkoban.levels.length) id = showkoban.levels.length;
     levelId = id;
     updateLevelVisibility();
-    showkoban.elems.levelId.textContent = levelId;
+    showkoban.elems.level.id.textContent = levelId;
     const levelObj = showkoban.levels[levelId - 1];
     console.log(`[LEVEL-${id}]${levelObj.ja !== undefined ? ` ${levelObj.ja}` : ''}`);
 
@@ -370,15 +370,15 @@
 
   function updateLevelVisibility() {
     if (levelId === null) {
-      hideElem(showkoban.elems.levelPrev);
-      hideElem(showkoban.elems.levelId);
-      hideElem(showkoban.elems.levelNext);
-      showElem(showkoban.elems.levelEdit);
+      hideElem(showkoban.elems.level.prev);
+      hideElem(showkoban.elems.level.id);
+      hideElem(showkoban.elems.level.next);
+      showElem(showkoban.elems.level.edit);
     } else {
-      (levelId === 1 ? hideElem : showElem)(showkoban.elems.levelPrev);
-      showElem(showkoban.elems.levelId);
-      (levelId === showkoban.levels.length ? hideElem : showElem)(showkoban.elems.levelNext);
-      hideElem(showkoban.elems.levelEdit);
+      (levelId === 1 ? hideElem : showElem)(showkoban.elems.level.prev);
+      showElem(showkoban.elems.level.id);
+      (levelId === showkoban.levels.length ? hideElem : showElem)(showkoban.elems.level.next);
+      hideElem(showkoban.elems.level.edit);
     }
   }
 
@@ -405,10 +405,10 @@
   function updateEditLevel() {
     if (editMode) {
       showElem(showkoban.elems.url);
-      showElem(showkoban.elems.editbox);
+      showElem(showkoban.elems.edit.editbox);
     } else {
       hideElem(showkoban.elems.url);
-      hideElem(showkoban.elems.editbox);
+      hideElem(showkoban.elems.edit.editbox);
     }
     updateUrl();
   }
@@ -420,11 +420,11 @@
   }
 
   function showHelpDialog() {
-    showkoban.elems.helpDialog.showModal();
+    showkoban.elems.help.dialog.showModal();
   }
 
   function closeHelpDialog() {
-    showkoban.elems.helpDialog.close();
+    showkoban.elems.help.dialog.close();
   }
 
   function applyLang(lang) {
@@ -448,12 +448,12 @@
   }
 
   function showLevelsDialog() {
-    showkoban.elems.levelsDialogSvg.innerHTML = '';
+    showkoban.elems.levels.dialogSvg.innerHTML = '';
     const HEIGHT = 90;
     const WIDTH = 90;
     const COLS = 5;
     const MARGIN = 20;
-    showkoban.elems.levelsDialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(showkoban.levels.length / COLS)}px`);
+    showkoban.elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(showkoban.levels.length / COLS)}px`);
 
     let id = 0;
     for (const levelObj of showkoban.levels) {
@@ -492,13 +492,13 @@
         loadLevelById(id);
         closeLevelsDialog();
       }, false);
-      showkoban.elems.levelsDialogSvg.appendChild(g);
+      showkoban.elems.levels.dialogSvg.appendChild(g);
     }
-    showkoban.elems.levelsDialog.showModal();
+    showkoban.elems.levels.dialog.showModal();
   }
 
   function closeLevelsDialog() {
-    showkoban.elems.levelsDialog.close();
+    showkoban.elems.levels.dialog.close();
   }
 
   function onload() {
@@ -532,10 +532,10 @@
         const elem = document.getElementById(`edit_${char}`);
         if (elem === null) continue;
         const func = () => {
-          showkoban.elems.editShape.setAttribute('fill', showkoban.colors[state].fill);
-          showkoban.elems.editShape.setAttribute('stroke', showkoban.colors[state].stroke);
-          showkoban.elems.editState.textContent = char;
-          showkoban.elems.editState.setAttribute('fill', showkoban.colors[state].text);
+          showkoban.elems.edit.editShape.setAttribute('fill', showkoban.colors[state].fill);
+          showkoban.elems.edit.editShape.setAttribute('stroke', showkoban.colors[state].stroke);
+          showkoban.elems.edit.editState.textContent = char;
+          showkoban.elems.edit.editState.setAttribute('fill', showkoban.colors[state].text);
           drawingState = state;
         };
         editboxFunctions[char] = func;
@@ -560,10 +560,10 @@
       }
       editboxFunctions[showkoban.states.stateToChar[showkoban.states.none]]();
 
-      showkoban.elems.wDec.addEventListener('click', () => resize(-1, 0), false);
-      showkoban.elems.wInc.addEventListener('click', () => resize(1, 0), false);
-      showkoban.elems.hDec.addEventListener('click', () => resize(0, -1), false);
-      showkoban.elems.hInc.addEventListener('click', () => resize(0, 1), false);
+      showkoban.elems.edit.wDec.addEventListener('click', () => resize(-1, 0), false);
+      showkoban.elems.edit.wInc.addEventListener('click', () => resize(1, 0), false);
+      showkoban.elems.edit.hDec.addEventListener('click', () => resize(0, -1), false);
+      showkoban.elems.edit.hInc.addEventListener('click', () => resize(0, 1), false);
     }
 
     {
@@ -575,19 +575,19 @@
       document.addEventListener('keydown', keydown, false);
       document.addEventListener('keyup', keyup, false);
 
-      showkoban.elems.helpDialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
-      showkoban.elems.help.addEventListener('click', showHelpDialog, false);
-      showkoban.elems.helpDialog.addEventListener('click', closeHelpDialog, false);
-      showkoban.elems.langEn.addEventListener('click', (e) => selectLang(e, 'en'), false);
-      showkoban.elems.langJa.addEventListener('click', (e) => selectLang(e, 'ja'), false);
+      showkoban.elems.help.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
+      showkoban.elems.help.button.addEventListener('click', showHelpDialog, false);
+      showkoban.elems.help.dialog.addEventListener('click', closeHelpDialog, false);
+      showkoban.elems.help.langEn.addEventListener('click', (e) => selectLang(e, 'en'), false);
+      showkoban.elems.help.langJa.addEventListener('click', (e) => selectLang(e, 'ja'), false);
 
-      showkoban.elems.levelReset.addEventListener('click', resetLevel, false);
-      showkoban.elems.levelPrev.addEventListener('click', gotoPrevLevel, false);
-      showkoban.elems.levelNext.addEventListener('click', gotoNextLevel, false);
-      showkoban.elems.levelEdit.addEventListener('click', toggleEditLevel, false);
-      showkoban.elems.levels.addEventListener('click', showLevelsDialog, false);
-      showkoban.elems.levelsDialog.addEventListener('click', closeLevelsDialog, false);
-      showkoban.elems.levelsDialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
+      showkoban.elems.level.reset.addEventListener('click', resetLevel, false);
+      showkoban.elems.level.prev.addEventListener('click', gotoPrevLevel, false);
+      showkoban.elems.level.next.addEventListener('click', gotoNextLevel, false);
+      showkoban.elems.level.edit.addEventListener('click', toggleEditLevel, false);
+      showkoban.elems.levels.button.addEventListener('click', showLevelsDialog, false);
+      showkoban.elems.levels.dialog.addEventListener('click', closeLevelsDialog, false);
+      showkoban.elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
 
       showkoban.elems.svg.addEventListener(pointerdownEventName, editSvg, false);
       showkoban.elems.svg.oncontextmenu = function() {return !editMode;};
