@@ -3,8 +3,9 @@
 
   if (typeof window !== 'undefined') {
     window.showkoban = window.showkoban || {};
-    window.showkoban.elems = {};
-    window.showkoban.elems.init = init;
+    window.showkoban.elems = {
+      init: init,
+    };
   }
 
   const elems = {
