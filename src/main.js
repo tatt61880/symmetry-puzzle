@@ -1,5 +1,6 @@
 (function() {
   'use strict';
+  const app = window.app;
   Object.freeze(app);
 
   const VERSION_TEXT = 'v2022.11.26';

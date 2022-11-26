@@ -10,7 +10,6 @@
   },
   "extends": "eslint:recommended",
   "globals": {
-    "showkoban": true
   },
   "rules": {
     "comma-spacing": "error",
