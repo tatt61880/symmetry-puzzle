@@ -792,10 +792,13 @@
     const y = curXY.y;
     if (!level.isInside(x, y)) return;
 
-    // 画面端付近はスワイプ操作できるように編集操作を無効にします。
-    if (isTouchScreenNearEdge(e)) return;
+    // タッチ環境の場合は、画面左端は必ずスワイプ操作できるように編集操作を無効化します。
+    if (isTouchScreenAndNearLeftEdge(e)) {
+      return;
+    }
 
     e.preventDefault();
+
     if ((e.button === 0 || e.button === undefined) && level.getState(x, y) !== drawingState) {
       addUndo(null);
       level.setState(x, y, drawingState);
@@ -815,8 +818,8 @@
     }
     return;
 
-    // タッチ環境において、画面端付近か否か。
-    function isTouchScreenNearEdge(e) {
+    // タッチ環境かつ画面左端付近か否か。
+    function isTouchScreenAndNearLeftEdge(e) {
       if (e.touches === undefined) return false;
       const x = e.touches[0].clientX;
       return x < 30; // 画面の左端付近ならtrue
