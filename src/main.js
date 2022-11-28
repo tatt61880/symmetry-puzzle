@@ -467,7 +467,7 @@
       const levelSvg = level.createSvg(blockSize);
       g.appendChild(levelSvg);
       {
-        const text = app.svg.createText(blockSize, {x: -0.1, y: -0.8, text: id});
+        const text = app.svg.createText(blockSize, {x: -0.1, y: -0.8, text: id, fill: 'black'});
         text.setAttribute('dominant-baseline', 'middle');
         text.setAttribute('text-anchor', 'middle');
         text.setAttribute('font-weight', 'bold');
@@ -548,12 +548,11 @@
           elem.appendChild(rect);
         }
         {
-          const text = app.svg.createText(30, {x: 0.5, y: 0, text: char});
+          const text = app.svg.createText(30, {x: 0.5, y: 0, text: char, fill: app.colors[state].text});
           text.setAttribute('dominant-baseline', 'middle');
           text.setAttribute('text-anchor', 'middle');
           text.setAttribute('font-weight', 'bold');
           text.setAttribute('font-size', '18px');
-          text.setAttribute('fill', app.colors[state].text);
           elem.appendChild(text);
         }
       }
@@ -701,10 +700,9 @@
     const bestStep = level.getBestStep();
     // クリアメッセージ
     if (clearFlag) {
-      const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: 'CLEAR'});
+      const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: 'CLEAR', fill: 'blue'});
       text.setAttribute('font-size', `${blockSize * 0.8}px`);
       text.setAttribute('font-weight', 'bold');
-      text.setAttribute('fill', 'blue');
       g.appendChild(text);
       const clearStep = undoInfo.getIndex();
       {
@@ -732,19 +730,18 @@
       }
 
       {
-        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${clearStep} steps`});
+        const color = getStepColor(clearStep, bestStep);
+        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${clearStep} steps`, fill: color});
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
-        text.setAttribute('fill', getStepColor(clearStep, bestStep));
         g.appendChild(text);
       }
       if (settings.autoMode) {
         nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
       }
     } else {
-      const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: `${undoInfo.getIndex()} steps`});
+      const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: `${undoInfo.getIndex()} steps`, fill: 'white'});
       text.setAttribute('font-weight', 'bold');
-      text.setAttribute('fill', 'white');
       g.appendChild(text);
     }
 
@@ -753,10 +750,10 @@
       const levelObj = level.getLevelObj();
       const highestScore = savedata.getHighestScore(levelObj);
       if (highestScore !== null) {
-        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`});
+        const color = getStepColor(highestScore, bestStep);
+        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`, fill: color});
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
-        text.setAttribute('fill', getStepColor(highestScore, bestStep));
         g.appendChild(text);
       }
     }

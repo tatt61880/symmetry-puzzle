@@ -54,6 +54,7 @@
     text.textContent = param.text;
     text.setAttribute('dominant-baseline', 'middle');
     text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('fill', param.fill);
     return text;
   };
 
