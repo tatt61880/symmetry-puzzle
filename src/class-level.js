@@ -30,7 +30,6 @@
   const dxs = [0, 1, 0, -1, 1, 1, -1, -1];
 
   const blockBorderWidth = 0.12;
-  const blockBorderWidthHalf = blockBorderWidth / 2;
 
   function level() {
     return new Level();
@@ -422,30 +421,22 @@
         }
         // 上側
         if (!flags[dirs.u]) {
-          const line = app.svg.createLine(blockSize, {x1: x, y1: y + blockBorderWidthHalf, x2: x + 1, y2: y + blockBorderWidthHalf});
-          line.setAttribute('stroke', color.stroke);
-          line.setAttribute('stroke-width', blockBorderWidth * blockSize);
+          const line = app.svg.createRect(blockSize, {x: x, y: y, width: 1, height: blockBorderWidth, fill: color.stroke});
           gElem.appendChild(line);
         }
         // 右側
         if (!flags[dirs.r]) {
-          const line = app.svg.createLine(blockSize, {x1: x + 1 - blockBorderWidthHalf, y1: y, x2: x + 1 - blockBorderWidthHalf, y2: y + 1});
-          line.setAttribute('stroke', color.stroke);
-          line.setAttribute('stroke-width', blockBorderWidth * blockSize);
+          const line = app.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y: y, width: blockBorderWidth, height: 1, fill: color.stroke});
           gElem.appendChild(line);
         }
         // 下側
         if (!flags[dirs.d]) {
-          const line = app.svg.createLine(blockSize, {x1: x, y1: y + 1 - blockBorderWidthHalf, x2: x + 1, y2: y + 1 - blockBorderWidthHalf});
-          line.setAttribute('stroke', color.stroke);
-          line.setAttribute('stroke-width', blockBorderWidth * blockSize);
+          const line = app.svg.createRect(blockSize, {x: x, y: y + 1 - blockBorderWidth, width: 1, height: blockBorderWidth, fill: color.stroke});
           gElem.appendChild(line);
         }
         // 左側
         if (!flags[dirs.l]) {
-          const line = app.svg.createLine(blockSize, {x1: x + blockBorderWidthHalf, y1: y, x2: x + blockBorderWidthHalf, y2: y + 1});
-          line.setAttribute('stroke', color.stroke);
-          line.setAttribute('stroke-width', blockBorderWidth * blockSize);
+          const line = app.svg.createRect(blockSize, {x: x, y: y, width: blockBorderWidth, height: 1, fill: color.stroke});
           gElem.appendChild(line);
         }
         // 右上
@@ -479,8 +470,8 @@
                 [x + 1, y],
                 [x + 1, y + size],
               ],
+              fill: color.stroke,
             });
-            polygon.setAttribute('fill', color.stroke);
             gElem.appendChild(polygon);
           }
           // 右下
@@ -491,8 +482,8 @@
                 [x + 1, y + 1],
                 [x + 1 - size, y + 1],
               ],
+              fill: color.stroke,
             });
-            polygon.setAttribute('fill', color.stroke);
             gElem.appendChild(polygon);
           }
           // 左下
@@ -503,8 +494,8 @@
                 [x + size, y + 1],
                 [x, y + 1],
               ],
+              fill: color.stroke,
             });
-            polygon.setAttribute('fill', color.stroke);
             gElem.appendChild(polygon);
           }
           // 左上
@@ -515,8 +506,8 @@
                 [x + size, y],
                 [x, y + size],
               ],
+              fill: color.stroke,
             });
-            polygon.setAttribute('fill', color.stroke);
             gElem.appendChild(polygon);
           }
         }

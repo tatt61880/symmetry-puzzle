@@ -661,15 +661,13 @@
       const g = app.svg.createG();
       // 横線
       for (let y = 2; y < level.getHeight() - 1; ++y) {
-        const line = app.svg.createLine(blockSize, {x1: 1, y1: y, x2: level.getWidth() - 1, y2: y});
-        line.setAttribute('stroke', app.colors.line);
+        const line = app.svg.createLine(blockSize, {x1: 1, y1: y, x2: level.getWidth() - 1, y2: y, stroke: app.colors.line});
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
       // 縦線
       for (let x = 2; x < level.getWidth() - 1; ++x) {
-        const line = app.svg.createLine(blockSize, {x1: x, y1: 1, x2: x, y2: level.getHeight() - 1});
-        line.setAttribute('stroke', app.colors.line);
+        const line = app.svg.createLine(blockSize, {x1: x, y1: 1, x2: x, y2: level.getHeight() - 1, stroke: app.colors.line});
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }

@@ -20,6 +20,8 @@
     line.setAttribute('y1', blockSize * param.y1);
     line.setAttribute('x2', blockSize * param.x2);
     line.setAttribute('y2', blockSize * param.y2);
+    line.setAttribute('stroke-width', '1px');
+    line.setAttribute('stroke', param.stroke);
     return line;
   };
 
@@ -41,6 +43,7 @@
       points += `${blockSize * point[0]},${blockSize * point[1]}`;
     }
     polygon.setAttribute('points', points);
+    polygon.setAttribute('fill', param.fill);
     return polygon;
   };
 
