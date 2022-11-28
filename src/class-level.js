@@ -412,8 +412,7 @@
       const color = app.colors[state];
       {
         const eps = 0.01; // サイズを少し大きくすることで、隙間をなくします。
-        const rect = app.svg.createRect(blockSize, {x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2});
-        rect.setAttribute('fill', color.fill);
+        const rect = app.svg.createRect(blockSize, {x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2, fill: color.fill});
         gElem.appendChild(rect);
       }
       {
@@ -451,26 +450,22 @@
         }
         // 右上
         if (flags[dirs.u] && flags[dirs.r] && !flags[dirs.ur]) {
-          const rect = app.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y: y, width: blockBorderWidth, height: blockBorderWidth});
-          rect.setAttribute('fill', color.stroke);
+          const rect = app.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y: y, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke});
           gElem.appendChild(rect);
         }
         // 右下
         if (flags[dirs.d] && flags[dirs.r] && !flags[dirs.dr]) {
-          const rect = app.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth});
-          rect.setAttribute('fill', color.stroke);
+          const rect = app.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke});
           gElem.appendChild(rect);
         }
         // 左下
         if (flags[dirs.d] && flags[dirs.l] && !flags[dirs.dl]) {
-          const rect = app.svg.createRect(blockSize, {x: x, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth});
-          rect.setAttribute('fill', color.stroke);
+          const rect = app.svg.createRect(blockSize, {x: x, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke});
           gElem.appendChild(rect);
         }
         // 左上
         if (flags[dirs.u] && flags[dirs.l] && !flags[dirs.ul]) {
-          const rect = app.svg.createRect(blockSize, {x: x, y: y, width: blockBorderWidth, height: blockBorderWidth});
-          rect.setAttribute('fill', color.stroke);
+          const rect = app.svg.createRect(blockSize, {x: x, y: y, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke});
           gElem.appendChild(rect);
         }
 
@@ -542,7 +537,7 @@
             {
               const dd = 0.2;
               const ddd = 0.15;
-              const rectArg = {x: x - dx, y: y - dy, width: 1, height: 1};
+              const rectArg = {x: x - dx, y: y - dy, width: 1, height: 1, fill: color.fill};
               if (dx === 0) {
                 if (!flags[dirs.l]) rectArg.x += dd;
                 if (!flags[dirs.l]) rectArg.width -= dd;
@@ -562,8 +557,6 @@
               }
 
               const rect = window.app.svg.createRect(blockSize, rectArg);
-              rect.setAttribute('fill', color.fill);
-              rect.setAttribute('fill-opacity', 1);
               rect.setAttribute('transform', `translate(${dx},${dy})`);
               gShadow.appendChild(rect);
             }
@@ -579,7 +572,7 @@
           text.setAttribute('fill', app.colors[state].text);
         } else {
           text.setAttribute('fill', app.colors[state].error);
-          const rect = app.svg.createRect(blockSize, {x: x, y: y, width: 1, height: 1});
+          const rect = app.svg.createRect(blockSize, {x: x, y: y, width: 1, height: 1, fill: 'black'});
           rect.setAttribute('opacity', 0.3);
           gElem.appendChild(rect);
         }

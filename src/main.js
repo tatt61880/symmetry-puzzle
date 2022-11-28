@@ -478,9 +478,8 @@
         const highestScore = savedata.getHighestScore(levelObj);
         const bestStep = level.getBestStep();
         if (highestScore !== null) {
-          const rect = app.svg.createRect(blockSize, {x: -1.5, y: 1.5, width: 2, height: 2});
           const color = getStepColor(highestScore, bestStep);
-          rect.setAttribute('fill', color);
+          const rect = app.svg.createRect(blockSize, {x: -1.5, y: 1.5, width: 2, height: 2, fill: color});
           g.appendChild(rect);
         }
       }
@@ -543,8 +542,7 @@
         elem.addEventListener('click', func, false);
 
         {
-          const rect = app.svg.createRect(30, {x: 0, y: 0, width: 1, height: 1});
-          rect.setAttribute('fill', app.colors[state].fill);
+          const rect = app.svg.createRect(30, {x: 0, y: 0, width: 1, height: 1, fill: app.colors[state].fill});
           rect.setAttribute('stroke', app.colors[state].stroke);
           rect.setAttribute('stroke-width', 4);
           elem.appendChild(rect);
@@ -686,23 +684,19 @@
     const g = app.svg.createG();
 
     {
-      const rect = app.svg.createRect(blockSize, {x: 0, y: 0, width: level.getWidth(), height: 1});
-      rect.setAttribute('fill', paddingColor);
+      const rect = app.svg.createRect(blockSize, {x: 0, y: 0, width: level.getWidth(), height: 1, fill: paddingColor});
       g.appendChild(rect);
     }
     {
-      const rect = app.svg.createRect(blockSize, {x: 0, y: 0, width: 1, height: level.getHeight()});
-      rect.setAttribute('fill', paddingColor);
+      const rect = app.svg.createRect(blockSize, {x: 0, y: 0, width: 1, height: level.getHeight(), fill: paddingColor});
       g.appendChild(rect);
     }
     {
-      const rect = app.svg.createRect(blockSize, {x: 0, y: level.getHeight() - 1, width: level.getWidth(), height: 1});
-      rect.setAttribute('fill', paddingColor);
+      const rect = app.svg.createRect(blockSize, {x: 0, y: level.getHeight() - 1, width: level.getWidth(), height: 1, fill: paddingColor});
       g.appendChild(rect);
     }
     {
-      const rect = app.svg.createRect(blockSize, {x: level.getWidth() - 1, y: 0, width: 1, height: level.getHeight()});
-      rect.setAttribute('fill', paddingColor);
+      const rect = app.svg.createRect(blockSize, {x: level.getWidth() - 1, y: 0, width: 1, height: level.getHeight(), fill: paddingColor});
       g.appendChild(rect);
     }
 

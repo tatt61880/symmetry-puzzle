@@ -29,6 +29,7 @@
     rect.setAttribute('y', blockSize * param.y);
     rect.setAttribute('width', blockSize * param.width);
     rect.setAttribute('height', blockSize * param.height);
+    rect.setAttribute('fill', param.fill);
     return rect;
   };
 
