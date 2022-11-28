@@ -456,7 +456,6 @@
     const MARGIN = 20;
     app.elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(app.levels.length / COLS)}px`);
 
-    const blockSize = 5;
     let id = 0;
     for (const levelObj of app.levels) {
       id++;
@@ -464,10 +463,11 @@
       g.classList.add('level-select');
       const level = app.Level();
       level.applyObj(levelObj, true);
+      const blockSize = Math.min((WIDTH - 20) / (level.getW() + 4), (HEIGHT - 20) / (level.getH() + 4));
       const levelSvg = level.createSvg(blockSize);
       g.appendChild(levelSvg);
       {
-        const text = app.svg.createText(blockSize, {x: -0.1, y: -0.8, text: id, fill: 'black'});
+        const text = app.svg.createText(5, {x: -0.1, y: -0.8, text: id, fill: 'black'});
         text.setAttribute('dominant-baseline', 'middle');
         text.setAttribute('text-anchor', 'middle');
         text.setAttribute('font-weight', 'bold');
@@ -479,7 +479,7 @@
         const bestStep = level.getBestStep();
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
-          const rect = app.svg.createRect(blockSize, {x: -1.5, y: 1.5, width: 2, height: 2, fill: color});
+          const rect = app.svg.createRect(5, {x: -1.5, y: 1.5, width: 2, height: 2, fill: color});
           g.appendChild(rect);
         }
       }
