@@ -456,9 +456,9 @@
     const MARGIN = 20;
     app.elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(app.levels.length / COLS)}px`);
 
+    const blockSize = 5;
     let id = 0;
     for (const levelObj of app.levels) {
-      const blockSize = 5;
       id++;
       const g = app.svg.createG();
       g.classList.add('level-select');
