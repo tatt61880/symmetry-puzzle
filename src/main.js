@@ -3,7 +3,7 @@
   const app = window.app;
   Object.freeze(app);
 
-  const VERSION_TEXT = 'v2022.11.28';
+  const VERSION_TEXT = 'v2022.12.03';
 
   const savedata = app.savedata();
 
@@ -42,6 +42,7 @@
 
   let editMode = false;
   let temporaryShowCharsFlag = false;
+  let secretId = 0;
 
   let levelId = null;
 
@@ -774,12 +775,37 @@
   }
 
   function editSvg(e) {
-    if (!editMode) return;
-
     const curXY = getCurXY(e);
     const x = curXY.x;
     const y = curXY.y;
-    if (!level.isInside(x, y)) return;
+    if (!editMode) {
+      const xMax = level.getW() + 3;
+      const yMax = level.getH() + 3;
+      switch (secretId) {
+      case 0:
+        secretId = (x === 0 && y === 0) ? secretId + 1 : 0;
+        break;
+      case 1:
+        secretId = (x === xMax && y === 0) ? secretId + 1 : 0;
+        break;
+      case 2:
+        secretId = (x === xMax && y === yMax) ? secretId + 1 : 0;
+        break;
+      case 3:
+        secretId = (x === 0 && y === yMax) ? secretId + 1 : 0;
+        break;
+      default:
+        break;
+      }
+      if (secretId === 4) {
+        toggleEditLevel();
+      }
+      return;
+    }
+
+    if (!level.isInside(x, y)) {
+      return;
+    }
 
     // タッチ環境の場合は、画面左端は必ずスワイプ操作できるように編集操作を無効化します。
     if (isTouchScreenAndNearLeftEdge(e)) {
