@@ -463,11 +463,12 @@
       g.classList.add('level-select');
       const level = app.Level();
       level.applyObj(levelObj, true);
-      const blockSize = Math.min((WIDTH - 20) / (level.getW() + 4), (HEIGHT - 20) / (level.getH() + 4));
+      const blockSize = Math.min((WIDTH - 30) / (level.getW() + 2), (HEIGHT - 30) / (level.getH() + 2));
       const levelSvg = level.createSvg(blockSize);
+      levelSvg.setAttribute('transform', `translate(${-blockSize + MARGIN},${-blockSize + MARGIN})`);
       g.appendChild(levelSvg);
       {
-        const text = app.svg.createText(5, {x: -0.1, y: -0.8, text: id, fill: 'black'});
+        const text = app.svg.createText(5, {x: 2.1, y: 2, text: id, fill: 'black'});
         text.setAttribute('dominant-baseline', 'middle');
         text.setAttribute('text-anchor', 'middle');
         text.setAttribute('font-weight', 'bold');
@@ -479,12 +480,12 @@
         const bestStep = level.getBestStep();
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
-          const rect = app.svg.createRect(5, {x: -1.5, y: 1.5, width: 2, height: 2, fill: color});
+          const rect = app.svg.createRect(5, {x: 1, y: 4.5, width: 2, height: 2, fill: color});
           g.appendChild(rect);
         }
       }
-      const x = ((id - 1) % COLS) * WIDTH + MARGIN;
-      const y = Math.floor((id - 1) / COLS) * HEIGHT + MARGIN;
+      const x = ((id - 1) % COLS) * WIDTH;
+      const y = Math.floor((id - 1) / COLS) * HEIGHT;
       g.setAttribute('transform', `translate(${x},${y})`);
       g.setAttribute('data-id', id);
       g.addEventListener('click', function() {
