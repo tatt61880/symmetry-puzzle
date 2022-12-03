@@ -248,38 +248,40 @@
 
   <div class="inner noselect" style="height: 210px">
     <svg id="svg-controller" width="480" height="210">
-      <rect x="0" y="0" width="480" height="250" fill="#eee" stroke="none" />
+      <g  transform="translate(240,105)">
+        <rect x="-210" y="-105" width="420" height="210" fill="#eee" stroke="none" />
 
-      <g id="button-undo" class="button" transform="translate(105,105) scale(1.5,1.5)">
-        <circle cx="0" cy="0" r="28" fill="lightgray" stroke="gray" stroke-width="4" />
-        <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="gray" stroke-width="4" />
-        <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="gray" stroke="none" stroke-width="4" />
-        <text x="0" y="45" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="gray">z</text>
-      </g>
-
-      <g id="stick-base" class="stick" transform="translate(375,105) scale(1.5,1.5)">
-        <!-- 範囲 -->
-        <rect x="-60" y="-60" width="120" height="120" fill="lightgray" stroke="none" />
-        <!-- 軸 -->
-        <circle cx="0" cy="0" r="14" fill="cyan" stroke="#555" stroke-width="3" />
-        <!-- 線 -->
-        <g>
-          <circle cx="0" cy="0" r="30" fill="none" stroke="#555" stroke-width="1" />
-          <line x1="21.21" y1="-21.21" x2="60" y2="-60" fill="none" stroke="#555" stroke-width="1" />
-          <line x1="21.21" y1="21.21" x2="60" y2="60" fill="none" stroke="#555" stroke-width="1" />
-          <line x1="-21.21" y1="21.21" x2="-60" y2="60" fill="none" stroke="#555" stroke-width="1" />
-          <line x1="-21.21" y1="-21.21" x2="-60" y2="-60" fill="none" stroke="#555" stroke-width="1" />
-          <polygon transform="translate(0, -45) rotate(0 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue"/>
-          <polygon transform="translate(45, 0) rotate(90 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue" />
-          <polygon transform="translate(0, 45) rotate(180 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue" />
-          <polygon transform="translate(-45, 0) rotate(270 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue" />
-          <rect x="-60" y="-60" width="120" height="120" fill="none" stroke="#555" />
+        <g id="button-undo" class="button" transform="translate(-105,0) scale(1.5,1.5)">
+          <circle cx="0" cy="0" r="28" fill="lightgray" stroke="gray" stroke-width="4" />
+          <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="gray" stroke-width="4" />
+          <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="gray" stroke="none" stroke-width="4" />
+          <text x="0" y="45" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="gray">z</text>
         </g>
-        <!-- スティック本体 -->
-        <g id="stick" style="transform-origin: 0 0 -30px">
-          <circle cx="0" cy="0" r="28" fill="cyan" stroke="blue" stroke-width="4" />
-          <circle cx="0" cy="0" r="18" fill="none" stroke="blue" stroke-width="4" />
-          <circle cx="0" cy="0" r="8" fill="none" stroke="blue" stroke-width="4" />
+
+        <g id="stick-base" class="stick" transform="translate(105,0) scale(1.5,1.5)">
+          <!-- 範囲 -->
+          <rect x="-60" y="-60" width="120" height="120" fill="lightgray" stroke="none" />
+          <!-- 軸 -->
+          <circle cx="0" cy="0" r="14" fill="cyan" stroke="#555" stroke-width="3" />
+          <!-- 線 -->
+          <g>
+            <circle cx="0" cy="0" r="30" fill="none" stroke="#555" stroke-width="1" />
+            <line x1="21.21" y1="-21.21" x2="60" y2="-60" fill="none" stroke="#555" stroke-width="1" />
+            <line x1="21.21" y1="21.21" x2="60" y2="60" fill="none" stroke="#555" stroke-width="1" />
+            <line x1="-21.21" y1="21.21" x2="-60" y2="60" fill="none" stroke="#555" stroke-width="1" />
+            <line x1="-21.21" y1="-21.21" x2="-60" y2="-60" fill="none" stroke="#555" stroke-width="1" />
+            <polygon transform="translate(0, -45) rotate(0 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue"/>
+            <polygon transform="translate(45, 0) rotate(90 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue" />
+            <polygon transform="translate(0, 45) rotate(180 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue" />
+            <polygon transform="translate(-45, 0) rotate(270 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue" />
+            <rect x="-60" y="-60" width="120" height="120" fill="none" stroke="#555" />
+          </g>
+          <!-- スティック本体 -->
+          <g id="stick" style="transform-origin: 0 0 -30px">
+            <circle cx="0" cy="0" r="28" fill="cyan" stroke="blue" stroke-width="4" />
+            <circle cx="0" cy="0" r="18" fill="none" stroke="blue" stroke-width="4" />
+            <circle cx="0" cy="0" r="8" fill="none" stroke="blue" stroke-width="4" />
+          </g>
         </g>
       </g>
     </svg>
