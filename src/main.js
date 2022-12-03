@@ -146,9 +146,9 @@
     e.preventDefault();
     if (!inputFlag || settings.autoMode) return;
     const cursorPos = getCursorPos(app.elems.stickBase, e);
-    const ax = cursorPos.x - 90.0;
-    const ay = cursorPos.y - 90.0;
-    const minDist = 45;
+    const ax = cursorPos.x - 120.0;
+    const ay = cursorPos.y - 120.0;
+    const minDist = 60;
     if (ax ** 2 + ay ** 2 < minDist ** 2) {
       inputDir = dirs.neutral;
     } else if (Math.abs(ax) > Math.abs(ay)) {
