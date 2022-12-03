@@ -453,7 +453,6 @@
     const HEIGHT = 90;
     const WIDTH = 90;
     const COLS = 5;
-    const MARGIN = 20;
     app.elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(app.levels.length / COLS)}px`);
 
     let id = 0;
@@ -465,7 +464,7 @@
       level.applyObj(levelObj, true);
       const blockSize = Math.min((WIDTH - 30) / (level.getW() + 2), (HEIGHT - 30) / (level.getH() + 2));
       const levelSvg = level.createSvg(blockSize);
-      levelSvg.setAttribute('transform', `translate(${-blockSize + MARGIN},${-blockSize + MARGIN})`);
+      levelSvg.setAttribute('transform', `translate(${-blockSize + 20},${-blockSize + 20})`);
       g.appendChild(levelSvg);
       {
         const text = app.svg.createText(5, {x: 2.1, y: 2, text: id, fill: 'black'});
