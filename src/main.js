@@ -3,7 +3,7 @@
   const app = window.app;
   Object.freeze(app);
 
-  const VERSION_TEXT = 'v2022.11.26';
+  const VERSION_TEXT = 'v2022.11.28';
 
   const savedata = app.savedata();
 
@@ -146,9 +146,9 @@
     e.preventDefault();
     if (!inputFlag || settings.autoMode) return;
     const cursorPos = getCursorPos(app.elems.stickBase, e);
-    const ax = cursorPos.x - 100.0;
-    const ay = cursorPos.y - 100.0;
-    const minDist = 60;
+    const ax = cursorPos.x - 90.0;
+    const ay = cursorPos.y - 90.0;
+    const minDist = 45;
     if (ax ** 2 + ay ** 2 < minDist ** 2) {
       inputDir = dirs.neutral;
     } else if (Math.abs(ax) > Math.abs(ay)) {
@@ -698,7 +698,7 @@
     }
 
     const bestStep = level.getBestStep();
-    // クリアメッセージ
+    // クリア時のメッセージ
     if (clearFlag) {
       const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: 'CLEAR', fill: 'blue'});
       text.setAttribute('font-size', `${blockSize * 0.8}px`);
@@ -718,11 +718,11 @@
         const levelObjStr = `{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}', ja: '${levelObj.ja}'},`;
         console.log(levelObjStr);
         if (r === undefined) {
-          console.warn('過去最高記録の情報がありません！');
+          console.warn('参考用公式記録の情報がありません！');
         } else if (clearStep < bestStep) {
-          console.log(`新記録!\n${bestStep} → ${clearStep} (${clearStep - bestStep} 手)`);
+          console.log(`参考用公式記録を破りました！\n参考用公式記録[${bestStep}] → あなたの記録[${clearStep}] (${clearStep - bestStep} 手)`);
         } else {
-          console.log(`過去最高記録は ${bestStep} 手です。\n(差: ${clearStep - bestStep} 手)`);
+          console.log(`参考用公式記録は ${bestStep} 手です。\n(差: ${clearStep - bestStep} 手)`);
           if (replayStr === r) {
             console.log('(完全に同じ手順です。)');
           }
