@@ -3,7 +3,7 @@
   const app = window.app;
   Object.freeze(app);
 
-  const VERSION_TEXT = 'v2022.12.03';
+  const VERSION_TEXT = 'v2022.12.04';
 
   const savedata = app.savedata();
 
@@ -134,6 +134,8 @@
       cursorX = e.clientX - bcRect.left;
       cursorY = e.clientY - bcRect.top;
     }
+    cursorX -= bcRect.width / 2;
+    cursorY -= bcRect.height / 2;
     return {x: cursorX, y: cursorY};
   }
 
@@ -147,15 +149,15 @@
     e.preventDefault();
     if (!inputFlag || settings.autoMode) return;
     const cursorPos = getCursorPos(app.elems.stickBase, e);
-    const ax = cursorPos.x - 120.0;
-    const ay = cursorPos.y - 120.0;
+    const x = cursorPos.x;
+    const y = cursorPos.y;
     const minDist = 60;
-    if (ax ** 2 + ay ** 2 < minDist ** 2) {
+    if (x ** 2 + y ** 2 < minDist ** 2) {
       inputDir = dirs.neutral;
-    } else if (Math.abs(ax) > Math.abs(ay)) {
-      inputDir = ax < 0 ? dirs.ArrowLeft : dirs.ArrowRight;
+    } else if (Math.abs(x) > Math.abs(y)) {
+      inputDir = x < 0 ? dirs.ArrowLeft : dirs.ArrowRight;
     } else {
-      inputDir = ay < 0 ? dirs.ArrowUp : dirs.ArrowDown;
+      inputDir = y < 0 ? dirs.ArrowUp : dirs.ArrowDown;
     }
     updateController(inputDir);
   }
