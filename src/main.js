@@ -783,16 +783,16 @@
       const yMax = level.getH() + 3;
       switch (secretId) {
       case 0:
-        secretId = (x === 0 && y === 0) ? secretId + 1 : 0;
+        secretId = (x < 2 && y < 2) ? secretId + 1 : 0;
         break;
       case 1:
-        secretId = (x === xMax && y === 0) ? secretId + 1 : 0;
+        secretId = (x > xMax - 2 && y < 2) ? secretId + 1 : 0;
         break;
       case 2:
-        secretId = (x === xMax && y === yMax) ? secretId + 1 : 0;
+        secretId = (x > xMax - 2 && y > yMax - 2) ? secretId + 1 : 0;
         break;
       case 3:
-        secretId = (x === 0 && y === yMax) ? secretId + 1 : 0;
+        secretId = (x < 2 && y > yMax - 2) ? secretId + 1 : 0;
         break;
       default:
         break;
