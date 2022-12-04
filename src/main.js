@@ -134,8 +134,6 @@
       cursorX = e.clientX - bcRect.left;
       cursorY = e.clientY - bcRect.top;
     }
-    cursorX -= bcRect.width / 2;
-    cursorY -= bcRect.height / 2;
     return {x: cursorX, y: cursorY};
   }
 
@@ -149,8 +147,9 @@
     e.preventDefault();
     if (!inputFlag || settings.autoMode) return;
     const cursorPos = getCursorPos(app.elems.stickBase, e);
-    const x = cursorPos.x;
-    const y = cursorPos.y;
+    const bcRect = app.elems.stickBase.getBoundingClientRect();
+    const x = cursorPos.x - bcRect.width / 2;
+    const y = cursorPos.y - bcRect.height / 2;
     const minDist = 60;
     if (x ** 2 + y ** 2 < minDist ** 2) {
       inputDir = dirs.neutral;
