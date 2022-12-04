@@ -182,8 +182,6 @@
         draw();
       }
     } else if (e.key === '@') {
-      levelId = null;
-      updateLevelVisibility();
       toggleEditLevel();
     } else if (e.key === 'r') {
       resetLevel();
@@ -418,6 +416,8 @@
 
   function toggleEditLevel() {
     editMode = !editMode;
+    levelId = null;
+    updateLevelVisibility();
     updateEditLevel();
     draw();
   }
