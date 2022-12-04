@@ -799,6 +799,7 @@
         break;
       }
       if (secretId === 4) {
+        secretId = 0;
         toggleEditLevel();
       }
       return;
