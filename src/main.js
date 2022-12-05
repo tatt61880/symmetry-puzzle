@@ -34,7 +34,7 @@
   };
 
   const settingsAuto = {
-    paused: false,
+    paused: true,
     interval: INPUT_INTERVAL_COUNT,
     INTERVAL_MIN: 1,
     INTERVAL_MAX: INPUT_INTERVAL_COUNT * 3,
@@ -42,7 +42,7 @@
 
   let editMode = false;
   let temporaryShowCharsFlag = false;
-  let secretId = 0;
+  let secretSequence = '';
 
   let levelId = null;
 
@@ -512,11 +512,7 @@
     settings = queryParams.settings;
     if (settings.autoMode) {
       showElem(app.elems.auto.buttons);
-      app.elems.auto.buttonStop.addEventListener('click', onButtonStop);
-      app.elems.auto.buttonStart.addEventListener('click', onButtonStart);
-      app.elems.auto.buttonPause.addEventListener('click', onButtonPause);
-      app.elems.auto.buttonSpeedDown.addEventListener('click', onButtonSpeedDown);
-      app.elems.auto.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
+      updateAutoStartPauseButtons();
     }
     if (queryParams.levelObj.s === '') {
       levelId = queryParams.id === null ? 1 : queryParams.id;
@@ -526,6 +522,15 @@
       loadLevelObj(queryParams.levelObj);
     }
     updateEditLevel();
+
+    // autoモード
+    {
+      app.elems.auto.buttonStop.addEventListener('click', onButtonStop);
+      app.elems.auto.buttonStart.addEventListener('click', onButtonStart);
+      app.elems.auto.buttonPause.addEventListener('click', onButtonPause);
+      app.elems.auto.buttonSpeedDown.addEventListener('click', onButtonSpeedDown);
+      app.elems.auto.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
+    }
 
     // editモード用
     {
@@ -785,25 +790,34 @@
     if (!editMode) {
       const xMax = level.getW() + 3;
       const yMax = level.getH() + 3;
-      switch (secretId) {
-      case 0:
-        secretId = (x < 2 && y < 2) ? secretId + 1 : 0;
-        break;
-      case 1:
-        secretId = (x > xMax - 2 && y < 2) ? secretId + 1 : 0;
-        break;
-      case 2:
-        secretId = (x > xMax - 2 && y > yMax - 2) ? secretId + 1 : 0;
-        break;
-      case 3:
-        secretId = (x < 2 && y > yMax - 2) ? secretId + 1 : 0;
-        break;
-      default:
-        break;
+      if (x < 2) {
+        if (y < 2) {
+          secretSequence += '1';
+        } else if (y > yMax - 2) {
+          secretSequence += '4';
+        } else {
+          secretSequence = '';
+        }
+      } else if (x > xMax - 2) {
+        if (y < 2) {
+          secretSequence += '2';
+        } else if (y > yMax - 2) {
+          secretSequence += '3';
+        } else {
+          secretSequence = '';
+        }
+      } else {
+        secretSequence = '';
       }
-      if (secretId === 4) {
-        secretId = 0;
+      if (secretSequence === '1234') {
+        secretSequence = '';
         toggleEditLevel();
+      } else if (secretSequence === '1212') {
+        secretSequence = '';
+        settings.autoMode = true;
+        settingsAuto.paused = true;
+        updateAutoStartPauseButtons();
+        showElem(app.elems.auto.buttons);
       }
       return;
     }
@@ -906,17 +920,25 @@
     replaceUrl();
   }
 
+  function updateAutoStartPauseButtons() {
+    if (settingsAuto.paused) {
+      showElem(app.elems.auto.buttonStart);
+      hideElem(app.elems.auto.buttonPause);
+    } else {
+      hideElem(app.elems.auto.buttonStart);
+      showElem(app.elems.auto.buttonPause);
+    }
+  }
+
   function onButtonStart() {
     settingsAuto.paused = false;
-    hideElem(app.elems.auto.buttonStart);
-    showElem(app.elems.auto.buttonPause);
+    updateAutoStartPauseButtons();
     updateButtonSpeedDisplay();
   }
 
   function onButtonPause() {
     settingsAuto.paused = true;
-    showElem(app.elems.auto.buttonStart);
-    hideElem(app.elems.auto.buttonPause);
+    updateAutoStartPauseButtons();
     hideElem(app.elems.auto.buttonSpeedDown);
     hideElem(app.elems.auto.buttonSpeedUp);
   }
