@@ -718,7 +718,8 @@
           if (bestStep !== undefined) {
             savedata.saveSteps(levelObj, replayStr);
           }
-          const levelObjStr = `{w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}', ja: '${levelObj.ja}'},`;
+          const levelParams = `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'` + (levelObj.ja !== undefined ? `, ja: '${levelObj.ja}'` : '');
+          const levelObjStr = `{${levelParams}},`;
           console.log(levelObjStr);
           if (r === undefined) {
             console.warn('参考用公式記録の情報がありません！');
