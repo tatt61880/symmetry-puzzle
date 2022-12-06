@@ -977,7 +977,7 @@
     li.textContent = str;
     elem.appendChild(li);
 
-    const MAX_LOG_NUM = 10;
+    const MAX_LOG_NUM = 30;
     while (elem.childElementCount > MAX_LOG_NUM) {
       elem.removeChild(elem.firstChild);
     }
