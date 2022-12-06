@@ -269,7 +269,7 @@
     updateLevelVisibility();
     app.elems.level.id.textContent = levelId;
     const levelObj = app.levels[levelId - 1];
-    console.log(`[LEVEL-${id}]${levelObj.ja !== undefined ? ` ${levelObj.ja}` : ''}`);
+    consoleLog(`[LEVEL-${id}]${levelObj.ja !== undefined ? ` ${levelObj.ja}` : ''}`);
 
     replaceUrl();
     loadLevelObj(levelObj);
@@ -725,15 +725,15 @@
           }
           const levelParams = `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'` + (levelObj.ja !== undefined ? `, ja: '${levelObj.ja}'` : '');
           const levelObjStr = `{${levelParams}},`;
-          console.log(levelObjStr);
+          consoleLog(levelObjStr);
           if (r === undefined) {
-            console.warn('参考用公式記録の情報がありません！');
+            consoleWarn('参考用公式記録の情報がありません！');
           } else if (clearStep < bestStep) {
-            console.log(`参考用公式記録を破りました！\n参考用公式記録[${bestStep}] → あなたの記録[${clearStep}] (${clearStep - bestStep} 手)`);
+            consoleLog(`参考用公式記録を破りました！\n参考用公式記録[${bestStep}] → あなたの記録[${clearStep}] (${clearStep - bestStep} 手)`);
           } else {
-            console.log(`参考用公式記録は ${bestStep} 手です。\n(差: ${clearStep - bestStep} 手)`);
+            consoleLog(`参考用公式記録は ${bestStep} 手です。\n(差: ${clearStep - bestStep} 手)`);
             if (replayStr === r) {
-              console.log('(完全に同じ手順です。)');
+              consoleLog('(完全に同じ手順です。)');
             }
           }
         }
@@ -809,16 +809,26 @@
       } else {
         secretSequence = '';
       }
+
+      let resetFlag = true;
       if (secretSequence === '1234') {
-        secretSequence = '';
         toggleEditLevel();
       } else if (secretSequence === '1212') {
-        secretSequence = '';
         settings.autoMode = true;
         settingsAuto.paused = true;
         updateAutoStartPauseButtons();
         showElem(app.elems.auto.buttons);
+      } else if (secretSequence === '4343') {
+        showElem(app.elems.consoleLog);
+      } else if (secretSequence === '3434') {
+        hideElem(app.elems.consoleLog);
+      } else {
+        resetFlag = false;
       }
+      if (resetFlag) {
+        secretSequence = '';
+      }
+
       return;
     }
 
@@ -957,5 +967,29 @@
       settingsAuto.interval = settingsAuto.INTERVAL_MIN;
     }
     updateButtonSpeedDisplay();
+  }
+
+  function consoleAdd(str, className) {
+
+    const elem = app.elems.consoleLog;
+    const li = document.createElement('li');
+    li.classList.add(className);
+    li.textContent = str;
+    elem.appendChild(li);
+
+    const MAX_LOG_NUM = 10;
+    while (elem.childElementCount > MAX_LOG_NUM) {
+      elem.removeChild(elem.firstChild);
+    }
+  }
+
+  function consoleLog(str) {
+    console.log(str);
+    consoleAdd(str, 'log');
+  }
+
+  function consoleWarn(str) {
+    console.warn(str);
+    consoleAdd(str, 'warn');
   }
 })();

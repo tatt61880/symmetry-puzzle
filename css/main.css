@@ -132,3 +132,20 @@ text {
 .low-contrast {
   filter: contrast(60%);
 }
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  padding: 3px 10px;
+  text-align: left;
+  list-style-type: none;
+  border: 1px solid #f0f0f0;
+}
+
+li.warn {
+  background-color: #fffbe5;
+  border: 1px solid #fff5c2;
+}

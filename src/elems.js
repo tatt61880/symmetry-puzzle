@@ -35,6 +35,7 @@
     },
 
     svg: 'svg-main',
+    consoleLog: 'console-log',
 
     auto: {
       buttons: 'buttons-auto',
