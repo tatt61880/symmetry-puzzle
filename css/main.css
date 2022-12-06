@@ -141,6 +141,7 @@ ul {
 li {
   padding: 3px 10px;
   text-align: left;
+  word-break: break-all;
   list-style-type: none;
   border: 1px solid #f0f0f0;
 }
