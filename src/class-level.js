@@ -212,6 +212,20 @@
       return this.#getRotateCenter(isX);
     }
 
+    isNormalized() {
+      const exists = {};
+      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
+        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+          const state = this.#states[y][x];
+          exists[state] = true;
+          if (app.states.targetMin < state && state <= app.states.targetMax) {
+            if (!exists[state - 1]) return false;
+          }
+        }
+      }
+      return true;
+    }
+
     // 図形が連結か否か。
     #isConnected(isX) {
       const dys = [-1, 0, 1, 0];

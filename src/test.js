@@ -17,7 +17,7 @@
     const levelId = Number(idx) + 1;
     const res = testLevel(levelObj);
     if (!res) {
-      console.error(`Error: Level-${levelId} Test failed.`);
+      console.error(`Error: Level-${levelId} [subject: ${levelObj.subject}] Test failed.`);
       process.exitCode = 1;
       return;
     }
@@ -35,6 +35,11 @@
   function testLevel(levelObj) {
     const level = app.Level();
     level.applyObj(levelObj, true);
+
+    if (!level.isNormalized()) {
+      console.error('Error: isNormalized check failed.');
+      return false;
+    }
 
     const r = level.getLevelObj()?.r;
     if (r === null) return false;
