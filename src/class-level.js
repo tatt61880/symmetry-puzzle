@@ -221,6 +221,12 @@
           if (app.states.targetMin < state && state <= app.states.targetMax) {
             if (!exists[state - 1]) return false;
           }
+          if (app.states.otherMin < state && state <= app.states.otherMax) {
+            if (!exists[state - 1]) return false;
+          }
+          if (app.states.userMin < state && state <= app.states.userMax) {
+            if (!exists[state - 1]) return false;
+          }
         }
       }
       return true;
