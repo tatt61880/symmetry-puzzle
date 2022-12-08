@@ -269,7 +269,7 @@
     updateLevelVisibility();
     app.elems.level.id.textContent = levelId;
     const levelObj = app.levels[levelId - 1];
-    consoleLog(`[LEVEL-${id}]${levelObj.ja !== undefined ? ` ${levelObj.ja}` : ''}`);
+    consoleLog(`[LEVEL-${id}]${levelObj.subject !== undefined ? ` ${levelObj.subject}` : ''}`);
 
     replaceUrl();
     loadLevelObj(levelObj);
@@ -723,7 +723,7 @@
           if (bestStep !== undefined) {
             savedata.saveSteps(levelObj, replayStr);
           }
-          const levelParams = `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'` + (levelObj.ja !== undefined ? `, ja: '${levelObj.ja}'` : '');
+          const levelParams = `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'` + (levelObj.subject !== undefined ? `, subject: '${levelObj.subject}'` : '');
           const levelObjStr = `{${levelParams}},`;
           consoleLog(levelObjStr);
           if (r === undefined) {
