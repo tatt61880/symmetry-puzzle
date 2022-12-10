@@ -154,7 +154,7 @@
         }
         r = rotatedR;
       }
-      const s = this.getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
+      const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
       levelObj = {w: w, h: h, s: s, r: r};
       return levelObj;
     }
@@ -194,7 +194,7 @@
           }
           r = rotatedR;
         }
-        const s = this.getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
+        const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
         levelObj = {w: w, h: h, s: s, r: r};
       }
       return levelObj;
@@ -251,7 +251,7 @@
       this.resetMoveFlags();
     }
 
-    count(isX) {
+    #count(isX) {
       let cnt = 0;
       for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
         for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
@@ -262,10 +262,10 @@
     }
 
     getStateStr() {
-      return this.getStateStrSub(this.#states, this.#upEnd, this.#rightEnd, this.#downEnd, this.#leftEnd);
+      return this.#getStateStrSub(this.#states, this.#upEnd, this.#rightEnd, this.#downEnd, this.#leftEnd);
     }
 
-    getStateStrSub(states, upEnd, rightEnd, downEnd, leftEnd) {
+    #getStateStrSub(states, upEnd, rightEnd, downEnd, leftEnd) {
       let res = '';
       for (let y = upEnd; y <= downEnd; ++y) {
         let line = '';
@@ -289,7 +289,7 @@
     // 回転中心を得る。
     // 回転中心がなければnullを返す。
     getRotateCenter(isX) {
-      if (this.count(isX) === 0) return null;
+      if (this.#count(isX) === 0) return null;
       if (!this.#isConnected(isX)) return null;
       return this.#getRotateCenter(isX);
     }
@@ -430,7 +430,7 @@
       }
 
       for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
-        if (this.count((x)=>{ return x === i; }) === 0) continue;
+        if (this.#count((x)=>{ return x === i; }) === 0) continue;
 
         const moveState = []; // 移動予定の状態番号
         moveState[i] = true;
