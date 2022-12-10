@@ -974,7 +974,6 @@
   }
 
   function consoleAdd(str, className) {
-
     const elem = app.elems.consoleLog;
     const li = document.createElement('li');
     li.classList.add(className);
