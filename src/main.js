@@ -283,7 +283,6 @@
 
     resetUndo();
     applyObj(levelObj, true);
-    updateLevelVisibility();
 
     inputDir = dirs.neutral;
     inputCount = INPUT_INTERVAL_COUNT;
@@ -515,10 +514,11 @@
       updateAutoStartPauseButtons();
     }
     if (queryParams.levelObj.s === '') {
-      levelId = queryParams.id === null ? 1 : queryParams.id;
-      loadLevelById(levelId);
+      const id = queryParams.id === null ? 1 : queryParams.id;
+      loadLevelById(id);
     } else {
       levelId = null;
+      updateLevelVisibility();
       loadLevelObj(queryParams.levelObj);
     }
     updateEditLevel();
