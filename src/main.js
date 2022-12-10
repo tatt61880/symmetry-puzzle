@@ -510,8 +510,7 @@
     const queryParams = app.analyzeUrl();
     settings = queryParams.settings;
     if (settings.autoMode) {
-      showElem(app.elems.auto.buttons);
-      updateAutoStartPauseButtons();
+      updateAutoMode(true);
     }
     if (queryParams.levelObj.s === '') {
       const id = queryParams.id === null ? 1 : queryParams.id;
@@ -818,10 +817,7 @@
       if (secretSequence === '1234') {
         toggleEditLevel();
       } else if (secretSequence === '1212') {
-        settings.autoMode = true;
-        settingsAuto.paused = true;
-        updateAutoStartPauseButtons();
-        showElem(app.elems.auto.buttons);
+        updateAutoMode(true);
       } else if (secretSequence === '4343') {
         showElem(app.elems.consoleLog);
       } else if (secretSequence === '3434') {
@@ -928,10 +924,20 @@
     (settingsAuto.interval === 1 ? hideElem : showElem)(app.elems.auto.buttonSpeedUp);
   }
 
+  function updateAutoMode(isOn) {
+    if (isOn) {
+      settings.autoMode = true;
+      settingsAuto.paused = true;
+      showElem(app.elems.auto.buttons);
+    } else {
+      settings.autoMode = false;
+      hideElem(app.elems.auto.buttons);
+    }
+    updateAutoStartPauseButtons();
+  }
+
   function onButtonStop() {
-    settings.autoMode = false;
-    hideElem(app.elems.auto.buttons);
-    replaceUrl();
+    updateAutoMode(false);
   }
 
   function updateAutoStartPauseButtons() {
@@ -947,14 +953,11 @@
   function onButtonStart() {
     settingsAuto.paused = false;
     updateAutoStartPauseButtons();
-    updateButtonSpeedDisplay();
   }
 
   function onButtonPause() {
     settingsAuto.paused = true;
     updateAutoStartPauseButtons();
-    hideElem(app.elems.auto.buttonSpeedDown);
-    hideElem(app.elems.auto.buttonSpeedUp);
   }
 
   function onButtonSpeedDown() {
