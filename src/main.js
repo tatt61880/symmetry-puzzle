@@ -275,14 +275,14 @@
     loadLevelObj(levelObj);
   }
 
-  function loadLevelObj(LevelObj, isReset = false) {
+  function loadLevelObj(levelObj, isReset = false) {
     if (!isReset) {
-      if (settings.mirrorFlag) LevelObj = mirrorLevel(LevelObj);
-      LevelObj = rotateLevel(LevelObj, settings.rotateNum);
+      if (settings.mirrorFlag) levelObj = mirrorLevel(levelObj);
+      levelObj = rotateLevel(levelObj, settings.rotateNum);
     }
 
     resetUndo();
-    applyObj(LevelObj, true);
+    applyObj(levelObj, true);
     updateLevelVisibility();
 
     inputDir = dirs.neutral;
