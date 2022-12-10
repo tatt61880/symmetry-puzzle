@@ -15,9 +15,6 @@
     ArrowLeft: '3',
   };
 
-  const dys = [-1, 0, 1, 0];
-  const dxs = [0, 1, 0, -1];
-
   let inputFlag = false;
   const INPUT_INTERVAL_MSEC = 35;
   const INPUT_INTERVAL_COUNT = 5;
@@ -83,6 +80,8 @@
   }
 
   function move(dir) {
+    const dys = [-1, 0, 1, 0];
+    const dxs = [0, 1, 0, -1];
     const dx = dxs[dir];
     const dy = dys[dir];
 
@@ -253,16 +252,11 @@
       const data = undoInfo.undo();
       applyObj(data);
     }
-
-    if (undoInfo.getIndex() === 0) {
-      resetUndo();
-    }
   }
 
   function loadLevelById(id) {
     clearTimeout(nextLevelTimerId);
     id = Number(id);
-    resetUndo();
     if (id < 1) id = 1;
     if (id > app.levels.length) id = app.levels.length;
     levelId = id;
@@ -444,7 +438,11 @@
       loadLevelObj(queryParams.levelObj);
     }
     updateEditLevel();
+    initElems();
+    setInterval(intervalFunc, INPUT_INTERVAL_MSEC);
+  }
 
+  function initElems() {
     // autoモード
     {
       app.elems.auto.buttonStop.addEventListener('click', onButtonStop);
@@ -493,6 +491,7 @@
       app.elems.edit.hInc.addEventListener('click', () => resize(0, 1), false);
       app.elems.edit.normalize.addEventListener('click', () => {
         level.normalize();
+        updateUrl();
         draw();
       }, false);
     }
@@ -530,49 +529,53 @@
 
       app.elems.undo.addEventListener(pointerdownEventName, undodown, false);
     }
+  }
 
-    setInterval(() => {
-      if (undoFlag) {
-        if (undoCount === UNDO_INTERVAL_COUNT) {
-          undoCount = 0;
-          execUndo();
-        }
-        undoCount++;
-        return;
+  function intervalFunc() {
+    if (undoFlag) {
+      if (undoCount === UNDO_INTERVAL_COUNT) {
+        undoCount = 0;
+        execUndo();
       }
-      const r = level.getLevelObj()?.r;
-      if (!editMode && settings.autoMode && r !== undefined) {
-        if (settingsAuto.paused) {
-          inputFlag = false;
-        } else {
-          inputDir = Number(r[undoInfo.getIndex()]);
-          inputFlag = true;
-        }
-      }
-      if (inputCount >= (settings.autoMode ? settingsAuto.interval : INPUT_INTERVAL_COUNT)) {
-        if (clearFlag) {
-          if (redrawFlag) {
-            redrawFlag = false;
-            draw(true);
-          }
-        } else if (inputFlag) {
-          if (inputDir !== dirs.neutral) {
-            if (settings.autoMode) {
-              updateController(inputDir);
-            }
-            inputCount = 0;
-            const moveFlag = move(inputDir);
-            if (moveFlag) {
-              draw();
-              clearCheck();
-              updateUrl();
-            }
-          }
-        }
+      undoCount++;
+      return;
+    }
+
+    let intervalCount = INPUT_INTERVAL_COUNT;
+    const r = level.getLevelObj()?.r;
+    if (!editMode && settings.autoMode && r !== undefined) {
+      intervalCount = settingsAuto.interval;
+      if (settingsAuto.paused) {
+        inputFlag = false;
       } else {
-        inputCount++;
+        inputDir = Number(r[undoInfo.getIndex()]);
+        inputFlag = true;
       }
-    }, INPUT_INTERVAL_MSEC);
+    }
+
+    if (inputCount >= intervalCount) {
+      if (clearFlag) {
+        if (redrawFlag) {
+          redrawFlag = false;
+          draw(true);
+        }
+      } else if (inputFlag) {
+        if (inputDir !== dirs.neutral) {
+          if (settings.autoMode) {
+            updateController(inputDir);
+          }
+          inputCount = 0;
+          const moveFlag = move(inputDir);
+          if (moveFlag) {
+            draw();
+            clearCheck();
+            updateUrl();
+          }
+        }
+      }
+    } else {
+      inputCount++;
+    }
   }
 
   // 描画
@@ -837,6 +840,7 @@
     const base = location.href.split('?')[0];
     let url = `${base}?id=${levelId}`;
     if (settings.autoMode) url += '&auto';
+    if (settings.debugFlag) url += '&debug';
     if (settings.mirrorFlag) url += '&mirror';
     if (settings.rotateNum !== 0) url += `&rotate=${settings.rotateNum}`;
     history.replaceState(null, '', url);
@@ -852,9 +856,11 @@
       settings.autoMode = true;
       settingsAuto.paused = true;
       showElem(app.elems.auto.buttons);
+      hideElem(app.elems.stickBase);
     } else {
       settings.autoMode = false;
       hideElem(app.elems.auto.buttons);
+      showElem(app.elems.stickBase);
     }
     updateAutoStartPauseButtons();
     replaceUrl();
