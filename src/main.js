@@ -934,6 +934,7 @@
       hideElem(app.elems.auto.buttons);
     }
     updateAutoStartPauseButtons();
+    replaceUrl();
   }
 
   function onButtonStop() {
