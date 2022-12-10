@@ -120,8 +120,90 @@
       return res;
     }
 
-    applyObj(obj, isInit = false) {
-      if (isInit) {
+    // 左右反転する。
+    #mirrorLevel(levelObj) {
+      const w = levelObj.w;
+      const h = levelObj.h;
+      const stateStr = levelObj.s;
+      const statesTemp = [];
+      for (let y = 0; y < h; ++y) {
+        statesTemp[y] = [];
+        for (let x = 0; x < w; ++x) {
+          statesTemp[y][x] = app.states.none;
+        }
+      }
+
+      let x = w - 1;
+      let y = 0;
+      for (const c of stateStr) {
+        if (c === '-') {
+          y++;
+          if (y === h) break;
+          x = w - 1;
+        } else {
+          if (x === -1) continue;
+          statesTemp[y][x] = app.states.charToState[c];
+          x--;
+        }
+      }
+      let r = levelObj.r;
+      if (r !== undefined) {
+        let rotatedR = '';
+        for (const c of r) {
+          rotatedR += (4 - Number(c)) % 4;
+        }
+        r = rotatedR;
+      }
+      const s = this.getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
+      levelObj = {w: w, h: h, s: s, r: r};
+      return levelObj;
+    }
+
+    // 時計回りに90度×num回 回転する。
+    #rotateLevel(levelObj, rotateNum) {
+      for (let i = 0; i < rotateNum; ++i) {
+        const w = levelObj.h; // 90度回転後
+        const h = levelObj.w; // 90度回転後
+        const stateStr = levelObj.s;
+        const statesTemp = [];
+        for (let y = 0; y < h; ++y) {
+          statesTemp[y] = [];
+          for (let x = 0; x < w; ++x) {
+            statesTemp[y][x] = app.states.none;
+          }
+        }
+
+        let x = w - 1;
+        let y = 0;
+        for (const c of stateStr) {
+          if (c === '-') {
+            x--;
+            if (x < 0) break;
+            y = 0;
+          } else {
+            if (y === h) continue;
+            statesTemp[y][x] = app.states.charToState[c];
+            y++;
+          }
+        }
+        let r = levelObj.r;
+        if (r !== undefined) {
+          let rotatedR = '';
+          for (const c of r) {
+            rotatedR += (Number(c) + 1) % 4;
+          }
+          r = rotatedR;
+        }
+        const s = this.getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
+        levelObj = {w: w, h: h, s: s, r: r};
+      }
+      return levelObj;
+    }
+
+    applyObj(obj, param = {}) {
+      if (param.init) {
+        if (param.mirrorFlag) obj = this.#mirrorLevel(obj);
+        if (param.rotateNum !== 0) obj = this.#rotateLevel(obj, param.rotateNum);
         this.#levelObj = obj;
         Object.freeze(this.#levelObj);
       }

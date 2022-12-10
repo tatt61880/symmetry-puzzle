@@ -34,7 +34,7 @@
 
   function testLevel(levelObj) {
     const level = app.Level();
-    level.applyObj(levelObj, true);
+    level.applyObj(levelObj, {init: true});
 
     if (!level.isNormalized()) {
       console.error('Error: isNormalized check failed.');
@@ -42,7 +42,7 @@
     }
 
     const r = level.getLevelObj()?.r;
-    if (r === null) return false;
+    if (r === undefined) return false;
     for (const dirChar of r) {
       const dir = Number(dirChar);
       const dx = dxs[dir];

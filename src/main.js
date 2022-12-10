@@ -226,7 +226,7 @@
 
     setTimeout(() => {
       app.elems.level.reset.classList.remove('low-contrast');
-      loadLevelObj(level.getLevelObj(), true);
+      loadLevelObj(level.getLevelObj(), {reset: true});
     }, RESET_DELAY);
   }
 
@@ -235,8 +235,8 @@
     hideElem(app.elems.undo);
   }
 
-  function applyObj(obj, isInit = false) {
-    level.applyObj(obj, isInit);
+  function applyObj(obj, param = {init: false}) {
+    level.applyObj(obj, param);
     const svgMaxWidth = 480;
     const svgMaxHeight = 250;
     blockSize = Math.min(svgMaxWidth / level.getWidth(), svgMaxHeight / level.getHeight());
@@ -275,97 +275,20 @@
     loadLevelObj(levelObj);
   }
 
-  function loadLevelObj(levelObj, isReset = false) {
-    if (!isReset) {
-      if (settings.mirrorFlag) levelObj = mirrorLevel(levelObj);
-      levelObj = rotateLevel(levelObj, settings.rotateNum);
+  function loadLevelObj(levelObj, param = {}) {
+    const objParam = {
+      init: true,
+    };
+    if (!param.reset) {
+      objParam.mirrorFlag = settings.mirrorFlag;
+      objParam.rotateNum = settings.rotateNum;
     }
 
     resetUndo();
-    applyObj(levelObj, true);
+    applyObj(levelObj, objParam);
 
     inputDir = dirs.neutral;
     inputCount = INPUT_INTERVAL_COUNT;
-
-    // 左右反転する。
-    function mirrorLevel(levelObj) {
-      const w = levelObj.w;
-      const h = levelObj.h;
-      const stateStr = levelObj.s;
-      const statesTemp = [];
-      for (let y = 0; y < h; ++y) {
-        statesTemp[y] = [];
-        for (let x = 0; x < w; ++x) {
-          statesTemp[y][x] = app.states.none;
-        }
-      }
-
-      let x = w - 1;
-      let y = 0;
-      for (const c of stateStr) {
-        if (c === '-') {
-          y++;
-          if (y === h) break;
-          x = w - 1;
-        } else {
-          if (x === -1) continue;
-          statesTemp[y][x] = app.states.charToState[c];
-          x--;
-        }
-      }
-      let r = levelObj.r;
-      if (r !== undefined) {
-        let rotatedR = '';
-        for (const c of r) {
-          rotatedR += (4 - Number(c)) % 4;
-        }
-        r = rotatedR;
-      }
-      const s = level.getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
-      levelObj = {w: w, h: h, s: s, r: r};
-      return levelObj;
-    }
-
-    // 時計回りに90度×num回 回転する。
-    function rotateLevel(levelObj, rotateNum) {
-      for (let i = 0; i < rotateNum; ++i) {
-        const w = levelObj.h; // 90度回転後
-        const h = levelObj.w; // 90度回転後
-        const stateStr = levelObj.s;
-        const statesTemp = [];
-        for (let y = 0; y < h; ++y) {
-          statesTemp[y] = [];
-          for (let x = 0; x < w; ++x) {
-            statesTemp[y][x] = app.states.none;
-          }
-        }
-
-        let x = w - 1;
-        let y = 0;
-        for (const c of stateStr) {
-          if (c === '-') {
-            x--;
-            if (x < 0) break;
-            y = 0;
-          } else {
-            if (y === h) continue;
-            statesTemp[y][x] = app.states.charToState[c];
-            y++;
-          }
-        }
-        let r = levelObj.r;
-        if (r !== undefined) {
-          let rotatedR = '';
-          for (const c of r) {
-            rotatedR += (Number(c) + 1) % 4;
-          }
-          r = rotatedR;
-        }
-        const s = level.getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
-        levelObj = {w: w, h: h, s: s, r: r};
-      }
-      return levelObj;
-    }
   }
 
   function updateLevelVisibility() {
@@ -462,7 +385,7 @@
       const g = app.svg.createG();
       g.classList.add('level-select');
       const level = app.Level();
-      level.applyObj(levelObj, true);
+      level.applyObj(levelObj, {init: true});
       const blockSize = Math.min((WIDTH - 30) / (level.getW() + 2), (HEIGHT - 30) / (level.getH() + 2));
       const levelSvg = level.createSvg(blockSize);
       levelSvg.setAttribute('transform', `translate(${-blockSize + 20},${-blockSize + 20})`);
