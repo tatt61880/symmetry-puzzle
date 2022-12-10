@@ -937,10 +937,6 @@
     replaceUrl();
   }
 
-  function onButtonStop() {
-    updateAutoMode(false);
-  }
-
   function updateAutoStartPauseButtons() {
     if (settingsAuto.paused) {
       showElem(app.elems.auto.buttonStart);
@@ -949,6 +945,10 @@
       hideElem(app.elems.auto.buttonStart);
       showElem(app.elems.auto.buttonPause);
     }
+  }
+
+  function onButtonStop() {
+    updateAutoMode(false);
   }
 
   function onButtonStart() {
