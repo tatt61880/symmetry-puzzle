@@ -212,20 +212,46 @@
       return this.#getRotateCenter(isX);
     }
 
+    normalize() {
+      const map = {};
+      let nextTarget = app.states.targetMin;
+      let nextOther = app.states.otherMin;
+      let nextUser = app.states.userMin;
+      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
+        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+          const state = this.#states[y][x];
+          if (map[state] === undefined) {
+            if (app.states.targetMin <= state && state <= app.states.targetMax) {
+              map[state] = nextTarget++;
+            } else if (app.states.otherMin <= state && state <= app.states.otherMax) {
+              map[state] = nextOther++;
+            } else if (app.states.userMin <= state && state <= app.states.userMax) {
+              map[state] = nextUser++;
+            } else if (state === app.states.wall || state === app.states.none) {
+              map[state] = this.#states[y][x];
+            } else {
+              console.error('Unexpected state.');
+            }
+          }
+          this.#states[y][x] = map[state];
+        }
+      }
+    }
+
     isNormalized() {
       const exists = {};
       for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
         for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
           const state = this.#states[y][x];
           exists[state] = true;
-          if (app.states.targetMin < state && state <= app.states.targetMax) {
-            if (!exists[state - 1]) return false;
-          }
-          if (app.states.otherMin < state && state <= app.states.otherMax) {
-            if (!exists[state - 1]) return false;
-          }
-          if (app.states.userMin < state && state <= app.states.userMax) {
-            if (!exists[state - 1]) return false;
+          if (app.states.targetMin <= state && state <= app.states.targetMax) {
+            if (state !== app.states.targetMin && !exists[state - 1]) return false;
+          } else if (app.states.otherMin <= state && state <= app.states.otherMax) {
+            if (state !== app.states.otherMin && !exists[state - 1]) return false;
+          } else if (app.states.userMin <= state && state <= app.states.userMax) {
+            if (state !== app.states.userMin && !exists[state - 1]) return false;
+          } else if (state !== app.states.wall && state !== app.states.none) {
+            return false;
           }
         }
       }

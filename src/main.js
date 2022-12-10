@@ -569,6 +569,10 @@
       app.elems.edit.wInc.addEventListener('click', () => resize(1, 0), false);
       app.elems.edit.hDec.addEventListener('click', () => resize(0, -1), false);
       app.elems.edit.hInc.addEventListener('click', () => resize(0, 1), false);
+      app.elems.edit.normalize.addEventListener('click', () => {
+        level.normalize();
+        draw();
+      }, false);
     }
 
     {

@@ -54,6 +54,7 @@
       wInc: 'w-inc',
       hDec: 'h-dec',
       hInc: 'h-inc',
+      normalize: 'edit-normalize',
     },
 
     url: 'url',
