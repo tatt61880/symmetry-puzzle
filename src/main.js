@@ -286,6 +286,9 @@
 
     inputDir = dirs.neutral;
     inputCount = INPUT_INTERVAL_COUNT;
+    if (!settings.autoMode) {
+      showElem(app.elems.stickBase);
+    }
   }
 
   function updateLevelVisibility() {
@@ -539,6 +542,9 @@
       if (undoCount === UNDO_INTERVAL_COUNT) {
         undoCount = 0;
         execUndo();
+        if (!settings.autoMode) {
+          showElem(app.elems.stickBase);
+        }
       }
       undoCount++;
       return;
@@ -561,6 +567,7 @@
         if (redrawFlag) {
           redrawFlag = false;
           draw(true);
+          hideElem(app.elems.stickBase);
         }
       } else if (inputFlag) {
         if (inputDir !== dirs.neutral) {
