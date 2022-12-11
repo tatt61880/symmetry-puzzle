@@ -251,6 +251,10 @@
       const data = undoInfo.undo();
       applyObj(data);
     }
+
+    if (undoInfo.getIndex() === 0) {
+      hideElem(app.elems.undo);
+    }
   }
 
   function loadLevelById(id) {
