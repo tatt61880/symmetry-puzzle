@@ -877,6 +877,7 @@
 
   function onButtonStop() {
     updateAutoMode(false);
+    clearTimeout(nextLevelTimerId);
   }
 
   function onButtonStart() {
@@ -887,6 +888,7 @@
   function onButtonPause() {
     settingsAuto.paused = true;
     updateAutoStartPauseButtons();
+    clearTimeout(nextLevelTimerId);
   }
 
   function onButtonSpeedDown() {
