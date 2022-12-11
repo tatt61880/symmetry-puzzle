@@ -3,7 +3,7 @@
   const app = window.app;
   Object.freeze(app);
 
-  const VERSION_TEXT = 'v2022.12.04';
+  const VERSION_TEXT = 'v2022.12.10';
 
   const savedata = app.savedata();
 
@@ -36,19 +36,16 @@
     INTERVAL_MIN: 1,
     INTERVAL_MAX: INPUT_INTERVAL_COUNT * 3,
   };
+  let nextLevelTimerId = null;
+  const AUTO_NEXT_LEVEL_DELAY = 1000;
 
   let editMode = false;
   let temporaryShowCharsFlag = false;
   let secretSequence = '';
 
-  let levelId = null;
-
   let undoInfo = app.UndoInfo();
   let undoFlag = false;
   let undoCount = 0;
-  let nextLevelTimerId = null;
-  const AUTO_NEXT_LEVEL_DELAY = 1000;
-  const RESET_DELAY = 50;
 
   let clearFlag = false;
   let redrawFlag = false;
@@ -58,6 +55,7 @@
 
   let blockSize = 0;
 
+  let levelId = null;
   const level = app.Level();
 
   document.documentElement.style.setProperty('--animation-duration', `${INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC}ms`);
@@ -223,6 +221,7 @@
     app.elems.level.reset.classList.add('low-contrast');
     app.elems.svg.textContent = '';
 
+    const RESET_DELAY = 50;
     setTimeout(() => {
       app.elems.level.reset.classList.remove('low-contrast');
       loadLevelObj(level.getLevelObj(), {reset: true});
