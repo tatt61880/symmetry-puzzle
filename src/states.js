@@ -12,11 +12,11 @@
   states.wall = -1; // 壁
   states.none = 0;
   states.targetMin = 1;
-  states.targetMax = 9;
-  states.otherMin = 10;
-  states.otherMax = 15;
-  states.userMin = 100; // 自機
-  states.userMax = 102; // 自機
+  states.targetMax = 1000;
+  states.otherMin = 1001;
+  states.otherMax = 1006;
+  states.userMin = 10000; // 自機
+  states.userMax = 10002; // 自機
 
   const stateToChar = {};
   const charToState = {};

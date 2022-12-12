@@ -260,12 +260,12 @@
   function loadLevelById(id) {
     clearTimeout(nextLevelTimerId);
     id = Number(id);
-    if (id < 1) id = 1;
-    if (id > app.levels.length) id = app.levels.length;
+    if (id < 0) id = 1;
+    if (id >= app.levels.length) id = app.levels.length;
     levelId = id;
     updateLevelVisibility();
     app.elems.level.id.textContent = levelId;
-    const levelObj = app.levels[levelId - 1];
+    const levelObj = app.levels[levelId];
     consoleLog(`[LEVEL-${id}]${levelObj.subject !== undefined ? ` ${levelObj.subject}` : ''}`);
 
     replaceUrl();
@@ -298,9 +298,9 @@
       hideElem(app.elems.level.next);
       showElem(app.elems.level.edit);
     } else {
-      (levelId === 1 ? hideElem : showElem)(app.elems.level.prev);
+      (levelId <= 1 ? hideElem : showElem)(app.elems.level.prev);
       showElem(app.elems.level.id);
-      (levelId === app.levels.length ? hideElem : showElem)(app.elems.level.next);
+      (levelId === app.levels.length - 1 ? hideElem : showElem)(app.elems.level.next);
       hideElem(app.elems.level.edit);
     }
   }
@@ -377,11 +377,10 @@
     const HEIGHT = 90;
     const WIDTH = 90;
     const COLS = 5;
-    app.elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(app.levels.length / COLS)}px`);
+    app.elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil((app.levels.length - 1) / COLS)}px`);
 
-    let id = 0;
-    for (const levelObj of app.levels) {
-      id++;
+    for (let id = 1; id < app.levels.length; id++) {
+      const levelObj = app.levels[id];
       const g = app.svg.createG();
       g.classList.add('level-select');
       const level = app.Level();
@@ -601,7 +600,7 @@
     level.resetMoveFlags();
 
     // 点線
-    {
+    if (levelId !== 0) {
       const dasharray = '1, 4';
       const g = app.svg.createG();
       // 横線

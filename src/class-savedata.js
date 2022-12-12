@@ -45,7 +45,7 @@
     }
 
     saveSteps(levelObj, r) {
-      const maxStep = 999;
+      const maxStep = 9999;
       const step = r.length;
       if (step > maxStep) {
         r = r.substring(0, maxStep);
