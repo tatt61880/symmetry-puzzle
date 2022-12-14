@@ -12,9 +12,9 @@
     const levelObj = app.levels[idx];
     levelSet.add(`${levelObj.w},${levelObj.h},${levelObj.s}`);
     const levelId = Number(idx);
-    const res = testLevel(levelObj);
+    const res = testLevel(levelId, levelObj);
     if (!res) {
-      console.error(`Error: Level-${levelId} [subject: ${levelObj.subject}] Test failed.`);
+      console.error(`Error: Test failed.`);
       process.exitCode = 1;
       return;
     }
@@ -29,7 +29,7 @@
   process.exitCode = 0;
   return;
 
-  function testLevel(levelObj) {
+  function testLevel(levelId, levelObj) {
     const level = app.Level();
     level.applyObj(levelObj, {init: true});
 
@@ -51,27 +51,31 @@
       const dy = dys[dir];
       const moveFlag = level.updateMoveFlags(dx, dy);
       if (!moveFlag) {
-        console.error('Error: moveFlag failed.');
+        console.error(`Error: ${levelInfo(levelId, levelObj)} moveFlag failed.`);
         return false;
       }
       const clearFlag = isClear(level);
       if (clearFlag) {
-        console.error('Error: Cleared on the way.');
+        console.error(`Error: ${levelInfo(levelId, levelObj)} Cleared on the way.`);
         return false;
       }
       level.move();
       const stateStr = level.getStateStr();
       if (stateStrMap[stateStr] !== undefined) {
-        console.error(`Warning: Same state on ${index} step`);
+        console.warn(`Warning: ${levelInfo(levelId, levelObj)} Same state on ${index} step`);
       }
       stateStrMap[stateStr] = true;
     }
     const clearFlag = isClear(level);
     if (!clearFlag) {
-      console.error('Error: clearFlag failed.');
+      console.error(`Error: ${levelInfo(levelId, levelObj)} clearFlag failed.`);
       return false;
     }
     return true;
+  }
+
+  function levelInfo(levelId, levelObj) {
+    return `Level-${levelId} [subject: ${levelObj.subject}]`;
   }
 
   function isClear(level) {
