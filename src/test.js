@@ -6,9 +6,6 @@
   app.levels = require('./levels.js');
   app.Level = require('./class-level.js');
 
-  const dys = [-1, 0, 1, 0];
-  const dxs = [0, 1, 0, -1];
-
   const levelSet = new Set();
 
   for (const idx in app.levels) {
@@ -41,6 +38,8 @@
       return false;
     }
 
+    const dys = [-1, 0, 1, 0];
+    const dxs = [0, 1, 0, -1];
     const r = level.getLevelObj()?.r;
     if (r === undefined) return false;
     for (const dirChar of r) {
@@ -52,21 +51,25 @@
         console.error('Error: moveFlag failed.');
         return false;
       }
-      const isConnected = level.isConnected(app.states.isTarget);
-      const center = level.getRotateCenter(app.states.isTarget);
-      const clearFlag = isConnected && center !== null;
+      const clearFlag = isClear(level);
       if (clearFlag) {
         console.error('Error: Cleared on the way.');
         return false;
       }
       level.move();
     }
-    const center = level.getRotateCenter(app.states.isTarget);
-    const clearFlag = center !== null;
+    const clearFlag = isClear(level);
     if (!clearFlag) {
       console.error('Error: clearFlag failed.');
       return false;
     }
     return true;
+  }
+
+  function isClear(level) {
+    const isConnected = level.isConnected(app.states.isTarget);
+    const center = level.getRotateCenter(app.states.isTarget);
+    const clearFlag = isConnected && center !== null;
+    return clearFlag;
   }
 })();
