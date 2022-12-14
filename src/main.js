@@ -3,7 +3,7 @@
   const app = window.app;
   Object.freeze(app);
 
-  const VERSION_TEXT = 'v2022.12.14';
+  const VERSION_TEXT = 'v2022.12.15';
 
   const savedata = app.savedata();
 
@@ -185,7 +185,13 @@
         gotoNextLevel();
       }
     } else if (e.key === ' ') {
-      if (!temporaryShowCharsFlag) {
+      if (settings.autoMode) {
+        if (settingsAuto.paused) {
+          onButtonStart();
+        } else {
+          onButtonPause();
+        }
+      } else if (!temporaryShowCharsFlag) {
         e.preventDefault();
         temporaryShowCharsFlag = true;
         draw();
