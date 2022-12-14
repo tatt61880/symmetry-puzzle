@@ -3,7 +3,7 @@
   const app = window.app;
   Object.freeze(app);
 
-  const VERSION_TEXT = 'v2022.12.13';
+  const VERSION_TEXT = 'v2022.12.14';
 
   const savedata = app.savedata();
 
@@ -549,6 +549,7 @@
   }
 
   function intervalFunc() {
+    // アンドゥの入力を受け付けます。
     if (undoFlag) {
       if (undoCount === UNDO_INTERVAL_COUNT) {
         undoCount = 0;
@@ -561,9 +562,14 @@
       return;
     }
 
+    // クリア後の入力はアンドゥ以外は受け付けません。
+    if (clearFlag && !redrawFlag) {
+      return;
+    }
+
     let intervalCount = INPUT_INTERVAL_COUNT;
     const r = level.getLevelObj()?.r;
-    if (!clearFlag && !editMode && settings.autoMode && r !== undefined) {
+    if (!editMode && settings.autoMode && r !== undefined) {
       intervalCount = settingsAuto.interval;
       if (settingsAuto.paused) {
         inputFlag = false;
@@ -673,17 +679,20 @@
           if (bestStep !== undefined) {
             savedata.saveSteps(levelObj, replayStr);
           }
-          const levelParams = `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'` + (levelObj.subject !== undefined ? `, subject: '${levelObj.subject}'` : '');
-          const levelObjStr = `{${levelParams}},`;
-          consoleLog(levelObjStr);
-          if (r === undefined) {
-            consoleWarn('参考用公式記録の情報がありません！');
-          } else if (clearStep < bestStep) {
-            consoleLog(`参考用公式記録を破りました！\n参考用公式記録[${bestStep}] → あなたの記録[${clearStep}] (${clearStep - bestStep} 手)`);
-          } else {
-            consoleLog(`参考用公式記録は ${bestStep} 手です。\n(差: ${clearStep - bestStep} 手)`);
-            if (replayStr === r) {
-              consoleLog('(完全に同じ手順です。)');
+          if (!settings.autoMode) {
+            const levelParams = `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}'` + (levelObj.subject !== undefined ? `, subject: '${levelObj.subject}'` : '');
+            const levelObjStr = `{${levelParams}},`;
+            consoleLog(levelObjStr);
+            if (r === undefined) {
+              consoleWarn('参照用公式記録の情報がありません！');
+            } else if (clearStep < bestStep) {
+              consoleLog(`参照用公式記録を破りました！\n参照用公式記録[${bestStep}] → あなたの記録[${clearStep}] (${clearStep - bestStep} 手)`);
+            } else {
+              if (replayStr === r) {
+                consoleLog('参照用公式記録と完全に同じ手順です。');
+              } else {
+                consoleLog(`参照用公式記録は ${bestStep} 手です。\n(差: ${clearStep - bestStep} 手)`);
+              }
             }
           }
         }
