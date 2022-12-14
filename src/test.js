@@ -38,11 +38,14 @@
       return false;
     }
 
+    const stateStrMap = {};
     const dys = [-1, 0, 1, 0];
     const dxs = [0, 1, 0, -1];
     const r = level.getLevelObj()?.r;
     if (r === undefined) return false;
+    let index = 0;
     for (const dirChar of r) {
+      index++;
       const dir = Number(dirChar);
       const dx = dxs[dir];
       const dy = dys[dir];
@@ -57,6 +60,11 @@
         return false;
       }
       level.move();
+      const stateStr = level.getStateStr();
+      if (stateStrMap[stateStr] !== undefined) {
+        console.error(`Warning: Same state on ${index} step`);
+      }
+      stateStrMap[stateStr] = true;
     }
     const clearFlag = isClear(level);
     if (!clearFlag) {
