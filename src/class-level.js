@@ -237,13 +237,20 @@
 
       let y = this.#upEnd;
       let x = this.#leftEnd;
-      for (const c of obj.s) {
+      for (let i = 0; i < obj.s.length; ++i) {
+        let c = obj.s[i];
         if (c === '-') {
           y++;
           if (y > this.#downEnd) break;
           x = this.#leftEnd;
         } else {
           if (x > this.#rightEnd) continue;
+          if (c === '(') {
+            c = '';
+            while (i !== obj.s.length - 1 && obj.s[++i] !== ')') {
+              c += obj.s[i];
+            }
+          }
           this.#states[y][x] = app.states.charToState[c];
           x++;
         }
@@ -270,7 +277,9 @@
       for (let y = upEnd; y <= downEnd; ++y) {
         let line = '';
         for (let x = leftEnd; x <= rightEnd; ++x) {
-          line += app.states.stateToChar[states[y][x]];
+          let c = app.states.stateToChar[states[y][x]];
+          if (c.length > 1) c = `(${c})`;
+          line += c;
         }
         res += line.replace(/0+$/, '');
         res += '-';
