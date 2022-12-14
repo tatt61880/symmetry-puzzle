@@ -14,7 +14,6 @@
   for (const idx in app.levels) {
     const levelObj = app.levels[idx];
     levelSet.add(`${levelObj.w},${levelObj.h},${levelObj.s}`);
-    if (idx === '0' && levelObj.r === undefined) continue; // FIXME Level-0の公式記録登録後は、この行を削除する。
     const levelId = Number(idx);
     const res = testLevel(levelObj);
     if (!res) {
