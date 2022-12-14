@@ -261,7 +261,7 @@
     clearTimeout(nextLevelTimerId);
     id = Number(id);
     if (id < 0) id = 1;
-    if (id >= app.levels.length) id = app.levels.length;
+    if (id >= app.levels.length) id = app.levels.length - 1;
     levelId = id;
     updateLevelVisibility();
     app.elems.level.id.textContent = levelId;
