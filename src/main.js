@@ -203,13 +203,15 @@
     } else if (e.key === 'z') {
       undoStart();
     } else if (e.key.length > 2) {
-      const dir = dirs[e.key];
-      if (dir !== undefined) {
-        e.preventDefault();
-        inputFlag = true;
-        inputDir = dir;
-        updateController(inputDir);
-        inputKeys[e.key] = true;
+      if (!settings.autoMode) {
+        const dir = dirs[e.key];
+        if (dir !== undefined) {
+          e.preventDefault();
+          inputFlag = true;
+          inputDir = dir;
+          updateController(inputDir);
+          inputKeys[e.key] = true;
+        }
       }
     } else if (editMode && editboxFunctions[e.key]) {
       editboxFunctions[e.key]();
@@ -218,17 +220,17 @@
   }
 
   function keyup(e) {
+    delete inputKeys[e.key];
     if (temporaryShowCharsFlag && e.key === ' ') {
       temporaryShowCharsFlag = false;
       draw();
-    }
-    delete inputKeys[e.key];
-    if (Object.keys(inputKeys).length === 0) {
-      updateController(dirs.neutral);
-      inputFlag = false;
-    }
-    if (e.key === 'z') {
+    } else if (e.key === 'z') {
       undoEnd();
+    } else if (Object.keys(inputKeys).length === 0) {
+      if (!settings.autoMode) {
+        updateController(dirs.neutral);
+        inputFlag = false;
+      }
     }
     return false;
   }
@@ -304,9 +306,7 @@
 
     inputDir = dirs.neutral;
     inputCount = INPUT_INTERVAL_COUNT;
-    if (!settings.autoMode) {
-      showElem(app.elems.stickBase);
-    }
+    showElem(app.elems.stickBase);
   }
 
   function updateLevelVisibility() {
@@ -560,9 +560,7 @@
       if (undoCount === UNDO_INTERVAL_COUNT) {
         undoCount = 0;
         execUndo();
-        if (!settings.autoMode) {
-          showElem(app.elems.stickBase);
-        }
+        showElem(app.elems.stickBase);
       }
       undoCount++;
       return;
