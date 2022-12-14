@@ -35,6 +35,19 @@
     return new Level();
   }
 
+  function* stateStrIterator(stateStr) {
+    for (let i = 0; i < stateStr.length; ++i) {
+      let c = stateStr[i];
+      if (c === '(') {
+        c = '';
+        while (i !== stateStr.length - 1 && stateStr[++i] !== ')') {
+          c += stateStr[i];
+        }
+      }
+      yield c;
+    }
+  }
+
   class Level {
     #levelObj;
     #states;
@@ -135,7 +148,7 @@
 
       let x = w - 1;
       let y = 0;
-      for (const c of stateStr) {
+      for (const c of stateStrIterator(stateStr)) {
         if (c === '-') {
           y++;
           if (y === h) break;
@@ -175,7 +188,7 @@
 
         let x = w - 1;
         let y = 0;
-        for (const c of stateStr) {
+        for (const c of stateStrIterator(stateStr)) {
           if (c === '-') {
             x--;
             if (x < 0) break;
@@ -237,20 +250,14 @@
 
       let y = this.#upEnd;
       let x = this.#leftEnd;
-      for (let i = 0; i < obj.s.length; ++i) {
-        let c = obj.s[i];
+      const stateStr = obj.s;
+      for (const c of stateStrIterator(stateStr)) {
         if (c === '-') {
           y++;
           if (y > this.#downEnd) break;
           x = this.#leftEnd;
         } else {
           if (x > this.#rightEnd) continue;
-          if (c === '(') {
-            c = '';
-            while (i !== obj.s.length - 1 && obj.s[++i] !== ')') {
-              c += obj.s[i];
-            }
-          }
           this.#states[y][x] = app.states.charToState[c];
           x++;
         }
