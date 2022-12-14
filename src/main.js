@@ -326,7 +326,7 @@
 
   function gotoNextLevel() {
     if (levelId === null) return;
-    if (levelId < app.levels.length) {
+    if (levelId < app.levels.length - 1) {
       loadLevelById(levelId + 1);
     }
   }
