@@ -302,14 +302,6 @@
       return true;
     }
 
-    // 回転中心を得る。
-    // 回転中心がなければnullを返す。
-    getRotateCenter(isX) {
-      if (this.#count(isX) === 0) return null;
-      if (!this.#isConnected(isX)) return null;
-      return this.#getRotateCenter(isX);
-    }
-
     normalize() {
       const map = {};
       let nextTarget = app.states.targetMin;
@@ -356,6 +348,11 @@
       return true;
     }
 
+    isConnected(isX) {
+      if (this.#count(isX) === 0) return null;
+      return this.#isConnected(isX);
+    }
+
     // 図形が連結か否か。
     #isConnected(isX) {
       const dys = [-1, 0, 1, 0];
@@ -398,6 +395,13 @@
         }
       }
       return true;
+    }
+
+    // 回転中心を得る。
+    // 回転中心がなければnullを返す。
+    getRotateCenter(isX) {
+      if (this.#count(isX) === 0) return null;
+      return this.#getRotateCenter(isX);
     }
 
     // 図形が点対称か否か。

@@ -52,8 +52,9 @@
         console.error('Error: moveFlag failed.');
         return false;
       }
+      const isConnected = level.isConnected(app.states.isTarget);
       const center = level.getRotateCenter(app.states.isTarget);
-      const clearFlag = center !== null;
+      const clearFlag = isConnected && center !== null;
       if (clearFlag) {
         console.error('Error: Cleared on the way.');
         return false;

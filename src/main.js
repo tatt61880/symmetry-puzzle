@@ -48,6 +48,7 @@
   let undoCount = 0;
 
   let clearFlag = false;
+  let symmetryFlag = false;
   let redrawFlag = false;
 
   let drawingState = app.states.none;
@@ -94,8 +95,19 @@
 
   function clearCheck() {
     const center = level.getRotateCenter(app.states.isTarget);
-    clearFlag = center !== null;
+    const symmetryFlagPrev = symmetryFlag;
+    symmetryFlag = center !== null;
+    clearFlag = false;
+    if (symmetryFlag) {
+      const isConnected = level.isConnected(app.states.isTarget);
+      if (isConnected) {
+        clearFlag = true;
+      }
+    }
     redrawFlag = clearFlag;
+    if (symmetryFlag !== symmetryFlagPrev) {
+      redrawFlag = true;
+    }
     if (clearFlag) {
       document.documentElement.style.setProperty('--animation-origin-rotation', `${blockSize * center.x}px ${blockSize * center.y}px`);
     }
@@ -551,7 +563,7 @@
 
     let intervalCount = INPUT_INTERVAL_COUNT;
     const r = level.getLevelObj()?.r;
-    if (!editMode && settings.autoMode && r !== undefined) {
+    if (!clearFlag && !editMode && settings.autoMode && r !== undefined) {
       intervalCount = settingsAuto.interval;
       if (settingsAuto.paused) {
         inputFlag = false;
@@ -562,10 +574,10 @@
     }
 
     if (inputCount >= intervalCount) {
-      if (clearFlag) {
-        if (redrawFlag) {
-          redrawFlag = false;
-          draw(true);
+      if (redrawFlag) {
+        redrawFlag = false;
+        draw(true);
+        if (clearFlag) {
           hideElem(app.elems.stickBase);
         }
       } else if (inputFlag) {
@@ -687,6 +699,12 @@
           nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
         }
       } else {
+        if (symmetryFlag) {
+          const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 2, text: 'Not connected.', fill: 'white'});
+          text.setAttribute('font-size', `${blockSize * 0.7}px`);
+          text.setAttribute('font-weight', 'bold');
+          g.appendChild(text);
+        }
         const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: `${undoInfo.getIndex()} steps`, fill: 'white'});
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
         text.setAttribute('font-weight', 'bold');
