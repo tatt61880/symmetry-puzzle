@@ -42,10 +42,6 @@
   background-color: #505050;
 }
 
-.translatable.hidden {
-  display: none;
-}
-
 .example-image {
   width: 380px;
   height: 140px;

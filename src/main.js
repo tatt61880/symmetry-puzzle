@@ -372,10 +372,10 @@
     const langButton = document.getElementById(`setting-lang-${lang}`);
     langButton.classList.add('active');
     for (const elem of document.getElementsByClassName('translatable')) {
-      elem.classList.add('hidden');
+      hideElem(elem);
     }
     for (const elem of document.getElementsByClassName(`translatable ${lang}`)) {
-      elem.classList.remove('hidden');
+      showElem(elem);
     }
   }
 
