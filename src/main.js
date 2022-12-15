@@ -43,7 +43,7 @@
   let temporaryShowCharsFlag = false;
   let secretSequence = '';
 
-  let undoInfo = app.UndoInfo();
+  let undoInfo;
   let undoFlag = false;
   let undoCount = 0;
 
@@ -249,8 +249,7 @@
   }
 
   function resetUndo() {
-    undoInfo = app.UndoInfo();
-    hideElem(app.elems.undo);
+    undoInfo = app.UndoInfo(app.elems.undo);
   }
 
   function applyObj(obj, param = {init: false}) {
@@ -270,10 +269,6 @@
     if (undoInfo.isUndoable()) {
       const data = undoInfo.undo();
       applyObj(data);
-    }
-
-    if (undoInfo.getIndex() === 0) {
-      hideElem(app.elems.undo);
     }
   }
 
@@ -868,7 +863,6 @@
   }
 
   function addUndo(dir) {
-    showElem(app.elems.undo);
     undoInfo.pushData({
       dir: dir,
       w: level.getW(),

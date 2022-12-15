@@ -14,7 +14,7 @@
     const levelId = Number(idx);
     const res = testLevel(levelId, levelObj);
     if (!res) {
-      console.error(`Error: Test failed.`);
+      console.error('Error: Test failed.');
       process.exitCode = 1;
       return;
     }

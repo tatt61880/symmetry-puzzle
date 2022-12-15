@@ -6,35 +6,60 @@
     window.app.UndoInfo = undoinfo;
   }
 
-  function undoinfo() {
-    return new UndoInfo();
+  function undoinfo(elemUndoButton) {
+    return new UndoInfo(elemUndoButton);
   }
 
   class UndoInfo {
-    constructor() {
+    #elemUndoButton;
+    #undoIdx;
+
+    constructor(elemUndoButton) {
+      this.#elemUndoButton = elemUndoButton;
       this.undoArray = [];
-      this.undoIdx = 0;
+      this.#undoIdx = 0;
+      hideElem(this.#elemUndoButton);
     }
+
     pushData(data) {
-      this.undoArray[this.undoIdx++] = data;
+      showElem(this.#elemUndoButton);
+      this.undoArray[this.#undoIdx++] = data;
     }
+
     isUndoable() {
-      return this.undoIdx !== 0;
+      return this.#undoIdx !== 0;
     }
+
     undo() {
-      return this.undoArray[--this.undoIdx];
+      this.#undoIdx--;
+      if (this.#undoIdx === 0) {
+        hideElem(this.#elemUndoButton);
+      }
+      return this.undoArray[this.#undoIdx];
     }
+
     getIndex() {
-      return this.undoIdx;
+      return this.#undoIdx;
     }
+
     getReplayStr() {
       let replayStr = '';
-      for (let i = 0; i < this.undoIdx; ++i) {
+      for (let i = 0; i < this.#undoIdx; ++i) {
         if (this.undoArray[i].dir !== null) {
           replayStr += this.undoArray[i].dir;
         }
       }
       return replayStr;
     }
+  }
+
+  function showElem(elem) {
+    if (elem === undefined) return;
+    elem.classList.remove('hide');
+  }
+
+  function hideElem(elem) {
+    if (elem === undefined) return;
+    elem.classList.add('hide');
   }
 })();
