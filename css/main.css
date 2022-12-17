@@ -130,7 +130,7 @@ text {
 }
 
 .low-contrast {
-  filter: contrast(60%);
+  opacity: 0.7;
 }
 
 ul {
