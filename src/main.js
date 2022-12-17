@@ -382,14 +382,18 @@
     }
   }
 
-  function selectLang(e, lang) {
-    applyLang(lang);
+  function rotateIcon() {
     const ICON_SIZE = 32;
     document.documentElement.style.setProperty('--animation-origin-rotation', `${ICON_SIZE / 2}px ${ICON_SIZE / 2}px`);
     app.elems.icon.classList.remove('animation-rotation');
     setTimeout(() => {
       app.elems.icon.classList.add('animation-rotation');
     }, 1);
+  }
+
+  function selectLang(e, lang) {
+    rotateIcon();
+    applyLang(lang);
     savedata.saveLang(lang);
   }
 
