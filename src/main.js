@@ -675,7 +675,7 @@
       const bestStep = level.getBestStep();
       // クリア時のメッセージ
       if (clearFlag) {
-        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: 'CLEAR', fill: 'blue'});
+        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: 'Congratulations!', fill: 'blue'});
         text.setAttribute('font-size', `${blockSize * 0.8}px`);
         text.setAttribute('font-weight', 'bold');
         g.appendChild(text);
