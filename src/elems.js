@@ -9,6 +9,7 @@
   }
 
   const elems = {
+    icon: 'icon',
     version: 'version',
 
     help: {

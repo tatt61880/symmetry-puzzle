@@ -59,9 +59,12 @@
   let levelId = null;
   const level = app.Level();
 
-  document.documentElement.style.setProperty('--animation-duration', `${INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC}ms`);
-  document.documentElement.style.setProperty('--animation-duration-shadow', `${INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC * 2}ms`);
-  document.documentElement.style.setProperty('--animation-duration-rotation', `${INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC * 3}ms`);
+  const MOVE_MSEC = INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
+  const SHADOW_MSEC = MOVE_MSEC * 2;
+  const ROTATION_MSEC = MOVE_MSEC * 3;
+  document.documentElement.style.setProperty('--animation-duration', `${MOVE_MSEC}ms`);
+  document.documentElement.style.setProperty('--animation-duration-shadow', `${SHADOW_MSEC}ms`);
+  document.documentElement.style.setProperty('--animation-duration-rotation', `${ROTATION_MSEC}ms`);
 
   document.addEventListener('DOMContentLoaded', onload, false);
   return;
@@ -381,6 +384,12 @@
 
   function selectLang(e, lang) {
     applyLang(lang);
+    const ICON_SIZE = 32;
+    document.documentElement.style.setProperty('--animation-origin-rotation', `${ICON_SIZE / 2}px ${ICON_SIZE / 2}px`);
+    app.elems.icon.classList.add('animation-rotation');
+    setTimeout(() => {
+      app.elems.icon.classList.remove('animation-rotation');
+    }, ROTATION_MSEC);
     e.stopPropagation();
     savedata.saveLang(lang);
   }
