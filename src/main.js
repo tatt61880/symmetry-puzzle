@@ -903,11 +903,9 @@
       settings.autoMode = true;
       settingsAuto.paused = true;
       showElem(app.elems.auto.buttons);
-      hideElem(app.elems.stickBase);
     } else {
       settings.autoMode = false;
       hideElem(app.elems.auto.buttons);
-      showElem(app.elems.stickBase);
     }
     updateAutoStartPauseButtons();
     replaceUrl();
