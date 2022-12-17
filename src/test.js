@@ -33,8 +33,13 @@
     const level = app.Level();
     level.applyObj(levelObj, {init: true});
 
+    if (levelObj.r.length !== levelObj.step) {
+      console.error(`Error: ${levelInfo(levelId, levelObj)} Step check failed.`);
+      return false;
+    }
+
     if (!level.isNormalized()) {
-      console.error('Error: isNormalized check failed.');
+      console.error(`Error: ${levelInfo(levelId, levelObj)} isNormalized check failed.`);
       return false;
     }
 
