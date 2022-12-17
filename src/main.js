@@ -3,7 +3,7 @@
   const app = window.app;
   Object.freeze(app);
 
-  const VERSION_TEXT = 'v2022.12.15';
+  const VERSION_TEXT = 'v2022.12.16';
 
   const savedata = app.savedata();
 
@@ -16,8 +16,8 @@
   };
 
   let inputFlag = false;
-  const INPUT_INTERVAL_MSEC = 35;
-  const INPUT_INTERVAL_COUNT = 5;
+  const INPUT_INTERVAL_MSEC = 28; // この値を変更するときは、iOSの省電力モード時のsetIntervalの動作を確認した上で変更してください。
+  const INPUT_INTERVAL_COUNT = 6;
   const UNDO_INTERVAL_COUNT = 5;
   let inputCount = INPUT_INTERVAL_COUNT;
   let inputDir = dirs.neutral;
