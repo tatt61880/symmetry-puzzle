@@ -386,11 +386,10 @@
     applyLang(lang);
     const ICON_SIZE = 32;
     document.documentElement.style.setProperty('--animation-origin-rotation', `${ICON_SIZE / 2}px ${ICON_SIZE / 2}px`);
-    app.elems.icon.classList.add('animation-rotation');
+    app.elems.icon.classList.remove('animation-rotation');
     setTimeout(() => {
-      app.elems.icon.classList.remove('animation-rotation');
-    }, ROTATION_MSEC);
-    e.stopPropagation();
+      app.elems.icon.classList.add('animation-rotation');
+    }, 1);
     savedata.saveLang(lang);
   }
 
