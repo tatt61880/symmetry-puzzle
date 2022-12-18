@@ -610,8 +610,27 @@
         }
 
         if (app.states.isOther(state) && !showCharsFlag) {
-          const rect = app.svg.createRect(blockSize, {x: x + 0.4, y: y + 0.4, width: 0.2, height: 0.2, fill: color.stroke});
-          gElem.appendChild(rect);
+          const size = blockBorderWidth * 1.75;
+          // 右上
+          if (!flags[dirs.u] && !flags[dirs.r]) {
+            const rect = app.svg.createRect(blockSize, {x: x + 1 - size, y: y, width: size, height: size, fill: color.stroke});
+            gElem.appendChild(rect);
+          }
+          // 右下
+          if (!flags[dirs.d] && !flags[dirs.r]) {
+            const rect = app.svg.createRect(blockSize, {x: x + 1 - size, y: y + 1 - size, width: size, height: size, fill: color.stroke});
+            gElem.appendChild(rect);
+          }
+          // 左下
+          if (!flags[dirs.d] && !flags[dirs.l]) {
+            const rect = app.svg.createRect(blockSize, {x: x, y: y + 1 - size, width: size, height: size, fill: color.stroke});
+            gElem.appendChild(rect);
+          }
+          // 左上
+          if (!flags[dirs.u] && !flags[dirs.l]) {
+            const rect = app.svg.createRect(blockSize, {x: x, y: y, width: size, height: size, fill: color.stroke});
+            gElem.appendChild(rect);
+          }
         }
 
         if (app.states.isUser(state)) {
