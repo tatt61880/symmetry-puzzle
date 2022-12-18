@@ -942,14 +942,14 @@
     if (settingsAuto.paused) {
       showElem(app.elems.auto.buttonStart);
       hideElem(app.elems.auto.buttonPause);
-      if (settings.autoMode) {
-        hideElem(app.elems.stickBase);
-      } else {
-        showElem(app.elems.stickBase);
-      }
     } else {
       hideElem(app.elems.auto.buttonStart);
       showElem(app.elems.auto.buttonPause);
+    }
+
+    if (settings.autoMode && settingsAuto.paused || clearFlag) {
+      hideElem(app.elems.stickBase);
+    } else {
       showElem(app.elems.stickBase);
     }
   }
