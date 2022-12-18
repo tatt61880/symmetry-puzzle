@@ -29,7 +29,7 @@
   const dys = [-1, 0, 1, 0, -1, 1, 1, -1];
   const dxs = [0, 1, 0, -1, 1, 1, -1, -1];
 
-  const blockBorderWidth = 0.12;
+  const blockBorderWidth = 0.14;
 
   function level() {
     return new Level();
@@ -334,11 +334,11 @@
         for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
           const state = this.#states[y][x];
           exists[state] = true;
-          if (app.states.targetMin <= state && state <= app.states.targetMax) {
+          if (app.states.isTarget(state)) {
             if (state !== app.states.targetMin && !exists[state - 1]) return false;
-          } else if (app.states.otherMin <= state && state <= app.states.otherMax) {
+          } else if (app.states.isOther(state)) {
             if (state !== app.states.otherMin && !exists[state - 1]) return false;
-          } else if (app.states.userMin <= state && state <= app.states.userMax) {
+          } else if (app.states.isUser(state)) {
             if (state !== app.states.userMin && !exists[state - 1]) return false;
           } else if (state !== app.states.wall && state !== app.states.none) {
             return false;
@@ -567,6 +567,7 @@
         for (let dir = 0; dir < 8; ++dir) {
           flags[dir] = this.getState(x + dxs[dir], y + dys[dir]) === state;
         }
+
         // 上側
         if (!flags[dirs.u]) {
           const line = app.svg.createRect(blockSize, {x: x, y: y, width: 1, height: blockBorderWidth, fill: color.stroke});
@@ -608,7 +609,12 @@
           gElem.appendChild(rect);
         }
 
-        if (app.states.userMin <= state && state <= app.states.userMax) {
+        if (app.states.isOther(state) && !showCharsFlag) {
+          const rect = app.svg.createRect(blockSize, {x: x + 0.4, y: y + 0.4, width: 0.2, height: 0.2, fill: color.stroke});
+          gElem.appendChild(rect);
+        }
+
+        if (app.states.isUser(state)) {
           const size = blockBorderWidth * 3;
           // 右上
           if (!flags[dirs.u] && !flags[dirs.r]) {
@@ -659,11 +665,13 @@
             gElem.appendChild(polygon);
           }
         }
+
         if (rotateFlag) {
           if (app.states.isTarget(state)) {
             gElem.classList.add('animation-rotation');
           }
         }
+
         // 移動モーション
         if (this.#moveFlags[y][x]) {
           const dx = this.#moveDx;

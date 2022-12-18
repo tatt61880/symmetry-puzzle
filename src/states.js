@@ -45,5 +45,11 @@
   states.isTarget = (state) => {
     return states.targetMin <= state && state <= states.targetMax;
   };
+  states.isOther = (state) => {
+    return states.otherMin <= state && state <= states.otherMax;
+  };
+  states.isUser = (state) => {
+    return states.userMin <= state && state <= states.userMax;
+  };
   Object.freeze(states);
 })();
