@@ -16,7 +16,7 @@
   };
 
   let inputFlag = false;
-  const INPUT_INTERVAL_MSEC = 28; // この値を変更するときは、iOSの省電力モード時のsetIntervalの動作を確認した上で変更してください。
+  const INPUT_INTERVAL_MSEC = 28; // この値を変更するときは、iOSの省電力モード時のsetIntervalの動作を確認した上で変更してください。詳細: https://github.com/tatt61880/showkoban/issues/38
   const INPUT_INTERVAL_COUNT = 6;
   const UNDO_INTERVAL_COUNT = 5;
   let inputCount = INPUT_INTERVAL_COUNT;
