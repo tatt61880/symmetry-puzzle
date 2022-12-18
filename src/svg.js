@@ -25,6 +25,15 @@
     return line;
   };
 
+  svg.createCircle = (blockSize, param) => {
+    const circle = document.createElementNS(SVG_NS, 'circle');
+    circle.setAttribute('cx', blockSize * param.cx);
+    circle.setAttribute('cy', blockSize * param.cy);
+    circle.setAttribute('r', blockSize * param.r);
+    circle.setAttribute('fill', param.fill);
+    return circle;
+  };
+
   svg.createRect = (blockSize, param) => {
     const rect = document.createElementNS(SVG_NS, 'rect');
     rect.setAttribute('x', blockSize * param.x);
@@ -52,23 +61,26 @@
     const polygon = svg.createPolygon(blockSize, {
       points: [
         [param.x + 0.1, param.y + 0.3],
-        [param.x + 0.35, param.y + 0.5],
+        [param.x + 0.33, param.y + 0.5],
         [param.x + 0.5, param.y + 0.15],
-        [param.x + 0.65, param.y + 0.5],
+        [param.x + 0.67, param.y + 0.5],
         [param.x + 0.9, param.y + 0.3],
-        [param.x + 0.75, param.y + 0.7],
-        [param.x + 0.25, param.y + 0.7],
+        [param.x + 0.8, param.y + 0.7],
+        [param.x + 0.2, param.y + 0.7],
       ],
       fill: param.fill,
     });
     const rect = svg.createRect(blockSize, {
-      x: param.x + 0.25,
+      x: param.x + 0.2,
       y: param.y + 0.75,
-      width: 0.5,
+      width: 0.6,
       height: 0.15,
       fill: param.fill,
     });
     g.appendChild(polygon);
+    g.appendChild(svg.createCircle(blockSize, {cx: param.x + 0.1, cy: param.y + 0.3, r: 0.05, fill: param.fill}));
+    g.appendChild(svg.createCircle(blockSize, {cx: param.x + 0.5, cy: param.y + 0.15, r: 0.05, fill: param.fill}));
+    g.appendChild(svg.createCircle(blockSize, {cx: param.x + 0.9, cy: param.y + 0.3, r: 0.05, fill: param.fill}));
     g.appendChild(rect);
     return g;
   };
