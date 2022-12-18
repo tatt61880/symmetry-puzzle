@@ -20,7 +20,7 @@
     line.setAttribute('y1', blockSize * param.y1);
     line.setAttribute('x2', blockSize * param.x2);
     line.setAttribute('y2', blockSize * param.y2);
-    line.setAttribute('stroke-width', '1px');
+    line.setAttribute('stroke-width', `${blockSize / 50}`);
     line.setAttribute('stroke', param.stroke);
     return line;
   };
