@@ -304,7 +304,9 @@
 
     inputDir = dirs.neutral;
     inputCount = INPUT_INTERVAL_COUNT;
-    showElem(app.elems.stickBase);
+    if (!settingsAuto.paused) {
+      showElem(app.elems.stickBase);
+    }
   }
 
   function updateLevelVisibility() {
@@ -924,9 +926,9 @@
   }
 
   function updateAutoMode(isOn) {
+    settingsAuto.paused = true;
     if (isOn) {
       settings.autoMode = true;
-      settingsAuto.paused = true;
       showElem(app.elems.auto.buttons);
     } else {
       settings.autoMode = false;
@@ -940,9 +942,15 @@
     if (settingsAuto.paused) {
       showElem(app.elems.auto.buttonStart);
       hideElem(app.elems.auto.buttonPause);
+      if (settings.autoMode) {
+        hideElem(app.elems.stickBase);
+      } else {
+        showElem(app.elems.stickBase);
+      }
     } else {
       hideElem(app.elems.auto.buttonStart);
       showElem(app.elems.auto.buttonPause);
+      showElem(app.elems.stickBase);
     }
   }
 
