@@ -708,7 +708,8 @@
           if (bestStep !== undefined) {
             savedata.saveSteps(levelObj, replayStr);
           }
-          if (!settings.autoMode) {
+
+          {
             const levelParams = `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}', step: ${replayStr.length}` + (levelObj.subject !== undefined ? `, subject: '${levelObj.subject}'` : '');
             const levelObjStr = `{${levelParams}},`;
             consoleLog(levelObjStr);
