@@ -12,22 +12,22 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2022.12.18">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2022.12.18">
 
-  <link rel="stylesheet" href="./css/main.css?2022.12.17">
-  <link rel="stylesheet" href="./css/dialog-help.css?2022.12.17">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2022.12.17">
-  <link rel="stylesheet" href="./css/animation.css?2022.12.17">
+  <link rel="stylesheet" href="./css/main.css?2022.12.19">
+  <link rel="stylesheet" href="./css/dialog-help.css?2022.12.19">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2022.12.19">
+  <link rel="stylesheet" href="./css/animation.css?2022.12.19">
 
-  <script src="./src/states.js?2022.12.17"></script>
-  <script src="./src/colors.js?2022.12.17"></script>
-  <script src="./src/levels.js?2022.12.17"></script>
-  <script src="./src/svg.js?2022.12.17"></script>
-  <script src="./src/analyze-url.js?2022.12.17"></script>
-  <script src="./src/class-savedata.js?2022.12.17"></script>
-  <script src="./src/class-stack.js?2022.12.17"></script>
-  <script src="./src/class-undo-info.js?2022.12.17"></script>
-  <script src="./src/class-level.js?2022.12.17"></script>
-  <script src="./src/elems.js?2022.12.17"></script>
-  <script src="./src/main.js?2022.12.17"></script>
+  <script src="./src/states.js?2022.12.19"></script>
+  <script src="./src/colors.js?2022.12.19"></script>
+  <script src="./src/levels.js?2022.12.19"></script>
+  <script src="./src/svg.js?2022.12.19"></script>
+  <script src="./src/analyze-url.js?2022.12.19"></script>
+  <script src="./src/class-savedata.js?2022.12.19"></script>
+  <script src="./src/class-stack.js?2022.12.19"></script>
+  <script src="./src/class-undo-info.js?2022.12.19"></script>
+  <script src="./src/class-level.js?2022.12.19"></script>
+  <script src="./src/elems.js?2022.12.19"></script>
+  <script src="./src/main.js?2022.12.19"></script>
 </head>
 
 <body>
@@ -146,6 +146,14 @@
 
   <dialog id="dialog-levels">
     <div id="dialog-levels-div">
+      <div class="toggle-div">
+        <div class="toggle-text translatable ja">クリアしたレベルを隠す</div>
+        <div class="toggle-text translatable en">Hide cleared levels</div>
+        <div class="toggle-button">
+          <input id="hide-cleared-levels" type="checkbox" class="toggle-input" />
+          <label class="toggle-label"></label>
+        </div>
+      </div>
       <svg id="dialog-levels-svg"></svg>
     </div>
   </dialog>

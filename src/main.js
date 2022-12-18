@@ -391,21 +391,37 @@
     }, 1);
   }
 
-  function selectLang(e, lang) {
+  function selectLang(lang) {
     rotateIcon();
     applyLang(lang);
     savedata.saveLang(lang);
   }
 
   function showLevelsDialog() {
+    updateLevelsDialog();
+    app.elems.levels.dialog.showModal();
+  }
+
+  function toggleHideClearedLevels() {
+    updateLevelsDialog();
+  }
+
+  function updateLevelsDialog() {
+    const hideClearedLevelsFlag = app.elems.levels.hideClearedLevels.checked;
+
     app.elems.levels.dialogSvg.innerHTML = '';
     const HEIGHT = 90;
     const WIDTH = 90;
     const COLS = 5;
-    app.elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil((app.levels.length - 1) / COLS)}px`);
 
+    let count = 0;
     for (let id = 1; id < app.levels.length; id++) {
       const levelObj = app.levels[id];
+
+      const highestScore = savedata.getHighestScore(levelObj);
+      if (highestScore !== null && hideClearedLevelsFlag) continue;
+      count++;
+
       const g = app.svg.createG();
       g.classList.add('level-select');
       const level = app.Level();
@@ -423,7 +439,6 @@
         g.appendChild(text);
       }
       {
-        const highestScore = savedata.getHighestScore(levelObj);
         const bestStep = level.getBestStep();
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
@@ -431,8 +446,8 @@
           g.appendChild(crown);
         }
       }
-      const x = ((id - 1) % COLS) * WIDTH;
-      const y = Math.floor((id - 1) / COLS) * HEIGHT;
+      const x = ((count - 1) % COLS) * WIDTH;
+      const y = Math.floor((count - 1) / COLS) * HEIGHT;
       g.setAttribute('transform', `translate(${x},${y})`);
       g.setAttribute('data-id', id);
       g.addEventListener('click', function() {
@@ -442,7 +457,8 @@
       }, false);
       app.elems.levels.dialogSvg.appendChild(g);
     }
-    app.elems.levels.dialog.showModal();
+
+    app.elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil((count - 1) / COLS)}px`);
   }
 
   function closeLevelsDialog() {
@@ -538,8 +554,8 @@
       app.elems.help.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
       app.elems.help.button.addEventListener('click', showHelpDialog, false);
       app.elems.help.dialog.addEventListener('click', closeHelpDialog, false);
-      app.elems.help.langEn.addEventListener('click', (e) => selectLang(e, 'en'), false);
-      app.elems.help.langJa.addEventListener('click', (e) => selectLang(e, 'ja'), false);
+      app.elems.help.langEn.addEventListener('click', () => selectLang('en'), false);
+      app.elems.help.langJa.addEventListener('click', () => selectLang('ja'), false);
 
       app.elems.level.reset.addEventListener('click', resetLevel, false);
       app.elems.level.prev.addEventListener('click', gotoPrevLevel, false);
@@ -547,6 +563,7 @@
       app.elems.level.edit.addEventListener('click', toggleEditLevel, false);
       app.elems.levels.button.addEventListener('click', showLevelsDialog, false);
       app.elems.levels.dialog.addEventListener('click', closeLevelsDialog, false);
+      app.elems.levels.hideClearedLevels.addEventListener('click', toggleHideClearedLevels, false);
       app.elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
 
       app.elems.svg.addEventListener(pointerdownEventName, editSvg, false);
