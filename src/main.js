@@ -458,7 +458,7 @@
       app.elems.levels.dialogSvg.appendChild(g);
     }
 
-    app.elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil((count - 1) / COLS)}px`);
+    app.elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(count / COLS)}px`);
   }
 
   function closeLevelsDialog() {
