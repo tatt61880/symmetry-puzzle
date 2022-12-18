@@ -760,7 +760,7 @@
           const color = getStepColor(highestScore, bestStep);
 
           if (!clearFlag) {
-            const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`, fill: color});
+            const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `Your best: ${highestScore} steps`, fill: color});
             text.setAttribute('font-size', fontSize);
             text.setAttribute('font-weight', 'bold');
             g.appendChild(text);
