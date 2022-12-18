@@ -304,7 +304,7 @@
 
     inputDir = dirs.neutral;
     inputCount = INPUT_INTERVAL_COUNT;
-    if (!settingsAuto.paused) {
+    if (!settings.autoMode || !settingsAuto.paused) {
       showElem(app.elems.stickBase);
     }
   }
