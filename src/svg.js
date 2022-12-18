@@ -47,6 +47,32 @@
     return polygon;
   };
 
+  svg.createCrown = (blockSize, param) => {
+    const g = svg.createG();
+    const polygon = svg.createPolygon(blockSize, {
+      points: [
+        [param.x + 0.1, param.y + 0.3],
+        [param.x + 0.4, param.y + 0.5],
+        [param.x + 0.5, param.y + 0.1],
+        [param.x + 0.6, param.y + 0.5],
+        [param.x + 0.9, param.y + 0.3],
+        [param.x + 0.75, param.y + 0.7],
+        [param.x + 0.25, param.y + 0.7],
+      ],
+      fill: param.fill,
+    });
+    const rect = svg.createRect(blockSize, {
+      x: param.x + 0.25,
+      y: param.y + 0.75,
+      width: 0.5,
+      height: 0.15,
+      fill: param.fill,
+    });
+    g.appendChild(polygon);
+    g.appendChild(rect);
+    return g;
+  };
+
   svg.createText = (blockSize, param) => {
     const text = document.createElementNS(SVG_NS, 'text');
     text.setAttribute('x', blockSize * param.x);

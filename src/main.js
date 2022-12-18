@@ -427,8 +427,8 @@
         const bestStep = level.getBestStep();
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
-          const rect = app.svg.createRect(5, {x: 1, y: 4.5, width: 2, height: 2, fill: color});
-          g.appendChild(rect);
+          const crown = app.svg.createCrown(20, {x: 0, y: 1, fill: color});
+          g.appendChild(crown);
         }
       }
       const x = ((id - 1) % COLS) * WIDTH;
@@ -733,15 +733,21 @@
       }
 
       // 自己最高記録
-      if (levelId !== null && !clearFlag) {
+      if (levelId !== null) {
         const levelObj = level.getLevelObj();
         const highestScore = savedata.getHighestScore(levelObj);
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
-          const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`, fill: color});
-          text.setAttribute('font-size', fontSize);
-          text.setAttribute('font-weight', 'bold');
-          g.appendChild(text);
+
+          if (!clearFlag) {
+            const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`, fill: color});
+            text.setAttribute('font-size', fontSize);
+            text.setAttribute('font-weight', 'bold');
+            g.appendChild(text);
+          }
+
+          const crown = app.svg.createCrown(blockSize, {x: 0, y: 0, fill: color});
+          g.appendChild(crown);
         }
       }
     }
