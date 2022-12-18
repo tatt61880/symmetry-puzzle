@@ -53,7 +53,7 @@
       points: [
         [param.x + 0.1, param.y + 0.3],
         [param.x + 0.35, param.y + 0.5],
-        [param.x + 0.5, param.y + 0.1],
+        [param.x + 0.5, param.y + 0.15],
         [param.x + 0.65, param.y + 0.5],
         [param.x + 0.9, param.y + 0.3],
         [param.x + 0.75, param.y + 0.7],
