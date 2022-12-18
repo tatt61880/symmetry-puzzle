@@ -953,6 +953,9 @@
   function onButtonStart() {
     settingsAuto.paused = false;
     updateAutoStartPauseButtons();
+    if (clearFlag) {
+      gotoNextLevel();
+    }
   }
 
   function onButtonPause() {
