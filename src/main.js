@@ -695,7 +695,7 @@
       const bestStep = level.getBestStep();
       // クリア時のメッセージ
       if (clearFlag) {
-        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: 'Congratulations!', fill: 'blue'});
+        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: 'Congratulations!', fill: 'blue'});
         text.setAttribute('font-size', fontSize);
         text.setAttribute('font-weight', 'bold');
         g.appendChild(text);
@@ -731,7 +731,7 @@
 
         {
           const color = getStepColor(clearStep, bestStep);
-          const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${clearStep} steps`, fill: color});
+          const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: `${clearStep} steps`, fill: color});
           text.setAttribute('font-size', fontSize);
           text.setAttribute('font-weight', 'bold');
           g.appendChild(text);
