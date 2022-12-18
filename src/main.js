@@ -671,12 +671,13 @@
       g.appendChild(rect);
     }
 
+    const fontSize = `${blockSize * 0.6}px`;
     if (!editMode) {
       const bestStep = level.getBestStep();
       // クリア時のメッセージ
       if (clearFlag) {
         const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: 'Congratulations!', fill: 'blue'});
-        text.setAttribute('font-size', `${blockSize * 0.8}px`);
+        text.setAttribute('font-size', fontSize);
         text.setAttribute('font-weight', 'bold');
         g.appendChild(text);
         const clearStep = undoInfo.getIndex();
@@ -711,7 +712,7 @@
         {
           const color = getStepColor(clearStep, bestStep);
           const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${clearStep} steps`, fill: color});
-          text.setAttribute('font-size', `${blockSize * 0.7}px`);
+          text.setAttribute('font-size', fontSize);
           text.setAttribute('font-weight', 'bold');
           g.appendChild(text);
         }
@@ -721,12 +722,12 @@
       } else {
         if (symmetryFlag) {
           const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 2, text: 'Not connected.', fill: 'white'});
-          text.setAttribute('font-size', `${blockSize * 0.7}px`);
+          text.setAttribute('font-size', fontSize);
           text.setAttribute('font-weight', 'bold');
           g.appendChild(text);
         }
         const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: `${undoInfo.getIndex()} steps`, fill: 'white'});
-        text.setAttribute('font-size', `${blockSize * 0.7}px`);
+        text.setAttribute('font-size', fontSize);
         text.setAttribute('font-weight', 'bold');
         g.appendChild(text);
       }
@@ -738,7 +739,7 @@
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
           const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `${highestScore}`, fill: color});
-          text.setAttribute('font-size', `${blockSize * 0.7}px`);
+          text.setAttribute('font-size', fontSize);
           text.setAttribute('font-weight', 'bold');
           g.appendChild(text);
         }
