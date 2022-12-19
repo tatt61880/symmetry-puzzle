@@ -669,7 +669,7 @@
   }
 
   function drawFrame() {
-    const paddingColor = clearFlag ? '#8f8' : '#753';
+    const paddingColor = '#997733';
 
     const g = app.svg.createG();
 
@@ -693,9 +693,27 @@
     const fontSize = `${blockSize * 0.6}px`;
     if (!editMode) {
       const bestStep = level.getBestStep();
+
+      // 自己最高記録
+      if (levelId !== null) {
+        const levelObj = level.getLevelObj();
+        const highestScore = savedata.getHighestScore(levelObj);
+        if (highestScore !== null) {
+          const color = getStepColor(highestScore, bestStep);
+
+          const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `Your best: ${highestScore} steps`, fill: color});
+          text.setAttribute('font-size', fontSize);
+          text.setAttribute('font-weight', 'bold');
+          g.appendChild(text);
+
+          const crown = app.svg.createCrown(blockSize, {x: 0, y: 0, fill: color});
+          g.appendChild(crown);
+        }
+      }
+
       // クリア時のメッセージ
       if (clearFlag) {
-        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: 'Congratulations!', fill: 'blue'});
+        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 2, text: 'Congratulations!', fill: 'white'});
         text.setAttribute('font-size', fontSize);
         text.setAttribute('font-weight', 'bold');
         g.appendChild(text);
@@ -750,25 +768,6 @@
         text.setAttribute('font-size', fontSize);
         text.setAttribute('font-weight', 'bold');
         g.appendChild(text);
-      }
-
-      // 自己最高記録
-      if (levelId !== null) {
-        const levelObj = level.getLevelObj();
-        const highestScore = savedata.getHighestScore(levelObj);
-        if (highestScore !== null) {
-          const color = getStepColor(highestScore, bestStep);
-
-          if (!clearFlag) {
-            const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `Your best: ${highestScore} steps`, fill: color});
-            text.setAttribute('font-size', fontSize);
-            text.setAttribute('font-weight', 'bold');
-            g.appendChild(text);
-          }
-
-          const crown = app.svg.createCrown(blockSize, {x: 0, y: 0, fill: color});
-          g.appendChild(crown);
-        }
       }
     }
 

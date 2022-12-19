@@ -26,7 +26,7 @@
 
   colors.line = '#888';
 
-  colors.stepWin = 'red';
+  colors.stepWin = '#ff5555';
   colors.stepDraw = 'orange';
   colors.stepLose = 'black';
   colors.stepUnknown = 'gray';
