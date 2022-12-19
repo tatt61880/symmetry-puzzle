@@ -27,8 +27,8 @@
   colors.line = '#888';
 
   colors.stepWin = '#ff5555';
-  colors.stepDraw = 'orange';
-  colors.stepLose = 'black';
+  colors.stepDraw = '#ffaa33';
+  colors.stepLose = '#222222';
   colors.stepUnknown = 'gray';
 
   Object.freeze(colors);

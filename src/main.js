@@ -669,7 +669,7 @@
   }
 
   function drawFrame() {
-    const paddingColor = '#997733';
+    const paddingColor = '#995533';
 
     const g = app.svg.createG();
 
