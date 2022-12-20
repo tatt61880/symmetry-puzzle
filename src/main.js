@@ -679,7 +679,7 @@
   }
 
   function drawFrame() {
-
+    const borderWidth = 0.05;
     const g = app.svg.createG();
 
     {
@@ -693,7 +693,6 @@
       g.appendChild(rectD);
       g.appendChild(rectL);
 
-      const borderWidth = 0.05;
       const borderColor = app.colors.frameBorder;
       const rectUb = app.svg.createRect(blockSize, {x: 0, y: 0, width: level.getWidth(), height: borderWidth, fill: borderColor});
       const rectRb = app.svg.createRect(blockSize, {x: level.getWidth() - borderWidth, y: 0, width: borderWidth, height: level.getHeight(), fill: borderColor});
@@ -709,13 +708,14 @@
     if (!editMode) {
       const bestStep = level.getBestStep();
 
+      let highestScorePrev = null;
+
       // クリア時のメッセージ
       if (clearFlag) {
-        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 2, text: 'Congratulations!', fill: 'white'});
+        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1.95, text: 'Congratulations!', fill: 'white'});
         text.setAttribute('font-size', fontSize);
         text.setAttribute('font-weight', 'bold');
         g.appendChild(text);
-        const clearStep = undoInfo.getIndex();
         {
           const levelObj = level.getLevelObj();
           const w = levelObj.w;
@@ -723,13 +723,18 @@
           const s = levelObj.s;
           const r = levelObj.r;
           const replayStr = undoInfo.getReplayStr();
+
+          // 記録保存
           if (bestStep !== undefined) {
+            highestScorePrev = savedata.getHighestScore(levelObj);
             savedata.saveSteps(levelObj, replayStr);
           }
 
+          // ログ出力
           {
             const levelParams = `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}', step: ${replayStr.length}` + (levelObj.subject !== undefined ? `, subject: '${levelObj.subject}'` : '');
             const levelObjStr = `{${levelParams}},`;
+            const clearStep = undoInfo.getIndex();
             consoleLog(levelObjStr);
             if (r === undefined) {
               consoleWarn('参照用公式記録の情報がありません！');
@@ -745,13 +750,6 @@
           }
         }
 
-        {
-          const color = getStepColor(clearStep, bestStep);
-          const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: `${clearStep} steps`, fill: color});
-          text.setAttribute('font-size', fontSize);
-          text.setAttribute('font-weight', 'bold');
-          g.appendChild(text);
-        }
         if (settings.autoMode) {
           nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
         }
@@ -762,7 +760,13 @@
           text.setAttribute('font-weight', 'bold');
           g.appendChild(text);
         }
-        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: `${undoInfo.getIndex()} steps`, fill: 'black'});
+      }
+
+      // 今回の手数
+      {
+        const currentStep = undoInfo.getIndex();
+        const color = clearFlag ? getStepColor(currentStep, bestStep) : 'black';
+        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1 - borderWidth / 2, text: `${currentStep} steps`, fill: color});
         text.setAttribute('font-size', fontSize);
         text.setAttribute('font-weight', 'bold');
         g.appendChild(text);
@@ -775,13 +779,21 @@
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
 
-          const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0, text: `Your best: ${highestScore} steps`, fill: color});
+          const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: borderWidth / 2, text: `Your best: ${highestScore} steps`, fill: color});
           text.setAttribute('font-size', fontSize);
           text.setAttribute('font-weight', 'bold');
           g.appendChild(text);
 
-          const crown = app.svg.createCrown(blockSize, {x: 0.05, y: 0, fill: color});
+          const crown = app.svg.createCrown(blockSize, {x: borderWidth, y: borderWidth / 2, fill: color});
           g.appendChild(crown);
+        }
+
+        // 記録更新？
+        if (highestScorePrev !== null && highestScore < highestScorePrev) {
+          const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0.95, text: 'New record!', fill: 'white'});
+          text.setAttribute('font-size', fontSize);
+          text.setAttribute('font-weight', 'bold');
+          g.appendChild(text);
         }
       }
     }
