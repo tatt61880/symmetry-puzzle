@@ -30,7 +30,7 @@
   colors.frameBorder = '#ffdd33';
 
   colors.stepWin = '#ff5555';
-  colors.stepDraw = '#ff9933';
+  colors.stepDraw = '#ff8800';
   colors.stepLose = '#222222';
   colors.stepUnknown = 'gray';
 
