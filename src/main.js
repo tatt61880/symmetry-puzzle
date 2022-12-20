@@ -3,7 +3,7 @@
   const app = window.app;
   Object.freeze(app);
 
-  const VERSION_TEXT = 'v2022.12.20';
+  const VERSION_TEXT = 'v2022.12.21';
 
   const savedata = app.savedata();
 
@@ -78,7 +78,7 @@
       '2': 'rotateX(-45deg)',
       '3': 'rotateY(-45deg)',
     };
-    app.elems.stick.style.setProperty('transform', transforms[dir]);
+    app.elems.controller.stick.style.setProperty('transform', transforms[dir]);
   }
 
   function move(dir) {
@@ -120,14 +120,14 @@
     if (undoFlag) return;
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
-    app.elems.undo.classList.add('low-contrast');
+    app.elems.controller.undo.classList.add('low-contrast');
     undoCount = UNDO_INTERVAL_COUNT;
   }
 
   function undoEnd() {
     if (!undoFlag) return;
     undoFlag = false;
-    app.elems.undo.classList.remove('low-contrast');
+    app.elems.controller.undo.classList.remove('low-contrast');
   }
 
   function undodown(e) {
@@ -158,8 +158,8 @@
   function pointermove(e) {
     e.preventDefault();
     if (!inputFlag || settings.autoMode) return;
-    const cursorPos = getCursorPos(app.elems.stickBase, e);
-    const bcRect = app.elems.stickBase.getBoundingClientRect();
+    const cursorPos = getCursorPos(app.elems.controller.stickBase, e);
+    const bcRect = app.elems.controller.stickBase.getBoundingClientRect();
     const x = cursorPos.x - bcRect.width / 2;
     const y = cursorPos.y - bcRect.height / 2;
     const minDist = 60;
@@ -242,7 +242,7 @@
     clearTimeout(nextLevelTimerId);
 
     app.elems.level.reset.classList.add('low-contrast');
-    app.elems.svg.textContent = '';
+    app.elems.main.svg.textContent = '';
 
     const RESET_DELAY = 50;
     setTimeout(() => {
@@ -252,7 +252,7 @@
   }
 
   function resetUndo() {
-    undoInfo = app.UndoInfo(app.elems.undo);
+    undoInfo = app.UndoInfo(app.elems.controller.undo);
   }
 
   function applyObj(obj, param = {init: false}) {
@@ -263,8 +263,8 @@
     clearCheck();
     updateUrl();
 
-    app.elems.svg.setAttribute('width', blockSize * level.getWidth());
-    app.elems.svg.setAttribute('height', blockSize * level.getHeight());
+    app.elems.main.svg.setAttribute('width', blockSize * level.getWidth());
+    app.elems.main.svg.setAttribute('height', blockSize * level.getHeight());
     draw();
   }
 
@@ -305,7 +305,7 @@
     inputDir = dirs.neutral;
     inputCount = INPUT_INTERVAL_COUNT;
     if (!settings.autoMode || !settingsAuto.paused) {
-      showElem(app.elems.stickBase);
+      showElem(app.elems.controller.stickBase);
     }
   }
 
@@ -471,26 +471,64 @@
     app.elems.init();
     app.elems.version.textContent = VERSION_TEXT;
     applyLang(savedata.loadLang());
+    initElems();
+    updateEditLevel();
 
     const queryParams = app.analyzeUrl();
     settings = queryParams.settings;
     if (settings.autoMode) {
       updateAutoMode(true);
     }
-    if (queryParams.levelObj.s === '') {
-      const id = queryParams.id === null ? 1 : queryParams.id;
-      loadLevelById(id);
-    } else {
-      levelId = null;
-      updateLevelVisibility();
-      loadLevelObj(queryParams.levelObj);
-    }
-    updateEditLevel();
-    initElems();
+
     setInterval(intervalFunc, INPUT_INTERVAL_MSEC);
+
+    if (queryParams.levelObj.s === '') {
+      if (queryParams.id === null) {
+        onloadTitle();
+      } else {
+        const id = queryParams.id;
+        onloadId(id);
+      }
+    } else {
+      onloadObj(queryParams.levelObj);
+    }
+  }
+
+  function onloadTitle() {
+    showElem(app.elems.main.title);
+    hideElem(app.elems.main.svg);
+    hideElem(app.elems.level.widget);
+    hideElem(app.elems.svgDiv);
+    hideElem(app.elems.controller.widget);
+
+    replaceUrlTitle();
+  }
+
+  function onloadId(id) {
+    hideElem(app.elems.main.title);
+    showElem(app.elems.main.svg);
+    showElem(app.elems.level.widget);
+    showElem(app.elems.svgDiv);
+    showElem(app.elems.controller.widget);
+
+    loadLevelById(id);
+  }
+
+  function onloadObj(obj) {
+    hideElem(app.elems.main.title);
+    showElem(app.elems.main.svg);
+    showElem(app.elems.level.widget);
+    showElem(app.elems.svgDiv);
+    showElem(app.elems.controller.widget);
+
+    levelId = null;
+    updateLevelVisibility();
+    loadLevelObj(obj);
   }
 
   function initElems() {
+    app.elems.top.addEventListener('click', onloadTitle, false);
+
     // Autoモード用
     {
       app.elems.auto.buttonStop.addEventListener('click', onButtonStop);
@@ -553,6 +591,12 @@
       app.elems.help.langJa.addEventListener('click', () => selectLang('ja'), false);
     }
 
+    // タイトル画面用
+    {
+      app.elems.main.buttonPlay.addEventListener('click', () => onloadId(1), false);
+      //app.elems.main.buttonEdit.addEventListener('click', () => onloadObj({w: 6, h: 5, s: ''}), false);
+    }
+
     // レベル操作用
     {
       app.elems.level.reset.addEventListener('click', resetLevel, false);
@@ -578,15 +622,15 @@
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
-      app.elems.svg.addEventListener(pointerdownEventName, editSvg, false);
-      app.elems.svg.oncontextmenu = function() {return !editMode;};
+      app.elems.main.svg.addEventListener(pointerdownEventName, editSvg, false);
+      app.elems.main.svg.oncontextmenu = function() {return !editMode;};
 
-      app.elems.stickBase.addEventListener(pointerdownEventName, pointerdown, false);
-      app.elems.stickBase.addEventListener(pointermoveEventName, pointermove, false);
-      app.elems.stickBase.addEventListener(pointerupEventName, pointerup, false);
+      app.elems.controller.stickBase.addEventListener(pointerdownEventName, pointerdown, false);
+      app.elems.controller.stickBase.addEventListener(pointermoveEventName, pointermove, false);
+      app.elems.controller.stickBase.addEventListener(pointerupEventName, pointerup, false);
       document.addEventListener(pointerupEventName, pointerup, false);
 
-      app.elems.undo.addEventListener(pointerdownEventName, undodown, false);
+      app.elems.controller.undo.addEventListener(pointerdownEventName, undodown, false);
     }
   }
 
@@ -596,7 +640,7 @@
       if (undoCount === UNDO_INTERVAL_COUNT) {
         undoCount = 0;
         execUndo();
-        showElem(app.elems.stickBase);
+        showElem(app.elems.controller.stickBase);
       }
       undoCount++;
       return;
@@ -624,7 +668,7 @@
         redrawFlag = false;
         draw(true);
         if (clearFlag) {
-          hideElem(app.elems.stickBase);
+          hideElem(app.elems.controller.stickBase);
         }
       } else if (inputFlag) {
         if (inputDir !== dirs.neutral) {
@@ -648,12 +692,12 @@
   // 描画
   function draw(rotateFlag = false) {
     rotateFlag &&= clearFlag;
-    app.elems.svg.textContent = '';
+    app.elems.main.svg.textContent = '';
 
     {
       const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
       const levelSvg = level.createSvg(blockSize, rotateFlag, showCharsFlag);
-      app.elems.svg.appendChild(levelSvg);
+      app.elems.main.svg.appendChild(levelSvg);
     }
     level.resetMoveFlags();
 
@@ -673,7 +717,7 @@
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
-      app.elems.svg.appendChild(g);
+      app.elems.main.svg.appendChild(g);
     }
     drawFrame();
   }
@@ -798,7 +842,7 @@
       }
     }
 
-    app.elems.svg.appendChild(g);
+    app.elems.main.svg.appendChild(g);
   }
 
   function getStepColor(step, bestStep) {
@@ -898,7 +942,7 @@
 
     // カーソル位置の座標を得る
     function getCurXY(e) {
-      const cursorPos = getCursorPos(app.elems.svg, e);
+      const cursorPos = getCursorPos(app.elems.main.svg, e);
       const x = Math.floor(cursorPos.x / blockSize);
       const y = Math.floor(cursorPos.y / blockSize);
       return {x: x, y: y};
@@ -934,6 +978,12 @@
       h: level.getH(),
       s: level.getStateStr(),
     });
+  }
+
+  function replaceUrlTitle() {
+    const base = location.href.split('?')[0];
+    const url = base;
+    history.replaceState(null, '', url);
   }
 
   function replaceUrl() {
@@ -974,9 +1024,9 @@
     }
 
     if (settings.autoMode && settingsAuto.paused || clearFlag) {
-      hideElem(app.elems.stickBase);
+      hideElem(app.elems.controller.stickBase);
     } else {
-      showElem(app.elems.stickBase);
+      showElem(app.elems.controller.stickBase);
     }
   }
 

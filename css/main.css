@@ -222,3 +222,28 @@ li.warn {
 .toggle-input:checked + .toggle-label::after {
   left: 40px;
 }
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title-button {
+  display: table;
+  width: 80px;
+  height: 80px;
+  margin: 10px;
+  cursor: pointer;
+  border: 2px solid #777777;
+}
+
+.title-button-text {
+  display: table-cell;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+#top {
+  cursor: pointer;
+}

@@ -9,6 +9,7 @@
   }
 
   const elems = {
+    top: 'top',
     icon: 'icon',
     version: 'version',
 
@@ -21,6 +22,7 @@
     },
 
     level: {
+      widget: 'level-widget',
       reset: 'button-level-reset',
       prev: 'button-level-prev',
       id: 'level-id',
@@ -36,8 +38,13 @@
       dialogSvg: 'dialog-levels-svg',
     },
 
-    svg: 'svg-main',
-    consoleLog: 'console-log',
+    main: {
+      div: 'main',
+      title: 'title',
+      buttonPlay: 'button-play',
+      buttonEdit: 'button-edit',
+      svg: 'svg-main',
+    },
 
     auto: {
       buttons: 'buttons-auto',
@@ -61,9 +68,14 @@
 
     url: 'url',
 
-    undo: 'button-undo',
-    stick: 'stick',
-    stickBase: 'stick-base',
+    controller: {
+      widget: 'controller-widget',
+      undo: 'button-undo',
+      stick: 'stick',
+      stickBase: 'stick-base',
+    },
+
+    consoleLog: 'console-log',
   };
 
   function init() {
