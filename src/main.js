@@ -679,15 +679,15 @@
   }
 
   function drawFrame() {
-    const borderWidth = 0.05;
     const g = app.svg.createG();
 
+    const borderWidth = 0.05;
     {
-      const paddingColor = app.colors.frame;
-      const rectU = app.svg.createRect(blockSize, {x: 0, y: 0, width: level.getWidth(), height: 1, fill: paddingColor});
-      const rectR = app.svg.createRect(blockSize, {x: level.getWidth() - 1, y: 0, width: 1, height: level.getHeight(), fill: paddingColor});
-      const rectD = app.svg.createRect(blockSize, {x: 0, y: level.getHeight() - 1, width: level.getWidth(), height: 1, fill: paddingColor});
-      const rectL = app.svg.createRect(blockSize, {x: 0, y: 0, width: 1, height: level.getHeight(), fill: paddingColor});
+      const frameColor = app.colors.frame;
+      const rectU = app.svg.createRect(blockSize, {x: 0, y: 0, width: level.getWidth(), height: 1, fill: frameColor});
+      const rectR = app.svg.createRect(blockSize, {x: level.getWidth() - 1, y: 0, width: 1, height: level.getHeight(), fill: frameColor});
+      const rectD = app.svg.createRect(blockSize, {x: 0, y: level.getHeight() - 1, width: level.getWidth(), height: 1, fill: frameColor});
+      const rectL = app.svg.createRect(blockSize, {x: 0, y: 0, width: 1, height: level.getHeight(), fill: frameColor});
       g.appendChild(rectU);
       g.appendChild(rectR);
       g.appendChild(rectD);
@@ -704,8 +704,8 @@
       g.appendChild(rectLb);
     }
 
-    const fontSize = `${blockSize * 0.6}px`;
     if (!editMode) {
+      const fontSize = `${blockSize * 0.6}px`;
       const bestStep = level.getBestStep();
 
       let highestScorePrev = null;
