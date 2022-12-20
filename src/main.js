@@ -3,7 +3,7 @@
   const app = window.app;
   Object.freeze(app);
 
-  const VERSION_TEXT = 'v2022.12.19';
+  const VERSION_TEXT = 'v2022.12.20';
 
   const savedata = app.savedata();
 
@@ -491,7 +491,7 @@
   }
 
   function initElems() {
-    // autoモード
+    // Autoモード用
     {
       app.elems.auto.buttonStop.addEventListener('click', onButtonStop);
       app.elems.auto.buttonStart.addEventListener('click', onButtonStart);
@@ -500,7 +500,7 @@
       app.elems.auto.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
     }
 
-    // editモード用
+    // Editモード用
     {
       for (const char in app.states.charToState) {
         const state = app.states.charToState[char];
@@ -544,29 +544,39 @@
       }, false);
     }
 
+    // ヘルプ画面用
     {
-      const touchDevice = document.ontouchstart !== undefined;
-      const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
-      const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
-      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
-
-      document.addEventListener('keydown', keydown, false);
-      document.addEventListener('keyup', keyup, false);
-
-      app.elems.help.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
       app.elems.help.button.addEventListener('click', showHelpDialog, false);
       app.elems.help.dialog.addEventListener('click', closeHelpDialog, false);
+      app.elems.help.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
       app.elems.help.langEn.addEventListener('click', () => selectLang('en'), false);
       app.elems.help.langJa.addEventListener('click', () => selectLang('ja'), false);
+    }
 
+    // レベル操作用
+    {
       app.elems.level.reset.addEventListener('click', resetLevel, false);
       app.elems.level.prev.addEventListener('click', gotoPrevLevel, false);
       app.elems.level.next.addEventListener('click', gotoNextLevel, false);
       app.elems.level.edit.addEventListener('click', toggleEditLevel, false);
       app.elems.levels.button.addEventListener('click', showLevelsDialog, false);
       app.elems.levels.dialog.addEventListener('click', closeLevelsDialog, false);
-      app.elems.levels.hideClearedLevels.addEventListener('click', toggleHideClearedLevels, false);
       app.elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
+      app.elems.levels.hideClearedLevels.addEventListener('click', toggleHideClearedLevels, false);
+    }
+
+    // キー入力用
+    {
+      document.addEventListener('keydown', keydown, false);
+      document.addEventListener('keyup', keyup, false);
+    }
+
+    // タッチ入力用
+    {
+      const touchDevice = document.ontouchstart !== undefined;
+      const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
+      const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
+      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
       app.elems.svg.addEventListener(pointerdownEventName, editSvg, false);
       app.elems.svg.oncontextmenu = function() {return !editMode;};
