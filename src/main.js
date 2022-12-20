@@ -669,7 +669,7 @@
   }
 
   function drawFrame() {
-    const paddingColor = '#995533';
+    const paddingColor = '#ffeecc';
 
     const g = app.svg.createG();
 
@@ -764,7 +764,7 @@
           text.setAttribute('font-weight', 'bold');
           g.appendChild(text);
         }
-        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: `${undoInfo.getIndex()} steps`, fill: 'white'});
+        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1, text: `${undoInfo.getIndex()} steps`, fill: 'black'});
         text.setAttribute('font-size', fontSize);
         text.setAttribute('font-weight', 'bold');
         g.appendChild(text);
