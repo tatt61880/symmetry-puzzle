@@ -26,6 +26,9 @@
 
   colors.line = '#888';
 
+  colors.frame = '#fff8dd';
+  colors.frameBorder = '#ffdd33';
+
   colors.stepWin = '#ff5555';
   colors.stepDraw = '#ff9933';
   colors.stepLose = '#222222';

@@ -679,25 +679,30 @@
   }
 
   function drawFrame() {
-    const paddingColor = '#ffeecc';
 
     const g = app.svg.createG();
 
     {
-      const rect = app.svg.createRect(blockSize, {x: 0, y: 0, width: level.getWidth(), height: 1, fill: paddingColor});
-      g.appendChild(rect);
-    }
-    {
-      const rect = app.svg.createRect(blockSize, {x: 0, y: 0, width: 1, height: level.getHeight(), fill: paddingColor});
-      g.appendChild(rect);
-    }
-    {
-      const rect = app.svg.createRect(blockSize, {x: 0, y: level.getHeight() - 1, width: level.getWidth(), height: 1, fill: paddingColor});
-      g.appendChild(rect);
-    }
-    {
-      const rect = app.svg.createRect(blockSize, {x: level.getWidth() - 1, y: 0, width: 1, height: level.getHeight(), fill: paddingColor});
-      g.appendChild(rect);
+      const paddingColor = app.colors.frame;
+      const rectU = app.svg.createRect(blockSize, {x: 0, y: 0, width: level.getWidth(), height: 1, fill: paddingColor});
+      const rectR = app.svg.createRect(blockSize, {x: level.getWidth() - 1, y: 0, width: 1, height: level.getHeight(), fill: paddingColor});
+      const rectD = app.svg.createRect(blockSize, {x: 0, y: level.getHeight() - 1, width: level.getWidth(), height: 1, fill: paddingColor});
+      const rectL = app.svg.createRect(blockSize, {x: 0, y: 0, width: 1, height: level.getHeight(), fill: paddingColor});
+      g.appendChild(rectU);
+      g.appendChild(rectR);
+      g.appendChild(rectD);
+      g.appendChild(rectL);
+
+      const borderWidth = 0.05;
+      const borderColor = app.colors.frameBorder;
+      const rectUb = app.svg.createRect(blockSize, {x: 0, y: 0, width: level.getWidth(), height: borderWidth, fill: borderColor});
+      const rectRb = app.svg.createRect(blockSize, {x: level.getWidth() - borderWidth, y: 0, width: borderWidth, height: level.getHeight(), fill: borderColor});
+      const rectDb = app.svg.createRect(blockSize, {x: 0, y: level.getHeight() - borderWidth, width: level.getWidth(), height: borderWidth, fill: borderColor});
+      const rectLb = app.svg.createRect(blockSize, {x: 0, y: 0, width: borderWidth, height: level.getHeight(), fill: borderColor});
+      g.appendChild(rectUb);
+      g.appendChild(rectRb);
+      g.appendChild(rectDb);
+      g.appendChild(rectLb);
     }
 
     const fontSize = `${blockSize * 0.6}px`;
@@ -775,7 +780,7 @@
           text.setAttribute('font-weight', 'bold');
           g.appendChild(text);
 
-          const crown = app.svg.createCrown(blockSize, {x: 0, y: 0, fill: color});
+          const crown = app.svg.createCrown(blockSize, {x: 0.05, y: 0, fill: color});
           g.appendChild(crown);
         }
       }
