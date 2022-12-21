@@ -511,6 +511,7 @@
     showElem(app.elems.svgDiv);
     showElem(app.elems.controller.widget);
 
+    if (id === null) id = 1;
     loadLevelById(id);
   }
 
@@ -593,7 +594,7 @@
 
     // タイトル画面用
     {
-      app.elems.main.buttonPlay.addEventListener('click', () => onloadId(1), false);
+      app.elems.main.buttonPlay.addEventListener('click', () => onloadId(levelId), false);
       //app.elems.main.buttonEdit.addEventListener('click', () => onloadObj({w: 6, h: 5, s: ''}), false);
     }
 
