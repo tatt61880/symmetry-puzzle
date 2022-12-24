@@ -277,9 +277,9 @@
     }
   }
 
-  function loadLevelById(id) {
+  function loadLevelById(id_) {
     clearTimeout(nextLevelTimerId);
-    id = Number(id);
+    let id = Number(id_);
     if (id < 0) id = 1;
     if (id >= app.levels.length) id = app.levels.length - 1;
     levelId = id;
@@ -507,13 +507,14 @@
     replaceUrlTitle();
   }
 
-  function onloadId(id) {
+  function onloadId(id_) {
     hideElem(app.elems.main.title);
     showElem(app.elems.main.svg);
     showElem(app.elems.level.widget);
     showElem(app.elems.svgDiv);
     showElem(app.elems.controller.widget);
 
+    let id = id_;
     if (id === null) id = 1;
     loadLevelById(id);
   }
@@ -694,7 +695,8 @@
   }
 
   // 描画
-  function draw(rotateFlag = false) {
+  function draw(rotateFlag_ = false) {
+    let rotateFlag = rotateFlag_;
     rotateFlag &&= clearFlag;
     app.elems.main.svg.textContent = '';
 

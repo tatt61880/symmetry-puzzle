@@ -44,7 +44,8 @@
       return lang;
     }
 
-    saveSteps(levelObj, r) {
+    saveSteps(levelObj, r_) {
+      let r = r_;
       const maxStep = 9999;
       const step = r.length;
       if (step > maxStep) {

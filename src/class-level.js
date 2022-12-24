@@ -168,12 +168,13 @@
         r = rotatedR;
       }
       const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
-      levelObj = {w, h, s, r};
-      return levelObj;
+      const newLevelObj = {w, h, s, r};
+      return newLevelObj;
     }
 
     // 時計回りに90度×num回 回転する。
     #rotateLevel(levelObj, rotateNum) {
+      let newLevelObj = levelObj;
       for (let i = 0; i < rotateNum; ++i) {
         const w = levelObj.h; // 90度回転後
         const h = levelObj.w; // 90度回転後
@@ -208,12 +209,13 @@
           r = rotatedR;
         }
         const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
-        levelObj = {w, h, s, r};
+        newLevelObj = {w, h, s, r};
       }
-      return levelObj;
+      return newLevelObj;
     }
 
-    applyObj(obj, {init, mirrorFlag, rotateNum}) {
+    applyObj(obj_, {init, mirrorFlag, rotateNum}) {
+      let obj = obj_;
       if (init) {
         if (mirrorFlag) obj = this.#mirrorLevel(obj);
         if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);

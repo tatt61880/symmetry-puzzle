@@ -35,6 +35,7 @@
     "no-multiple-empty-lines": ["error", {"max": 1, "maxEOF": 0}],
     "no-native-reassign": "error",
     "no-new": "error",
+    "no-param-reassign": "error",
     "no-trailing-spaces": "error",
     "no-unexpected-multiline": "error",
     "no-unneeded-ternary": "error",
