@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
   const app = window.app;
   Object.freeze(app);
@@ -454,7 +454,7 @@
       const y = Math.floor((count - 1) / COLS) * HEIGHT;
       g.setAttribute('transform', `translate(${x},${y})`);
       g.setAttribute('data-id', id);
-      g.addEventListener('click', function() {
+      g.addEventListener('click', function () {
         const id = Number(g.getAttribute('data-id'));
         loadLevelById(id);
         closeLevelsDialog();
@@ -596,7 +596,7 @@
     // タイトル画面用
     {
       app.elems.main.buttonPlay.addEventListener('click', () => onloadId(levelId), false);
-      //app.elems.main.buttonEdit.addEventListener('click', () => onloadObj({w: 6, h: 5, s: ''}), false);
+      // app.elems.main.buttonEdit.addEventListener('click', () => onloadObj({w: 6, h: 5, s: ''}), false);
     }
 
     // レベル操作用
@@ -625,7 +625,7 @@
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
       app.elems.main.svg.addEventListener(pointerdownEventName, editSvg, false);
-      app.elems.main.svg.oncontextmenu = function() {return !editMode;};
+      app.elems.main.svg.oncontextmenu = function () {return !editMode;};
 
       app.elems.controller.stickBase.addEventListener(pointerdownEventName, pointerdown, false);
       app.elems.controller.stickBase.addEventListener(pointermoveEventName, pointermove, false);
