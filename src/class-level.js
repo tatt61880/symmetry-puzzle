@@ -450,7 +450,7 @@
       }
 
       for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
-        if (this.#count((x)=>{ return x === i; }) === 0) continue;
+        if (this.#count((x) => x === i) === 0) continue;
 
         const moveState = []; // 移動予定の状態番号
         moveState[i] = true;
@@ -734,7 +734,7 @@
       if (showCharsFlag) {
         const text = app.svg.createText(blockSize, {x: x + 0.5, y: y, text: app.states.stateToChar[state]});
         gElem.appendChild(text);
-        if (state === app.states.wall || this.#isConnected((s) => {return s === state;})) {
+        if (state === app.states.wall || this.#isConnected((s) => s === state)) {
           text.setAttribute('fill', app.colors[state].text);
         } else {
           text.setAttribute('fill', app.colors[state].error);

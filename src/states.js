@@ -42,14 +42,8 @@
   Object.freeze(charToState);
   states.stateToChar = stateToChar;
   states.charToState = charToState;
-  states.isTarget = (state) => {
-    return states.targetMin <= state && state <= states.targetMax;
-  };
-  states.isOther = (state) => {
-    return states.otherMin <= state && state <= states.otherMax;
-  };
-  states.isUser = (state) => {
-    return states.userMin <= state && state <= states.userMax;
-  };
+  states.isTarget = (state) => states.targetMin <= state && state <= states.targetMax;
+  states.isOther = (state) => states.otherMin <= state && state <= states.otherMax;
+  states.isUser = (state) => states.userMin <= state && state <= states.userMax;
   Object.freeze(states);
 })();

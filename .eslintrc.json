@@ -12,6 +12,9 @@
   "globals": {
   },
   "rules": {
+    "arrow-body-style": ["error", "as-needed"],
+    "arrow-parens": "error",
+    "arrow-spacing": "error",
     "comma-spacing": "error",
     "computed-property-spacing": "error",
     "eol-last": "error",
