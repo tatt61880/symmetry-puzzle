@@ -3,7 +3,7 @@
   const app = window.app;
   Object.freeze(app);
 
-  const VERSION_TEXT = 'v2022.12.21';
+  const VERSION_TEXT = 'v2022.12.22';
 
   const savedata = app.savedata();
 

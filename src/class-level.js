@@ -213,10 +213,10 @@
       return levelObj;
     }
 
-    applyObj(obj, param = {}) {
-      if (param.init) {
-        if (param.mirrorFlag) obj = this.#mirrorLevel(obj);
-        if (param.rotateNum !== 0) obj = this.#rotateLevel(obj, param.rotateNum);
+    applyObj(obj, {init, mirrorFlag, rotateNum}) {
+      if (init) {
+        if (mirrorFlag) obj = this.#mirrorLevel(obj);
+        if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
         this.#levelObj = obj;
         Object.freeze(this.#levelObj);
       }
