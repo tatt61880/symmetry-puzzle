@@ -426,6 +426,8 @@
 
       const g = app.svg.createG();
       g.classList.add('level-select');
+      app.elems.levels.dialogSvg.appendChild(g);
+
       const level = app.Level();
       level.applyObj(levelObj, {init: true});
       const blockSize = Math.min((WIDTH - 30) / (level.getW() + 2), (HEIGHT - 30) / (level.getH() + 2));
@@ -457,7 +459,6 @@
         loadLevelById(id);
         closeLevelsDialog();
       }, false);
-      app.elems.levels.dialogSvg.appendChild(g);
     }
 
     app.elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(count / COLS)}px`);
@@ -706,6 +707,7 @@
     if (levelId !== 0) {
       const dasharray = '1, 4';
       const g = app.svg.createG();
+      app.elems.main.svg.appendChild(g);
       // 横線
       for (let y = 2; y < level.getHeight() - 1; ++y) {
         const line = app.svg.createLine(blockSize, {x1: 1, y1: y, x2: level.getWidth() - 1, y2: y, stroke: app.colors.line});
@@ -718,13 +720,13 @@
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
-      app.elems.main.svg.appendChild(g);
     }
     drawFrame();
   }
 
   function drawFrame() {
     const g = app.svg.createG();
+    app.elems.main.svg.appendChild(g);
 
     const borderWidth = 0.05;
     {
@@ -842,8 +844,6 @@
         }
       }
     }
-
-    app.elems.main.svg.appendChild(g);
   }
 
   function getStepColor(step, bestStep) {
