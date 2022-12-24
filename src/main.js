@@ -66,7 +66,7 @@
   document.documentElement.style.setProperty('--animation-duration-shadow', `${SHADOW_MSEC}ms`);
   document.documentElement.style.setProperty('--animation-duration-rotation', `${ROTATION_MSEC}ms`);
 
-  document.addEventListener('DOMContentLoaded', onload, false);
+  document.addEventListener('DOMContentLoaded', onloadApp, false);
   return;
   // ==========================================================================
 
@@ -181,6 +181,7 @@
   }
 
   function keydown(e) {
+    if (!app.elems.main.title.classList.contains('hide')) return;
     if (e.shiftKey) {
       if (e.key === 'ArrowLeft') {
         gotoPrevLevel();
@@ -468,7 +469,7 @@
     app.elems.levels.dialog.close();
   }
 
-  function onload() {
+  function onloadApp() {
     app.elems.init();
     app.elems.version.textContent = VERSION_TEXT;
     applyLang(savedata.loadLang());
@@ -951,12 +952,12 @@
   }
 
   function showElem(elem) {
-    if (elem === undefined) return;
+    if (!elem) return;
     elem.classList.remove('hide');
   }
 
   function hideElem(elem) {
-    if (elem === undefined) return;
+    if (!elem) return;
     elem.classList.add('hide');
   }
 
