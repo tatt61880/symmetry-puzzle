@@ -224,6 +224,7 @@
   }
 
   function keyup(e) {
+    if (!app.elems.main.title.classList.contains('hide')) return;
     delete inputKeys[e.key];
     if (temporaryShowCharsFlag && e.key === ' ') {
       temporaryShowCharsFlag = false;
