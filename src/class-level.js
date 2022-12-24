@@ -168,7 +168,7 @@
         r = rotatedR;
       }
       const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
-      levelObj = {w: w, h: h, s: s, r: r};
+      levelObj = {w, h, s, r};
       return levelObj;
     }
 
@@ -208,7 +208,7 @@
           r = rotatedR;
         }
         const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
-        levelObj = {w: w, h: h, s: s, r: r};
+        levelObj = {w, h, s, r};
       }
       return levelObj;
     }
@@ -570,27 +570,27 @@
 
         // 上側
         if (!flags[dirs.u]) {
-          const line = app.svg.createRect(blockSize, {x: x, y: y, width: 1, height: blockBorderWidth, fill: color.stroke});
+          const line = app.svg.createRect(blockSize, {x, y, width: 1, height: blockBorderWidth, fill: color.stroke});
           gElem.appendChild(line);
         }
         // 右側
         if (!flags[dirs.r]) {
-          const line = app.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y: y, width: blockBorderWidth, height: 1, fill: color.stroke});
+          const line = app.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y, width: blockBorderWidth, height: 1, fill: color.stroke});
           gElem.appendChild(line);
         }
         // 下側
         if (!flags[dirs.d]) {
-          const line = app.svg.createRect(blockSize, {x: x, y: y + 1 - blockBorderWidth, width: 1, height: blockBorderWidth, fill: color.stroke});
+          const line = app.svg.createRect(blockSize, {x, y: y + 1 - blockBorderWidth, width: 1, height: blockBorderWidth, fill: color.stroke});
           gElem.appendChild(line);
         }
         // 左側
         if (!flags[dirs.l]) {
-          const line = app.svg.createRect(blockSize, {x: x, y: y, width: blockBorderWidth, height: 1, fill: color.stroke});
+          const line = app.svg.createRect(blockSize, {x, y, width: blockBorderWidth, height: 1, fill: color.stroke});
           gElem.appendChild(line);
         }
         // 右上
         if (flags[dirs.u] && flags[dirs.r] && !flags[dirs.ur]) {
-          const rect = app.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y: y, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke});
+          const rect = app.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke});
           gElem.appendChild(rect);
         }
         // 右下
@@ -600,12 +600,12 @@
         }
         // 左下
         if (flags[dirs.d] && flags[dirs.l] && !flags[dirs.dl]) {
-          const rect = app.svg.createRect(blockSize, {x: x, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke});
+          const rect = app.svg.createRect(blockSize, {x, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke});
           gElem.appendChild(rect);
         }
         // 左上
         if (flags[dirs.u] && flags[dirs.l] && !flags[dirs.ul]) {
-          const rect = app.svg.createRect(blockSize, {x: x, y: y, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke});
+          const rect = app.svg.createRect(blockSize, {x, y, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke});
           gElem.appendChild(rect);
         }
 
@@ -613,7 +613,7 @@
           const size = blockBorderWidth * 1.75;
           // 右上
           if (!flags[dirs.u] && !flags[dirs.r]) {
-            const rect = app.svg.createRect(blockSize, {x: x + 1 - size, y: y, width: size, height: size, fill: color.stroke});
+            const rect = app.svg.createRect(blockSize, {x: x + 1 - size, y, width: size, height: size, fill: color.stroke});
             gElem.appendChild(rect);
           }
           // 右下
@@ -623,12 +623,12 @@
           }
           // 左下
           if (!flags[dirs.d] && !flags[dirs.l]) {
-            const rect = app.svg.createRect(blockSize, {x: x, y: y + 1 - size, width: size, height: size, fill: color.stroke});
+            const rect = app.svg.createRect(blockSize, {x, y: y + 1 - size, width: size, height: size, fill: color.stroke});
             gElem.appendChild(rect);
           }
           // 左上
           if (!flags[dirs.u] && !flags[dirs.l]) {
-            const rect = app.svg.createRect(blockSize, {x: x, y: y, width: size, height: size, fill: color.stroke});
+            const rect = app.svg.createRect(blockSize, {x, y, width: size, height: size, fill: color.stroke});
             gElem.appendChild(rect);
           }
         }
@@ -732,13 +732,13 @@
         }
       }
       if (showCharsFlag) {
-        const text = app.svg.createText(blockSize, {x: x + 0.5, y: y, text: app.states.stateToChar[state]});
+        const text = app.svg.createText(blockSize, {x: x + 0.5, y, text: app.states.stateToChar[state]});
         gElem.appendChild(text);
         if (state === app.states.wall || this.#isConnected((s) => s === state)) {
           text.setAttribute('fill', app.colors[state].text);
         } else {
           text.setAttribute('fill', app.colors[state].error);
-          const rect = app.svg.createRect(blockSize, {x: x, y: y, width: 1, height: 1, fill: 'black'});
+          const rect = app.svg.createRect(blockSize, {x, y, width: 1, height: 1, fill: 'black'});
           rect.setAttribute('opacity', 0.3);
           gElem.appendChild(rect);
         }

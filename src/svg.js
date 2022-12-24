@@ -68,19 +68,19 @@
         [x + 0.8, y + 0.7],
         [x + 0.2, y + 0.7],
       ],
-      fill: fill,
+      fill,
     });
     const rect = svg.createRect(blockSize, {
       x: x + 0.2,
       y: y + 0.75,
       width: 0.6,
       height: 0.15,
-      fill: fill,
+      fill,
     });
     g.appendChild(polygon);
-    g.appendChild(svg.createCircle(blockSize, {cx: x + 0.1, cy: y + 0.3, r: 0.05, fill: fill}));
-    g.appendChild(svg.createCircle(blockSize, {cx: x + 0.5, cy: y + 0.15, r: 0.05, fill: fill}));
-    g.appendChild(svg.createCircle(blockSize, {cx: x + 0.9, cy: y + 0.3, r: 0.05, fill: fill}));
+    g.appendChild(svg.createCircle(blockSize, {cx: x + 0.1, cy: y + 0.3, r: 0.05, fill}));
+    g.appendChild(svg.createCircle(blockSize, {cx: x + 0.5, cy: y + 0.15, r: 0.05, fill}));
+    g.appendChild(svg.createCircle(blockSize, {cx: x + 0.9, cy: y + 0.3, r: 0.05, fill}));
     g.appendChild(rect);
     return g;
   };

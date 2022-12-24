@@ -4,7 +4,7 @@
   if (typeof window !== 'undefined') {
     window.app = window.app || {};
     window.app.elems = {
-      init: init,
+      init,
     };
   }
 

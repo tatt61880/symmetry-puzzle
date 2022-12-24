@@ -948,7 +948,7 @@
       const cursorPos = getCursorPos(app.elems.main.svg, e);
       const x = Math.floor(cursorPos.x / blockSize);
       const y = Math.floor(cursorPos.y / blockSize);
-      return {x: x, y: y};
+      return {x, y};
     }
   }
 
@@ -976,7 +976,7 @@
 
   function addUndo(dir) {
     undoInfo.pushData({
-      dir: dir,
+      dir,
       w: level.getW(),
       h: level.getH(),
       s: level.getStateStr(),
