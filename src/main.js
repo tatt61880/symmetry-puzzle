@@ -66,6 +66,76 @@
   document.documentElement.style.setProperty('--animation-duration-shadow', `${SHADOW_MSEC}ms`);
   document.documentElement.style.setProperty('--animation-duration-rotation', `${ROTATION_MSEC}ms`);
 
+  const elems = app.Elems({
+    top: 'top',
+    icon: 'icon',
+    version: 'version',
+
+    help: {
+      button: 'button-help',
+      dialog: 'dialog-help',
+      dialogDiv: 'dialog-help-div',
+      langEn: 'setting-lang-en',
+      langJa: 'setting-lang-ja',
+    },
+
+    level: {
+      widget: 'level-widget',
+      reset: 'button-level-reset',
+      prev: 'button-level-prev',
+      id: 'level-id',
+      next: 'button-level-next',
+      edit: 'button-level-edit',
+    },
+
+    levels: {
+      button: 'button-levels',
+      dialog: 'dialog-levels',
+      hideClearedLevels: 'hide-cleared-levels',
+      dialogDiv: 'dialog-levels-div',
+      dialogSvg: 'dialog-levels-svg',
+    },
+
+    main: {
+      div: 'main',
+      title: 'title',
+      buttonPlay: 'button-play',
+      buttonEdit: 'button-edit',
+      svg: 'svg-main',
+    },
+
+    auto: {
+      buttons: 'buttons-auto',
+      buttonStop: 'button-stop',
+      buttonStart: 'button-start',
+      buttonPause: 'button-pause',
+      buttonSpeedDown: 'button-speed-down',
+      buttonSpeedUp: 'button-speed-up',
+    },
+
+    edit: {
+      editbox: 'editbox',
+      editShape: 'edit-drawing-shape',
+      editState: 'edit-drawing-state',
+      wDec: 'w-dec',
+      wInc: 'w-inc',
+      hDec: 'h-dec',
+      hInc: 'h-inc',
+      normalize: 'edit-normalize',
+    },
+
+    url: 'url',
+
+    controller: {
+      widget: 'controller-widget',
+      undo: 'button-undo',
+      stick: 'stick',
+      stickBase: 'stick-base',
+    },
+
+    consoleLog: 'console-log',
+  });
+
   document.addEventListener('DOMContentLoaded', onloadApp, false);
   return;
   // ==========================================================================
@@ -78,7 +148,7 @@
       '2': 'rotateX(-45deg)',
       '3': 'rotateY(-45deg)',
     };
-    app.elems.controller.stick.style.setProperty('transform', transforms[dir]);
+    elems.controller.stick.style.setProperty('transform', transforms[dir]);
   }
 
   function move(dir) {
@@ -120,14 +190,14 @@
     if (undoFlag) return;
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
-    app.elems.controller.undo.classList.add('low-contrast');
+    elems.controller.undo.classList.add('low-contrast');
     undoCount = UNDO_INTERVAL_COUNT;
   }
 
   function undoEnd() {
     if (!undoFlag) return;
     undoFlag = false;
-    app.elems.controller.undo.classList.remove('low-contrast');
+    elems.controller.undo.classList.remove('low-contrast');
   }
 
   function undodown(e) {
@@ -158,8 +228,8 @@
   function pointermove(e) {
     e.preventDefault();
     if (!inputFlag || settings.autoMode) return;
-    const cursorPos = getCursorPos(app.elems.controller.stickBase, e);
-    const bcRect = app.elems.controller.stickBase.getBoundingClientRect();
+    const cursorPos = getCursorPos(elems.controller.stickBase, e);
+    const bcRect = elems.controller.stickBase.getBoundingClientRect();
     const x = cursorPos.x - bcRect.width / 2;
     const y = cursorPos.y - bcRect.height / 2;
     const minDist = 60;
@@ -181,7 +251,7 @@
   }
 
   function keydown(e) {
-    if (!app.elems.main.title.classList.contains('hide')) return;
+    if (!elems.main.title.classList.contains('hide')) return;
     if (e.shiftKey) {
       if (e.key === 'ArrowLeft') {
         gotoPrevLevel();
@@ -224,7 +294,7 @@
   }
 
   function keyup(e) {
-    if (!app.elems.main.title.classList.contains('hide')) return;
+    if (!elems.main.title.classList.contains('hide')) return;
     delete inputKeys[e.key];
     if (temporaryShowCharsFlag && e.key === ' ') {
       temporaryShowCharsFlag = false;
@@ -243,18 +313,18 @@
   function resetLevel() {
     clearTimeout(nextLevelTimerId);
 
-    app.elems.level.reset.classList.add('low-contrast');
-    app.elems.main.svg.textContent = '';
+    elems.level.reset.classList.add('low-contrast');
+    elems.main.svg.textContent = '';
 
     const RESET_DELAY = 50;
     setTimeout(() => {
-      app.elems.level.reset.classList.remove('low-contrast');
+      elems.level.reset.classList.remove('low-contrast');
       loadLevelObj(level.getLevelObj(), {reset: true});
     }, RESET_DELAY);
   }
 
   function resetUndo() {
-    undoInfo = app.UndoInfo(app.elems.controller.undo);
+    undoInfo = app.UndoInfo(elems.controller.undo);
   }
 
   function applyObj(obj, param = {init: false}) {
@@ -265,8 +335,8 @@
     clearCheck();
     updateUrl();
 
-    app.elems.main.svg.setAttribute('width', blockSize * level.getWidth());
-    app.elems.main.svg.setAttribute('height', blockSize * level.getHeight());
+    elems.main.svg.setAttribute('width', blockSize * level.getWidth());
+    elems.main.svg.setAttribute('height', blockSize * level.getHeight());
     draw();
   }
 
@@ -284,7 +354,7 @@
     if (id >= app.levels.length) id = app.levels.length - 1;
     levelId = id;
     updateLevelVisibility();
-    app.elems.level.id.textContent = levelId;
+    elems.level.id.textContent = levelId;
     const levelObj = app.levels[levelId];
     consoleLog(`[LEVEL-${id}]${levelObj.subject !== undefined ? ` ${levelObj.subject}` : ''}`);
 
@@ -307,21 +377,21 @@
     inputDir = dirs.neutral;
     inputCount = INPUT_INTERVAL_COUNT;
     if (!settings.autoMode || !settingsAuto.paused) {
-      showElem(app.elems.controller.stickBase);
+      showElem(elems.controller.stickBase);
     }
   }
 
   function updateLevelVisibility() {
     if (levelId === null) {
-      hideElem(app.elems.level.prev);
-      hideElem(app.elems.level.id);
-      hideElem(app.elems.level.next);
-      showElem(app.elems.level.edit);
+      hideElem(elems.level.prev);
+      hideElem(elems.level.id);
+      hideElem(elems.level.next);
+      showElem(elems.level.edit);
     } else {
-      (levelId <= 1 ? hideElem : showElem)(app.elems.level.prev);
-      showElem(app.elems.level.id);
-      (levelId === app.levels.length - 1 ? hideElem : showElem)(app.elems.level.next);
-      hideElem(app.elems.level.edit);
+      (levelId <= 1 ? hideElem : showElem)(elems.level.prev);
+      showElem(elems.level.id);
+      (levelId === app.levels.length - 1 ? hideElem : showElem)(elems.level.next);
+      hideElem(elems.level.edit);
     }
   }
 
@@ -342,16 +412,16 @@
   function updateUrl() {
     if (!editMode) return;
     const url = level.getUrlStr();
-    app.elems.url.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
+    elems.url.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
   }
 
   function updateEditLevel() {
     if (editMode) {
-      showElem(app.elems.url);
-      showElem(app.elems.edit.editbox);
+      showElem(elems.url);
+      showElem(elems.edit.editbox);
     } else {
-      hideElem(app.elems.url);
-      hideElem(app.elems.edit.editbox);
+      hideElem(elems.url);
+      hideElem(elems.edit.editbox);
     }
     updateUrl();
   }
@@ -365,11 +435,11 @@
   }
 
   function showHelpDialog() {
-    app.elems.help.dialog.showModal();
+    elems.help.dialog.showModal();
   }
 
   function closeHelpDialog() {
-    app.elems.help.dialog.close();
+    elems.help.dialog.close();
   }
 
   function applyLang(lang) {
@@ -389,9 +459,9 @@
   function rotateIcon() {
     const ICON_SIZE = 32;
     document.documentElement.style.setProperty('--animation-origin-rotation', `${ICON_SIZE / 2}px ${ICON_SIZE / 2}px`);
-    app.elems.icon.classList.remove('animation-rotation');
+    elems.icon.classList.remove('animation-rotation');
     setTimeout(() => {
-      app.elems.icon.classList.add('animation-rotation');
+      elems.icon.classList.add('animation-rotation');
     }, 1);
   }
 
@@ -403,7 +473,7 @@
 
   function showLevelsDialog() {
     updateLevelsDialog();
-    app.elems.levels.dialog.showModal();
+    elems.levels.dialog.showModal();
   }
 
   function toggleHideClearedLevels() {
@@ -411,9 +481,9 @@
   }
 
   function updateLevelsDialog() {
-    const hideClearedLevelsFlag = app.elems.levels.hideClearedLevels.checked;
+    const hideClearedLevelsFlag = elems.levels.hideClearedLevels.checked;
 
-    app.elems.levels.dialogSvg.innerHTML = '';
+    elems.levels.dialogSvg.innerHTML = '';
     const HEIGHT = 90;
     const WIDTH = 90;
     const COLS = 5;
@@ -428,7 +498,7 @@
 
       const g = app.svg.createG();
       g.classList.add('level-select');
-      app.elems.levels.dialogSvg.appendChild(g);
+      elems.levels.dialogSvg.appendChild(g);
 
       const level = app.Level();
       level.applyObj(levelObj, {init: true});
@@ -463,16 +533,16 @@
       }, false);
     }
 
-    app.elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(count / COLS)}px`);
+    elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(count / COLS)}px`);
   }
 
   function closeLevelsDialog() {
-    app.elems.levels.dialog.close();
+    elems.levels.dialog.close();
   }
 
   function onloadApp() {
-    app.elems.init();
-    app.elems.version.textContent = VERSION_TEXT;
+    elems.init();
+    elems.version.textContent = VERSION_TEXT;
     applyLang(savedata.loadLang());
     initElems();
     updateEditLevel();
@@ -498,21 +568,21 @@
   }
 
   function onloadTitle() {
-    showElem(app.elems.main.title);
-    hideElem(app.elems.main.svg);
-    hideElem(app.elems.level.widget);
-    hideElem(app.elems.svgDiv);
-    hideElem(app.elems.controller.widget);
+    showElem(elems.main.title);
+    hideElem(elems.main.svg);
+    hideElem(elems.level.widget);
+    hideElem(elems.svgDiv);
+    hideElem(elems.controller.widget);
 
     replaceUrlTitle();
   }
 
   function onloadId(id_) {
-    hideElem(app.elems.main.title);
-    showElem(app.elems.main.svg);
-    showElem(app.elems.level.widget);
-    showElem(app.elems.svgDiv);
-    showElem(app.elems.controller.widget);
+    hideElem(elems.main.title);
+    showElem(elems.main.svg);
+    showElem(elems.level.widget);
+    showElem(elems.svgDiv);
+    showElem(elems.controller.widget);
 
     let id = id_;
     if (id === null) id = 1;
@@ -520,11 +590,11 @@
   }
 
   function onloadObj(obj) {
-    hideElem(app.elems.main.title);
-    showElem(app.elems.main.svg);
-    showElem(app.elems.level.widget);
-    showElem(app.elems.svgDiv);
-    showElem(app.elems.controller.widget);
+    hideElem(elems.main.title);
+    showElem(elems.main.svg);
+    showElem(elems.level.widget);
+    showElem(elems.svgDiv);
+    showElem(elems.controller.widget);
 
     levelId = null;
     updateLevelVisibility();
@@ -532,15 +602,15 @@
   }
 
   function initElems() {
-    app.elems.top.addEventListener('click', onloadTitle, false);
+    elems.top.addEventListener('click', onloadTitle, false);
 
     // Autoモード用
     {
-      app.elems.auto.buttonStop.addEventListener('click', onButtonStop);
-      app.elems.auto.buttonStart.addEventListener('click', onButtonStart);
-      app.elems.auto.buttonPause.addEventListener('click', onButtonPause);
-      app.elems.auto.buttonSpeedDown.addEventListener('click', onButtonSpeedDown);
-      app.elems.auto.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
+      elems.auto.buttonStop.addEventListener('click', onButtonStop);
+      elems.auto.buttonStart.addEventListener('click', onButtonStart);
+      elems.auto.buttonPause.addEventListener('click', onButtonPause);
+      elems.auto.buttonSpeedDown.addEventListener('click', onButtonSpeedDown);
+      elems.auto.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
     }
 
     // Editモード用
@@ -550,10 +620,10 @@
         const elem = document.getElementById(`edit_${char}`);
         if (elem === null) continue;
         const func = () => {
-          app.elems.edit.editShape.setAttribute('fill', app.colors[state].fill);
-          app.elems.edit.editShape.setAttribute('stroke', app.colors[state].stroke);
-          app.elems.edit.editState.textContent = char;
-          app.elems.edit.editState.setAttribute('fill', app.colors[state].text);
+          elems.edit.editShape.setAttribute('fill', app.colors[state].fill);
+          elems.edit.editShape.setAttribute('stroke', app.colors[state].stroke);
+          elems.edit.editState.textContent = char;
+          elems.edit.editState.setAttribute('fill', app.colors[state].text);
           drawingState = state;
         };
         editboxFunctions[char] = func;
@@ -576,11 +646,11 @@
       }
       editboxFunctions[app.states.stateToChar[app.states.none]]();
 
-      app.elems.edit.wDec.addEventListener('click', () => resize(-1, 0), false);
-      app.elems.edit.wInc.addEventListener('click', () => resize(1, 0), false);
-      app.elems.edit.hDec.addEventListener('click', () => resize(0, -1), false);
-      app.elems.edit.hInc.addEventListener('click', () => resize(0, 1), false);
-      app.elems.edit.normalize.addEventListener('click', () => {
+      elems.edit.wDec.addEventListener('click', () => resize(-1, 0), false);
+      elems.edit.wInc.addEventListener('click', () => resize(1, 0), false);
+      elems.edit.hDec.addEventListener('click', () => resize(0, -1), false);
+      elems.edit.hInc.addEventListener('click', () => resize(0, 1), false);
+      elems.edit.normalize.addEventListener('click', () => {
         level.normalize();
         updateUrl();
         draw();
@@ -589,29 +659,29 @@
 
     // ヘルプ画面用
     {
-      app.elems.help.button.addEventListener('click', showHelpDialog, false);
-      app.elems.help.dialog.addEventListener('click', closeHelpDialog, false);
-      app.elems.help.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
-      app.elems.help.langEn.addEventListener('click', () => selectLang('en'), false);
-      app.elems.help.langJa.addEventListener('click', () => selectLang('ja'), false);
+      elems.help.button.addEventListener('click', showHelpDialog, false);
+      elems.help.dialog.addEventListener('click', closeHelpDialog, false);
+      elems.help.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
+      elems.help.langEn.addEventListener('click', () => selectLang('en'), false);
+      elems.help.langJa.addEventListener('click', () => selectLang('ja'), false);
     }
 
     // タイトル画面用
     {
-      app.elems.main.buttonPlay.addEventListener('click', () => onloadId(levelId), false);
-      // app.elems.main.buttonEdit.addEventListener('click', () => onloadObj({w: 6, h: 5, s: ''}), false);
+      elems.main.buttonPlay.addEventListener('click', () => onloadId(levelId), false);
+      // elems.main.buttonEdit.addEventListener('click', () => onloadObj({w: 6, h: 5, s: ''}), false);
     }
 
     // レベル操作用
     {
-      app.elems.level.reset.addEventListener('click', resetLevel, false);
-      app.elems.level.prev.addEventListener('click', gotoPrevLevel, false);
-      app.elems.level.next.addEventListener('click', gotoNextLevel, false);
-      app.elems.level.edit.addEventListener('click', toggleEditLevel, false);
-      app.elems.levels.button.addEventListener('click', showLevelsDialog, false);
-      app.elems.levels.dialog.addEventListener('click', closeLevelsDialog, false);
-      app.elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
-      app.elems.levels.hideClearedLevels.addEventListener('click', toggleHideClearedLevels, false);
+      elems.level.reset.addEventListener('click', resetLevel, false);
+      elems.level.prev.addEventListener('click', gotoPrevLevel, false);
+      elems.level.next.addEventListener('click', gotoNextLevel, false);
+      elems.level.edit.addEventListener('click', toggleEditLevel, false);
+      elems.levels.button.addEventListener('click', showLevelsDialog, false);
+      elems.levels.dialog.addEventListener('click', closeLevelsDialog, false);
+      elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
+      elems.levels.hideClearedLevels.addEventListener('click', toggleHideClearedLevels, false);
     }
 
     // キー入力用
@@ -627,15 +697,15 @@
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
-      app.elems.main.svg.addEventListener(pointerdownEventName, editSvg, false);
-      app.elems.main.svg.oncontextmenu = function () {return !editMode;};
+      elems.main.svg.addEventListener(pointerdownEventName, editSvg, false);
+      elems.main.svg.oncontextmenu = function () {return !editMode;};
 
-      app.elems.controller.stickBase.addEventListener(pointerdownEventName, pointerdown, false);
-      app.elems.controller.stickBase.addEventListener(pointermoveEventName, pointermove, false);
-      app.elems.controller.stickBase.addEventListener(pointerupEventName, pointerup, false);
+      elems.controller.stickBase.addEventListener(pointerdownEventName, pointerdown, false);
+      elems.controller.stickBase.addEventListener(pointermoveEventName, pointermove, false);
+      elems.controller.stickBase.addEventListener(pointerupEventName, pointerup, false);
       document.addEventListener(pointerupEventName, pointerup, false);
 
-      app.elems.controller.undo.addEventListener(pointerdownEventName, undodown, false);
+      elems.controller.undo.addEventListener(pointerdownEventName, undodown, false);
     }
   }
 
@@ -645,7 +715,7 @@
       if (undoCount === UNDO_INTERVAL_COUNT) {
         undoCount = 0;
         execUndo();
-        showElem(app.elems.controller.stickBase);
+        showElem(elems.controller.stickBase);
       }
       undoCount++;
       return;
@@ -673,7 +743,7 @@
         redrawFlag = false;
         draw(true);
         if (clearFlag) {
-          hideElem(app.elems.controller.stickBase);
+          hideElem(elems.controller.stickBase);
         }
       } else if (inputFlag) {
         if (inputDir !== dirs.neutral) {
@@ -698,12 +768,12 @@
   function draw(rotateFlag_ = false) {
     let rotateFlag = rotateFlag_;
     rotateFlag &&= clearFlag;
-    app.elems.main.svg.textContent = '';
+    elems.main.svg.textContent = '';
 
     {
       const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
       const levelSvg = level.createSvg(blockSize, rotateFlag, showCharsFlag);
-      app.elems.main.svg.appendChild(levelSvg);
+      elems.main.svg.appendChild(levelSvg);
     }
     level.resetMoveFlags();
 
@@ -711,7 +781,7 @@
     if (levelId !== 0) {
       const dasharray = '1, 4';
       const g = app.svg.createG();
-      app.elems.main.svg.appendChild(g);
+      elems.main.svg.appendChild(g);
       // 横線
       for (let y = 2; y < level.getHeight() - 1; ++y) {
         const line = app.svg.createLine(blockSize, {x1: 1, y1: y, x2: level.getWidth() - 1, y2: y, stroke: app.colors.line});
@@ -730,7 +800,7 @@
 
   function drawFrame() {
     const g = app.svg.createG();
-    app.elems.main.svg.appendChild(g);
+    elems.main.svg.appendChild(g);
 
     const borderWidth = 0.05;
     {
@@ -895,9 +965,9 @@
       } else if (secretSequence === '1212') {
         updateAutoMode(true);
       } else if (secretSequence === '4343') {
-        showElem(app.elems.consoleLog);
+        showElem(elems.consoleLog);
       } else if (secretSequence === '3434') {
-        hideElem(app.elems.consoleLog);
+        hideElem(elems.consoleLog);
       } else {
         resetFlag = false;
       }
@@ -947,7 +1017,7 @@
 
     // カーソル位置の座標を得る
     function getCurXY(e) {
-      const cursorPos = getCursorPos(app.elems.main.svg, e);
+      const cursorPos = getCursorPos(elems.main.svg, e);
       const x = Math.floor(cursorPos.x / blockSize);
       const y = Math.floor(cursorPos.y / blockSize);
       return {x, y};
@@ -1002,18 +1072,18 @@
   }
 
   function updateButtonSpeedDisplay() {
-    (settingsAuto.interval === settingsAuto.INTERVAL_MAX ? hideElem : showElem)(app.elems.auto.buttonSpeedDown);
-    (settingsAuto.interval === 1 ? hideElem : showElem)(app.elems.auto.buttonSpeedUp);
+    (settingsAuto.interval === settingsAuto.INTERVAL_MAX ? hideElem : showElem)(elems.auto.buttonSpeedDown);
+    (settingsAuto.interval === 1 ? hideElem : showElem)(elems.auto.buttonSpeedUp);
   }
 
   function updateAutoMode(isOn) {
     settingsAuto.paused = true;
     if (isOn) {
       settings.autoMode = true;
-      showElem(app.elems.auto.buttons);
+      showElem(elems.auto.buttons);
     } else {
       settings.autoMode = false;
-      hideElem(app.elems.auto.buttons);
+      hideElem(elems.auto.buttons);
     }
     updateAutoStartPauseButtons();
     replaceUrl();
@@ -1021,17 +1091,17 @@
 
   function updateAutoStartPauseButtons() {
     if (settingsAuto.paused) {
-      showElem(app.elems.auto.buttonStart);
-      hideElem(app.elems.auto.buttonPause);
+      showElem(elems.auto.buttonStart);
+      hideElem(elems.auto.buttonPause);
     } else {
-      hideElem(app.elems.auto.buttonStart);
-      showElem(app.elems.auto.buttonPause);
+      hideElem(elems.auto.buttonStart);
+      showElem(elems.auto.buttonPause);
     }
 
     if (settings.autoMode && settingsAuto.paused || clearFlag) {
-      hideElem(app.elems.controller.stickBase);
+      hideElem(elems.controller.stickBase);
     } else {
-      showElem(app.elems.controller.stickBase);
+      showElem(elems.controller.stickBase);
     }
   }
 
@@ -1071,7 +1141,7 @@
   }
 
   function consoleAdd(str, className) {
-    const elem = app.elems.consoleLog;
+    const elem = elems.consoleLog;
     const li = document.createElement('li');
     li.classList.add(className);
     li.textContent = str;
