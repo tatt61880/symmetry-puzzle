@@ -121,7 +121,7 @@
       const w = this.getW();
       const h = this.getH();
       const s = this.getStateStr();
-      console.log(`{w: ${w}, h: ${h}, s: '${s}'},`); // コピペ用
+      console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
       return `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}`;
     }
 
@@ -168,7 +168,7 @@
         r = rotatedR;
       }
       const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
-      const newLevelObj = {w, h, s, r};
+      const newLevelObj = { w, h, s, r };
       return newLevelObj;
     }
 
@@ -209,12 +209,12 @@
           r = rotatedR;
         }
         const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
-        newLevelObj = {w, h, s, r};
+        newLevelObj = { w, h, s, r };
       }
       return newLevelObj;
     }
 
-    applyObj(obj_, {init, mirrorFlag, rotateNum}) {
+    applyObj(obj_, { init, mirrorFlag, rotateNum }) {
       let obj = obj_;
       if (init) {
         if (mirrorFlag) obj = this.#mirrorLevel(obj);
@@ -429,7 +429,7 @@
           }
         }
       }
-      return {x: (minX + maxX + 1) * 0.5, y: (minY + maxY + 1) * 0.5};
+      return { x: (minX + maxX + 1) * 0.5, y: (minY + maxY + 1) * 0.5 };
     }
 
     resetMoveFlags() {
@@ -524,7 +524,7 @@
 
       // 背景
       {
-        const rect = app.svg.createRect(blockSize, {x: 1, y: 1, width: this.getWidth() - 2, height: this.getHeight() - 2});
+        const rect = app.svg.createRect(blockSize, { x: 1, y: 1, width: this.getWidth() - 2, height: this.getHeight() - 2 });
         rect.setAttribute('fill', 'white');
         g.appendChild(rect);
       }
@@ -561,7 +561,7 @@
       const color = app.colors[state];
       {
         const eps = 0.01; // サイズを少し大きくすることで、隙間をなくします。
-        const rect = app.svg.createRect(blockSize, {x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2, fill: color.fill});
+        const rect = app.svg.createRect(blockSize, { x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2, fill: color.fill });
         gElem.appendChild(rect);
       }
       {
@@ -572,42 +572,42 @@
 
         // 上側
         if (!flags[dirs.u]) {
-          const line = app.svg.createRect(blockSize, {x, y, width: 1, height: blockBorderWidth, fill: color.stroke});
+          const line = app.svg.createRect(blockSize, { x, y, width: 1, height: blockBorderWidth, fill: color.stroke });
           gElem.appendChild(line);
         }
         // 右側
         if (!flags[dirs.r]) {
-          const line = app.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y, width: blockBorderWidth, height: 1, fill: color.stroke});
+          const line = app.svg.createRect(blockSize, { x: x + 1 - blockBorderWidth, y, width: blockBorderWidth, height: 1, fill: color.stroke });
           gElem.appendChild(line);
         }
         // 下側
         if (!flags[dirs.d]) {
-          const line = app.svg.createRect(blockSize, {x, y: y + 1 - blockBorderWidth, width: 1, height: blockBorderWidth, fill: color.stroke});
+          const line = app.svg.createRect(blockSize, { x, y: y + 1 - blockBorderWidth, width: 1, height: blockBorderWidth, fill: color.stroke });
           gElem.appendChild(line);
         }
         // 左側
         if (!flags[dirs.l]) {
-          const line = app.svg.createRect(blockSize, {x, y, width: blockBorderWidth, height: 1, fill: color.stroke});
+          const line = app.svg.createRect(blockSize, { x, y, width: blockBorderWidth, height: 1, fill: color.stroke });
           gElem.appendChild(line);
         }
         // 右上
         if (flags[dirs.u] && flags[dirs.r] && !flags[dirs.ur]) {
-          const rect = app.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke});
+          const rect = app.svg.createRect(blockSize, { x: x + 1 - blockBorderWidth, y, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke });
           gElem.appendChild(rect);
         }
         // 右下
         if (flags[dirs.d] && flags[dirs.r] && !flags[dirs.dr]) {
-          const rect = app.svg.createRect(blockSize, {x: x + 1 - blockBorderWidth, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke});
+          const rect = app.svg.createRect(blockSize, { x: x + 1 - blockBorderWidth, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke });
           gElem.appendChild(rect);
         }
         // 左下
         if (flags[dirs.d] && flags[dirs.l] && !flags[dirs.dl]) {
-          const rect = app.svg.createRect(blockSize, {x, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke});
+          const rect = app.svg.createRect(blockSize, { x, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke });
           gElem.appendChild(rect);
         }
         // 左上
         if (flags[dirs.u] && flags[dirs.l] && !flags[dirs.ul]) {
-          const rect = app.svg.createRect(blockSize, {x, y, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke});
+          const rect = app.svg.createRect(blockSize, { x, y, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke });
           gElem.appendChild(rect);
         }
 
@@ -615,22 +615,22 @@
           const size = blockBorderWidth * 1.75;
           // 右上
           if (!flags[dirs.u] && !flags[dirs.r]) {
-            const rect = app.svg.createRect(blockSize, {x: x + 1 - size, y, width: size, height: size, fill: color.stroke});
+            const rect = app.svg.createRect(blockSize, { x: x + 1 - size, y, width: size, height: size, fill: color.stroke });
             gElem.appendChild(rect);
           }
           // 右下
           if (!flags[dirs.d] && !flags[dirs.r]) {
-            const rect = app.svg.createRect(blockSize, {x: x + 1 - size, y: y + 1 - size, width: size, height: size, fill: color.stroke});
+            const rect = app.svg.createRect(blockSize, { x: x + 1 - size, y: y + 1 - size, width: size, height: size, fill: color.stroke });
             gElem.appendChild(rect);
           }
           // 左下
           if (!flags[dirs.d] && !flags[dirs.l]) {
-            const rect = app.svg.createRect(blockSize, {x, y: y + 1 - size, width: size, height: size, fill: color.stroke});
+            const rect = app.svg.createRect(blockSize, { x, y: y + 1 - size, width: size, height: size, fill: color.stroke });
             gElem.appendChild(rect);
           }
           // 左上
           if (!flags[dirs.u] && !flags[dirs.l]) {
-            const rect = app.svg.createRect(blockSize, {x, y, width: size, height: size, fill: color.stroke});
+            const rect = app.svg.createRect(blockSize, { x, y, width: size, height: size, fill: color.stroke });
             gElem.appendChild(rect);
           }
         }
@@ -705,7 +705,7 @@
             {
               const dd = 0.2;
               const ddd = 0.15;
-              const rectArg = {x: x - dx, y: y - dy, width: 1, height: 1, fill: color.fill};
+              const rectArg = { x: x - dx, y: y - dy, width: 1, height: 1, fill: color.fill };
               if (dx === 0) {
                 if (!flags[dirs.l]) rectArg.x += dd;
                 if (!flags[dirs.l]) rectArg.width -= dd;
@@ -734,13 +734,13 @@
         }
       }
       if (showCharsFlag) {
-        const text = app.svg.createText(blockSize, {x: x + 0.5, y, text: app.states.stateToChar[state]});
+        const text = app.svg.createText(blockSize, { x: x + 0.5, y, text: app.states.stateToChar[state] });
         gElem.appendChild(text);
         if (state === app.states.wall || this.#isConnected((s) => s === state)) {
           text.setAttribute('fill', app.colors[state].text);
         } else {
           text.setAttribute('fill', app.colors[state].error);
-          const rect = app.svg.createRect(blockSize, {x, y, width: 1, height: 1, fill: 'black'});
+          const rect = app.svg.createRect(blockSize, { x, y, width: 1, height: 1, fill: 'black' });
           rect.setAttribute('opacity', 0.3);
           gElem.appendChild(rect);
         }

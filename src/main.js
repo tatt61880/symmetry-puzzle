@@ -216,7 +216,7 @@
       cursorX = e.clientX - bcRect.left;
       cursorY = e.clientY - bcRect.top;
     }
-    return {x: cursorX, y: cursorY};
+    return { x: cursorX, y: cursorY };
   }
 
   function pointerdown(e) {
@@ -319,7 +319,7 @@
     const RESET_DELAY = 50;
     setTimeout(() => {
       elems.level.reset.classList.remove('low-contrast');
-      loadLevelObj(level.getLevelObj(), {reset: true});
+      loadLevelObj(level.getLevelObj(), { reset: true });
     }, RESET_DELAY);
   }
 
@@ -327,7 +327,7 @@
     undoInfo = app.UndoInfo(elems.controller.undo);
   }
 
-  function applyObj(obj, param = {init: false}) {
+  function applyObj(obj, param = { init: false }) {
     level.applyObj(obj, param);
     const svgMaxWidth = 480;
     const svgMaxHeight = 250;
@@ -501,13 +501,13 @@
       elems.levels.dialogSvg.appendChild(g);
 
       const level = app.Level();
-      level.applyObj(levelObj, {init: true});
+      level.applyObj(levelObj, { init: true });
       const blockSize = Math.min((WIDTH - 30) / (level.getW() + 2), (HEIGHT - 30) / (level.getH() + 2));
       const levelSvg = level.createSvg(blockSize);
       levelSvg.setAttribute('transform', `translate(${-blockSize + 20},${-blockSize + 20})`);
       g.appendChild(levelSvg);
       {
-        const text = app.svg.createText(5, {x: 2.1, y: 2, text: id, fill: 'black'});
+        const text = app.svg.createText(5, { x: 2.1, y: 2, text: id, fill: 'black' });
         text.setAttribute('dominant-baseline', 'middle');
         text.setAttribute('text-anchor', 'middle');
         text.setAttribute('font-weight', 'bold');
@@ -518,7 +518,7 @@
         const bestStep = level.getBestStep();
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
-          const crown = app.svg.createCrown(20, {x: 0, y: 1, fill: color});
+          const crown = app.svg.createCrown(20, { x: 0, y: 1, fill: color });
           g.appendChild(crown);
         }
       }
@@ -630,13 +630,13 @@
         elem.addEventListener('click', func, false);
 
         {
-          const rect = app.svg.createRect(30, {x: 0, y: 0, width: 1, height: 1, fill: app.colors[state].fill});
+          const rect = app.svg.createRect(30, { x: 0, y: 0, width: 1, height: 1, fill: app.colors[state].fill });
           rect.setAttribute('stroke', app.colors[state].stroke);
           rect.setAttribute('stroke-width', 4);
           elem.appendChild(rect);
         }
         {
-          const text = app.svg.createText(30, {x: 0.5, y: 0, text: char, fill: app.colors[state].text});
+          const text = app.svg.createText(30, { x: 0.5, y: 0, text: char, fill: app.colors[state].text });
           text.setAttribute('dominant-baseline', 'middle');
           text.setAttribute('text-anchor', 'middle');
           text.setAttribute('font-weight', 'bold');
@@ -669,7 +669,7 @@
     // タイトル画面用
     {
       elems.main.buttonPlay.addEventListener('click', () => onloadId(levelId), false);
-      // elems.main.buttonEdit.addEventListener('click', () => onloadObj({w: 6, h: 5, s: ''}), false);
+      // elems.main.buttonEdit.addEventListener('click', () => onloadObj({ w: 6, h: 5, s: '' }), false);
     }
 
     // レベル操作用
@@ -784,13 +784,13 @@
       elems.main.svg.appendChild(g);
       // 横線
       for (let y = 2; y < level.getHeight() - 1; ++y) {
-        const line = app.svg.createLine(blockSize, {x1: 1, y1: y, x2: level.getWidth() - 1, y2: y, stroke: app.colors.line});
+        const line = app.svg.createLine(blockSize, { x1: 1, y1: y, x2: level.getWidth() - 1, y2: y, stroke: app.colors.line });
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
       // 縦線
       for (let x = 2; x < level.getWidth() - 1; ++x) {
-        const line = app.svg.createLine(blockSize, {x1: x, y1: 1, x2: x, y2: level.getHeight() - 1, stroke: app.colors.line});
+        const line = app.svg.createLine(blockSize, { x1: x, y1: 1, x2: x, y2: level.getHeight() - 1, stroke: app.colors.line });
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
@@ -805,20 +805,20 @@
     const borderWidth = 0.05;
     {
       const frameColor = app.colors.frame;
-      const rectU = app.svg.createRect(blockSize, {x: 0, y: 0, width: level.getWidth(), height: 1, fill: frameColor});
-      const rectR = app.svg.createRect(blockSize, {x: level.getWidth() - 1, y: 0, width: 1, height: level.getHeight(), fill: frameColor});
-      const rectD = app.svg.createRect(blockSize, {x: 0, y: level.getHeight() - 1, width: level.getWidth(), height: 1, fill: frameColor});
-      const rectL = app.svg.createRect(blockSize, {x: 0, y: 0, width: 1, height: level.getHeight(), fill: frameColor});
+      const rectU = app.svg.createRect(blockSize, { x: 0, y: 0, width: level.getWidth(), height: 1, fill: frameColor });
+      const rectR = app.svg.createRect(blockSize, { x: level.getWidth() - 1, y: 0, width: 1, height: level.getHeight(), fill: frameColor });
+      const rectD = app.svg.createRect(blockSize, { x: 0, y: level.getHeight() - 1, width: level.getWidth(), height: 1, fill: frameColor });
+      const rectL = app.svg.createRect(blockSize, { x: 0, y: 0, width: 1, height: level.getHeight(), fill: frameColor });
       g.appendChild(rectU);
       g.appendChild(rectR);
       g.appendChild(rectD);
       g.appendChild(rectL);
 
       const borderColor = app.colors.frameBorder;
-      const rectUb = app.svg.createRect(blockSize, {x: 0, y: 0, width: level.getWidth(), height: borderWidth, fill: borderColor});
-      const rectRb = app.svg.createRect(blockSize, {x: level.getWidth() - borderWidth, y: 0, width: borderWidth, height: level.getHeight(), fill: borderColor});
-      const rectDb = app.svg.createRect(blockSize, {x: 0, y: level.getHeight() - borderWidth, width: level.getWidth(), height: borderWidth, fill: borderColor});
-      const rectLb = app.svg.createRect(blockSize, {x: 0, y: 0, width: borderWidth, height: level.getHeight(), fill: borderColor});
+      const rectUb = app.svg.createRect(blockSize, { x: 0, y: 0, width: level.getWidth(), height: borderWidth, fill: borderColor });
+      const rectRb = app.svg.createRect(blockSize, { x: level.getWidth() - borderWidth, y: 0, width: borderWidth, height: level.getHeight(), fill: borderColor });
+      const rectDb = app.svg.createRect(blockSize, { x: 0, y: level.getHeight() - borderWidth, width: level.getWidth(), height: borderWidth, fill: borderColor });
+      const rectLb = app.svg.createRect(blockSize, { x: 0, y: 0, width: borderWidth, height: level.getHeight(), fill: borderColor });
       g.appendChild(rectUb);
       g.appendChild(rectRb);
       g.appendChild(rectDb);
@@ -833,7 +833,7 @@
 
       // クリア時のメッセージ
       if (clearFlag) {
-        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1.95, text: 'Congratulations!', fill: 'white'});
+        const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: level.getHeight() - 1.95, text: 'Congratulations!', fill: 'white' });
         text.setAttribute('font-size', fontSize);
         text.setAttribute('font-weight', 'bold');
         g.appendChild(text);
@@ -854,7 +854,7 @@
           // ログ出力
           {
             const levelParams = `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}', step: ${replayStr.length}` + (levelObj.subject !== undefined ? `, subject: '${levelObj.subject}'` : '');
-            const levelObjStr = `{${levelParams}},`;
+            const levelObjStr = `{ ${levelParams} },`;
             const clearStep = undoInfo.getIndex();
             consoleLog(levelObjStr);
             if (r === undefined) {
@@ -876,7 +876,7 @@
         }
       } else {
         if (symmetryFlag) {
-          const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 2, text: 'Not connected.', fill: 'white'});
+          const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: level.getHeight() - 2, text: 'Not connected.', fill: 'white' });
           text.setAttribute('font-size', fontSize);
           text.setAttribute('font-weight', 'bold');
           g.appendChild(text);
@@ -887,7 +887,7 @@
       {
         const currentStep = undoInfo.getIndex();
         const color = clearFlag ? getStepColor(currentStep, bestStep) : 'black';
-        const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: level.getHeight() - 1 - borderWidth / 2, text: `${currentStep} steps`, fill: color});
+        const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: level.getHeight() - 1 - borderWidth / 2, text: `${currentStep} steps`, fill: color });
         text.setAttribute('font-size', fontSize);
         text.setAttribute('font-weight', 'bold');
         g.appendChild(text);
@@ -900,18 +900,18 @@
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
 
-          const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: borderWidth / 2, text: `Your best: ${highestScore} steps`, fill: color});
+          const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: borderWidth / 2, text: `Your best: ${highestScore} steps`, fill: color });
           text.setAttribute('font-size', fontSize);
           text.setAttribute('font-weight', 'bold');
           g.appendChild(text);
 
-          const crown = app.svg.createCrown(blockSize, {x: borderWidth, y: borderWidth / 2, fill: color});
+          const crown = app.svg.createCrown(blockSize, { x: borderWidth, y: borderWidth / 2, fill: color });
           g.appendChild(crown);
         }
 
         // 記録更新？
         if (highestScorePrev !== null && highestScore < highestScorePrev) {
-          const text = app.svg.createText(blockSize, {x: level.getWidth() * 0.5, y: 0.95, text: 'New record!', fill: 'white'});
+          const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: 0.95, text: 'New record!', fill: 'white' });
           text.setAttribute('font-size', fontSize);
           text.setAttribute('font-weight', 'bold');
           g.appendChild(text);
@@ -1020,7 +1020,7 @@
       const cursorPos = getCursorPos(elems.main.svg, e);
       const x = Math.floor(cursorPos.x / blockSize);
       const y = Math.floor(cursorPos.y / blockSize);
-      return {x, y};
+      return { x, y };
     }
   }
 
@@ -1040,7 +1040,7 @@
     const s = level.getStateStr();
     if (w < 1) return;
     if (h < 1) return;
-    const obj = {w, h, s};
+    const obj = { w, h, s };
     addUndo(null);
     applyObj(obj);
     level.removeR();

@@ -14,7 +14,7 @@
     return g;
   };
 
-  svg.createLine = (blockSize, {x1, y1, x2, y2, stroke}) => {
+  svg.createLine = (blockSize, { x1, y1, x2, y2, stroke }) => {
     const line = document.createElementNS(SVG_NS, 'line');
     line.setAttribute('x1', blockSize * x1);
     line.setAttribute('y1', blockSize * y1);
@@ -25,7 +25,7 @@
     return line;
   };
 
-  svg.createCircle = (blockSize, {cx, cy, r, fill}) => {
+  svg.createCircle = (blockSize, { cx, cy, r, fill }) => {
     const circle = document.createElementNS(SVG_NS, 'circle');
     circle.setAttribute('cx', blockSize * cx);
     circle.setAttribute('cy', blockSize * cy);
@@ -34,7 +34,7 @@
     return circle;
   };
 
-  svg.createRect = (blockSize, {x, y, width, height, fill}) => {
+  svg.createRect = (blockSize, { x, y, width, height, fill }) => {
     const rect = document.createElementNS(SVG_NS, 'rect');
     rect.setAttribute('x', blockSize * x);
     rect.setAttribute('y', blockSize * y);
@@ -44,7 +44,7 @@
     return rect;
   };
 
-  svg.createPolygon = (blockSize, {points, fill}) => {
+  svg.createPolygon = (blockSize, { points, fill }) => {
     const polygon = document.createElementNS(SVG_NS, 'polygon');
     let pointsStr = '';
     for (const point of points) {
@@ -56,7 +56,7 @@
     return polygon;
   };
 
-  svg.createCrown = (blockSize, {x, y, fill}) => {
+  svg.createCrown = (blockSize, { x, y, fill }) => {
     const g = svg.createG();
     const polygon = svg.createPolygon(blockSize, {
       points: [
@@ -78,14 +78,14 @@
       fill,
     });
     g.appendChild(polygon);
-    g.appendChild(svg.createCircle(blockSize, {cx: x + 0.1, cy: y + 0.3, r: 0.05, fill}));
-    g.appendChild(svg.createCircle(blockSize, {cx: x + 0.5, cy: y + 0.15, r: 0.05, fill}));
-    g.appendChild(svg.createCircle(blockSize, {cx: x + 0.9, cy: y + 0.3, r: 0.05, fill}));
+    g.appendChild(svg.createCircle(blockSize, { cx: x + 0.1, cy: y + 0.3, r: 0.05, fill }));
+    g.appendChild(svg.createCircle(blockSize, { cx: x + 0.5, cy: y + 0.15, r: 0.05, fill }));
+    g.appendChild(svg.createCircle(blockSize, { cx: x + 0.9, cy: y + 0.3, r: 0.05, fill }));
     g.appendChild(rect);
     return g;
   };
 
-  svg.createText = (blockSize, {x, y, text, fill}) => {
+  svg.createText = (blockSize, { x, y, text, fill }) => {
     const textElem = document.createElementNS(SVG_NS, 'text');
     textElem.setAttribute('x', blockSize * x);
     textElem.setAttribute('y', blockSize * (y + 0.55));
