@@ -611,7 +611,7 @@
           gElem.appendChild(rect);
         }
 
-        if (app.states.isOther(state) && !showCharsFlag) {
+        if (app.states.isOther(state)) {
           const size = blockBorderWidth * 1.75;
           // 右上
           if (!flags[dirs.u] && !flags[dirs.r]) {
