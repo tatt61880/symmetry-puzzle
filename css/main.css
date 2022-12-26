@@ -229,6 +229,10 @@ li.warn {
   justify-content: center;
 }
 
+#title-logo {
+  margin: 30px;
+}
+
 .title-button {
   display: table;
   width: 80px;

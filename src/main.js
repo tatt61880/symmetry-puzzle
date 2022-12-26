@@ -96,11 +96,14 @@
       dialogSvg: 'dialog-levels-svg',
     },
 
-    main: {
-      div: 'main',
-      title: 'title',
+    title: {
+      div: 'title',
       buttonPlay: 'button-play',
       buttonEdit: 'button-edit',
+    },
+
+    main: {
+      div: 'main',
       svg: 'svg-main',
     },
 
@@ -251,7 +254,7 @@
   }
 
   function keydown(e) {
-    if (!elems.main.title.classList.contains('hide')) return;
+    if (!elems.title.div.classList.contains('hide')) return;
     if (e.shiftKey) {
       if (e.key === 'ArrowLeft') {
         gotoPrevLevel();
@@ -294,7 +297,7 @@
   }
 
   function keyup(e) {
-    if (!elems.main.title.classList.contains('hide')) return;
+    if (!elems.title.div.classList.contains('hide')) return;
     delete inputKeys[e.key];
     if (temporaryShowCharsFlag && e.key === ' ') {
       temporaryShowCharsFlag = false;
@@ -568,8 +571,8 @@
   }
 
   function onloadTitle() {
-    showElem(elems.main.title);
-    hideElem(elems.main.svg);
+    showElem(elems.title.div);
+    hideElem(elems.main.div);
     hideElem(elems.level.widget);
     hideElem(elems.svgDiv);
     hideElem(elems.controller.widget);
@@ -578,8 +581,8 @@
   }
 
   function onloadId(id_) {
-    hideElem(elems.main.title);
-    showElem(elems.main.svg);
+    hideElem(elems.title.div);
+    showElem(elems.main.div);
     showElem(elems.level.widget);
     showElem(elems.svgDiv);
     showElem(elems.controller.widget);
@@ -590,7 +593,7 @@
   }
 
   function onloadObj(obj) {
-    hideElem(elems.main.title);
+    hideElem(elems.title.div);
     showElem(elems.main.svg);
     showElem(elems.level.widget);
     showElem(elems.svgDiv);
@@ -668,8 +671,8 @@
 
     // タイトル画面用
     {
-      elems.main.buttonPlay.addEventListener('click', () => onloadId(levelId), false);
-      // elems.main.buttonEdit.addEventListener('click', () => onloadObj({ w: 6, h: 5, s: '' }), false);
+      elems.title.buttonPlay.addEventListener('click', () => onloadId(levelId), false);
+      // elems.title.buttonEdit.addEventListener('click', () => onloadObj({ w: 6, h: 5, s: '' }), false);
     }
 
     // レベル操作用
