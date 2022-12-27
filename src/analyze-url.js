@@ -30,30 +30,30 @@
       const paramName = paramArray[0];
       const paramVal = paramArray[1];
       switch (paramName) {
-      case 'id':
-        res.id = Number(paramVal);
-        break;
-      case 'w':
-        res.levelObj.w = Number(paramVal);
-        break;
-      case 'h':
-        res.levelObj.h = Number(paramVal);
-        break;
-      case 's':
-        res.levelObj.s = paramVal;
-        break;
-      case 'auto':
-        res.settings.autoMode = true;
-        break;
-      case 'debug':
-        res.settings.debugFlag = true;
-        break;
-      case 'mirror':
-        res.settings.mirrorFlag = true;
-        break;
-      case 'rotate':
-        res.settings.rotateNum = Number(paramVal) % 4;
-        break;
+        case 'id':
+          res.id = Number(paramVal);
+          break;
+        case 'w':
+          res.levelObj.w = Number(paramVal);
+          break;
+        case 'h':
+          res.levelObj.h = Number(paramVal);
+          break;
+        case 's':
+          res.levelObj.s = paramVal;
+          break;
+        case 'auto':
+          res.settings.autoMode = true;
+          break;
+        case 'debug':
+          res.settings.debugFlag = true;
+          break;
+        case 'mirror':
+          res.settings.mirrorFlag = true;
+          break;
+        case 'rotate':
+          res.settings.rotateNum = Number(paramVal) % 4;
+          break;
       }
     }
     return res;

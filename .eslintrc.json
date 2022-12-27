@@ -18,8 +18,10 @@
     ],
     "arrow-parens": "error",
     "arrow-spacing": "error",
+    "camelcase": "error",
     "comma-spacing": "error",
     "computed-property-spacing": "error",
+    "dot-location": "error",
     "eol-last": "error",
     "eqeqeq": "error",
     "func-call-spacing": [
@@ -28,10 +30,14 @@
     ],
     "indent": [
       "error",
-      2
+      2,
+      {
+        "SwitchCase": 1
+      }
     ],
     "key-spacing": "error",
     "keyword-spacing": "error",
+    "no-case-declarations": "error",
     "no-console": "off",
     "no-constant-condition": [
       "error",
@@ -59,12 +65,16 @@
       }
     ],
     "no-native-reassign": "error",
+    "no-nested-ternary": "error",
     "no-new": "error",
+    "no-octal": "error",
     "no-param-reassign": "error",
     "no-trailing-spaces": "error",
+    "no-undef-init": "error",
     "no-unexpected-multiline": "error",
     "no-unneeded-ternary": "error",
     "no-unused-private-class-members": "error",
+    "no-useless-escape": "error",
     "no-var": "error",
     "object-curly-spacing": [
       "error",
