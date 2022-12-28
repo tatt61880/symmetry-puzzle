@@ -35,7 +35,7 @@
     return new Level();
   }
 
-  function* stateStrIterator(stateStr) {
+  function* stateCharGenerator(stateStr) {
     for (let i = 0; i < stateStr.length; ++i) {
       let c = stateStr[i];
       if (c === '(') {
@@ -148,7 +148,7 @@
 
       let x = w - 1;
       let y = 0;
-      for (const c of stateStrIterator(stateStr)) {
+      for (const c of stateCharGenerator(stateStr)) {
         if (c === '-') {
           y++;
           if (y === h) break;
@@ -189,7 +189,7 @@
 
         let x = w - 1;
         let y = 0;
-        for (const c of stateStrIterator(stateStr)) {
+        for (const c of stateCharGenerator(stateStr)) {
           if (c === '-') {
             x--;
             if (x < 0) break;
@@ -253,7 +253,7 @@
       let y = this.#upEnd;
       let x = this.#leftEnd;
       const stateStr = obj.s;
-      for (const c of stateStrIterator(stateStr)) {
+      for (const c of stateCharGenerator(stateStr)) {
         if (c === '-') {
           y++;
           if (y > this.#downEnd) break;
