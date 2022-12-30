@@ -1,9 +1,9 @@
 (function () {
   'use strict';
+  const VERSION_TEXT = 'v2022.12.30';
+
   const app = window.app;
   Object.freeze(app);
-
-  const VERSION_TEXT = 'v2022.12.30';
 
   const savedata = app.savedata();
 
