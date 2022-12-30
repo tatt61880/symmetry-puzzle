@@ -1,15 +1,6 @@
 (function () {
   'use strict';
 
-  if (typeof window !== 'undefined') {
-    window.app = window.app || {};
-    window.app.Elems = elems;
-  }
-
-  function elems(param) {
-    return new Elems(param);
-  }
-
   class Elems {
     #elems;
     constructor(elems) {
@@ -36,5 +27,10 @@
         }
       }
     }
+  }
+
+  if (typeof window !== 'undefined') {
+    window.app = window.app || {};
+    window.app.Elems = Elems;
   }
 })();

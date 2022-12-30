@@ -66,7 +66,7 @@
   document.documentElement.style.setProperty('--animation-duration-shadow', `${SHADOW_MSEC}ms`);
   document.documentElement.style.setProperty('--animation-duration-rotation', `${ROTATION_MSEC}ms`);
 
-  const elems = app.Elems({
+  const elems = new app.Elems({
     top: 'top',
     icon: 'icon',
     version: 'version',
