@@ -3,7 +3,7 @@
   const app = window.app;
   Object.freeze(app);
 
-  const VERSION_TEXT = 'v2022.12.22';
+  const VERSION_TEXT = 'v2022.12.30';
 
   const savedata = app.savedata();
 
@@ -552,9 +552,6 @@
 
     const queryParams = app.analyzeUrl();
     settings = queryParams.settings;
-    if (settings.autoMode) {
-      updateAutoMode(true);
-    }
 
     setInterval(intervalFunc, INPUT_INTERVAL_MSEC);
 
@@ -575,6 +572,7 @@
     hideElem(elems.main.div);
     hideElem(elems.level.widget);
     hideElem(elems.svgDiv);
+    hideElem(elems.auto.buttons);
     hideElem(elems.controller.widget);
 
     replaceUrlTitle();
@@ -585,6 +583,9 @@
     showElem(elems.main.div);
     showElem(elems.level.widget);
     showElem(elems.svgDiv);
+    if (settings.autoMode) {
+      updateAutoMode(true);
+    }
     showElem(elems.controller.widget);
 
     let id = id_;
@@ -597,6 +598,7 @@
     showElem(elems.main.svg);
     showElem(elems.level.widget);
     showElem(elems.svgDiv);
+    hideElem(elems.auto.buttons);
     showElem(elems.controller.widget);
 
     levelId = null;

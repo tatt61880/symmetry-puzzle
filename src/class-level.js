@@ -376,7 +376,7 @@
         }
       }
 
-      const st = app.Stack();
+      const st = new app.Stack();
       st.push([x0, y0]);
       statesTemp[y0][x0] = app.states.none;
       while (!st.empty()) {
@@ -458,7 +458,7 @@
         moveState[i] = true;
 
         let flag = true;
-        const st = app.Stack(); // 移動可能か検証必要な状態番号
+        const st = new app.Stack(); // 移動可能か検証必要な状態番号
         st.push(i);
         while (!st.empty()) {
           const state = st.pop();

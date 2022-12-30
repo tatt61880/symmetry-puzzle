@@ -1,17 +1,6 @@
 (function () {
   'use strict';
 
-  if (typeof window === 'undefined') {
-    module.exports = stack;
-  } else {
-    window.app = window.app || {};
-    window.app.Stack = stack;
-  }
-
-  function stack() {
-    return new Stack();
-  }
-
   class Stack {
     constructor() {
       this.data = [];
@@ -32,5 +21,12 @@
     empty() {
       return this.data.length === 0;
     }
+  }
+
+  if (typeof window === 'undefined') {
+    module.exports = Stack;
+  } else {
+    window.app = window.app || {};
+    window.app.Stack = Stack;
   }
 })();
