@@ -1,11 +1,6 @@
 (function () {
   'use strict';
 
-  if (typeof window !== 'undefined') {
-    window.app = window.app || {};
-    window.app.savedata = savedata;
-  }
-
   const LOCAL_STORAGE_KEY = 'tatt61880-showkoban';
 
   function savedata() {
@@ -68,5 +63,10 @@
     #getLevelKey(levelObj) {
       return `w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
     }
+  }
+
+  if (typeof window !== 'undefined') {
+    window.app = window.app || {};
+    window.app.savedata = savedata;
   }
 })();

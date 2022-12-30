@@ -2,13 +2,6 @@
   'use strict';
 
   const levels = [];
-  if (typeof window === 'undefined') {
-    module.exports = levels;
-  } else {
-    window.app = window.app || {};
-    window.app.levels = levels;
-  }
-
   levels.push(
     {
       w: 33,
@@ -75,5 +68,12 @@
   Object.freeze(levels);
   for (const level of levels) {
     Object.freeze(level);
+  }
+
+  if (typeof window === 'undefined') {
+    module.exports = levels;
+  } else {
+    window.app = window.app || {};
+    window.app.levels = levels;
   }
 })();

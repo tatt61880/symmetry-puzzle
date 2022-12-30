@@ -1,15 +1,6 @@
 (function () {
   'use strict';
 
-  if (typeof window !== 'undefined') {
-    window.app = window.app || {};
-    window.app.UndoInfo = undoinfo;
-  }
-
-  function undoinfo(elemUndoButton) {
-    return new UndoInfo(elemUndoButton);
-  }
-
   class UndoInfo {
     #elemUndoButton;
     #undoIdx;
@@ -61,5 +52,10 @@
   function hideElem(elem) {
     if (elem === undefined) return;
     elem.classList.add('hide');
+  }
+
+  if (typeof window !== 'undefined') {
+    window.app = window.app || {};
+    window.app.UndoInfo = UndoInfo;
   }
 })();

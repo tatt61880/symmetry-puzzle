@@ -327,7 +327,7 @@
   }
 
   function resetUndo() {
-    undoInfo = app.UndoInfo(elems.controller.undo);
+    undoInfo = new app.UndoInfo(elems.controller.undo);
   }
 
   function applyObj(obj, param = { init: false }) {

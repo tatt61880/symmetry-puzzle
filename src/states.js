@@ -2,12 +2,6 @@
   'use strict';
 
   const states = {};
-  if (typeof window === 'undefined') {
-    module.exports = states;
-  } else {
-    window.app = window.app || {};
-    window.app.states = states;
-  }
 
   states.wall = -1; // 壁
   states.none = 0;
@@ -46,4 +40,11 @@
   states.isOther = (state) => states.otherMin <= state && state <= states.otherMax;
   states.isUser = (state) => states.userMin <= state && state <= states.userMax;
   Object.freeze(states);
+
+  if (typeof window === 'undefined') {
+    module.exports = states;
+  } else {
+    window.app = window.app || {};
+    window.app.states = states;
+  }
 })();

@@ -1,11 +1,6 @@
 (function () {
   'use strict';
 
-  if (typeof window !== 'undefined') {
-    window.app = window.app || {};
-    window.app.analyzeUrl = analyzeUrl;
-  }
-
   function analyzeUrl() {
     const res = {
       id: null,
@@ -57,5 +52,10 @@
       }
     }
     return res;
+  }
+
+  if (typeof window !== 'undefined') {
+    window.app = window.app || {};
+    window.app.analyzeUrl = analyzeUrl;
   }
 })();
