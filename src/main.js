@@ -99,7 +99,7 @@
     title: {
       div: 'title',
       buttonPlay: 'button-play',
-      buttonEdit: 'button-edit',
+      // buttonEdit: 'button-edit',
     },
 
     main: {
