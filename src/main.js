@@ -364,7 +364,8 @@
 
   function createObjById(id_) {
     const digits = [];
-    let id = id_;
+    let id = Math.floor(id_);
+    levelId = id;
     let isMinus = false;
     if (id < 0) {
       id = -id;
@@ -402,7 +403,6 @@
     const id = Number(id_);
     levelId = id;
     updateLevelVisibility();
-    elems.level.id.textContent = levelId;
     let levelObj;
     if (app.levels[levelId] !== undefined) {
       levelObj = app.levels[levelId];
@@ -411,8 +411,9 @@
     }
     consoleLog(`[LEVEL-${id}]${levelObj?.subject !== undefined ? ` ${levelObj.subject}` : ''}`);
 
-    replaceUrl();
     loadLevelObj(levelObj !== undefined ? levelObj : createObjById(levelId));
+    elems.level.id.textContent = levelId;
+    replaceUrl();
   }
 
   function loadLevelObj(levelObj, param = {}) {
