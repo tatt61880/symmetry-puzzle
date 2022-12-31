@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2022.12.30';
+  const VERSION_TEXT = 'v2022.12.31';
 
   const app = window.app;
   Object.freeze(app);
@@ -79,6 +79,16 @@
       langJa: 'setting-lang-ja',
     },
 
+    category: {
+      title: 'title',
+      game: 'game',
+    },
+
+    title: {
+      buttonPlay: 'button-play',
+      // buttonEdit: 'button-edit',
+    },
+
     level: {
       widget: 'level-widget',
       reset: 'button-level-reset',
@@ -94,12 +104,6 @@
       hideClearedLevels: 'hide-cleared-levels',
       dialogDiv: 'dialog-levels-div',
       dialogSvg: 'dialog-levels-svg',
-    },
-
-    title: {
-      div: 'title',
-      buttonPlay: 'button-play',
-      // buttonEdit: 'button-edit',
     },
 
     main: {
@@ -254,7 +258,7 @@
   }
 
   function keydown(e) {
-    if (!elems.title.div.classList.contains('hide')) return;
+    if (!elems.category.title.classList.contains('hide')) return;
     if (e.shiftKey) {
       if (e.key === 'ArrowLeft') {
         gotoPrevLevel();
@@ -297,7 +301,7 @@
   }
 
   function keyup(e) {
-    if (!elems.title.div.classList.contains('hide')) return;
+    if (!elems.category.title.classList.contains('hide')) return;
     delete inputKeys[e.key];
     if (temporaryShowCharsFlag && e.key === ' ') {
       temporaryShowCharsFlag = false;
@@ -568,18 +572,15 @@
   }
 
   function onloadTitle() {
-    showElem(elems.title.div);
-    hideElem(elems.main.div);
-    hideElem(elems.level.widget);
-    hideElem(elems.svgDiv);
-    hideElem(elems.auto.buttons);
-    hideElem(elems.controller.widget);
+    showElem(elems.category.title);
+    hideElem(elems.category.game);
 
     replaceUrlTitle();
   }
 
   function onloadId(id_) {
-    hideElem(elems.title.div);
+    hideElem(elems.category.title);
+    showElem(elems.category.game);
     showElem(elems.main.div);
     showElem(elems.level.widget);
     showElem(elems.svgDiv);
@@ -594,7 +595,8 @@
   }
 
   function onloadObj(obj) {
-    hideElem(elems.title.div);
+    hideElem(elems.category.title);
+    showElem(elems.category.game);
     showElem(elems.main.svg);
     showElem(elems.level.widget);
     showElem(elems.svgDiv);

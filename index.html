@@ -12,22 +12,22 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2022.12.18">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2022.12.18">
 
-  <link rel="stylesheet" href="./css/main.css?2022.12.30">
-  <link rel="stylesheet" href="./css/dialog-help.css?2022.12.30">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2022.12.30">
-  <link rel="stylesheet" href="./css/animation.css?2022.12.30">
+  <link rel="stylesheet" href="./css/main.css?2022.12.31">
+  <link rel="stylesheet" href="./css/dialog-help.css?2022.12.31">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2022.12.31">
+  <link rel="stylesheet" href="./css/animation.css?2022.12.31">
 
-  <script src="./src/states.js?2022.12.30"></script>
-  <script src="./src/colors.js?2022.12.30"></script>
-  <script src="./src/levels.js?2022.12.30"></script>
-  <script src="./src/svg.js?2022.12.30"></script>
-  <script src="./src/analyze-url.js?2022.12.30"></script>
-  <script src="./src/class-savedata.js?2022.12.30"></script>
-  <script src="./src/class-stack.js?2022.12.30"></script>
-  <script src="./src/class-undo-info.js?2022.12.30"></script>
-  <script src="./src/class-level.js?2022.12.30"></script>
-  <script src="./src/class-elems.js?2022.12.30"></script>
-  <script src="./src/main.js?2022.12.30"></script>
+  <script src="./src/states.js?2022.12.31"></script>
+  <script src="./src/colors.js?2022.12.31"></script>
+  <script src="./src/levels.js?2022.12.31"></script>
+  <script src="./src/svg.js?2022.12.31"></script>
+  <script src="./src/analyze-url.js?2022.12.31"></script>
+  <script src="./src/class-savedata.js?2022.12.31"></script>
+  <script src="./src/class-stack.js?2022.12.31"></script>
+  <script src="./src/class-undo-info.js?2022.12.31"></script>
+  <script src="./src/class-level.js?2022.12.31"></script>
+  <script src="./src/class-elems.js?2022.12.31"></script>
+  <script src="./src/main.js?2022.12.31"></script>
 </head>
 
 <body>
@@ -96,70 +96,6 @@
     </div>
   </dialog>
 
-  <div id="level-widget" class="inner level noselect">
-    <h2>LEVEL</h2>
-    <div>
-      <svg width="440" height="78">
-        <!-- Reset -->
-        <g id="button-level-reset" class="button active-hover" transform="translate(30,30)">
-          <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
-          <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#87ceeb" stroke-width="4" />
-          <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#87ceeb" stroke="none" stroke-width="4" />
-          <text x="0" y="41" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="#7799bb">r</text>
-        </g>
-
-        <!-- Level -->
-        <g id="button-level-prev" class="button active-hover" transform="translate(90,2)">
-          <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
-          <path d="M 50 14 24 28 50 42 Z" fill="#87ceeb" />
-          <text x="40" y="71" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="12px" fill="#7799bb">Shift + ←</text>
-        </g>
-        <g transform="translate(220,35)">
-          <text id="level-id" x="0" y="0" fill="#335577" dominant-baseline="middle" text-anchor="middle" font-size="40" />
-        </g>
-        <g id="button-level-next" class="button active-hover" transform="translate(270,2)">
-          <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
-          <path d="M 30 14 55 28 30 42 Z" fill="#87ceeb" />
-          <text x="40" y="71" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="12px" fill="#7799bb">Shift + →</text>
-        </g>
-
-        <!-- Edit -->
-        <g id="button-level-edit" class="button active-hover" transform="translate(220,30)">
-          <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
-          <text x="0" y="41" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="#7799bb">@</text>
-        </g>
-
-        <!-- Levels -->
-        <g id="button-levels" class="button active-hover" transform="translate(410,30)">
-          <rect x="-28" y="-28" width="56" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
-          <rect x="-22" y="-22" width="12" height="12" fill="#87ceeb" />
-          <rect x="-6" y="-22" width="12" height="12" fill="#87ceeb" />
-          <rect x="10" y="-22" width="12" height="12" fill="#87ceeb" />
-          <rect x="-22" y="-6" width="12" height="12" fill="#87ceeb" />
-          <rect x="-6" y="-6" width="12" height="12" fill="#87ceeb" />
-          <rect x="10" y="-6" width="12" height="12" fill="#87ceeb" />
-          <rect x="-22" y="10" width="12" height="12" fill="#87ceeb" />
-          <rect x="-6" y="10" width="12" height="12" fill="#87ceeb" />
-          <rect x="10" y="10" width="12" height="12" fill="#87ceeb" />
-        </g>
-      </svg>
-    </div>
-  </div>
-
-  <dialog id="dialog-levels">
-    <div id="dialog-levels-div">
-      <div class="toggle-div">
-        <div class="toggle-text translatable ja">クリアしたレベルを隠す</div>
-        <div class="toggle-text translatable en">Hide cleared levels</div>
-        <div class="toggle-button">
-          <input id="hide-cleared-levels" type="checkbox" class="toggle-input" />
-          <label class="toggle-label"></label>
-        </div>
-      </div>
-      <svg id="dialog-levels-svg"></svg>
-    </div>
-  </dialog>
-
   <div id="title">
     <img id="title-logo" src="./images/apple-touch-icon.png" alt="Application image">
     <div class="flex">
@@ -171,149 +107,215 @@
       </div> -->
     </div>
   </div>
+  
+  <div id="game">
+    <div id="level-widget" class="inner level noselect">
+      <h2>LEVEL</h2>
+      <div>
+        <svg width="440" height="78">
+          <!-- Reset -->
+          <g id="button-level-reset" class="button active-hover" transform="translate(30,30)">
+            <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
+            <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#87ceeb" stroke-width="4" />
+            <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#87ceeb" stroke="none" stroke-width="4" />
+            <text x="0" y="41" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="#7799bb">r</text>
+          </g>
 
-  <div id="main">
-    <svg id="svg-main" width="480" height="250"></svg>
-  </div>
+          <!-- Level -->
+          <g id="button-level-prev" class="button active-hover" transform="translate(90,2)">
+            <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
+            <path d="M 50 14 24 28 50 42 Z" fill="#87ceeb" />
+            <text x="40" y="71" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="12px" fill="#7799bb">Shift + ←</text>
+          </g>
+          <g transform="translate(220,35)">
+            <text id="level-id" x="0" y="0" fill="#335577" dominant-baseline="middle" text-anchor="middle" font-size="40" />
+          </g>
+          <g id="button-level-next" class="button active-hover" transform="translate(270,2)">
+            <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
+            <path d="M 30 14 55 28 30 42 Z" fill="#87ceeb" />
+            <text x="40" y="71" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="12px" fill="#7799bb">Shift + →</text>
+          </g>
 
-  <div id="buttons-auto" class="hide">
-    <svg width="80" height="60">
-      <g id="button-stop" class="button" transform="translate(40,30)">
-        <circle cx="0" cy="0" r="28" fill="lightgreen" stroke="green" stroke-width="4" />
-        <rect x="-13" y="-13" width="26" height="26" rx="3" ry="3" fill="green" />
-      </g>
-    </svg>
+          <!-- Edit -->
+          <g id="button-level-edit" class="button active-hover" transform="translate(220,30)">
+            <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
+            <text x="0" y="41" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="#7799bb">@</text>
+          </g>
 
-    <svg width="80" height="60">
-      <g id="button-start" class="button" transform="translate(40,30)">
-        <circle cx="0" cy="0" r="28" fill="lightgreen" stroke="green" stroke-width="4" />
-        <path d="M -8 -13 L 13 0 L -8 13 Z" fill="green" stroke="none" stroke-width="4" />
-      </g>
-      <g id="button-pause" class="button" transform="translate(40,30)">
-        <circle cx="0" cy="0" r="28" fill="lightgreen" stroke="green" stroke-width="4" />
-        <rect x="-11" y="-13" width="6" height="26" rx="3" ry="3" fill="green" />
-        <rect x="5" y="-13" width="6" height="26" rx="3" ry="3" fill="green" />
-      </g>
-    </svg>
+          <!-- Levels -->
+          <g id="button-levels" class="button active-hover" transform="translate(410,30)">
+            <rect x="-28" y="-28" width="56" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
+            <rect x="-22" y="-22" width="12" height="12" fill="#87ceeb" />
+            <rect x="-6" y="-22" width="12" height="12" fill="#87ceeb" />
+            <rect x="10" y="-22" width="12" height="12" fill="#87ceeb" />
+            <rect x="-22" y="-6" width="12" height="12" fill="#87ceeb" />
+            <rect x="-6" y="-6" width="12" height="12" fill="#87ceeb" />
+            <rect x="10" y="-6" width="12" height="12" fill="#87ceeb" />
+            <rect x="-22" y="10" width="12" height="12" fill="#87ceeb" />
+            <rect x="-6" y="10" width="12" height="12" fill="#87ceeb" />
+            <rect x="10" y="10" width="12" height="12" fill="#87ceeb" />
+          </g>
+        </svg>
+      </div>
+    </div>
 
-    <svg width="80" height="60">
-      <g id="button-speed-down" class="button" transform="translate(40,30)">
-        <circle cx="0" cy="0" r="28" fill="#ffa" stroke="darkorange" stroke-width="4" />
-        <path d="M -10 -13 L 0 2 L 10 -13 Z" fill="darkorange" stroke="none" stroke-width="4" />
-        <path d="M -10 2 L 0 17 L 10 2 Z" fill="darkorange" stroke="none" stroke-width="4" />
-      </g>
-    </svg>
-    <svg width="80" height="60">
-      <g id="button-speed-up" class="button" transform="translate(40,30)">
-        <circle cx="0" cy="0" r="28" fill="#ffa" stroke="darkorange" stroke-width="4" />
-        <path d="M -10 13 L 0 -2 L 10 13 Z" fill="darkorange" stroke="none" stroke-width="4" />
-        <path d="M -10 -2 L 0 -17 L 10 -2 Z" fill="darkorange" stroke="none" stroke-width="4" />
-      </g>
-    </svg>
-  </div>
+    <dialog id="dialog-levels">
+      <div id="dialog-levels-div">
+        <div class="toggle-div">
+          <div class="toggle-text translatable ja">クリアしたレベルを隠す</div>
+          <div class="toggle-text translatable en">Hide cleared levels</div>
+          <div class="toggle-button">
+            <input id="hide-cleared-levels" type="checkbox" class="toggle-input" />
+            <label class="toggle-label"></label>
+          </div>
+        </div>
+        <svg id="dialog-levels-svg"></svg>
+      </div>
+    </dialog>
 
-  <div id="editbox">
-    <svg width="470" height="170">
-      <rect x="2" y="2" width="466" height="166" fill="#def" stroke="skyblue" stroke-width="4"/>
+    <div id="main">
+      <svg id="svg-main" width="480" height="250"></svg>
+    </div>
 
-      <g transform="translate(25,35)">
-        <rect id="edit-drawing-shape" x="-15" y="-15" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
-        <text id="edit-drawing-state" x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px" fill="gray" />
-      </g>
+    <div id="buttons-auto" class="hide">
+      <svg width="80" height="60">
+        <g id="button-stop" class="button" transform="translate(40,30)">
+          <circle cx="0" cy="0" r="28" fill="lightgreen" stroke="green" stroke-width="4" />
+          <rect x="-13" y="-13" width="26" height="26" rx="3" ry="3" fill="green" />
+        </g>
+      </svg>
 
-      <g class="button active-hover" transform="translate(80,35)">
-        <rect id="h-dec" x="-30" y="-15" width="60" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
-        <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px" fill="gray">--h</text>
-      </g>
-      <g class="button active-hover" transform="translate(40,85)">
-        <rect id="w-dec" x="-30" y="-15" width="60" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
-        <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px" fill="gray">--w</text>
-      </g>
-      <g class="button active-hover" transform="translate(120,85)">
-        <rect id="w-inc" x="-30" y="-15" width="60" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
-        <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px" fill="gray">++w</text>
-      </g>
-      <g class="button active-hover" transform="translate(80,135)">
-        <rect id="h-inc" x="-30" y="-15" width="60" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
-        <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px" fill="gray">++h</text>
-      </g>
+      <svg width="80" height="60">
+        <g id="button-start" class="button" transform="translate(40,30)">
+          <circle cx="0" cy="0" r="28" fill="lightgreen" stroke="green" stroke-width="4" />
+          <path d="M -8 -13 L 13 0 L -8 13 Z" fill="green" stroke="none" stroke-width="4" />
+        </g>
+        <g id="button-pause" class="button" transform="translate(40,30)">
+          <circle cx="0" cy="0" r="28" fill="lightgreen" stroke="green" stroke-width="4" />
+          <rect x="-11" y="-13" width="6" height="26" rx="3" ry="3" fill="green" />
+          <rect x="5" y="-13" width="6" height="26" rx="3" ry="3" fill="green" />
+        </g>
+      </svg>
 
-      <g transform="translate(25,135)">
-        <rect id="edit-normalize" x="-15" y="-15" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
-      </g>
+      <svg width="80" height="60">
+        <g id="button-speed-down" class="button" transform="translate(40,30)">
+          <circle cx="0" cy="0" r="28" fill="#ffa" stroke="darkorange" stroke-width="4" />
+          <path d="M -10 -13 L 0 2 L 10 -13 Z" fill="darkorange" stroke="none" stroke-width="4" />
+          <path d="M -10 2 L 0 17 L 10 2 Z" fill="darkorange" stroke="none" stroke-width="4" />
+        </g>
+      </svg>
+      <svg width="80" height="60">
+        <g id="button-speed-up" class="button" transform="translate(40,30)">
+          <circle cx="0" cy="0" r="28" fill="#ffa" stroke="darkorange" stroke-width="4" />
+          <path d="M -10 13 L 0 -2 L 10 13 Z" fill="darkorange" stroke="none" stroke-width="4" />
+          <path d="M -10 -2 L 0 -17 L 10 -2 Z" fill="darkorange" stroke="none" stroke-width="4" />
+        </g>
+      </svg>
+    </div>
 
-      <!-- 0 -->
-      <g id="edit_0" class="button active-hover" transform="translate(170,20)"></g>
-      <!-- x -->
-      <g id="edit_x" class="button active-hover" transform="translate(220,20)"></g>
+    <div id="editbox">
+      <svg width="470" height="170">
+        <rect x="2" y="2" width="466" height="166" fill="#def" stroke="skyblue" stroke-width="4"/>
 
-      <!-- s-u -->
-      <g id="edit_s" class="button active-hover" transform="translate(320,20)"></g>
-      <g id="edit_t" class="button active-hover" transform="translate(370,20)"></g>
-      <g id="edit_u" class="button active-hover" transform="translate(420,20)"></g>
-
-      <!-- a-f -->
-      <g id="edit_a" class="button active-hover" transform="translate(170,70)"></g>
-      <g id="edit_b" class="button active-hover" transform="translate(220,70)"></g>
-      <g id="edit_c" class="button active-hover" transform="translate(270,70)"></g>
-      <g id="edit_d" class="button active-hover" transform="translate(320,70)"></g>
-      <g id="edit_e" class="button active-hover" transform="translate(370,70)"></g>
-      <g id="edit_f" class="button active-hover" transform="translate(420,70)"></g>
-
-      <!-- 1-6 -->
-      <g id="edit_1" class="button active-hover" transform="translate(170,120)"></g>
-      <g id="edit_2" class="button active-hover" transform="translate(220,120)"></g>
-      <g id="edit_3" class="button active-hover" transform="translate(270,120)"></g>
-      <g id="edit_4" class="button active-hover" transform="translate(320,120)"></g>
-      <g id="edit_5" class="button active-hover" transform="translate(370,120)"></g>
-      <g id="edit_6" class="button active-hover" transform="translate(420,120)"></g>
-    </svg>
-  </div>
-
-  <div><span id="url"></span></div>
-
-  <div id="controller-widget" class="inner noselect" style="height: 250px">
-    <svg width="480" height="250">
-      <g  transform="translate(240,125)">
-        <rect x="-240" y="-125" width="480" height="250" fill="#eee" stroke="none" />
-
-        <g id="button-undo" class="button" transform="translate(-115,0) scale(2,2)">
-          <circle cx="0" cy="0" r="28" fill="lightgray" stroke="gray" stroke-width="4" />
-          <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="gray" stroke-width="4" />
-          <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="gray" stroke="none" stroke-width="4" />
-          <text x="0" y="45" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="gray">z</text>
+        <g transform="translate(25,35)">
+          <rect id="edit-drawing-shape" x="-15" y="-15" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
+          <text id="edit-drawing-state" x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px" fill="gray" />
         </g>
 
-        <g id="stick-base" class="stick" transform="translate(115,0) scale(2,2)">
-          <!-- 範囲 -->
-          <rect x="-60" y="-60" width="120" height="120" fill="lightgray" stroke="none" />
-          <!-- 軸 -->
-          <circle cx="0" cy="0" r="14" fill="cyan" stroke="#555" stroke-width="3" />
-          <!-- 線 -->
-          <g>
-            <circle cx="0" cy="0" r="30" fill="none" stroke="#555" stroke-width="1" />
-            <line x1="21.21" y1="-21.21" x2="60" y2="-60" fill="none" stroke="#555" stroke-width="1" />
-            <line x1="21.21" y1="21.21" x2="60" y2="60" fill="none" stroke="#555" stroke-width="1" />
-            <line x1="-21.21" y1="21.21" x2="-60" y2="60" fill="none" stroke="#555" stroke-width="1" />
-            <line x1="-21.21" y1="-21.21" x2="-60" y2="-60" fill="none" stroke="#555" stroke-width="1" />
-            <polygon transform="translate(0, -45) rotate(0 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue"/>
-            <polygon transform="translate(45, 0) rotate(90 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue" />
-            <polygon transform="translate(0, 45) rotate(180 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue" />
-            <polygon transform="translate(-45, 0) rotate(270 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue" />
-            <rect x="-60" y="-60" width="120" height="120" fill="none" stroke="#555" />
+        <g class="button active-hover" transform="translate(80,35)">
+          <rect id="h-dec" x="-30" y="-15" width="60" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
+          <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px" fill="gray">--h</text>
+        </g>
+        <g class="button active-hover" transform="translate(40,85)">
+          <rect id="w-dec" x="-30" y="-15" width="60" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
+          <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px" fill="gray">--w</text>
+        </g>
+        <g class="button active-hover" transform="translate(120,85)">
+          <rect id="w-inc" x="-30" y="-15" width="60" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
+          <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px" fill="gray">++w</text>
+        </g>
+        <g class="button active-hover" transform="translate(80,135)">
+          <rect id="h-inc" x="-30" y="-15" width="60" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
+          <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px" fill="gray">++h</text>
+        </g>
+
+        <g transform="translate(25,135)">
+          <rect id="edit-normalize" x="-15" y="-15" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
+        </g>
+
+        <!-- 0 -->
+        <g id="edit_0" class="button active-hover" transform="translate(170,20)"></g>
+        <!-- x -->
+        <g id="edit_x" class="button active-hover" transform="translate(220,20)"></g>
+
+        <!-- s-u -->
+        <g id="edit_s" class="button active-hover" transform="translate(320,20)"></g>
+        <g id="edit_t" class="button active-hover" transform="translate(370,20)"></g>
+        <g id="edit_u" class="button active-hover" transform="translate(420,20)"></g>
+
+        <!-- a-f -->
+        <g id="edit_a" class="button active-hover" transform="translate(170,70)"></g>
+        <g id="edit_b" class="button active-hover" transform="translate(220,70)"></g>
+        <g id="edit_c" class="button active-hover" transform="translate(270,70)"></g>
+        <g id="edit_d" class="button active-hover" transform="translate(320,70)"></g>
+        <g id="edit_e" class="button active-hover" transform="translate(370,70)"></g>
+        <g id="edit_f" class="button active-hover" transform="translate(420,70)"></g>
+
+        <!-- 1-6 -->
+        <g id="edit_1" class="button active-hover" transform="translate(170,120)"></g>
+        <g id="edit_2" class="button active-hover" transform="translate(220,120)"></g>
+        <g id="edit_3" class="button active-hover" transform="translate(270,120)"></g>
+        <g id="edit_4" class="button active-hover" transform="translate(320,120)"></g>
+        <g id="edit_5" class="button active-hover" transform="translate(370,120)"></g>
+        <g id="edit_6" class="button active-hover" transform="translate(420,120)"></g>
+      </svg>
+    </div>
+
+    <div><span id="url"></span></div>
+
+    <div id="controller-widget" class="inner noselect" style="height: 250px">
+      <svg width="480" height="250">
+        <g  transform="translate(240,125)">
+          <rect x="-240" y="-125" width="480" height="250" fill="#eee" stroke="none" />
+
+          <g id="button-undo" class="button" transform="translate(-115,0) scale(2,2)">
+            <circle cx="0" cy="0" r="28" fill="lightgray" stroke="gray" stroke-width="4" />
+            <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="gray" stroke-width="4" />
+            <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="gray" stroke="none" stroke-width="4" />
+            <text x="0" y="45" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="gray">z</text>
           </g>
-          <!-- スティック本体 -->
-          <g id="stick" style="transform-origin: 0 0 -30px">
-            <circle cx="0" cy="0" r="28" fill="cyan" stroke="blue" stroke-width="4" />
-            <circle cx="0" cy="0" r="18" fill="none" stroke="blue" stroke-width="4" />
-            <circle cx="0" cy="0" r="8" fill="none" stroke="blue" stroke-width="4" />
+
+          <g id="stick-base" class="stick" transform="translate(115,0) scale(2,2)">
+            <!-- 範囲 -->
+            <rect x="-60" y="-60" width="120" height="120" fill="lightgray" stroke="none" />
+            <!-- 軸 -->
+            <circle cx="0" cy="0" r="14" fill="cyan" stroke="#555" stroke-width="3" />
+            <!-- 線 -->
+            <g>
+              <circle cx="0" cy="0" r="30" fill="none" stroke="#555" stroke-width="1" />
+              <line x1="21.21" y1="-21.21" x2="60" y2="-60" fill="none" stroke="#555" stroke-width="1" />
+              <line x1="21.21" y1="21.21" x2="60" y2="60" fill="none" stroke="#555" stroke-width="1" />
+              <line x1="-21.21" y1="21.21" x2="-60" y2="60" fill="none" stroke="#555" stroke-width="1" />
+              <line x1="-21.21" y1="-21.21" x2="-60" y2="-60" fill="none" stroke="#555" stroke-width="1" />
+              <polygon transform="translate(0, -45) rotate(0 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue"/>
+              <polygon transform="translate(45, 0) rotate(90 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue" />
+              <polygon transform="translate(0, 45) rotate(180 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue" />
+              <polygon transform="translate(-45, 0) rotate(270 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="blue" />
+              <rect x="-60" y="-60" width="120" height="120" fill="none" stroke="#555" />
+            </g>
+            <!-- スティック本体 -->
+            <g id="stick" style="transform-origin: 0 0 -30px">
+              <circle cx="0" cy="0" r="28" fill="cyan" stroke="blue" stroke-width="4" />
+              <circle cx="0" cy="0" r="18" fill="none" stroke="blue" stroke-width="4" />
+              <circle cx="0" cy="0" r="8" fill="none" stroke="blue" stroke-width="4" />
+            </g>
           </g>
         </g>
-      </g>
-    </svg>
-  </div>
+      </svg>
+    </div>
 
-  <ul id="console-log" class="hide"></ul>
+    <ul id="console-log" class="hide"></ul>
+  </div>
 
   <footer>
     <span>Created by Tatt (@tatt61880)</span>
