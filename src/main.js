@@ -144,11 +144,11 @@
   });
 
   const digitStates = {
-    0: '111001111111101111111111111111',
-    1: '101001001001101100100001101101',
-    2: '101001111111111111111001111111',
-    3: '101001100001001001101001101001',
-    4: '111001111111001111111001111111',
+    0: '000111001111111101111111111111111',
+    1: '000101001001001101100100001101101',
+    2: '111101001111111111111111001111111',
+    3: '000101001100001001001101001101001',
+    4: '000111001111111001111111001111111',
   };
 
   document.addEventListener('DOMContentLoaded', onloadApp, false);
@@ -365,16 +365,24 @@
   function createObjById(id_) {
     const digits = [];
     let id = id_;
+    let isMinus = false;
+    if (id < 0) {
+      id = -id;
+      isMinus = true;
+    }
     while (id) {
       digits.unshift(id % 10);
       id = Math.floor(id / 10);
+    }
+    if (isMinus) {
+      digits.unshift(-1);
     }
     let s = 's-';
     let x = 1;
     for (let row = 0; row < 5; ++row) {
       s += '0';
       for (let i = 0; i < digits.length; ++i) {
-        const digit = digits[i];
+        const digit = digits[i] + 1;
         for (let j = digit * 3; j < (digit + 1) * 3; j++) {
           const val = digitStates[row].charAt(j) * x;
           if (val) ++x;
@@ -391,8 +399,7 @@
 
   function loadLevelById(id_) {
     clearTimeout(nextLevelTimerId);
-    let id = Number(id_);
-    if (id < 0) id = 1;
+    const id = Number(id_);
     levelId = id;
     updateLevelVisibility();
     elems.level.id.textContent = levelId;
@@ -436,7 +443,7 @@
     } else {
       (levelId <= 1 || app.levels.length <= levelId ? hideElem : showElem)(elems.level.prev);
       showElem(elems.level.id);
-      (levelId >= app.levels.length - 1 ? hideElem : showElem)(elems.level.next);
+      (levelId < 1 || app.levels.length - 1 <= levelId ? hideElem : showElem)(elems.level.next);
       hideElem(elems.level.edit);
     }
   }
