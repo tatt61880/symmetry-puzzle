@@ -362,7 +362,7 @@
     }
   }
 
-  function createObj(id_) {
+  function createObjById(id_) {
     const digits = [];
     let id = id_;
     while (id) {
@@ -370,14 +370,15 @@
       id = Math.floor(id / 10);
     }
     let s = 's-';
-    let x = 0;
+    let x = 1;
     for (let row = 0; row < 5; ++row) {
       s += '0';
       for (let i = 0; i < digits.length; ++i) {
         const digit = digits[i];
         for (let j = digit * 3; j < (digit + 1) * 3; j++) {
-          const val = digitStates[row].charAt(j) * (++x);
-          s += val > 9 ? '(' + val + ')' : val;
+          const val = digitStates[row].charAt(j) * x;
+          if (val) ++x;
+          s += val < 10 ? val : `(${val})`;
         }
         s += '0';
       }
@@ -404,7 +405,7 @@
     consoleLog(`[LEVEL-${id}]${levelObj?.subject !== undefined ? ` ${levelObj.subject}` : ''}`);
 
     replaceUrl();
-    loadLevelObj(levelObj !== undefined ? levelObj : createObj(levelId));
+    loadLevelObj(levelObj !== undefined ? levelObj : createObjById(levelId));
   }
 
   function loadLevelObj(levelObj, param = {}) {
