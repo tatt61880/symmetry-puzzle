@@ -396,7 +396,7 @@
     updateLevelVisibility();
     elems.level.id.textContent = levelId;
     let levelObj;
-    if (0 <= levelId && levelId < app.levels.length) {
+    if (app.levels[levelId] !== undefined) {
       levelObj = app.levels[levelId];
     } else if (app.levelsEx[levelId] !== undefined) {
       levelObj = app.levelsEx[levelId];
@@ -538,7 +538,7 @@
       const levelObj = app.levels[id];
       appendLevel(levelObj, id);
     }
-    for (const id in app.levelsEx) {
+    for (const id of Object.keys(app.levelsEx).sort()) {
       const levelObj = app.levelsEx[id];
       appendLevel(levelObj, id);
     }
