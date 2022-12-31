@@ -365,6 +365,10 @@
   function createObjById(id_) {
     const digits = [];
     let id = Math.floor(id_);
+    if (id !== id_) {
+      loadLevelById(id);
+      return;
+    }
     levelId = id;
     let isMinus = false;
     if (id < 0) {
@@ -408,7 +412,7 @@
     } else if (app.levelsEx[levelId] !== undefined) {
       levelObj = app.levelsEx[levelId];
     }
-    consoleLog(`[LEVEL-${id}]${levelObj?.subject !== undefined ? ` ${levelObj.subject}` : ''}`);
+    consoleLog(`[LEVEL ${id}]${levelObj?.subject !== undefined ? ` ${levelObj.subject}` : ''}`);
 
     loadLevelObj(levelObj !== undefined ? levelObj : createObjById(levelId));
     updateLevelVisibility();
@@ -440,6 +444,7 @@
     if (levelId === 0) return false;
     if (levelId === 1) return false;
     if (app.levels[levelId] !== undefined) return app.levels[levelId - 1] !== undefined;
+    if (isNaN(levelId)) return false;
     if (app.levelsEx[levelId] !== undefined) return app.levelsEx[levelId - 1] !== undefined;
     return app.levels[levelId - 1] === undefined && app.levelsEx[levelId - 1] === undefined;
   }
@@ -449,6 +454,7 @@
     if (levelId === -1) return false;
     if (levelId === 0) return false;
     if (app.levels[levelId] !== undefined) return app.levels[levelId + 1] !== undefined;
+    if (isNaN(levelId)) return false;
     if (app.levelsEx[levelId] !== undefined) return app.levelsEx[levelId + 1] !== undefined;
     return app.levels[levelId + 1] === undefined && app.levelsEx[levelId + 1] === undefined;
   }
@@ -559,6 +565,7 @@
       appendLevel(levelObj, id);
     }
     for (const id of Object.keys(app.levelsEx).sort()) {
+      if (String(id) === 'NaN') continue;
       const levelObj = app.levelsEx[id];
       appendLevel(levelObj, id);
     }
@@ -581,7 +588,7 @@
       levelSvg.setAttribute('transform', `translate(${-blockSize + 20},${-blockSize + 20})`);
       g.appendChild(levelSvg);
       {
-        const text = app.svg.createText(5, { x: 2.1, y: 2, text: id, fill: 'black' });
+        const text = app.svg.createText(5, { x: 10, y: 2, text: id, fill: 'black' });
         text.setAttribute('dominant-baseline', 'middle');
         text.setAttribute('text-anchor', 'middle');
         text.setAttribute('font-weight', 'bold');
