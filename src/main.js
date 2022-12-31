@@ -402,7 +402,6 @@
     clearTimeout(nextLevelTimerId);
     const id = Number(id_);
     levelId = id;
-    updateLevelVisibility();
     let levelObj;
     if (app.levels[levelId] !== undefined) {
       levelObj = app.levels[levelId];
@@ -412,6 +411,7 @@
     consoleLog(`[LEVEL-${id}]${levelObj?.subject !== undefined ? ` ${levelObj.subject}` : ''}`);
 
     loadLevelObj(levelObj !== undefined ? levelObj : createObjById(levelId));
+    updateLevelVisibility();
     elems.level.id.textContent = levelId;
     replaceUrl();
   }
@@ -442,23 +442,23 @@
       hideElem(elems.level.next);
       showElem(elems.level.edit);
     } else {
-      (levelId <= 1 || app.levels.length <= levelId ? hideElem : showElem)(elems.level.prev);
+      (levelId === 0 || levelId === 1 || app.levels.length <= levelId ? hideElem : showElem)(elems.level.prev);
       showElem(elems.level.id);
-      (levelId < 1 || app.levels.length - 1 <= levelId ? hideElem : showElem)(elems.level.next);
+      (levelId === -1 || levelId === 0 || app.levels.length - 1 <= levelId ? hideElem : showElem)(elems.level.next);
       hideElem(elems.level.edit);
     }
   }
 
   function gotoPrevLevel() {
     if (levelId === null) return;
-    if (levelId > 1) {
+    if (!isHide(elems.level.prev)) {
       loadLevelById(levelId - 1);
     }
   }
 
   function gotoNextLevel() {
     if (levelId === null) return;
-    if (levelId < app.levels.length - 1) {
+    if (!isHide(elems.level.next)) {
       loadLevelById(levelId + 1);
     }
   }
@@ -1093,6 +1093,11 @@
   function hideElem(elem) {
     if (!elem) return;
     elem.classList.add('hide');
+  }
+
+  function isHide(elem) {
+    if (!elem) return true;
+    return elem.classList.contains('hide');
   }
 
   function resize(dx, dy) {
