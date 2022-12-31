@@ -72,6 +72,7 @@
     "no-param-reassign": "error",
     "no-trailing-spaces": "error",
     "no-undef-init": "error",
+    "no-underscore-dangle": "error",
     "no-unexpected-multiline": "error",
     "no-unneeded-ternary": "error",
     "no-unused-private-class-members": "error",
