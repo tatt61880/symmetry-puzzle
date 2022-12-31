@@ -395,7 +395,12 @@
     levelId = id;
     updateLevelVisibility();
     elems.level.id.textContent = levelId;
-    const levelObj = app.levels[levelId];
+    let levelObj;
+    if (0 <= levelId && levelId < app.levels.length) {
+      levelObj = app.levels[levelId];
+    } else if (app.levelsEx[levelId] !== undefined) {
+      levelObj = app.levelsEx[levelId];
+    }
     consoleLog(`[LEVEL-${id}]${levelObj?.subject !== undefined ? ` ${levelObj.subject}` : ''}`);
 
     replaceUrl();
@@ -531,9 +536,18 @@
     let count = 0;
     for (let id = 1; id < app.levels.length; id++) {
       const levelObj = app.levels[id];
+      appendLevel(levelObj, id);
+    }
+    for (const id in app.levelsEx) {
+      const levelObj = app.levelsEx[id];
+      appendLevel(levelObj, id);
+    }
 
+    elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(count / COLS)}px`);
+
+    function appendLevel(levelObj, id) {
       const highestScore = savedata.getHighestScore(levelObj);
-      if (highestScore !== null && hideClearedLevelsFlag) continue;
+      if (highestScore !== null && hideClearedLevelsFlag) return;
       count++;
 
       const g = app.svg.createG();
@@ -572,8 +586,6 @@
         closeLevelsDialog();
       }, false);
     }
-
-    elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(count / COLS)}px`);
   }
 
   function closeLevelsDialog() {
