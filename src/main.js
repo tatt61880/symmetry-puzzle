@@ -435,30 +435,41 @@
     }
   }
 
+  function showLevelPrev() {
+    if (levelId === null) return false;
+    if (levelId === 0) return false;
+    if (levelId === 1) return false;
+    if (app.levels[levelId] !== undefined) return app.levels[levelId - 1] !== undefined;
+    if (app.levelsEx[levelId] !== undefined) return app.levelsEx[levelId - 1] !== undefined;
+    return app.levels[levelId - 1] === undefined && app.levelsEx[levelId - 1] === undefined;
+  }
+
+  function showLevelNext() {
+    if (levelId === null) return false;
+    if (levelId === -1) return false;
+    if (levelId === 0) return false;
+    if (app.levels[levelId] !== undefined) return app.levels[levelId + 1] !== undefined;
+    if (app.levelsEx[levelId] !== undefined) return app.levelsEx[levelId + 1] !== undefined;
+    return app.levels[levelId + 1] === undefined && app.levelsEx[levelId + 1] === undefined;
+  }
+
   function updateLevelVisibility() {
-    if (levelId === null) {
-      hideElem(elems.level.prev);
-      hideElem(elems.level.id);
-      hideElem(elems.level.next);
-      showElem(elems.level.edit);
-    } else {
-      (levelId === 0 || levelId === 1 || app.levels.length <= levelId ? hideElem : showElem)(elems.level.prev);
-      showElem(elems.level.id);
-      (levelId === -1 || levelId === 0 || app.levels.length - 1 <= levelId ? hideElem : showElem)(elems.level.next);
-      hideElem(elems.level.edit);
-    }
+    (showLevelPrev() ? showElem : hideElem)(elems.level.prev);
+    (showLevelNext() ? showElem : hideElem)(elems.level.next);
+    (levelId !== null ? showElem : hideElem)(elems.level.id);
+    (levelId === null ? showElem : hideElem)(elems.level.edit);
   }
 
   function gotoPrevLevel() {
     if (levelId === null) return;
-    if (!isHide(elems.level.prev)) {
+    if (showLevelPrev()) {
       loadLevelById(levelId - 1);
     }
   }
 
   function gotoNextLevel() {
     if (levelId === null) return;
-    if (!isHide(elems.level.next)) {
+    if (showLevelNext()) {
       loadLevelById(levelId + 1);
     }
   }
@@ -1093,11 +1104,6 @@
   function hideElem(elem) {
     if (!elem) return;
     elem.classList.add('hide');
-  }
-
-  function isHide(elem) {
-    if (!elem) return true;
-    return elem.classList.contains('hide');
   }
 
   function resize(dx, dy) {
