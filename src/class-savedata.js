@@ -3,10 +3,6 @@
 
   const LOCAL_STORAGE_KEY = 'tatt61880-showkoban';
 
-  function savedata() {
-    return new Savedata();
-  }
-
   class Savedata {
     constructor() {
       this.data = null;
@@ -67,6 +63,6 @@
 
   if (typeof window !== 'undefined') {
     window.app = window.app || {};
-    window.app.savedata = savedata;
+    window.app.Savedata = Savedata;
   }
 })();

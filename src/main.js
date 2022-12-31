@@ -1,11 +1,11 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2022.12.31';
+  const VERSION_TEXT = 'v2023.01.01';
 
   const app = window.app;
   Object.freeze(app);
 
-  const savedata = app.savedata();
+  const savedata = new app.Savedata();
 
   const dirs = {
     neutral: 'N',
@@ -57,7 +57,7 @@
   let blockSize = 0;
 
   let levelId = null;
-  const level = app.Level();
+  const level = new app.Level();
 
   const MOVE_MSEC = INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
   const SHADOW_MSEC = MOVE_MSEC * 2;
@@ -554,7 +554,7 @@
       g.classList.add('level-select');
       elems.levels.dialogSvg.appendChild(g);
 
-      const level = app.Level();
+      const level = new app.Level();
       level.applyObj(levelObj, { init: true });
       const blockSize = Math.min((WIDTH - 30) / (level.getW() + 2), (HEIGHT - 30) / (level.getH() + 2));
       const levelSvg = level.createSvg(blockSize);

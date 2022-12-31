@@ -42,7 +42,7 @@
   return;
 
   function testLevel(levelId, levelObj) {
-    const level = app.Level();
+    const level = new app.Level();
     level.applyObj(levelObj, { init: true });
 
     if (levelObj.r.length !== levelObj.step) {

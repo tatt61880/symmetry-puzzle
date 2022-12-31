@@ -6,13 +6,11 @@
     app.states = require('./states.js');
     app.colors = require('./colors.js');
     app.Stack = require('./class-stack.js');
-    module.exports = level;
   } else {
     app = window.app;
     if (app?.states === undefined) console.error('app.states is undefined.');
     if (app?.colors === undefined) console.error('app.colors is undefined.');
     if (app?.Stack === undefined) console.error('app.Stack is undefined.');
-    window.app.Level = level;
   }
 
   const dirs = {
@@ -30,10 +28,6 @@
   const dxs = [0, 1, 0, -1, 1, 1, -1, -1];
 
   const blockBorderWidth = 0.14;
-
-  function level() {
-    return new Level();
-  }
 
   function* stateCharGenerator(stateStr) {
     for (let i = 0; i < stateStr.length; ++i) {
@@ -749,5 +743,12 @@
       }
       gElems.appendChild(gElem);
     }
+  }
+
+  if (typeof window === 'undefined') {
+    module.exports = Level;
+  } else {
+    window.app = window.app || {};
+    window.app.Level = Level;
   }
 })();
