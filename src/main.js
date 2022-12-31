@@ -143,6 +143,14 @@
     consoleLog: 'console-log',
   });
 
+  const digitStates = {
+    0: '111001111111101111111111111111',
+    1: '101001001001101100100001101101',
+    2: '101001111111111111111001111111',
+    3: '101001100001001001101001101001',
+    4: '111001111111001111111001111111',
+  };
+
   document.addEventListener('DOMContentLoaded', onloadApp, false);
   return;
   // ==========================================================================
@@ -354,19 +362,44 @@
     }
   }
 
+  function createObj(id_) {
+    const digits = [];
+    let id = id_;
+    while (id) {
+      digits.unshift(id % 10);
+      id = Math.floor(id / 10);
+    }
+    let s = 's-';
+    let x = 0;
+    for (let row = 0; row < 5; ++row) {
+      s += '0';
+      for (let i = 0; i < digits.length; ++i) {
+        const digit = digits[i];
+        for (let j = digit * 3; j < (digit + 1) * 3; j++) {
+          const val = digitStates[row].charAt(j) * (++x);
+          s += val > 9 ? '(' + val + ')' : val;
+        }
+        s += '0';
+      }
+      s += '-';
+    }
+    const w = digits.length * 4 + 1;
+    const h = 7;
+    return { w, h, s };
+  }
+
   function loadLevelById(id_) {
     clearTimeout(nextLevelTimerId);
     let id = Number(id_);
     if (id < 0) id = 1;
-    if (id >= app.levels.length) id = app.levels.length - 1;
     levelId = id;
     updateLevelVisibility();
     elems.level.id.textContent = levelId;
     const levelObj = app.levels[levelId];
-    consoleLog(`[LEVEL-${id}]${levelObj.subject !== undefined ? ` ${levelObj.subject}` : ''}`);
+    consoleLog(`[LEVEL-${id}]${levelObj?.subject !== undefined ? ` ${levelObj.subject}` : ''}`);
 
     replaceUrl();
-    loadLevelObj(levelObj);
+    loadLevelObj(levelObj !== undefined ? levelObj : createObj(levelId));
   }
 
   function loadLevelObj(levelObj, param = {}) {
@@ -395,9 +428,9 @@
       hideElem(elems.level.next);
       showElem(elems.level.edit);
     } else {
-      (levelId <= 1 ? hideElem : showElem)(elems.level.prev);
+      (levelId <= 1 || app.levels.length <= levelId ? hideElem : showElem)(elems.level.prev);
       showElem(elems.level.id);
-      (levelId === app.levels.length - 1 ? hideElem : showElem)(elems.level.next);
+      (levelId >= app.levels.length - 1 ? hideElem : showElem)(elems.level.next);
       hideElem(elems.level.edit);
     }
   }
