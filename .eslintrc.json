@@ -37,6 +37,7 @@
     ],
     "key-spacing": "error",
     "keyword-spacing": "error",
+    "new-cap": "error",
     "no-case-declarations": "error",
     "no-console": "off",
     "no-constant-condition": [
