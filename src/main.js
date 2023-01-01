@@ -1246,10 +1246,12 @@
   }
 
   function resizeWindow() {
-    if (window.screen.height >= window.screen.width * 1.4) {
+    const WIDTH = 500;
+    const HEIGHT = 710;
+    if (window.innerHeight * WIDTH >= window.innerWidth * HEIGHT) {
       elems.viewport.setAttribute('content', 'width=500');
     } else {
-      const width = 710 * window.screen.width / window.screen.height;
+      const width = HEIGHT * window.innerWidth / window.innerHeight;
       elems.viewport.setAttribute('content', `width=${width}`);
     }
   }
