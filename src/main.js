@@ -67,6 +67,7 @@
   document.documentElement.style.setProperty('--animation-duration-rotation', `${ROTATION_MSEC}ms`);
 
   const elems = new app.Elems({
+    viewport: 'viewport',
     top: 'top',
     icon: 'icon',
     version: 'version',
@@ -622,6 +623,8 @@
   function onloadApp() {
     elems.init();
     elems.version.textContent = VERSION_TEXT;
+    window.onresize = resizeWindow;
+    resizeWindow();
     applyLang(savedata.loadLang());
     initElems();
     updateEditLevel();
@@ -1240,5 +1243,13 @@
   function consoleWarn(str) {
     console.warn(str);
     consoleAdd(str, 'warn');
+  }
+
+  function resizeWindow() {
+    if (window.screen.height >= window.screen.width * 1.4) {
+      elems.viewport.setAttribute('content', 'width=500');
+    } else {
+      elems.viewport.setAttribute('content', 'width=device-width');
+    }
   }
 })();
