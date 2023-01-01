@@ -61,8 +61,14 @@ footer {
   background-color: pink;
 }
 
+#level-widget {
+  box-sizing: border-box;
+  height: 108px;
+}
+
 h2 {
   position: relative;
+  height: 21px;
   margin: 0 0 5px;
   font-size: 1.1rem;
   color: #335577;
