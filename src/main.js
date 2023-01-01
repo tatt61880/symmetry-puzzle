@@ -345,8 +345,8 @@
 
   function applyObj(obj, param = { init: false }) {
     level.applyObj(obj, param);
-    const svgMaxWidth = 480;
-    const svgMaxHeight = 250;
+    const svgMaxWidth = 490;
+    const svgMaxHeight = 280;
     blockSize = Math.min(svgMaxWidth / level.getWidth(), svgMaxHeight / level.getHeight());
     clearCheck();
     updateUrl();

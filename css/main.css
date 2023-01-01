@@ -99,10 +99,11 @@ svg {
 
 #main {
   position: relative;
-  width: 480px;
-  height: 250px;
+  box-sizing: border-box;
+  width: 490px;
+  height: 280px;
   padding: 0;
-  margin: 10px;
+  margin: 5px;
 }
 
 #svg-main {
@@ -231,13 +232,13 @@ li.warn {
 #title {
   box-sizing: border-box;
   width: 500px;
-  height: 628px;
+  height: 648px;
 }
 
 #game {
   box-sizing: border-box;
   width: 500px;
-  height: 628px;
+  height: 648px;
 }
 
 #title-logo {
