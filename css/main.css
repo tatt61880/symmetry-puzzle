@@ -231,11 +231,27 @@ li.warn {
   justify-content: center;
 }
 
+#title {
+  box-sizing: border-box;
+  width: 500px;
+  height: 648px;
+}
+
+#game {
+  box-sizing: border-box;
+  width: 500px;
+  height: 638px;
+}
+
 #title-logo {
-  margin: 120px;
+  box-sizing: border-box;
+  width: 450px;
+  height: 450px;
+  padding: 150px;
 }
 
 .title-button {
+  box-sizing: border-box;
   display: table;
   width: 80px;
   height: 80px;
