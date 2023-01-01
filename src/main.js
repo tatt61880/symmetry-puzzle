@@ -1247,7 +1247,7 @@
 
   function resizeWindow() {
     const WIDTH = 500;
-    const HEIGHT = 710;
+    const HEIGHT = 688;
     if (window.innerHeight * WIDTH >= window.innerWidth * HEIGHT) {
       elems.viewport.setAttribute('content', 'width=500');
     } else {

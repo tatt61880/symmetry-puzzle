@@ -26,9 +26,10 @@ body {
 
 header {
   position: relative;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
-  height: 32px;
+  height: 34px;
   font-size: 1.1rem;
   text-align: left;
   background-color: pink;
@@ -53,7 +54,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 28px;
+  height: 26px;
   font-size: 1rem;
   font-weight: bold;
   color: #aa7777;
@@ -70,10 +71,6 @@ h2 {
 
 div.noselect {
   user-select: none;
-}
-
-div.inner {
-  margin: 10px;
 }
 
 div.level {
@@ -234,13 +231,13 @@ li.warn {
 #title {
   box-sizing: border-box;
   width: 500px;
-  height: 648px;
+  height: 628px;
 }
 
 #game {
   box-sizing: border-box;
   width: 500px;
-  height: 638px;
+  height: 628px;
 }
 
 #title-logo {
