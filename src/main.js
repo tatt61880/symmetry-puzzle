@@ -1249,7 +1249,8 @@
     if (window.screen.height >= window.screen.width * 1.4) {
       elems.viewport.setAttribute('content', 'width=500');
     } else {
-      elems.viewport.setAttribute('content', 'width=device-width');
+      const width = 710 * window.screen.width / window.screen.height;
+      elems.viewport.setAttribute('content', `width=${width}`);
     }
   }
 })();
