@@ -13,7 +13,7 @@
   const program = require('commander');
   program
     .version('1.0.0')
-    .option('-i, --id <id>', 'Level id')
+    .requiredOption('-i, --id <id>', 'Level id')
     .option('-m, --max <max step>', 'Max step');
 
   program.parse();
