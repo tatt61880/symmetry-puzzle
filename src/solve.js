@@ -12,9 +12,10 @@
 
   const program = require('commander');
   program
-    .version('1.0.0')
+    .version('1.1.0')
     .requiredOption('-i, --id <id>', 'Level id')
-    .option('-m, --max <max step>', 'Max step');
+    .option('-m, --max <max step>', 'Max step')
+    .option('-s, --step <step>', 'Step for prefix');
 
   program.parse();
   const options = program.opts();
@@ -36,6 +37,7 @@
 
   const levelObj = levels[levelId];
   let maxStep = options.max !== undefined ? options.max : levelObj.step; // ※途中により短い解が見つかり次第、更新する値です。
+  const r = options.step !== undefined ? options.step : '';
   solveLevel(levelId, levelObj);
 
   const endTime = performance.now();
@@ -53,6 +55,37 @@
     let step = 0;
     const undoInfo = new app.UndoInfo();
     const stateStrMap = new Map;
+
+    for (const dirChar of r) {
+      step++;
+      const dir = Number(dirChar);
+      const dx = dxs[dir];
+      const dy = dys[dir];
+      const moveFlag = level.updateMoveFlags(dx, dy);
+      if (!moveFlag) {
+        console.error('Error: moveFlag failed.');
+        return false;
+      }
+      const clearFlag = isClear(level);
+      if (clearFlag) {
+        console.error('Error: Cleared on the way.');
+        return false;
+      }
+
+      undoInfo.pushData({
+        dir,
+        w: level.getW(),
+        h: level.getH(),
+        s: level.getStateStr(),
+      });
+      level.move();
+
+      const stateStr = level.getStateStr();
+      if (stateStrMap.has(stateStr)) {
+        console.warn('Warning: Same state exists.');
+      }
+      stateStrMap.set(stateStr, step);
+    }
     dfs();
 
     function dfs() {
