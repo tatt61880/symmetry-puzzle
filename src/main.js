@@ -47,7 +47,7 @@
   let undoFlag = false;
   let undoCount = 0;
 
-  let clearFlag = false;
+  let completeFlag = false;
   let symmetryFlag = false;
   let redrawFlag = false;
 
@@ -182,22 +182,15 @@
     return moveFlag;
   }
 
-  function clearCheck() {
+  function completeCheck() {
     const center = level.getRotateCenter(app.states.isTarget);
+    completeFlag = level.isCompleted();
+
     const symmetryFlagPrev = symmetryFlag;
     symmetryFlag = center !== null;
-    clearFlag = false;
-    if (symmetryFlag) {
-      const isConnected = level.isConnected(app.states.isTarget);
-      if (isConnected) {
-        clearFlag = true;
-      }
-    }
-    redrawFlag = clearFlag;
-    if (symmetryFlag !== symmetryFlagPrev) {
-      redrawFlag = true;
-    }
-    if (clearFlag) {
+    redrawFlag = completeFlag || (symmetryFlag !== symmetryFlagPrev);
+
+    if (completeFlag) {
       document.documentElement.style.setProperty('--animation-origin-rotation', `${blockSize * center.x}px ${blockSize * center.y}px`);
     }
   }
@@ -348,7 +341,7 @@
     const svgMaxWidth = 490;
     const svgMaxHeight = 280;
     blockSize = Math.min(svgMaxWidth / level.getWidth(), svgMaxHeight / level.getHeight());
-    clearCheck();
+    completeCheck();
     updateUrl();
 
     elems.main.svg.setAttribute('width', blockSize * level.getWidth());
@@ -804,7 +797,7 @@
     }
 
     // クリア後の入力はアンドゥ以外は受け付けません。
-    if (clearFlag && !redrawFlag) {
+    if (completeFlag && !redrawFlag) {
       return;
     }
 
@@ -824,7 +817,7 @@
       if (redrawFlag) {
         redrawFlag = false;
         draw(true);
-        if (clearFlag) {
+        if (completeFlag) {
           hideElem(elems.controller.stickBase);
         }
       } else if (inputFlag) {
@@ -836,7 +829,7 @@
           const moveFlag = move(inputDir);
           if (moveFlag) {
             draw();
-            clearCheck();
+            completeCheck();
             updateUrl();
           }
         }
@@ -849,7 +842,7 @@
   // 描画
   function draw(rotateFlag_ = false) {
     let rotateFlag = rotateFlag_;
-    rotateFlag &&= clearFlag;
+    rotateFlag &&= completeFlag;
     elems.main.svg.textContent = '';
 
     {
@@ -914,7 +907,7 @@
       let highestScorePrev = null;
 
       // クリア時のメッセージ
-      if (clearFlag) {
+      if (completeFlag) {
         const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: level.getHeight() - 1.95, text: 'Congratulations!', fill: 'white' });
         text.setAttribute('font-size', fontSize);
         text.setAttribute('font-weight', 'bold');
@@ -968,7 +961,7 @@
       // 今回の手数
       {
         const currentStep = undoInfo.getIndex();
-        const color = clearFlag ? getStepColor(currentStep, bestStep) : 'black';
+        const color = completeFlag ? getStepColor(currentStep, bestStep) : 'black';
         const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: level.getHeight() - 1 - borderWidth / 2, text: `${currentStep} steps`, fill: color });
         text.setAttribute('font-size', fontSize);
         text.setAttribute('font-weight', 'bold');
@@ -1075,7 +1068,7 @@
       addUndo(null);
       level.setState(x, y, drawingState);
       level.removeR();
-      clearCheck();
+      completeCheck();
       updateUrl();
       draw();
     } else if (level.getState(x, y) !== app.states.none) {
@@ -1083,7 +1076,7 @@
         addUndo(null);
         level.setState(x, y, app.states.none);
         level.removeR();
-        clearCheck();
+        completeCheck();
         updateUrl();
         draw();
       }
@@ -1180,7 +1173,7 @@
       showElem(elems.auto.buttonPause);
     }
 
-    if (settings.autoMode && settingsAuto.paused || clearFlag) {
+    if (settings.autoMode && settingsAuto.paused || completeFlag) {
       hideElem(elems.controller.stickBase);
     } else {
       showElem(elems.controller.stickBase);
@@ -1195,7 +1188,7 @@
   function onButtonStart() {
     settingsAuto.paused = false;
     updateAutoStartPauseButtons();
-    if (clearFlag) {
+    if (completeFlag) {
       gotoNextLevel();
     }
   }
