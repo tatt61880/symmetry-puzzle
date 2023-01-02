@@ -358,10 +358,7 @@
     #isConnected(isX) {
       const dys = [-1, 0, 1, 0];
       const dxs = [0, 1, 0, -1];
-      const statesTemp = new Array(this.getHeight());
-      for (let y = 0; y < this.getHeight(); ++y) {
-        statesTemp[y] = [...this.#states[y]];
-      }
+      const statesTemp = this.copyStates();
       let x0;
       let y0;
       loop:
