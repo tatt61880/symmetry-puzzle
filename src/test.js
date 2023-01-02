@@ -7,6 +7,18 @@
   app.levelsEx = require('./levels-ex.js');
   app.Level = require('./class-level.js');
 
+  if (app.states.targetMin !== 1
+    || app.states.targetMax < app.states.targetMin
+    || app.states.otherMin <= app.states.targetMax
+    || app.states.otherMax < app.states.otherMin
+    || app.states.userMin <= app.states.otherMax
+    || app.states.userMax < app.states.userMin
+  ) {
+    console.error('Error: Invalid states.');
+    process.exitCode = 1;
+    return;
+  }
+
   const levelSet = new Set();
   const levels = [];
 

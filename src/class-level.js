@@ -331,11 +331,17 @@
           const state = this.#states[y][x];
           exists[state] = true;
           if (app.states.isTarget(state)) {
-            if (state !== app.states.targetMin && !exists[state - 1]) return false;
+            if (state !== app.states.targetMin && !exists[state - 1]) {
+              return false;
+            }
           } else if (app.states.isOther(state)) {
-            if (state !== app.states.otherMin && !exists[state - 1]) return false;
+            if (state !== app.states.otherMin && !exists[state - 1]) {
+              return false;
+            }
           } else if (app.states.isUser(state)) {
-            if (state !== app.states.userMin && !exists[state - 1]) return false;
+            if (state !== app.states.userMin && !exists[state - 1]) {
+              return false;
+            }
           } else if (state !== app.states.wall && state !== app.states.none) {
             return false;
           }
