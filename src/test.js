@@ -71,7 +71,11 @@
     const dys = [-1, 0, 1, 0];
     const dxs = [0, 1, 0, -1];
     const r = level.getLevelObj()?.r;
-    if (r === undefined) return false;
+    if (r === undefined) {
+      console.error(`Error: ${levelInfo()} r === undefined.`);
+      return false;
+    }
+
     let index = 0;
     for (const dirChar of r) {
       index++;
@@ -79,24 +83,26 @@
       const dx = dxs[dir];
       const dy = dys[dir];
       const moveFlag = level.updateMoveFlags(dx, dy);
+
       if (!moveFlag) {
         console.error(`Error: ${levelInfo()} moveFlag failed.`);
         return false;
       }
-      const clearFlag = level.isClear();
-      if (clearFlag) {
+
+      if (level.isClear()) {
         console.error(`Error: ${levelInfo()} Cleared on the way.`);
         return false;
       }
+
       level.move();
+
       const stateStr = level.getStateStr();
       if (stateStrMap[stateStr] !== undefined) {
         console.warn(`Warning: ${levelInfo()} Same state on ${index} step`);
       }
       stateStrMap[stateStr] = true;
     }
-    const clearFlag = level.isClear();
-    if (!clearFlag) {
+    if (!level.isClear()) {
       console.error(`Error: ${levelInfo()} clearFlag failed.`);
       return false;
     }
@@ -105,12 +111,5 @@
     function levelInfo() {
       return `Level-${levelId} [subject: ${levelObj.subject}]`;
     }
-  }
-
-  function isClear(level) {
-    const isConnected = level.isConnected(app.states.isTarget);
-    const center = level.getRotateCenter(app.states.isTarget);
-    const clearFlag = isConnected && center !== null;
-    return clearFlag;
   }
 })();
