@@ -57,5 +57,7 @@
   if (typeof window !== 'undefined') {
     window.app = window.app || {};
     window.app.UndoInfo = UndoInfo;
+  } else {
+    module.exports = UndoInfo;
   }
 })();
