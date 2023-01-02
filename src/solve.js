@@ -19,7 +19,7 @@
   program.parse();
   const options = program.opts();
 
-  const levelId = options.id !== undefined ? options.id : 1;
+  const levelId = options.id;
 
   const startTime = performance.now();
 
