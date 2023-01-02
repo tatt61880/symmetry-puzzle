@@ -86,7 +86,15 @@
       }
       stateStrMap.set(stateStr, step);
     }
+    let solveStep = null;
     dfs();
+    if (solveStep !== null) {
+      if (solveStep < levelObj.step) {
+        console.log('===== New record! =====');
+      } else if (solveStep === levelObj.step) {
+        console.log('Same steps.');
+      }
+    }
 
     function dfs() {
       if (step >= maxStep) return;
@@ -112,7 +120,8 @@
           if (clearFlag) {
             const replayStr = undoInfo.getReplayStr();
             console.log(`${step} steps: ${replayStr}`);
-            maxStep = Math.min(maxStep, step - 1);
+            solveStep = step;
+            maxStep = step - 1;
           }
           dfs();
         }
