@@ -80,7 +80,7 @@
           if (clearFlag) {
             const replayStr = undoInfo.getReplayStr();
             console.log(`${step} steps: ${replayStr}`);
-            maxStep = Math.min(maxStep, step);
+            maxStep = Math.min(maxStep, step - 1);
           }
           dfs();
         }
