@@ -470,6 +470,7 @@
               if (this.getState(x, y) !== state) continue;
               const neighborState = this.getState(x + dx, y + dy);
               if (neighborState === app.states.none) continue;
+
               if (neighborState === app.states.wall) {
                 continue loop;
               } else if (!moveState[neighborState]) {
