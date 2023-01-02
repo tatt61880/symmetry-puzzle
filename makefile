@@ -6,3 +6,6 @@ all: node_modules
 
 node_modules:
 	npm install
+
+solve:
+	npm run solve -- --id 1 --max 5

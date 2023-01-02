@@ -8,22 +8,32 @@
   app.Level = require('./class-level.js');
   app.UndoInfo = require('./class-undo-info.js');
 
-  const levels = [];
+  const program = require('commander');
+  program
+    .version('1.0.0')
+    .option('-i, --id <id>', 'Level id')
+    .option('-m, --max <max step>', 'Max step');
 
-  for (const idx in app.levels) {
-    const levelObj = app.levels[idx];
-    const levelId = Number(idx);
-    levels.push({ levelId, levelObj });
+  program.parse();
+  const options = program.opts();
+
+  console.log('Option: ', options);
+  const levelId = options.id !== undefined ? options.id : 1;
+  let maxStep = options.max !== undefined ? options.max : 10; // ※途中により短い解が見つかり次第、更新する値です。
+
+  const levels = {};
+
+  for (const levelId in app.levels) {
+    const levelObj = app.levels[levelId];
+    levels[levelId] = levelObj;
   }
   for (const levelId in app.levelsEx) {
     const levelObj = app.levelsEx[levelId];
-    levels.push({ levelId, levelObj });
+    levels[levelId] = levelObj;
   }
 
   {
-    const id = 1;
-    const levelId = levels[id].levelId;
-    const levelObj = levels[id].levelObj;
+    const levelObj = levels[levelId];
     solveLevel(levelId, levelObj);
   }
 
@@ -36,7 +46,6 @@
 
     const dxs = [0, 1, 0, -1];
     const dys = [-1, 0, 1, 0];
-    let maxStep = 7; // 途中により短い解が見つかり次第、更新します。
     let step = 0;
     const undoInfo = new app.UndoInfo();
     dfs();
