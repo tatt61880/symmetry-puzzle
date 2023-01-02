@@ -17,7 +17,6 @@
   program.parse();
   const options = program.opts();
 
-  console.log('Option: ', options);
   const levelId = options.id !== undefined ? options.id : 1;
   let maxStep = options.max !== undefined ? options.max : 10; // ※途中により短い解が見つかり次第、更新する値です。
 
