@@ -61,11 +61,13 @@
       const dir = Number(dirChar);
       const dx = dxs[dir];
       const dy = dys[dir];
+
       const moveFlag = level.updateMoveFlags(dx, dy);
       if (!moveFlag) {
         console.error('Error: moveFlag failed.');
         return false;
       }
+
       const clearFlag = level.isClear();
       if (clearFlag) {
         console.error('Error: Cleared on the way.');
@@ -86,8 +88,10 @@
       }
       stateStrMap.set(stateStr, step);
     }
+
     let solveStep = null;
     dfs();
+
     if (solveStep !== null) {
       if (solveStep < levelObj.step) {
         console.log('===== New record! =====');
@@ -116,6 +120,7 @@
         const stateStr = level.getStateStr();
         if (!stateStrMap.has(stateStr) || step < stateStrMap.get(stateStr)) {
           stateStrMap.set(stateStr, step);
+
           const clearFlag = level.isClear();
           if (clearFlag) {
             const replayStr = undoInfo.getReplayStr();
