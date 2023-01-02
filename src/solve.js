@@ -13,9 +13,9 @@
   const program = require('commander');
   program
     .version('1.1.0')
-    .requiredOption('-i, --id <id>', 'Level id')
-    .option('-m, --max <max step>', 'Max step')
-    .option('-s, --step <step>', 'Step for prefix');
+    .requiredOption('-i, --id <id>', 'id of level')
+    .option('-m, --max <max step>', 'max step')
+    .option('-s, --step <step>', 'step for prefix');
 
   program.parse();
   const options = program.opts();
@@ -38,6 +38,17 @@
   const levelObj = levels[levelId];
   let maxStep = options.max !== undefined ? options.max : levelObj.step; // ※途中により短い解が見つかり次第、更新する値です。
   const prefixStep = options.step !== undefined ? options.step : '';
+  if (prefixStep !== '') {
+    for (const c of prefixStep) {
+      if (c === '0') continue;
+      if (c === '1') continue;
+      if (c === '2') continue;
+      if (c === '3') continue;
+      console.error('Error: invalid step. chars in step should be 0-3.');
+      process.exitCode = 1;
+      return;
+    }
+  }
   solveLevel(levelId, levelObj);
 
   const endTime = performance.now();
