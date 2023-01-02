@@ -53,6 +53,7 @@
     const dys = [-1, 0, 1, 0];
     let step = 0;
     const undoInfo = new app.UndoInfo();
+    const stateStrMap = new Map;
     dfs();
 
     function dfs() {
@@ -63,6 +64,7 @@
         const dy = dys[dir];
         const moveFlag = level.updateMoveFlags(dx, dy);
         if (!moveFlag) continue;
+
         undoInfo.pushData({
           dir,
           w: level.getW(),
@@ -70,13 +72,18 @@
           s: level.getStateStr(),
         });
         level.move();
-        const clearFlag = isClear(level);
-        if (clearFlag) {
-          const replayStr = undoInfo.getReplayStr();
-          console.log(`${step} steps: ${replayStr}`);
-          maxStep = Math.min(maxStep, step);
+
+        const stateStr = level.getStateStr();
+        if (!stateStrMap.has(stateStr) || step < stateStrMap.get(stateStr)) {
+          stateStrMap.set(stateStr, step);
+          const clearFlag = isClear(level);
+          if (clearFlag) {
+            const replayStr = undoInfo.getReplayStr();
+            console.log(`${step} steps: ${replayStr}`);
+            maxStep = Math.min(maxStep, step);
+          }
+          dfs();
         }
-        dfs();
         const levelObj = undoInfo.undo();
         level.applyObj(levelObj, { init: false });
       }
