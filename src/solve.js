@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  const { performance } = require('perf_hooks');
+
   const app = {};
   app.states = require('./states.js');
   app.levels = require('./levels.js');
@@ -20,6 +22,8 @@
   const levelId = options.id !== undefined ? options.id : 1;
   let maxStep = options.max !== undefined ? options.max : 10; // ※途中により短い解が見つかり次第、更新する値です。
 
+  const startTime = performance.now();
+
   const levels = {};
 
   for (const levelId in app.levels) {
@@ -35,6 +39,8 @@
     const levelObj = levels[levelId];
     solveLevel(levelId, levelObj);
   }
+  const endTime = performance.now();
+  console.log(`Time: ${Math.floor(endTime - startTime)} msec`);
 
   process.exitCode = 0;
   return;
@@ -67,7 +73,7 @@
         const clearFlag = isClear(level);
         if (clearFlag) {
           const replayStr = undoInfo.getReplayStr();
-          console.log(`${step} ${replayStr}`);
+          console.log(`${step} steps: ${replayStr}`);
           maxStep = Math.min(maxStep, step);
         }
         dfs();
