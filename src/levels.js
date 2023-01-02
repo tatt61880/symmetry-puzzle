@@ -70,10 +70,10 @@
     Object.freeze(level);
   }
 
-  if (typeof window === 'undefined') {
-    module.exports = levels;
-  } else {
+  if (typeof window !== 'undefined') {
     window.app = window.app || {};
     window.app.levels = levels;
+  } else {
+    module.exports = levels;
   }
 })();

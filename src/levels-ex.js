@@ -12,10 +12,10 @@
     Object.freeze(levelId);
   }
 
-  if (typeof window === 'undefined') {
-    module.exports = levelsEx;
-  } else {
+  if (typeof window !== 'undefined') {
     window.app = window.app || {};
     window.app.levelsEx = levelsEx;
+  } else {
+    module.exports = levelsEx;
   }
 })();

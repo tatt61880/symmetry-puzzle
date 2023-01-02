@@ -3,13 +3,11 @@
 
   let app = {};
   const colors = {};
-  if (typeof window === 'undefined') {
-    app.states = require('./states.js');
-    module.exports = colors;
-  } else {
+  if (typeof window !== 'undefined') {
     app = window.app;
     if (app?.states === undefined) console.error('app.states is undefined.');
-    window.app.colors = colors;
+  } else {
+    app.states = require('./states.js');
   }
 
   colors[app.states.none] = { fill: '#ffffff', stroke: '#aaaaaa', text: '#888888', error: 'red' };
@@ -35,4 +33,11 @@
   colors.stepUnknown = 'gray';
 
   Object.freeze(colors);
+
+  if (typeof window === 'undefined') {
+    module.exports = colors;
+  } else {
+    window.app = window.app || {};
+    window.app.colors = colors;
+  }
 })();

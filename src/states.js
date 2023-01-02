@@ -41,10 +41,10 @@
   states.isUser = (state) => states.userMin <= state && state <= states.userMax;
   Object.freeze(states);
 
-  if (typeof window === 'undefined') {
-    module.exports = states;
-  } else {
+  if (typeof window !== 'undefined') {
     window.app = window.app || {};
     window.app.states = states;
+  } else {
+    module.exports = states;
   }
 })();

@@ -23,10 +23,10 @@
     }
   }
 
-  if (typeof window === 'undefined') {
-    module.exports = Stack;
-  } else {
+  if (typeof window !== 'undefined') {
     window.app = window.app || {};
     window.app.Stack = Stack;
+  } else {
+    module.exports = Stack;
   }
 })();
