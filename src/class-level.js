@@ -122,7 +122,7 @@
     copyStates() {
       const res = new Array(this.getHeight());
       for (let y = 0; y < this.getHeight(); ++y) {
-        res[y] = this.#states[y].slice();
+        res[y] = Array.from(this.#states[y]);
       }
       return res;
     }
@@ -360,7 +360,7 @@
       const dxs = [0, 1, 0, -1];
       const statesTemp = new Array(this.getHeight());
       for (let y = 0; y < this.getHeight(); ++y) {
-        statesTemp[y] = this.#states[y].slice();
+        statesTemp[y] = Array.from(this.#states[y]);
       }
       let x0;
       let y0;
