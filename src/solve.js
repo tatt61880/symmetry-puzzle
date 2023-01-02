@@ -156,7 +156,8 @@
             const clearFlag = level.isCompleted();
             if (clearFlag) {
               const replayStr = undoInfo.getReplayStr();
-              console.log(`[LEVEL ${levelId}] ${step} steps: ${replayStr}`);
+              const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps (${prefixStep})]`;
+              console.log(`[LEVEL ${levelId}] ${step} steps: ${replayStr}${prefixStepInfo}`);
               solveStep = step;
               maxStep = step - 1;
             }
