@@ -37,7 +37,7 @@
 
   const levelObj = levels[levelId];
   let maxStep = options.max !== undefined ? options.max : levelObj.step; // ※途中により短い解が見つかり次第、更新する値です。
-  const r = options.step !== undefined ? options.step : '';
+  const prefixStep = options.step !== undefined ? options.step : '';
   solveLevel(levelId, levelObj);
 
   const endTime = performance.now();
@@ -56,7 +56,7 @@
     const undoInfo = new app.UndoInfo();
     const stateStrMap = new Map;
 
-    for (const dirChar of r) {
+    for (const dirChar of prefixStep) {
       step++;
       const dir = Number(dirChar);
       const dx = dxs[dir];
