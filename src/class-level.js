@@ -454,26 +454,24 @@
         }
       }
 
+      loop:
       for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
         if (!this.#exist((x) => x === i)) continue;
 
         const moveState = []; // 移動予定の状態番号
         moveState[i] = true;
 
-        let flag = true;
         const st = new app.Stack(); // 移動可能か検証必要な状態番号
         st.push(i);
         while (!st.empty()) {
           const state = st.pop();
-          loop:
           for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
             for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
               if (this.getState(x, y) !== state) continue;
               const neighborState = this.getState(x + dx, y + dy);
               if (neighborState === app.states.none) continue;
               if (neighborState === app.states.wall) {
-                flag = false;
-                break loop;
+                continue loop;
               } else if (!moveState[neighborState]) {
                 moveState[neighborState] = true;
                 st.push(neighborState);
@@ -483,17 +481,16 @@
         }
 
         // 各座標に移動フラグを設定
-        if (flag) {
-          for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-            for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
-              if (moveState[this.getState(x, y)]) {
-                this.#moveFlags[y + dy][x + dx] = true;
-              }
+        for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
+          for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+            if (moveState[this.getState(x, y)]) {
+              this.#moveFlags[y + dy][x + dx] = true;
             }
           }
-          moveFlag = true;
         }
+        moveFlag = true;
       }
+
       if (moveFlag) {
         this.#moveDx = dx;
         this.#moveDy = dy;
