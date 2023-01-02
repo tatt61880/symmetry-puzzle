@@ -83,7 +83,7 @@
         console.error(`Error: ${levelInfo()} moveFlag failed.`);
         return false;
       }
-      const clearFlag = isClear(level);
+      const clearFlag = level.isClear();
       if (clearFlag) {
         console.error(`Error: ${levelInfo()} Cleared on the way.`);
         return false;
@@ -95,7 +95,7 @@
       }
       stateStrMap[stateStr] = true;
     }
-    const clearFlag = isClear(level);
+    const clearFlag = level.isClear();
     if (!clearFlag) {
       console.error(`Error: ${levelInfo()} clearFlag failed.`);
       return false;

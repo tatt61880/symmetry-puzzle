@@ -66,7 +66,7 @@
         console.error('Error: moveFlag failed.');
         return false;
       }
-      const clearFlag = isClear(level);
+      const clearFlag = level.isClear();
       if (clearFlag) {
         console.error('Error: Cleared on the way.');
         return false;
@@ -116,7 +116,7 @@
         const stateStr = level.getStateStr();
         if (!stateStrMap.has(stateStr) || step < stateStrMap.get(stateStr)) {
           stateStrMap.set(stateStr, step);
-          const clearFlag = isClear(level);
+          const clearFlag = level.isClear();
           if (clearFlag) {
             const replayStr = undoInfo.getReplayStr();
             console.log(`${step} steps: ${replayStr}`);
@@ -131,12 +131,5 @@
       step--;
     }
     return true;
-  }
-
-  function isClear(level) {
-    const isConnected = level.isConnected(app.states.isTarget);
-    const center = level.getRotateCenter(app.states.isTarget);
-    const clearFlag = isConnected && center !== null;
-    return clearFlag;
   }
 })();
