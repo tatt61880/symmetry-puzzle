@@ -89,7 +89,7 @@
         return false;
       }
 
-      if (level.isClear()) {
+      if (level.isCompleted()) {
         console.error(`Error: ${levelInfo()} Cleared on the way.`);
         return false;
       }
@@ -102,7 +102,8 @@
       }
       stateStrMap[stateStr] = true;
     }
-    if (!level.isClear()) {
+
+    if (!level.isCompleted()) {
       console.error(`Error: ${levelInfo()} clearFlag failed.`);
       return false;
     }

@@ -428,7 +428,7 @@
       return { x: (minX + maxX + 1) * 0.5, y: (minY + maxY + 1) * 0.5 };
     }
 
-    isClear() {
+    isCompleted() {
       const isConnected = this.isConnected(app.states.isTarget);
       if (!isConnected) return false;
       const center = this.getRotateCenter(app.states.isTarget);

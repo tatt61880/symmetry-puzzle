@@ -70,7 +70,7 @@
         return false;
       }
 
-      const clearFlag = level.isClear();
+      const clearFlag = level.isCompleted();
       if (clearFlag) {
         console.error('Error: Cleared on the way.');
         return false;
@@ -125,7 +125,7 @@
         if (!stateStrMap.has(stateStr) || step < stateStrMap.get(stateStr)) {
           stateStrMap.set(stateStr, step);
 
-          const clearFlag = level.isClear();
+          const clearFlag = level.isCompleted();
           if (clearFlag) {
             const replayStr = undoInfo.getReplayStr();
             console.log(`${step} steps: ${replayStr}`);
