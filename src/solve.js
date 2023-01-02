@@ -15,7 +15,8 @@
     .version('1.1.0')
     .requiredOption('-i, --id <id>', 'id of level')
     .option('-m, --max <max step>', 'max step')
-    .option('-s, --step <step>', 'step for prefix');
+    .option('-s, --step <prefix-step>', 'step for prefix')
+    .option('-t, --time <time-limit>', 'time limit');
 
   program.parse();
   const options = program.opts();
@@ -104,6 +105,8 @@
     }
 
     let solveStep = null;
+    let count = 0;
+    let isTle = false;
     dfs();
 
     if (solveStep !== null) {
@@ -115,6 +118,14 @@
     }
 
     function dfs() {
+      if (options.time !== undefined && ++count % 10000 === 0) {
+        const time = performance.now();
+        if (time - startTime > options.time * 1000) {
+          isTle = true;
+          console.error('TLE');
+          return;
+        }
+      }
       if (step >= maxStep) return;
       step++;
       for (let dir = 0; dir < 4; ++dir) {
@@ -144,6 +155,7 @@
             maxStep = step - 1;
           }
           dfs();
+          if (isTle) return false;
         }
         const levelObj = undoInfo.undo();
         level.applyObj(levelObj, { init: false });
