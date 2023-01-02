@@ -99,12 +99,7 @@
         }
 
         const s = level.getStateStr();
-        undoInfo.pushData({
-          dir,
-          w,
-          h,
-          s,
-        });
+        undoInfo.pushData({ dir, w, h, s });
         level.move();
 
         const stateStr = level.getStateStr();
@@ -151,12 +146,7 @@
           if (!moveFlag) continue;
 
           const s = level.getStateStr();
-          undoInfo.pushData({
-            dir,
-            w,
-            h,
-            s,
-          });
+          undoInfo.pushData({ dir, w, h, s });
           level.move();
 
           const stateStr = level.getStateStr();
