@@ -14,8 +14,8 @@
   program
     .version('1.1.0')
     .requiredOption('-i, --id <id>', 'id of level')
-    .option('-m, --max <max step>', 'max step')
-    .option('-s, --step <prefix-step>', 'step for prefix')
+    .option('-m, --max <max-step>', 'max step')
+    .option('-p, --prefix <prefix-step>', 'prefix step')
     .option('-t, --time <time-limit>', 'time limit');
 
   program.parse();
@@ -47,7 +47,8 @@
     const startTime = performance.now();
     const levelObj = levels[levelId];
     let maxStep = options.max !== undefined ? options.max : levelObj.step; // ※途中により短い解が見つかり次第、更新する値です。
-    const prefixStep = options.step !== undefined ? options.step : '';
+
+    const prefixStep = options.prefix !== undefined ? options.prefix : '';
     if (prefixStep !== '') {
       for (const c of prefixStep) {
         if (c === '0') continue;
@@ -59,6 +60,7 @@
         return;
       }
     }
+
     solveLevel(levelId, levelObj);
 
     const endTime = performance.now();
@@ -91,12 +93,6 @@
           return false;
         }
 
-        const clearFlag = level.isCompleted();
-        if (clearFlag) {
-          console.error('Error: Cleared on the way.');
-          return false;
-        }
-
         const s = level.getStateStr();
         undoInfo.pushData({
           dir,
@@ -109,6 +105,12 @@
         const stateStr = level.getStateStr();
         if (stateStrMap.has(stateStr)) {
           console.warn('Warning: Same state exists.');
+        }
+
+        const clearFlag = level.isCompleted();
+        if (clearFlag) {
+          console.error('Error: Cleared on prefix-step.');
+          return false;
         }
         stateStrMap.set(stateStr, step);
       }
