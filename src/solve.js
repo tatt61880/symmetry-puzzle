@@ -55,6 +55,8 @@
     let step = 0;
     const undoInfo = new app.UndoInfo();
     const stateStrMap = new Map;
+    const w = level.getW();
+    const h = level.getH();
 
     for (const dirChar of prefixStep) {
       step++;
@@ -74,11 +76,12 @@
         return false;
       }
 
+      const s = level.getStateStr();
       undoInfo.pushData({
         dir,
-        w: level.getW(),
-        h: level.getH(),
-        s: level.getStateStr(),
+        w,
+        h,
+        s,
       });
       level.move();
 
@@ -109,11 +112,12 @@
         const moveFlag = level.updateMoveFlags(dx, dy);
         if (!moveFlag) continue;
 
+        const s = level.getStateStr();
         undoInfo.pushData({
           dir,
-          w: level.getW(),
-          h: level.getH(),
-          s: level.getStateStr(),
+          w,
+          h,
+          s,
         });
         level.move();
 
