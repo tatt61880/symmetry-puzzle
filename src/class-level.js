@@ -24,8 +24,8 @@
     ul: 7,
   };
 
-  const dys = [-1, 0, 1, 0, -1, 1, 1, -1];
   const dxs = [0, 1, 0, -1, 1, 1, -1, -1];
+  const dys = [-1, 0, 1, 0, -1, 1, 1, -1];
 
   const blockBorderWidth = 0.14;
 
@@ -356,8 +356,6 @@
 
     // 図形が連結か否か。
     #isConnected(isX) {
-      const dys = [-1, 0, 1, 0];
-      const dxs = [0, 1, 0, -1];
       const statesTemp = this.copyStates();
       let x0;
       let y0;
@@ -372,6 +370,8 @@
         }
       }
 
+      const dxs = [0, 1, 0, -1];
+      const dys = [-1, 0, 1, 0];
       const st = new app.Stack();
       st.push([x0, y0]);
       statesTemp[y0][x0] = app.states.none;
