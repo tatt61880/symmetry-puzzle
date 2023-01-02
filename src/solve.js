@@ -125,6 +125,7 @@
       }
 
       function dfs() {
+        if (step >= maxStep) return;
         if (options.time !== undefined && ++count % 10000 === 0) {
           const time = performance.now();
           if (time - startTime > options.time * 1000) {
@@ -133,7 +134,7 @@
             return;
           }
         }
-        if (step >= maxStep) return;
+
         step++;
         for (let dir = 0; dir < 4; ++dir) {
           const dx = dxs[dir];
