@@ -36,17 +36,13 @@
 
     const dxs = [0, 1, 0, -1];
     const dys = [-1, 0, 1, 0];
-    const MAX_STEP = 7;
+    let maxStep = 7; // 途中により短い解が見つかり次第、更新します。
     let step = 0;
     const undoInfo = new app.UndoInfo();
     dfs();
 
     function dfs() {
-      {
-        // const replayStr = undoInfo.getReplayStr();
-        // console.log(`${step} ${replayStr}`);
-      }
-      if (step >= MAX_STEP) return;
+      if (step >= maxStep) return;
       step++;
       for (let dir = 0; dir < 4; ++dir) {
         const dx = dxs[dir];
@@ -64,6 +60,7 @@
         if (clearFlag) {
           const replayStr = undoInfo.getReplayStr();
           console.log(`${step} ${replayStr}`);
+          maxStep = Math.min(maxStep, step);
         }
         dfs();
         const levelObj = undoInfo.undo();
