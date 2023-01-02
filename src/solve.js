@@ -20,7 +20,6 @@
   const options = program.opts();
 
   const levelId = options.id !== undefined ? options.id : 1;
-  let maxStep = options.max !== undefined ? options.max : 10; // ※途中により短い解が見つかり次第、更新する値です。
 
   const startTime = performance.now();
 
@@ -35,10 +34,10 @@
     levels[levelId] = levelObj;
   }
 
-  {
-    const levelObj = levels[levelId];
-    solveLevel(levelId, levelObj);
-  }
+  const levelObj = levels[levelId];
+  let maxStep = options.max !== undefined ? options.max : levelObj.step; // ※途中により短い解が見つかり次第、更新する値です。
+  solveLevel(levelId, levelObj);
+
   const endTime = performance.now();
   console.log(`Time: ${Math.floor(endTime - startTime)} msec`);
 
