@@ -261,14 +261,13 @@
       this.resetMoveFlags();
     }
 
-    #count(isX) {
-      let cnt = 0;
+    #exist(isX) {
       for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
         for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
-          if (isX(this.#states[y][x])) cnt++;
+          if (isX(this.#states[y][x])) return true;
         }
       }
-      return cnt;
+      return false;
     }
 
     getStateStr() {
@@ -351,7 +350,7 @@
     }
 
     isConnected(isX) {
-      if (this.#count(isX) === 0) return null;
+      if (!this.#exist(isX)) return null;
       return this.#isConnected(isX);
     }
 
@@ -402,7 +401,7 @@
     // 回転中心を得る。
     // 回転中心がなければnullを返す。
     getRotateCenter(isX) {
-      if (this.#count(isX) === 0) return null;
+      if (!this.#exist(isX)) return null;
       return this.#getRotateCenter(isX);
     }
 
@@ -452,7 +451,7 @@
       }
 
       for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
-        if (this.#count((x) => x === i) === 0) continue;
+        if (!this.#exist((x) => x === i)) continue;
 
         const moveState = []; // 移動予定の状態番号
         moveState[i] = true;
