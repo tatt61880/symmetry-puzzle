@@ -128,11 +128,12 @@
 
       function dfs() {
         if (step >= maxStep) return;
+
         if (options.time !== undefined && ++count % 10000 === 0) {
           const time = performance.now();
           if (time - startTime > options.time * 1000) {
             isTle = true;
-            console.error(`[LEVEL ${levelId}] TLE`);
+            console.error(`[LEVEL ${levelId}] TLE (count = ${count / 1000} K)`);
             return;
           }
         }
