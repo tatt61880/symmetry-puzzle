@@ -34,6 +34,19 @@
   const options = program.opts();
   const levelId = options.id;
 
+  const prefixStep = options.prefix !== undefined ? options.prefix : '';
+  if (prefixStep !== '') {
+    for (const c of prefixStep) {
+      if (c === '0') continue;
+      if (c === '1') continue;
+      if (c === '2') continue;
+      if (c === '3') continue;
+      console.error('Error: invalid step. chars in step should be 0-3.');
+      process.exitCode = 1;
+      return;
+    }
+  }
+
   if (levelId === 'all') {
     for (const levelId in levels) {
       if (levelId === '0') continue;
@@ -46,20 +59,12 @@
   function solve(levelId) {
     const startTime = performance.now();
     const levelObj = levels[levelId];
-    let maxStep = options.max !== undefined ? options.max : levelObj.step; // ※途中により短い解が見つかり次第、更新する値です。
-
-    const prefixStep = options.prefix !== undefined ? options.prefix : '';
-    if (prefixStep !== '') {
-      for (const c of prefixStep) {
-        if (c === '0') continue;
-        if (c === '1') continue;
-        if (c === '2') continue;
-        if (c === '3') continue;
-        console.error('Error: invalid step. chars in step should be 0-3.');
-        process.exitCode = 1;
-        return;
-      }
+    if (levelObj === undefined) {
+      console.error(`Error: [LEVEL ${levelId}] levelObj === undefined`);
+      process.exitCode = 1;
+      return;
     }
+    let maxStep = options.max !== undefined ? options.max : levelObj.step; // ※途中により短い解が見つかり次第、更新する値です。
 
     solveLevel(levelId, levelObj);
 
