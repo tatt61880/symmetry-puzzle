@@ -153,7 +153,7 @@
       const completedFlag = level.isCompleted();
       if (completedFlag) {
         console.error('Warning: Completed on start.');
-        return false;
+        return null;
       }
 
       let dirs = '';
@@ -170,7 +170,7 @@
         const moveFlag = level.updateMoveFlags(dx, dy);
         if (!moveFlag) {
           console.error('Error: moveFlag failed.');
-          return false;
+          return null;
         }
 
         level.move();
@@ -182,7 +182,7 @@
         const completedFlag = level.isCompleted();
         if (completedFlag) {
           console.error('Error: Completed on prefix-step.');
-          return false;
+          return null;
         }
         dirs += dirChar;
         stateStrMap.set(stateStr, dirs);
@@ -211,7 +211,7 @@
             const time = performance.now();
             if (time - startTime > options.time * 1000) {
               console.error(`[LEVEL ${levelId}] TLE (count = ${count / 1000} K)`);
-              return;
+              return null;
             }
           }
 
