@@ -90,7 +90,7 @@
       }
 
       if (level.isCompleted()) {
-        console.error(`Error: ${levelInfo()} Cleared on the way.`);
+        console.error(`Error: ${levelInfo()} Completed on the way.`);
         return false;
       }
 
