@@ -1117,7 +1117,7 @@
     if (h < 1) return;
     const obj = { w, h, s };
     addUndo(null);
-    applyObj(obj);
+    applyObj(obj, { init: true });
     level.removeR();
   }
 
