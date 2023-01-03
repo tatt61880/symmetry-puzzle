@@ -219,7 +219,7 @@
           if (options.time !== undefined && ++stateCount % 10000 === 0) {
             const time = performance.now();
             if (time - startTime > options.time * 1000) {
-              const errorMessage = `Time limit over.\n[Time: ${((time - startTime) / 1000).toFixed(2)} sec.] [Time limit: ${(options.time / 1000).toFixed(2)} sec.] [State count: ${stateCount}]`;
+              const errorMessage = `Time limit over.\n[Time: ${((time - startTime) / 1000).toFixed(2)} sec.] [Time limit: ${options.time.toFixed(2)} sec.] [State count: ${stateCount}]`;
               console.error(`[LEVEL ${levelId}] ${errorMessage}`);
               return { replayStr: null, errorMessage };
             }
