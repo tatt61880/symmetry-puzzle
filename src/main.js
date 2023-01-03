@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.01.02';
+  const VERSION_TEXT = 'v2023.01.03';
 
   const app = window.app;
   Object.freeze(app);
@@ -1187,6 +1187,20 @@
   }
 
   function onButtonStart() {
+    console.log('levelId', levelId);
+    if (levelId === null) {
+      console.log('Edit Auto');
+      const w = level.getW();
+      const h = level.getH();
+      const s = level.getStateStr();
+      const levelObj = { w, h, s, step: 10 };
+      const replayStr = app.solveLevelObj(null, levelObj);
+      if (replayStr !== null) {
+        console.log(replayStr);
+        const newLevelObj = { ...levelObj, ...{ r: replayStr } };
+        level.applyObj(newLevelObj, { init: true });
+      }
+    }
     settingsAuto.paused = false;
     updateAutoStartPauseButtons();
     if (completeFlag) {

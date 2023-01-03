@@ -1,41 +1,44 @@
 (function () {
   'use strict';
 
-  const { performance } = require('perf_hooks');
+  const isBrowser = typeof window !== 'undefined';
 
-  const app = {};
-  app.states = require('./states.js');
-  app.levels = require('./levels.js');
-  app.levelsEx = require('./levels-ex.js');
-  app.Level = require('./class-level.js');
-  app.UndoInfo = require('./class-undo-info.js');
+  let app = {};
+  let options;
+  if (isBrowser) {
+    app = window.app;
+    if (app?.states === undefined) console.error('app.states is undefined.');
+    if (app?.levels === undefined) console.error('app.levels is undefined.');
+    if (app?.levelsEx === undefined) console.error('app.levelsEx is undefined.');
+    if (app?.Level === undefined) console.error('app.Level is undefined.');
+    options = {
+      prefix: '',
+      time: 10, // 時間制限を10秒に設定。
+    };
+    window.process = {
+      exitCode: 0,
+    };
+  } else {
+    app.states = require('./states.js');
+    app.levels = require('./levels.js');
+    app.levelsEx = require('./levels-ex.js');
+    app.Level = require('./class-level.js');
 
-  const program = require('commander');
-  program
-    .version('1.4.0')
-    .option('-c, --console', 'console.log step')
-    .option('-i, --id <id>', 'id of level')
-    .option('-w, --w <w>', 'levelObj.w')
-    .option('-h, --h <h>', 'levelObj.h')
-    .option('-s, --s <s>', 'levelObj.s')
-    .option('-m, --max <max-step>', 'max step')
-    .option('-p, --prefix <prefix-step>', 'prefix step')
-    .option('-t, --time <time-limit>', 'time limit');
+    const program = require('commander');
+    program
+      .version('1.4.0')
+      .option('-c, --console', 'console.log step')
+      .option('-i, --id <id>', 'id of level')
+      .option('-w, --w <w>', 'levelObj.w')
+      .option('-h, --h <h>', 'levelObj.h')
+      .option('-s, --s <s>', 'levelObj.s')
+      .option('-m, --max <max-step>', 'max step')
+      .option('-p, --prefix <prefix-step>', 'prefix step')
+      .option('-t, --time <time-limit>', 'time limit');
 
-  program.parse();
-
-  const levels = {};
-
-  for (const levelId in app.levels) {
-    const levelObj = app.levels[levelId];
-    levels[levelId] = levelObj;
+    program.parse();
+    options = program.opts();
   }
-  for (const levelId in app.levelsEx) {
-    const levelObj = app.levelsEx[levelId];
-    levels[levelId] = levelObj;
-  }
-
-  const options = program.opts();
 
   const prefixStep = options.prefix !== undefined ? options.prefix : '';
   if (prefixStep !== '') {
@@ -51,7 +54,20 @@
   }
 
   const levelId = options.id;
-  if (levelId !== undefined) {
+  if (isBrowser) {
+    1;
+  } else if (levelId !== undefined) {
+    const levels = {};
+
+    for (const levelId in app.levels) {
+      const levelObj = app.levels[levelId];
+      levels[levelId] = levelObj;
+    }
+    for (const levelId in app.levelsEx) {
+      const levelObj = app.levelsEx[levelId];
+      levels[levelId] = levelObj;
+    }
+
     if (levelId === 'all') {
       for (const levelId in levels) {
         if (levelId === '0') continue;
@@ -105,13 +121,25 @@
     }
     const maxStep = options.max !== undefined ? options.max : levelObj.step;
 
-    solveLevel(levelId, levelObj);
+    const replayStr = solveLevel(levelId, levelObj);
 
-    const endTime = performance.now();
-    console.log(`Time: ${Math.floor(endTime - startTime)} msec`);
+    if (replayStr === null) {
+      console.warn(`No solution. [maxStep = ${maxStep}]`);
+    }
+    if (!isBrowser) {
+      if (replayStr !== null) {
+        if (replayStr.length < levelObj.step) {
+          console.log('===== New record! =====');
+        }
+      }
+      const endTime = performance.now();
+      const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps (${prefixStep})]`;
+      console.log(`[LEVEL ${levelId}] ${replayStr.length} steps: ${replayStr}${prefixStepInfo}`);
+      console.log(`Time: ${Math.floor(endTime - startTime)} msec`);
+      process.exitCode = 0;
+    }
 
-    process.exitCode = 0;
-    return;
+    return replayStr;
 
     function solveLevel(levelId, levelObj) {
       const level = new app.Level();
@@ -160,9 +188,7 @@
         stateStrMap.set(stateStr, dirs);
       }
 
-      let solveStep = null;
       let count = 0;
-      let isTle = false;
 
       let nextStateStrSet = new Set;
       {
@@ -170,7 +196,6 @@
         nextStateStrSet.add(stateStr);
       }
 
-      loop:
       for (; step < maxStep; ++step) {
         if (options.console) {
           const time = performance.now();
@@ -185,7 +210,6 @@
           if (options.time !== undefined && ++count % 10000 === 0) {
             const time = performance.now();
             if (time - startTime > options.time * 1000) {
-              isTle = true;
               console.error(`[LEVEL ${levelId}] TLE (count = ${count / 1000} K)`);
               return;
             }
@@ -210,24 +234,21 @@
 
               const completedFlag = level.isCompleted();
               if (completedFlag) {
-                const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps (${prefixStep})]`;
-                solveStep = step + 1;
-                console.log(`[LEVEL ${levelId}] ${solveStep} steps: ${replayStr}${prefixStepInfo}`);
-                break loop;
+                return replayStr;
               }
-              if (isTle) return false;
             }
           }
         }
       }
 
-      if (solveStep === null) {
-        console.warn('No solution.');
-      } else {
-        if (solveStep < levelObj.step) {
-          console.log('===== New record! =====');
-        }
-      }
+      return null;
     }
+  }
+
+  if (isBrowser) {
+    window.app = window.app || {};
+    window.app.solveLevelObj = solveLevelObj;
+  } else {
+    module.exports = solveLevelObj;
   }
 })();
