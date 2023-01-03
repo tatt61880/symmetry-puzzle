@@ -396,13 +396,14 @@
     }
 
     // 回転中心を得る。
-    // 回転中心がなければnullを返す。
+    // 点対称図形でなければnullを返す。
     getRotateCenter(isX) {
       if (!this.#exist(isX)) return null;
       return this.#getRotateCenter(isX);
     }
 
-    // 図形が点対称か否か。
+    // 回転中心を得る。
+    // 点対称図形でなければnullを返す。
     #getRotateCenter(isX) {
       let minX = this.getWidth();
       let maxX = 0;
