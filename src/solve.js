@@ -221,7 +221,9 @@
         }
       }
 
-      if (solveStep !== null) {
+      if (solveStep === null) {
+        console.warn('No solution.');
+      } else {
         if (solveStep < levelObj.step) {
           console.log('===== New record! =====');
         }
