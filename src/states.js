@@ -10,8 +10,8 @@
   states.targetMax = 1000;
   states.otherMin = 1001;
   states.otherMax = 1006;
-  states.userMin = 10000; // 自機
-  states.userMax = 10004; // 自機
+  states.userMin = 10000;
+  states.userMax = 10004; // 探索時はこの値が小さい方が有利。
 
   const stateToChar = {};
   const charToState = {};
