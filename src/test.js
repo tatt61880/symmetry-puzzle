@@ -58,7 +58,7 @@
     level.applyObj(levelObj, { init: true });
 
     if (levelObj.r.length !== levelObj.step) {
-      console.error(`Error: ${levelInfo()} Step check failed.`);
+      console.error(`Error: ${levelInfo()} Step check failed. step: ${levelObj.step} (Expected: ${levelObj.r.length})`);
       return false;
     }
 

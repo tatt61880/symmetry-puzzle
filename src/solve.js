@@ -97,6 +97,7 @@
 
   function solveLevelObj(levelId, levelObj) {
     const startTime = performance.now();
+    let prevTime = startTime;
     if (levelObj === undefined) {
       console.error(`Error: [LEVEL ${levelId}] levelObj === undefined`);
       process.exitCode = 1;
@@ -172,8 +173,11 @@
       loop:
       for (; step < maxStep; ++step) {
         if (options.console) {
-          const time = ((performance.now() - startTime) / 1000).toFixed(2);
-          console.log(`${step} steps. (${time} sec.)`);
+          const time = performance.now();
+          const timeStr = ((time - startTime) / 1000).toFixed(2);
+          const diffTimeStr = ((time - prevTime) / 1000).toFixed(2);
+          console.log(`${step} steps. [Time: ${timeStr} sec. (+${diffTimeStr} sec.)]`);
+          prevTime = time;
         }
         const currentStateStrSet = nextStateStrSet;
         nextStateStrSet = new Set;
