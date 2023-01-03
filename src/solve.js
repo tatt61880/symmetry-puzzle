@@ -12,7 +12,7 @@
 
   const program = require('commander');
   program
-    .version('1.1.1')
+    .version('1.2.0')
     .option('-i, --id <id>', 'id of level')
     .option('-w, --w <w>', 'levelObj.w')
     .option('-h, --h <h>', 'levelObj.h')
@@ -62,21 +62,31 @@
       solveLevelObj(levelId, levelObj);
     }
   } else {
-    const w = options.w;
-    const h = options.h;
-    const s = options.s;
-    if (w === undefined) {
+    if (options.w === undefined) {
       console.error('Error: w === undefined');
       process.exitCode = 1;
       return;
     }
-    if (h === undefined) {
+    if (options.h === undefined) {
       console.error('Error: h === undefined');
       process.exitCode = 1;
       return;
     }
-    if (s === undefined) {
+    if (options.s === undefined) {
       console.error('Error: s === undefined');
+      process.exitCode = 1;
+      return;
+    }
+    const w = Number(options.w);
+    const h = Number(options.h);
+    const s = options.s;
+    if (isNaN(w)) {
+      console.error('Error: w is NaN');
+      process.exitCode = 1;
+      return;
+    }
+    if (isNaN(h)) {
+      console.error('Error: h is NaN');
       process.exitCode = 1;
       return;
     }
