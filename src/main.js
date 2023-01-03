@@ -1193,10 +1193,15 @@
       const w = level.getW();
       const h = level.getH();
       const s = level.getStateStr();
-      const levelObj = { w, h, s, step: 10 };
+      const step = 10;
+      const levelObj = { w, h, s, step };
       const replayStr = app.solveLevelObj(null, levelObj);
-      if (replayStr !== null) {
+      if (replayStr === null) {
+        window.alert(`No solution.\n[max-step: ${step}]`);
+        return;
+      } else {
         console.log(replayStr);
+        resetUndo();
         const newLevelObj = { ...levelObj, ...{ r: replayStr } };
         level.applyObj(newLevelObj, { init: true });
       }
