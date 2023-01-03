@@ -430,9 +430,10 @@
     }
 
     isCompleted() {
-      const isConnected = this.isConnected(app.states.isTarget);
+      if (!this.#exist(app.states.isTarget)) return false;
+      const isConnected = this.#isConnected(app.states.isTarget);
       if (!isConnected) return false;
-      const center = this.getRotateCenter(app.states.isTarget);
+      const center = this.#getRotateCenter(app.states.isTarget);
       return center !== null;
     }
 
