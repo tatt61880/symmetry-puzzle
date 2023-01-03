@@ -1,5 +1,6 @@
 (function () {
   'use strict';
+  const isBrowser = typeof window !== 'undefined';
 
   class UndoInfo {
     #elemUndoButton;
@@ -54,7 +55,7 @@
     elem.classList.add('hide');
   }
 
-  if (typeof window !== 'undefined') {
+  if (isBrowser) {
     window.app = window.app || {};
     window.app.UndoInfo = UndoInfo;
   } else {

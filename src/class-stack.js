@@ -1,5 +1,6 @@
 (function () {
   'use strict';
+  const isBrowser = typeof window !== 'undefined';
 
   class Stack {
     constructor() {
@@ -23,7 +24,7 @@
     }
   }
 
-  if (typeof window !== 'undefined') {
+  if (isBrowser) {
     window.app = window.app || {};
     window.app.Stack = Stack;
   } else {

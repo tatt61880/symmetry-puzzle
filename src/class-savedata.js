@@ -1,5 +1,6 @@
 (function () {
   'use strict';
+  const isBrowser = typeof window !== 'undefined';
 
   const LOCAL_STORAGE_KEY = 'tatt61880-showkoban';
 
@@ -61,7 +62,7 @@
     }
   }
 
-  if (typeof window !== 'undefined') {
+  if (isBrowser) {
     window.app = window.app || {};
     window.app.Savedata = Savedata;
   }

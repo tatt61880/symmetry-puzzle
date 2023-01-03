@@ -1,5 +1,6 @@
 (function () {
   'use strict';
+  const isBrowser = typeof window !== 'undefined';
 
   const levels = [];
   levels.push(
@@ -71,7 +72,7 @@
     Object.freeze(level);
   }
 
-  if (typeof window !== 'undefined') {
+  if (isBrowser) {
     window.app = window.app || {};
     window.app.levels = levels;
   } else {

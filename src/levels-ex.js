@@ -1,5 +1,6 @@
 (function () {
   'use strict';
+  const isBrowser = typeof window !== 'undefined';
 
   const levelsEx = {
     NaN: { w: 3, h: 7, s: 's-01-01-01--02', r: '12', step: 2 },
@@ -12,7 +13,7 @@
     Object.freeze(levelId);
   }
 
-  if (typeof window !== 'undefined') {
+  if (isBrowser) {
     window.app = window.app || {};
     window.app.levelsEx = levelsEx;
   } else {

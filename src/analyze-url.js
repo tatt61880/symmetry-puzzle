@@ -1,5 +1,6 @@
 (function () {
   'use strict';
+  const isBrowser = typeof window !== 'undefined';
 
   function analyzeUrl() {
     const res = {
@@ -54,7 +55,7 @@
     return res;
   }
 
-  if (typeof window !== 'undefined') {
+  if (isBrowser) {
     window.app = window.app || {};
     window.app.analyzeUrl = analyzeUrl;
   }

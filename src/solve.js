@@ -1,6 +1,5 @@
 (function () {
   'use strict';
-
   const isBrowser = typeof window !== 'undefined';
 
   let app = {};

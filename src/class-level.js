@@ -1,16 +1,17 @@
 (function () {
   'use strict';
+  const isBrowser = typeof window !== 'undefined';
 
   let app = {};
-  if (typeof window === 'undefined') {
-    app.states = require('./states.js');
-    app.colors = require('./colors.js');
-    app.Stack = require('./class-stack.js');
-  } else {
+  if (isBrowser) {
     app = window.app;
     if (app?.states === undefined) console.error('app.states is undefined.');
     if (app?.colors === undefined) console.error('app.colors is undefined.');
     if (app?.Stack === undefined) console.error('app.Stack is undefined.');
+  } else {
+    app.states = require('./states.js');
+    app.colors = require('./colors.js');
+    app.Stack = require('./class-stack.js');
   }
 
   const dirs = {
@@ -766,7 +767,7 @@
     }
   }
 
-  if (typeof window !== 'undefined') {
+  if (isBrowser) {
     window.app = window.app || {};
     window.app.Level = Level;
   } else {

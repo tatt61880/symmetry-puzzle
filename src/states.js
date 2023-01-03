@@ -1,5 +1,6 @@
 (function () {
   'use strict';
+  const isBrowser = typeof window !== 'undefined';
 
   const states = {};
 
@@ -41,7 +42,7 @@
   states.isUser = (state) => states.userMin <= state && state <= states.userMax;
   Object.freeze(states);
 
-  if (typeof window !== 'undefined') {
+  if (isBrowser) {
     window.app = window.app || {};
     window.app.states = states;
   } else {

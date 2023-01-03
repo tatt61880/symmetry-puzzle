@@ -1,9 +1,10 @@
 (function () {
   'use strict';
+  const isBrowser = typeof window !== 'undefined';
 
   let app = {};
   const colors = {};
-  if (typeof window !== 'undefined') {
+  if (isBrowser) {
     app = window.app;
     if (app?.states === undefined) console.error('app.states is undefined.');
   } else {
@@ -34,10 +35,10 @@
 
   Object.freeze(colors);
 
-  if (typeof window === 'undefined') {
-    module.exports = colors;
-  } else {
+  if (isBrowser) {
     window.app = window.app || {};
     window.app.colors = colors;
+  } else {
+    module.exports = colors;
   }
 })();
