@@ -14,6 +14,9 @@
   program
     .version('1.1.1')
     .option('-i, --id <id>', 'id of level')
+    .option('-w, --w <w>', 'levelObj.w')
+    .option('-h, --h <h>', 'levelObj.h')
+    .option('-s, --s <s>', 'levelObj.s')
     .option('-m, --max <max-step>', 'max step')
     .option('-p, --prefix <prefix-step>', 'prefix step')
     .option('-t, --time <time-limit>', 'time limit');
@@ -32,7 +35,6 @@
   }
 
   const options = program.opts();
-  const levelId = options.id;
 
   const prefixStep = options.prefix !== undefined ? options.prefix : '';
   if (prefixStep !== '') {
@@ -47,15 +49,39 @@
     }
   }
 
-  if (levelId === 'all') {
-    for (const levelId in levels) {
-      if (levelId === '0') continue;
+  const levelId = options.id;
+  if (levelId !== undefined) {
+    if (levelId === 'all') {
+      for (const levelId in levels) {
+        if (levelId === '0') continue;
+        const levelObj = levels[levelId];
+        solveLevelObj(levelId, levelObj);
+      }
+    } else {
       const levelObj = levels[levelId];
       solveLevelObj(levelId, levelObj);
     }
   } else {
-    const levelObj = levels[levelId];
-    solveLevelObj(levelId, levelObj);
+    const w = options.w;
+    const h = options.h;
+    const s = options.s;
+    if (w === undefined) {
+      console.error('Error: w === undefined');
+      process.exitCode = 1;
+      return;
+    }
+    if (h === undefined) {
+      console.error('Error: h === undefined');
+      process.exitCode = 1;
+      return;
+    }
+    if (s === undefined) {
+      console.error('Error: s === undefined');
+      process.exitCode = 1;
+      return;
+    }
+    const levelObj = { w, h, s };
+    solveLevelObj(null, levelObj);
   }
 
   function solveLevelObj(levelId, levelObj) {
@@ -76,6 +102,7 @@
     return;
 
     function solveLevel(levelId, levelObj) {
+      console.log(levelObj);
       const level = new app.Level();
       level.applyObj(levelObj, { init: true });
 
@@ -87,6 +114,11 @@
       const w = level.getW();
       const h = level.getH();
 
+      const clearFlag = level.isCompleted();
+      if (clearFlag) {
+        console.error('Warning: Completed on start.');
+        return false;
+      }
       for (const dirChar of prefixStep) {
         step++;
         const dir = Number(dirChar);
@@ -110,7 +142,7 @@
 
         const clearFlag = level.isCompleted();
         if (clearFlag) {
-          console.error('Error: Cleared on prefix-step.');
+          console.error('Error: Completed on prefix-step.');
           return false;
         }
         stateStrMap.set(stateStr, step);
