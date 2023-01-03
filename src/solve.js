@@ -131,10 +131,10 @@
         if (replayStr.length < levelObj.step) {
           console.log('===== New record! =====');
         }
+        const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps (${prefixStep})]`;
+        console.log(`[LEVEL ${levelId}] ${replayStr.length} steps: ${replayStr}${prefixStepInfo}`);
       }
       const endTime = performance.now();
-      const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps (${prefixStep})]`;
-      console.log(`[LEVEL ${levelId}] ${replayStr.length} steps: ${replayStr}${prefixStepInfo}`);
       console.log(`Time: ${Math.floor(endTime - startTime)} msec`);
       process.exitCode = 0;
     }
