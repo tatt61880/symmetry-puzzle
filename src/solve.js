@@ -12,7 +12,8 @@
 
   const program = require('commander');
   program
-    .version('1.3.0')
+    .version('1.4.0')
+    .option('-c, --console', 'console.log step')
     .option('-i, --id <id>', 'id of level')
     .option('-w, --w <w>', 'levelObj.w')
     .option('-h, --h <h>', 'levelObj.h')
@@ -170,6 +171,10 @@
 
       loop:
       for (; step < maxStep; ++step) {
+        if (options.console) {
+          const time = ((performance.now() - startTime) / 1000).toFixed(2);
+          console.log(`${step} steps. (${time} sec.)`);
+        }
         const currentStateStrSet = nextStateStrSet;
         nextStateStrSet = new Set;
         for (const currentStateStr of currentStateStrSet) {
