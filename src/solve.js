@@ -102,7 +102,6 @@
     return;
 
     function solveLevel(levelId, levelObj) {
-      console.log(levelObj);
       const level = new app.Level();
       level.applyObj(levelObj, { init: true });
 
