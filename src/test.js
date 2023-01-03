@@ -104,7 +104,7 @@
     }
 
     if (!level.isCompleted()) {
-      console.error(`Error: ${levelInfo()} clearFlag failed.`);
+      console.error(`Error: ${levelInfo()} Not completed.`);
       return false;
     }
     return true;

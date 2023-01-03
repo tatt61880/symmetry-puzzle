@@ -102,7 +102,7 @@
     levels: {
       button: 'button-levels',
       dialog: 'dialog-levels',
-      hideClearedLevels: 'hide-cleared-levels',
+      hideCompletedLevels: 'hide-completed-levels',
       dialogDiv: 'dialog-levels-div',
       dialogSvg: 'dialog-levels-svg',
     },
@@ -541,12 +541,12 @@
     elems.levels.dialog.showModal();
   }
 
-  function toggleHideClearedLevels() {
+  function toggleHideCompletedLevels() {
     updateLevelsDialog();
   }
 
   function updateLevelsDialog() {
-    const hideClearedLevelsFlag = elems.levels.hideClearedLevels.checked;
+    const hideCompletedLevelsFlag = elems.levels.hideCompletedLevels.checked;
 
     elems.levels.dialogSvg.innerHTML = '';
     const HEIGHT = 90;
@@ -568,7 +568,7 @@
 
     function appendLevel(levelObj, id) {
       const highestScore = savedata.getHighestScore(levelObj);
-      if (highestScore !== null && hideClearedLevelsFlag) return;
+      if (highestScore !== null && hideCompletedLevelsFlag) return;
       count++;
 
       const g = app.svg.createG();
@@ -756,7 +756,7 @@
       elems.levels.button.addEventListener('click', showLevelsDialog, false);
       elems.levels.dialog.addEventListener('click', closeLevelsDialog, false);
       elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
-      elems.levels.hideClearedLevels.addEventListener('click', toggleHideClearedLevels, false);
+      elems.levels.hideCompletedLevels.addEventListener('click', toggleHideCompletedLevels, false);
     }
 
     // キー入力用
@@ -930,17 +930,17 @@
           {
             const levelParams = `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}', step: ${replayStr.length}` + (levelObj.subject !== undefined ? `, subject: '${levelObj.subject}'` : '');
             const levelObjStr = `{ ${levelParams} },`;
-            const clearStep = undoInfo.getIndex();
+            const completedStep = undoInfo.getIndex();
             consoleLog(levelObjStr);
             if (r === undefined) {
               consoleWarn('参照用公式記録の情報がありません！');
-            } else if (clearStep < bestStep) {
-              consoleLog(`参照用公式記録を破りました！\n参照用公式記録[${bestStep}] → あなたの記録[${clearStep}] (${clearStep - bestStep} 手)`);
+            } else if (completedStep < bestStep) {
+              consoleLog(`参照用公式記録を破りました！\n参照用公式記録[${bestStep}] → あなたの記録[${completedStep}] (${completedStep - bestStep} 手)`);
             } else {
               if (replayStr === r) {
                 consoleLog('参照用公式記録と完全に同じ手順です。');
               } else {
-                consoleLog(`参照用公式記録は ${bestStep} 手です。\n(差: ${clearStep - bestStep} 手)`);
+                consoleLog(`参照用公式記録は ${bestStep} 手です。\n(差: ${completedStep - bestStep} 手)`);
               }
             }
           }

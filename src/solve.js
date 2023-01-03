@@ -113,8 +113,8 @@
       const w = level.getW();
       const h = level.getH();
 
-      const clearFlag = level.isCompleted();
-      if (clearFlag) {
+      const completedFlag = level.isCompleted();
+      if (completedFlag) {
         console.error('Warning: Completed on start.');
         return false;
       }
@@ -139,8 +139,8 @@
           console.warn('Warning: Same state exists.');
         }
 
-        const clearFlag = level.isCompleted();
-        if (clearFlag) {
+        const completedFlag = level.isCompleted();
+        if (completedFlag) {
           console.error('Error: Completed on prefix-step.');
           return false;
         }
@@ -185,8 +185,8 @@
           if (!stateStrMap.has(stateStr) || step < stateStrMap.get(stateStr)) {
             stateStrMap.set(stateStr, step);
 
-            const clearFlag = level.isCompleted();
-            if (clearFlag) {
+            const completedFlag = level.isCompleted();
+            if (completedFlag) {
               const replayStr = undoInfo.getReplayStr();
               const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps (${prefixStep})]`;
               console.log(`[LEVEL ${levelId}] ${step} steps: ${replayStr}${prefixStepInfo}`);
