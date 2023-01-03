@@ -12,7 +12,7 @@
 
   const program = require('commander');
   program
-    .version('1.2.0')
+    .version('1.3.0')
     .option('-i, --id <id>', 'id of level')
     .option('-w, --w <w>', 'levelObj.w')
     .option('-h, --h <h>', 'levelObj.h')
@@ -101,7 +101,7 @@
       process.exitCode = 1;
       return;
     }
-    let maxStep = options.max !== undefined ? options.max : levelObj.step; // ※途中により短い解が見つかり次第、更新する値です。
+    const maxStep = options.max !== undefined ? options.max : levelObj.step;
 
     solveLevel(levelId, levelObj);
 
@@ -118,15 +118,18 @@
       const dxs = [0, 1, 0, -1];
       const dys = [-1, 0, 1, 0];
       let step = 0;
-      const undoInfo = new app.UndoInfo();
       const stateStrMap = new Map;
-      const w = level.getW();
-      const h = level.getH();
 
       const completedFlag = level.isCompleted();
       if (completedFlag) {
         console.error('Warning: Completed on start.');
         return false;
+      }
+
+      let dirs = '';
+      {
+        const stateStr = level.getStateStr();
+        stateStrMap.set(stateStr, dirs);
       }
       for (const dirChar of prefixStep) {
         step++;
@@ -140,10 +143,7 @@
           return false;
         }
 
-        const s = level.getStateStr();
-        undoInfo.pushData({ dir, w, h, s });
         level.move();
-
         const stateStr = level.getStateStr();
         if (stateStrMap.has(stateStr)) {
           console.warn('Warning: Same state exists.');
@@ -154,64 +154,69 @@
           console.error('Error: Completed on prefix-step.');
           return false;
         }
-        stateStrMap.set(stateStr, step);
+        dirs += dirChar;
+        stateStrMap.set(stateStr, dirs);
       }
 
       let solveStep = null;
       let count = 0;
       let isTle = false;
-      dfs();
+
+      let nextStateStrSet = new Set;
+      {
+        const stateStr = level.getStateStr();
+        nextStateStrSet.add(stateStr);
+      }
+
+      loop:
+      for (; step < maxStep; ++step) {
+        const currentStateStrSet = nextStateStrSet;
+        nextStateStrSet = new Set;
+        for (const currentStateStr of currentStateStrSet) {
+          if (options.time !== undefined && ++count % 10000 === 0) {
+            const time = performance.now();
+            if (time - startTime > options.time * 1000) {
+              isTle = true;
+              console.error(`[LEVEL ${levelId}] TLE (count = ${count / 1000} K)`);
+              return;
+            }
+          }
+
+          const currentReplyStr = stateStrMap.get(currentStateStr);
+          for (let dir = 0; dir < 4; ++dir) {
+            level.applyStateStr(currentStateStr);
+
+            const dx = dxs[dir];
+            const dy = dys[dir];
+            const moveFlag = level.updateMoveFlags(dx, dy);
+            if (!moveFlag) continue;
+
+            level.move();
+
+            const stateStr = level.getStateStr();
+            if (!stateStrMap.has(stateStr)) {
+              const replayStr = currentReplyStr + dir;
+              stateStrMap.set(stateStr, replayStr);
+              nextStateStrSet.add(stateStr);
+
+              const completedFlag = level.isCompleted();
+              if (completedFlag) {
+                const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps (${prefixStep})]`;
+                solveStep = step + 1;
+                console.log(`[LEVEL ${levelId}] ${solveStep} steps: ${replayStr}${prefixStepInfo}`);
+                break loop;
+              }
+              if (isTle) return false;
+            }
+          }
+        }
+      }
 
       if (solveStep !== null) {
         if (solveStep < levelObj.step) {
           console.log('===== New record! =====');
         }
       }
-
-      function dfs() {
-        if (step >= maxStep) return;
-
-        if (options.time !== undefined && ++count % 10000 === 0) {
-          const time = performance.now();
-          if (time - startTime > options.time * 1000) {
-            isTle = true;
-            console.error(`[LEVEL ${levelId}] TLE (count = ${count / 1000} K)`);
-            return;
-          }
-        }
-
-        step++;
-        for (let dir = 0; dir < 4; ++dir) {
-          const dx = dxs[dir];
-          const dy = dys[dir];
-          const moveFlag = level.updateMoveFlags(dx, dy);
-          if (!moveFlag) continue;
-
-          const s = level.getStateStr();
-          undoInfo.pushData({ dir, w, h, s });
-          level.move();
-
-          const stateStr = level.getStateStr();
-          if (!stateStrMap.has(stateStr) || step < stateStrMap.get(stateStr)) {
-            stateStrMap.set(stateStr, step);
-
-            const completedFlag = level.isCompleted();
-            if (completedFlag) {
-              const replayStr = undoInfo.getReplayStr();
-              const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps (${prefixStep})]`;
-              console.log(`[LEVEL ${levelId}] ${step} steps: ${replayStr}${prefixStepInfo}`);
-              solveStep = step;
-              maxStep = step - 1;
-            }
-            dfs();
-            if (isTle) return false;
-          }
-          const levelObj = undoInfo.undo();
-          level.applyObj(levelObj, { init: false });
-        }
-        step--;
-      }
-      return true;
     }
   }
 })();

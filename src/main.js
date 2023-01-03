@@ -382,9 +382,9 @@
       s += '0';
       for (let i = 0; i < digits.length; ++i) {
         const digit = digits[i] + 1;
-        for (let j = digit * 3; j < (digit + 1) * 3; j++) {
+        for (let j = digit * 3; j < (digit + 1) * 3; ++j) {
           const val = digitStates[row].charAt(j) * x;
-          if (val) ++x;
+          if (val) x++;
           s += val < 10 ? val : `(${val})`;
         }
         s += '0';
@@ -554,7 +554,7 @@
     const COLS = 5;
 
     let count = 0;
-    for (let id = 1; id < app.levels.length; id++) {
+    for (let id = 1; id < app.levels.length; ++id) {
       const levelObj = app.levels[id];
       appendLevel(levelObj, id);
     }

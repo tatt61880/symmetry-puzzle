@@ -208,45 +208,14 @@
       return newLevelObj;
     }
 
-    applyObj(obj_, { init, mirrorFlag, rotateNum }) {
-      let obj = obj_;
-      if (init) {
-        if (mirrorFlag) obj = this.#mirrorLevel(obj);
-        if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
-        this.#levelObj = obj;
-        Object.freeze(this.#levelObj);
-      }
-      this.#width = obj.w + 4;
-      this.#height = obj.h + 4;
-      this.#rightEnd = this.#width - 3;
-      this.#downEnd = this.#height - 3;
-
-      for (let y = 0; y < this.#height; ++y) {
-        this.#states[y] = [];
-        for (let x = 0; x < this.#width; ++x) {
+    applyStateStr(stateStr) {
+      for (let y = 2; y < this.#height - 2; ++y) {
+        for (let x = 2; x < this.#width - 2; ++x) {
           this.#states[y][x] = app.states.none;
         }
       }
-
-      // 枠(外周2マス分)
-      {
-        for (let y = 0; y < this.#height; ++y) {
-          this.#states[y][0] = app.states.wall;
-          this.#states[y][1] = app.states.wall;
-          this.#states[y][this.#width - 2] = app.states.wall;
-          this.#states[y][this.#width - 1] = app.states.wall;
-        }
-        for (let x = 2; x < this.#width - 2; ++x) {
-          this.#states[0][x] = app.states.wall;
-          this.#states[1][x] = app.states.wall;
-          this.#states[this.#height - 2][x] = app.states.wall;
-          this.#states[this.#height - 1][x] = app.states.wall;
-        }
-      }
-
       let y = this.#upEnd;
       let x = this.#leftEnd;
-      const stateStr = obj.s;
       for (const c of stateCharGenerator(stateStr)) {
         if (c === '-') {
           y++;
@@ -259,6 +228,45 @@
         }
       }
       this.resetMoveFlags();
+    }
+
+    applyObj(obj_, { init, mirrorFlag, rotateNum }) {
+      let obj = obj_;
+      if (init) {
+        if (mirrorFlag) obj = this.#mirrorLevel(obj);
+        if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
+        this.#levelObj = obj;
+        Object.freeze(this.#levelObj);
+        this.#width = obj.w + 4;
+        this.#height = obj.h + 4;
+        this.#rightEnd = this.#width - 3;
+        this.#downEnd = this.#height - 3;
+
+        // 初期化
+        for (let y = 0; y < this.#height; ++y) {
+          this.#states[y] = [];
+          for (let x = 0; x < this.#width; ++x) {
+            this.#states[y][x] = app.states.none;
+          }
+        }
+
+        // 枠(外周2マス分)
+        {
+          for (let y = 0; y < this.#height; ++y) {
+            this.#states[y][0] = app.states.wall;
+            this.#states[y][1] = app.states.wall;
+            this.#states[y][this.#width - 2] = app.states.wall;
+            this.#states[y][this.#width - 1] = app.states.wall;
+          }
+          for (let x = 2; x < this.#width - 2; ++x) {
+            this.#states[0][x] = app.states.wall;
+            this.#states[1][x] = app.states.wall;
+            this.#states[this.#height - 2][x] = app.states.wall;
+            this.#states[this.#height - 1][x] = app.states.wall;
+          }
+        }
+      }
+      this.applyStateStr(obj.s);
     }
 
     #exist(isX) {
