@@ -13,6 +13,7 @@
     options = {
       prefix: '',
       time: 10, // 時間制限を10秒に設定。
+      max: undefined,
     };
     window.process = {
       exitCode: 0,
@@ -25,7 +26,7 @@
 
     const program = require('commander');
     program
-      .version('1.4.0')
+      .version('1.4.1')
       .option('-c, --console', 'console.log step')
       .option('-i, --id <id>', 'id of level')
       .option('-w, --w <w>', 'levelObj.w')
@@ -119,26 +120,28 @@
       return;
     }
     const maxStep = options.max !== undefined ? options.max : levelObj.step;
-
-    const replayStr = solveLevel(levelId, levelObj);
-
-    if (replayStr === null) {
-      console.warn(`No solution. [maxStep = ${maxStep}]`);
+    if (isNaN(maxStep)) {
+      console.error(`Error: [LEVEL ${levelId}] maxStep is NaN. maxStep === ${maxStep}`);
+      process.exitCode = 1;
+      return;
     }
+
+    const result = solveLevel(levelId, levelObj);
+
     if (!isBrowser) {
-      if (replayStr !== null) {
-        if (replayStr.length < levelObj.step) {
+      if (result.replayStr !== null) {
+        if (result.replayStr.length < levelObj.step) {
           console.log('===== New record! =====');
         }
         const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps (${prefixStep})]`;
-        console.log(`[LEVEL ${levelId}] ${replayStr.length} steps: ${replayStr}${prefixStepInfo}`);
+        console.log(`[LEVEL ${levelId}] ${result.replayStr.length} steps: ${result.replayStr}${prefixStepInfo}`);
       }
       const endTime = performance.now();
       console.log(`Time: ${Math.floor(endTime - startTime)} msec`);
       process.exitCode = 0;
     }
 
-    return replayStr;
+    return result;
 
     function solveLevel(levelId, levelObj) {
       const level = new app.Level();
@@ -151,8 +154,8 @@
 
       const completedFlag = level.isCompleted();
       if (completedFlag) {
-        console.error('Warning: Completed on start.');
-        return null;
+        console.warn('Warning: Completed on start.');
+        return { replayStr: '' };
       }
 
       let dirs = '';
@@ -168,8 +171,9 @@
 
         const moveFlag = level.updateMoveFlags(dx, dy);
         if (!moveFlag) {
-          console.error('Error: moveFlag failed.');
-          return null;
+          const errorMessage = 'Error: moveFlag failed.';
+          console.error(errorMessage);
+          return { replayStr: null, errorMessage };
         }
 
         level.move();
@@ -180,8 +184,9 @@
 
         const completedFlag = level.isCompleted();
         if (completedFlag) {
-          console.error('Error: Completed on prefix-step.');
-          return null;
+          const errorMessage = 'Error: Completed on prefix-step.';
+          console.error(errorMessage);
+          return { replayStr: null, errorMessage };
         }
         dirs += dirChar;
         stateStrMap.set(stateStr, dirs);
@@ -204,13 +209,19 @@
           prevTime = time;
         }
         const currentStateStrSet = nextStateStrSet;
+        if (currentStateStrSet.size === 0) {
+          const errorMessage = `No solution. [step: ${step - 1}] [max-step: ${maxStep}]`;
+          console.error(errorMessage);
+          return { replayStr: null, errorMessage };
+        }
         nextStateStrSet = new Set;
         for (const currentStateStr of currentStateStrSet) {
           if (options.time !== undefined && ++count % 10000 === 0) {
             const time = performance.now();
             if (time - startTime > options.time * 1000) {
-              console.error(`[LEVEL ${levelId}] TLE (count = ${count / 1000} K)`);
-              return null;
+              const errorMessage = `Time limit over. [Time: ${((time - startTime) / 1000).toFixed(2)} sec.] [count = ${count}]`;
+              console.error(`[LEVEL ${levelId}] ${errorMessage}`);
+              return { replayStr: null, errorMessage };
             }
           }
 
@@ -233,14 +244,16 @@
 
               const completedFlag = level.isCompleted();
               if (completedFlag) {
-                return replayStr;
+                return { replayStr };
               }
             }
           }
         }
       }
 
-      return null;
+      const errorMessage = `Max step over. [max-step: ${maxStep}]`;
+      console.error(errorMessage);
+      return { replayStr: null, errorMessage };
     }
   }
 

@@ -1193,16 +1193,16 @@
       const w = level.getW();
       const h = level.getH();
       const s = level.getStateStr();
-      const step = 10;
+      const step = 1000; // 探索ステップ数上限値は大きな値にしておきます。時間制限もあるので、この制限にかかることはほぼないはずです。
       const levelObj = { w, h, s, step };
-      const replayStr = app.solveLevelObj(null, levelObj);
-      if (replayStr === null) {
-        window.alert(`No solution.\n[max-step: ${step}]`);
+      const result = app.solveLevelObj(null, levelObj);
+      if (result.replayStr === null) {
+        window.alert(result.errorMessage);
         return;
       } else {
-        console.log(replayStr);
+        console.log(result.replayStr);
         resetUndo();
-        const newLevelObj = { ...levelObj, ...{ r: replayStr } };
+        const newLevelObj = { ...levelObj, ...{ r: result.replayStr } };
         level.applyObj(newLevelObj, { init: true });
       }
     }
