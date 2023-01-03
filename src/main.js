@@ -336,7 +336,7 @@
     undoInfo = new app.UndoInfo(elems.controller.undo);
   }
 
-  function applyObj(obj, param = { init: false }) {
+  function applyObj(obj, param = { init: false, resize: false }) {
     level.applyObj(obj, param);
     const svgMaxWidth = 490;
     const svgMaxHeight = 280;
@@ -1118,7 +1118,7 @@
     if (h < 1) return;
     const obj = { w, h, s };
     addUndo(null);
-    applyObj(obj, { init: true });
+    applyObj(obj, { resize: true });
     level.removeR();
   }
 
