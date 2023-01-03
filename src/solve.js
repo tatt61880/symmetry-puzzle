@@ -192,7 +192,7 @@
         stateStrMap.set(stateStr, dirs);
       }
 
-      let count = 0;
+      let stateCount = 0;
 
       let nextStateStrSet = new Set;
       {
@@ -210,16 +210,16 @@
         }
         const currentStateStrSet = nextStateStrSet;
         if (currentStateStrSet.size === 0) {
-          const errorMessage = `No solution. [step: ${step - 1}] [max-step: ${maxStep}]`;
+          const errorMessage = `No solution.\n[Step: ${step - 1}] [Step limit: ${maxStep}]`;
           console.error(errorMessage);
           return { replayStr: null, errorMessage };
         }
         nextStateStrSet = new Set;
         for (const currentStateStr of currentStateStrSet) {
-          if (options.time !== undefined && ++count % 10000 === 0) {
+          if (options.time !== undefined && ++stateCount % 10000 === 0) {
             const time = performance.now();
             if (time - startTime > options.time * 1000) {
-              const errorMessage = `Time limit over. [Time: ${((time - startTime) / 1000).toFixed(2)} sec.] [count = ${count}]`;
+              const errorMessage = `Time limit over.\n[Time: ${((time - startTime) / 1000).toFixed(2)} sec.] [Time limit: ${(options.time / 1000).toFixed(2)} sec.] [State count: ${stateCount}]`;
               console.error(`[LEVEL ${levelId}] ${errorMessage}`);
               return { replayStr: null, errorMessage };
             }
@@ -251,7 +251,7 @@
         }
       }
 
-      const errorMessage = `Max step over. [max-step: ${maxStep}]`;
+      const errorMessage = `Step limit over.\n[Step limit: ${maxStep}]`;
       console.error(errorMessage);
       return { replayStr: null, errorMessage };
     }
