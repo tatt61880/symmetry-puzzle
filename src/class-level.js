@@ -230,13 +230,16 @@
       this.resetMoveFlags();
     }
 
-    applyObj(obj_, { init, mirrorFlag, rotateNum }) {
+    applyObj(obj_, { init, mirrorFlag, rotateNum, resize }) {
       let obj = obj_;
       if (init) {
         if (mirrorFlag) obj = this.#mirrorLevel(obj);
         if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
         this.#levelObj = obj;
         Object.freeze(this.#levelObj);
+      }
+
+      if (init || resize) {
         this.#width = obj.w + 4;
         this.#height = obj.h + 4;
         this.#rightEnd = this.#width - 3;
@@ -266,6 +269,7 @@
           }
         }
       }
+
       this.applyStateStr(obj.s);
     }
 

@@ -352,7 +352,8 @@
   function execUndo() {
     if (undoInfo.isUndoable()) {
       const data = undoInfo.undo();
-      applyObj(data);
+      const resizeFlag = level.getW() !== data.w || level.getH() !== data.h;
+      applyObj(data, { resize: resizeFlag });
     }
   }
 
