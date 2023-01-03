@@ -12,8 +12,8 @@
 
   const program = require('commander');
   program
-    .version('1.1.0')
-    .requiredOption('-i, --id <id>', 'id of level')
+    .version('1.1.1')
+    .option('-i, --id <id>', 'id of level')
     .option('-m, --max <max-step>', 'max step')
     .option('-p, --prefix <prefix-step>', 'prefix step')
     .option('-t, --time <time-limit>', 'time limit');
@@ -50,15 +50,16 @@
   if (levelId === 'all') {
     for (const levelId in levels) {
       if (levelId === '0') continue;
-      solve(levelId);
+      const levelObj = levels[levelId];
+      solveLevelObj(levelId, levelObj);
     }
   } else {
-    solve(levelId);
+    const levelObj = levels[levelId];
+    solveLevelObj(levelId, levelObj);
   }
 
-  function solve(levelId) {
+  function solveLevelObj(levelId, levelObj) {
     const startTime = performance.now();
-    const levelObj = levels[levelId];
     if (levelObj === undefined) {
       console.error(`Error: [LEVEL ${levelId}] levelObj === undefined`);
       process.exitCode = 1;
