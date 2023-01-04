@@ -211,6 +211,7 @@
         nextStateStrSet.add(stateStr);
       }
 
+      let solutionNum = 0;
       for (; step < maxStep;) {
         const currentStateStrSet = nextStateStrSet;
         nextStateStrSet = new Set;
@@ -244,6 +245,7 @@
               const completedFlag = level.isCompleted();
               if (completedFlag) {
                 if (options.all) {
+                  solutionNum++;
                   const r = replayStr;
                   const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
                   console.log(`[LEVEL ${levelId}] { r: '${r}', steps: ${r.length} }${prefixStepInfo}`);
@@ -256,6 +258,11 @@
         }
 
         if (nextStateStrSet.size === 0) {
+          if (options.all) {
+            const errorMessage = `${solutionNum} solutions found.\n[Step: ${step}] [Step limit: ${maxStep}]`;
+            console.error(errorMessage);
+            return { replayStr: null, errorMessage };
+          }
           const errorMessage = `No solution.\n[Step: ${step}] [Step limit: ${maxStep}]`;
           console.error(errorMessage);
           return { replayStr: null, errorMessage };
