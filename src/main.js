@@ -1038,7 +1038,7 @@
       let resetFlag = true;
       if (secretSequence === '1234') {
         toggleEditLevel();
-      } else if (secretSequence === '1212') {
+      } else if (secretSequence === '1414') {
         updateAutoMode(true);
       } else if (secretSequence === '4343') {
         showElem(elems.consoleLog);
@@ -1189,13 +1189,15 @@
   function onButtonStart() {
     console.log('levelId', levelId);
     if (levelId === null) {
-      console.log('Edit Auto');
       const w = level.getW();
       const h = level.getH();
       const s = level.getStateStr();
       const step = 1000; // 探索ステップ数上限値は大きな値にしておきます。時間制限もあるので、この制限にかかることはほぼないはずです。
       const levelObj = { w, h, s, step };
+      // TODO low-contrastを盤面に反映させてから計算する。Promiseを使うといけそう。
+      // elems.auto.buttonStart.classList.add('low-contrast');
       const result = app.solveLevelObj(null, levelObj);
+      // elems.auto.buttonStart.classList.remove('low-contrast');
       if (result.replayStr === null) {
         window.alert(result.errorMessage);
         return;
