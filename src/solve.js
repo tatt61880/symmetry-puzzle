@@ -145,7 +145,8 @@
         }
         const r = result.replayStr;
         const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
-        console.log(`[LEVEL ${levelId}] { r: '${r}', steps: ${r.length} }${prefixStepInfo}`);
+        const completedLevelObj = getCompletedLevelObj(r);
+        console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
       }
       const endTime = performance.now();
       console.log(`Time: ${Math.floor(endTime - startTime)} msec`);
@@ -246,7 +247,8 @@
                   solutionNum++;
                   const r = replayStr;
                   const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
-                  console.log(`[LEVEL ${levelId}] { r: '${r}', steps: ${r.length} }${prefixStepInfo}`);
+                  const completedLevelObj = getCompletedLevelObj(r);
+                  console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
                 } else {
                   return { replayStr };
                 }
@@ -281,6 +283,15 @@
       const errorMessage = `Step limit over.\n[Step limit: ${maxStep}]`;
       console.error(errorMessage);
       return { replayStr: null, errorMessage };
+    }
+
+    function getCompletedLevelObj(r) {
+      const w = levelObj.w;
+      const h = levelObj.h;
+      const s = levelObj.s;
+      const subject = levelObj.subject !== undefined ? `, subject: '${levelObj.subject}'` : '';
+      const res = `{ w: ${w}, h: ${h}, s: '${s}', r: '${r}', steps: ${r.length}${subject} },`;
+      return res;
     }
   }
 
