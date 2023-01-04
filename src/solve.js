@@ -239,8 +239,6 @@
             const stateStr = level.getStateStr();
             if (!stateStrMap.has(stateStr)) {
               const replayStr = currentReplyStr + dir;
-              stateStrMap.set(stateStr, replayStr);
-              nextStateStrSet.add(stateStr);
 
               const completedFlag = level.isCompleted();
               if (completedFlag) {
@@ -252,6 +250,9 @@
                 } else {
                   return { replayStr };
                 }
+              } else {
+                stateStrMap.set(stateStr, replayStr);
+                nextStateStrSet.add(stateStr);
               }
             }
           }
