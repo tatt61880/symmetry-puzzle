@@ -120,7 +120,16 @@
       process.exitCode = 1;
       return;
     }
-    const maxStep = options.max !== undefined ? options.max : levelObj.step;
+    const maxStep = (() => {
+      let res = options.max;
+      if (res === undefined) {
+        res = levelObj.step;
+      }
+      if (res === undefined) {
+        res = 1000;
+      }
+      return res;
+    })();
     if (isNaN(maxStep)) {
       console.error(`Error: [LEVEL ${levelId}] maxStep is NaN. maxStep === ${maxStep}`);
       process.exitCode = 1;
