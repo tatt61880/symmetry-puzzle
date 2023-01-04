@@ -143,8 +143,9 @@
         if (result.replayStr.length < levelObj.step) {
           console.log('===== New record! =====');
         }
-        const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps (${prefixStep})]`;
-        console.log(`[LEVEL ${levelId}] ${result.replayStr.length} steps: ${result.replayStr}${prefixStepInfo}`);
+        const r = result.replayStr;
+        const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
+        console.log(`[LEVEL ${levelId}] { r: '${r}', steps: ${r.length} }${prefixStepInfo}`);
       }
       const endTime = performance.now();
       console.log(`Time: ${Math.floor(endTime - startTime)} msec`);
@@ -243,8 +244,9 @@
               const completedFlag = level.isCompleted();
               if (completedFlag) {
                 if (options.all) {
-                  const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps (${prefixStep})]`;
-                  console.log(`[LEVEL ${levelId}] ${replayStr.length} steps: ${replayStr}${prefixStepInfo}`);
+                  const r = replayStr;
+                  const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
+                  console.log(`[LEVEL ${levelId}] { r: '${r}', steps: ${r.length} }${prefixStepInfo}`);
                 } else {
                   return { replayStr };
                 }
