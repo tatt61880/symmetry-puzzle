@@ -27,8 +27,9 @@
     const program = require('commander');
     program
       .version('1.4.1')
-      .option('-c, --console', 'console.log step')
       .option('-i, --id <id>', 'id of level')
+      .option('-a, --all', 'list up all solutions')
+      .option('-c, --console', 'console.log step')
       .option('-w, --w <w>', 'levelObj.w')
       .option('-h, --h <h>', 'levelObj.h')
       .option('-s, --s <s>', 'levelObj.s')
@@ -244,7 +245,11 @@
 
               const completedFlag = level.isCompleted();
               if (completedFlag) {
-                return { replayStr };
+                if (options.all) {
+                  console.log(replayStr);
+                } else {
+                  return { replayStr };
+                }
               }
             }
           }
