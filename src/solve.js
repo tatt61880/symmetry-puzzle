@@ -201,20 +201,8 @@
         nextStateStrSet.add(stateStr);
       }
 
-      for (; step < maxStep; ++step) {
-        if (options.console) {
-          const time = performance.now();
-          const timeStr = ((time - startTime) / 1000).toFixed(2);
-          const diffTimeStr = ((time - prevTime) / 1000).toFixed(2);
-          console.log(`${step} steps. [Time: ${timeStr} sec. (+${diffTimeStr} sec.)]`);
-          prevTime = time;
-        }
+      for (; step < maxStep;) {
         const currentStateStrSet = nextStateStrSet;
-        if (currentStateStrSet.size === 0) {
-          const errorMessage = `No solution.\n[Step: ${step - 1}] [Step limit: ${maxStep}]`;
-          console.error(errorMessage);
-          return { replayStr: null, errorMessage };
-        }
         nextStateStrSet = new Set;
         for (const currentStateStr of currentStateStrSet) {
           if (options.time !== undefined && ++stateCount % 10000 === 0) {
@@ -246,13 +234,28 @@
               const completedFlag = level.isCompleted();
               if (completedFlag) {
                 if (options.all) {
-                  console.log(replayStr);
+                  const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps (${prefixStep})]`;
+                  console.log(`[LEVEL ${levelId}] ${replayStr.length} steps: ${replayStr}${prefixStepInfo}`);
                 } else {
                   return { replayStr };
                 }
               }
             }
           }
+        }
+
+        if (nextStateStrSet.size === 0) {
+          const errorMessage = `No solution.\n[Step: ${step}] [Step limit: ${maxStep}]`;
+          console.error(errorMessage);
+          return { replayStr: null, errorMessage };
+        }
+        step++;
+        if (options.console) {
+          const time = performance.now();
+          const timeStr = ((time - startTime) / 1000).toFixed(2);
+          const diffTimeStr = ((time - prevTime) / 1000).toFixed(2);
+          console.log(`${step} steps. [Time: ${timeStr} sec. (+${diffTimeStr} sec.)]`);
+          prevTime = time;
         }
       }
 
