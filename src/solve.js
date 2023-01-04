@@ -254,7 +254,7 @@
           const time = performance.now();
           const timeStr = ((time - startTime) / 1000).toFixed(2);
           const diffTimeStr = ((time - prevTime) / 1000).toFixed(2);
-          console.log(`${step} steps. [Time: ${timeStr} sec. (+${diffTimeStr} sec.)]`);
+          console.log(`${step} steps completed. [Time: ${timeStr} sec. (+${diffTimeStr} sec.)]`);
           prevTime = time;
         }
       }
