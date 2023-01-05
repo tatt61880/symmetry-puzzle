@@ -156,7 +156,7 @@
   return;
   // ==========================================================================
 
-  function updateController(dir) {
+  function updateStick(dir) {
     const transforms = {
       'N': '',
       '0': 'rotateX(45deg)',
@@ -248,14 +248,14 @@
     } else {
       inputDir = y < 0 ? dirs.ArrowUp : dirs.ArrowDown;
     }
-    updateController(inputDir);
+    updateStick(inputDir);
   }
 
   function pointerup() {
     undoEnd();
     inputFlag = false;
     inputDir = dirs.neutral;
-    updateController(inputDir);
+    updateStick(inputDir);
   }
 
   function keydown(e) {
@@ -291,7 +291,7 @@
           e.preventDefault();
           inputFlag = true;
           inputDir = dir;
-          updateController(inputDir);
+          updateStick(inputDir);
           inputKeys[e.key] = true;
         }
       }
@@ -311,7 +311,7 @@
       undoEnd();
     } else if (Object.keys(inputKeys).length === 0) {
       if (!settings.autoMode) {
-        updateController(dirs.neutral);
+        updateStick(dirs.neutral);
         inputFlag = false;
       }
     }
@@ -428,9 +428,6 @@
 
     inputDir = dirs.neutral;
     inputCount = INPUT_INTERVAL_COUNT;
-    if (!settings.autoMode || !settingsAuto.paused) {
-      showElem(elems.controller.stickBase);
-    }
   }
 
   function showLevelPrev() {
@@ -791,7 +788,6 @@
       if (undoCount === UNDO_INTERVAL_COUNT) {
         undoCount = 0;
         execUndo();
-        showElem(elems.controller.stickBase);
       }
       undoCount++;
       return;
@@ -818,13 +814,10 @@
       if (redrawFlag) {
         redrawFlag = false;
         draw(true);
-        if (completeFlag) {
-          hideElem(elems.controller.stickBase);
-        }
       } else if (inputFlag) {
         if (inputDir !== dirs.neutral) {
           if (settings.autoMode) {
-            updateController(inputDir);
+            updateStick(inputDir);
           }
           inputCount = 0;
           const moveFlag = move(inputDir);
@@ -845,6 +838,18 @@
     let rotateFlag = rotateFlag_;
     rotateFlag &&= completeFlag;
     elems.main.svg.textContent = '';
+
+    {
+      if (settings.autoMode && settingsAuto.paused) {
+        hideElem(elems.controller.stickBase);
+      } else {
+        if (completeFlag) {
+          hideElem(elems.controller.stickBase);
+        } else {
+          showElem(elems.controller.stickBase);
+        }
+      }
+    }
 
     {
       const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
@@ -1172,12 +1177,6 @@
     } else {
       hideElem(elems.auto.buttonStart);
       showElem(elems.auto.buttonPause);
-    }
-
-    if (settings.autoMode && settingsAuto.paused || completeFlag) {
-      hideElem(elems.controller.stickBase);
-    } else {
-      showElem(elems.controller.stickBase);
     }
   }
 
