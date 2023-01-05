@@ -457,6 +457,7 @@
     (showLevelPrev() ? showElem : hideElem)(elems.level.prev);
     (showLevelNext() ? showElem : hideElem)(elems.level.next);
     (levelId !== null ? showElem : hideElem)(elems.level.id);
+    (levelId !== null ? showElem : hideElem)(elems.levels.button);
     (levelId === null ? showElem : hideElem)(elems.level.edit);
   }
 
