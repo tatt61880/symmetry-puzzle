@@ -442,12 +442,98 @@
       return { x: (minX + maxX + 1) * 0.5, y: (minY + maxY + 1) * 0.5 };
     }
 
+    // 線対称か否か。
+    #isReflectionSymmetry(isX) {
+      let minX = this.getWidth();
+      let maxX = 0;
+      let minY = this.getHeight();
+      let maxY = 0;
+      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
+        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+          if (isX(this.#states[y][x])) {
+            minX = Math.min(minX, x);
+            maxX = Math.max(maxX, x);
+            minY = Math.min(minY, y);
+            maxY = Math.max(maxY, y);
+          }
+        }
+      }
+
+      // 左右対称か否か。
+      let res = true;
+      for (let y = minY; y <= maxY; ++y) {
+        for (let x = minX; x <= maxX; ++x) {
+          if (isX(this.#states[y][x]) && !isX(this.#states[y][minX + maxX - x])) {
+            res = false;
+          }
+        }
+      }
+      if (res) {
+        console.log('線対称(左右)');
+        return true;
+      }
+
+      // 上下対称か否か。
+      res = true;
+      for (let y = minY; y <= maxY; ++y) {
+        for (let x = minX; x <= maxX; ++x) {
+          if (isX(this.#states[y][x]) && !isX(this.#states[minY + maxY - y][x])) {
+            res = false;
+          }
+        }
+      }
+      if (res) {
+        console.log('線対称(上下)');
+        return true;
+      }
+
+      if (maxX - minX !== maxY - minY) return false; // 縦と横の長さが異なる場合、左右対称でも上下対称でもなければ線対称でないことが確定。
+
+      // 斜めに対称軸があるか否か。(1)
+      res = true;
+      for (let y = minY; y <= maxY; ++y) {
+        for (let x = minX; x <= maxX; ++x) {
+          if (isX(this.#states[y][x]) && !isX(this.#states[minY + x - minX][minX + y - minY])) {
+            res = false;
+          }
+        }
+      }
+      if (res) {
+        console.log('線対称(斜め1)');
+        return true;
+      }
+
+      // 斜めに対称軸があるか否か。(2)
+      res = true;
+      for (let y = minY; y <= maxY; ++y) {
+        for (let x = minX; x <= maxX; ++x) {
+          if (isX(this.#states[y][x]) && !isX(this.#states[minY + maxX - x][minX + maxY - y])) {
+            res = false;
+          }
+        }
+      }
+      if (res) {
+        console.log('線対称(斜め2)');
+        return true;
+      }
+
+      return false;
+    }
+
     isCompleted() {
       if (!this.#exist(app.states.isTarget)) return false;
       const isConnected = this.#isConnected(app.states.isTarget);
       if (!isConnected) return false;
       const center = this.#getRotateCenter(app.states.isTarget);
       return center !== null;
+    }
+
+    isCompleted2() {
+      if (!this.#exist(app.states.isTarget)) return false;
+      const isConnected = this.#isConnected(app.states.isTarget);
+      if (!isConnected) return false;
+      const isRefrectSymmetry = this.#isReflectionSymmetry(app.states.isTarget);
+      return isRefrectSymmetry;
     }
 
     resetMoveFlags() {
