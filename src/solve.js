@@ -113,13 +113,15 @@
   }
 
   function solveLevelObj(levelId, levelObj) {
-    const startTime = performance.now();
-    let prevTime = startTime;
     if (levelObj === undefined) {
       console.error(`Error: [LEVEL ${levelId}] levelObj === undefined`);
       process.exitCode = 1;
       return;
     }
+
+    const startTime = performance.now();
+    let prevTime = startTime;
+
     const maxStep = (() => {
       let res = options.max;
       if (res === undefined) {
@@ -130,6 +132,7 @@
       }
       return res;
     })();
+
     if (isNaN(maxStep)) {
       console.error(`Error: [LEVEL ${levelId}] maxStep is NaN. maxStep === ${maxStep}`);
       process.exitCode = 1;
