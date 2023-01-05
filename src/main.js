@@ -216,16 +216,15 @@
 
   function getCursorPos(elem, e) {
     const bcRect = elem.getBoundingClientRect();
-    let cursorX;
-    let cursorY;
     if (e.touches !== undefined) {
-      cursorX = e.touches[0].clientX - bcRect.left;
-      cursorY = e.touches[0].clientY - bcRect.top;
+      const x = e.touches[0].clientX - bcRect.left;
+      const y = e.touches[0].clientY - bcRect.top;
+      return { x, y };
     } else {
-      cursorX = e.clientX - bcRect.left;
-      cursorY = e.clientY - bcRect.top;
+      const x = e.clientX - bcRect.left;
+      const y = e.clientY - bcRect.top;
+      return { x, y };
     }
-    return { x: cursorX, y: cursorY };
   }
 
   function pointerdown(e) {
