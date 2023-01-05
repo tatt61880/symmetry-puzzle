@@ -802,10 +802,11 @@
     const r = level.getLevelObj()?.r;
     if (!editMode && settings.autoMode && r !== undefined) {
       intervalCount = settingsAuto.interval;
-      if (settingsAuto.paused) {
+      const steps = undoInfo.getIndex() + 1;
+      if (settingsAuto.paused || steps > r.length) {
         inputFlag = false;
       } else {
-        inputDir = Number(r[undoInfo.getIndex()]);
+        inputDir = Number(r[steps - 1]);
         inputFlag = true;
       }
     }
