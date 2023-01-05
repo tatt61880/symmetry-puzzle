@@ -196,7 +196,7 @@
 
         const completedFlag = level.isCompleted();
         if (completedFlag) {
-          const errorMessage = 'Error: Completed on prefix-step.';
+          const errorMessage = `Error: Completed on prefix-step. (${step} steps)`;
           console.error(errorMessage);
           return { replayStr: null, errorMessage };
         }
