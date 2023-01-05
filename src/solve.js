@@ -253,9 +253,9 @@
                   return { replayStr };
                 }
               } else {
-                stateStrMap.set(stateStr, replayStr);
                 nextStateStrSet.add(stateStr);
               }
+              stateStrMap.set(stateStr, replayStr);
             }
           }
         }
@@ -290,7 +290,7 @@
       const h = levelObj.h;
       const s = levelObj.s;
       const subject = levelObj.subject !== undefined ? `, subject: '${levelObj.subject}'` : '';
-      const res = `{ w: ${w}, h: ${h}, s: '${s}', r: '${r}', steps: ${r.length}${subject} },`;
+      const res = `{ w: ${w}, h: ${h}, s: '${s}', r: '${r}', step: ${r.length}${subject} },`;
       return res;
     }
   }
