@@ -143,13 +143,13 @@
 
     if (!isBrowser) {
       if (result.replayStr !== null) {
-        if (result.replayStr.length < levelObj.step) {
-          console.log('===== New record! =====');
-        }
         const r = result.replayStr;
         const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
         const completedLevelObj = getCompletedLevelObj(r);
         console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
+        if (result.replayStr.length < levelObj.step) {
+          console.log('===== New record! =====');
+        }
       }
       const endTime = performance.now();
       console.log(`Time: ${Math.floor(endTime - startTime)} msec`);
