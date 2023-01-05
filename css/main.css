@@ -68,6 +68,9 @@ footer {
 
 h2 {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 21px;
   margin: 0 0 5px;
   font-size: 1.1rem;
