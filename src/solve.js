@@ -238,24 +238,24 @@
             level.move();
 
             const stateStr = level.getStateStr();
-            if (!stateStrMap.has(stateStr)) {
-              const replayStr = currentReplyStr + dir;
+            if (stateStrMap.has(stateStr)) continue;
 
-              const completedFlag = level.isCompleted();
-              if (completedFlag) {
-                if (options.all) {
-                  solutionNum++;
-                  const r = replayStr;
-                  const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
-                  const completedLevelObj = getCompletedLevelObj(r);
-                  console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
-                } else {
-                  return { replayStr };
-                }
+            const replayStr = currentReplyStr + dir;
+            stateStrMap.set(stateStr, replayStr);
+
+            const completedFlag = level.isCompleted();
+            if (completedFlag) {
+              if (options.all) {
+                solutionNum++;
+                const r = replayStr;
+                const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
+                const completedLevelObj = getCompletedLevelObj(r);
+                console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
               } else {
-                nextStateStrSet.add(stateStr);
+                return { replayStr };
               }
-              stateStrMap.set(stateStr, replayStr);
+            } else {
+              nextStateStrSet.add(stateStr);
             }
           }
         }
