@@ -833,23 +833,25 @@
     }
   }
 
+  function updateController() {
+    if (settings.autoMode && settingsAuto.paused) {
+      hideElem(elems.controller.stickBase);
+    } else {
+      if (completeFlag) {
+        hideElem(elems.controller.stickBase);
+      } else {
+        showElem(elems.controller.stickBase);
+      }
+    }
+  }
+
   // 描画
   function draw(rotateFlag_ = false) {
     let rotateFlag = rotateFlag_;
     rotateFlag &&= completeFlag;
     elems.main.svg.textContent = '';
 
-    {
-      if (settings.autoMode && settingsAuto.paused) {
-        hideElem(elems.controller.stickBase);
-      } else {
-        if (completeFlag) {
-          hideElem(elems.controller.stickBase);
-        } else {
-          showElem(elems.controller.stickBase);
-        }
-      }
-    }
+    updateController();
 
     {
       const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
@@ -1167,6 +1169,7 @@
       hideElem(elems.auto.buttons);
     }
     updateAutoStartPauseButtons();
+    updateController();
     replaceUrl();
   }
 
