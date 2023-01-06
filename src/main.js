@@ -276,6 +276,8 @@
 
   function keydown(e) {
     if (!elems.category.title.classList.contains('hide')) return;
+    if (e.altKey) return;
+
     if (e.shiftKey) {
       if (e.key === 'ArrowLeft') {
         gotoPrevLevel();
