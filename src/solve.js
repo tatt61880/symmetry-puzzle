@@ -33,7 +33,7 @@
       .option('-w, --w <w>', 'levelObj.w')
       .option('-h, --h <h>', 'levelObj.h')
       .option('-s, --s <s>', 'levelObj.s')
-      .option('-r, --r', 'reflection symmetry mode')
+      .option('-r, --reflection', 'reflection symmetry mode')
       .option('-m, --max <max-step>', 'max step')
       .option('-p, --prefix <prefix-step>', 'prefix step')
       .option('-t, --time <time-limit>', 'time limit');
@@ -60,8 +60,8 @@
     1;
   } else if (levelId !== undefined) {
     const levels = {};
-    const levelsList = options.r ? app.levelsReflection : app.levels;
-    const levelsExList = options.r ? app.levelsExReflection : app.levelsEx;
+    const levelsList = options.reflection ? app.levelsReflection : app.levels;
+    const levelsExList = options.reflection ? app.levelsExReflection : app.levelsEx;
 
     for (const levelId in levelsList) {
       const levelObj = levelsList[levelId];
@@ -76,11 +76,11 @@
       for (const levelId in levels) {
         if (levelId === '0') continue;
         const levelObj = levels[levelId];
-        solveLevelObj(levelId, levelObj, options.r);
+        solveLevelObj(levelId, levelObj, options.reflection);
       }
     } else {
       const levelObj = levels[levelId];
-      solveLevelObj(levelId, levelObj, options.r);
+      solveLevelObj(levelId, levelObj, options.reflection);
     }
   } else {
     if (options.w === undefined) {
@@ -112,7 +112,7 @@
       return;
     }
     const levelObj = { w, h, s };
-    solveLevelObj(null, levelObj, options.r);
+    solveLevelObj(null, levelObj, options.reflection);
   }
 
   function solveLevelObj(levelId, levelObj, isReflectionMode) {

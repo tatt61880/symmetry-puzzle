@@ -8,12 +8,12 @@
   const program = require('commander');
   program
     .version('2.0.0')
-    .option('-r, --r', 'reflection symmetry mode');
+    .option('-r, --reflection', 'reflection symmetry mode');
 
   program.parse();
   const options = program.opts();
 
-  if (options.r) {
+  if (options.reflection) {
     app.levels = require('./levels-reflection.js');
     app.levelsEx = require('./levels-ex-reflection.js');
   } else {
@@ -129,7 +129,7 @@
   }
 
   function isCompleted(level) {
-    if (options.r) {
+    if (options.reflection) {
       return level.isCompleted2();
     } else {
       return level.isCompleted();
