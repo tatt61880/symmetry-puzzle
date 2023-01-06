@@ -3,9 +3,23 @@
 
   const app = {};
   app.states = require('./states.js');
-  app.levels = require('./levels.js');
-  app.levelsEx = require('./levels-ex.js');
   app.Level = require('./class-level.js');
+
+  const program = require('commander');
+  program
+    .version('2.0.0')
+    .option('-r, --r', 'reflection symmetry mode');
+
+  program.parse();
+  const options = program.opts();
+
+  if (options.r) {
+    app.levels = require('./levels-reflection.js');
+    app.levelsEx = require('./levels-ex-reflection.js');
+  } else {
+    app.levels = require('./levels.js');
+    app.levelsEx = require('./levels-ex.js');
+  }
 
   if (app.states.targetMin !== 1
     || app.states.targetMax < app.states.targetMin
@@ -89,7 +103,7 @@
         return false;
       }
 
-      if (level.isCompleted()) {
+      if (isCompleted(level)) {
         console.error(`Error: ${levelInfo()} Completed on the way.`);
         return false;
       }
@@ -103,7 +117,7 @@
       stateStrMap[stateStr] = true;
     }
 
-    if (!level.isCompleted()) {
+    if (!isCompleted(level)) {
       console.error(`Error: ${levelInfo()} Not completed.`);
       return false;
     }
@@ -111,6 +125,14 @@
 
     function levelInfo() {
       return `Level-${levelId} [subject: ${levelObj.subject}]`;
+    }
+  }
+
+  function isCompleted(level) {
+    if (options.r) {
+      return level.isCompleted2();
+    } else {
+      return level.isCompleted();
     }
   }
 })();

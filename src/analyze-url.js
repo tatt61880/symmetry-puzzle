@@ -11,6 +11,7 @@
         s: '',
       },
       settings: {
+        r: false,
         autoMode: false,
         debugFlag: false,
         mirrorFlag: false,
@@ -37,6 +38,9 @@
           break;
         case 's':
           res.levelObj.s = paramVal;
+          break;
+        case 'r':
+          res.settings.r = true;
           break;
         case 'auto':
           res.settings.autoMode = true;

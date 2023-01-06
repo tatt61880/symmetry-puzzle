@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <title>点対称パズル</title>
+  <title>対称パズル</title>
   <meta charset="UTF-8">
   <meta id="viewport" name="viewport">
 
-  <meta name="description" content="図形を点対称にするパズルです。">
-  <meta property="og:title" content="点対称パズル">
-  <meta property="og:description" content="図形を点対称にするパズルです。">
+  <meta name="description" content="図形を点対称や線対称にするパズルです。">
+  <meta property="og:title" content="対称パズル">
+  <meta property="og:description" content="図形を点対称や線対称にするパズルです。">
 
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2022.12.18">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2022.12.18">
 
-  <link rel="stylesheet" href="./css/main.css?2023.01.03f">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.01.03f">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.01.03f">
-  <link rel="stylesheet" href="./css/animation.css?2023.01.03f">
+  <link rel="stylesheet" href="./css/main.css?2023.01.06">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.01.06">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.01.06">
+  <link rel="stylesheet" href="./css/animation.css?2023.01.06">
 
-  <script src="./src/states.js?2023.01.03f"></script>
-  <script src="./src/colors.js?2023.01.03f"></script>
-  <script src="./src/levels.js?2023.01.03f"></script>
-  <script src="./src/levels-ex.js?2023.01.03f"></script>
-  <script src="./src/svg.js?2023.01.03f"></script>
-  <script src="./src/analyze-url.js?2023.01.03f"></script>
-  <script src="./src/class-savedata.js?2023.01.03f"></script>
-  <script src="./src/class-stack.js?2023.01.03f"></script>
-  <script src="./src/class-undo-info.js?2023.01.03f"></script>
-  <script src="./src/class-level.js?2023.01.03f"></script>
-  <script src="./src/class-elems.js?2023.01.03f"></script>
-  <script src="./src/solve.js?2023.01.03f"></script>
-  <script src="./src/main.js?2023.01.03f"></script>
+  <script src="./src/states.js?2023.01.06"></script>
+  <script src="./src/colors.js?2023.01.06"></script>
+  <script src="./src/levels.js?2023.01.06"></script>
+  <script src="./src/levels-ex.js?2023.01.06"></script>
+  <script src="./src/levels-reflection.js?2023.01.06"></script>
+  <script src="./src/levels-ex-reflection.js?2023.01.06"></script>
+  <script src="./src/svg.js?2023.01.06"></script>
+  <script src="./src/analyze-url.js?2023.01.06"></script>
+  <script src="./src/class-savedata.js?2023.01.06"></script>
+  <script src="./src/class-stack.js?2023.01.06"></script>
+  <script src="./src/class-undo-info.js?2023.01.06"></script>
+  <script src="./src/class-level.js?2023.01.06"></script>
+  <script src="./src/class-elems.js?2023.01.06"></script>
+  <script src="./src/solve.js?2023.01.06"></script>
+  <script src="./src/main.js?2023.01.06"></script>
 </head>
 
 <body>
@@ -37,8 +39,8 @@
   <header>
     <div id="top" class="flex">
       <img id="icon" alt="icon" src="./images/icon.png?2022.12.18">
-      <span class="title translatable ja">点対称パズル</span>
-      <span class="title translatable en">Point Symmetry Puzzle</span>
+      <span class="title translatable ja">対称パズル</span>
+      <span class="title translatable en">Symmetry Puzzle</span>
       <span id="version">v2022.XX.XX</span>
     </div>
     <svg width="30" height="30" style="margin: 0 5px 0 auto;">
@@ -105,7 +107,21 @@
     <img id="title-logo" src="./images/apple-touch-icon.png?2022.12.18" alt="Application image">
     <div class="flex">
       <div id="button-play" class="title-button">
-        <div class="title-button-text">Play</div>
+        <div class="title-button-text translatable ja">
+          点対称
+        </div>
+        <div class="title-button-text translatable en">
+          Point<br>Symmetry
+        </div>
+      </div>
+      <div id="button-play2" class="title-button">
+        <div class="title-button-text translatable ja">
+          線対称
+        </div>
+        <div class="title-button-text translatable en">
+          Reflection<br>
+          Symmetry
+        </div>
       </div>
       <!-- <div id="button-edit" class="title-button">
         <div class="title-button-text">-</div>

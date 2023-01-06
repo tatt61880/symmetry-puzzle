@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.01.03';
+  const VERSION_TEXT = 'v2023.01.06';
 
   const app = window.app;
   Object.freeze(app);
@@ -56,7 +56,14 @@
 
   let blockSize = 0;
 
+  let levelsList = null;
+  let levelsExList = null;
   let levelId = null;
+  let mode;
+  const MODE = {
+    POINT: 0,
+    REFLECTION: 1,
+  };
   const level = new app.Level();
 
   const MOVE_MSEC = INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
@@ -87,6 +94,7 @@
 
     title: {
       buttonPlay: 'button-play',
+      buttonPlay2: 'button-play2',
       // buttonEdit: 'button-edit',
     },
 
@@ -184,14 +192,22 @@
 
   function completeCheck() {
     const center = level.getRotateCenter(app.states.isTarget);
-    completeFlag = level.isCompleted();
+    if (mode === MODE.REFLECTION) {
+      completeFlag = level.isCompleted2();
+    } else {
+      completeFlag = level.isCompleted();
+    }
 
     const symmetryFlagPrev = symmetryFlag;
     symmetryFlag = center !== null;
     redrawFlag = completeFlag || (symmetryFlag !== symmetryFlagPrev);
 
     if (completeFlag) {
-      document.documentElement.style.setProperty('--animation-origin-rotation', `${blockSize * center.x}px ${blockSize * center.y}px`);
+      if (mode === MODE.REFLECTION) {
+        1;
+      } else {
+        document.documentElement.style.setProperty('--animation-origin-rotation', `${blockSize * center.x}px ${blockSize * center.y}px`);
+      }
     }
   }
 
@@ -401,10 +417,10 @@
     const id = Number(id_);
     levelId = id;
     let levelObj;
-    if (app.levels[levelId] !== undefined) {
-      levelObj = app.levels[levelId];
-    } else if (app.levelsEx[levelId] !== undefined) {
-      levelObj = app.levelsEx[levelId];
+    if (levelsList[levelId] !== undefined) {
+      levelObj = levelsList[levelId];
+    } else if (levelsExList[levelId] !== undefined) {
+      levelObj = levelsExList[levelId];
     }
     consoleLog(`[LEVEL ${id}]${levelObj?.subject !== undefined ? ` ${levelObj.subject}` : ''}`);
 
@@ -434,20 +450,20 @@
     if (levelId === null) return false;
     if (levelId === 0) return false;
     if (levelId === 1) return false;
-    if (app.levels[levelId] !== undefined) return app.levels[levelId - 1] !== undefined;
+    if (levelsList[levelId] !== undefined) return levelsList[levelId - 1] !== undefined;
     if (isNaN(levelId)) return false;
-    if (app.levelsEx[levelId] !== undefined) return app.levelsEx[levelId - 1] !== undefined;
-    return app.levels[levelId - 1] === undefined && app.levelsEx[levelId - 1] === undefined;
+    if (levelsExList[levelId] !== undefined) return levelsExList[levelId - 1] !== undefined;
+    return levelsList[levelId - 1] === undefined && levelsExList[levelId - 1] === undefined;
   }
 
   function showLevelNext() {
     if (levelId === null) return false;
     if (levelId === -1) return false;
     if (levelId === 0) return false;
-    if (app.levels[levelId] !== undefined) return app.levels[levelId + 1] !== undefined;
+    if (levelsList[levelId] !== undefined) return levelsList[levelId + 1] !== undefined;
     if (isNaN(levelId)) return false;
-    if (app.levelsEx[levelId] !== undefined) return app.levelsEx[levelId + 1] !== undefined;
-    return app.levels[levelId + 1] === undefined && app.levelsEx[levelId + 1] === undefined;
+    if (levelsExList[levelId] !== undefined) return levelsExList[levelId + 1] !== undefined;
+    return levelsList[levelId + 1] === undefined && levelsExList[levelId + 1] === undefined;
   }
 
   function updateLevelVisibility() {
@@ -474,7 +490,7 @@
 
   function updateUrl() {
     if (!editMode) return;
-    const url = level.getUrlStr();
+    const url = level.getUrlStr() + (mode === MODE.REFLECTION ? '&r' : '');
     elems.url.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
   }
 
@@ -552,20 +568,20 @@
     const COLS = 5;
 
     let count = 0;
-    for (let id = 1; id < app.levels.length; ++id) {
-      const levelObj = app.levels[id];
+    for (let id = 1; id < levelsList.length; ++id) {
+      const levelObj = levelsList[id];
       appendLevel(levelObj, id);
     }
-    for (const id of Object.keys(app.levelsEx).sort()) {
+    for (const id of Object.keys(levelsExList).sort()) {
       if (String(id) === 'NaN') continue;
-      const levelObj = app.levelsEx[id];
+      const levelObj = levelsExList[id];
       appendLevel(levelObj, id);
     }
 
     elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(count / COLS)}px`);
 
     function appendLevel(levelObj, id) {
-      const highestScore = savedata.getHighestScore(levelObj);
+      const highestScore = savedata.getHighestScore(levelObj, mode === MODE.REFLECTION);
       if (highestScore !== null && hideCompletedLevelsFlag) return;
       count++;
 
@@ -622,14 +638,15 @@
 
     const queryParams = app.analyzeUrl();
     settings = queryParams.settings;
+    mode = settings.r ? MODE.REFLECTION : MODE.POINT;
 
     setInterval(intervalFunc, INPUT_INTERVAL_MSEC);
 
     if (queryParams.levelObj.s === '') {
-      if (queryParams.id === null) {
+      const id = queryParams.id;
+      if (id === null) {
         onloadTitle();
       } else {
-        const id = queryParams.id;
         onloadId(id);
       }
     } else {
@@ -645,6 +662,13 @@
   }
 
   function onloadId(id_) {
+    if (mode === MODE.POINT) {
+      levelsList = app.levels;
+      levelsExList = app.levelsEx;
+    } else {
+      levelsList = app.levelsReflection;
+      levelsExList = app.levelsExReflection;
+    }
     hideElem(elems.category.title);
     showElem(elems.category.game);
     showElem(elems.main.div);
@@ -741,7 +765,8 @@
 
     // タイトル画面用
     {
-      elems.title.buttonPlay.addEventListener('click', () => onloadId(levelId), false);
+      elems.title.buttonPlay.addEventListener('click', () => { mode = MODE.POINT; onloadId(1); }, false);
+      elems.title.buttonPlay2.addEventListener('click', () => { mode = MODE.REFLECTION; onloadId(1); }, false);
       // elems.title.buttonEdit.addEventListener('click', () => onloadObj({ w: 6, h: 5, s: '' }), false);
     }
 
@@ -856,7 +881,7 @@
 
     {
       const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
-      const levelSvg = level.createSvg(blockSize, rotateFlag, showCharsFlag);
+      const levelSvg = level.createSvg(blockSize, mode === MODE.REFLECTION ? false : rotateFlag, showCharsFlag);
       elems.main.svg.appendChild(levelSvg);
     }
     level.resetMoveFlags();
@@ -931,8 +956,8 @@
 
           // 記録保存
           if (bestStep !== undefined) {
-            highestScorePrev = savedata.getHighestScore(levelObj);
-            savedata.saveSteps(levelObj, replayStr);
+            highestScorePrev = savedata.getHighestScore(levelObj, mode === MODE.REFLECTION);
+            savedata.saveSteps(levelObj, mode === MODE.REFLECTION, replayStr);
           }
 
           // ログ出力
@@ -959,7 +984,7 @@
           nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
         }
       } else {
-        if (symmetryFlag) {
+        if (mode === MODE.POINT && symmetryFlag) {
           const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: level.getHeight() - 2, text: 'Not connected.', fill: 'white' });
           text.setAttribute('font-size', fontSize);
           text.setAttribute('font-weight', 'bold');
@@ -980,7 +1005,7 @@
       // 自己最高記録
       if (levelId !== null) {
         const levelObj = level.getLevelObj();
-        const highestScore = savedata.getHighestScore(levelObj);
+        const highestScore = savedata.getHighestScore(levelObj, mode === MODE.REFLECTION);
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
 
@@ -1148,6 +1173,7 @@
   function replaceUrl() {
     const base = location.href.split('?')[0];
     let url = `${base}?id=${levelId}`;
+    if (mode === MODE.REFLECTION) url += '&r';
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';
     if (settings.mirrorFlag) url += '&mirror';
@@ -1199,7 +1225,7 @@
       const levelObj = { w, h, s, step };
       // TODO low-contrastを盤面に反映させてから計算する。Promiseを使うといけそう。
       // elems.auto.buttonStart.classList.add('low-contrast');
-      const result = app.solveLevelObj(null, levelObj);
+      const result = app.solveLevelObj(null, levelObj, mode === MODE.REFLECTION);
       // elems.auto.buttonStart.classList.remove('low-contrast');
       if (result.replayStr === null) {
         window.alert(result.errorMessage);

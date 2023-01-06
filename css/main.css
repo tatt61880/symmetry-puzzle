@@ -258,27 +258,22 @@ li.warn {
 
 .title-button {
   box-sizing: border-box;
-  display: table;
-  width: 80px;
-  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 140px;
   margin: 10px;
   font-size: 1.3rem;
-  color: #ed1c24;
-  cursor: pointer;
-  background-color: #ffdee4;
-  border: 3px solid #ed1c24;
-}
-
-#button-play {
   color: #87ceeb;
+  cursor: pointer;
+  user-select: none;
   background-color: #eef0ff;
   border: 3px solid #87ceeb;
 }
 
 .title-button-text {
-  display: table-cell;
   font-weight: bold;
-  vertical-align: middle;
 }
 
 #top {

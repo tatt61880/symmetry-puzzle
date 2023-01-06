@@ -7,8 +7,6 @@
   if (isBrowser) {
     app = window.app;
     if (app?.states === undefined) console.error('app.states is undefined.');
-    if (app?.levels === undefined) console.error('app.levels is undefined.');
-    if (app?.levelsEx === undefined) console.error('app.levelsEx is undefined.');
     if (app?.Level === undefined) console.error('app.Level is undefined.');
     options = {
       prefix: '',
@@ -22,17 +20,20 @@
     app.states = require('./states.js');
     app.levels = require('./levels.js');
     app.levelsEx = require('./levels-ex.js');
+    app.levelsReflection = require('./levels-reflection.js');
+    app.levelsExReflection = require('./levels-ex-reflection.js');
     app.Level = require('./class-level.js');
 
     const program = require('commander');
     program
-      .version('1.4.1')
+      .version('2.0.0')
       .option('-i, --id <id>', 'id of level')
       .option('-a, --all', 'list up all solutions')
       .option('-c, --console', 'console.log step')
       .option('-w, --w <w>', 'levelObj.w')
       .option('-h, --h <h>', 'levelObj.h')
       .option('-s, --s <s>', 'levelObj.s')
+      .option('-r, --r', 'reflection symmetry mode')
       .option('-m, --max <max-step>', 'max step')
       .option('-p, --prefix <prefix-step>', 'prefix step')
       .option('-t, --time <time-limit>', 'time limit');
@@ -59,13 +60,15 @@
     1;
   } else if (levelId !== undefined) {
     const levels = {};
+    const levelsList = options.r ? app.levelsReflection : app.levels;
+    const levelsExList = options.r ? app.levelsExReflection : app.levelsEx;
 
-    for (const levelId in app.levels) {
-      const levelObj = app.levels[levelId];
+    for (const levelId in levelsList) {
+      const levelObj = levelsList[levelId];
       levels[levelId] = levelObj;
     }
-    for (const levelId in app.levelsEx) {
-      const levelObj = app.levelsEx[levelId];
+    for (const levelId in levelsExList) {
+      const levelObj = levelsExList[levelId];
       levels[levelId] = levelObj;
     }
 
@@ -73,11 +76,11 @@
       for (const levelId in levels) {
         if (levelId === '0') continue;
         const levelObj = levels[levelId];
-        solveLevelObj(levelId, levelObj);
+        solveLevelObj(levelId, levelObj, options.r);
       }
     } else {
       const levelObj = levels[levelId];
-      solveLevelObj(levelId, levelObj);
+      solveLevelObj(levelId, levelObj, options.r);
     }
   } else {
     if (options.w === undefined) {
@@ -109,10 +112,10 @@
       return;
     }
     const levelObj = { w, h, s };
-    solveLevelObj(null, levelObj);
+    solveLevelObj(null, levelObj, options.r);
   }
 
-  function solveLevelObj(levelId, levelObj) {
+  function solveLevelObj(levelId, levelObj, isReflectionMode) {
     if (levelObj === undefined) {
       console.error(`Error: [LEVEL ${levelId}] levelObj === undefined`);
       process.exitCode = 1;
@@ -139,7 +142,7 @@
       return;
     }
 
-    const result = solveLevel(levelId, levelObj);
+    const result = solveLevel(levelId, levelObj, isReflectionMode);
 
     if (!isBrowser) {
       if (result.replayStr !== null) {
@@ -158,7 +161,7 @@
 
     return result;
 
-    function solveLevel(levelId, levelObj) {
+    function solveLevel(levelId, levelObj, isReflectionMode) {
       const level = new app.Level();
       level.applyObj(levelObj, { init: true });
 
@@ -167,7 +170,7 @@
       let step = 0;
       const stateStrMap = new Map;
 
-      const completedFlag = level.isCompleted();
+      const completedFlag = isCompleted(level, isReflectionMode);
       if (completedFlag) {
         console.warn('Warning: Completed on start.');
         return { replayStr: '' };
@@ -197,7 +200,7 @@
           console.warn('Warning: Same state exists.');
         }
 
-        const completedFlag = level.isCompleted();
+        const completedFlag = isCompleted(level, isReflectionMode);
         if (completedFlag) {
           const errorMessage = `Error: Completed on prefix-step. (${step} steps)`;
           console.error(errorMessage);
@@ -246,7 +249,7 @@
             const replayStr = currentReplyStr + dir;
             stateStrMap.set(stateStr, replayStr);
 
-            const completedFlag = level.isCompleted();
+            const completedFlag = isCompleted(level, isReflectionMode);
             if (completedFlag) {
               if (options.all) {
                 solutionNum++;
@@ -295,6 +298,14 @@
       const subject = levelObj.subject !== undefined ? `, subject: '${levelObj.subject}'` : '';
       const res = `{ w: ${w}, h: ${h}, s: '${s}', r: '${r}', step: ${r.length}${subject} },`;
       return res;
+    }
+  }
+
+  function isCompleted(level, isReflectionMode) {
+    if (isReflectionMode) {
+      return level.isCompleted2();
+    } else {
+      return level.isCompleted();
     }
   }
 

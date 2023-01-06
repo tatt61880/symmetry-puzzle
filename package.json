@@ -18,6 +18,7 @@
     "htmlhint": "htmlhint ./*.html",
     "stylelint": "stylelint ./css/*.css --fix",
     "test": "node ./src/test.js",
+    "test2": "node ./src/test.js -r",
     "solve": "node ./src/solve.js"
   },
   "devDependencies": {

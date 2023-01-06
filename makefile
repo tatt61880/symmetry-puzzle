@@ -1,5 +1,6 @@
 all: node_modules
 	npm run test
+	npm run test2
 	npm run eslint
 	npm run htmlhint
 	npm run stylelint
