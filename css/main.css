@@ -251,9 +251,9 @@ li.warn {
 
 #title-logo {
   box-sizing: border-box;
-  width: 450px;
-  height: 450px;
-  padding: 150px;
+  width: 400px;
+  height: 400px;
+  padding: 125px;
 }
 
 .title-button {
