@@ -469,7 +469,7 @@
         }
       }
       if (res) {
-        console.log('線対称(左右)');
+        // console.log('線対称(左右)');
         return true;
       }
 
@@ -483,7 +483,7 @@
         }
       }
       if (res) {
-        console.log('線対称(上下)');
+        // console.log('線対称(上下)');
         return true;
       }
 
@@ -499,7 +499,7 @@
         }
       }
       if (res) {
-        console.log('線対称(斜め1)');
+        // console.log('線対称(斜め1)');
         return true;
       }
 
@@ -513,7 +513,7 @@
         }
       }
       if (res) {
-        console.log('線対称(斜め2)');
+        // console.log('線対称(斜め2)');
         return true;
       }
 
