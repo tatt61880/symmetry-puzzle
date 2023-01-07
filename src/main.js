@@ -875,16 +875,24 @@
   }
 
   // 描画
-  function draw(rotateFlag_ = false) {
-    let rotateFlag = rotateFlag_;
-    rotateFlag &&= completeFlag;
+  function draw(completeCheckFlag = false) {
     elems.main.svg.textContent = '';
-
     updateController();
 
     {
+      const symmetryType = (() => {
+        if (completeCheckFlag && completeFlag) {
+          if (mode === MODE.REFLECTION) {
+            return null;
+          } else {
+            return app.Level.SYMMETRYTYPE.ROTATE;
+          }
+        }
+        return null;
+      })();
+
       const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
-      const levelSvg = level.createSvg(blockSize, mode === MODE.REFLECTION ? false : rotateFlag, showCharsFlag);
+      const levelSvg = level.createSvg(blockSize, symmetryType, showCharsFlag);
       elems.main.svg.appendChild(levelSvg);
     }
     level.resetMoveFlags();

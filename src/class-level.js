@@ -44,6 +44,13 @@
   }
 
   class Level {
+    static SYMMETRYTYPE = {
+      ROTATE: 0,
+      REFLECT1: 1,
+      REFLECT2: 2,
+      REFLECT3: 3,
+      REFLECT4: 4,
+    };
     #levelObj;
     #states;
     #width;
@@ -628,7 +635,7 @@
       }
     }
 
-    createSvg(blockSize, rotateFlag = false, showCharsFlag = false) {
+    createSvg(blockSize, symmetryType = false, showCharsFlag = false) {
       const g = app.svg.createG();
 
       // 背景
@@ -658,13 +665,13 @@
         for (let x = 1; x < this.getWidth() - 1; ++x) {
           const state = this.getState(x, y);
           if (!app.states.isTarget(state)) continue;
-          this.#addOneBlock(x, y, blockSize, rotateFlag, showCharsFlag, gShadows, gElems);
+          this.#addOneBlock(x, y, blockSize, symmetryType, showCharsFlag, gShadows, gElems);
         }
       }
       return g;
     }
 
-    #addOneBlock(x, y, blockSize, rotateFlag, showCharsFlag, gShadows, gElems) {
+    #addOneBlock(x, y, blockSize, symmetryType, showCharsFlag, gShadows, gElems) {
       const state = this.getState(x, y);
       const gElem = app.svg.createG();
       const color = app.colors[state];
@@ -796,7 +803,7 @@
           }
         }
 
-        if (rotateFlag) {
+        if (symmetryType === Level.SYMMETRYTYPE.ROTATE) {
           if (app.states.isTarget(state)) {
             gElem.classList.add('animation-rotation');
           }
