@@ -5,7 +5,7 @@
   --animation-duration: none;
   --animation-duration-shadow: none;
   --animation-duration-rotation: none;
-  --animation-origin-rotation: 124 150;
+  --animation-origin: 124 150;
 }
 
 .animation-block {
@@ -19,7 +19,7 @@
 }
 
 .animation-rotation {
-  transform-origin: var(--animation-origin-rotation);
+  transform-origin: var(--animation-origin);
   animation: animation-rotation ease forwards;
   animation-duration: var(--animation-duration-rotation);
 }

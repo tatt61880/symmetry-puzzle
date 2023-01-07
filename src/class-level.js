@@ -408,16 +408,14 @@
       return true;
     }
 
-    // 回転中心を得る。
-    // 点対称図形でなければnullを返す。
-    getRotateCenter(isX) {
+    // 図形の中心を得る。
+    getCenter(isX) {
       if (!this.#exist(isX)) return null;
-      return this.#getRotateCenter(isX);
+      return this.#getCenter(isX);
     }
 
-    // 回転中心を得る。
-    // 点対称図形でなければnullを返す。
-    #getRotateCenter(isX) {
+    // 図形の中心を得る。
+    #getMinMaxXY(isX) {
       let minX = this.getWidth();
       let maxX = 0;
       let minY = this.getHeight();
@@ -432,32 +430,41 @@
           }
         }
       }
+      return { minX, maxX, minY, maxY };
+    }
+
+    // 図形の中心を得る。
+    #getCenter(isX) {
+      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
+      return { x: (minX + maxX + 1) * 0.5, y: (minY + maxY + 1) * 0.5 };
+    }
+
+    isPointSymmetry(isX) {
+      if (!this.#exist(app.states.isTarget)) return false;
+      return this.#isPointSymmetry(isX);
+    }
+
+    // 点対称か否か。
+    #isPointSymmetry(isX) {
+      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
           if (isX(this.#states[y][x]) && !isX(this.#states[minY + maxY - y][minX + maxX - x])) {
-            return null;
+            return false;
           }
         }
       }
-      return { x: (minX + maxX + 1) * 0.5, y: (minY + maxY + 1) * 0.5 };
+      return true;
+    }
+
+    isReflectionSymmetry(isX) {
+      if (!this.#exist(app.states.isTarget)) return false;
+      return this.#isReflectionSymmetry(isX);
     }
 
     // 線対称か否か。
     #isReflectionSymmetry(isX) {
-      let minX = this.getWidth();
-      let maxX = 0;
-      let minY = this.getHeight();
-      let maxY = 0;
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
-          if (isX(this.#states[y][x])) {
-            minX = Math.min(minX, x);
-            maxX = Math.max(maxX, x);
-            minY = Math.min(minY, y);
-            maxY = Math.max(maxY, y);
-          }
-        }
-      }
+      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
 
       // 左右対称か否か。
       let res = true;
@@ -524,8 +531,8 @@
       if (!this.#exist(app.states.isTarget)) return false;
       const isConnected = this.#isConnected(app.states.isTarget);
       if (!isConnected) return false;
-      const center = this.#getRotateCenter(app.states.isTarget);
-      return center !== null;
+      const isPointSymmetry = this.#isPointSymmetry(app.states.isTarget);
+      return isPointSymmetry;
     }
 
     isCompleted2() {

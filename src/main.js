@@ -191,23 +191,21 @@
   }
 
   function completeCheck() {
-    const center = level.getRotateCenter(app.states.isTarget);
     if (mode === MODE.REFLECTION) {
       completeFlag = level.isCompleted2();
+      const symmetryFlagPrev = symmetryFlag;
+      symmetryFlag = level.isReflectionSymmetry(app.states.isTarget);
+      redrawFlag = completeFlag || (symmetryFlag !== symmetryFlagPrev);
     } else {
       completeFlag = level.isCompleted();
+      const symmetryFlagPrev = symmetryFlag;
+      symmetryFlag = level.isPointSymmetry(app.states.isTarget);
+      redrawFlag = completeFlag || (symmetryFlag !== symmetryFlagPrev);
     }
 
-    const symmetryFlagPrev = symmetryFlag;
-    symmetryFlag = center !== null;
-    redrawFlag = completeFlag || (symmetryFlag !== symmetryFlagPrev);
-
+    const center = level.getCenter(app.states.isTarget);
     if (completeFlag) {
-      if (mode === MODE.REFLECTION) {
-        1;
-      } else {
-        document.documentElement.style.setProperty('--animation-origin-rotation', `${blockSize * center.x}px ${blockSize * center.y}px`);
-      }
+      document.documentElement.style.setProperty('--animation-origin', `${blockSize * center.x}px ${blockSize * center.y}px`);
     }
   }
 
@@ -539,7 +537,7 @@
 
   function rotateIcon() {
     const ICON_SIZE = 32;
-    document.documentElement.style.setProperty('--animation-origin-rotation', `${ICON_SIZE / 2}px ${ICON_SIZE / 2}px`);
+    document.documentElement.style.setProperty('--animation-origin', `${ICON_SIZE / 2}px ${ICON_SIZE / 2}px`);
     elems.icon.classList.remove('animation-rotation');
     setTimeout(() => {
       elems.icon.classList.add('animation-rotation');
@@ -989,7 +987,7 @@
           nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
         }
       } else {
-        if (mode === MODE.POINT && symmetryFlag) {
+        if (symmetryFlag) {
           const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: level.getHeight() - 2, text: 'Not connected.', fill: 'white' });
           text.setAttribute('font-size', fontSize);
           text.setAttribute('font-weight', 'bold');
