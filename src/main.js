@@ -1275,6 +1275,15 @@
     li.classList.add(className);
     li.textContent = str;
     elem.appendChild(li);
+    li.addEventListener('click', function () {
+      navigator.clipboard.writeText(str).then(
+        () => {
+          alert('【クリップボードにコピーしました】\n' + str);
+        },
+        () => {
+          alert('クリップボードへのコピーに失敗しました。');
+        });
+    });
 
     const MAX_LOG_NUM = 30;
     while (elem.childElementCount > MAX_LOG_NUM) {
