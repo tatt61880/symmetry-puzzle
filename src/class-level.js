@@ -807,24 +807,28 @@
           }
         }
 
-        switch (symmetryType) {
-          case Level.SYMMETRY_TYPE.POINT: {
-            if (app.states.isTarget(state)) {
+        if (app.states.isTarget(state)) {
+          switch (symmetryType) {
+            case Level.SYMMETRY_TYPE.POINT: {
               gElem.classList.add('animation-rotation');
+              break;
             }
-            break;
-          }
-          case Level.SYMMETRY_TYPE.REFLECTION1: {
-            if (app.states.isTarget(state)) {
+            case Level.SYMMETRY_TYPE.REFLECTION1: {
               gElem.classList.add('animation-reflection1');
+              break;
             }
-            break;
-          }
-          case Level.SYMMETRY_TYPE.REFLECTION2: {
-            if (app.states.isTarget(state)) {
+            case Level.SYMMETRY_TYPE.REFLECTION2: {
               gElem.classList.add('animation-reflection2');
+              break;
             }
-            break;
+            case Level.SYMMETRY_TYPE.REFLECTION3: {
+              gElem.classList.add('animation-reflection3');
+              break;
+            }
+            case Level.SYMMETRY_TYPE.REFLECTION4: {
+              gElem.classList.add('animation-reflection4');
+              break;
+            }
           }
         }
 
