@@ -215,6 +215,8 @@
     clearTimeout(nextLevelTimerId);
     elems.controller.undo.classList.add('low-contrast');
     undoCount = UNDO_INTERVAL_COUNT;
+    inputDir = dirs.neutral;
+    updateStick(inputDir);
   }
 
   function undoEnd() {
@@ -243,6 +245,7 @@
 
   function pointerdown(e) {
     e.preventDefault();
+    if (settings.autoMode) return;
     inputFlag = true;
     pointermove(e);
   }
@@ -267,7 +270,7 @@
 
   function pointerup() {
     undoEnd();
-    if (!inputFlag || settings.autoMode) return;
+    if (settings.autoMode) return;
     inputFlag = false;
     inputDir = dirs.neutral;
     updateStick(inputDir);
