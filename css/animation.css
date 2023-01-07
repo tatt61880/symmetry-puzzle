@@ -36,6 +36,18 @@
   animation-duration: var(--animation-duration-symmetry);
 }
 
+.animation-reflection3 {
+  transform-origin: var(--animation-origin);
+  animation: animation-reflection3 ease forwards;
+  animation-duration: var(--animation-duration-symmetry);
+}
+
+.animation-reflection4 {
+  transform-origin: var(--animation-origin);
+  animation: animation-reflection4 ease forwards;
+  animation-duration: var(--animation-duration-symmetry);
+}
+
 @keyframes animation-block {
   0% {
     transform: var(--animation-transform);
@@ -112,4 +124,10 @@
   100% {
     transform: rotateX(0deg);
   }
+}
+
+@keyframes animation-reflection3 {
+}
+
+@keyframes animation-reflection4 {
 }
