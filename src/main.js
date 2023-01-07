@@ -479,17 +479,13 @@
   }
 
   function gotoPrevLevel() {
-    if (levelId === null) return;
-    if (showLevelPrev()) {
-      loadLevelById(levelId - 1);
-    }
+    if (!showLevelPrev()) return;
+    loadLevelById(levelId - 1);
   }
 
   function gotoNextLevel() {
-    if (levelId === null) return;
-    if (showLevelNext()) {
-      loadLevelById(levelId + 1);
-    }
+    if (!showLevelNext()) return;
+    loadLevelById(levelId + 1);
   }
 
   function updateUrl() {
