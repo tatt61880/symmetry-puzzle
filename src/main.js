@@ -71,7 +71,7 @@
   const ROTATION_MSEC = MOVE_MSEC * 3;
   document.documentElement.style.setProperty('--animation-duration', `${MOVE_MSEC}ms`);
   document.documentElement.style.setProperty('--animation-duration-shadow', `${SHADOW_MSEC}ms`);
-  document.documentElement.style.setProperty('--animation-duration-rotation', `${ROTATION_MSEC}ms`);
+  document.documentElement.style.setProperty('--animation-duration-symmetry', `${ROTATION_MSEC}ms`);
 
   const elems = new app.Elems({
     viewport: 'viewport',
@@ -883,9 +883,9 @@
       const symmetryType = (() => {
         if (completeCheckFlag && completeFlag) {
           if (mode === MODE.REFLECTION) {
-            return null;
+            return level.getReflectionType(app.states.isTarget);
           } else {
-            return app.Level.SYMMETRYTYPE.ROTATE;
+            return app.Level.SYMMETRY_TYPE.POINT;
           }
         }
         return null;

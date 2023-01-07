@@ -44,12 +44,12 @@
   }
 
   class Level {
-    static SYMMETRYTYPE = {
-      ROTATE: 0,
-      REFLECT1: 1,
-      REFLECT2: 2,
-      REFLECT3: 3,
-      REFLECT4: 4,
+    static SYMMETRY_TYPE = {
+      POINT: 0,
+      REFLECTION1: 1,
+      REFLECTION2: 2,
+      REFLECTION3: 3,
+      REFLECTION4: 4,
     };
     #levelObj;
     #states;
@@ -471,6 +471,10 @@
 
     // 線対称か否か。
     #isReflectionSymmetry(isX) {
+      return this.getReflectionType(isX) !== null;
+    }
+
+    getReflectionType(isX) {
       const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
 
       // 左右対称か否か。
@@ -484,7 +488,7 @@
       }
       if (res) {
         // console.log('線対称(左右)');
-        return true;
+        return Level.SYMMETRY_TYPE.REFLECTION1;
       }
 
       // 上下対称か否か。
@@ -498,10 +502,10 @@
       }
       if (res) {
         // console.log('線対称(上下)');
-        return true;
+        return Level.SYMMETRY_TYPE.REFLECTION2;
       }
 
-      if (maxX - minX !== maxY - minY) return false; // 縦と横の長さが異なる場合、左右対称でも上下対称でもなければ線対称でないことが確定。
+      if (maxX - minX !== maxY - minY) return null; // 縦と横の長さが異なる場合、左右対称でも上下対称でもなければ線対称でないことが確定。
 
       // 斜めに対称軸があるか否か。(1)
       res = true;
@@ -514,7 +518,7 @@
       }
       if (res) {
         // console.log('線対称(斜め1)');
-        return true;
+        return Level.SYMMETRY_TYPE.REFLECTION3;
       }
 
       // 斜めに対称軸があるか否か。(2)
@@ -528,10 +532,10 @@
       }
       if (res) {
         // console.log('線対称(斜め2)');
-        return true;
+        return Level.SYMMETRY_TYPE.REFLECTION4;
       }
 
-      return false;
+      return null;
     }
 
     isCompleted() {
@@ -803,9 +807,24 @@
           }
         }
 
-        if (symmetryType === Level.SYMMETRYTYPE.ROTATE) {
-          if (app.states.isTarget(state)) {
-            gElem.classList.add('animation-rotation');
+        switch (symmetryType) {
+          case Level.SYMMETRY_TYPE.POINT: {
+            if (app.states.isTarget(state)) {
+              gElem.classList.add('animation-rotation');
+            }
+            break;
+          }
+          case Level.SYMMETRY_TYPE.REFLECTION1: {
+            if (app.states.isTarget(state)) {
+              gElem.classList.add('animation-reflection1');
+            }
+            break;
+          }
+          case Level.SYMMETRY_TYPE.REFLECTION2: {
+            if (app.states.isTarget(state)) {
+              gElem.classList.add('animation-reflection2');
+            }
+            break;
           }
         }
 
