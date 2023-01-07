@@ -267,6 +267,7 @@
 
   function pointerup() {
     undoEnd();
+    if (!inputFlag || settings.autoMode) return;
     inputFlag = false;
     inputDir = dirs.neutral;
     updateStick(inputDir);
