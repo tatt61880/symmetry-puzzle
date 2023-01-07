@@ -664,6 +664,9 @@
   }
 
   function onloadId(id_) {
+    if (editMode) {
+      toggleEditLevel();
+    }
     if (mode === MODE.POINT) {
       levelsList = app.levels;
       levelsExList = app.levelsEx;
