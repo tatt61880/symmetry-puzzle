@@ -127,7 +127,37 @@
 }
 
 @keyframes animation-reflection3 {
+  0% {
+    transform: rotate3d(1, 1, 0, 0deg);
+  }
+
+  40% {
+    transform: rotate3d(1, 1, 0, 180deg);
+  }
+
+  80% {
+    transform: rotate3d(1, 1, 0, 180deg);
+  }
+
+  100% {
+    transform: rotate3d(1, 1, 0, 0deg);
+  }
 }
 
 @keyframes animation-reflection4 {
+  0% {
+    transform: rotate3d(1, -1, 0, 0deg);
+  }
+
+  40% {
+    transform: rotate3d(1, -1, 0, 180deg);
+  }
+
+  80% {
+    transform: rotate3d(1, -1, 0, 180deg);
+  }
+
+  100% {
+    transform: rotate3d(1, -1, 0, 0deg);
+  }
 }
