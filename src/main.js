@@ -1030,7 +1030,7 @@
         }
 
         // 記録更新？
-        if (highestScorePrev !== null && highestScore < highestScorePrev) {
+        if (highestScore !== null && highestScorePrev !== null && highestScore < highestScorePrev) {
           const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: 0.95, text: 'New record!', fill: 'white' });
           text.setAttribute('font-size', fontSize);
           text.setAttribute('font-weight', 'bold');
