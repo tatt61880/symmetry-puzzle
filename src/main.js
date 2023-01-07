@@ -166,11 +166,11 @@
 
   function updateStick(dir) {
     const transforms = {
-      'N': '',
-      '0': 'rotateX(45deg)',
-      '1': 'rotateY(45deg)',
-      '2': 'rotateX(-45deg)',
-      '3': 'rotateY(-45deg)',
+      'N': 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
+      '0': 'rotateX(45deg) rotateY(0deg) translate(0, -30px)',
+      '1': 'rotateX(0deg) rotateY(45deg) translate(30px, 0)',
+      '2': 'rotateX(-45deg) rotateY(0deg) translate(0, 30px)',
+      '3': 'rotateX(0deg) rotateY(-45deg) translate(-30px, 0)',
     };
     elems.controller.stick.style.setProperty('transform', transforms[dir]);
   }
