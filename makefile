@@ -1,4 +1,5 @@
 all: node_modules
+	npm run test
 	npm run test-point
 	npm run test-reflection
 	npm run eslint
@@ -10,6 +11,8 @@ node_modules:
 
 test:
 	npm run test
+	npm run test-point
+	npm run test-reflection
 
 solve:
 	npm run solve -- --id 1 --max 5
