@@ -146,6 +146,7 @@
       widget: 'controller-widget',
       undo: 'button-undo',
       stick: 'stick',
+      stickThickness: 'stick-thickness',
       stickBase: 'stick-base',
     },
 
@@ -169,13 +170,14 @@
 
   function updateStick(dir) {
     const transforms = {
-      'N': 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
-      '0': 'rotateX(45deg) rotateY(0deg) translate(0, -30px)',
-      '1': 'rotateX(0deg) rotateY(45deg) translate(30px, 0)',
-      '2': 'rotateX(-45deg) rotateY(0deg) translate(0, 30px)',
-      '3': 'rotateX(0deg) rotateY(-45deg) translate(-30px, 0)',
+      'N': () => 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
+      '0': (dist) => `rotateX(45deg) rotateY(0deg) translate(0, -${dist}px)`,
+      '1': (dist) => `rotateX(0deg) rotateY(45deg) translate(${dist}px, 0)`,
+      '2': (dist) => `rotateX(-45deg) rotateY(0deg) translate(0, ${dist}px)`,
+      '3': (dist) => `rotateX(0deg) rotateY(-45deg) translate(-${dist}px, 0)`,
     };
-    elems.controller.stick.style.setProperty('transform', transforms[dir]);
+    elems.controller.stickThickness.style.setProperty('transform', transforms[dir](25));
+    elems.controller.stick.style.setProperty('transform', transforms[dir](30));
   }
 
   function move(dir) {

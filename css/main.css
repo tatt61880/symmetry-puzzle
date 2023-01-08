@@ -104,6 +104,10 @@ div.level {
   transition: 0.07s;
 }
 
+#stick-thickness {
+  transition: 0.07s;
+}
+
 svg {
   padding: 0;
   margin: 0;
