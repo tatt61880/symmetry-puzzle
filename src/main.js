@@ -1102,6 +1102,7 @@
     const curXY = getCurXY(e);
     const x = curXY.x;
     const y = curXY.y;
+
     if (!editMode) {
       const xMax = level.getW() + 3;
       const yMax = level.getH() + 3;
