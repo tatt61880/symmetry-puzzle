@@ -149,7 +149,10 @@
       stickBase: 'stick-base',
     },
 
-    consoleLog: 'console-log',
+    console: {
+      widget: 'console-widget',
+      log: 'console-log',
+    }
   });
 
   const digitStates = {
@@ -1085,9 +1088,9 @@
       } else if (secretSequence === '1414') {
         updateAutoMode(true);
       } else if (secretSequence === '4343') {
-        showElem(elems.consoleLog);
+        showElem(elems.console.widget);
       } else if (secretSequence === '3434') {
-        hideElem(elems.consoleLog);
+        hideElem(elems.console.widget);
       } else {
         resetFlag = false;
       }
@@ -1227,7 +1230,6 @@
   }
 
   function onButtonStart() {
-    console.log('levelId', levelId);
     if (levelId === null) {
       const w = level.getW();
       const h = level.getH();
@@ -1242,7 +1244,6 @@
         window.alert(result.errorMessage);
         return;
       } else {
-        console.log(result.replayStr);
         resetUndo();
         const newLevelObj = { ...levelObj, ...{ r: result.replayStr } };
         level.applyObj(newLevelObj, { init: true });
@@ -1278,7 +1279,7 @@
   }
 
   function consoleAdd(str, className) {
-    const elem = elems.consoleLog;
+    const elem = elems.console.log;
     const li = document.createElement('li');
     li.classList.add(className);
     li.textContent = str;

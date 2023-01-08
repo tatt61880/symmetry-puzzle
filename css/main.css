@@ -157,24 +157,6 @@ text {
   opacity: 0.7;
 }
 
-ul {
-  padding: 0;
-  margin: 0;
-}
-
-li {
-  padding: 3px 10px;
-  text-align: left;
-  word-break: break-all;
-  list-style-type: none;
-  border: 1px solid #f0f0f0;
-}
-
-li.warn {
-  background-color: #fffbe5;
-  border: 1px solid #fff5c2;
-}
-
 .toggle-div {
   display: flex;
   align-items: center;
@@ -282,4 +264,29 @@ li.warn {
 
 #top {
   cursor: pointer;
+}
+
+#console-widget {
+  color: #eef0ff;
+  background-color: #335577;
+  border: 3px solid #113355;
+}
+
+#console-widget ul {
+  padding: 0;
+  margin: 0;
+}
+
+#console-widget li {
+  box-sizing: border-box;
+  padding: 3px 10px;
+  text-align: left;
+  word-break: break-all;
+  list-style-type: none;
+  border-top: 1px solid #f0f0f0;
+}
+
+#console-widget li.warn {
+  background-color: #fffbe5;
+  border: 1px solid #fff5c2;
 }
