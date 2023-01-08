@@ -17,7 +17,7 @@
     "eslint": "eslint ./src/*.js --fix",
     "htmlhint": "htmlhint ./*.html",
     "stylelint": "stylelint ./css/*.css --fix",
-    "test": "node ./src/test.js",
+    "test-point": "node ./src/test.js",
     "test-reflection": "node ./src/test.js --reflection",
     "solve": "node ./src/solve.js"
   },
