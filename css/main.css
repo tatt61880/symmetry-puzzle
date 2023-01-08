@@ -32,8 +32,8 @@ header {
   height: 34px;
   font-size: 1.1rem;
   text-align: left;
-  background-color: pink;
-  border: 1px solid pink;
+  background-color: #ffc0cb;
+  border: 1px solid #ffc0cb;
 }
 
 .title {
@@ -58,7 +58,7 @@ footer {
   font-size: 1rem;
   font-weight: bold;
   color: #aa7777;
-  background-color: pink;
+  background-color: #ffc0cb;
 }
 
 #level-widget {
@@ -75,7 +75,7 @@ h2 {
   margin: 0;
   font-size: 1.1rem;
   color: #335577;
-  background-color: skyblue;
+  background-color: #87ceeb;
 }
 
 div.noselect {
@@ -135,18 +135,18 @@ span.red-block {
   padding: 0 4px;
   margin: 4px;
   font-weight: bold;
-  color: red;
-  background-color: pink;
-  border: solid 2px red;
+  color: #f80000;
+  background-color: #ffc0cb;
+  border: solid 2px #f80000;
 }
 
 span.blue-block {
   padding: 0 4px;
   margin: 4px;
   font-weight: bold;
-  color: blue;
-  background-color: cyan;
-  border: solid 2px blue;
+  color: #0000f8;
+  background-color: #00f8f8;
+  border: solid 2px #0000f8;
 }
 
 text {
@@ -208,7 +208,7 @@ text {
   width: 35px;
   height: 35px;
   content: "";
-  background-color: white;
+  background-color: #ffffff;
   border-radius: 100%;
   box-shadow: 0 0 5px rgb(0 0 0 / 50%);
   transition: 0.2s;
