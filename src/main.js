@@ -176,8 +176,8 @@
       '2': (dist) => `rotateX(-45deg) rotateY(0deg) translate(0, ${dist}px)`,
       '3': (dist) => `rotateX(0deg) rotateY(-45deg) translate(-${dist}px, 0)`,
     };
-    elems.controller.stickThickness.style.setProperty('transform', transforms[dir](25));
-    elems.controller.stick.style.setProperty('transform', transforms[dir](30));
+    elems.controller.stickThickness.style.setProperty('transform', transforms[dir](28));
+    elems.controller.stick.style.setProperty('transform', transforms[dir](32));
   }
 
   function move(dir) {
