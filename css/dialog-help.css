@@ -21,12 +21,12 @@
   background-color: rgb(0 0 0 / 50%);
 }
 
-#setting-lang {
+#dialog-help #setting-lang {
   display: flex;
   justify-content: flex-end;
 }
 
-.setting-lang-button {
+#dialog-help .setting-lang-button {
   width: 80px;
   height: 30px;
   margin: 5px;
@@ -39,12 +39,12 @@
   outline: none;
 }
 
-.setting-lang-button.active {
+#dialog-help .setting-lang-button.active {
   color: #dddddd;
   background-color: #505050;
 }
 
-.example-image {
+#dialog-help .example-image {
   width: 380px;
   height: 140px;
 }
