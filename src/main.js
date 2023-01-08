@@ -15,11 +15,11 @@
     ArrowLeft: '3',
   };
 
-  let inputFlag = false;
   const INPUT_INTERVAL_MSEC = 28; // この値を変更するときは、iOSの省電力モード時のsetIntervalの動作を確認した上で変更してください。詳細: https://github.com/tatt61880/showkoban/issues/38
   const INPUT_INTERVAL_COUNT = 6;
   const UNDO_INTERVAL_COUNT = 5;
   let inputCount = INPUT_INTERVAL_COUNT;
+  let inputFlag = false;
   let inputDir = dirs.neutral;
   const inputKeys = {};
 
@@ -350,8 +350,8 @@
       undoEnd();
     } else if (Object.keys(inputKeys).length === 0) {
       if (!settings.autoMode) {
-        updateStick(dirs.neutral);
         inputFlag = false;
+        updateStick(dirs.neutral);
       }
     }
     return false;
@@ -465,7 +465,9 @@
     resetUndo();
     applyObj(levelObj, objParam);
 
+    inputFlag = false;
     inputDir = dirs.neutral;
+    updateStick(inputDir);
     inputCount = INPUT_INTERVAL_COUNT;
   }
 
@@ -1222,6 +1224,10 @@
     } else {
       settings.autoMode = false;
       hideElem(elems.auto.buttons);
+
+      inputFlag = false;
+      inputDir = dirs.neutral;
+      updateStick(inputDir);
     }
     updateAutoStartPauseButtons();
     updateController();
