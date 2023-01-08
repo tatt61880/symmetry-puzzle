@@ -318,8 +318,24 @@
           inputKeys[e.key] = true;
         }
       }
-    } else if (editMode && editboxFunctions[e.key]) {
-      editboxFunctions[e.key]();
+    }
+
+    if (editMode) {
+      if (editboxFunctions[e.key]) {
+        editboxFunctions[e.key]();
+      }
+    } else {
+      if (e.key === '0') {
+        secretSequenceReset();
+      } else if (e.key === '1') {
+        secretSequenceAdd('1');
+      } else if (e.key === '2') {
+        secretSequenceAdd('2');
+      } else if (e.key === '3') {
+        secretSequenceAdd('3');
+      } else if (e.key === '4') {
+        secretSequenceAdd('4');
+      }
     }
     return false;
   }
@@ -1055,6 +1071,29 @@
     }
   }
 
+  function secretSequenceAdd(c) {
+    secretSequence += c;
+    let resetFlag = true;
+    if (secretSequence === '1234') {
+      toggleEditLevel();
+    } else if (secretSequence === '1414') {
+      updateAutoMode(true);
+    } else if (secretSequence === '4343') {
+      showElem(elems.console.widget);
+    } else if (secretSequence === '3434') {
+      hideElem(elems.console.widget);
+    } else {
+      resetFlag = false;
+    }
+    if (resetFlag) {
+      secretSequenceReset();
+    }
+  }
+
+  function secretSequenceReset() {
+    secretSequence = '';
+  }
+
   function editSvg(e) {
     const curXY = getCurXY(e);
     const x = curXY.x;
@@ -1062,42 +1101,17 @@
     if (!editMode) {
       const xMax = level.getW() + 3;
       const yMax = level.getH() + 3;
-      if (x < 2) {
-        if (y < 2) {
-          secretSequence += '1';
-        } else if (y > yMax - 2) {
-          secretSequence += '4';
-        } else {
-          secretSequence = '';
-        }
-      } else if (x > xMax - 2) {
-        if (y < 2) {
-          secretSequence += '2';
-        } else if (y > yMax - 2) {
-          secretSequence += '3';
-        } else {
-          secretSequence = '';
-        }
+      if (x < 2 && y < 2) {
+        secretSequenceAdd('1');
+      } else if (x > xMax - 2 && y < 2) {
+        secretSequenceAdd('2');
+      } else if (x > xMax - 2 && y > yMax - 2) {
+        secretSequenceAdd('3');
+      } else if (x < 2 && y > yMax - 2) {
+        secretSequenceAdd('4');
       } else {
-        secretSequence = '';
+        secretSequenceReset();
       }
-
-      let resetFlag = true;
-      if (secretSequence === '1234') {
-        toggleEditLevel();
-      } else if (secretSequence === '1414') {
-        updateAutoMode(true);
-      } else if (secretSequence === '4343') {
-        showElem(elems.console.widget);
-      } else if (secretSequence === '3434') {
-        hideElem(elems.console.widget);
-      } else {
-        resetFlag = false;
-      }
-      if (resetFlag) {
-        secretSequence = '';
-      }
-
       return;
     }
 
