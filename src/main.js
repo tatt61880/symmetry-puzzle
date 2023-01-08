@@ -197,12 +197,12 @@
 
   function completeCheck() {
     if (mode === MODE.REFLECTION) {
-      completeFlag = level.isCompleted2();
+      completeFlag = level.isCompletedReflection();
       const symmetryFlagPrev = symmetryFlag;
       symmetryFlag = level.isReflectionSymmetry(app.states.isTarget);
       redrawFlag = completeFlag || (symmetryFlag !== symmetryFlagPrev);
     } else {
-      completeFlag = level.isCompleted();
+      completeFlag = level.isCompletedPoint();
       const symmetryFlagPrev = symmetryFlag;
       symmetryFlag = level.isPointSymmetry(app.states.isTarget);
       redrawFlag = completeFlag || (symmetryFlag !== symmetryFlagPrev);

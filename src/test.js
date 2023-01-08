@@ -112,7 +112,7 @@
         return false;
       }
 
-      if (isCompleted(level)) {
+      if (isCompletedPoint(level)) {
         console.error(`Error: ${levelInfo()} Completed on the way.`);
         return false;
       }
@@ -126,7 +126,7 @@
       stateStrMap[stateStr] = true;
     }
 
-    if (!isCompleted(level)) {
+    if (!isCompletedPoint(level)) {
       console.error(`Error: ${levelInfo()} Not completed.`);
       return false;
     }
@@ -137,11 +137,12 @@
     }
   }
 
-  function isCompleted(level) {
-    if (options.reflection) {
-      return level.isCompleted2();
-    } else {
-      return level.isCompleted();
+  function isCompletedPoint(level) {
+    if (options.point) {
+      return level.isCompletedPoint();
+    } else if (options.reflection) {
+      return level.isCompletedReflection();
     }
+    return false;
   }
 })();

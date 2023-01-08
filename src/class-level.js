@@ -541,7 +541,7 @@
       return null;
     }
 
-    isCompleted() {
+    isCompletedPoint() {
       if (!this.#exist(app.states.isTarget)) return false;
       const isConnected = this.#isConnected(app.states.isTarget);
       if (!isConnected) return false;
@@ -549,7 +549,7 @@
       return isPointSymmetry;
     }
 
-    isCompleted2() {
+    isCompletedReflection() {
       if (!this.#exist(app.states.isTarget)) return false;
       const isConnected = this.#isConnected(app.states.isTarget);
       if (!isConnected) return false;
