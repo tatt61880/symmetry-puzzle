@@ -1252,7 +1252,7 @@
   }
 
   function onButtonStart() {
-    if (levelId === null) {
+    if (level.getBestStep() === undefined) {
       const w = level.getW();
       const h = level.getH();
       const s = level.getStateStr();
