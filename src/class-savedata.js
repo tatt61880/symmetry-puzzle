@@ -30,7 +30,7 @@
     loadLang() {
       let lang = this.data.lang;
       if (lang === undefined) {
-        lang = 'ja';
+        lang = 'en';
         this.saveLang(lang);
       }
       return lang;

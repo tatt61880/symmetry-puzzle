@@ -551,7 +551,7 @@
     for (const elem of document.getElementsByClassName('translatable')) {
       hideElem(elem);
     }
-    for (const elem of document.querySelectorAll(`[lang='${lang}']`)) {
+    for (const elem of document.getElementsByClassName(`translatable ${lang}`)) {
       showElem(elem);
     }
   }
