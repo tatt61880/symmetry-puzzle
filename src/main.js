@@ -618,10 +618,6 @@
       g.appendChild(levelSvg);
       {
         const text = app.svg.createText(5, { x: 10, y: 2, text: id, fill: 'black' });
-        text.setAttribute('dominant-baseline', 'middle');
-        text.setAttribute('text-anchor', 'middle');
-        text.setAttribute('font-weight', 'bold');
-        text.setAttribute('font-size', '16px');
         g.appendChild(text);
       }
       {
