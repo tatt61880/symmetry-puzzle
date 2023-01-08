@@ -196,17 +196,15 @@
   }
 
   function completeCheck() {
-    if (mode === MODE.REFLECTION) {
-      completeFlag = level.isCompletedReflection();
-      const symmetryFlagPrev = symmetryFlag;
-      symmetryFlag = level.isReflectionSymmetry(app.states.isTarget);
-      redrawFlag = completeFlag || (symmetryFlag !== symmetryFlagPrev);
-    } else {
+    const symmetryFlagPrev = symmetryFlag;
+    if (mode === MODE.POINT) {
       completeFlag = level.isCompletedPoint();
-      const symmetryFlagPrev = symmetryFlag;
       symmetryFlag = level.isPointSymmetry(app.states.isTarget);
-      redrawFlag = completeFlag || (symmetryFlag !== symmetryFlagPrev);
+    } else if (mode === MODE.REFLECTION) {
+      completeFlag = level.isCompletedReflection();
+      symmetryFlag = level.isReflectionSymmetry(app.states.isTarget);
     }
+    redrawFlag = completeFlag || (symmetryFlag !== symmetryFlagPrev);
 
     const center = level.getCenter(app.states.isTarget);
     if (completeFlag) {
@@ -691,7 +689,7 @@
     if (mode === MODE.POINT) {
       levelsList = app.levels;
       levelsExList = app.levelsEx;
-    } else {
+    } else if (mode === MODE.REFLECTION) {
       levelsList = app.levelsReflection;
       levelsExList = app.levelsExReflection;
     }
@@ -905,10 +903,10 @@
     {
       const symmetryType = (() => {
         if (completeCheckFlag && completeFlag) {
-          if (mode === MODE.REFLECTION) {
-            return level.getReflectionType(app.states.isTarget);
-          } else {
+          if (mode === MODE.POINT) {
             return app.Level.SYMMETRY_TYPE.POINT;
+          } else if (mode === MODE.REFLECTION) {
+            return level.getReflectionType(app.states.isTarget);
           }
         }
         return null;
