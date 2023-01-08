@@ -15,10 +15,10 @@
 
   if (options.reflection) {
     app.levels = require('./levels-reflection.js');
-    app.levelsEx = require('./levels-ex-reflection.js');
+    app.levelsEx = require('./levels-reflection-ex.js');
   } else {
-    app.levels = require('./levels.js');
-    app.levelsEx = require('./levels-ex.js');
+    app.levels = require('./levels-point.js');
+    app.levelsEx = require('./levels-point-ex.js');
   }
 
   if (app.states.targetMin !== 1

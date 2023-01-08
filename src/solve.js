@@ -18,10 +18,10 @@
     };
   } else {
     app.states = require('./states.js');
-    app.levels = require('./levels.js');
-    app.levelsEx = require('./levels-ex.js');
+    app.levelsPoint = require('./levels-point.js');
+    app.levelsPointEx = require('./levels-point-ex.js');
     app.levelsReflection = require('./levels-reflection.js');
-    app.levelsExReflection = require('./levels-ex-reflection.js');
+    app.levelsReflectionEx = require('./levels-reflection-ex.js');
     app.Level = require('./class-level.js');
 
     const program = require('commander');
@@ -60,8 +60,8 @@
     1;
   } else if (levelId !== undefined) {
     const levels = {};
-    const levelsList = options.reflection ? app.levelsReflection : app.levels;
-    const levelsExList = options.reflection ? app.levelsExReflection : app.levelsEx;
+    const levelsList = options.reflection ? app.levelsReflection : app.levelsPoint;
+    const levelsExList = options.reflection ? app.levelsReflectionEx : app.levelsPointEx;
 
     for (const levelId in levelsList) {
       const levelObj = levelsList[levelId];
