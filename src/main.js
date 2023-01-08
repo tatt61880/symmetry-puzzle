@@ -1185,7 +1185,6 @@
     const obj = { w, h, s };
     addUndo(null);
     applyObj(obj, { resize: true });
-    level.removeR();
   }
 
   function addUndo(dir) {
