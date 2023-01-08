@@ -28,6 +28,12 @@
     checkLevels();
   } else {
     // その他
+    tests();
+  }
+
+  return;
+
+  function tests() {
     if (app.states.wall !== -1
       || app.states.none !== 0
       || app.states.targetMin !== 1
@@ -41,8 +47,6 @@
       process.exitCode = 1;
     }
   }
-
-  return;
 
   function checkLevels() {
     const levelSet = new Set();
