@@ -754,9 +754,6 @@
         }
         {
           const text = app.svg.createText(30, { x: 0.5, y: 0, text: char, fill: app.colors[state].text });
-          text.setAttribute('dominant-baseline', 'middle');
-          text.setAttribute('text-anchor', 'middle');
-          text.setAttribute('font-weight', 'bold');
           text.setAttribute('font-size', '18px');
           elem.appendChild(text);
         }
@@ -972,7 +969,6 @@
       if (completeFlag) {
         const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: level.getHeight() - 1.95, text: 'Congratulations!', fill: 'white' });
         text.setAttribute('font-size', fontSize);
-        text.setAttribute('font-weight', 'bold');
         g.appendChild(text);
         {
           const levelObj = level.getLevelObj();
@@ -1015,7 +1011,6 @@
         if (symmetryFlag) {
           const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: level.getHeight() - 2, text: 'Not connected.', fill: 'white' });
           text.setAttribute('font-size', fontSize);
-          text.setAttribute('font-weight', 'bold');
           g.appendChild(text);
         }
       }
@@ -1026,7 +1021,6 @@
         const color = completeFlag ? getStepColor(currentStep, bestStep) : 'black';
         const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: level.getHeight() - 1 - borderWidth / 2, text: `${currentStep} steps`, fill: color });
         text.setAttribute('font-size', fontSize);
-        text.setAttribute('font-weight', 'bold');
         g.appendChild(text);
       }
 
@@ -1039,7 +1033,6 @@
 
           const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: borderWidth / 2, text: `Your best: ${highestScore} steps`, fill: color });
           text.setAttribute('font-size', fontSize);
-          text.setAttribute('font-weight', 'bold');
           g.appendChild(text);
 
           const crown = app.svg.createCrown(blockSize, { x: borderWidth, y: borderWidth / 2, fill: color });
@@ -1050,7 +1043,6 @@
         if (highestScore !== null && highestScorePrev !== null && highestScore < highestScorePrev) {
           const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: 0.95, text: 'New record!', fill: 'white' });
           text.setAttribute('font-size', fontSize);
-          text.setAttribute('font-weight', 'bold');
           g.appendChild(text);
         }
       }

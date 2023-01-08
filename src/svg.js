@@ -89,6 +89,7 @@
     textElem.textContent = text;
     textElem.setAttribute('dominant-baseline', 'middle');
     textElem.setAttribute('text-anchor', 'middle');
+    textElem.setAttribute('font-weight', 'bold');
     textElem.setAttribute('fill', fill);
     return textElem;
   };
