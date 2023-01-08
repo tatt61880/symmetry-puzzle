@@ -5,7 +5,7 @@
   --animation-duration: none;
   --animation-duration-shadow: none;
   --animation-duration-symmetry: none;
-  --animation-origin: 124 150;
+  --animation-origin: 0 0;
 }
 
 .animation-block {
