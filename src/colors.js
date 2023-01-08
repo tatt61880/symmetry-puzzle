@@ -20,7 +20,7 @@
     colors[i] = { fill: '#e5e5e5', stroke: '#aaa', text: '#555555', error: 'red' };
   }
   for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
-    colors[i] = { fill: 'aqua', stroke: 'blue', text: '#333399', error: 'red' };
+    colors[i] = { fill: 'cyan', stroke: 'blue', text: '#333399', error: 'red' };
   }
 
   colors.line = '#888';
