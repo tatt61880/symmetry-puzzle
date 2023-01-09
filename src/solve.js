@@ -29,7 +29,7 @@
       .version('2.0.0')
       .option('-i, --id <id>', 'id of level')
       .option('-a, --all', 'list up all solutions')
-      .option('-c, --console', 'console.log step')
+      .option('-c, --console', 'consoleLog step')
       .option('-w, --w <w>', 'levelObj.w')
       .option('-h, --h <h>', 'levelObj.h')
       .option('-s, --s <s>', 'levelObj.s')
@@ -143,7 +143,7 @@
     }
 
     const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
-    if (prefixStepInfo !== '') console.log(`${prefixStepInfo}`);
+    if (prefixStepInfo !== '') consoleLog(`${prefixStepInfo}`);
     const result = solveLevel(levelId, levelObj, isReflectionMode);
 
     if (!isBrowser) {
@@ -152,14 +152,14 @@
       } else {
         const r = result.replayStr;
         const completedLevelObj = getCompletedLevelObj(r);
-        console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
+        consoleLog(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
         if (result.replayStr.length < levelObj.step) {
-          console.log('===== New record! =====');
+          consoleLog('===== New record! =====');
         }
       }
       const endTime = performance.now();
-      console.log(`Time: ${Math.floor(endTime - startTime)} msec`);
-      if (prefixStepInfo !== '') console.log(`${prefixStepInfo}`);
+      consoleLog(`Time: ${Math.floor(endTime - startTime)} msec`);
+      if (prefixStepInfo !== '') consoleLog(`${prefixStepInfo}`);
 
       process.exitCode = 0;
     }
@@ -177,7 +177,7 @@
 
       const completedFlag = isCompletedPoint(level, isReflectionMode);
       if (completedFlag) {
-        console.warn('Warning: Completed on start.');
+        consoleWarn('Warning: Completed on start.');
         return { replayStr: '' };
       }
 
@@ -201,7 +201,7 @@
         level.move();
         const stateStr = level.getStateStr();
         if (stateStrMap.has(stateStr)) {
-          console.warn('Warning: Same state exists.');
+          consoleWarn('Warning: Same state exists.');
         }
 
         const completedFlag = isCompletedPoint(level, isReflectionMode);
@@ -258,7 +258,7 @@
                 const r = replayStr;
                 const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
                 const completedLevelObj = getCompletedLevelObj(r);
-                console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
+                consoleLog(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
               } else {
                 return { replayStr };
               }
@@ -281,7 +281,7 @@
           const time = performance.now();
           const timeStr = ((time - startTime) / 1000).toFixed(2);
           const diffTimeStr = ((time - prevTime) / 1000).toFixed(2);
-          console.log(`${step} steps completed. [Time: ${timeStr} sec. (+${diffTimeStr} sec.)]`);
+          consoleLog(`${step} steps completed. [Time: ${timeStr} sec. (+${diffTimeStr} sec.)]`);
           prevTime = time;
         }
       }
@@ -305,6 +305,21 @@
       return level.isCompletedReflection();
     } else {
       return level.isCompletedPoint();
+    }
+  }
+
+  function consoleLog(message) {
+    console.log(message);
+  }
+
+  function consoleWarn(message) {
+    if (isBrowser) {
+      console.warn(message);
+    } else {
+      for (const line of message.split('\n')) {
+        process.stderr.write('\x1b[38;2;200;200;0m');
+        process.stderr.write(`${line}\x1b[0m\n`);
+      }
     }
   }
 
