@@ -147,7 +147,9 @@
     const result = solveLevel(levelId, levelObj, isReflectionMode);
 
     if (!isBrowser) {
-      if (result.replayStr !== null) {
+      if (result.replayStr === null) {
+        consoleError(`[LEVEL ${levelId}] ${result.errorMessage}`);
+      } else {
         const r = result.replayStr;
         const completedLevelObj = getCompletedLevelObj(r);
         console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
@@ -192,8 +194,7 @@
 
         const moveFlag = level.updateMoveFlags(dx, dy);
         if (!moveFlag) {
-          const errorMessage = 'Error: moveFlag failed.';
-          consoleError(errorMessage);
+          const errorMessage = 'Error: moveFlag failed on prefix-step.';
           return { replayStr: null, errorMessage };
         }
 
@@ -206,7 +207,6 @@
         const completedFlag = isCompletedPoint(level, isReflectionMode);
         if (completedFlag) {
           const errorMessage = `Error: Completed on prefix-step. (${step} steps)`;
-          consoleError(errorMessage);
           return { replayStr: null, errorMessage };
         }
         dirs += dirChar;
@@ -230,7 +230,6 @@
             const time = performance.now();
             if (time - startTime > options.time * 1000) {
               const errorMessage = `Time limit over. [Time: ${((time - startTime) / 1000).toFixed(2)} sec.] [Time limit: ${Number(options.time).toFixed(2)} sec.] [State count: ${stateCount}]`;
-              consoleError(`[LEVEL ${levelId}] ${errorMessage}`);
               return { replayStr: null, errorMessage };
             }
           }
@@ -272,11 +271,9 @@
         if (nextStateStrSet.size === 0) {
           if (options.all) {
             const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Step limit: ${maxStep}]`;
-            consoleError(errorMessage);
             return { replayStr: null, errorMessage };
           }
           const errorMessage = `No solution. [Step: ${step}] [Step limit: ${maxStep}]`;
-          consoleError(errorMessage);
           return { replayStr: null, errorMessage };
         }
         step++;
@@ -290,7 +287,6 @@
       }
 
       const errorMessage = `Step limit over. [Step limit: ${maxStep}]`;
-      consoleError(errorMessage);
       return { replayStr: null, errorMessage };
     }
 
