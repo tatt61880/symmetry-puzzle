@@ -28,7 +28,7 @@
 
     const program = require('commander');
     program
-      .version('2.0.0')
+      .version('2.1.0')
       .option('-i, --id <id>', 'id of level')
       .option('-a, --all', 'list up all solutions')
       .option('-c, --console', 'console.info step')
@@ -233,7 +233,7 @@
           if (options.time !== undefined && ++stateCount % 10000 === 0) {
             const time = performance.now();
             if (time - startTime > options.time * 1000) {
-              const errorMessage = `Time limit over. [Time: ${msToSecStr(time - startTime)}] [Time limit: ${msToSecStr(Number(options.time) * 1000)}] [State count: ${stateCount}]`;
+              const errorMessage = `Time limit over. [Time: ${msToSecStr(time - startTime)}] [Time limit: ${msToSecStr(Number(options.time) * 1000)}] [map.size: ${stateStrMap.size}]`;
               return { replayStr: null, errorMessage };
             }
           }
@@ -283,7 +283,7 @@
         step++;
         if (options.console) {
           const time = performance.now();
-          app.console.info(`${step} steps completed. [Time: ${msToSecStr(time - startTime)}] (+${msToSecStr(time - prevTime)})`);
+          app.console.info(`${step} steps completed. [Time: ${msToSecStr(time - startTime)}] (+${msToSecStr(time - prevTime)}) [map.size: ${stateStrMap.size}]`);
           prevTime = time;
         }
       }
