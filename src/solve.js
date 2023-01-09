@@ -6,8 +6,9 @@
   let options;
   if (isBrowser) {
     app = window.app;
-    if (app?.states === undefined) consoleError('app.states is undefined.');
-    if (app?.Level === undefined) consoleError('app.Level is undefined.');
+    app.console = console;
+    if (app?.states === undefined) app.console.error('app.states is undefined.');
+    if (app?.Level === undefined) app.console.error('app.Level is undefined.');
     options = {
       prefix: '',
       time: 10, // 時間制限を10秒に設定。
@@ -17,6 +18,7 @@
       exitCode: 0,
     };
   } else {
+    app.console = require('./console.js');
     app.states = require('./states.js');
     app.levelsPoint = require('./levels-point.js');
     app.levelsPointEx = require('./levels-point-ex.js');
@@ -29,7 +31,7 @@
       .version('2.0.0')
       .option('-i, --id <id>', 'id of level')
       .option('-a, --all', 'list up all solutions')
-      .option('-c, --console', 'consoleLog step')
+      .option('-c, --console', 'console.info step')
       .option('-w, --w <w>', 'levelObj.w')
       .option('-h, --h <h>', 'levelObj.h')
       .option('-s, --s <s>', 'levelObj.s')
@@ -49,7 +51,7 @@
       if (c === '1') continue;
       if (c === '2') continue;
       if (c === '3') continue;
-      consoleError('Error: invalid step. chars in step should be 0-3.');
+      app.console.error('Error: invalid step. chars in step should be 0-3.');
       process.exitCode = 1;
       return;
     }
@@ -84,17 +86,17 @@
     }
   } else {
     if (options.w === undefined) {
-      consoleError('Error: w === undefined');
+      app.console.error('Error: w === undefined');
       process.exitCode = 1;
       return;
     }
     if (options.h === undefined) {
-      consoleError('Error: h === undefined');
+      app.console.error('Error: h === undefined');
       process.exitCode = 1;
       return;
     }
     if (options.s === undefined) {
-      consoleError('Error: s === undefined');
+      app.console.error('Error: s === undefined');
       process.exitCode = 1;
       return;
     }
@@ -102,12 +104,12 @@
     const h = Number(options.h);
     const s = options.s;
     if (isNaN(w)) {
-      consoleError('Error: w is NaN');
+      app.console.error('Error: w is NaN');
       process.exitCode = 1;
       return;
     }
     if (isNaN(h)) {
-      consoleError('Error: h is NaN');
+      app.console.error('Error: h is NaN');
       process.exitCode = 1;
       return;
     }
@@ -117,7 +119,7 @@
 
   function solveLevelObj(levelId, levelObj, isReflectionMode) {
     if (levelObj === undefined) {
-      consoleError(`Error: [LEVEL ${levelId}] levelObj === undefined`);
+      app.console.error(`Error: [LEVEL ${levelId}] levelObj === undefined`);
       process.exitCode = 1;
       return;
     }
@@ -137,31 +139,31 @@
     })();
 
     if (isNaN(maxStep)) {
-      consoleError(`Error: [LEVEL ${levelId}] maxStep is NaN. maxStep === ${maxStep}`);
+      app.console.error(`Error: [LEVEL ${levelId}] maxStep is NaN. maxStep === ${maxStep}`);
       process.exitCode = 1;
       return;
     }
 
     const prefixStepInfo = prefixStep === '' ? '' : `[prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
     if (!isBrowser) {
-      if (prefixStepInfo !== '') consoleWarn(`${prefixStepInfo}`);
+      if (prefixStepInfo !== '') app.console.warn(`${prefixStepInfo}`);
     }
     const result = solveLevel(levelId, levelObj, isReflectionMode);
 
     if (!isBrowser) {
       if (result.replayStr === null) {
-        consoleError(`[LEVEL ${levelId}] ${result.errorMessage}`);
+        app.console.error(`[LEVEL ${levelId}] ${result.errorMessage}`);
       } else {
         const r = result.replayStr;
         const completedLevelObj = getCompletedLevelObj(r);
-        consoleLog(`/* [LEVEL ${levelId}] */ ${completedLevelObj}`);
+        app.console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}`);
         if (result.replayStr.length < levelObj.step) {
-          consoleLog('===== New record! =====');
+          app.console.log('===== New record! =====');
         }
       }
       const endTime = performance.now();
-      consoleInfo(`[Time: ${msToSecStr(endTime - startTime)}]`);
-      if (prefixStepInfo !== '') consoleWarn(`${prefixStepInfo}`);
+      app.console.info(`[Time: ${msToSecStr(endTime - startTime)}]`);
+      if (prefixStepInfo !== '') app.console.warn(`${prefixStepInfo}`);
 
       process.exitCode = 0;
     }
@@ -179,7 +181,7 @@
 
       const completedFlag = isCompletedPoint(level, isReflectionMode);
       if (completedFlag) {
-        consoleWarn('Warning: Completed on start.');
+        app.console.warn('Warning: Completed on start.');
         return { replayStr: '' };
       }
 
@@ -203,7 +205,7 @@
         level.move();
         const stateStr = level.getStateStr();
         if (stateStrMap.has(stateStr)) {
-          consoleWarn('Warning: Same state exists.');
+          app.console.warn('Warning: Same state exists.');
         }
 
         const completedFlag = isCompletedPoint(level, isReflectionMode);
@@ -260,7 +262,7 @@
                 const r = replayStr;
                 const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
                 const completedLevelObj = getCompletedLevelObj(r);
-                consoleLog(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
+                app.console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
               } else {
                 return { replayStr };
               }
@@ -281,7 +283,7 @@
         step++;
         if (options.console) {
           const time = performance.now();
-          consoleInfo(`${step} steps completed. [Time: ${msToSecStr(time - startTime)}] (+${msToSecStr(time - prevTime)})`);
+          app.console.info(`${step} steps completed. [Time: ${msToSecStr(time - startTime)}] (+${msToSecStr(time - prevTime)})`);
           prevTime = time;
         }
       }
@@ -305,44 +307,6 @@
       return level.isCompletedReflection();
     } else {
       return level.isCompletedPoint();
-    }
-  }
-
-  function consoleLog(message) {
-    console.log(message);
-  }
-
-  function colorizedText(text, r, g, b) {
-    return `\x1b[38;2;${r};${g};${b}m${text}\x1b[0m`;
-  }
-
-  function consoleInfo(message) {
-    if (isBrowser) {
-      console.info(message);
-    } else {
-      for (const line of message.split('\n')) {
-        console.info(colorizedText(line, 120, 120, 120));
-      }
-    }
-  }
-
-  function consoleWarn(message) {
-    if (isBrowser) {
-      console.warn(message);
-    } else {
-      for (const line of message.split('\n')) {
-        console.warn(colorizedText(line, 200, 200, 0));
-      }
-    }
-  }
-
-  function consoleError(message) {
-    if (isBrowser) {
-      console.error(message);
-    } else {
-      for (const line of message.split('\n')) {
-        console.error(colorizedText(line, 200, 0, 0));
-      }
     }
   }
 
