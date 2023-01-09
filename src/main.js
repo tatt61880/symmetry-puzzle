@@ -436,7 +436,7 @@
 
   function updateUrl() {
     if (!editMode) return;
-    const url = level.getUrlStr() + (mode === MODE.REFLECTION ? '&r' : '');
+    const url = level.getUrlStr(mode === MODE.REFLECTION);
     elems.url.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
   }
 

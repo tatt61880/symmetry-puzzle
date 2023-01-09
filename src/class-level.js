@@ -119,12 +119,13 @@
       this.#states[y][x] = state;
     }
 
-    getUrlStr() {
+    getUrlStr(isReflectionMode) {
       const w = this.getW();
       const h = this.getH();
       const s = this.getStateStr();
       console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
-      return `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}`;
+      console.log(`node src/solve.js -w ${w} -h ${h} -s ${s} --all --console` + (isReflectionMode ? ' --reflection' : ''));
+      return `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}` + (isReflectionMode ? '&r' : '');
     }
 
     copyStates() {
