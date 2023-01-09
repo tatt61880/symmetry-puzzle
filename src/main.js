@@ -1216,12 +1216,12 @@
   }
 
   function updateAutoMode(isOn) {
-    settingsAuto.paused = true;
     if (isOn) {
       settings.autoMode = true;
       showElem(elems.auto.buttons);
     } else {
       settings.autoMode = false;
+      settingsAuto.paused = true;
       hideElem(elems.auto.buttons);
 
       inputFlag = false;
@@ -1268,6 +1268,7 @@
         level.applyObj(newLevelObj, { init: true });
       }
     }
+
     settingsAuto.paused = false;
     updateAutoStartPauseButtons();
     if (completeFlag) {
