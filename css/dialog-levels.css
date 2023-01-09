@@ -29,7 +29,7 @@
 
 #dialog-levels,
 #dialog-levels::backdrop {
-  animation: fade-in-dialog 0.2s ease-out 1 forwards;
+  animation: fade-in-dialog 0.1s ease-out 1 forwards;
 }
 
 @keyframes fade-in-dialog {
