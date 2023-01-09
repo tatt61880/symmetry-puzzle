@@ -180,7 +180,7 @@
       let step = 0;
       const stateStrMap = new Map;
 
-      const completedFlag = isCompletedPoint(level, isReflectionMode);
+      const completedFlag = isCompleted(level, isReflectionMode);
       if (completedFlag) {
         app.console.warn('Warning: Completed on start.');
         return { replayStr: '' };
@@ -209,7 +209,7 @@
           app.console.warn('Warning: Same state exists.');
         }
 
-        const completedFlag = isCompletedPoint(level, isReflectionMode);
+        const completedFlag = isCompleted(level, isReflectionMode);
         if (completedFlag) {
           const errorMessage = `Error: Completed on prefix-step. (${step} steps)`;
           return { replayStr: null, errorMessage };
@@ -257,7 +257,7 @@
             const replayStr = currentReplyStr + dir;
             stateStrMap.set(stateStr, replayStr);
 
-            const completedFlag = isCompletedPoint(level, isReflectionMode);
+            const completedFlag = isCompleted(level, isReflectionMode);
             if (completedFlag) {
               if (options.all) {
                 solutionNum++;
@@ -304,7 +304,7 @@
     }
   }
 
-  function isCompletedPoint(level, isReflectionMode) {
+  function isCompleted(level, isReflectionMode) {
     if (isReflectionMode) {
       return level.isCompletedReflection();
     } else {
