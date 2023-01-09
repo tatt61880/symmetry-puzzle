@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.01.08';
+  const VERSION_TEXT = 'v2023.01.09';
 
   const app = window.app;
   Object.freeze(app);
@@ -73,90 +73,7 @@
   document.documentElement.style.setProperty('--animation-duration-shadow', `${SHADOW_MSEC}ms`);
   document.documentElement.style.setProperty('--animation-duration-symmetry', `${ROTATION_MSEC}ms`);
 
-  const elems = new app.Elems({
-    viewport: 'viewport',
-    top: 'top',
-    icon: 'icon',
-    version: 'version',
-
-    help: {
-      button: 'button-help',
-      dialog: 'dialog-help',
-      dialogDiv: 'dialog-help-div',
-      langEn: 'setting-lang-en',
-      langJa: 'setting-lang-ja',
-    },
-
-    category: {
-      title: 'title',
-      game: 'game',
-    },
-
-    title: {
-      buttonPlay: 'button-play',
-      buttonPlay2: 'button-play2',
-      // buttonEdit: 'button-edit',
-    },
-
-    level: {
-      widget: 'level-widget',
-      reset: 'button-level-reset',
-      prev: 'button-level-prev',
-      id: 'level-id',
-      next: 'button-level-next',
-      edit: 'button-level-edit',
-    },
-
-    levels: {
-      button: 'button-levels',
-      dialog: 'dialog-levels',
-      hideCompletedLevels: 'hide-completed-levels',
-      dialogDiv: 'dialog-levels-div',
-      dialogSvg: 'dialog-levels-svg',
-    },
-
-    main: {
-      div: 'main',
-      svg: 'svg-main',
-    },
-
-    auto: {
-      buttons: 'buttons-auto',
-      buttonStop: 'button-stop',
-      buttonStart: 'button-start',
-      buttonPause: 'button-pause',
-      buttonSpeedDown: 'button-speed-down',
-      buttonSpeedUp: 'button-speed-up',
-    },
-
-    edit: {
-      editbox: 'editbox',
-      editShape: 'edit-drawing-shape',
-      editState: 'edit-drawing-state',
-      wDec: 'w-dec',
-      wInc: 'w-inc',
-      hDec: 'h-dec',
-      hInc: 'h-inc',
-      normalize: 'edit-normalize',
-    },
-
-    url: 'url',
-
-    controller: {
-      widget: 'controller-widget',
-      undo: 'button-undo',
-      stickOuter: 'stick-outer',
-      stickMiddle: 'stick-middle',
-      stickInner: 'stick-inner',
-      stickThickness: 'stick-thickness',
-      stickBase: 'stick-base',
-    },
-
-    console: {
-      widget: 'console-widget',
-      log: 'console-log',
-    }
-  });
+  const elems = app.elems;
 
   const digitStates = {
     0: '000111001111111101111111111111111',
@@ -787,8 +704,8 @@
 
     // タイトル画面用
     {
-      elems.title.buttonPlay.addEventListener('click', () => { mode = MODE.POINT; onloadId(1); }, false);
-      elems.title.buttonPlay2.addEventListener('click', () => { mode = MODE.REFLECTION; onloadId(1); }, false);
+      elems.title.buttonPlayPoint.addEventListener('click', () => { mode = MODE.POINT; onloadId(1); }, false);
+      elems.title.buttonPlayReflection.addEventListener('click', () => { mode = MODE.REFLECTION; onloadId(1); }, false);
       // elems.title.buttonEdit.addEventListener('click', () => onloadObj({ w: 6, h: 5, s: '' }), false);
     }
 
