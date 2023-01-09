@@ -239,7 +239,7 @@
 
     <div id="editbox">
       <svg width="470" height="170">
-        <rect x="2" y="2" width="466" height="166" fill="#def" stroke="skyblue" stroke-width="4"/>
+        <rect x="2" y="2" width="466" height="166" fill="#def" stroke="skyblue" stroke-width="4" />
 
         <g transform="translate(25,35)">
           <rect id="edit-drawing-shape" x="-15" y="-15" width="30" height="30" fill="#e5e5e5" stroke="#aaa" stroke-width="4" />
@@ -312,27 +312,27 @@
           <g id="stick-base" class="stick-area" transform="translate(115,0) scale(2,2)">
             <!-- 範囲 -->
             <rect x="-60" y="-60" width="120" height="120" fill="lightgray" stroke="none" />
-            <!-- 軸 -->
-            <circle cx="0" cy="0" r="14" fill="#00f8f8" stroke="#555" stroke-width="3" />
             <!-- 線 -->
             <g>
-              <line x1="21.21" y1="-21.21" x2="60" y2="-60" fill="none" stroke="#555" stroke-width="1" />
-              <line x1="21.21" y1="21.21" x2="60" y2="60" fill="none" stroke="#555" stroke-width="1" />
-              <line x1="-21.21" y1="21.21" x2="-60" y2="60" fill="none" stroke="#555" stroke-width="1" />
-              <line x1="-21.21" y1="-21.21" x2="-60" y2="-60" fill="none" stroke="#555" stroke-width="1" />
-              <circle cx="0" cy="0" r="30" fill="none" stroke="#555" stroke-width="1" />
+              <polygon points="-59.2,-60 -60,-60 -60,-59.2 -21.8,-20.2 -20.2,-21.8"  fill="#555" stroke="none" />
+              <polygon points="59.2,-60 60,-60 60,-59.2 21.8,-20.2 20.2,-21.8"  fill="#555" stroke="none" />
+              <polygon points="59.2,60 60,60 60,59.2 21.8,20.2 20.2,21.8"  fill="#555" stroke="none" />
+              <polygon points="-59.2,60 -60,60 -60,59.2 -21.8,20.2 -20.2,21.8"  fill="#555" stroke="none" />
+              <circle cx="0" cy="0" r="29" fill="none" stroke="#555555" stroke-width="2" />
               <rect x="-60" y="-60" width="120" height="120" fill="none" stroke="#555" />
             </g>
+            <!-- 軸 -->
+            <circle cx="0" cy="0" r="14" fill="#00f8f8" stroke="#555" stroke-width="3" />
             <!-- 矢印 -->
             <g>
-              <polygon transform="translate(0, -45) rotate(0 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="#0000f8"/>
+              <polygon transform="translate(0, -45) rotate(0 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="#0000f8" />
               <polygon transform="translate(45, 0) rotate(90 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="#0000f8" />
               <polygon transform="translate(0, 45) rotate(180 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="#0000f8" />
               <polygon transform="translate(-45, 0) rotate(270 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0" fill="#0000f8" />
             </g>
             <!-- スティック本体 -->
             <g id="stick-thickness" class="stick">
-              <circle cx="0" cy="0" r="28" fill="#0000f8" stroke="#0000f8" stroke-width="4"/>
+              <circle cx="0" cy="0" r="28" fill="#0000f8" stroke="#0000f8" stroke-width="4" />
             </g>
             <g id="stick-outer" class="stick">
               <circle cx="0" cy="0" r="28" fill="#00f8f8" stroke="#0000f8" stroke-width="4" />
