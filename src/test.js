@@ -131,7 +131,7 @@
 
       const stateStr = level.getStateStr();
       if (stateStrMap[stateStr] !== undefined) {
-        app.console.warn(`Warning: ${levelInfo()} Same state on ${index} step`);
+        app.console.warn(`Warning: ${levelInfo()} Same state exists. [index: ${index}]`);
       }
       stateStrMap[stateStr] = true;
     }
@@ -143,7 +143,7 @@
     return true;
 
     function levelInfo() {
-      return `Level-${levelId} [subject: ${levelObj.subject}]`;
+      return `[LEVEL ${levelId}] [subject: ${levelObj.subject}]`;
     }
   }
 
