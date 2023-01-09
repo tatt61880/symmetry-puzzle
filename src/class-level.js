@@ -13,6 +13,7 @@
     app.colors = require('./colors.js');
     app.Stack = require('./class-stack.js');
   }
+  Object.freeze(app);
 
   const dirs = {
     u: 0,
