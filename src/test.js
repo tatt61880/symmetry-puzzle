@@ -1,7 +1,13 @@
 (function () {
   'use strict';
+  const isBrowser = typeof window !== 'undefined';
+  if (isBrowser) {
+    console.error('Error: test.js isn\'t for browser.');
+    return;
+  }
 
   const app = {};
+  app.console = require('./console.js');
   app.states = require('./states.js');
   app.Level = require('./class-level.js');
 
@@ -43,7 +49,7 @@
       || app.states.userMin <= app.states.otherMax
       || app.states.userMax < app.states.userMin
     ) {
-      console.error('Error: Invalid states setting.');
+      app.console.error('Error: Invalid states setting.');
       process.exitCode = 1;
     }
   }
@@ -68,14 +74,14 @@
       levelSet.add(`${levelObj.w},${levelObj.h},${levelObj.s}`);
       const res = testLevel(levelId, levelObj);
       if (!res) {
-        console.error('Error: Test failed.');
+        app.console.error('Error: Test failed.');
         process.exitCode = 1;
         return;
       }
     }
 
     if (levelSet.size !== app.levels.length + Object.keys(app.levelsEx).length) {
-      console.error('Error: There are same levels.');
+      app.console.error('Error: There are same levels.');
       process.exitCode = 1;
       return;
     }
@@ -86,7 +92,7 @@
     level.applyObj(levelObj, { init: true });
 
     if (!level.isNormalized()) {
-      console.error(`Error: ${levelInfo()} isNormalized check failed.`);
+      app.console.error(`Error: ${levelInfo()} isNormalized check failed.`);
       return false;
     }
 
@@ -94,12 +100,12 @@
     const dys = [-1, 0, 1, 0];
     const dxs = [0, 1, 0, -1];
     if (levelObj.r === undefined) {
-      console.error(`Error: ${levelInfo()} r === undefined.`);
+      app.console.error(`Error: ${levelInfo()} r === undefined.`);
       return false;
     }
 
     if (levelObj.r.length !== levelObj.step) {
-      console.error(`Error: ${levelInfo()} Step check failed. step: ${levelObj.step} (r.length = ${levelObj.r.length})`);
+      app.console.error(`Error: ${levelInfo()} Step check failed. step: ${levelObj.step} (r.length = ${levelObj.r.length})`);
       return false;
     }
 
@@ -112,12 +118,12 @@
       const moveFlag = level.updateMoveFlags(dx, dy);
 
       if (!moveFlag) {
-        console.error(`Error: ${levelInfo()} moveFlag failed.`);
+        app.console.error(`Error: ${levelInfo()} moveFlag failed.`);
         return false;
       }
 
       if (isCompletedPoint(level)) {
-        console.error(`Error: ${levelInfo()} Completed on the way.`);
+        app.console.error(`Error: ${levelInfo()} Completed on the way.`);
         return false;
       }
 
@@ -125,13 +131,13 @@
 
       const stateStr = level.getStateStr();
       if (stateStrMap[stateStr] !== undefined) {
-        console.warn(`Warning: ${levelInfo()} Same state on ${index} step`);
+        app.console.warn(`Warning: ${levelInfo()} Same state on ${index} step`);
       }
       stateStrMap[stateStr] = true;
     }
 
     if (!isCompletedPoint(level)) {
-      console.error(`Error: ${levelInfo()} Not completed.`);
+      app.console.error(`Error: ${levelInfo()} Not completed.`);
       return false;
     }
     return true;
