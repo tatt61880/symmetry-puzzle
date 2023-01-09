@@ -142,12 +142,13 @@
       return;
     }
 
+    const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
+    if (prefixStepInfo !== '') console.log(`${prefixStepInfo}`);
     const result = solveLevel(levelId, levelObj, isReflectionMode);
 
     if (!isBrowser) {
       if (result.replayStr !== null) {
         const r = result.replayStr;
-        const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
         const completedLevelObj = getCompletedLevelObj(r);
         console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
         if (result.replayStr.length < levelObj.step) {
@@ -156,6 +157,8 @@
       }
       const endTime = performance.now();
       console.log(`Time: ${Math.floor(endTime - startTime)} msec`);
+      if (prefixStepInfo !== '') console.log(`${prefixStepInfo}`);
+
       process.exitCode = 0;
     }
 
