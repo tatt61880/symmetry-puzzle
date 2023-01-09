@@ -490,7 +490,6 @@
         }
       }
       if (res) {
-        // console.log('線対称(左右)');
         return Level.SYMMETRY_TYPE.REFLECTION1;
       }
 
@@ -504,7 +503,6 @@
         }
       }
       if (res) {
-        // console.log('線対称(上下)');
         return Level.SYMMETRY_TYPE.REFLECTION2;
       }
 
@@ -520,7 +518,6 @@
         }
       }
       if (res) {
-        // console.log('線対称(斜め1)');
         return Level.SYMMETRY_TYPE.REFLECTION3;
       }
 
@@ -534,7 +531,6 @@
         }
       }
       if (res) {
-        // console.log('線対称(斜め2)');
         return Level.SYMMETRY_TYPE.REFLECTION4;
       }
 
