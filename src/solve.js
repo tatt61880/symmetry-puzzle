@@ -28,7 +28,7 @@
 
     const program = require('commander');
     program
-      .version('2.1.0')
+      .version('2.2.0')
       .option('-i, --id <id>', 'id of level')
       .option('-a, --all', 'list up all solutions')
       .option('-c, --console', 'console.info step')
@@ -36,6 +36,7 @@
       .option('-h, --h <h>', 'levelObj.h')
       .option('-s, --s <s>', 'levelObj.s')
       .option('-r, --reflection', 'reflection symmetry mode')
+      .option('-n, --normalize', 'normalize state')
       .option('-m, --max <max-step>', 'max step')
       .option('-p, --prefix <prefix-step>', 'prefix step')
       .option('-t, --time <time-limit>', 'time limit');
@@ -249,6 +250,7 @@
 
             level.move();
 
+            if (options.normalize) level.normalize();
             const stateStr = level.getStateStr();
             if (stateStrMap.has(stateStr)) continue;
 
