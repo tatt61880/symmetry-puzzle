@@ -142,8 +142,10 @@
       return;
     }
 
-    const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
-    if (prefixStepInfo !== '') consoleLog(`${prefixStepInfo}`);
+    const prefixStepInfo = prefixStep === '' ? '' : `[prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
+    if (!isBrowser) {
+      if (prefixStepInfo !== '') consoleWarn(`${prefixStepInfo}`);
+    }
     const result = solveLevel(levelId, levelObj, isReflectionMode);
 
     if (!isBrowser) {
@@ -152,14 +154,14 @@
       } else {
         const r = result.replayStr;
         const completedLevelObj = getCompletedLevelObj(r);
-        consoleLog(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
+        consoleLog(`/* [LEVEL ${levelId}] */ ${completedLevelObj}`);
         if (result.replayStr.length < levelObj.step) {
           consoleLog('===== New record! =====');
         }
       }
       const endTime = performance.now();
       consoleInfo(`[Time: ${msToSecStr(endTime - startTime)}]`);
-      if (prefixStepInfo !== '') consoleLog(`${prefixStepInfo}`);
+      if (prefixStepInfo !== '') consoleWarn(`${prefixStepInfo}`);
 
       process.exitCode = 0;
     }
@@ -315,8 +317,7 @@
       console.info(message);
     } else {
       for (const line of message.split('\n')) {
-        process.stdout.write('\x1b[38;2;120;120;120m');
-        process.stdout.write(`${line}\x1b[0m\n`);
+        console.info(`\x1b[38;2;120;120;120m${line}\x1b[0m`);
       }
     }
   }
@@ -326,8 +327,7 @@
       console.warn(message);
     } else {
       for (const line of message.split('\n')) {
-        process.stderr.write('\x1b[38;2;200;200;0m');
-        process.stderr.write(`${line}\x1b[0m\n`);
+        console.warn(`\x1b[38;2;200;200;0m${line}\x1b[0m`);
       }
     }
   }
@@ -337,8 +337,7 @@
       console.error(message);
     } else {
       for (const line of message.split('\n')) {
-        process.stderr.write('\x1b[38;2;200;0;0m');
-        process.stderr.write(`${line}\x1b[0m\n`);
+        console.error(`\x1b[38;2;200;0;0m${line}\x1b[0m`);
       }
     }
   }
