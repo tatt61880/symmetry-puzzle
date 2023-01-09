@@ -308,7 +308,7 @@
             <text x="0" y="45" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px" fill="gray">z</text>
           </g>
 
-          <g id="stick-base" class="stick" transform="translate(115,0) scale(2,2)">
+          <g id="stick-base" class="stick-area" transform="translate(115,0) scale(2,2)">
             <!-- 範囲 -->
             <rect x="-60" y="-60" width="120" height="120" fill="lightgray" stroke="none" />
             <!-- 軸 -->
@@ -327,12 +327,16 @@
               <rect x="-60" y="-60" width="120" height="120" fill="none" stroke="#555" />
             </g>
             <!-- スティック本体 -->
-            <g id="stick-thickness">
+            <g id="stick-thickness" class="stick">
               <circle cx="0" cy="0" r="28" fill="#0000f8" stroke="#0000f8" stroke-width="4"/>
             </g>
-            <g id="stick">
+            <g id="stick-outer" class="stick">
               <circle cx="0" cy="0" r="28" fill="#00f8f8" stroke="#0000f8" stroke-width="4" />
+            </g>
+            <g id="stick-middle" class="stick">
               <circle cx="0" cy="0" r="18" fill="none" stroke="#0000f8" stroke-width="4" />
+            </g>
+            <g id="stick-inner" class="stick">
               <circle cx="0" cy="0" r="8" fill="none" stroke="#0000f8" stroke-width="4" />
             </g>
           </g>

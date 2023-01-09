@@ -145,7 +145,9 @@
     controller: {
       widget: 'controller-widget',
       undo: 'button-undo',
-      stick: 'stick',
+      stickOuter: 'stick-outer',
+      stickMiddle: 'stick-middle',
+      stickInner: 'stick-inner',
       stickThickness: 'stick-thickness',
       stickBase: 'stick-base',
     },
@@ -177,7 +179,9 @@
       '3': (dist) => `rotateX(0deg) rotateY(-45deg) translate(-${dist}px, 0)`,
     };
     elems.controller.stickThickness.style.setProperty('transform', transforms[dir](28));
-    elems.controller.stick.style.setProperty('transform', transforms[dir](32));
+    elems.controller.stickOuter.style.setProperty('transform', transforms[dir](32));
+    elems.controller.stickMiddle.style.setProperty('transform', transforms[dir](32.7));
+    elems.controller.stickInner.style.setProperty('transform', transforms[dir](33.4));
   }
 
   function move(dir) {

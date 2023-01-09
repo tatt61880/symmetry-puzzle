@@ -94,17 +94,13 @@ div.level {
   filter: contrast(60%);
 }
 
-.stick {
+.stick-area {
   cursor: pointer;
   user-select: none;
 }
 
-#stick {
-  transition: 0.07s;
-}
-
-#stick-thickness {
-  transition: 0.07s;
+.stick {
+  transition: 0.1s;
 }
 
 svg {
