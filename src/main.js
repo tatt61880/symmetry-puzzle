@@ -473,6 +473,10 @@
     inputDir = dirs.neutral;
     updateStick(inputDir);
     inputCount = INPUT_INTERVAL_COUNT;
+
+    if (settings.autoMode) {
+      updateAutoMode(true);
+    }
   }
 
   function showLevelPrev() {
@@ -698,9 +702,6 @@
     showElem(elems.main.div);
     showElem(elems.level.widget);
     showElem(elems.svgDiv);
-    if (settings.autoMode) {
-      updateAutoMode(true);
-    }
     showElem(elems.controller.widget);
 
     let id = id_;
@@ -1194,7 +1195,13 @@
 
   function replaceUrl() {
     const base = location.href.split('?')[0];
-    let url = `${base}?id=${levelId}`;
+    let url = `${base}`;
+    if (levelId !== null) {
+      url += `?id=${levelId}`;
+    } else {
+      const levelObj = level.getLevelObj();
+      url += `?w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
+    }
     if (mode === MODE.REFLECTION) url += '&r';
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';
