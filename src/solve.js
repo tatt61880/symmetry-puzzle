@@ -6,8 +6,8 @@
   let options;
   if (isBrowser) {
     app = window.app;
-    if (app?.states === undefined) console.error('app.states is undefined.');
-    if (app?.Level === undefined) console.error('app.Level is undefined.');
+    if (app?.states === undefined) consoleError('app.states is undefined.');
+    if (app?.Level === undefined) consoleError('app.Level is undefined.');
     options = {
       prefix: '',
       time: 10, // 時間制限を10秒に設定。
@@ -49,7 +49,7 @@
       if (c === '1') continue;
       if (c === '2') continue;
       if (c === '3') continue;
-      console.error('Error: invalid step. chars in step should be 0-3.');
+      consoleError('Error: invalid step. chars in step should be 0-3.');
       process.exitCode = 1;
       return;
     }
@@ -84,17 +84,17 @@
     }
   } else {
     if (options.w === undefined) {
-      console.error('Error: w === undefined');
+      consoleError('Error: w === undefined');
       process.exitCode = 1;
       return;
     }
     if (options.h === undefined) {
-      console.error('Error: h === undefined');
+      consoleError('Error: h === undefined');
       process.exitCode = 1;
       return;
     }
     if (options.s === undefined) {
-      console.error('Error: s === undefined');
+      consoleError('Error: s === undefined');
       process.exitCode = 1;
       return;
     }
@@ -102,12 +102,12 @@
     const h = Number(options.h);
     const s = options.s;
     if (isNaN(w)) {
-      console.error('Error: w is NaN');
+      consoleError('Error: w is NaN');
       process.exitCode = 1;
       return;
     }
     if (isNaN(h)) {
-      console.error('Error: h is NaN');
+      consoleError('Error: h is NaN');
       process.exitCode = 1;
       return;
     }
@@ -117,7 +117,7 @@
 
   function solveLevelObj(levelId, levelObj, isReflectionMode) {
     if (levelObj === undefined) {
-      console.error(`Error: [LEVEL ${levelId}] levelObj === undefined`);
+      consoleError(`Error: [LEVEL ${levelId}] levelObj === undefined`);
       process.exitCode = 1;
       return;
     }
@@ -137,7 +137,7 @@
     })();
 
     if (isNaN(maxStep)) {
-      console.error(`Error: [LEVEL ${levelId}] maxStep is NaN. maxStep === ${maxStep}`);
+      consoleError(`Error: [LEVEL ${levelId}] maxStep is NaN. maxStep === ${maxStep}`);
       process.exitCode = 1;
       return;
     }
@@ -193,7 +193,7 @@
         const moveFlag = level.updateMoveFlags(dx, dy);
         if (!moveFlag) {
           const errorMessage = 'Error: moveFlag failed.';
-          console.error(errorMessage);
+          consoleError(errorMessage);
           return { replayStr: null, errorMessage };
         }
 
@@ -206,7 +206,7 @@
         const completedFlag = isCompletedPoint(level, isReflectionMode);
         if (completedFlag) {
           const errorMessage = `Error: Completed on prefix-step. (${step} steps)`;
-          console.error(errorMessage);
+          consoleError(errorMessage);
           return { replayStr: null, errorMessage };
         }
         dirs += dirChar;
@@ -229,8 +229,8 @@
           if (options.time !== undefined && ++stateCount % 10000 === 0) {
             const time = performance.now();
             if (time - startTime > options.time * 1000) {
-              const errorMessage = `Time limit over.\n[Time: ${((time - startTime) / 1000).toFixed(2)} sec.] [Time limit: ${options.time.toFixed(2)} sec.] [State count: ${stateCount}]`;
-              console.error(`[LEVEL ${levelId}] ${errorMessage}`);
+              const errorMessage = `Time limit over. [Time: ${((time - startTime) / 1000).toFixed(2)} sec.] [Time limit: ${Number(options.time).toFixed(2)} sec.] [State count: ${stateCount}]`;
+              consoleError(`[LEVEL ${levelId}] ${errorMessage}`);
               return { replayStr: null, errorMessage };
             }
           }
@@ -271,12 +271,12 @@
 
         if (nextStateStrSet.size === 0) {
           if (options.all) {
-            const errorMessage = `${solutionNum} solutions found.\n[Step: ${step}] [Step limit: ${maxStep}]`;
-            console.error(errorMessage);
+            const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Step limit: ${maxStep}]`;
+            consoleError(errorMessage);
             return { replayStr: null, errorMessage };
           }
-          const errorMessage = `No solution.\n[Step: ${step}] [Step limit: ${maxStep}]`;
-          console.error(errorMessage);
+          const errorMessage = `No solution. [Step: ${step}] [Step limit: ${maxStep}]`;
+          consoleError(errorMessage);
           return { replayStr: null, errorMessage };
         }
         step++;
@@ -289,8 +289,8 @@
         }
       }
 
-      const errorMessage = `Step limit over.\n[Step limit: ${maxStep}]`;
-      console.error(errorMessage);
+      const errorMessage = `Step limit over. [Step limit: ${maxStep}]`;
+      consoleError(errorMessage);
       return { replayStr: null, errorMessage };
     }
 
@@ -309,6 +309,13 @@
       return level.isCompletedReflection();
     } else {
       return level.isCompletedPoint();
+    }
+  }
+
+  function consoleError(message) {
+    for (const line of message.split('\n')) {
+      process.stderr.write('\x1b[38;2;200;0;0m');
+      process.stderr.write(`${line}\x1b[0m\n`);
     }
   }
 
