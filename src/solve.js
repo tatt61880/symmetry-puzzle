@@ -313,9 +313,13 @@
   }
 
   function consoleError(message) {
-    for (const line of message.split('\n')) {
-      process.stderr.write('\x1b[38;2;200;0;0m');
-      process.stderr.write(`${line}\x1b[0m\n`);
+    if (isBrowser) {
+      console.error(message);
+    } else {
+      for (const line of message.split('\n')) {
+        process.stderr.write('\x1b[38;2;200;0;0m');
+        process.stderr.write(`${line}\x1b[0m\n`);
+      }
     }
   }
 
