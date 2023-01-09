@@ -312,12 +312,16 @@
     console.log(message);
   }
 
+  function colorizedText(text, r, g, b) {
+    return `\x1b[38;2;${r};${g};${b}m${text}\x1b[0m`;
+  }
+
   function consoleInfo(message) {
     if (isBrowser) {
       console.info(message);
     } else {
       for (const line of message.split('\n')) {
-        console.info(`\x1b[38;2;120;120;120m${line}\x1b[0m`);
+        console.info(colorizedText(line, 120, 120, 120));
       }
     }
   }
@@ -327,7 +331,7 @@
       console.warn(message);
     } else {
       for (const line of message.split('\n')) {
-        console.warn(`\x1b[38;2;200;200;0m${line}\x1b[0m`);
+        console.warn(colorizedText(line, 200, 200, 0));
       }
     }
   }
@@ -337,7 +341,7 @@
       console.error(message);
     } else {
       for (const line of message.split('\n')) {
-        console.error(`\x1b[38;2;200;0;0m${line}\x1b[0m`);
+        console.error(colorizedText(line, 200, 0, 0));
       }
     }
   }
