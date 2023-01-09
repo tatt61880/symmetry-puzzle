@@ -158,7 +158,7 @@
         }
       }
       const endTime = performance.now();
-      consoleInfo(`[Time: ${((endTime - startTime) / 1000).toFixed(2)} sec.]`);
+      consoleInfo(`[Time: ${msToSecStr(endTime - startTime)}]`);
       if (prefixStepInfo !== '') consoleLog(`${prefixStepInfo}`);
 
       process.exitCode = 0;
@@ -229,7 +229,7 @@
           if (options.time !== undefined && ++stateCount % 10000 === 0) {
             const time = performance.now();
             if (time - startTime > options.time * 1000) {
-              const errorMessage = `Time limit over. [Time: ${((time - startTime) / 1000).toFixed(2)} sec.] [Time limit: ${Number(options.time).toFixed(2)} sec.] [State count: ${stateCount}]`;
+              const errorMessage = `Time limit over. [Time: ${msToSecStr(time - startTime)}] [Time limit: ${msToSecStr(Number(options.time) * 1000)}] [State count: ${stateCount}]`;
               return { replayStr: null, errorMessage };
             }
           }
@@ -279,9 +279,7 @@
         step++;
         if (options.console) {
           const time = performance.now();
-          const timeStr = ((time - startTime) / 1000).toFixed(2);
-          const diffTimeStr = ((time - prevTime) / 1000).toFixed(2);
-          consoleInfo(`${step} steps completed. [Time: ${timeStr} sec. (+${diffTimeStr} sec.)]`);
+          consoleInfo(`${step} steps completed. [Time: ${msToSecStr(time - startTime)}] (+${msToSecStr(time - prevTime)})`);
           prevTime = time;
         }
       }
@@ -343,6 +341,10 @@
         process.stderr.write(`${line}\x1b[0m\n`);
       }
     }
+  }
+
+  function msToSecStr(ms) {
+    return `${(ms / 1000).toFixed(2)} sec.`;
   }
 
   if (isBrowser) {
