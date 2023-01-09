@@ -158,7 +158,7 @@
         }
       }
       const endTime = performance.now();
-      consoleLog(`Time: ${Math.floor(endTime - startTime)} msec`);
+      consoleInfo(`[Time: ${((endTime - startTime) / 1000).toFixed(2)} sec.]`);
       if (prefixStepInfo !== '') consoleLog(`${prefixStepInfo}`);
 
       process.exitCode = 0;
@@ -281,7 +281,7 @@
           const time = performance.now();
           const timeStr = ((time - startTime) / 1000).toFixed(2);
           const diffTimeStr = ((time - prevTime) / 1000).toFixed(2);
-          consoleLog(`${step} steps completed. [Time: ${timeStr} sec. (+${diffTimeStr} sec.)]`);
+          consoleInfo(`${step} steps completed. [Time: ${timeStr} sec. (+${diffTimeStr} sec.)]`);
           prevTime = time;
         }
       }
@@ -310,6 +310,17 @@
 
   function consoleLog(message) {
     console.log(message);
+  }
+
+  function consoleInfo(message) {
+    if (isBrowser) {
+      console.info(message);
+    } else {
+      for (const line of message.split('\n')) {
+        process.stdout.write('\x1b[38;2;120;120;120m');
+        process.stdout.write(`${line}\x1b[0m\n`);
+      }
+    }
   }
 
   function consoleWarn(message) {
