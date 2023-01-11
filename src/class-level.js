@@ -7,10 +7,12 @@
     app = window.app;
     if (app?.states === undefined) console.error('app.states is undefined.');
     if (app?.colors === undefined) console.error('app.colors is undefined.');
+    if (app?.svg === undefined) console.error('app.svg is undefined.');
     if (app?.Stack === undefined) console.error('app.Stack is undefined.');
   } else {
     app.states = require('./states.js');
     app.colors = require('./colors.js');
+    app.svg = require('./svg.js');
     app.Stack = require('./class-stack.js');
   }
 
