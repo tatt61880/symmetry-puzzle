@@ -112,7 +112,7 @@
       return this.#height - 4;
     }
 
-    removeR() {
+    #removeR() {
       const obj = {};
       for (const key in this.#levelObj) {
         if (key === 'r') continue;
@@ -143,6 +143,11 @@
     }
 
     setState(x, y, state) {
+      this.#setState(x, y, state);
+      this.#removeR();
+    }
+
+    #setState(x, y, state) {
       this.#states[y][x] = state;
     }
 
@@ -285,7 +290,7 @@
           Object.freeze(this.#levelObj);
         }
         if (resize) {
-          this.removeR();
+          this.#removeR();
         }
         this.#width = obj.w + 4;
         this.#height = obj.h + 4;
@@ -665,14 +670,14 @@
       for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
         for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
           if (this.#moveFlags[y + dy][x + dx]) {
-            this.setState(x, y, app.states.none);
+            this.#setState(x, y, app.states.none);
           }
         }
       }
       for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
         for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
           if (this.#moveFlags[y][x]) {
-            this.setState(x, y, statesTemp[y - dy][x - dx]);
+            this.#setState(x, y, statesTemp[y - dy][x - dx]);
           }
         }
       }

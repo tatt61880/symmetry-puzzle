@@ -1045,7 +1045,6 @@
     if ((e.button === 0 || e.button === undefined) && level.getState(x, y) !== drawingState) {
       addUndo(null);
       level.setState(x, y, drawingState);
-      level.removeR();
       completeCheck();
       updateUrl();
       draw();
@@ -1053,7 +1052,6 @@
       if (e.button !== 0) {
         addUndo(null);
         level.setState(x, y, app.states.none);
-        level.removeR();
         completeCheck();
         updateUrl();
         draw();

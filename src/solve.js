@@ -179,8 +179,6 @@
     function solve(levelId, level) {
       const dxs = [0, 1, 0, -1];
       const dys = [-1, 0, 1, 0];
-      let step = 0;
-      const stateStrMap = new Map;
 
       const completedFlag = level.isCompleted();
       if (completedFlag) {
@@ -188,11 +186,13 @@
         return { replayStr: '' };
       }
 
-      let dirs = '';
+      const stateStrMap = new Map;
+      let replayStr = '';
       {
         const stateStr = level.getStateStr();
-        stateStrMap.set(stateStr, dirs);
+        stateStrMap.set(stateStr, replayStr);
       }
+      let step = 0;
       for (const dirChar of prefixStep) {
         step++;
         const dir = Number(dirChar);
@@ -216,8 +216,8 @@
           const errorMessage = `Error: Completed on prefix-step. (${step} steps)`;
           return { replayStr: null, errorMessage };
         }
-        dirs += dirChar;
-        stateStrMap.set(stateStr, dirs);
+        replayStr += dirChar;
+        stateStrMap.set(stateStr, replayStr);
       }
 
       let stateCount = 0;
