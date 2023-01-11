@@ -115,10 +115,10 @@
       return;
     }
     const levelObj = { w, h, s };
-    solveLevelObj(null, levelObj);
+    solveLevelObj(null, levelObj, options.reflection);
   }
 
-  function solveLevelObj(levelId, levelObj) {
+  function solveLevelObj(levelId, levelObj, isReflection) {
     if (levelObj === undefined) {
       app.console.error(`Error: [LEVEL ${levelId}] levelObj === undefined`);
       process.exitCode = 1;
@@ -149,7 +149,7 @@
     if (!isBrowser) {
       if (prefixStepInfo !== '') app.console.warn(`${prefixStepInfo}`);
     }
-    const result = solveLevel(levelId, levelObj);
+    const result = solveLevel(levelId, levelObj, isReflection);
 
     if (!isBrowser) {
       if (result.replayStr === null) {
@@ -171,9 +171,9 @@
 
     return result;
 
-    function solveLevel(levelId, levelObj) {
+    function solveLevel(levelId, levelObj, isReflection) {
       const level = new app.Level();
-      if (options.reflection) {
+      if (isReflection) {
         level.setCheckMode(app.Level.CHECK_MODE.REFLECTION);
       } else {
         level.setCheckMode(app.Level.CHECK_MODE.POINT);
