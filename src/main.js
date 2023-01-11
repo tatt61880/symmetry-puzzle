@@ -596,6 +596,7 @@
   }
 
   function onloadId(id_) {
+    level.setCheckMode(checkMode);
     if (editMode) {
       toggleEditLevel();
     }
