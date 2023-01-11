@@ -100,6 +100,10 @@
       this.#checkMode = mode;
     }
 
+    isReflectionMode() {
+      return this.#checkMode === Level.CHECK_MODE.REFLECTION;
+    }
+
     getW() {
       return this.#width - 4;
     }
@@ -142,13 +146,13 @@
       this.#states[y][x] = state;
     }
 
-    getUrlStr(isReflectionMode) {
+    getUrlStr() {
       const w = this.getW();
       const h = this.getH();
       const s = this.getStateStr();
       console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
-      console.log(`node src/solve.js -w ${w} -h ${h} -s ${s} --all --console` + (isReflectionMode ? ' --reflection' : ''));
-      return `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}` + (isReflectionMode ? '&r' : '');
+      console.log(`node src/solve.js -w ${w} -h ${h} -s ${s} --all --console` + (this.isReflectionMode() ? ' --reflection' : ''));
+      return `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}` + (this.isReflectionMode() ? '&r' : '');
     }
 
     getSymmetryType(isX) {

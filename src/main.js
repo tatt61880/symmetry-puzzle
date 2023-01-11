@@ -59,7 +59,6 @@
   let levelsList = null;
   let levelsExList = null;
   let levelId = null;
-  let checkMode;
   const level = new app.Level();
 
   const MOVE_MSEC = INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
@@ -427,7 +426,7 @@
 
   function updateUrl() {
     if (!editMode) return;
-    const url = level.getUrlStr(checkMode === app.Level.CHECK_MODE.REFLECTION);
+    const url = level.getUrlStr(level.isReflectionMode());
     elems.url.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
   }
 
@@ -518,7 +517,7 @@
     elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(count / COLS)}px`);
 
     function appendLevel(levelObj, id) {
-      const highestScore = savedata.getHighestScore(levelObj, checkMode === app.Level.CHECK_MODE.REFLECTION);
+      const highestScore = savedata.getHighestScore(levelObj, level.isReflectionMode());
       if (highestScore !== null && hideCompletedLevelsFlag) return;
       count++;
 
@@ -571,8 +570,11 @@
 
     const queryParams = app.analyzeUrl();
     settings = queryParams.settings;
-    checkMode = settings.r ? app.Level.CHECK_MODE.REFLECTION : app.Level.CHECK_MODE.POINT;
-    level.setCheckMode(checkMode);
+    if (settings.r) {
+      level.setCheckMode(app.Level.CHECK_MODE.REFLECTION);
+    } else {
+      level.setCheckMode(app.Level.CHECK_MODE.POINT);
+    }
 
     setInterval(intervalFunc, INPUT_INTERVAL_MSEC);
 
@@ -596,16 +598,15 @@
   }
 
   function onloadId(id_) {
-    level.setCheckMode(checkMode);
     if (editMode) {
       toggleEditLevel();
     }
-    if (checkMode === app.Level.CHECK_MODE.POINT) {
-      levelsList = app.levels;
-      levelsExList = app.levelsEx;
-    } else if (checkMode === app.Level.CHECK_MODE.REFLECTION) {
+    if (level.isReflectionMode()) {
       levelsList = app.levelsReflection;
       levelsExList = app.levelsExReflection;
+    } else {
+      levelsList = app.levels;
+      levelsExList = app.levelsEx;
     }
     hideElem(elems.category.title);
     showElem(elems.category.game);
@@ -697,8 +698,21 @@
 
     // タイトル画面用
     {
-      elems.title.buttonPlayPoint.addEventListener('click', () => { checkMode = app.Level.CHECK_MODE.POINT; onloadId(1); }, false);
-      elems.title.buttonPlayReflection.addEventListener('click', () => { checkMode = app.Level.CHECK_MODE.REFLECTION; onloadId(1); }, false);
+      elems.title.buttonPlayPoint.addEventListener(
+        'click',
+        () => {
+          level.setCheckMode(app.Level.CHECK_MODE.POINT);
+          onloadId(1);
+        },
+        false
+      );
+      elems.title.buttonPlayReflection.addEventListener(
+        'click',
+        () => {
+          level.setCheckMode(app.Level.CHECK_MODE.REFLECTION);
+          onloadId(1);
+        },
+        false);
       // elems.title.buttonEdit.addEventListener('click', () => onloadObj({ w: 6, h: 5, s: '' }), false);
     }
 
@@ -891,8 +905,8 @@
 
           // 記録保存
           if (bestStep !== undefined) {
-            highestScorePrev = savedata.getHighestScore(levelObj, checkMode === app.Level.CHECK_MODE.REFLECTION);
-            savedata.saveSteps(levelObj, checkMode === app.Level.CHECK_MODE.REFLECTION, replayStr);
+            highestScorePrev = savedata.getHighestScore(levelObj, level.isReflectionMode());
+            savedata.saveSteps(levelObj, level.isReflectionMode(), replayStr);
           }
 
           // ログ出力
@@ -938,7 +952,7 @@
       // 自己最高記録
       if (levelId !== null) {
         const levelObj = level.getLevelObj();
-        const highestScore = savedata.getHighestScore(levelObj, checkMode === app.Level.CHECK_MODE.REFLECTION);
+        const highestScore = savedata.getHighestScore(levelObj, level.isReflectionMode());
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
 
@@ -1108,7 +1122,7 @@
       const levelObj = level.getLevelObj();
       url += `?w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
     }
-    if (checkMode === app.Level.CHECK_MODE.REFLECTION) url += '&r';
+    if (level.isReflectionMode()) url += '&r';
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';
     if (settings.mirrorFlag) url += '&mirror';
