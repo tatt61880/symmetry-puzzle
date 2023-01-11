@@ -10,20 +10,20 @@
     }
 
     init() {
-      initElems(this, this.#elems);
-      Object.freeze(window.app.elems);
+      this.#initElems(this, this.#elems);
+      Object.freeze(this.#elems);
+    }
 
-      function initElems(obj, elems) {
-        for (const key in elems) {
-          const value = elems[key];
-          if (typeof value === 'object') {
-            obj[key] = {};
-            initElems(obj[key], value);
-          } else {
-            obj[key] = document.getElementById(value);
-            if (obj[key] === null) {
-              console.error(`Elem not exist. [id=${value}]`);
-            }
+    #initElems(obj, elems) {
+      for (const key in elems) {
+        const value = elems[key];
+        if (typeof value === 'object') {
+          obj[key] = {};
+          this.#initElems(obj[key], value);
+        } else {
+          obj[key] = document.getElementById(value);
+          if (obj[key] === null) {
+            console.error(`Elem not exist. [id=${value}]`);
           }
         }
       }
