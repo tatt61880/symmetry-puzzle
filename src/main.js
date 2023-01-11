@@ -525,17 +525,17 @@
       g.classList.add('level-select');
       elems.levels.dialogSvg.appendChild(g);
 
-      const level = new app.Level();
-      level.applyObj(levelObj, { init: true });
-      const blockSize = Math.min((WIDTH - 30) / (level.getW() + 2), (HEIGHT - 30) / (level.getH() + 2));
-      const levelSvg = level.createSvg(blockSize);
-      levelSvg.setAttribute('transform', `translate(${-blockSize + 20},${-blockSize + 20})`);
-      g.appendChild(levelSvg);
       {
-        const text = app.svg.createText(5, { x: 10, y: 2, text: id, fill: 'black' });
-        g.appendChild(text);
-      }
-      {
+        const level = new app.Level();
+        level.applyObj(levelObj, { init: true });
+        const blockSize = Math.min((WIDTH - 30) / (level.getW() + 2), (HEIGHT - 30) / (level.getH() + 2));
+        const levelSvg = level.createSvg(blockSize);
+        levelSvg.setAttribute('transform', `translate(${-blockSize + 20},${-blockSize + 20})`);
+        g.appendChild(levelSvg);
+        {
+          const text = app.svg.createText(5, { x: 10, y: 2, text: id, fill: 'black' });
+          g.appendChild(text);
+        }
         const bestStep = level.getBestStep();
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
