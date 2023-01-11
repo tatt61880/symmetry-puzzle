@@ -44,13 +44,18 @@
   }
 
   class Level {
-    static SYMMETRY_TYPE = {
-      POINT: 0,
-      REFLECTION1: 1,
-      REFLECTION2: 2,
-      REFLECTION3: 3,
-      REFLECTION4: 4,
+    static CHECK_MODE = {
+      POINT: Symbol(0),
+      REFLECTION: Symbol(1),
     };
+    static SYMMETRY_TYPE = {
+      POINT: Symbol(0),
+      REFLECTION1: Symbol(1),
+      REFLECTION2: Symbol(2),
+      REFLECTION3: Symbol(3),
+      REFLECTION4: Symbol(4),
+    };
+    #checkMode;
     #levelObj;
     #states;
     #width;
@@ -64,6 +69,7 @@
     #rightEnd;
 
     constructor() {
+      this.#checkMode = null;
       this.#levelObj = null;
       this.#width = null;
       this.#height = null;
@@ -75,6 +81,21 @@
       this.#leftEnd = 2;
       this.#downEnd = null;
       this.#rightEnd = null;
+      this.isCompleted = null;
+      this.isSymmetry = null;
+    }
+
+    setCheckMode(mode) {
+      if (mode === Level.CHECK_MODE.POINT) {
+        this.isCompleted = this.#isCompletedPoint;
+        this.isSymmetry = this.#isPointSymmetry;
+      } else if (mode === Level.CHECK_MODE.REFLECTION) {
+        this.isCompleted = this.#isCompletedReflection;
+        this.isSymmetry = this.#isReflectionSymmetry;
+      } else {
+        throw new Error('Unexpected check mode.');
+      }
+      this.#checkMode = mode;
     }
 
     getW() {
@@ -126,6 +147,14 @@
       console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
       console.log(`node src/solve.js -w ${w} -h ${h} -s ${s} --all --console` + (isReflectionMode ? ' --reflection' : ''));
       return `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}` + (isReflectionMode ? '&r' : '');
+    }
+
+    getSymmetryType(isX) {
+      if (this.#checkMode === Level.CHECK_MODE.POINT) {
+        return this.#getSymmetryTypePoint(isX);
+      } else {
+        return this.#getSymmetryTypeReflection(isX);
+      }
     }
 
     copyStates() {
@@ -452,20 +481,24 @@
 
     isPointSymmetry(isX) {
       if (!this.#exist(app.states.isTarget)) return false;
-      return this.#isPointSymmetry(isX);
+      return this.#getSymmetryTypePoint(isX) !== null;
     }
 
     // 点対称か否か。
     #isPointSymmetry(isX) {
+      return this.#getSymmetryTypePoint(isX) !== null;
+    }
+
+    #getSymmetryTypePoint(isX) {
       const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
           if (isX(this.#states[y][x]) && !isX(this.#states[minY + maxY - y][minX + maxX - x])) {
-            return false;
+            return null;
           }
         }
       }
-      return true;
+      return Level.SYMMETRY_TYPE.POINT;
     }
 
     isReflectionSymmetry(isX) {
@@ -475,10 +508,10 @@
 
     // 線対称か否か。
     #isReflectionSymmetry(isX) {
-      return this.getReflectionType(isX) !== null;
+      return this.#getSymmetryTypeReflection(isX) !== null;
     }
 
-    getReflectionType(isX) {
+    #getSymmetryTypeReflection(isX) {
       const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
 
       // 左右対称か否か。
@@ -538,7 +571,7 @@
       return null;
     }
 
-    isCompletedPoint() {
+    #isCompletedPoint() {
       if (!this.#exist(app.states.isTarget)) return false;
       const isConnected = this.#isConnected(app.states.isTarget);
       if (!isConnected) return false;
@@ -546,7 +579,7 @@
       return isPointSymmetry;
     }
 
-    isCompletedReflection() {
+    #isCompletedReflection() {
       if (!this.#exist(app.states.isTarget)) return false;
       const isConnected = this.#isConnected(app.states.isTarget);
       if (!isConnected) return false;

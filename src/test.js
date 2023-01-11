@@ -89,6 +89,8 @@
 
   function testLevel(levelId, levelObj) {
     const level = new app.Level();
+    if (options.point) level.setCheckMode(app.Level.CHECK_MODE.POINT);
+    if (options.reflection) level.setCheckMode(app.Level.CHECK_MODE.REFLECTION);
     level.applyObj(levelObj, { init: true });
 
     if (!level.isNormalized()) {
@@ -122,7 +124,7 @@
         return false;
       }
 
-      if (isCompletedPoint(level)) {
+      if (level.isCompleted()) {
         app.console.error(`Error: ${levelInfo()} Completed on the way.`);
         return false;
       }
@@ -136,7 +138,7 @@
       stateStrMap[stateStr] = true;
     }
 
-    if (!isCompletedPoint(level)) {
+    if (!level.isCompleted()) {
       app.console.error(`Error: ${levelInfo()} Not completed.`);
       return false;
     }
@@ -145,14 +147,5 @@
     function levelInfo() {
       return `[LEVEL ${levelId}] [subject: ${levelObj.subject}]`;
     }
-  }
-
-  function isCompletedPoint(level) {
-    if (options.point) {
-      return level.isCompletedPoint();
-    } else if (options.reflection) {
-      return level.isCompletedReflection();
-    }
-    return false;
   }
 })();

@@ -59,11 +59,7 @@
   let levelsList = null;
   let levelsExList = null;
   let levelId = null;
-  let mode;
-  const MODE = {
-    POINT: 0,
-    REFLECTION: 1,
-  };
+  let checkMode;
   const level = new app.Level();
 
   const MOVE_MSEC = INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
@@ -118,13 +114,8 @@
 
   function completeCheck() {
     const symmetryFlagPrev = symmetryFlag;
-    if (mode === MODE.POINT) {
-      completeFlag = level.isCompletedPoint();
-      symmetryFlag = level.isPointSymmetry(app.states.isTarget);
-    } else if (mode === MODE.REFLECTION) {
-      completeFlag = level.isCompletedReflection();
-      symmetryFlag = level.isReflectionSymmetry(app.states.isTarget);
-    }
+    completeFlag = level.isCompleted();
+    symmetryFlag = level.isSymmetry(app.states.isTarget);
     redrawFlag = completeFlag || (symmetryFlag !== symmetryFlagPrev);
 
     const center = level.getCenter(app.states.isTarget);
@@ -436,7 +427,7 @@
 
   function updateUrl() {
     if (!editMode) return;
-    const url = level.getUrlStr(mode === MODE.REFLECTION);
+    const url = level.getUrlStr(checkMode === app.Level.CHECK_MODE.REFLECTION);
     elems.url.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
   }
 
@@ -527,7 +518,7 @@
     elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(count / COLS)}px`);
 
     function appendLevel(levelObj, id) {
-      const highestScore = savedata.getHighestScore(levelObj, mode === MODE.REFLECTION);
+      const highestScore = savedata.getHighestScore(levelObj, checkMode === app.Level.CHECK_MODE.REFLECTION);
       if (highestScore !== null && hideCompletedLevelsFlag) return;
       count++;
 
@@ -580,7 +571,8 @@
 
     const queryParams = app.analyzeUrl();
     settings = queryParams.settings;
-    mode = settings.r ? MODE.REFLECTION : MODE.POINT;
+    checkMode = settings.r ? app.Level.CHECK_MODE.REFLECTION : app.Level.CHECK_MODE.POINT;
+    level.setCheckMode(checkMode);
 
     setInterval(intervalFunc, INPUT_INTERVAL_MSEC);
 
@@ -607,10 +599,10 @@
     if (editMode) {
       toggleEditLevel();
     }
-    if (mode === MODE.POINT) {
+    if (checkMode === app.Level.CHECK_MODE.POINT) {
       levelsList = app.levels;
       levelsExList = app.levelsEx;
-    } else if (mode === MODE.REFLECTION) {
+    } else if (checkMode === app.Level.CHECK_MODE.REFLECTION) {
       levelsList = app.levelsReflection;
       levelsExList = app.levelsExReflection;
     }
@@ -704,8 +696,8 @@
 
     // タイトル画面用
     {
-      elems.title.buttonPlayPoint.addEventListener('click', () => { mode = MODE.POINT; onloadId(1); }, false);
-      elems.title.buttonPlayReflection.addEventListener('click', () => { mode = MODE.REFLECTION; onloadId(1); }, false);
+      elems.title.buttonPlayPoint.addEventListener('click', () => { checkMode = app.Level.CHECK_MODE.POINT; onloadId(1); }, false);
+      elems.title.buttonPlayReflection.addEventListener('click', () => { checkMode = app.Level.CHECK_MODE.REFLECTION; onloadId(1); }, false);
       // elems.title.buttonEdit.addEventListener('click', () => onloadObj({ w: 6, h: 5, s: '' }), false);
     }
 
@@ -818,11 +810,7 @@
     {
       const symmetryType = (() => {
         if (completeCheckFlag && completeFlag) {
-          if (mode === MODE.POINT) {
-            return app.Level.SYMMETRY_TYPE.POINT;
-          } else if (mode === MODE.REFLECTION) {
-            return level.getReflectionType(app.states.isTarget);
-          }
+          return level.getSymmetryType(app.states.isTarget);
         }
         return null;
       })();
@@ -902,8 +890,8 @@
 
           // 記録保存
           if (bestStep !== undefined) {
-            highestScorePrev = savedata.getHighestScore(levelObj, mode === MODE.REFLECTION);
-            savedata.saveSteps(levelObj, mode === MODE.REFLECTION, replayStr);
+            highestScorePrev = savedata.getHighestScore(levelObj, checkMode === app.Level.CHECK_MODE.REFLECTION);
+            savedata.saveSteps(levelObj, checkMode === app.Level.CHECK_MODE.REFLECTION, replayStr);
           }
 
           // ログ出力
@@ -949,7 +937,7 @@
       // 自己最高記録
       if (levelId !== null) {
         const levelObj = level.getLevelObj();
-        const highestScore = savedata.getHighestScore(levelObj, mode === MODE.REFLECTION);
+        const highestScore = savedata.getHighestScore(levelObj, checkMode === app.Level.CHECK_MODE.REFLECTION);
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
 
@@ -1119,7 +1107,7 @@
       const levelObj = level.getLevelObj();
       url += `?w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
     }
-    if (mode === MODE.REFLECTION) url += '&r';
+    if (checkMode === app.Level.CHECK_MODE.REFLECTION) url += '&r';
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';
     if (settings.mirrorFlag) url += '&mirror';
@@ -1174,7 +1162,7 @@
       const levelObj = { w, h, s, step };
       // TODO low-contrastを盤面に反映させてから計算する。Promiseを使うといけそう。
       // elems.auto.buttonStart.classList.add('low-contrast');
-      const result = app.solveLevelObj(null, levelObj, mode === MODE.REFLECTION);
+      const result = app.solveLevelObj(null, levelObj, checkMode === app.Level.CHECK_MODE.REFLECTION);
       // elems.auto.buttonStart.classList.remove('low-contrast');
       if (result.replayStr === null) {
         window.alert(result.errorMessage);
