@@ -639,7 +639,7 @@
       }
     }
 
-    createSvg(blockSize, symmetryType = false, showCharsFlag = false) {
+    createSvg(blockSize, symmetryType = null, showCharsFlag = false) {
       const g = app.svg.createG();
 
       // 背景
@@ -650,28 +650,21 @@
       }
 
       const gShadows = app.svg.createG();
-      const gElems = app.svg.createG();
+      const gElemsNotTarget = app.svg.createG();
+      const gElemsTarget = app.svg.createG();
       g.appendChild(gShadows);
-      g.appendChild(gElems);
+      g.appendChild(gElemsNotTarget);
+      g.appendChild(gElemsTarget);
 
-      // ターゲット以外を作成し、追加する。（描画順のためにターゲットは後で追加します。）
       for (let y = 1; y < this.getHeight() - 1; ++y) {
         for (let x = 1; x < this.getWidth() - 1; ++x) {
           const state = this.getState(x, y);
           if (state === app.states.none) continue;
-          if (app.states.isTarget(state)) continue;
-          this.#addOneBlock(x, y, blockSize, false, showCharsFlag, gShadows, gElems);
-        }
-      }
-
-      // ターゲットを作成し、追加する。
-      for (let y = 1; y < this.getHeight() - 1; ++y) {
-        for (let x = 1; x < this.getWidth() - 1; ++x) {
-          const state = this.getState(x, y);
-          if (!app.states.isTarget(state)) continue;
+          const gElems = app.states.isTarget(state) ? gElemsTarget : gElemsNotTarget;
           this.#addOneBlock(x, y, blockSize, symmetryType, showCharsFlag, gShadows, gElems);
         }
       }
+
       return g;
     }
 
