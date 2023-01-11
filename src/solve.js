@@ -10,9 +10,6 @@
     if (app?.states === undefined) app.console.error('app.states is undefined.');
     if (app?.Level === undefined) app.console.error('app.Level is undefined.');
     options = {
-      prefix: '',
-      time: 10, // 時間制限を10秒に設定。
-      max: undefined,
     };
     window.process = {
       exitCode: 0,
@@ -31,31 +28,18 @@
       .version('2.2.0')
       .option('-i, --id <id>', 'id of level')
       .option('-a, --all', 'list up all solutions')
-      .option('-c, --console', 'console.info step')
       .option('-w, --w <w>', 'levelObj.w')
       .option('-h, --h <h>', 'levelObj.h')
       .option('-s, --s <s>', 'levelObj.s')
       .option('-r, --reflection', 'reflection symmetry mode')
-      .option('-n, --normalize', 'normalize state')
-      .option('-m, --max <max-step>', 'max step')
       .option('-p, --prefix <prefix-step>', 'prefix step')
-      .option('-t, --time <time-limit>', 'time limit');
+      .option('-c, --console', 'console.info step')
+      .option('-n, --normalize', 'normalize state')
+      .option('-m, --max <max-step>', 'max step', parseInt)
+      .option('-t, --time <time-limit>', 'time limit', parseInt);
 
     program.parse();
     options = program.opts();
-  }
-
-  const prefixStep = options.prefix !== undefined ? options.prefix : '';
-  if (prefixStep !== '') {
-    for (const c of prefixStep) {
-      if (c === '0') continue;
-      if (c === '1') continue;
-      if (c === '2') continue;
-      if (c === '3') continue;
-      app.console.error('Error: invalid step. chars in step should be 0-3.');
-      process.exitCode = 1;
-      return;
-    }
   }
 
   const levelId = options.id;
@@ -124,17 +108,18 @@
       process.exitCode = 1;
       return;
     }
-
-    const startTime = performance.now();
-    let prevTime = startTime;
+    const level = new app.Level();
+    if (isReflection) {
+      level.setCheckMode(app.Level.CHECK_MODE.REFLECTION);
+    } else {
+      level.setCheckMode(app.Level.CHECK_MODE.POINT);
+    }
+    level.applyObj(levelObj, { init: true });
 
     const maxStep = (() => {
       let res = options.max;
       if (res === undefined) {
         res = levelObj.step;
-      }
-      if (res === undefined) {
-        res = 1000;
       }
       return res;
     })();
@@ -145,11 +130,29 @@
       return;
     }
 
-    const prefixStepInfo = prefixStep === '' ? '' : `[prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
+    solveLevel(levelId, level, { maxStep, prefix: options.prefix });
+  }
+
+  function solveLevel(levelId, level, { maxStep = 1000, time, prefix = '' }) {
+    if (prefix !== '') {
+      for (const c of prefix) {
+        if (c === '0') continue;
+        if (c === '1') continue;
+        if (c === '2') continue;
+        if (c === '3') continue;
+        app.console.error('Error: invalid step. chars in step should be 0-3.');
+        process.exitCode = 1;
+        return;
+      }
+    }
+    const startTime = performance.now();
+    let prevTime = startTime;
+    const prefixStepInfo = prefix === '' ? '' : `[prefix-step: ${prefix.length} steps ('${prefix}')]`;
     if (!isBrowser) {
       if (prefixStepInfo !== '') app.console.warn(`${prefixStepInfo}`);
     }
-    const result = solveLevel(levelId, levelObj, isReflection);
+
+    const result = solve(levelId, level);
 
     if (!isBrowser) {
       if (result.replayStr === null) {
@@ -158,7 +161,7 @@
         const r = result.replayStr;
         const completedLevelObj = getCompletedLevelObj(r);
         app.console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}`);
-        if (result.replayStr.length < levelObj.step) {
+        if (result.replayStr.length < level.getLevelObj().step) {
           app.console.log('===== New record! =====');
         }
       }
@@ -171,15 +174,7 @@
 
     return result;
 
-    function solveLevel(levelId, levelObj, isReflection) {
-      const level = new app.Level();
-      if (isReflection) {
-        level.setCheckMode(app.Level.CHECK_MODE.REFLECTION);
-      } else {
-        level.setCheckMode(app.Level.CHECK_MODE.POINT);
-      }
-      level.applyObj(levelObj, { init: true });
-
+    function solve(levelId, level) {
       const dxs = [0, 1, 0, -1];
       const dys = [-1, 0, 1, 0];
       let step = 0;
@@ -196,7 +191,7 @@
         const stateStr = level.getStateStr();
         stateStrMap.set(stateStr, dirs);
       }
-      for (const dirChar of prefixStep) {
+      for (const dirChar of prefix) {
         step++;
         const dir = Number(dirChar);
         const dx = dxs[dir];
@@ -236,7 +231,7 @@
         const currentStateStrSet = nextStateStrSet;
         nextStateStrSet = new Set;
         for (const currentStateStr of currentStateStrSet) {
-          if (options.time !== undefined && ++stateCount % 10000 === 0) {
+          if (time !== undefined && ++stateCount % 10000 === 0) {
             const time = performance.now();
             if (time - startTime > options.time * 1000) {
               const errorMessage = `Time limit over. [Time: ${msToSecStr(time - startTime)}] [Time limit: ${msToSecStr(Number(options.time) * 1000)}] [map.size: ${stateStrMap.size}]`;
@@ -267,7 +262,7 @@
               if (options.all) {
                 solutionNum++;
                 const r = replayStr;
-                const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
+                const prefixStepInfo = prefix === '' ? '' : ` [prefix-step: ${prefix.length} steps ('${prefix}')]`;
                 const completedLevelObj = getCompletedLevelObj(r);
                 app.console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
               } else {
@@ -300,6 +295,7 @@
     }
 
     function getCompletedLevelObj(r) {
+      const levelObj = level.getLevelObj();
       const w = levelObj.w;
       const h = levelObj.h;
       const s = levelObj.s;
@@ -315,8 +311,8 @@
 
   if (isBrowser) {
     window.app = window.app || {};
-    window.app.solveLevelObj = solveLevelObj;
+    window.app.solveLevel = solveLevel;
   } else {
-    module.exports = solveLevelObj;
+    module.exports = solveLevel;
   }
 })();

@@ -1163,7 +1163,7 @@
       const levelObj = { w, h, s, step };
       // TODO low-contrastを盤面に反映させてから計算する。Promiseを使うといけそう。
       // elems.auto.buttonStart.classList.add('low-contrast');
-      const result = app.solveLevelObj(null, levelObj, checkMode === app.Level.CHECK_MODE.REFLECTION);
+      const result = app.solveLevel(null, level, { time: 10 });
       // elems.auto.buttonStart.classList.remove('low-contrast');
       if (result.replayStr === null) {
         window.alert(result.errorMessage);
