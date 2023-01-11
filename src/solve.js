@@ -32,7 +32,7 @@
       .option('-h, --h <h>', 'levelObj.h')
       .option('-s, --s <s>', 'levelObj.s')
       .option('-r, --reflection', 'reflection symmetry mode')
-      .option('-p, --prefix <prefix-step>', 'prefix step')
+      .option('-p, --prefixStep <prefix-step>', 'prefixStep step')
       .option('-c, --console', 'console.info step')
       .option('-n, --normalize', 'normalize state')
       .option('-m, --max <max-step>', 'max step', parseInt)
@@ -119,7 +119,7 @@
     const maxStep = (() => {
       let res = options.max;
       if (res === undefined) {
-        res = levelObj.step;
+        res = 1000;
       }
       return res;
     })();
@@ -130,12 +130,14 @@
       return;
     }
 
-    solveLevel(levelId, level, { maxStep, prefix: options.prefix });
+    const prefixStep = options.prefixStep;
+
+    solveLevel(levelId, level, { maxStep, prefixStep });
   }
 
-  function solveLevel(levelId, level, { maxStep = 1000, time, prefix = '' }) {
-    if (prefix !== '') {
-      for (const c of prefix) {
+  function solveLevel(levelId, level, { maxStep = 1000, time, prefixStep = '' }) {
+    if (prefixStep !== '') {
+      for (const c of prefixStep) {
         if (c === '0') continue;
         if (c === '1') continue;
         if (c === '2') continue;
@@ -147,7 +149,7 @@
     }
     const startTime = performance.now();
     let prevTime = startTime;
-    const prefixStepInfo = prefix === '' ? '' : `[prefix-step: ${prefix.length} steps ('${prefix}')]`;
+    const prefixStepInfo = prefixStep === '' ? '' : `[prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
     if (!isBrowser) {
       if (prefixStepInfo !== '') app.console.warn(`${prefixStepInfo}`);
     }
@@ -191,7 +193,7 @@
         const stateStr = level.getStateStr();
         stateStrMap.set(stateStr, dirs);
       }
-      for (const dirChar of prefix) {
+      for (const dirChar of prefixStep) {
         step++;
         const dir = Number(dirChar);
         const dx = dxs[dir];
@@ -262,7 +264,7 @@
               if (options.all) {
                 solutionNum++;
                 const r = replayStr;
-                const prefixStepInfo = prefix === '' ? '' : ` [prefix-step: ${prefix.length} steps ('${prefix}')]`;
+                const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
                 const completedLevelObj = getCompletedLevelObj(r);
                 app.console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
               } else {
