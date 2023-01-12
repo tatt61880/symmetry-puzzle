@@ -64,9 +64,18 @@
   const MOVE_MSEC = INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
   const SHADOW_MSEC = MOVE_MSEC * 2;
   const ROTATION_MSEC = MOVE_MSEC * 3;
-  document.documentElement.style.setProperty('--animation-duration', `${MOVE_MSEC}ms`);
-  document.documentElement.style.setProperty('--animation-duration-shadow', `${SHADOW_MSEC}ms`);
-  document.documentElement.style.setProperty('--animation-duration-symmetry', `${ROTATION_MSEC}ms`);
+  document.documentElement.style.setProperty(
+    '--animation-duration',
+    `${MOVE_MSEC}ms`
+  );
+  document.documentElement.style.setProperty(
+    '--animation-duration-shadow',
+    `${SHADOW_MSEC}ms`
+  );
+  document.documentElement.style.setProperty(
+    '--animation-duration-symmetry',
+    `${ROTATION_MSEC}ms`
+  );
 
   const elems = app.elems;
 
@@ -84,16 +93,28 @@
 
   function updateStick(dir) {
     const transforms = {
-      'N': () => 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
-      '0': (dist) => `rotateX(45deg) rotateY(0deg) translate(0, -${dist}px)`,
-      '1': (dist) => `rotateX(0deg) rotateY(45deg) translate(${dist}px, 0)`,
-      '2': (dist) => `rotateX(-45deg) rotateY(0deg) translate(0, ${dist}px)`,
-      '3': (dist) => `rotateX(0deg) rotateY(-45deg) translate(-${dist}px, 0)`,
+      N: () => 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
+      0: (dist) => `rotateX(45deg) rotateY(0deg) translate(0, -${dist}px)`,
+      1: (dist) => `rotateX(0deg) rotateY(45deg) translate(${dist}px, 0)`,
+      2: (dist) => `rotateX(-45deg) rotateY(0deg) translate(0, ${dist}px)`,
+      3: (dist) => `rotateX(0deg) rotateY(-45deg) translate(-${dist}px, 0)`,
     };
-    elems.controller.stickThickness.style.setProperty('transform', transforms[dir](28));
-    elems.controller.stickOuter.style.setProperty('transform', transforms[dir](32));
-    elems.controller.stickMiddle.style.setProperty('transform', transforms[dir](32.7));
-    elems.controller.stickInner.style.setProperty('transform', transforms[dir](33.4));
+    elems.controller.stickThickness.style.setProperty(
+      'transform',
+      transforms[dir](28)
+    );
+    elems.controller.stickOuter.style.setProperty(
+      'transform',
+      transforms[dir](32)
+    );
+    elems.controller.stickMiddle.style.setProperty(
+      'transform',
+      transforms[dir](32.7)
+    );
+    elems.controller.stickInner.style.setProperty(
+      'transform',
+      transforms[dir](33.4)
+    );
   }
 
   function move(dir) {
@@ -104,7 +125,10 @@
 
     const moveFlag = level.updateMoveFlags(dx, dy);
     if (moveFlag) {
-      document.documentElement.style.setProperty('--animation-transform', `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`);
+      document.documentElement.style.setProperty(
+        '--animation-transform',
+        `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`
+      );
       addUndo(dir);
       level.move();
     }
@@ -115,11 +139,14 @@
     const symmetryFlagPrev = symmetryFlag;
     completeFlag = level.isCompleted();
     symmetryFlag = level.isSymmetry(app.states.isTarget);
-    redrawFlag = completeFlag || (symmetryFlag !== symmetryFlagPrev);
+    redrawFlag = completeFlag || symmetryFlag !== symmetryFlagPrev;
 
     const center = level.getCenter(app.states.isTarget);
     if (completeFlag) {
-      document.documentElement.style.setProperty('--animation-origin', `${blockSize * center.x}px ${blockSize * center.y}px`);
+      document.documentElement.style.setProperty(
+        '--animation-origin',
+        `${blockSize * center.x}px ${blockSize * center.y}px`
+      );
     }
   }
 
@@ -289,7 +316,10 @@
     level.applyObj(obj, param);
     const svgMaxWidth = 490;
     const svgMaxHeight = 280;
-    blockSize = Math.min(svgMaxWidth / level.getWidth(), svgMaxHeight / level.getHeight());
+    blockSize = Math.min(
+      svgMaxWidth / level.getWidth(),
+      svgMaxHeight / level.getHeight()
+    );
     completeCheck();
     updateUrl();
 
@@ -356,7 +386,11 @@
     } else if (levelsExList[levelId] !== undefined) {
       levelObj = levelsExList[levelId];
     }
-    consoleLog(`[LEVEL ${id}]${levelObj?.subject !== undefined ? ` ${levelObj.subject}` : ''}`);
+    consoleLog(
+      `[LEVEL ${id}]${
+        levelObj?.subject !== undefined ? ` ${levelObj.subject}` : ''
+      }`
+    );
 
     loadLevelObj(levelObj !== undefined ? levelObj : createObjById(levelId));
     updateLevelVisibility();
@@ -390,20 +424,30 @@
     if (levelId === null) return false;
     if (levelId === 0) return false;
     if (levelId === 1) return false;
-    if (levelsList[levelId] !== undefined) return levelsList[levelId - 1] !== undefined;
+    if (levelsList[levelId] !== undefined)
+      return levelsList[levelId - 1] !== undefined;
     if (isNaN(levelId)) return false;
-    if (levelsExList[levelId] !== undefined) return levelsExList[levelId - 1] !== undefined;
-    return levelsList[levelId - 1] === undefined && levelsExList[levelId - 1] === undefined;
+    if (levelsExList[levelId] !== undefined)
+      return levelsExList[levelId - 1] !== undefined;
+    return (
+      levelsList[levelId - 1] === undefined &&
+      levelsExList[levelId - 1] === undefined
+    );
   }
 
   function showLevelNext() {
     if (levelId === null) return false;
     if (levelId === -1) return false;
     if (levelId === 0) return false;
-    if (levelsList[levelId] !== undefined) return levelsList[levelId + 1] !== undefined;
+    if (levelsList[levelId] !== undefined)
+      return levelsList[levelId + 1] !== undefined;
     if (isNaN(levelId)) return false;
-    if (levelsExList[levelId] !== undefined) return levelsExList[levelId + 1] !== undefined;
-    return levelsList[levelId + 1] === undefined && levelsExList[levelId + 1] === undefined;
+    if (levelsExList[levelId] !== undefined)
+      return levelsExList[levelId + 1] !== undefined;
+    return (
+      levelsList[levelId + 1] === undefined &&
+      levelsExList[levelId + 1] === undefined
+    );
   }
 
   function updateLevelVisibility() {
@@ -466,14 +510,19 @@
     for (const elem of document.getElementsByClassName('translatable')) {
       hideElem(elem);
     }
-    for (const elem of document.getElementsByClassName(`translatable ${lang}`)) {
+    for (const elem of document.getElementsByClassName(
+      `translatable ${lang}`
+    )) {
       showElem(elem);
     }
   }
 
   function rotateIcon() {
     const ICON_SIZE = 32;
-    document.documentElement.style.setProperty('--animation-origin', `${ICON_SIZE / 2}px ${ICON_SIZE / 2}px`);
+    document.documentElement.style.setProperty(
+      '--animation-origin',
+      `${ICON_SIZE / 2}px ${ICON_SIZE / 2}px`
+    );
     elems.icon.classList.remove('animation-rotation');
     setTimeout(() => {
       elems.icon.classList.add('animation-rotation');
@@ -514,10 +563,16 @@
       appendLevel(levelObj, id);
     }
 
-    elems.levels.dialogSvg.style.setProperty('height', `${HEIGHT * Math.ceil(count / COLS)}px`);
+    elems.levels.dialogSvg.style.setProperty(
+      'height',
+      `${HEIGHT * Math.ceil(count / COLS)}px`
+    );
 
     function appendLevel(levelObj, id) {
-      const highestScore = savedata.getHighestScore(levelObj, level.isReflectionMode());
+      const highestScore = savedata.getHighestScore(
+        levelObj,
+        level.isReflectionMode()
+      );
       if (highestScore !== null && hideCompletedLevelsFlag) return;
       count++;
 
@@ -528,12 +583,23 @@
       {
         const level = new app.Level();
         level.applyObj(levelObj, { init: true });
-        const blockSize = Math.min((WIDTH - 30) / (level.getW() + 2), (HEIGHT - 30) / (level.getH() + 2));
+        const blockSize = Math.min(
+          (WIDTH - 30) / (level.getW() + 2),
+          (HEIGHT - 30) / (level.getH() + 2)
+        );
         const levelSvg = level.createSvg(blockSize);
-        levelSvg.setAttribute('transform', `translate(${-blockSize + 20},${-blockSize + 20})`);
+        levelSvg.setAttribute(
+          'transform',
+          `translate(${-blockSize + 20},${-blockSize + 20})`
+        );
         g.appendChild(levelSvg);
         {
-          const text = app.svg.createText(5, { x: 10, y: 2, text: id, fill: 'black' });
+          const text = app.svg.createText(5, {
+            x: 10,
+            y: 2,
+            text: id,
+            fill: 'black',
+          });
           g.appendChild(text);
         }
         const bestStep = level.getBestStep();
@@ -547,11 +613,15 @@
       const y = Math.floor((count - 1) / COLS) * HEIGHT;
       g.setAttribute('transform', `translate(${x},${y})`);
       g.setAttribute('data-id', id);
-      g.addEventListener('click', function () {
-        const id = Number(g.getAttribute('data-id'));
-        loadLevelById(id);
-        closeLevelsDialog();
-      }, false);
+      g.addEventListener(
+        'click',
+        function () {
+          const id = Number(g.getAttribute('data-id'));
+          loadLevelById(id);
+          closeLevelsDialog();
+        },
+        false
+      );
     }
   }
 
@@ -663,13 +733,24 @@
         elem.addEventListener('click', func, false);
 
         {
-          const rect = app.svg.createRect(30, { x: 0, y: 0, width: 1, height: 1, fill: app.colors[state].fill });
+          const rect = app.svg.createRect(30, {
+            x: 0,
+            y: 0,
+            width: 1,
+            height: 1,
+            fill: app.colors[state].fill,
+          });
           rect.setAttribute('stroke', app.colors[state].stroke);
           rect.setAttribute('stroke-width', 4);
           elem.appendChild(rect);
         }
         {
-          const text = app.svg.createText(30, { x: 0.5, y: 0, text: char, fill: app.colors[state].text });
+          const text = app.svg.createText(30, {
+            x: 0.5,
+            y: 0,
+            text: char,
+            fill: app.colors[state].text,
+          });
           text.setAttribute('font-size', '18px');
           elem.appendChild(text);
         }
@@ -680,20 +761,36 @@
       elems.edit.wInc.addEventListener('click', () => resize(1, 0), false);
       elems.edit.hDec.addEventListener('click', () => resize(0, -1), false);
       elems.edit.hInc.addEventListener('click', () => resize(0, 1), false);
-      elems.edit.normalize.addEventListener('click', () => {
-        level.normalize();
-        updateUrl();
-        draw();
-      }, false);
+      elems.edit.normalize.addEventListener(
+        'click',
+        () => {
+          level.normalize();
+          updateUrl();
+          draw();
+        },
+        false
+      );
     }
 
     // ヘルプ画面用
     {
       elems.help.button.addEventListener('click', showHelpDialog, false);
       elems.help.dialog.addEventListener('click', closeHelpDialog, false);
-      elems.help.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
-      elems.help.langEn.addEventListener('click', () => selectLang('en'), false);
-      elems.help.langJa.addEventListener('click', () => selectLang('ja'), false);
+      elems.help.dialogDiv.addEventListener(
+        'click',
+        (e) => e.stopPropagation(),
+        false
+      );
+      elems.help.langEn.addEventListener(
+        'click',
+        () => selectLang('en'),
+        false
+      );
+      elems.help.langJa.addEventListener(
+        'click',
+        () => selectLang('ja'),
+        false
+      );
     }
 
     // タイトル画面用
@@ -712,7 +809,8 @@
           level.setCheckMode(app.Level.CHECK_MODE.REFLECTION);
           onloadId(1);
         },
-        false);
+        false
+      );
       // elems.title.buttonEdit.addEventListener('click', () => onloadObj({ w: 6, h: 5, s: '' }), false);
     }
 
@@ -724,8 +822,16 @@
       elems.level.edit.addEventListener('click', toggleEditLevel, false);
       elems.levels.button.addEventListener('click', showLevelsDialog, false);
       elems.levels.dialog.addEventListener('click', closeLevelsDialog, false);
-      elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation(), false);
-      elems.levels.hideCompletedLevels.addEventListener('click', toggleHideCompletedLevels, false);
+      elems.levels.dialogDiv.addEventListener(
+        'click',
+        (e) => e.stopPropagation(),
+        false
+      );
+      elems.levels.hideCompletedLevels.addEventListener(
+        'click',
+        toggleHideCompletedLevels,
+        false
+      );
     }
 
     // キー入力用
@@ -742,14 +848,32 @@
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
       elems.main.svg.addEventListener(pointerdownEventName, editSvg, false);
-      elems.main.svg.oncontextmenu = function () {return !editMode;};
+      elems.main.svg.oncontextmenu = function () {
+        return !editMode;
+      };
 
-      elems.controller.stickBase.addEventListener(pointerdownEventName, pointerdown, false);
-      elems.controller.stickBase.addEventListener(pointermoveEventName, pointermove, false);
-      elems.controller.stickBase.addEventListener(pointerupEventName, pointerup, false);
+      elems.controller.stickBase.addEventListener(
+        pointerdownEventName,
+        pointerdown,
+        false
+      );
+      elems.controller.stickBase.addEventListener(
+        pointermoveEventName,
+        pointermove,
+        false
+      );
+      elems.controller.stickBase.addEventListener(
+        pointerupEventName,
+        pointerup,
+        false
+      );
       document.addEventListener(pointerupEventName, pointerup, false);
 
-      elems.controller.undo.addEventListener(pointerdownEventName, undodown, false);
+      elems.controller.undo.addEventListener(
+        pointerdownEventName,
+        undodown,
+        false
+      );
     }
   }
 
@@ -830,7 +954,8 @@
         return null;
       })();
 
-      const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
+      const showCharsFlag =
+        editMode || settings.debugFlag || temporaryShowCharsFlag;
       const levelSvg = level.createSvg(blockSize, symmetryType, showCharsFlag);
       elems.main.svg.appendChild(levelSvg);
     }
@@ -843,13 +968,25 @@
       elems.main.svg.appendChild(g);
       // 横線
       for (let y = 2; y < level.getHeight() - 1; ++y) {
-        const line = app.svg.createLine(blockSize, { x1: 1, y1: y, x2: level.getWidth() - 1, y2: y, stroke: app.colors.line });
+        const line = app.svg.createLine(blockSize, {
+          x1: 1,
+          y1: y,
+          x2: level.getWidth() - 1,
+          y2: y,
+          stroke: app.colors.line,
+        });
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
       // 縦線
       for (let x = 2; x < level.getWidth() - 1; ++x) {
-        const line = app.svg.createLine(blockSize, { x1: x, y1: 1, x2: x, y2: level.getHeight() - 1, stroke: app.colors.line });
+        const line = app.svg.createLine(blockSize, {
+          x1: x,
+          y1: 1,
+          x2: x,
+          y2: level.getHeight() - 1,
+          stroke: app.colors.line,
+        });
         line.setAttribute('stroke-dasharray', dasharray);
         g.appendChild(line);
       }
@@ -864,20 +1001,68 @@
     const borderWidth = 0.05;
     {
       const frameColor = app.colors.frame;
-      const rectU = app.svg.createRect(blockSize, { x: 0, y: 0, width: level.getWidth(), height: 1, fill: frameColor });
-      const rectR = app.svg.createRect(blockSize, { x: level.getWidth() - 1, y: 0, width: 1, height: level.getHeight(), fill: frameColor });
-      const rectD = app.svg.createRect(blockSize, { x: 0, y: level.getHeight() - 1, width: level.getWidth(), height: 1, fill: frameColor });
-      const rectL = app.svg.createRect(blockSize, { x: 0, y: 0, width: 1, height: level.getHeight(), fill: frameColor });
+      const rectU = app.svg.createRect(blockSize, {
+        x: 0,
+        y: 0,
+        width: level.getWidth(),
+        height: 1,
+        fill: frameColor,
+      });
+      const rectR = app.svg.createRect(blockSize, {
+        x: level.getWidth() - 1,
+        y: 0,
+        width: 1,
+        height: level.getHeight(),
+        fill: frameColor,
+      });
+      const rectD = app.svg.createRect(blockSize, {
+        x: 0,
+        y: level.getHeight() - 1,
+        width: level.getWidth(),
+        height: 1,
+        fill: frameColor,
+      });
+      const rectL = app.svg.createRect(blockSize, {
+        x: 0,
+        y: 0,
+        width: 1,
+        height: level.getHeight(),
+        fill: frameColor,
+      });
       g.appendChild(rectU);
       g.appendChild(rectR);
       g.appendChild(rectD);
       g.appendChild(rectL);
 
       const borderColor = app.colors.frameBorder;
-      const rectUb = app.svg.createRect(blockSize, { x: 0, y: 0, width: level.getWidth(), height: borderWidth, fill: borderColor });
-      const rectRb = app.svg.createRect(blockSize, { x: level.getWidth() - borderWidth, y: 0, width: borderWidth, height: level.getHeight(), fill: borderColor });
-      const rectDb = app.svg.createRect(blockSize, { x: 0, y: level.getHeight() - borderWidth, width: level.getWidth(), height: borderWidth, fill: borderColor });
-      const rectLb = app.svg.createRect(blockSize, { x: 0, y: 0, width: borderWidth, height: level.getHeight(), fill: borderColor });
+      const rectUb = app.svg.createRect(blockSize, {
+        x: 0,
+        y: 0,
+        width: level.getWidth(),
+        height: borderWidth,
+        fill: borderColor,
+      });
+      const rectRb = app.svg.createRect(blockSize, {
+        x: level.getWidth() - borderWidth,
+        y: 0,
+        width: borderWidth,
+        height: level.getHeight(),
+        fill: borderColor,
+      });
+      const rectDb = app.svg.createRect(blockSize, {
+        x: 0,
+        y: level.getHeight() - borderWidth,
+        width: level.getWidth(),
+        height: borderWidth,
+        fill: borderColor,
+      });
+      const rectLb = app.svg.createRect(blockSize, {
+        x: 0,
+        y: 0,
+        width: borderWidth,
+        height: level.getHeight(),
+        fill: borderColor,
+      });
       g.appendChild(rectUb);
       g.appendChild(rectRb);
       g.appendChild(rectDb);
@@ -892,38 +1077,58 @@
 
       // クリア時のメッセージ
       if (completeFlag) {
-        const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: level.getHeight() - 1.95, text: 'Congratulations!', fill: 'white' });
+        const text = app.svg.createText(blockSize, {
+          x: level.getWidth() * 0.5,
+          y: level.getHeight() - 1.95,
+          text: 'Congratulations!',
+          fill: 'white',
+        });
         text.setAttribute('font-size', fontSize);
         g.appendChild(text);
         {
           const levelObj = level.getLevelObj();
-          const w = levelObj.w;
-          const h = levelObj.h;
-          const s = levelObj.s;
-          const r = levelObj.r;
           const replayStr = undoInfo.getReplayStr();
 
           // 記録保存
           if (bestStep !== undefined) {
-            highestScorePrev = savedata.getHighestScore(levelObj, level.isReflectionMode());
+            highestScorePrev = savedata.getHighestScore(
+              levelObj,
+              level.isReflectionMode()
+            );
             savedata.saveSteps(levelObj, level.isReflectionMode(), replayStr);
           }
 
           // ログ出力
           {
-            const levelParams = `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}', step: ${replayStr.length}` + (levelObj.subject !== undefined ? `, subject: '${levelObj.subject}'` : '');
+            const w = levelObj.w;
+            const h = levelObj.h;
+            const s = levelObj.s;
+            const r = levelObj.r;
+            const levelParams =
+              `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}', step: ${replayStr.length}` +
+              (levelObj.subject !== undefined
+                ? `, subject: '${levelObj.subject}'`
+                : '');
             const levelObjStr = `{ ${levelParams} },`;
             const completedStep = undoInfo.getIndex();
             consoleLog(levelObjStr);
             if (r === undefined) {
               consoleWarn('参照用公式記録の情報がありません！');
             } else if (completedStep < bestStep) {
-              consoleLog(`参照用公式記録を破りました！\n参照用公式記録[${bestStep}] → あなたの記録[${completedStep}] (${completedStep - bestStep} 手)`);
+              consoleLog(
+                `参照用公式記録を破りました！\n参照用公式記録[${bestStep}] → あなたの記録[${completedStep}] (${
+                  completedStep - bestStep
+                } 手)`
+              );
             } else {
               if (replayStr === r) {
                 consoleLog('参照用公式記録と完全に同じ手順です。');
               } else {
-                consoleLog(`参照用公式記録は ${bestStep} 手です。\n(差: ${completedStep - bestStep} 手)`);
+                consoleLog(
+                  `参照用公式記録は ${bestStep} 手です。\n(差: ${
+                    completedStep - bestStep
+                  } 手)`
+                );
               }
             }
           }
@@ -934,7 +1139,12 @@
         }
       } else {
         if (symmetryFlag) {
-          const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: level.getHeight() - 2, text: 'Not connected.', fill: 'white' });
+          const text = app.svg.createText(blockSize, {
+            x: level.getWidth() * 0.5,
+            y: level.getHeight() - 2,
+            text: 'Not connected.',
+            fill: 'white',
+          });
           text.setAttribute('font-size', fontSize);
           g.appendChild(text);
         }
@@ -943,8 +1153,15 @@
       // 今回の手数
       {
         const currentStep = undoInfo.getIndex();
-        const color = completeFlag ? getStepColor(currentStep, bestStep) : 'black';
-        const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: level.getHeight() - 1 - borderWidth / 2, text: `${currentStep} steps`, fill: color });
+        const color = completeFlag
+          ? getStepColor(currentStep, bestStep)
+          : 'black';
+        const text = app.svg.createText(blockSize, {
+          x: level.getWidth() * 0.5,
+          y: level.getHeight() - 1 - borderWidth / 2,
+          text: `${currentStep} steps`,
+          fill: color,
+        });
         text.setAttribute('font-size', fontSize);
         g.appendChild(text);
       }
@@ -952,21 +1169,42 @@
       // 自己最高記録
       if (levelId !== null) {
         const levelObj = level.getLevelObj();
-        const highestScore = savedata.getHighestScore(levelObj, level.isReflectionMode());
+        const highestScore = savedata.getHighestScore(
+          levelObj,
+          level.isReflectionMode()
+        );
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
 
-          const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: borderWidth / 2, text: `Your best: ${highestScore} steps`, fill: color });
+          const text = app.svg.createText(blockSize, {
+            x: level.getWidth() * 0.5,
+            y: borderWidth / 2,
+            text: `Your best: ${highestScore} steps`,
+            fill: color,
+          });
           text.setAttribute('font-size', fontSize);
           g.appendChild(text);
 
-          const crown = app.svg.createCrown(blockSize, { x: borderWidth, y: borderWidth / 2, fill: color });
+          const crown = app.svg.createCrown(blockSize, {
+            x: borderWidth,
+            y: borderWidth / 2,
+            fill: color,
+          });
           g.appendChild(crown);
         }
 
         // 記録更新？
-        if (highestScore !== null && highestScorePrev !== null && highestScore < highestScorePrev) {
-          const text = app.svg.createText(blockSize, { x: level.getWidth() * 0.5, y: 0.95, text: 'New record!', fill: 'white' });
+        if (
+          highestScore !== null &&
+          highestScorePrev !== null &&
+          highestScore < highestScorePrev
+        ) {
+          const text = app.svg.createText(blockSize, {
+            x: level.getWidth() * 0.5,
+            y: 0.95,
+            text: 'New record!',
+            fill: 'white',
+          });
           text.setAttribute('font-size', fontSize);
           g.appendChild(text);
         }
@@ -1042,7 +1280,10 @@
 
     e.preventDefault();
 
-    if ((e.button === 0 || e.button === undefined) && level.getState(x, y) !== drawingState) {
+    if (
+      (e.button === 0 || e.button === undefined) &&
+      level.getState(x, y) !== drawingState
+    ) {
       addUndo(null);
       level.setState(x, y, drawingState);
       completeCheck();
@@ -1129,8 +1370,12 @@
   }
 
   function updateButtonSpeedDisplay() {
-    (settingsAuto.interval === settingsAuto.INTERVAL_MAX ? hideElem : showElem)(elems.auto.buttonSpeedDown);
-    (settingsAuto.interval === 1 ? hideElem : showElem)(elems.auto.buttonSpeedUp);
+    (settingsAuto.interval === settingsAuto.INTERVAL_MAX ? hideElem : showElem)(
+      elems.auto.buttonSpeedDown
+    );
+    (settingsAuto.interval === 1 ? hideElem : showElem)(
+      elems.auto.buttonSpeedUp
+    );
   }
 
   function updateAutoMode(isOn) {
@@ -1229,7 +1474,8 @@
         },
         () => {
           alert('クリップボードへのコピーに失敗しました。');
-        });
+        }
+      );
     });
 
     const MAX_LOG_NUM = 30;
@@ -1254,7 +1500,7 @@
     if (window.innerHeight * WIDTH >= window.innerWidth * HEIGHT) {
       elems.viewport.setAttribute('content', 'width=500');
     } else {
-      const width = HEIGHT * window.innerWidth / window.innerHeight;
+      const width = (HEIGHT * window.innerWidth) / window.innerHeight;
       elems.viewport.setAttribute('content', `width=${width}`);
     }
   }

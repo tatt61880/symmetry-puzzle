@@ -2,7 +2,7 @@
   'use strict';
   const isBrowser = typeof window !== 'undefined';
   if (isBrowser) {
-    console.error('Error: console.js isn\'t for browser.');
+    console.error("Error: console.js isn't for browser.");
     return;
   }
 

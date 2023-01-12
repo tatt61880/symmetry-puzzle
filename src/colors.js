@@ -11,16 +11,41 @@
     app.states = require('./states.js');
   }
 
-  colors[app.states.none] = { fill: '#ffffff', stroke: '#aaaaaa', text: '#888888', error: '#f80000' };
-  colors[app.states.wall] = { fill: '#222222', stroke: '#666666', text: '#bbbbbb', error: '#f80000' };
+  colors[app.states.none] = {
+    fill: '#ffffff',
+    stroke: '#aaaaaa',
+    text: '#888888',
+    error: '#f80000',
+  };
+  colors[app.states.wall] = {
+    fill: '#222222',
+    stroke: '#666666',
+    text: '#bbbbbb',
+    error: '#f80000',
+  };
   for (let i = app.states.targetMin; i <= app.states.targetMax; ++i) {
-    colors[i] = { fill: '#ffc0cb', stroke: '#f80000', text: '#773333', error: '#f80000' };
+    colors[i] = {
+      fill: '#ffc0cb',
+      stroke: '#f80000',
+      text: '#773333',
+      error: '#f80000',
+    };
   }
   for (let i = app.states.otherMin; i <= app.states.otherMax; ++i) {
-    colors[i] = { fill: '#e5e5e5', stroke: '#aaaaaa', text: '#555555', error: '#f80000' };
+    colors[i] = {
+      fill: '#e5e5e5',
+      stroke: '#aaaaaa',
+      text: '#555555',
+      error: '#f80000',
+    };
   }
   for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
-    colors[i] = { fill: '#00f8f8', stroke: '#0000f8', text: '#333399', error: '#f80000' };
+    colors[i] = {
+      fill: '#00f8f8',
+      stroke: '#0000f8',
+      text: '#333399',
+      error: '#f80000',
+    };
   }
 
   colors.line = '#888888';

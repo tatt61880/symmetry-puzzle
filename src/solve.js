@@ -7,10 +7,10 @@
   if (isBrowser) {
     app = window.app;
     app.console = console;
-    if (app?.states === undefined) app.console.error('app.states is undefined.');
+    if (app?.states === undefined)
+      app.console.error('app.states is undefined.');
     if (app?.Level === undefined) app.console.error('app.Level is undefined.');
-    options = {
-    };
+    options = {};
     window.process = {
       exitCode: 0,
     };
@@ -47,8 +47,12 @@
     1;
   } else if (levelId !== undefined) {
     const levels = {};
-    const levelsList = options.reflection ? app.levelsReflection : app.levelsPoint;
-    const levelsExList = options.reflection ? app.levelsReflectionEx : app.levelsPointEx;
+    const levelsList = options.reflection
+      ? app.levelsReflection
+      : app.levelsPoint;
+    const levelsExList = options.reflection
+      ? app.levelsReflectionEx
+      : app.levelsPointEx;
 
     for (const levelId in levelsList) {
       const levelObj = levelsList[levelId];
@@ -125,7 +129,9 @@
     })();
 
     if (isNaN(maxStep)) {
-      app.console.error(`Error: [LEVEL ${levelId}] maxStep is NaN. maxStep === ${maxStep}`);
+      app.console.error(
+        `Error: [LEVEL ${levelId}] maxStep is NaN. maxStep === ${maxStep}`
+      );
       process.exitCode = 1;
       return;
     }
@@ -135,7 +141,11 @@
     solveLevel(levelId, level, { maxStep, prefixStep });
   }
 
-  function solveLevel(levelId, level, { maxStep = 1000, time, prefixStep = '' }) {
+  function solveLevel(
+    levelId,
+    level,
+    { maxStep = 1000, time, prefixStep = '' }
+  ) {
     if (prefixStep !== '') {
       for (const c of prefixStep) {
         if (c === '0') continue;
@@ -149,7 +159,10 @@
     }
     const startTime = performance.now();
     let prevTime = startTime;
-    const prefixStepInfo = prefixStep === '' ? '' : `[prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
+    const prefixStepInfo =
+      prefixStep === ''
+        ? ''
+        : `[prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
     if (!isBrowser) {
       if (prefixStepInfo !== '') app.console.warn(`${prefixStepInfo}`);
     }
@@ -186,7 +199,7 @@
         return { replayStr: '' };
       }
 
-      const stateStrMap = new Map;
+      const stateStrMap = new Map();
       let replayStr = '';
       {
         const stateStr = level.getStateStr();
@@ -222,21 +235,25 @@
 
       let stateCount = 0;
 
-      let nextStateStrSet = new Set;
+      let nextStateStrSet = new Set();
       {
         const stateStr = level.getStateStr();
         nextStateStrSet.add(stateStr);
       }
 
       let solutionNum = 0;
-      for (; step < maxStep;) {
+      for (; step < maxStep; ) {
         const currentStateStrSet = nextStateStrSet;
-        nextStateStrSet = new Set;
+        nextStateStrSet = new Set();
         for (const currentStateStr of currentStateStrSet) {
           if (time !== undefined && ++stateCount % 10000 === 0) {
             const time = performance.now();
             if (time - startTime > options.time * 1000) {
-              const errorMessage = `Time limit over. [Time: ${msToSecStr(time - startTime)}] [Time limit: ${msToSecStr(Number(options.time) * 1000)}] [map.size: ${stateStrMap.size}]`;
+              const errorMessage = `Time limit over. [Time: ${msToSecStr(
+                time - startTime
+              )}] [Time limit: ${msToSecStr(
+                Number(options.time) * 1000
+              )}] [map.size: ${stateStrMap.size}]`;
               return { replayStr: null, errorMessage };
             }
           }
@@ -264,9 +281,14 @@
               if (options.all) {
                 solutionNum++;
                 const r = replayStr;
-                const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
+                const prefixStepInfo =
+                  prefixStep === ''
+                    ? ''
+                    : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
                 const completedLevelObj = getCompletedLevelObj(r);
-                app.console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`);
+                app.console.log(
+                  `/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`
+                );
               } else {
                 return { replayStr };
               }
@@ -287,7 +309,13 @@
         step++;
         if (options.console) {
           const time = performance.now();
-          app.console.info(`${step} steps completed. [Time: ${msToSecStr(time - startTime)}] (+${msToSecStr(time - prevTime)}) [map.size: ${stateStrMap.size}]`);
+          app.console.info(
+            `${step} steps completed. [Time: ${msToSecStr(
+              time - startTime
+            )}] (+${msToSecStr(time - prevTime)}) [map.size: ${
+              stateStrMap.size
+            }]`
+          );
           prevTime = time;
         }
       }
@@ -301,7 +329,10 @@
       const w = levelObj.w;
       const h = levelObj.h;
       const s = levelObj.s;
-      const subject = levelObj.subject !== undefined ? `, subject: '${levelObj.subject}'` : '';
+      const subject =
+        levelObj.subject !== undefined
+          ? `, subject: '${levelObj.subject}'`
+          : '';
       const res = `{ w: ${w}, h: ${h}, s: '${s}', r: '${r}', step: ${r.length}${subject} },`;
       return res;
     }

@@ -2,7 +2,7 @@
   'use strict';
   const isBrowser = typeof window !== 'undefined';
   if (isBrowser) {
-    console.error('Error: test.js isn\'t for browser.');
+    console.error("Error: test.js isn't for browser.");
     return;
   }
 
@@ -40,14 +40,15 @@
   return;
 
   function tests() {
-    if (app.states.wall !== -1
-      || app.states.none !== 0
-      || app.states.targetMin !== 1
-      || app.states.targetMax < app.states.targetMin
-      || app.states.otherMin <= app.states.targetMax
-      || app.states.otherMax < app.states.otherMin
-      || app.states.userMin <= app.states.otherMax
-      || app.states.userMax < app.states.userMin
+    if (
+      app.states.wall !== -1 ||
+      app.states.none !== 0 ||
+      app.states.targetMin !== 1 ||
+      app.states.targetMax < app.states.targetMin ||
+      app.states.otherMin <= app.states.targetMax ||
+      app.states.otherMax < app.states.otherMin ||
+      app.states.userMin <= app.states.otherMax ||
+      app.states.userMax < app.states.userMin
     ) {
       app.console.error('Error: Invalid states setting.');
       process.exitCode = 1;
@@ -80,7 +81,10 @@
       }
     }
 
-    if (levelSet.size !== app.levels.length + Object.keys(app.levelsEx).length) {
+    if (
+      levelSet.size !==
+      app.levels.length + Object.keys(app.levelsEx).length
+    ) {
       app.console.error('Error: There are same levels.');
       process.exitCode = 1;
       return;
@@ -107,7 +111,11 @@
     }
 
     if (levelObj.r.length !== levelObj.step) {
-      app.console.error(`Error: ${levelInfo()} Step check failed. step: ${levelObj.step} (r.length = ${levelObj.r.length})`);
+      app.console.error(
+        `Error: ${levelInfo()} Step check failed. step: ${
+          levelObj.step
+        } (r.length = ${levelObj.r.length})`
+      );
       return false;
     }
 
@@ -133,7 +141,9 @@
 
       const stateStr = level.getStateStr();
       if (stateStrMap[stateStr] !== undefined) {
-        app.console.warn(`Warning: ${levelInfo()} Same state exists. [index: ${index}]`);
+        app.console.warn(
+          `Warning: ${levelInfo()} Same state exists. [index: ${index}]`
+        );
       }
       stateStrMap[stateStr] = true;
     }
