@@ -112,13 +112,14 @@
       process.exitCode = 1;
       return;
     }
-    const level = new app.Level();
+    let checkMode = null;
     if (isReflection) {
-      level.setCheckMode(app.Level.CHECK_MODE.REFLECTION);
+      checkMode = app.Level.CHECK_MODE.POINT;
     } else {
-      level.setCheckMode(app.Level.CHECK_MODE.POINT);
+      checkMode = app.Level.CHECK_MODE.REFLECTION;
     }
-    level.applyObj(levelObj, { init: true });
+    const level = new app.Level();
+    level.init(levelObj, checkMode, {});
 
     const maxStep = (() => {
       let res = options.max;

@@ -155,7 +155,7 @@
       return this.#getSymmetryType(isX);
     }
 
-    setCheckMode(mode) {
+    #setCheckMode(mode) {
       if (mode === Level.CHECK_MODE.POINT) {
         this.#isCompleted = this.#isCompletedPoint;
         this.#isSymmetry = this.#isSymmetryPoint;
@@ -170,49 +170,53 @@
       this.#checkMode = mode;
     }
 
-    applyObj(obj_, { init, mirrorFlag, rotateNum, resize }) {
+    init(obj_, checkMode, { mirrorFlag = false, rotateNum = false }) {
+      this.#setCheckMode(checkMode);
       let obj = obj_;
+      if (mirrorFlag) obj = this.#mirrorLevel(obj);
+      if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
+      this.#levelObj = obj;
+      Object.freeze(this.#levelObj);
+      this.#initStates();
+      this.applyStateStr(obj.s);
+    }
 
-      if (init || resize) {
-        if (init) {
-          if (mirrorFlag) obj = this.#mirrorLevel(obj);
-          if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
-          this.#levelObj = obj;
-          Object.freeze(this.#levelObj);
-        }
-        if (resize) {
-          this.#removeR();
-        }
-        this.#width = obj.w + 4;
-        this.#height = obj.h + 4;
-        this.#rightEnd = this.#width - 3;
-        this.#downEnd = this.#height - 3;
+    #initStates() {
+      this.#width = this.#levelObj.w + 4;
+      this.#height = this.#levelObj.h + 4;
+      this.#rightEnd = this.#width - 3;
+      this.#downEnd = this.#height - 3;
 
-        // 初期化
-        for (let y = 0; y < this.#height; ++y) {
-          this.#states[y] = [];
-          for (let x = 0; x < this.#width; ++x) {
-            this.#states[y][x] = app.states.none;
-          }
-        }
-
-        // 枠(外周2マス分)
-        {
-          for (let y = 0; y < this.#height; ++y) {
-            this.#states[y][0] = app.states.wall;
-            this.#states[y][1] = app.states.wall;
-            this.#states[y][this.#width - 2] = app.states.wall;
-            this.#states[y][this.#width - 1] = app.states.wall;
-          }
-          for (let x = 2; x < this.#width - 2; ++x) {
-            this.#states[0][x] = app.states.wall;
-            this.#states[1][x] = app.states.wall;
-            this.#states[this.#height - 2][x] = app.states.wall;
-            this.#states[this.#height - 1][x] = app.states.wall;
-          }
+      // 初期化
+      for (let y = 0; y < this.#height; ++y) {
+        this.#states[y] = [];
+        for (let x = 0; x < this.#width; ++x) {
+          this.#states[y][x] = app.states.none;
         }
       }
 
+      // 枠(外周2マス分)
+      {
+        for (let y = 0; y < this.#height; ++y) {
+          this.#states[y][0] = app.states.wall;
+          this.#states[y][1] = app.states.wall;
+          this.#states[y][this.#width - 2] = app.states.wall;
+          this.#states[y][this.#width - 1] = app.states.wall;
+        }
+        for (let x = 2; x < this.#width - 2; ++x) {
+          this.#states[0][x] = app.states.wall;
+          this.#states[1][x] = app.states.wall;
+          this.#states[this.#height - 2][x] = app.states.wall;
+          this.#states[this.#height - 1][x] = app.states.wall;
+        }
+      }
+    }
+
+    applyObj(obj, resizeFlag) {
+      if (resizeFlag) {
+        this.#removeR();
+        this.#initStates();
+      }
       this.applyStateStr(obj.s);
     }
 
@@ -337,6 +341,10 @@
     isSymmetryReflection(isX) {
       if (!this.#exist(app.states.isTarget)) return false;
       return this.#isSymmetryReflection(isX);
+    }
+
+    isCompleted() {
+      return this.#isCompleted();
     }
 
     isReflectionMode() {
@@ -743,10 +751,6 @@
     // 線対称か否か。
     #isSymmetryReflection(isX) {
       return this.#getSymmetryTypeReflection(isX) !== null;
-    }
-
-    isCompleted() {
-      return this.#isCompleted();
     }
 
     #isCompletedPoint() {
