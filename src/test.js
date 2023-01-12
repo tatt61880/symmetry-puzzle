@@ -92,10 +92,11 @@
   }
 
   function testLevel(levelId, levelObj) {
+    let checkMode = null;
+    if (options.point) checkMode = app.Level.CHECK_MODE.POINT;
+    if (options.reflection) checkMode = app.Level.CHECK_MODE.REFLECTION;
     const level = new app.Level();
-    if (options.point) level.setCheckMode(app.Level.CHECK_MODE.POINT);
-    if (options.reflection) level.setCheckMode(app.Level.CHECK_MODE.REFLECTION);
-    level.applyObj(levelObj, { init: true });
+    level.init(levelObj, checkMode, {});
 
     if (!level.isNormalized()) {
       app.console.error(`Error: ${levelInfo()} isNormalized check failed.`);

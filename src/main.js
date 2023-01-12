@@ -59,7 +59,8 @@
   let levelsList = null;
   let levelsExList = null;
   let levelId = null;
-  const level = new app.Level();
+  let level = new app.Level();
+  let checkMode;
 
   const MOVE_MSEC = INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
   const SHADOW_MSEC = MOVE_MSEC * 2;
@@ -312,8 +313,18 @@
     undoInfo = new app.UndoInfo(elems.controller.undo);
   }
 
-  function applyObj(obj, param = { init: false, resize: false }) {
-    level.applyObj(obj, param);
+  function initLevel(obj, initParam) {
+    level = new app.Level();
+    level.init(obj, checkMode, initParam);
+    updateSvg();
+  }
+
+  function applyObj(obj, { resizeFlag = false }) {
+    level.applyObj(obj, resizeFlag);
+    updateSvg();
+  }
+
+  function updateSvg() {
     const svgMaxWidth = 490;
     const svgMaxHeight = 280;
     blockSize = Math.min(
@@ -332,7 +343,7 @@
     if (undoInfo.isUndoable()) {
       const data = undoInfo.undo();
       const resizeFlag = level.getW() !== data.w || level.getH() !== data.h;
-      applyObj(data, { resize: resizeFlag });
+      applyObj(data, { resizeFlag });
     }
   }
 
@@ -399,16 +410,14 @@
   }
 
   function loadLevelObj(levelObj, param = {}) {
-    const objParam = {
-      init: true,
-    };
+    const initParam = {};
     if (!param.reset) {
-      objParam.mirrorFlag = settings.mirrorFlag;
-      objParam.rotateNum = settings.rotateNum;
+      initParam.mirrorFlag = settings.mirrorFlag;
+      initParam.rotateNum = settings.rotateNum;
     }
 
     resetUndo();
-    applyObj(levelObj, objParam);
+    initLevel(levelObj, initParam);
 
     inputFlag = false;
     inputDir = dirs.neutral;
@@ -582,7 +591,7 @@
 
       {
         const level = new app.Level();
-        level.applyObj(levelObj, { init: true });
+        level.init(levelObj, checkMode, {});
         const blockSize = Math.min(
           (WIDTH - 30) / (level.getW() + 2),
           (HEIGHT - 30) / (level.getH() + 2)
@@ -641,9 +650,9 @@
     const queryParams = app.analyzeUrl();
     settings = queryParams.settings;
     if (settings.r) {
-      level.setCheckMode(app.Level.CHECK_MODE.REFLECTION);
+      checkMode = app.Level.CHECK_MODE.REFLECTION;
     } else {
-      level.setCheckMode(app.Level.CHECK_MODE.POINT);
+      checkMode = app.Level.CHECK_MODE.POINT;
     }
 
     setInterval(intervalFunc, INPUT_INTERVAL_MSEC);
@@ -671,12 +680,15 @@
     if (editMode) {
       toggleEditLevel();
     }
-    if (level.isReflectionMode()) {
+    if (checkMode === app.Level.CHECK_MODE.POINT) {
+      levelsList = app.levels;
+      levelsExList = app.levelsEx;
+    } else if (checkMode === app.Level.CHECK_MODE.REFLECTION) {
       levelsList = app.levelsReflection;
       levelsExList = app.levelsExReflection;
     } else {
-      levelsList = app.levels;
-      levelsExList = app.levelsEx;
+      levelsList = null;
+      levelsExList = null;
     }
     hideElem(elems.category.title);
     showElem(elems.category.game);
@@ -798,7 +810,7 @@
       elems.title.buttonPlayPoint.addEventListener(
         'click',
         () => {
-          level.setCheckMode(app.Level.CHECK_MODE.POINT);
+          checkMode = app.Level.CHECK_MODE.POINT;
           onloadId(1);
         },
         false
@@ -806,7 +818,7 @@
       elems.title.buttonPlayReflection.addEventListener(
         'click',
         () => {
-          level.setCheckMode(app.Level.CHECK_MODE.REFLECTION);
+          checkMode = app.Level.CHECK_MODE.REFLECTION;
           onloadId(1);
         },
         false
@@ -1285,14 +1297,14 @@
       level.getState(x, y) !== drawingState
     ) {
       addUndo(null);
-      level.setState(x, y, drawingState);
+      level.applyState(x, y, drawingState);
       completeCheck();
       updateUrl();
       draw();
     } else if (level.getState(x, y) !== app.states.none) {
       if (e.button !== 0) {
         addUndo(null);
-        level.setState(x, y, app.states.none);
+        level.applyState(x, y, app.states.none);
         completeCheck();
         updateUrl();
         draw();
@@ -1334,7 +1346,7 @@
     if (h < 1) return;
     const obj = { w, h, s };
     addUndo(null);
-    applyObj(obj, { resize: true });
+    applyObj(obj, { resizeFlag: true });
   }
 
   function addUndo(dir) {
@@ -1428,7 +1440,7 @@
       } else {
         resetUndo();
         const newLevelObj = { ...levelObj, ...{ r: result.replayStr } };
-        level.applyObj(newLevelObj, { init: true });
+        initLevel(newLevelObj, {});
       }
     }
 
