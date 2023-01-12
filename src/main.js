@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.01.10';
+  const VERSION_TEXT = 'v2023.01.13';
 
   const app = window.app;
   Object.freeze(app);
@@ -57,7 +57,7 @@
   let blockSize = 0;
 
   let levelsList = null;
-  let levelsExList = null;
+  let levelsListEx = null;
   let levelId = null;
   let level = new app.Level();
   let checkMode;
@@ -394,8 +394,8 @@
     let levelObj;
     if (levelsList[levelId] !== undefined) {
       levelObj = levelsList[levelId];
-    } else if (levelsExList[levelId] !== undefined) {
-      levelObj = levelsExList[levelId];
+    } else if (levelsListEx[levelId] !== undefined) {
+      levelObj = levelsListEx[levelId];
     }
     consoleLog(
       `[LEVEL ${id}]${
@@ -436,11 +436,11 @@
     if (levelsList[levelId] !== undefined)
       return levelsList[levelId - 1] !== undefined;
     if (isNaN(levelId)) return false;
-    if (levelsExList[levelId] !== undefined)
-      return levelsExList[levelId - 1] !== undefined;
+    if (levelsListEx[levelId] !== undefined)
+      return levelsListEx[levelId - 1] !== undefined;
     return (
       levelsList[levelId - 1] === undefined &&
-      levelsExList[levelId - 1] === undefined
+      levelsListEx[levelId - 1] === undefined
     );
   }
 
@@ -451,11 +451,11 @@
     if (levelsList[levelId] !== undefined)
       return levelsList[levelId + 1] !== undefined;
     if (isNaN(levelId)) return false;
-    if (levelsExList[levelId] !== undefined)
-      return levelsExList[levelId + 1] !== undefined;
+    if (levelsListEx[levelId] !== undefined)
+      return levelsListEx[levelId + 1] !== undefined;
     return (
       levelsList[levelId + 1] === undefined &&
-      levelsExList[levelId + 1] === undefined
+      levelsListEx[levelId + 1] === undefined
     );
   }
 
@@ -566,9 +566,9 @@
       const levelObj = levelsList[id];
       appendLevel(levelObj, id);
     }
-    for (const id of Object.keys(levelsExList).sort()) {
+    for (const id of Object.keys(levelsListEx).sort()) {
       if (String(id) === 'NaN') continue;
-      const levelObj = levelsExList[id];
+      const levelObj = levelsListEx[id];
       appendLevel(levelObj, id);
     }
 
@@ -681,14 +681,14 @@
       toggleEditLevel();
     }
     if (checkMode === app.Level.CHECK_MODE.POINT) {
-      levelsList = app.levels;
-      levelsExList = app.levelsEx;
+      levelsList = app.levelsPoint;
+      levelsListEx = app.levelsPointEx;
     } else if (checkMode === app.Level.CHECK_MODE.REFLECTION) {
       levelsList = app.levelsReflection;
-      levelsExList = app.levelsExReflection;
+      levelsListEx = app.levelsReflectionEx;
     } else {
       levelsList = null;
-      levelsExList = null;
+      levelsListEx = null;
     }
     hideElem(elems.category.title);
     showElem(elems.category.game);
