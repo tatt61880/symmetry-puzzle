@@ -2,8 +2,8 @@
   'use strict';
   const isBrowser = typeof window !== 'undefined';
 
-  const levels = [];
-  levels.push(
+  const levelsPoint = [];
+  levelsPoint.push(
     {
       w: 33,
       h: 33,
@@ -494,15 +494,15 @@
     }
   );
 
-  Object.freeze(levels);
-  for (const level of levels) {
+  Object.freeze(levelsPoint);
+  for (const level of levelsPoint) {
     Object.freeze(level);
   }
 
   if (isBrowser) {
     window.app = window.app || {};
-    window.app.levels = levels;
+    window.app.levelsPoint = levelsPoint;
   } else {
-    module.exports = levels;
+    module.exports = levelsPoint;
   }
 })();

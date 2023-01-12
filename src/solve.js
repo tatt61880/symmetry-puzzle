@@ -7,9 +7,8 @@
   if (isBrowser) {
     app = window.app;
     app.console = console;
-    if (app?.states === undefined)
-      app.console.error('app.states is undefined.');
-    if (app?.Level === undefined) app.console.error('app.Level is undefined.');
+    if (app.states === undefined) app.console.error('app.states is undefined.');
+    if (app.Level === undefined) app.console.error('app.Level is undefined.');
     options = {};
     window.process = {
       exitCode: 0,
@@ -114,9 +113,9 @@
     }
     let checkMode = null;
     if (isReflection) {
-      checkMode = app.Level.CHECK_MODE.POINT;
-    } else {
       checkMode = app.Level.CHECK_MODE.REFLECTION;
+    } else {
+      checkMode = app.Level.CHECK_MODE.POINT;
     }
     const level = new app.Level();
     level.init(levelObj, checkMode, {});
