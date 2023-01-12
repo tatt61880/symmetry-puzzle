@@ -75,9 +75,15 @@
       fill,
     });
     g.appendChild(polygon);
-    g.appendChild(svg.createCircle(blockSize, { cx: x + 0.1, cy: y + 0.3, r: 0.05, fill }));
-    g.appendChild(svg.createCircle(blockSize, { cx: x + 0.5, cy: y + 0.15, r: 0.05, fill }));
-    g.appendChild(svg.createCircle(blockSize, { cx: x + 0.9, cy: y + 0.3, r: 0.05, fill }));
+    g.appendChild(
+      svg.createCircle(blockSize, { cx: x + 0.1, cy: y + 0.3, r: 0.05, fill })
+    );
+    g.appendChild(
+      svg.createCircle(blockSize, { cx: x + 0.5, cy: y + 0.15, r: 0.05, fill })
+    );
+    g.appendChild(
+      svg.createCircle(blockSize, { cx: x + 0.9, cy: y + 0.3, r: 0.05, fill })
+    );
     g.appendChild(rect);
     return g;
   };

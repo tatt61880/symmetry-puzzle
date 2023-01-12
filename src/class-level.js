@@ -50,6 +50,7 @@
       POINT: Symbol(0),
       REFLECTION: Symbol(1),
     };
+
     static SYMMETRY_TYPE = {
       POINT: Symbol(0),
       REFLECTION1: Symbol(1),
@@ -57,6 +58,7 @@
       REFLECTION3: Symbol(3),
       REFLECTION4: Symbol(4),
     };
+
     #checkMode;
     #levelObj;
     #states;
@@ -69,6 +71,9 @@
     #leftEnd;
     #downEnd;
     #rightEnd;
+    #isCompleted;
+    #isSymmetry;
+    #getSymmetryType;
 
     constructor() {
       this.#checkMode = null;
@@ -83,8 +88,9 @@
       this.#leftEnd = 2;
       this.#downEnd = null;
       this.#rightEnd = null;
-      this.isCompleted = null;
-      this.isSymmetry = null;
+      this.#isCompleted = null;
+      this.#isSymmetry = null;
+      this.#getSymmetryType = null;
     }
 
     getW() {
@@ -116,7 +122,13 @@
     }
 
     getStateStr() {
-      return this.#getStateStrSub(this.#states, this.#upEnd, this.#rightEnd, this.#downEnd, this.#leftEnd);
+      return this.#getStateStrSub(
+        this.#states,
+        this.#upEnd,
+        this.#rightEnd,
+        this.#downEnd,
+        this.#leftEnd
+      );
     }
 
     getUrlStr() {
@@ -124,8 +136,14 @@
       const h = this.getH();
       const s = this.getStateStr();
       console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
-      console.log(`node src/solve.js -w ${w} -h ${h} -s ${s} --all --console` + (this.isReflectionMode() ? ' --reflection' : ''));
-      return `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}` + (this.isReflectionMode() ? '&r' : '');
+      console.log(
+        `node src/solve.js -w ${w} -h ${h} -s ${s} --all --console` +
+          (this.isReflectionMode() ? ' --reflection' : '')
+      );
+      return (
+        `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}` +
+        (this.isReflectionMode() ? '&r' : '')
+      );
     }
 
     getCenter(isX) {
@@ -134,20 +152,18 @@
     }
 
     getSymmetryType(isX) {
-      if (this.#checkMode === Level.CHECK_MODE.POINT) {
-        return this.#getSymmetryTypePoint(isX);
-      } else {
-        return this.#getSymmetryTypeReflection(isX);
-      }
+      return this.#getSymmetryType(isX);
     }
 
     setCheckMode(mode) {
       if (mode === Level.CHECK_MODE.POINT) {
-        this.isCompleted = this.#isCompletedPoint;
-        this.isSymmetry = this.#isSymmetryPoint;
+        this.#isCompleted = this.#isCompletedPoint;
+        this.#isSymmetry = this.#isSymmetryPoint;
+        this.#getSymmetryType = this.#getSymmetryTypePoint;
       } else if (mode === Level.CHECK_MODE.REFLECTION) {
-        this.isCompleted = this.#isCompletedReflection;
-        this.isSymmetry = this.#isSymmetryReflection;
+        this.#isCompleted = this.#isCompletedReflection;
+        this.#isSymmetry = this.#isSymmetryReflection;
+        this.#getSymmetryType = this.#getSymmetryTypeReflection;
       } else {
         throw new Error('Unexpected check mode.');
       }
@@ -244,11 +260,20 @@
         for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
           const state = this.#states[y][x];
           if (map[state] === undefined) {
-            if (app.states.targetMin <= state && state <= app.states.targetMax) {
+            if (
+              app.states.targetMin <= state &&
+              state <= app.states.targetMax
+            ) {
               map[state] = nextTarget++;
-            } else if (app.states.otherMin <= state && state <= app.states.otherMax) {
+            } else if (
+              app.states.otherMin <= state &&
+              state <= app.states.otherMax
+            ) {
               map[state] = nextOther++;
-            } else if (app.states.userMin <= state && state <= app.states.userMax) {
+            } else if (
+              app.states.userMin <= state &&
+              state <= app.states.userMax
+            ) {
               map[state] = nextUser++;
             } else if (state === app.states.wall || state === app.states.none) {
               map[state] = this.#states[y][x];
@@ -300,6 +325,10 @@
       return this.#isConnected(isX);
     }
 
+    isSymmetry(isX) {
+      return this.#isSymmetry(isX);
+    }
+
     isSymmetryPoint(isX) {
       if (!this.#exist(app.states.isTarget)) return false;
       return this.#getSymmetryTypePoint(isX) !== null;
@@ -327,8 +356,7 @@
       let moveFlag = false;
       this.resetMoveFlags();
 
-      loop:
-      for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
+      loop: for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
         if (!this.#exist((x) => x === i)) continue;
 
         const moveState = []; // 移動予定の状態番号
@@ -398,7 +426,12 @@
 
       // 背景
       {
-        const rect = app.svg.createRect(blockSize, { x: 1, y: 1, width: this.getWidth() - 2, height: this.getHeight() - 2 });
+        const rect = app.svg.createRect(blockSize, {
+          x: 1,
+          y: 1,
+          width: this.getWidth() - 2,
+          height: this.getHeight() - 2,
+        });
         rect.setAttribute('fill', 'white');
         g.appendChild(rect);
       }
@@ -414,8 +447,18 @@
         for (let x = 1; x < this.getWidth() - 1; ++x) {
           const state = this.getState(x, y);
           if (state === app.states.none) continue;
-          const gElems = app.states.isTarget(state) ? gElemsTarget : gElemsNotTarget;
-          this.#addOneBlock(x, y, blockSize, symmetryType, showCharsFlag, gShadows, gElems);
+          const gElems = app.states.isTarget(state)
+            ? gElemsTarget
+            : gElemsNotTarget;
+          this.#addOneBlock(
+            x,
+            y,
+            blockSize,
+            symmetryType,
+            showCharsFlag,
+            gShadows,
+            gElems
+          );
         }
       }
 
@@ -565,7 +608,10 @@
       const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
-          if (isX(this.#states[y][x]) && !isX(this.#states[minY + maxY - y][minX + maxX - x])) {
+          if (
+            isX(this.#states[y][x]) &&
+            !isX(this.#states[minY + maxY - y][minX + maxX - x])
+          ) {
             return null;
           }
         }
@@ -580,7 +626,10 @@
       let res = true;
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
-          if (isX(this.#states[y][x]) && !isX(this.#states[y][minX + maxX - x])) {
+          if (
+            isX(this.#states[y][x]) &&
+            !isX(this.#states[y][minX + maxX - x])
+          ) {
             res = false;
           }
         }
@@ -593,7 +642,10 @@
       res = true;
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
-          if (isX(this.#states[y][x]) && !isX(this.#states[minY + maxY - y][x])) {
+          if (
+            isX(this.#states[y][x]) &&
+            !isX(this.#states[minY + maxY - y][x])
+          ) {
             res = false;
           }
         }
@@ -608,7 +660,10 @@
       res = true;
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
-          if (isX(this.#states[y][x]) && !isX(this.#states[minY + x - minX][minX + y - minY])) {
+          if (
+            isX(this.#states[y][x]) &&
+            !isX(this.#states[minY + x - minX][minX + y - minY])
+          ) {
             res = false;
           }
         }
@@ -621,7 +676,10 @@
       res = true;
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
-          if (isX(this.#states[y][x]) && !isX(this.#states[minY + maxX - x][minX + maxY - y])) {
+          if (
+            isX(this.#states[y][x]) &&
+            !isX(this.#states[minY + maxX - x][minX + maxY - y])
+          ) {
             res = false;
           }
         }
@@ -642,8 +700,7 @@
       const statesTemp = this.copyStates();
       let x0;
       let y0;
-      loop:
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
+      loop: for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
         for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
           if (isX(statesTemp[y][x])) {
             x0 = x;
@@ -688,6 +745,10 @@
       return this.#getSymmetryTypeReflection(isX) !== null;
     }
 
+    isCompleted() {
+      return this.#isCompleted();
+    }
+
     #isCompletedPoint() {
       if (!this.#exist(app.states.isTarget)) return false;
       const isConnected = this.#isConnected(app.states.isTarget);
@@ -702,13 +763,27 @@
       return this.#isSymmetryReflection(app.states.isTarget);
     }
 
-    #addOneBlock(x, y, blockSize, symmetryType, showCharsFlag, gShadows, gElems) {
+    #addOneBlock(
+      x,
+      y,
+      blockSize,
+      symmetryType,
+      showCharsFlag,
+      gShadows,
+      gElems
+    ) {
       const state = this.getState(x, y);
       const gElem = app.svg.createG();
       const color = app.colors[state];
       {
         const eps = 0.01; // サイズを少し大きくすることで、隙間をなくします。
-        const rect = app.svg.createRect(blockSize, { x: x - eps, y: y - eps, width: 1 + eps * 2, height: 1 + eps * 2, fill: color.fill });
+        const rect = app.svg.createRect(blockSize, {
+          x: x - eps,
+          y: y - eps,
+          width: 1 + eps * 2,
+          height: 1 + eps * 2,
+          fill: color.fill,
+        });
         gElem.appendChild(rect);
       }
       {
@@ -719,42 +794,90 @@
 
         // 上側
         if (!flags[dirs.u]) {
-          const line = app.svg.createRect(blockSize, { x, y, width: 1, height: blockBorderWidth, fill: color.stroke });
+          const line = app.svg.createRect(blockSize, {
+            x,
+            y,
+            width: 1,
+            height: blockBorderWidth,
+            fill: color.stroke,
+          });
           gElem.appendChild(line);
         }
         // 右側
         if (!flags[dirs.r]) {
-          const line = app.svg.createRect(blockSize, { x: x + 1 - blockBorderWidth, y, width: blockBorderWidth, height: 1, fill: color.stroke });
+          const line = app.svg.createRect(blockSize, {
+            x: x + 1 - blockBorderWidth,
+            y,
+            width: blockBorderWidth,
+            height: 1,
+            fill: color.stroke,
+          });
           gElem.appendChild(line);
         }
         // 下側
         if (!flags[dirs.d]) {
-          const line = app.svg.createRect(blockSize, { x, y: y + 1 - blockBorderWidth, width: 1, height: blockBorderWidth, fill: color.stroke });
+          const line = app.svg.createRect(blockSize, {
+            x,
+            y: y + 1 - blockBorderWidth,
+            width: 1,
+            height: blockBorderWidth,
+            fill: color.stroke,
+          });
           gElem.appendChild(line);
         }
         // 左側
         if (!flags[dirs.l]) {
-          const line = app.svg.createRect(blockSize, { x, y, width: blockBorderWidth, height: 1, fill: color.stroke });
+          const line = app.svg.createRect(blockSize, {
+            x,
+            y,
+            width: blockBorderWidth,
+            height: 1,
+            fill: color.stroke,
+          });
           gElem.appendChild(line);
         }
         // 右上
         if (flags[dirs.u] && flags[dirs.r] && !flags[dirs.ur]) {
-          const rect = app.svg.createRect(blockSize, { x: x + 1 - blockBorderWidth, y, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke });
+          const rect = app.svg.createRect(blockSize, {
+            x: x + 1 - blockBorderWidth,
+            y,
+            width: blockBorderWidth,
+            height: blockBorderWidth,
+            fill: color.stroke,
+          });
           gElem.appendChild(rect);
         }
         // 右下
         if (flags[dirs.d] && flags[dirs.r] && !flags[dirs.dr]) {
-          const rect = app.svg.createRect(blockSize, { x: x + 1 - blockBorderWidth, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke });
+          const rect = app.svg.createRect(blockSize, {
+            x: x + 1 - blockBorderWidth,
+            y: y + 1 - blockBorderWidth,
+            width: blockBorderWidth,
+            height: blockBorderWidth,
+            fill: color.stroke,
+          });
           gElem.appendChild(rect);
         }
         // 左下
         if (flags[dirs.d] && flags[dirs.l] && !flags[dirs.dl]) {
-          const rect = app.svg.createRect(blockSize, { x, y: y + 1 - blockBorderWidth, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke });
+          const rect = app.svg.createRect(blockSize, {
+            x,
+            y: y + 1 - blockBorderWidth,
+            width: blockBorderWidth,
+            height: blockBorderWidth,
+            fill: color.stroke,
+          });
           gElem.appendChild(rect);
         }
         // 左上
         if (flags[dirs.u] && flags[dirs.l] && !flags[dirs.ul]) {
-          const rect = app.svg.createRect(blockSize, { x, y, width: blockBorderWidth, height: blockBorderWidth, fill: color.stroke });
+          const rect = app.svg.createRect(blockSize, {
+            x,
+            y,
+            width: blockBorderWidth,
+            height: blockBorderWidth,
+            fill: color.stroke,
+          });
           gElem.appendChild(rect);
         }
 
@@ -762,22 +885,46 @@
           const size = blockBorderWidth * 1.75;
           // 右上
           if (!flags[dirs.u] && !flags[dirs.r]) {
-            const rect = app.svg.createRect(blockSize, { x: x + 1 - size, y, width: size, height: size, fill: color.stroke });
+            const rect = app.svg.createRect(blockSize, {
+              x: x + 1 - size,
+              y,
+              width: size,
+              height: size,
+              fill: color.stroke,
+            });
             gElem.appendChild(rect);
           }
           // 右下
           if (!flags[dirs.d] && !flags[dirs.r]) {
-            const rect = app.svg.createRect(blockSize, { x: x + 1 - size, y: y + 1 - size, width: size, height: size, fill: color.stroke });
+            const rect = app.svg.createRect(blockSize, {
+              x: x + 1 - size,
+              y: y + 1 - size,
+              width: size,
+              height: size,
+              fill: color.stroke,
+            });
             gElem.appendChild(rect);
           }
           // 左下
           if (!flags[dirs.d] && !flags[dirs.l]) {
-            const rect = app.svg.createRect(blockSize, { x, y: y + 1 - size, width: size, height: size, fill: color.stroke });
+            const rect = app.svg.createRect(blockSize, {
+              x,
+              y: y + 1 - size,
+              width: size,
+              height: size,
+              fill: color.stroke,
+            });
             gElem.appendChild(rect);
           }
           // 左上
           if (!flags[dirs.u] && !flags[dirs.l]) {
-            const rect = app.svg.createRect(blockSize, { x, y, width: size, height: size, fill: color.stroke });
+            const rect = app.svg.createRect(blockSize, {
+              x,
+              y,
+              width: size,
+              height: size,
+              fill: color.stroke,
+            });
             gElem.appendChild(rect);
           }
         }
@@ -835,28 +982,7 @@
         }
 
         if (app.states.isTarget(state)) {
-          switch (symmetryType) {
-            case Level.SYMMETRY_TYPE.POINT: {
-              gElem.classList.add('animation-rotation');
-              break;
-            }
-            case Level.SYMMETRY_TYPE.REFLECTION1: {
-              gElem.classList.add('animation-reflection1');
-              break;
-            }
-            case Level.SYMMETRY_TYPE.REFLECTION2: {
-              gElem.classList.add('animation-reflection2');
-              break;
-            }
-            case Level.SYMMETRY_TYPE.REFLECTION3: {
-              gElem.classList.add('animation-reflection3');
-              break;
-            }
-            case Level.SYMMETRY_TYPE.REFLECTION4: {
-              gElem.classList.add('animation-reflection4');
-              break;
-            }
-          }
+          gElem.classList.add(animationClass[symmetryType]);
         }
 
         // 移動モーション
@@ -871,7 +997,13 @@
             {
               const dd = 0.2;
               const ddd = 0.15;
-              const rectArg = { x: x - dx, y: y - dy, width: 1, height: 1, fill: color.fill };
+              const rectArg = {
+                x: x - dx,
+                y: y - dy,
+                width: 1,
+                height: 1,
+                fill: color.fill,
+              };
               if (dx === 0) {
                 if (!flags[dirs.l]) rectArg.x += dd;
                 if (!flags[dirs.l]) rectArg.width -= dd;
@@ -901,13 +1033,26 @@
       }
 
       if (showCharsFlag) {
-        const text = app.svg.createText(blockSize, { x: x + 0.5, y, text: app.states.stateToChar[state] });
+        const text = app.svg.createText(blockSize, {
+          x: x + 0.5,
+          y,
+          text: app.states.stateToChar[state],
+        });
         gElem.appendChild(text);
-        if (state === app.states.wall || this.#isConnected((s) => s === state)) {
+        if (
+          state === app.states.wall ||
+          this.#isConnected((s) => s === state)
+        ) {
           text.setAttribute('fill', app.colors[state].text);
         } else {
           text.setAttribute('fill', app.colors[state].error);
-          const rect = app.svg.createRect(blockSize, { x, y, width: 1, height: 1, fill: 'black' });
+          const rect = app.svg.createRect(blockSize, {
+            x,
+            y,
+            width: 1,
+            height: 1,
+            fill: 'black',
+          });
           rect.setAttribute('opacity', 0.3);
           gElem.appendChild(rect);
         }
@@ -917,6 +1062,14 @@
       gElems.appendChild(gElem);
     }
   }
+
+  const animationClass = {
+    [Level.SYMMETRY_TYPE.POINT]: 'animation-rotation',
+    [Level.SYMMETRY_TYPE.REFLECTION1]: 'animation-reflection1',
+    [Level.SYMMETRY_TYPE.REFLECTION2]: 'animation-reflection2',
+    [Level.SYMMETRY_TYPE.REFLECTION3]: 'animation-reflection3',
+    [Level.SYMMETRY_TYPE.REFLECTION4]: 'animation-reflection4',
+  };
 
   if (isBrowser) {
     window.app = window.app || {};

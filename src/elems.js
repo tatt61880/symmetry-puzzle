@@ -90,7 +90,7 @@
     console: {
       widget: 'console-widget',
       log: 'console-log',
-    }
+    },
   });
 
   if (isBrowser) {
