@@ -87,47 +87,12 @@
       this.isSymmetry = null;
     }
 
-    setCheckMode(mode) {
-      if (mode === Level.CHECK_MODE.POINT) {
-        this.isCompleted = this.#isCompletedPoint;
-        this.isSymmetry = this.#isPointSymmetry;
-      } else if (mode === Level.CHECK_MODE.REFLECTION) {
-        this.isCompleted = this.#isCompletedReflection;
-        this.isSymmetry = this.#isReflectionSymmetry;
-      } else {
-        throw new Error('Unexpected check mode.');
-      }
-      this.#checkMode = mode;
-    }
-
-    isReflectionMode() {
-      return this.#checkMode === Level.CHECK_MODE.REFLECTION;
-    }
-
     getW() {
       return this.#width - 4;
     }
 
     getH() {
       return this.#height - 4;
-    }
-
-    #removeR() {
-      const obj = {};
-      for (const key in this.#levelObj) {
-        if (key === 'r') continue;
-        obj[key] = this.#levelObj[key];
-      }
-      this.#levelObj = obj;
-      Object.freeze(this.#levelObj);
-    }
-
-    getLevelObj() {
-      return this.#levelObj;
-    }
-
-    getBestStep() {
-      return this.#levelObj?.r?.length;
     }
 
     getWidth() {
@@ -138,17 +103,20 @@
       return this.#height;
     }
 
+    getLevelObj() {
+      return this.#levelObj;
+    }
+
+    getBestStep() {
+      return this.#levelObj?.r?.length;
+    }
+
     getState(x, y) {
       return this.#states[y][x];
     }
 
-    setState(x, y, state) {
-      this.#setState(x, y, state);
-      this.#removeR();
-    }
-
-    #setState(x, y, state) {
-      this.#states[y][x] = state;
+    getStateStr() {
+      return this.#getStateStrSub(this.#states, this.#upEnd, this.#rightEnd, this.#downEnd, this.#leftEnd);
     }
 
     getUrlStr() {
@@ -160,6 +128,11 @@
       return `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}` + (this.isReflectionMode() ? '&r' : '');
     }
 
+    getCenter(isX) {
+      if (!this.#exist(isX)) return null;
+      return this.#getCenter(isX);
+    }
+
     getSymmetryType(isX) {
       if (this.#checkMode === Level.CHECK_MODE.POINT) {
         return this.#getSymmetryTypePoint(isX);
@@ -168,115 +141,17 @@
       }
     }
 
-    copyStates() {
-      const res = new Array(this.getHeight());
-      for (let y = 0; y < this.getHeight(); ++y) {
-        res[y] = [...this.#states[y]];
+    setCheckMode(mode) {
+      if (mode === Level.CHECK_MODE.POINT) {
+        this.isCompleted = this.#isCompletedPoint;
+        this.isSymmetry = this.#isSymmetryPoint;
+      } else if (mode === Level.CHECK_MODE.REFLECTION) {
+        this.isCompleted = this.#isCompletedReflection;
+        this.isSymmetry = this.#isSymmetryReflection;
+      } else {
+        throw new Error('Unexpected check mode.');
       }
-      return res;
-    }
-
-    // 左右反転する。
-    #mirrorLevel(levelObj) {
-      const w = levelObj.w;
-      const h = levelObj.h;
-      const stateStr = levelObj.s;
-      const statesTemp = [];
-      for (let y = 0; y < h; ++y) {
-        statesTemp[y] = [];
-        for (let x = 0; x < w; ++x) {
-          statesTemp[y][x] = app.states.none;
-        }
-      }
-
-      let x = w - 1;
-      let y = 0;
-      for (const c of stateCharGenerator(stateStr)) {
-        if (c === '-') {
-          y++;
-          if (y === h) break;
-          x = w - 1;
-        } else {
-          if (x === -1) continue;
-          statesTemp[y][x] = app.states.charToState[c];
-          x--;
-        }
-      }
-      let r = levelObj.r;
-      if (r !== undefined) {
-        let rotatedR = '';
-        for (const c of r) {
-          rotatedR += (4 - Number(c)) % 4;
-        }
-        r = rotatedR;
-      }
-      const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
-      const newLevelObj = { w, h, s, r };
-      return newLevelObj;
-    }
-
-    // 時計回りに90度×num回 回転する。
-    #rotateLevel(levelObj, rotateNum) {
-      let newLevelObj = levelObj;
-      for (let i = 0; i < rotateNum; ++i) {
-        const w = levelObj.h; // 90度回転後
-        const h = levelObj.w; // 90度回転後
-        const stateStr = levelObj.s;
-        const statesTemp = [];
-        for (let y = 0; y < h; ++y) {
-          statesTemp[y] = [];
-          for (let x = 0; x < w; ++x) {
-            statesTemp[y][x] = app.states.none;
-          }
-        }
-
-        let x = w - 1;
-        let y = 0;
-        for (const c of stateCharGenerator(stateStr)) {
-          if (c === '-') {
-            x--;
-            if (x < 0) break;
-            y = 0;
-          } else {
-            if (y === h) continue;
-            statesTemp[y][x] = app.states.charToState[c];
-            y++;
-          }
-        }
-        let r = levelObj.r;
-        if (r !== undefined) {
-          let rotatedR = '';
-          for (const c of r) {
-            rotatedR += (Number(c) + 1) % 4;
-          }
-          r = rotatedR;
-        }
-        const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
-        newLevelObj = { w, h, s, r };
-      }
-      return newLevelObj;
-    }
-
-    applyStateStr(stateStr) {
-      for (let y = 2; y < this.#height - 2; ++y) {
-        for (let x = 2; x < this.#width - 2; ++x) {
-          this.#states[y][x] = app.states.none;
-        }
-      }
-      let y = this.#upEnd;
-      let x = this.#leftEnd;
-      for (const c of stateCharGenerator(stateStr)) {
-        if (c === '-') {
-          y++;
-          if (y > this.#downEnd) break;
-          x = this.#leftEnd;
-        } else {
-          if (x > this.#rightEnd) continue;
-          this.#states[y][x] = app.states.charToState[c];
-          x++;
-        }
-      }
-      this.resetMoveFlags();
+      this.#checkMode = mode;
     }
 
     applyObj(obj_, { init, mirrorFlag, rotateNum, resize }) {
@@ -325,40 +200,39 @@
       this.applyStateStr(obj.s);
     }
 
-    #exist(isX) {
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
-          if (isX(this.#states[y][x])) return true;
+    applyState(x, y, state) {
+      this.#setState(x, y, state);
+      this.#removeR();
+    }
+
+    applyStateStr(stateStr) {
+      for (let y = 2; y < this.#height - 2; ++y) {
+        for (let x = 2; x < this.#width - 2; ++x) {
+          this.#states[y][x] = app.states.none;
         }
       }
-      return false;
-    }
-
-    getStateStr() {
-      return this.#getStateStrSub(this.#states, this.#upEnd, this.#rightEnd, this.#downEnd, this.#leftEnd);
-    }
-
-    #getStateStrSub(states, upEnd, rightEnd, downEnd, leftEnd) {
-      let res = '';
-      for (let y = upEnd; y <= downEnd; ++y) {
-        let line = '';
-        for (let x = leftEnd; x <= rightEnd; ++x) {
-          let c = app.states.stateToChar[states[y][x]];
-          if (c.length > 1) c = `(${c})`;
-          line += c;
+      let y = this.#upEnd;
+      let x = this.#leftEnd;
+      for (const c of stateCharGenerator(stateStr)) {
+        if (c === '-') {
+          y++;
+          if (y > this.#downEnd) break;
+          x = this.#leftEnd;
+        } else {
+          if (x > this.#rightEnd) continue;
+          this.#states[y][x] = app.states.charToState[c];
+          x++;
         }
-        res += line.replace(/0+$/, '');
-        res += '-';
       }
-      return res.replace(/-+$/, '');
+      this.resetMoveFlags();
     }
 
-    isInside(x, y) {
-      if (x < this.#leftEnd) return false;
-      if (this.#rightEnd < x) return false;
-      if (y < this.#upEnd) return false;
-      if (this.#downEnd < y) return false;
-      return true;
+    copyStates() {
+      const res = new Array(this.getHeight());
+      for (let y = 0; y < this.getHeight(); ++y) {
+        res[y] = [...this.#states[y]];
+      }
+      return res;
     }
 
     normalize() {
@@ -385,6 +259,14 @@
           this.#states[y][x] = map[state];
         }
       }
+    }
+
+    isInside(x, y) {
+      if (x < this.#leftEnd) return false;
+      if (this.#rightEnd < x) return false;
+      if (y < this.#upEnd) return false;
+      if (this.#downEnd < y) return false;
+      return true;
     }
 
     isNormalized() {
@@ -418,184 +300,18 @@
       return this.#isConnected(isX);
     }
 
-    // 図形が連結か否か。
-    #isConnected(isX) {
-      const statesTemp = this.copyStates();
-      let x0;
-      let y0;
-      loop:
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
-          if (isX(statesTemp[y][x])) {
-            x0 = x;
-            y0 = y;
-            break loop;
-          }
-        }
-      }
-
-      const dxs = [0, 1, 0, -1];
-      const dys = [-1, 0, 1, 0];
-      const st = new app.Stack();
-      st.push([x0, y0]);
-      statesTemp[y0][x0] = app.states.none;
-      while (!st.empty()) {
-        const xy = st.pop();
-        for (let i = 0; i < 4; i++) {
-          const xx = xy[0] + dxs[i];
-          const yy = xy[1] + dys[i];
-          if (isX(statesTemp[yy][xx])) {
-            statesTemp[yy][xx] = app.states.none;
-            st.push([xx, yy]);
-          }
-        }
-      }
-
-      for (let y = 0; y < this.getHeight(); ++y) {
-        for (let x = 0; x < this.getWidth(); ++x) {
-          if (isX(statesTemp[y][x])) return false;
-        }
-      }
-      return true;
-    }
-
-    // 図形の中心を得る。
-    getCenter(isX) {
-      if (!this.#exist(isX)) return null;
-      return this.#getCenter(isX);
-    }
-
-    // 図形の中心を得る。
-    #getMinMaxXY(isX) {
-      let minX = this.getWidth();
-      let maxX = 0;
-      let minY = this.getHeight();
-      let maxY = 0;
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
-          if (isX(this.#states[y][x])) {
-            minX = Math.min(minX, x);
-            maxX = Math.max(maxX, x);
-            minY = Math.min(minY, y);
-            maxY = Math.max(maxY, y);
-          }
-        }
-      }
-      return { minX, maxX, minY, maxY };
-    }
-
-    // 図形の中心を得る。
-    #getCenter(isX) {
-      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
-      return { x: (minX + maxX + 1) * 0.5, y: (minY + maxY + 1) * 0.5 };
-    }
-
-    isPointSymmetry(isX) {
+    isSymmetryPoint(isX) {
       if (!this.#exist(app.states.isTarget)) return false;
       return this.#getSymmetryTypePoint(isX) !== null;
     }
 
-    // 点対称か否か。
-    #isPointSymmetry(isX) {
-      return this.#getSymmetryTypePoint(isX) !== null;
-    }
-
-    #getSymmetryTypePoint(isX) {
-      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
-      for (let y = minY; y <= maxY; ++y) {
-        for (let x = minX; x <= maxX; ++x) {
-          if (isX(this.#states[y][x]) && !isX(this.#states[minY + maxY - y][minX + maxX - x])) {
-            return null;
-          }
-        }
-      }
-      return Level.SYMMETRY_TYPE.POINT;
-    }
-
-    isReflectionSymmetry(isX) {
+    isSymmetryReflection(isX) {
       if (!this.#exist(app.states.isTarget)) return false;
-      return this.#isReflectionSymmetry(isX);
+      return this.#isSymmetryReflection(isX);
     }
 
-    // 線対称か否か。
-    #isReflectionSymmetry(isX) {
-      return this.#getSymmetryTypeReflection(isX) !== null;
-    }
-
-    #getSymmetryTypeReflection(isX) {
-      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
-
-      // 左右対称か否か。
-      let res = true;
-      for (let y = minY; y <= maxY; ++y) {
-        for (let x = minX; x <= maxX; ++x) {
-          if (isX(this.#states[y][x]) && !isX(this.#states[y][minX + maxX - x])) {
-            res = false;
-          }
-        }
-      }
-      if (res) {
-        return Level.SYMMETRY_TYPE.REFLECTION1;
-      }
-
-      // 上下対称か否か。
-      res = true;
-      for (let y = minY; y <= maxY; ++y) {
-        for (let x = minX; x <= maxX; ++x) {
-          if (isX(this.#states[y][x]) && !isX(this.#states[minY + maxY - y][x])) {
-            res = false;
-          }
-        }
-      }
-      if (res) {
-        return Level.SYMMETRY_TYPE.REFLECTION2;
-      }
-
-      if (maxX - minX !== maxY - minY) return null; // 縦と横の長さが異なる場合、左右対称でも上下対称でもなければ線対称でないことが確定。
-
-      // 斜めに対称軸があるか否か。(1)
-      res = true;
-      for (let y = minY; y <= maxY; ++y) {
-        for (let x = minX; x <= maxX; ++x) {
-          if (isX(this.#states[y][x]) && !isX(this.#states[minY + x - minX][minX + y - minY])) {
-            res = false;
-          }
-        }
-      }
-      if (res) {
-        return Level.SYMMETRY_TYPE.REFLECTION3;
-      }
-
-      // 斜めに対称軸があるか否か。(2)
-      res = true;
-      for (let y = minY; y <= maxY; ++y) {
-        for (let x = minX; x <= maxX; ++x) {
-          if (isX(this.#states[y][x]) && !isX(this.#states[minY + maxX - x][minX + maxY - y])) {
-            res = false;
-          }
-        }
-      }
-      if (res) {
-        return Level.SYMMETRY_TYPE.REFLECTION4;
-      }
-
-      return null;
-    }
-
-    #isCompletedPoint() {
-      if (!this.#exist(app.states.isTarget)) return false;
-      const isConnected = this.#isConnected(app.states.isTarget);
-      if (!isConnected) return false;
-      const isPointSymmetry = this.#isPointSymmetry(app.states.isTarget);
-      return isPointSymmetry;
-    }
-
-    #isCompletedReflection() {
-      if (!this.#exist(app.states.isTarget)) return false;
-      const isConnected = this.#isConnected(app.states.isTarget);
-      if (!isConnected) return false;
-      const isRefrectSymmetry = this.#isReflectionSymmetry(app.states.isTarget);
-      return isRefrectSymmetry;
+    isReflectionMode() {
+      return this.#checkMode === Level.CHECK_MODE.REFLECTION;
     }
 
     resetMoveFlags() {
@@ -609,13 +325,7 @@
 
     updateMoveFlags(dx, dy) {
       let moveFlag = false;
-
-      for (let y = 0; y < this.getHeight(); ++y) {
-        this.#moveFlags[y] = [];
-        for (let x = 0; x < this.getWidth(); ++x) {
-          this.#moveFlags[y][x] = false;
-        }
-      }
+      this.resetMoveFlags();
 
       loop:
       for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
@@ -710,6 +420,286 @@
       }
 
       return g;
+    }
+
+    #removeR() {
+      const obj = {};
+      for (const key in this.#levelObj) {
+        if (key === 'r') continue;
+        obj[key] = this.#levelObj[key];
+      }
+      this.#levelObj = obj;
+      Object.freeze(this.#levelObj);
+    }
+
+    // 左右反転する。
+    #mirrorLevel(levelObj) {
+      const w = levelObj.w;
+      const h = levelObj.h;
+      const stateStr = levelObj.s;
+      const statesTemp = [];
+      for (let y = 0; y < h; ++y) {
+        statesTemp[y] = [];
+        for (let x = 0; x < w; ++x) {
+          statesTemp[y][x] = app.states.none;
+        }
+      }
+
+      let x = w - 1;
+      let y = 0;
+      for (const c of stateCharGenerator(stateStr)) {
+        if (c === '-') {
+          y++;
+          if (y === h) break;
+          x = w - 1;
+        } else {
+          if (x === -1) continue;
+          statesTemp[y][x] = app.states.charToState[c];
+          x--;
+        }
+      }
+      let r = levelObj.r;
+      if (r !== undefined) {
+        let rotatedR = '';
+        for (const c of r) {
+          rotatedR += (4 - Number(c)) % 4;
+        }
+        r = rotatedR;
+      }
+      const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
+      const newLevelObj = { w, h, s, r };
+      return newLevelObj;
+    }
+
+    // 時計回りに90度×num回 回転する。
+    #rotateLevel(levelObj, rotateNum) {
+      let newLevelObj = levelObj;
+      for (let i = 0; i < rotateNum; ++i) {
+        const w = levelObj.h; // 90度回転後
+        const h = levelObj.w; // 90度回転後
+        const stateStr = levelObj.s;
+        const statesTemp = [];
+        for (let y = 0; y < h; ++y) {
+          statesTemp[y] = [];
+          for (let x = 0; x < w; ++x) {
+            statesTemp[y][x] = app.states.none;
+          }
+        }
+
+        let x = w - 1;
+        let y = 0;
+        for (const c of stateCharGenerator(stateStr)) {
+          if (c === '-') {
+            x--;
+            if (x < 0) break;
+            y = 0;
+          } else {
+            if (y === h) continue;
+            statesTemp[y][x] = app.states.charToState[c];
+            y++;
+          }
+        }
+        let r = levelObj.r;
+        if (r !== undefined) {
+          let rotatedR = '';
+          for (const c of r) {
+            rotatedR += (Number(c) + 1) % 4;
+          }
+          r = rotatedR;
+        }
+        const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
+        newLevelObj = { w, h, s, r };
+      }
+      return newLevelObj;
+    }
+
+    #exist(isX) {
+      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
+        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+          if (isX(this.#states[y][x])) return true;
+        }
+      }
+      return false;
+    }
+
+    #getStateStrSub(states, upEnd, rightEnd, downEnd, leftEnd) {
+      let res = '';
+      for (let y = upEnd; y <= downEnd; ++y) {
+        let line = '';
+        for (let x = leftEnd; x <= rightEnd; ++x) {
+          let c = app.states.stateToChar[states[y][x]];
+          if (c.length > 1) c = `(${c})`;
+          line += c;
+        }
+        res += line.replace(/0+$/, '');
+        res += '-';
+      }
+      return res.replace(/-+$/, '');
+    }
+
+    #getMinMaxXY(isX) {
+      let minX = this.getWidth();
+      let maxX = 0;
+      let minY = this.getHeight();
+      let maxY = 0;
+      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
+        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+          if (isX(this.#states[y][x])) {
+            minX = Math.min(minX, x);
+            maxX = Math.max(maxX, x);
+            minY = Math.min(minY, y);
+            maxY = Math.max(maxY, y);
+          }
+        }
+      }
+      return { minX, maxX, minY, maxY };
+    }
+
+    // 図形の中心を得る。
+    #getCenter(isX) {
+      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
+      return { x: (minX + maxX + 1) * 0.5, y: (minY + maxY + 1) * 0.5 };
+    }
+
+    #getSymmetryTypePoint(isX) {
+      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
+      for (let y = minY; y <= maxY; ++y) {
+        for (let x = minX; x <= maxX; ++x) {
+          if (isX(this.#states[y][x]) && !isX(this.#states[minY + maxY - y][minX + maxX - x])) {
+            return null;
+          }
+        }
+      }
+      return Level.SYMMETRY_TYPE.POINT;
+    }
+
+    #getSymmetryTypeReflection(isX) {
+      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
+
+      // 左右対称か否か。
+      let res = true;
+      for (let y = minY; y <= maxY; ++y) {
+        for (let x = minX; x <= maxX; ++x) {
+          if (isX(this.#states[y][x]) && !isX(this.#states[y][minX + maxX - x])) {
+            res = false;
+          }
+        }
+      }
+      if (res) {
+        return Level.SYMMETRY_TYPE.REFLECTION1;
+      }
+
+      // 上下対称か否か。
+      res = true;
+      for (let y = minY; y <= maxY; ++y) {
+        for (let x = minX; x <= maxX; ++x) {
+          if (isX(this.#states[y][x]) && !isX(this.#states[minY + maxY - y][x])) {
+            res = false;
+          }
+        }
+      }
+      if (res) {
+        return Level.SYMMETRY_TYPE.REFLECTION2;
+      }
+
+      if (maxX - minX !== maxY - minY) return null; // 縦と横の長さが異なる場合、左右対称でも上下対称でもなければ線対称でないことが確定。
+
+      // 斜めに対称軸があるか否か。(1)
+      res = true;
+      for (let y = minY; y <= maxY; ++y) {
+        for (let x = minX; x <= maxX; ++x) {
+          if (isX(this.#states[y][x]) && !isX(this.#states[minY + x - minX][minX + y - minY])) {
+            res = false;
+          }
+        }
+      }
+      if (res) {
+        return Level.SYMMETRY_TYPE.REFLECTION3;
+      }
+
+      // 斜めに対称軸があるか否か。(2)
+      res = true;
+      for (let y = minY; y <= maxY; ++y) {
+        for (let x = minX; x <= maxX; ++x) {
+          if (isX(this.#states[y][x]) && !isX(this.#states[minY + maxX - x][minX + maxY - y])) {
+            res = false;
+          }
+        }
+      }
+      if (res) {
+        return Level.SYMMETRY_TYPE.REFLECTION4;
+      }
+
+      return null;
+    }
+
+    #setState(x, y, state) {
+      this.#states[y][x] = state;
+    }
+
+    // 図形が連結か否か。
+    #isConnected(isX) {
+      const statesTemp = this.copyStates();
+      let x0;
+      let y0;
+      loop:
+      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
+        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+          if (isX(statesTemp[y][x])) {
+            x0 = x;
+            y0 = y;
+            break loop;
+          }
+        }
+      }
+
+      const dxs = [0, 1, 0, -1];
+      const dys = [-1, 0, 1, 0];
+      const st = new app.Stack();
+      st.push([x0, y0]);
+      statesTemp[y0][x0] = app.states.none;
+      while (!st.empty()) {
+        const xy = st.pop();
+        for (let i = 0; i < 4; i++) {
+          const xx = xy[0] + dxs[i];
+          const yy = xy[1] + dys[i];
+          if (isX(statesTemp[yy][xx])) {
+            statesTemp[yy][xx] = app.states.none;
+            st.push([xx, yy]);
+          }
+        }
+      }
+
+      for (let y = 0; y < this.getHeight(); ++y) {
+        for (let x = 0; x < this.getWidth(); ++x) {
+          if (isX(statesTemp[y][x])) return false;
+        }
+      }
+      return true;
+    }
+
+    // 点対称か否か。
+    #isSymmetryPoint(isX) {
+      return this.#getSymmetryTypePoint(isX) !== null;
+    }
+
+    // 線対称か否か。
+    #isSymmetryReflection(isX) {
+      return this.#getSymmetryTypeReflection(isX) !== null;
+    }
+
+    #isCompletedPoint() {
+      if (!this.#exist(app.states.isTarget)) return false;
+      const isConnected = this.#isConnected(app.states.isTarget);
+      if (!isConnected) return false;
+      return this.#isSymmetryPoint(app.states.isTarget);
+    }
+
+    #isCompletedReflection() {
+      if (!this.#exist(app.states.isTarget)) return false;
+      const isConnected = this.#isConnected(app.states.isTarget);
+      if (!isConnected) return false;
+      return this.#isSymmetryReflection(app.states.isTarget);
     }
 
     #addOneBlock(x, y, blockSize, symmetryType, showCharsFlag, gShadows, gElems) {
@@ -909,6 +899,7 @@
           }
         }
       }
+
       if (showCharsFlag) {
         const text = app.svg.createText(blockSize, { x: x + 0.5, y, text: app.states.stateToChar[state] });
         gElem.appendChild(text);
