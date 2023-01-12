@@ -672,7 +672,7 @@
   function onloadTitle() {
     showElem(elems.category.title);
     hideElem(elems.category.game);
-
+    updateAutoMode(false);
     replaceUrlTitle();
   }
 
