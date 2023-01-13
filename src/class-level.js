@@ -84,8 +84,8 @@
       this.#moveFlags = [];
       this.#moveDx = null;
       this.#moveDy = null;
-      this.#upEnd = 2;
-      this.#leftEnd = 2;
+      this.#upEnd = 1;
+      this.#leftEnd = 1;
       this.#downEnd = null;
       this.#rightEnd = null;
       this.#isCompleted = null;
@@ -94,11 +94,11 @@
     }
 
     getW() {
-      return this.#width - 4;
+      return this.#width - 2;
     }
 
     getH() {
-      return this.#height - 4;
+      return this.#height - 2;
     }
 
     getWidth() {
@@ -168,8 +168,10 @@
 
     applyObj(obj, resizeFlag) {
       if (resizeFlag) {
-        this.#removeR();
+        this.#levelObj = obj;
+        Object.freeze(this.#levelObj);
         this.#initStates();
+        this.#removeR();
       }
       this.applyStateStr(obj.s);
     }
@@ -180,8 +182,8 @@
     }
 
     applyStateStr(stateStr) {
-      for (let y = 2; y < this.#height - 2; ++y) {
-        for (let x = 2; x < this.#width - 2; ++x) {
+      for (let y = 1; y < this.#height - 1; ++y) {
+        for (let x = 1; x < this.#width - 1; ++x) {
           this.#states[y][x] = app.states.none;
         }
       }
@@ -244,7 +246,7 @@
       }
     }
 
-    isInside(x, y) {
+    isInsideInnerArea(x, y) {
       if (x < this.#leftEnd) return false;
       if (this.#rightEnd < x) return false;
       if (y < this.#upEnd) return false;
@@ -368,16 +370,16 @@
       }
     }
 
-    createSvg(blockSize, symmetryType = null, showCharsFlag = false) {
+    createSvgG(blockSize, symmetryType = null, showCharsFlag = false) {
       const g = app.svg.createG();
 
       // 背景
       {
         const rect = app.svg.createRect(blockSize, {
-          x: 1,
-          y: 1,
-          width: this.getWidth() - 2,
-          height: this.getHeight() - 2,
+          x: 0,
+          y: 0,
+          width: this.getWidth(),
+          height: this.getHeight(),
         });
         rect.setAttribute('fill', 'white');
         g.appendChild(rect);
@@ -390,8 +392,8 @@
       g.appendChild(gElemsNotTarget);
       g.appendChild(gElemsTarget);
 
-      for (let y = 1; y < this.getHeight() - 1; ++y) {
-        for (let x = 1; x < this.getWidth() - 1; ++x) {
+      for (let y = 0; y < this.getHeight(); ++y) {
+        for (let x = 0; x < this.getWidth(); ++x) {
           const state = this.getState(x, y);
           if (state === app.states.none) continue;
           const gElems = app.states.isTarget(state)
@@ -639,10 +641,10 @@
     }
 
     #initStates() {
-      this.#width = this.#levelObj.w + 4;
-      this.#height = this.#levelObj.h + 4;
-      this.#rightEnd = this.#width - 3;
-      this.#downEnd = this.#height - 3;
+      this.#width = this.#levelObj.w + 2;
+      this.#height = this.#levelObj.h + 2;
+      this.#rightEnd = this.#width - 2;
+      this.#downEnd = this.#height - 2;
 
       // 初期化
       for (let y = 0; y < this.#height; ++y) {
@@ -656,14 +658,10 @@
       {
         for (let y = 0; y < this.#height; ++y) {
           this.#states[y][0] = app.states.wall;
-          this.#states[y][1] = app.states.wall;
-          this.#states[y][this.#width - 2] = app.states.wall;
           this.#states[y][this.#width - 1] = app.states.wall;
         }
-        for (let x = 2; x < this.#width - 2; ++x) {
+        for (let x = 1; x < this.#width - 1; ++x) {
           this.#states[0][x] = app.states.wall;
-          this.#states[1][x] = app.states.wall;
-          this.#states[this.#height - 2][x] = app.states.wall;
           this.#states[this.#height - 1][x] = app.states.wall;
         }
       }
@@ -752,6 +750,14 @@
       return this.#isSymmetryReflection(app.states.isTarget);
     }
 
+    #isInArea(x, y) {
+      if (x < 0) return false;
+      if (this.#width <= x) return false;
+      if (y < 0) return false;
+      if (this.#height <= y) return false;
+      return true;
+    }
+
     #addOneBlock(
       x,
       y,
@@ -778,7 +784,13 @@
       {
         const flags = [];
         for (let dir = 0; dir < 8; ++dir) {
-          flags[dir] = this.getState(x + dxs[dir], y + dys[dir]) === state;
+          const dx = dxs[dir];
+          const dy = dys[dir];
+          if (this.#isInArea(x + dx, y + dy)) {
+            flags[dir] = this.getState(x + dx, y + dy) === state;
+          } else {
+            flags[dir] = true;
+          }
         }
 
         // 上側

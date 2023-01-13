@@ -328,14 +328,14 @@
     const svgMaxWidth = 490;
     const svgMaxHeight = 280;
     blockSize = Math.min(
-      svgMaxWidth / level.getWidth(),
-      svgMaxHeight / level.getHeight()
+      svgMaxWidth / (level.getWidth() + 2),
+      svgMaxHeight / (level.getHeight() + 2)
     );
     completeCheck();
     updateUrl();
 
-    elems.main.svg.setAttribute('width', blockSize * level.getWidth());
-    elems.main.svg.setAttribute('height', blockSize * level.getHeight());
+    elems.main.svg.setAttribute('width', blockSize * (level.getWidth() + 2));
+    elems.main.svg.setAttribute('height', blockSize * (level.getHeight() + 2));
     draw();
   }
 
@@ -592,30 +592,32 @@
       {
         const level = new app.Level();
         level.init(levelObj, checkMode, {});
-        const blockSize = Math.min(
-          (WIDTH - 30) / (level.getW() + 2),
-          (HEIGHT - 30) / (level.getH() + 2)
-        );
-        const levelSvg = level.createSvg(blockSize);
-        levelSvg.setAttribute(
-          'transform',
-          `translate(${-blockSize + 20},${-blockSize + 20})`
-        );
-        g.appendChild(levelSvg);
+        {
+          const bestStep = level.getBestStep();
+          if (highestScore !== null) {
+            const color = getStepColor(highestScore, bestStep);
+            const crown = app.svg.createCrown(20, { x: 0, y: 1, fill: color });
+            g.appendChild(crown);
+          }
+        }
         {
           const text = app.svg.createText(5, {
-            x: 10,
+            x: 10.5,
             y: 2,
             text: id,
             fill: 'black',
           });
           g.appendChild(text);
+          g.setAttribute('transform', `translate(20,20)`);
         }
-        const bestStep = level.getBestStep();
-        if (highestScore !== null) {
-          const color = getStepColor(highestScore, bestStep);
-          const crown = app.svg.createCrown(20, { x: 0, y: 1, fill: color });
-          g.appendChild(crown);
+        {
+          const blockSize = Math.min(
+            (WIDTH - 25) / level.getWidth(),
+            (HEIGHT - 25) / level.getHeight()
+          );
+          const levelSvgG = level.createSvgG(blockSize);
+          levelSvgG.setAttribute('transform', `translate(20,20)`);
+          g.appendChild(levelSvgG);
         }
       }
       const x = ((count - 1) % COLS) * WIDTH;
@@ -968,8 +970,16 @@
 
       const showCharsFlag =
         editMode || settings.debugFlag || temporaryShowCharsFlag;
-      const levelSvg = level.createSvg(blockSize, symmetryType, showCharsFlag);
-      elems.main.svg.appendChild(levelSvg);
+      const levelSvgG = level.createSvgG(
+        blockSize,
+        symmetryType,
+        showCharsFlag
+      );
+      levelSvgG.setAttribute(
+        'transform',
+        `translate(${blockSize},${blockSize})`
+      );
+      elems.main.svg.appendChild(levelSvgG);
     }
     level.resetMoveFlags();
 
@@ -979,11 +989,11 @@
       const g = app.svg.createG();
       elems.main.svg.appendChild(g);
       // 横線
-      for (let y = 2; y < level.getHeight() - 1; ++y) {
+      for (let y = 2; y < level.getHeight() + 1; ++y) {
         const line = app.svg.createLine(blockSize, {
           x1: 1,
           y1: y,
-          x2: level.getWidth() - 1,
+          x2: level.getWidth() + 1,
           y2: y,
           stroke: app.colors.line,
         });
@@ -991,12 +1001,12 @@
         g.appendChild(line);
       }
       // 縦線
-      for (let x = 2; x < level.getWidth() - 1; ++x) {
+      for (let x = 2; x < level.getWidth() + 1; ++x) {
         const line = app.svg.createLine(blockSize, {
           x1: x,
           y1: 1,
           x2: x,
-          y2: level.getHeight() - 1,
+          y2: level.getHeight() + 1,
           stroke: app.colors.line,
         });
         line.setAttribute('stroke-dasharray', dasharray);
@@ -1016,21 +1026,21 @@
       const rectU = app.svg.createRect(blockSize, {
         x: 0,
         y: 0,
-        width: level.getWidth(),
+        width: level.getWidth() + 2,
         height: 1,
         fill: frameColor,
       });
       const rectR = app.svg.createRect(blockSize, {
-        x: level.getWidth() - 1,
+        x: level.getWidth() + 1,
         y: 0,
         width: 1,
-        height: level.getHeight(),
+        height: level.getHeight() + 2,
         fill: frameColor,
       });
       const rectD = app.svg.createRect(blockSize, {
         x: 0,
-        y: level.getHeight() - 1,
-        width: level.getWidth(),
+        y: level.getHeight() + 1,
+        width: level.getWidth() + 2,
         height: 1,
         fill: frameColor,
       });
@@ -1038,7 +1048,7 @@
         x: 0,
         y: 0,
         width: 1,
-        height: level.getHeight(),
+        height: level.getHeight() + 2,
         fill: frameColor,
       });
       g.appendChild(rectU);
@@ -1050,21 +1060,21 @@
       const rectUb = app.svg.createRect(blockSize, {
         x: 0,
         y: 0,
-        width: level.getWidth(),
+        width: level.getWidth() + 2,
         height: borderWidth,
         fill: borderColor,
       });
       const rectRb = app.svg.createRect(blockSize, {
-        x: level.getWidth() - borderWidth,
+        x: level.getWidth() + 2 - borderWidth,
         y: 0,
         width: borderWidth,
-        height: level.getHeight(),
+        height: level.getHeight() + 2,
         fill: borderColor,
       });
       const rectDb = app.svg.createRect(blockSize, {
         x: 0,
-        y: level.getHeight() - borderWidth,
-        width: level.getWidth(),
+        y: level.getHeight() + 2 - borderWidth,
+        width: level.getWidth() + 2,
         height: borderWidth,
         fill: borderColor,
       });
@@ -1072,7 +1082,7 @@
         x: 0,
         y: 0,
         width: borderWidth,
-        height: level.getHeight(),
+        height: level.getHeight() + 2,
         fill: borderColor,
       });
       g.appendChild(rectUb);
@@ -1090,8 +1100,8 @@
       // クリア時のメッセージ
       if (completeFlag) {
         const text = app.svg.createText(blockSize, {
-          x: level.getWidth() * 0.5,
-          y: level.getHeight() - 1.95,
+          x: (level.getWidth() + 2) * 0.5,
+          y: level.getHeight() + 2 - 1.95,
           text: 'Congratulations!',
           fill: 'white',
         });
@@ -1152,8 +1162,8 @@
       } else {
         if (symmetryFlag) {
           const text = app.svg.createText(blockSize, {
-            x: level.getWidth() * 0.5,
-            y: level.getHeight() - 2,
+            x: (level.getWidth() + 2) * 0.5,
+            y: level.getHeight() + 0.05,
             text: 'Not connected.',
             fill: 'white',
           });
@@ -1169,8 +1179,8 @@
           ? getStepColor(currentStep, bestStep)
           : 'black';
         const text = app.svg.createText(blockSize, {
-          x: level.getWidth() * 0.5,
-          y: level.getHeight() - 1 - borderWidth / 2,
+          x: (level.getWidth() + 2) * 0.5,
+          y: level.getHeight() + 1 - borderWidth / 2,
           text: `${currentStep} steps`,
           fill: color,
         });
@@ -1189,7 +1199,7 @@
           const color = getStepColor(highestScore, bestStep);
 
           const text = app.svg.createText(blockSize, {
-            x: level.getWidth() * 0.5,
+            x: (level.getWidth() + 2) * 0.5,
             y: borderWidth / 2,
             text: `Your best: ${highestScore} steps`,
             fill: color,
@@ -1212,7 +1222,7 @@
           highestScore < highestScorePrev
         ) {
           const text = app.svg.createText(blockSize, {
-            x: level.getWidth() * 0.5,
+            x: (level.getWidth() + 2) * 0.5,
             y: 0.95,
             text: 'New record!',
             fill: 'white',
@@ -1261,19 +1271,19 @@
 
   function editSvg(e) {
     const curXY = getCurXY(e);
-    const x = curXY.x;
-    const y = curXY.y;
+    const x = curXY.x - 1;
+    const y = curXY.y - 1;
 
     if (!editMode) {
-      const xMax = level.getW() + 3;
-      const yMax = level.getH() + 3;
-      if (x < 2 && y < 2) {
+      const xMax = level.getWidth() + 1;
+      const yMax = level.getHeight() + 1;
+      if (x < 1 && y < 1) {
         secretSequenceAdd('1');
-      } else if (x > xMax - 2 && y < 2) {
+      } else if (x > xMax - 3 && y < 3) {
         secretSequenceAdd('2');
-      } else if (x > xMax - 2 && y > yMax - 2) {
+      } else if (x > xMax - 3 && y > yMax - 3) {
         secretSequenceAdd('3');
-      } else if (x < 2 && y > yMax - 2) {
+      } else if (x < 1 && y > yMax - 3) {
         secretSequenceAdd('4');
       } else {
         secretSequenceReset();
@@ -1281,7 +1291,7 @@
       return;
     }
 
-    if (!level.isInside(x, y)) {
+    if (!level.isInsideInnerArea(x, y)) {
       return;
     }
 
@@ -1365,6 +1375,10 @@
   }
 
   function replaceUrl() {
+    if (!elems.category.title.classList.contains('hide')) {
+      replaceUrlTitle();
+      return;
+    }
     const base = location.href.split('?')[0];
     let url = `${base}`;
     if (levelId !== null) {
