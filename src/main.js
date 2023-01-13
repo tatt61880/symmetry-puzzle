@@ -142,8 +142,8 @@
     symmetryFlag = level.isSymmetry(app.states.isTarget);
     redrawFlag = completeFlag || symmetryFlag !== symmetryFlagPrev;
 
-    const center = level.getCenter(app.states.isTarget);
     if (completeFlag) {
+      const center = level.getCenter(app.states.isTarget);
       document.documentElement.style.setProperty(
         '--animation-origin',
         `${blockSize * center.x}px ${blockSize * center.y}px`
