@@ -201,14 +201,6 @@
       this.resetMoveFlags();
     }
 
-    copyStates() {
-      const res = new Array(this.getHeight());
-      for (let y = 0; y < this.getHeight(); ++y) {
-        res[y] = [...this.#states[y]];
-      }
-      return res;
-    }
-
     normalize() {
       const map = {};
       let nextTarget = app.states.targetMin;
@@ -348,7 +340,7 @@
     }
 
     move() {
-      const statesTemp = this.copyStates();
+      const statesTemp = this.#copyStates();
       const dx = this.#moveDx;
       const dy = this.#moveDy;
 
@@ -665,6 +657,14 @@
       }
     }
 
+    #copyStates() {
+      const res = new Array(this.getHeight());
+      for (let y = 0; y < this.getHeight(); ++y) {
+        res[y] = [...this.#states[y]];
+      }
+      return res;
+    }
+
     #setCheckMode(mode) {
       if (mode === Level.CHECK_MODE.POINT) {
         this.#isCompleted = this.#isCompletedPoint;
@@ -686,7 +686,7 @@
 
     // 図形が連結か否か。
     #isConnected(isX) {
-      const statesTemp = this.copyStates();
+      const statesTemp = this.#copyStates();
       let x0;
       let y0;
       loop: for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
