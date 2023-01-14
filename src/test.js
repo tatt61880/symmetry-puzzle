@@ -95,8 +95,7 @@
     let checkMode = null;
     if (options.point) checkMode = app.Level.CHECK_MODE.POINT;
     if (options.reflection) checkMode = app.Level.CHECK_MODE.REFLECTION;
-    const level = new app.Level();
-    level.init(levelObj, checkMode, {});
+    const level = new app.Level(levelObj, checkMode, {});
 
     if (!level.isNormalized()) {
       app.console.error(`Error: ${levelInfo()} isNormalized check failed.`);

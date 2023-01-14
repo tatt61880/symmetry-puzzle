@@ -75,7 +75,7 @@
     #isSymmetry;
     #getSymmetryType;
 
-    constructor() {
+    constructor(obj_, checkMode, { mirrorFlag = false, rotateNum = false }) {
       this.#checkMode = null;
       this.#levelObj = null;
       this.#width = null;
@@ -91,6 +91,15 @@
       this.#isCompleted = null;
       this.#isSymmetry = null;
       this.#getSymmetryType = null;
+
+      this.#setCheckMode(checkMode);
+      let obj = obj_;
+      if (mirrorFlag) obj = this.#mirrorLevel(obj);
+      if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
+      this.#levelObj = obj;
+      Object.freeze(this.#levelObj);
+      this.#initStates();
+      this.applyStateStr(obj.s);
     }
 
     getW() {
@@ -153,17 +162,6 @@
 
     getSymmetryType(isX) {
       return this.#getSymmetryType(isX);
-    }
-
-    init(obj_, checkMode, { mirrorFlag = false, rotateNum = false }) {
-      this.#setCheckMode(checkMode);
-      let obj = obj_;
-      if (mirrorFlag) obj = this.#mirrorLevel(obj);
-      if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
-      this.#levelObj = obj;
-      Object.freeze(this.#levelObj);
-      this.#initStates();
-      this.applyStateStr(obj.s);
     }
 
     applyObj(obj, resizeFlag) {
