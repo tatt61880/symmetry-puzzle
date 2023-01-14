@@ -890,6 +890,8 @@
   }
 
   function intervalFunc() {
+    if (level === null) return;
+
     // アンドゥの入力を受け付けます。
     if (undoFlag) {
       if (undoCount === UNDO_INTERVAL_COUNT) {
