@@ -117,8 +117,7 @@
     } else {
       checkMode = app.Level.CHECK_MODE.POINT;
     }
-    const level = new app.Level();
-    level.init(levelObj, checkMode, {});
+    const level = new app.Level(levelObj, checkMode, {});
 
     const maxStep = (() => {
       let res = options.max;

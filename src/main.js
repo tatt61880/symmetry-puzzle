@@ -59,7 +59,7 @@
   let levelsList = null;
   let levelsListEx = null;
   let levelId = null;
-  let level = new app.Level();
+  let level = null;
   let checkMode;
 
   const MOVE_MSEC = INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
@@ -314,8 +314,7 @@
   }
 
   function initLevel(obj, initParam) {
-    level = new app.Level();
-    level.init(obj, checkMode, initParam);
+    level = new app.Level(obj, checkMode, initParam);
     updateSvg();
   }
 
@@ -590,8 +589,7 @@
       elems.levels.dialogSvg.appendChild(g);
 
       {
-        const level = new app.Level();
-        level.init(levelObj, checkMode, {});
+        const level = new app.Level(levelObj, checkMode, {});
         {
           const bestStep = level.getBestStep();
           if (highestScore !== null) {
@@ -1446,7 +1444,8 @@
       const levelObj = { w, h, s, step };
       // TODO low-contrastを盤面に反映させてから計算する。Promiseを使うといけそう。
       // elems.auto.buttonStart.classList.add('low-contrast');
-      const result = app.solveLevel(null, level, { time: 10 });
+      const levelTemp = new app.Level(levelObj, checkMode, {});
+      const result = app.solveLevel(null, levelTemp, { time: 10 });
       // elems.auto.buttonStart.classList.remove('low-contrast');
       if (result.replayStr === null) {
         window.alert(result.errorMessage);
