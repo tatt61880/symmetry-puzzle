@@ -161,6 +161,15 @@
       s: '0sssssss-0s10002s-0s33000s-0s00044s-0s55000s-0s00060s-0sssssss',
       r: '12122000',
       step: 8,
+      subject: '空洞1',
+    },
+    {
+      w: 10,
+      h: 10,
+      s: '0sssssss-0s10002s-0s33000s-0s00044s-0s55000s-0s00006s-0sssssss',
+      r: '223111200330',
+      step: 12,
+      subject: '空洞2',
     },
     {
       w: 11,
