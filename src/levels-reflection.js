@@ -156,6 +156,13 @@
       subject: '4つの四角',
     },
     {
+      w: 10,
+      h: 10,
+      s: '0sssssss-0s10002s-0s33000s-0s00044s-0s55000s-0s00060s-0sssssss',
+      r: '12122000',
+      step: 8,
+    },
+    {
       w: 11,
       h: 11,
       s: 'sssssss-s11223ss-s112200s-s000000s-s00000ss-s00000s-s00ssss-ssss',
