@@ -236,9 +236,12 @@ text {
 
 #title-logo {
   box-sizing: border-box;
-  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
   height: 400px;
-  padding: 125px;
+  pointer-events: none;
 }
 
 .title-button {
