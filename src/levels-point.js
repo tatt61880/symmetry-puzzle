@@ -473,7 +473,7 @@
       s: '-0ssssss-0s1120s-0s3000s-0s0000s-0s0004s-0ssssss',
       r: '1133320011',
       step: 10,
-      subject: '空洞',
+      subject: '空洞1',
     },
     {
       w: 10,
@@ -490,6 +490,14 @@
       r: '22120001',
       step: 8,
       subject: '空洞3',
+    },
+    {
+      w: 11,
+      h: 11,
+      s: 'ssssssss-s001000s-s011100s-s00102as-s00bb3as-s000333s-s000030s-ssssssss',
+      r: '12112200033312210',
+      step: 17,
+      subject: '空洞4',
     },
     {
       w: 12,
