@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.01.13';
+  const VERSION_TEXT = 'v2023.01.14';
 
   const app = window.app;
   Object.freeze(app);
@@ -509,6 +509,24 @@
     elems.help.dialog.close();
   }
 
+  function updateCheckMode(mode) {
+    checkMode = mode;
+    let modeId = 'none';
+    if (mode === app.Level.CHECK_MODE.POINT) {
+      modeId = 'point';
+    } else if (mode === app.Level.CHECK_MODE.REFLECTION) {
+      modeId = 'reflection';
+    }
+    for (const elem of document.getElementsByClassName('check-mode')) {
+      elem.classList.add('hide-mode');
+    }
+    for (const elem of document.getElementsByClassName(
+      `check-mode ${modeId}`
+    )) {
+      elem.classList.remove('hide-mode');
+    }
+  }
+
   function applyLang(lang) {
     for (const elem of document.getElementsByClassName('setting-lang-button')) {
       elem.classList.remove('active');
@@ -516,12 +534,12 @@
     const langButton = document.getElementById(`setting-lang-${lang}`);
     langButton.classList.add('active');
     for (const elem of document.getElementsByClassName('translatable')) {
-      hideElem(elem);
+      elem.classList.add('hide-lang');
     }
     for (const elem of document.getElementsByClassName(
       `translatable ${lang}`
     )) {
-      showElem(elem);
+      elem.classList.remove('hide-lang');
     }
   }
 
@@ -649,27 +667,31 @@
 
     const queryParams = app.analyzeUrl();
     settings = queryParams.settings;
-    if (settings.r) {
-      checkMode = app.Level.CHECK_MODE.REFLECTION;
-    } else {
-      checkMode = app.Level.CHECK_MODE.POINT;
-    }
 
     setInterval(intervalFunc, INPUT_INTERVAL_MSEC);
 
-    if (queryParams.levelObj.s === '') {
-      const id = queryParams.id;
-      if (id === null) {
-        onloadTitle();
-      } else {
-        onloadId(id);
-      }
+    const id = queryParams.id;
+
+    if (id === null && queryParams.levelObj.s === '') {
+      onloadTitle();
+      return;
+    }
+
+    if (settings.r) {
+      updateCheckMode(app.Level.CHECK_MODE.REFLECTION);
+    } else {
+      updateCheckMode(app.Level.CHECK_MODE.POINT);
+    }
+
+    if (id !== null) {
+      onloadId(id);
     } else {
       onloadObj(queryParams.levelObj);
     }
   }
 
   function onloadTitle() {
+    updateCheckMode(null);
     showElem(elems.category.title);
     hideElem(elems.category.game);
     updateAutoMode(false);
@@ -810,7 +832,7 @@
       elems.title.buttonPlayPoint.addEventListener(
         'click',
         () => {
-          checkMode = app.Level.CHECK_MODE.POINT;
+          updateCheckMode(app.Level.CHECK_MODE.POINT);
           onloadId(1);
         },
         false
@@ -818,7 +840,7 @@
       elems.title.buttonPlayReflection.addEventListener(
         'click',
         () => {
-          checkMode = app.Level.CHECK_MODE.REFLECTION;
+          updateCheckMode(app.Level.CHECK_MODE.REFLECTION);
           onloadId(1);
         },
         false
