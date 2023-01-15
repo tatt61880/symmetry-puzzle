@@ -478,10 +478,18 @@
     {
       w: 10,
       h: 10,
+      s: '0sssssss-0s10002s-0s03300s-0s00000s-0s44000s-0s00050s-0sssssss',
+      r: '12212000223332',
+      step: 14,
+      subject: '空洞2',
+    },
+    {
+      w: 10,
+      h: 10,
       s: '0sssssss-0s10002s-0s03300s-0s00440s-0s55000s-0s00060s-0sssssss',
       r: '22120001',
       step: 8,
-      subject: '空洞2',
+      subject: '空洞3',
     },
     {
       w: 12,
