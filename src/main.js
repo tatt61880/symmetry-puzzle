@@ -510,6 +510,7 @@
   }
 
   function updateCheckMode(mode) {
+    animateIcon();
     checkMode = mode;
     let modeId = 'none';
     if (mode === app.Level.CHECK_MODE.POINT) {
@@ -528,6 +529,7 @@
   }
 
   function applyLang(lang) {
+    animateIcon();
     for (const elem of document.getElementsByClassName('setting-lang-button')) {
       elem.classList.remove('active');
     }
@@ -543,7 +545,7 @@
     }
   }
 
-  function rotateIcon() {
+  function animateIcon() {
     const ICON_SIZE = 32;
     document.documentElement.style.setProperty(
       '--animation-origin',
@@ -553,10 +555,17 @@
     setTimeout(() => {
       elems.icon.classList.add('animation-rotation');
     }, 1);
+    elems.iconPoint.classList.remove('animation-rotation');
+    setTimeout(() => {
+      elems.iconPoint.classList.add('animation-rotation');
+    }, 1);
+    elems.iconReflection.classList.remove('animation-reflection1');
+    setTimeout(() => {
+      elems.iconReflection.classList.add('animation-reflection1');
+    }, 1);
   }
 
   function selectLang(lang) {
-    rotateIcon();
     applyLang(lang);
     savedata.saveLang(lang);
   }

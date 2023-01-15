@@ -12,6 +12,8 @@
     viewport: 'viewport',
     top: 'top',
     icon: 'icon',
+    iconPoint: 'icon-point',
+    iconReflection: 'icon-reflection',
     version: 'version',
 
     help: {
