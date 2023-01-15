@@ -157,11 +157,19 @@
     },
     {
       w: 10,
+      h: 9,
+      s: '-0sssssss-0s02011s-0s22000s-0s30000s-0s30050s-0s00050s-0sssssss',
+      r: '01123323',
+      step: 8,
+      subject: '空洞1',
+    },
+    {
+      w: 10,
       h: 10,
       s: '0sssssss-0s00001s-0s22000s-0s30444s-0s30000s-0s00050s-0sssssss',
       r: '311123312010',
       step: 12,
-      subject: '空洞1',
+      subject: '空洞2',
     },
     {
       w: 10,
@@ -169,7 +177,7 @@
       s: '0sssssss-0s10002s-0s33000s-0s00044s-0s55000s-0s00006s-0sssssss',
       r: '223111200330',
       step: 12,
-      subject: '空洞2',
+      subject: '空洞3',
     },
     {
       w: 11,
@@ -177,6 +185,7 @@
       s: 'sssssss-s11223ss-s112200s-s000000s-s00000ss-s00000s-s00ssss-ssss',
       r: '1222003012231113300',
       step: 19,
+      subject: 'いびつな空洞',
     },
     {
       w: 9,
