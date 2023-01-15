@@ -14,40 +14,47 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.01.15">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.01.15">
 
-  <link rel="stylesheet" href="./css/main.css?2023.01.14">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.01.14">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.01.14">
-  <link rel="stylesheet" href="./css/animation.css?2023.01.14">
+  <link rel="stylesheet" href="./css/main.css?2023.01.15b">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.01.15b">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.01.15b">
+  <link rel="stylesheet" href="./css/animation.css?2023.01.15b">
 
-  <script src="./src/states.js?2023.01.14"></script>
-  <script src="./src/colors.js?2023.01.14"></script>
-  <script src="./src/svg.js?2023.01.14"></script>
-  <script src="./src/class-stack.js?2023.01.14"></script>
-  <script src="./src/class-level.js?2023.01.14"></script>
+  <script src="./src/states.js?2023.01.15b"></script>
+  <script src="./src/colors.js?2023.01.15b"></script>
+  <script src="./src/svg.js?2023.01.15b"></script>
+  <script src="./src/class-stack.js?2023.01.15b"></script>
+  <script src="./src/class-level.js?2023.01.15b"></script>
 
-  <script src="./src/class-savedata.js?2023.01.14"></script>
-  <script src="./src/class-undo-info.js?2023.01.14"></script>
-  <script src="./src/class-elems.js?2023.01.14"></script>
+  <script src="./src/class-savedata.js?2023.01.15b"></script>
+  <script src="./src/class-undo-info.js?2023.01.15b"></script>
+  <script src="./src/class-elems.js?2023.01.15b"></script>
 
-  <script src="./src/levels-point.js?2023.01.14"></script>
-  <script src="./src/levels-point-ex.js?2023.01.14"></script>
-  <script src="./src/levels-reflection.js?2023.01.14"></script>
-  <script src="./src/levels-reflection-ex.js?2023.01.14"></script>
-  <script src="./src/elems.js?2023.01.14"></script>
+  <script src="./src/levels-point.js?2023.01.15b"></script>
+  <script src="./src/levels-point-ex.js?2023.01.15b"></script>
+  <script src="./src/levels-reflection.js?2023.01.15b"></script>
+  <script src="./src/levels-reflection-ex.js?2023.01.15b"></script>
+  <script src="./src/elems.js?2023.01.15b"></script>
 
-  <script src="./src/solve.js?2023.01.14"></script>
+  <script src="./src/solve.js?2023.01.15b"></script>
 
-  <script src="./src/analyze-url.js?2023.01.14"></script>
-  <script src="./src/main.js?2023.01.14"></script>
+  <script src="./src/analyze-url.js?2023.01.15b"></script>
+  <script src="./src/main.js?2023.01.15b"></script>
 </head>
 
 <body>
   <div id="contents">
     <header>
       <div id="top" class="flex">
-        <img id="icon" alt="icon" src="./images/icon.png?2023.01.15">
-        <span class="title translatable ja" lang="ja">対称パズル</span>
-        <span class="title translatable en" lang="en">Symmetry Puzzle</span>
+        <img id="icon" alt="icon" src="./images/icon-point.png?2023.01.15" class="check-mode none">
+        <img id="icon-point" alt="icon" src="./images/icon-point.png?2023.01.15" class="check-mode point hide-mode">
+        <img id="icon-reflection" alt="icon" src="./images/icon-reflection.png?2023.01.15"
+          class="check-mode reflection hide-mode">
+        <span class="title translatable en check-mode none" lang="en">Symmetry Puzzle</span>
+        <span class="title translatable ja check-mode none hide-lang" lang="ja">対称パズル</span>
+        <span class="title translatable en check-mode point hide-mode" lang="en">Point Symmetry Puzzle</span>
+        <span class="title translatable ja check-mode point hide-lang hide-mode" lang="ja">点対称パズル</span>
+        <span class="title translatable en check-mode reflection hide-mode" lang="en">Reflection Symmetry Puzzle</span>
+        <span class="title translatable ja check-mode reflection hide-lang hide-mode" lang="ja">線対称パズル</span>
         <span id="version">vXXXX.XX.XX</span>
       </div>
       <svg width="30" height="30" style="margin: 0 5px 0 auto;">
@@ -117,21 +124,21 @@
       </div>
       <div class="flex">
         <div id="button-play-point" class="title-button">
-          <div class="title-button-text translatable ja" lang="ja">
-            点対称
-          </div>
           <div class="title-button-text translatable en" lang="en">
             Point<br>
             symmetry
           </div>
+          <div class="title-button-text translatable ja hide-lang" lang="ja">
+            点対称
+          </div>
         </div>
         <div id="button-play-reflection" class="title-button">
-          <div class="title-button-text translatable ja" lang="ja">
-            線対称
-          </div>
           <div class="title-button-text translatable en" lang="en">
             Reflection<br>
             symmetry
+          </div>
+          <div class="title-button-text translatable ja hide-lang" lang="ja">
+            線対称
           </div>
         </div>
         <!-- <div id="button-edit" class="title-button">

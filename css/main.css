@@ -152,6 +152,14 @@ text {
   display: none;
 }
 
+.hide-lang {
+  display: none;
+}
+
+.hide-mode {
+  display: none;
+}
+
 .low-contrast {
   opacity: 0.7;
 }
