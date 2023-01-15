@@ -179,7 +179,7 @@
     {
       w: 10,
       h: 9,
-      s: '-0sssssss-0s02011s-0s22000s-0s30000s-0s30050s-0s00050s-0sssssss',
+      s: '-0sssssss-0s01022s-0s11000s-0s30000s-0s30040s-0s00040s-0sssssss',
       r: '01123323',
       step: 8,
       subject: '空洞1',
