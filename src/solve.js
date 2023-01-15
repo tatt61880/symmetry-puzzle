@@ -163,10 +163,11 @@
         ? ''
         : `[prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
     if (!isBrowser) {
-      if (prefixStepInfo !== '') app.console.warn(`${prefixStepInfo}`);
+      // if (prefixStepInfo !== '') app.console.warn(`${prefixStepInfo}`);
     }
 
     const result = solve(levelId, level);
+    return;
 
     if (!isBrowser) {
       if (result.replayStr === null) {
@@ -181,7 +182,7 @@
       }
       const endTime = performance.now();
       app.console.info(`[Time: ${msToSecStr(endTime - startTime)}]`);
-      if (prefixStepInfo !== '') app.console.warn(`${prefixStepInfo}`);
+      // if (prefixStepInfo !== '') app.console.warn(`${prefixStepInfo}`);
 
       process.exitCode = 0;
     }
@@ -274,6 +275,9 @@
 
             const replayStr = currentReplyStr + dir;
             stateStrMap.set(stateStr, replayStr);
+            if (step === 16) {
+              console.log(replayStr);
+            }
 
             const completedFlag = level.isCompleted();
             if (completedFlag) {
@@ -289,6 +293,14 @@
                   `/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`
                 );
               } else {
+                const r = replayStr;
+                const completedLevelObj = getCompletedLevelObj(r);
+                app.console.warn(
+                  `/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`
+                );
+                app.console.log(
+                  `/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`
+                );
                 return { replayStr };
               }
             } else {
@@ -319,8 +331,9 @@
         }
       }
 
-      const errorMessage = `Step limit over. [Step limit: ${maxStep}]`;
-      return { replayStr: null, errorMessage };
+      // const errorMessage = `Step limit over. [Step limit: ${maxStep}]`;
+      // return { replayStr: null, errorMessage };
+      return null;
     }
 
     function getCompletedLevelObj(r) {
