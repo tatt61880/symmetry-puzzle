@@ -96,8 +96,10 @@
       let obj = obj_;
       if (mirrorFlag) obj = this.#mirrorLevel(obj);
       if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
+      obj.s = obj.s.replace(/([1-9]|\(\d+\))/g, '1');
+      // console.log(obj.s);
       this.#levelObj = obj;
-      Object.freeze(this.#levelObj);
+      // Object.freeze(this.#levelObj);
       this.#initStates();
       this.applyStateStr(obj.s);
     }
@@ -292,49 +294,46 @@
     }
 
     updateMoveFlags(dx, dy) {
-      let moveFlag = false;
       this.resetMoveFlags();
 
-      loop: for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
-        if (!this.#exist((x) => x === i)) continue;
-
-        const moveState = []; // 移動予定の状態番号
-        moveState[i] = true;
-
-        const st = new app.Stack(); // 移動可能か検証必要な状態番号
-        st.push(i);
-        while (!st.empty()) {
-          const state = st.pop();
-          for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-            for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
-              if (this.getState(x, y) !== state) continue;
-              const neighborState = this.getState(x + dx, y + dy);
-              if (neighborState === app.states.none) continue;
-
-              if (neighborState === app.states.wall) {
-                continue loop;
-              } else if (!moveState[neighborState]) {
-                moveState[neighborState] = true;
-                st.push(neighborState);
-              }
-            }
+      let x0;
+      let y0;
+      loop: for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
+        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+          if (this.#states[y][x] === app.states.userMin) {
+            x0 = x;
+            y0 = y;
+            break loop;
           }
         }
-
-        // 各座標に移動フラグを設定
-        for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-          for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
-            if (moveState[this.getState(x, y)]) {
-              this.#moveFlags[y + dy][x + dx] = true;
-            }
-          }
+      }
+      let x = x0;
+      let y = y0;
+      let count = 0;
+      let moveFlag = false;
+      while (true) {
+        count++;
+        x += dx;
+        y += dy;
+        if (this.#states[y][x] === app.states.wall) {
+          break;
         }
-        moveFlag = true;
+        if (this.#states[y][x] === app.states.none) {
+          moveFlag = true;
+          break;
+        }
       }
 
       if (moveFlag) {
         this.#moveDx = dx;
         this.#moveDy = dy;
+        x = x0;
+        y = y0;
+        for (let i = 0; i < count; ++i) {
+          x += dx;
+          y += dy;
+          this.#moveFlags[y][x] = true;
+        }
       }
       return moveFlag;
     }
