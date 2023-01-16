@@ -6,11 +6,6 @@
     return;
   }
 
-  const app = {};
-  app.console = require('./console.js');
-  app.states = require('./states.js');
-  app.Level = require('./class-level.js');
-
   const program = require('commander');
   program
     .version('2.1.0')
@@ -19,6 +14,12 @@
 
   program.parse();
   const options = program.opts();
+
+  const app = {};
+  app.console = require('./console.js');
+  app.states = require('./states.js');
+  app.Level = require('./class-level.js');
+  app.solveLevel = require('./solve.js');
 
   process.exitCode = 0;
 
@@ -33,13 +34,13 @@
     app.levelsEx = require('./levels-reflection-ex.js');
     checkLevels();
   } else {
-    // その他
-    tests();
+    testsOther();
+    testsSolve();
   }
 
   return;
 
-  function tests() {
+  function testsOther() {
     if (
       app.states.wall !== -1 ||
       app.states.none !== 0 ||
@@ -52,6 +53,47 @@
     ) {
       app.console.error('Error: Invalid states setting.');
       process.exitCode = 1;
+    }
+  }
+
+  function testsSolve() {
+    {
+      const levelObj = {
+        w: 5,
+        h: 3,
+        s: 's001-00211',
+      };
+      const checkMode = app.Level.CHECK_MODE.POINT;
+      const level = new app.Level(levelObj, checkMode, {});
+      const result = app.solveLevel('Test-1', level, {
+        maxStep: 1000,
+        timeLimit: 10,
+      });
+      if (result.replayStr !== '12210') {
+        app.console.error(
+          `Error: Unexpected solve function's result. result.replayStr = ${result.replayStr}`
+        );
+        process.exitCode = 1;
+      }
+    }
+    {
+      const levelObj = {
+        w: 5,
+        h: 3,
+        s: 's0001-00211',
+      };
+      const checkMode = app.Level.CHECK_MODE.REFLECTION;
+      const level = new app.Level(levelObj, checkMode, {});
+      const result = app.solveLevel('Test-2', level, {
+        maxStep: 1000,
+        timeLimit: 10,
+      });
+      if (result.replayStr !== '1123211') {
+        app.console.error(
+          `Error: Unexpected solve function's result. result.replayStr = ${result.replayStr}`
+        );
+        process.exitCode = 1;
+      }
     }
   }
 

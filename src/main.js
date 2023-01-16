@@ -1524,12 +1524,13 @@
       const w = level.getW();
       const h = level.getH();
       const s = level.getStateStr();
-      const step = 1000; // 探索ステップ数上限値は大きな値にしておきます。時間制限もあるので、この制限にかかることはほぼないはずです。
-      const levelObj = { w, h, s, step };
+      const levelObj = { w, h, s };
       // TODO low-contrastを盤面に反映させてから計算する。Promiseを使うといけそう。
       // elems.auto.buttonStart.classList.add('low-contrast');
       const levelTemp = new app.Level(levelObj, checkMode, {});
-      const result = app.solveLevel(null, levelTemp, { time: 10 });
+      const maxStep = 1000; // 探索ステップ数上限値は大きな値にしておきます。時間制限もあるので、この制限にかかることはほぼないはずです。
+      const timeLimit = 10;
+      const result = app.solveLevel(null, levelTemp, { maxStep, timeLimit });
       // elems.auto.buttonStart.classList.remove('low-contrast');
       if (result.replayStr === null) {
         window.alert(result.errorMessage);

@@ -72,7 +72,7 @@
       const levelObj = levels[levelId];
       solveLevelObj(levelId, levelObj, options.reflection);
     }
-  } else {
+  } else if (options.w !== undefined) {
     if (options.w === undefined) {
       app.console.error('Error: w === undefined');
       process.exitCode = 1;
@@ -136,14 +136,15 @@
     }
 
     const prefixStep = options.prefixStep;
+    const timeLimit = options.time;
 
-    solveLevel(levelId, level, { maxStep, prefixStep });
+    solveLevel(levelId, level, { maxStep, timeLimit, prefixStep });
   }
 
   function solveLevel(
     levelId,
     level,
-    { maxStep = 1000, time, prefixStep = '' }
+    { maxStep = 1000, timeLimit, prefixStep = '' }
   ) {
     if (prefixStep !== '') {
       for (const c of prefixStep) {
@@ -245,13 +246,13 @@
         const currentStateStrSet = nextStateStrSet;
         nextStateStrSet = new Set();
         for (const currentStateStr of currentStateStrSet) {
-          if (time !== undefined && ++stateCount % 10000 === 0) {
+          if (timeLimit !== undefined && ++stateCount % 1000 === 0) {
             const time = performance.now();
-            if (time - startTime > options.time * 1000) {
+            if (time - startTime > timeLimit * 1000) {
               const errorMessage = `Time limit over. [Time: ${msToSecStr(
                 time - startTime
               )}] [Time limit: ${msToSecStr(
-                Number(options.time) * 1000
+                Number(timeLimit) * 1000
               )}] [map.size: ${stateStrMap.size}]`;
               return { replayStr: null, errorMessage };
             }
