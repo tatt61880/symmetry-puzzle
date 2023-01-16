@@ -92,7 +92,7 @@
       this.#isSymmetry = null;
       this.#getSymmetryType = null;
 
-      this.#setCheckMode(checkMode);
+      this.setCheckMode(checkMode);
       let obj = obj_;
       if (mirrorFlag) obj = this.#mirrorLevel(obj);
       if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
@@ -665,7 +665,7 @@
       return res;
     }
 
-    #setCheckMode(mode) {
+    setCheckMode(mode) {
       if (mode === Level.CHECK_MODE.POINT) {
         this.#isCompleted = this.#isCompletedPoint;
         this.#isSymmetry = this.#isSymmetryPoint;

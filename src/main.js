@@ -813,6 +813,20 @@
         },
         false
       );
+      elems.edit.switchMode.addEventListener(
+        'click',
+        () => {
+          if (level.isReflectionMode()) {
+            updateCheckMode(app.Level.CHECK_MODE.POINT);
+          } else {
+            updateCheckMode(app.Level.CHECK_MODE.REFLECTION);
+          }
+          level.setCheckMode(checkMode);
+          updateUrl();
+          draw();
+        },
+        false
+      );
     }
 
     // ヘルプ画面用

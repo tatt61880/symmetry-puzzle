@@ -75,6 +75,7 @@
       hDec: 'h-dec',
       hInc: 'h-inc',
       normalize: 'edit-normalize',
+      switchMode: 'edit-switch-mode',
     },
 
     url: 'url',
