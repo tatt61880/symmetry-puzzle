@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.01.16';
+  const VERSION_TEXT = 'v2023.01.17';
 
   const app = window.app;
   Object.freeze(app);
@@ -548,20 +548,20 @@
   function animateIcon() {
     const ICON_SIZE = 32;
     document.documentElement.style.setProperty(
-      '--animation-origin',
+      '--animation-origin-icon',
       `${ICON_SIZE / 2}px ${ICON_SIZE / 2}px`
     );
-    elems.icon.classList.remove('animation-rotation');
+    elems.icon.classList.remove('animation-rotation-icon');
     setTimeout(() => {
-      elems.icon.classList.add('animation-rotation');
+      elems.icon.classList.add('animation-rotation-icon');
     }, 1);
-    elems.iconPoint.classList.remove('animation-rotation');
+    elems.iconPoint.classList.remove('animation-rotation-icon');
     setTimeout(() => {
-      elems.iconPoint.classList.add('animation-rotation');
+      elems.iconPoint.classList.add('animation-rotation-icon');
     }, 1);
-    elems.iconReflection.classList.remove('animation-reflection1');
+    elems.iconReflection.classList.remove('animation-reflection1-icon');
     setTimeout(() => {
-      elems.iconReflection.classList.add('animation-reflection1');
+      elems.iconReflection.classList.add('animation-reflection1-icon');
     }, 1);
   }
 
@@ -821,7 +821,11 @@
           } else {
             updateCheckMode(app.Level.CHECK_MODE.REFLECTION);
           }
-          level.setCheckMode(checkMode);
+          const w = level.getW();
+          const h = level.getH();
+          const s = level.getStateStr();
+          level = new app.Level({ w, h, s }, checkMode, {});
+          completeCheck();
           updateUrl();
           draw();
         },
