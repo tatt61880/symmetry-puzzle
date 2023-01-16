@@ -261,11 +261,11 @@ text {
   height: 135px;
   margin: 10px;
   font-size: 1.3rem;
-  color: #335577;
+  color: #550000;
   cursor: pointer;
   user-select: none;
-  background-color: #eef0ff;
-  border: 3px solid #87ceeb;
+  background-color: #ffc0cb;
+  border: 6px solid #ed1c24;
 }
 
 .title-button-text {
