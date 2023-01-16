@@ -72,41 +72,70 @@
           <button id="setting-lang-ja" class="setting-lang-button">日本語</button>
           <button id="setting-lang-en" class="setting-lang-button">English</button>
         </div>
+
+        <div class="translatable en" lang="en">
+          <div>
+            <div class="mode-title">
+              Point Symmetry Puzzle
+            </div>
+            <p>
+              Manipulate <span class="blue-block">Blue</span> to make<br>
+              <span class="red-block">Red</span> a <span class="bold">connected point symmetrical one</span>.
+            </p>
+            <p>
+              <img class="example-image" alt="example" src="./images/example.png?2022.12.18"><br>
+              Figure: 3 examples of <span class="bold">Connected point symmetrical shape</span>.
+            </p>
+          </div>
+
+          <div>
+            <div class="mode-title">
+              Reflection Symmetry Puzzle
+            </div>
+            <p>
+              Manipulate <span class="blue-block">Blue</span> to make<br>
+              <span class="red-block">Red</span> a <span class="bold">connected reflection symmetrical
+                one</span>.
+            </p>
+          </div>
+
+          <p class="warn">
+            Note: This web application is in beta version.<br>
+            Levels are added/removed as needed.<br>
+          </p>
+        </div>
+
         <div class="translatable ja" lang="ja">
-          <p class="bold">
-            点対称パズル
-          </p>
-          <p>
-            <span class="blue-block">青色の図形</span>を操作し、<br>
-            <span class="red-block">赤色の図形</span>を1つながりの点対称図形にしてください。
-          </p>
-          <p>
-            <img class="example-image" alt="example" src="./images/example.png?2022.12.18"><br>
-            図: 「1つながりの点対称図形」の3つの例
-          </p>
+          <div>
+            <div class="mode-title">
+              点対称パズル
+            </div>
+            <p>
+              <span class="blue-block">青色の図形</span>を操作し、<br>
+              <span class="red-block">赤色の図形</span>を<span class="bold">1つながりの点対称図形</span>にしてください。
+            </p>
+            <p>
+              <img class="example-image" alt="example" src="./images/example.png?2022.12.18"><br>
+              図: <span class="bold">1つながりの点対称図形</span>の3つの例
+            </p>
+          </div>
+
+          <div>
+            <div class="mode-title">
+              線対称パズル
+            </div>
+            <p>
+              <span class="blue-block">青色の図形</span>を操作し、<br>
+              <span class="red-block">赤色の図形</span>を<span class="bold">1つながりの線対称図形</span>にしてください。
+            </p>
+          </div>
+
           <p class="warn">
             ※このWebアプリはベータ版（未完成）です。<br>
             随時、レベルを追加/変更しています。<br>
           </p>
         </div>
 
-        <div class="translatable en" lang="en">
-          <p class="bold">
-            Point Symmetry Puzzle
-          </p>
-          <p>
-            Manipulate <span class="blue-block">Blue</span> to make<br>
-            <span class="red-block">Red</span> a connected point symmetrical one.
-          </p>
-          <p>
-            <img class="example-image" alt="example" src="./images/example.png?2022.12.18"><br>
-            Figure: 3 examples of "Connected point symmetrical shape".
-          </p>
-          <p class="warn">
-            Note: This web application is in beta version.<br>
-            Levels are added/removed as needed.<br>
-          </p>
-        </div>
         <div>
           <p>
             Created by Tatt (<a href="https://twitter.com/tatt61880">@tatt61880</a>)
@@ -126,19 +155,23 @@
         <div id="button-play-point" class="title-button">
           <div class="title-button-text translatable en" lang="en">
             Point<br>
-            symmetry
+            Symmetry<br>
+            Puzzle
           </div>
           <div class="title-button-text translatable ja hide-lang" lang="ja">
-            点対称
+            点対称<br>
+            パズル
           </div>
         </div>
         <div id="button-play-reflection" class="title-button">
           <div class="title-button-text translatable en" lang="en">
             Reflection<br>
-            symmetry
+            Symmetry<br>
+            Puzzle
           </div>
           <div class="title-button-text translatable ja hide-lang" lang="ja">
-            線対称
+            線対称<br>
+            パズル
           </div>
         </div>
         <!-- <div id="button-edit" class="title-button">
