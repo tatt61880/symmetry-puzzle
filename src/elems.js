@@ -92,6 +92,7 @@
 
     console: {
       widget: 'console-widget',
+      image: 'console-image',
       log: 'console-log',
     },
   });
