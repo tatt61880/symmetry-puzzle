@@ -6,8 +6,10 @@
   --animation-duration-shadow: none;
   --animation-duration-symmetry: none;
   --animation-origin: 0 0;
+  --animation-origin-icon: 0 0;
 }
 
+/* blocks moving animation */
 .animation-block {
   animation: animation-block cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   animation-duration: var(--animation-duration);
@@ -18,6 +20,7 @@
   animation-duration: var(--animation-duration-shadow);
 }
 
+/* blocks completed animation */
 .animation-rotation {
   transform-origin: var(--animation-origin);
   animation: animation-rotation ease forwards;
@@ -45,6 +48,19 @@
 .animation-reflection4 {
   transform-origin: var(--animation-origin);
   animation: animation-reflection4 ease forwards;
+  animation-duration: var(--animation-duration-symmetry);
+}
+
+/* icon animation */
+.animation-rotation-icon {
+  transform-origin: var(--animation-origin-icon);
+  animation: animation-rotation ease forwards;
+  animation-duration: var(--animation-duration-symmetry);
+}
+
+.animation-reflection1-icon {
+  transform-origin: var(--animation-origin-icon);
+  animation: animation-reflection1 ease forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 

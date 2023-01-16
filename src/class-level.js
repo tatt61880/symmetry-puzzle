@@ -47,16 +47,16 @@
 
   class Level {
     static CHECK_MODE = {
-      POINT: Symbol(0),
-      REFLECTION: Symbol(1),
+      POINT: Symbol('point'),
+      REFLECTION: Symbol('reflection'),
     };
 
     static SYMMETRY_TYPE = {
-      POINT: Symbol(0),
-      REFLECTION1: Symbol(1),
-      REFLECTION2: Symbol(2),
-      REFLECTION3: Symbol(3),
-      REFLECTION4: Symbol(4),
+      POINT: Symbol('point'),
+      REFLECTION1: Symbol('reflection1'),
+      REFLECTION2: Symbol('reflection2'),
+      REFLECTION3: Symbol('reflection3'),
+      REFLECTION4: Symbol('reflection4'),
     };
 
     #checkMode;
@@ -92,7 +92,7 @@
       this.#isSymmetry = null;
       this.#getSymmetryType = null;
 
-      this.setCheckMode(checkMode);
+      this.#setCheckMode(checkMode);
       let obj = obj_;
       if (mirrorFlag) obj = this.#mirrorLevel(obj);
       if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
@@ -665,7 +665,7 @@
       return res;
     }
 
-    setCheckMode(mode) {
+    #setCheckMode(mode) {
       if (mode === Level.CHECK_MODE.POINT) {
         this.#isCompleted = this.#isCompletedPoint;
         this.#isSymmetry = this.#isSymmetryPoint;
