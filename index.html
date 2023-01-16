@@ -14,31 +14,31 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.01.15">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.01.15">
 
-  <link rel="stylesheet" href="./css/main.css?2023.01.15c">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.01.15c">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.01.15c">
-  <link rel="stylesheet" href="./css/animation.css?2023.01.15c">
+  <link rel="stylesheet" href="./css/main.css?2023.01.16">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.01.16">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.01.16">
+  <link rel="stylesheet" href="./css/animation.css?2023.01.16">
 
-  <script src="./src/states.js?2023.01.15c"></script>
-  <script src="./src/colors.js?2023.01.15c"></script>
-  <script src="./src/svg.js?2023.01.15c"></script>
-  <script src="./src/class-stack.js?2023.01.15c"></script>
-  <script src="./src/class-level.js?2023.01.15c"></script>
+  <script src="./src/states.js?2023.01.16"></script>
+  <script src="./src/colors.js?2023.01.16"></script>
+  <script src="./src/svg.js?2023.01.16"></script>
+  <script src="./src/class-stack.js?2023.01.16"></script>
+  <script src="./src/class-level.js?2023.01.16"></script>
 
-  <script src="./src/class-savedata.js?2023.01.15c"></script>
-  <script src="./src/class-undo-info.js?2023.01.15c"></script>
-  <script src="./src/class-elems.js?2023.01.15c"></script>
+  <script src="./src/class-savedata.js?2023.01.16"></script>
+  <script src="./src/class-undo-info.js?2023.01.16"></script>
+  <script src="./src/class-elems.js?2023.01.16"></script>
 
-  <script src="./src/levels-point.js?2023.01.15c"></script>
-  <script src="./src/levels-point-ex.js?2023.01.15c"></script>
-  <script src="./src/levels-reflection.js?2023.01.15c"></script>
-  <script src="./src/levels-reflection-ex.js?2023.01.15c"></script>
-  <script src="./src/elems.js?2023.01.15c"></script>
+  <script src="./src/levels-point.js?2023.01.16"></script>
+  <script src="./src/levels-point-ex.js?2023.01.16"></script>
+  <script src="./src/levels-reflection.js?2023.01.16"></script>
+  <script src="./src/levels-reflection-ex.js?2023.01.16"></script>
+  <script src="./src/elems.js?2023.01.16"></script>
 
-  <script src="./src/solve.js?2023.01.15c"></script>
+  <script src="./src/solve.js?2023.01.16"></script>
 
-  <script src="./src/analyze-url.js?2023.01.15c"></script>
-  <script src="./src/main.js?2023.01.15c"></script>
+  <script src="./src/analyze-url.js?2023.01.16"></script>
+  <script src="./src/main.js?2023.01.16"></script>
 </head>
 
 <body>
@@ -260,8 +260,8 @@
       </div>
 
       <div id="editbox">
-        <svg width="470" height="170">
-          <rect x="2" y="2" width="466" height="166" fill="#def" stroke="skyblue" stroke-width="4" />
+        <svg width="470" height="220">
+          <rect x="2" y="2" width="466" height="216" fill="#def" stroke="skyblue" stroke-width="4" />
 
           <g transform="translate(25,35)">
             <rect id="edit-drawing-shape" x="-15" y="-15" width="30" height="30" fill="#e5e5e5" stroke="#aaa"
@@ -291,9 +291,18 @@
               fill="gray">++h</text>
           </g>
 
-          <g transform="translate(25,135)">
-            <rect id="edit-normalize" x="-15" y="-15" width="30" height="30" fill="#e5e5e5" stroke="#aaa"
+          <g transform="translate(65,185)">
+            <rect id="edit-normalize" x="-55" y="-15" width="110" height="30" fill="#e5e5e5" stroke="#aaa"
               stroke-width="4" />
+            <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px"
+              fill="gray">Normalize</text>
+          </g>
+
+          <g transform="translate(200,185)">
+            <rect id="edit-switch-mode" x="-65" y="-15" width="130" height="30" fill="#e5e5e5" stroke="#aaa"
+              stroke-width="4" />
+            <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px"
+              fill="gray">Switch mode</text>
           </g>
 
           <!-- 0 -->
