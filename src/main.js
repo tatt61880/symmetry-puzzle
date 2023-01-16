@@ -1300,6 +1300,39 @@
       updateAutoMode(true);
     } else if (secretSequence === '4343') {
       showElem(elems.console.widget);
+      {
+        const input = elems.main.svg;
+        const output = elems.console.image;
+        const svgData = new XMLSerializer().serializeToString(input);
+        const svgDataBase64 = window.btoa(svgData);
+        const svgDataUrl = `data:image/svg+xml;charset=utf-8;base64,${svgDataBase64}`;
+
+        const image = new Image();
+        image.addEventListener('load', () => {
+          const width = input.getAttribute('width');
+          const height = input.getAttribute('height');
+          const canvas = document.createElement('canvas');
+
+          canvas.setAttribute('width', width - 2 * blockSize);
+          canvas.setAttribute('height', height - 2 * blockSize);
+
+          const context = canvas.getContext('2d');
+          context.drawImage(
+            image,
+            blockSize,
+            blockSize,
+            width - 2 * blockSize,
+            height - 2 * blockSize,
+            0,
+            0,
+            width - 2 * blockSize,
+            height - 2 * blockSize
+          );
+          const dataUrl = canvas.toDataURL('image/png');
+          output.src = dataUrl;
+        });
+        image.src = svgDataUrl;
+      }
     } else if (secretSequence === '3434') {
       hideElem(elems.console.widget);
     } else {
