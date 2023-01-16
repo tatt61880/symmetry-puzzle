@@ -12,6 +12,14 @@
   border: none;
 }
 
+#dialog-help .mode-title {
+  padding: 5px;
+  margin: 5px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: #ffc0cb;
+}
+
 #dialog-help .bold {
   font-weight: bold;
 }
@@ -45,8 +53,8 @@
 }
 
 #dialog-help .example-image {
-  width: 380px;
-  height: 140px;
+  width: 320px;
+  height: 80px;
 }
 
 #dialog-help .warn {
