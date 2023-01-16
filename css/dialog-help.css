@@ -20,6 +20,12 @@
   background-color: #ffc0cb;
 }
 
+#dialog-help .border {
+  padding: 5px;
+  margin: 10px 30px;
+  border: 1px solid #888888;
+}
+
 #dialog-help .bold {
   font-weight: bold;
 }
@@ -53,8 +59,8 @@
 }
 
 #dialog-help .example-image {
-  width: 320px;
-  height: 80px;
+  width: 310px;
+  height: 90px;
 }
 
 #dialog-help .warn {
