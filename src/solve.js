@@ -218,7 +218,7 @@
           return { replayStr: null, errorMessage };
         }
 
-        level.move();
+        // level.move();
         const stateStr = level.getStateStr();
         if (stateStrMap.has(stateStr)) {
           app.console.warn('Warning: Same state exists.');
@@ -267,7 +267,7 @@
             const moveFlag = level.updateMoveFlags(dx, dy);
             if (!moveFlag) continue;
 
-            level.move();
+            // level.move();
 
             if (options.normalize) level.normalize();
             const stateStr = level.getStateStr();
@@ -275,9 +275,11 @@
 
             const replayStr = currentReplyStr + dir;
             stateStrMap.set(stateStr, replayStr);
+            /*
             if (step === 16) {
               console.log(replayStr);
             }
+            */
 
             const completedFlag = level.isCompleted();
             if (completedFlag) {

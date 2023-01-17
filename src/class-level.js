@@ -294,8 +294,7 @@
     }
 
     updateMoveFlags(dx, dy) {
-      this.resetMoveFlags();
-
+      // this.resetMoveFlags();
       let x0;
       let y0;
       loop: for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
@@ -310,32 +309,21 @@
       let x = x0;
       let y = y0;
       let count = 0;
-      let moveFlag = false;
-      while (true) {
+      do {
         count++;
         x += dx;
         y += dy;
         if (this.#states[y][x] === app.states.wall) {
-          break;
+          return false;
         }
-        if (this.#states[y][x] === app.states.none) {
-          moveFlag = true;
-          break;
-        }
-      }
+      } while (this.#states[y][x] !== app.states.none);
 
-      if (moveFlag) {
-        this.#moveDx = dx;
-        this.#moveDy = dy;
-        x = x0;
-        y = y0;
-        for (let i = 0; i < count; ++i) {
-          x += dx;
-          y += dy;
-          this.#moveFlags[y][x] = true;
-        }
+      this.#states[y0][x0] = app.states.none;
+      this.#states[y0 + dy][x0 + dx] = app.states.userMin;
+      if (count !== 1) {
+        this.#states[y][x] = app.states.targetMin;
       }
-      return moveFlag;
+      return true;
     }
 
     move() {
