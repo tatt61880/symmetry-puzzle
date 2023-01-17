@@ -269,7 +269,7 @@
 
             // level.move();
 
-            if (options.normalize) level.normalize();
+            // if (options.normalize) level.normalize();
             const stateStr = level.getStateStr();
             if (stateStrMap.has(stateStr)) continue;
 

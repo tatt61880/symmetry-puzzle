@@ -200,7 +200,7 @@
           x++;
         }
       }
-      this.resetMoveFlags();
+      // this.resetMoveFlags();
     }
 
     normalize() {
@@ -497,7 +497,7 @@
         let line = '';
         for (let x = leftEnd; x <= rightEnd; ++x) {
           let c = app.states.stateToChar[states[y][x]];
-          if (c.length > 1) c = `(${c})`;
+          // if (c.length > 1) c = `(${c})`;
           line += c;
         }
         res += line.replace(/0+$/, '');
