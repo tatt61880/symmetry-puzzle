@@ -7,9 +7,9 @@
   states.wall = -1; // 壁
   states.none = 0;
   states.targetMin = 1;
-  states.targetMax = 1000;
+  states.targetMax = 256;
   states.otherMin = 1001;
-  states.otherMax = 1006;
+  states.otherMax = 1008;
   states.userMin = 10000;
   states.userMax = 10004; // 探索時はこの値が小さい方が有利。
 
