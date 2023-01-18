@@ -634,9 +634,9 @@
     }
 
     #getMinMaxXY(isX) {
-      let minX = this.getWidth();
+      let minX = this.#width;
       let maxX = 0;
-      let minY = this.getHeight();
+      let minY = this.#height;
       let maxY = 0;
       for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
         for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
@@ -830,8 +830,8 @@
         }
       }
 
-      for (let y = 0; y < this.getHeight(); ++y) {
-        for (let x = 0; x < this.getWidth(); ++x) {
+      for (let y = 0; y < this.#height; ++y) {
+        for (let x = 0; x < this.#width; ++x) {
           if (isX(statesTemp[y][x])) return false;
         }
       }
