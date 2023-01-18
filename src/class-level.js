@@ -74,6 +74,8 @@
     #isCompleted;
     #isSymmetry;
     #getSymmetryType;
+    #userX;
+    #userY;
 
     constructor(obj_, checkMode, { mirrorFlag = false, rotateNum = false }) {
       this.#checkMode = null;
@@ -101,7 +103,7 @@
       this.#levelObj = obj;
       // Object.freeze(this.#levelObj);
       this.#initStates();
-      this.applyStateStr(obj.s);
+      this.applyStateStr0(obj.s);
     }
 
     getW() {
@@ -133,13 +135,56 @@
     }
 
     getStateStr() {
-      return this.#getStateStrSub(
-        this.#states,
-        this.#upEnd,
-        this.#rightEnd,
-        this.#downEnd,
-        this.#leftEnd
-      );
+      const NUM = 6;
+      let res = '';
+      let count = 0;
+      let val = 0;
+      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
+        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+          count++;
+          val <<= 1;
+          val += this.#states[y][x] === 1 ? 1 : 0;
+          if (count % NUM === 0) {
+            const c = String.fromCharCode('0'.charCodeAt(0) + val);
+            res += c;
+            val = 0;
+          }
+        }
+      }
+      val <<= NUM - (count % NUM);
+      const c = String.fromCharCode('0'.charCodeAt(0) + val);
+      res += c;
+
+      {
+        const c = String.fromCharCode('0'.charCodeAt(0) + this.#userX);
+        res += c;
+      }
+      {
+        const c = String.fromCharCode('0'.charCodeAt(0) + this.#userY);
+        res += c;
+      }
+
+      // console.log(res);
+      return res;
+
+      // let res = 0n; // BigInt
+      // for (let y = this.#downEnd; y >= this.#upEnd; --y) {
+      //   for (let x = this.#rightEnd; x >= this.#leftEnd; --x) {
+      //     res <<= 1n;
+      //     res += this.#states[y][x] === 1 ? 1n : 0n;
+      //   }
+      // }
+      // res <<= 7n;
+      // res += BigInt((this.#userY - 1) * 17 + (this.#userX - 1));
+      // // console.log(res);
+      // return res;
+      // return this.#getStateStrSub(
+      //   this.#states,
+      //   this.#upEnd,
+      //   this.#rightEnd,
+      //   this.#downEnd,
+      //   this.#leftEnd
+      // );
     }
 
     getUrlStr() {
@@ -181,10 +226,12 @@
       this.#removeR();
     }
 
-    applyStateStr(stateStr) {
+    applyStateStr0(stateStr) {
+      this.#userX = 1;
+      this.#userY = 1;
       for (let y = 1; y < this.#height - 1; ++y) {
         for (let x = 1; x < this.#width - 1; ++x) {
-          this.#states[y][x] = app.states.none;
+          this.#states[y][x] = 0;
         }
       }
       let y = this.#upEnd;
@@ -200,6 +247,84 @@
           x++;
         }
       }
+
+      // if (0) {
+      //   let str = '';
+      //   for (let y = 1; y < this.#height - 1; ++y) {
+      //     for (let x = 1; x < this.#width - 1; ++x) {
+      //       if (this.#states[y][x] === app.states.userMin) {
+      //         str += 's';
+      //       } else {
+      //         str += this.#states[y][x];
+      //       }
+      //     }
+      //     str += '\n';
+      //   }
+      //   console.log(str);
+      // }
+    }
+
+    applyStateStr(stateStr) {
+      const NUM = 6;
+      let count = 0;
+      for (let y = 1; y < this.#height - 1; ++y) {
+        for (let x = 1; x < this.#width - 1; ++x) {
+          const val = stateStr.charCodeAt(Math.floor(count / NUM)) - 0x30;
+          this.#states[y][x] = (val >> (NUM - 1 - (count % NUM))) & 1;
+          count++;
+        }
+      }
+      const pos = Math.floor((119 + NUM) / NUM);
+      this.#userX = stateStr.charCodeAt(pos) - 0x30;
+      this.#userY = stateStr.charCodeAt(pos + 1) - 0x30;
+      this.#states[this.#userY][this.#userX] = app.states.userMin;
+
+      /*
+      const userPos = Number(stateNum % 128n);
+      // console.log(userPos);
+      stateNum >>= 7n;
+      for (let y = 1; y < this.#height - 1; ++y) {
+        for (let x = 1; x < this.#width - 1; ++x) {
+          this.#states[y][x] = Number(stateNum & 1n);
+          stateNum >>= 1n;
+        }
+      }
+      this.#userX = (userPos % 17) + 1;
+      this.#userY = Math.floor(userPos / 17) + 1;
+      this.#states[this.#userY][this.#userX] = app.states.userMin;
+      */
+      // if (0) {
+      //   let str = '';
+      //   for (let y = 1; y < this.#height - 1; ++y) {
+      //     for (let x = 1; x < this.#width - 1; ++x) {
+      //       if (this.#states[y][x] === app.states.userMin) {
+      //         str += 's';
+      //       } else {
+      //         str += this.#states[y][x];
+      //       }
+      //     }
+      //     str += '\n';
+      //   }
+      //   console.log(str);
+      // }
+      // for (let y = 1; y < this.#height - 1; ++y) {
+      //   for (let x = 1; x < this.#width - 1; ++x) {
+      //     this.#states[y][x] = 0;
+      //   }
+      // }
+      // let y = this.#upEnd;
+      // let x = this.#leftEnd;
+      // for (const c of stateCharGenerator(stateStr)) {
+      //   if (c === '-') {
+      //     y++;
+      //     if (y > this.#downEnd) break;
+      //     x = this.#leftEnd;
+      //   } else {
+      //     if (x > this.#rightEnd) continue;
+      //     this.#states[y][x] = app.states.charToState[c];
+      //     x++;
+      //   }
+      // }
       // this.resetMoveFlags();
     }
 
@@ -295,17 +420,17 @@
 
     updateMoveFlags(dx, dy) {
       // this.resetMoveFlags();
-      let x0;
-      let y0;
-      loop: for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
-          if (this.#states[y][x] === app.states.userMin) {
-            x0 = x;
-            y0 = y;
-            break loop;
-          }
-        }
-      }
+      const x0 = this.#userX;
+      const y0 = this.#userY;
+      // loop: for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
+      //   for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      //     if (this.#states[y][x] === app.states.userMin) {
+      //       x0 = x;
+      //       y0 = y;
+      //       break loop;
+      //     }
+      //   }
+      // }
       let x = x0;
       let y = y0;
       let count = 0;
@@ -320,6 +445,8 @@
 
       this.#states[y0][x0] = app.states.none;
       this.#states[y0 + dy][x0 + dx] = app.states.userMin;
+      this.#userY = y0 + dy;
+      this.#userX = x0 + dx;
       if (count !== 1) {
         this.#states[y][x] = app.states.targetMin;
       }

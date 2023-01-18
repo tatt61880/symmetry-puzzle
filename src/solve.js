@@ -238,6 +238,7 @@
       let nextStateStrSet = new Set();
       {
         const stateStr = level.getStateStr();
+        // console.log(stateStr);
         nextStateStrSet.add(stateStr);
       }
 
@@ -271,6 +272,8 @@
 
             // if (options.normalize) level.normalize();
             const stateStr = level.getStateStr();
+            // console.log(dir, stateStr);
+
             if (stateStrMap.has(stateStr)) continue;
 
             const replayStr = currentReplyStr + dir;
