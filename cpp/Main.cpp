@@ -208,7 +208,7 @@ bool updateMoveFlags(int dx, int dy)
 
 int main()
 {
-    printLevel();
+    // printLevel();
     const bool completedFlag = isCompleted();
     if (completedFlag)
     {
@@ -227,36 +227,37 @@ int main()
     }
     int step = 0;
 
-    // for (const dirChar of prefixStep)
-    // {
-    //     step++;
-    //     const dir = Number(dirChar);
-    //     const dx = dxs[dir];
-    //     const dy = dys[dir];
+    std::string prefixStep = "";
+    // prefixStep = "1111211332121211221111033";
+    for (char dirChar : prefixStep)
+    {
+        step++;
+        const int dir = dirChar - 0x30;
+        const int dx = dxs[dir];
+        const int dy = dys[dir];
 
-    //     const moveFlag = level.updateMoveFlags(dx, dy);
-    //     if (!moveFlag)
-    //     {
-    //         const errorMessage = 'Error: moveFlag failed on prefix-step.';
-    //         return {replayStr : null, errorMessage};
-    //     }
+        const bool moveFlag = updateMoveFlags(dx, dy);
+        if (!moveFlag)
+        {
+            std::cerr << "Error: moveFlag failed on prefix-step." << std::endl;
+            return -1;
+        }
 
-    //     // level.move();
-    //     const stateStr = level.getStateStr();
-    //     if (stateStrMap.has(stateStr))
-    //     {
-    //         app.console.warn('Warning: Same state exists.');
-    //     }
+        const std::string stateStr = getStateStr();
+        if (stateStrMap.find(stateStr) != stateStrMap.end())
+        {
+            std::cerr << "Warning: Same state exists." << std::endl;
+        }
 
-    //     const completedFlag = level.isCompleted();
-    //     if (completedFlag)
-    //     {
-    //         const errorMessage = `Error : Completed on prefix - step.(${step} steps)`;
-    //         return {replayStr : null, errorMessage};
-    //     }
-    //     replayStr += dirChar;
-    //     stateStrMap.set(stateStr, replayStr);
-    // }
+        const bool completedFlag = isCompleted();
+        if (completedFlag)
+        {
+            std::cerr << "Error : Completed on prefix-step." << std::endl;
+            return -1;
+        }
+        replayStr += dirChar;
+        stateStrMap[stateStr] = replayStr;
+    }
 
     int stateCount = 0;
 
@@ -266,13 +267,13 @@ int main()
         nextStateStrSet.insert(stateStr);
     }
 
-    int maxStep = 28;
+    int maxStep = 29;
     int solutionNum = 0;
     for (; step < maxStep;)
     {
         std::set<std::string> currentStateStrSet = nextStateStrSet;
         nextStateStrSet = std::set<std::string>();
-        for (auto currentStateStr : currentStateStrSet)
+        for (std::string currentStateStr : currentStateStrSet)
         {
             std::string currentReplyStr = stateStrMap[currentStateStr];
             for (int dir = 0; dir < 4; ++dir)
@@ -298,6 +299,7 @@ int main()
                 {
                     printf("Completed!\n");
                     std::cout << replayStr << std::endl;
+                    return 0;
                 }
                 else
                 {
