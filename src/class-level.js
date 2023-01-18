@@ -67,17 +67,17 @@
     #moveFlags;
     #moveDx;
     #moveDy;
-    #upEnd;
-    #leftEnd;
-    #downEnd;
-    #rightEnd;
+    #yMin;
+    #xMin;
+    #yMax;
+    #xMax;
     #isCompleted;
     #isSymmetry;
     #getSymmetryType;
     #userX;
     #userY;
 
-    constructor(obj_, checkMode, { mirrorFlag = false, rotateNum = false }) {
+    constructor(obj_, checkMode, { mirrorFlag = false, rotateNum = 0 }) {
       this.#checkMode = null;
       this.#levelObj = null;
       this.#width = null;
@@ -86,10 +86,10 @@
       this.#moveFlags = [];
       this.#moveDx = null;
       this.#moveDy = null;
-      this.#upEnd = 1;
-      this.#leftEnd = 1;
-      this.#downEnd = null;
-      this.#rightEnd = null;
+      this.#yMin = 1;
+      this.#xMin = 1;
+      this.#yMax = null;
+      this.#xMax = null;
       this.#isCompleted = null;
       this.#isSymmetry = null;
       this.#getSymmetryType = null;
@@ -139,8 +139,8 @@
       let res = '';
       let count = 0;
       let val = 0;
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           count++;
           val <<= 1;
           val += this.#states[y][x] === 1 ? 1 : 0;
@@ -164,27 +164,7 @@
         res += c;
       }
 
-      // console.log(res);
       return res;
-
-      // let res = 0n; // BigInt
-      // for (let y = this.#downEnd; y >= this.#upEnd; --y) {
-      //   for (let x = this.#rightEnd; x >= this.#leftEnd; --x) {
-      //     res <<= 1n;
-      //     res += this.#states[y][x] === 1 ? 1n : 0n;
-      //   }
-      // }
-      // res <<= 7n;
-      // res += BigInt((this.#userY - 1) * 17 + (this.#userX - 1));
-      // // console.log(res);
-      // return res;
-      // return this.#getStateStrSub(
-      //   this.#states,
-      //   this.#upEnd,
-      //   this.#rightEnd,
-      //   this.#downEnd,
-      //   this.#leftEnd
-      // );
     }
 
     getUrlStr() {
@@ -234,15 +214,15 @@
           this.#states[y][x] = 0;
         }
       }
-      let y = this.#upEnd;
-      let x = this.#leftEnd;
+      let y = this.#yMin;
+      let x = this.#xMin;
       for (const c of stateCharGenerator(stateStr)) {
         if (c === '-') {
           y++;
-          if (y > this.#downEnd) break;
-          x = this.#leftEnd;
+          if (y >= this.#yMax) break;
+          x = this.#xMin;
         } else {
-          if (x > this.#rightEnd) continue;
+          if (x >= this.#xMax) continue;
           this.#states[y][x] = app.states.charToState[c];
           x++;
         }
@@ -278,54 +258,6 @@
       this.#userX = stateStr.charCodeAt(pos) - 0x30;
       this.#userY = stateStr.charCodeAt(pos + 1) - 0x30;
       this.#states[this.#userY][this.#userX] = app.states.userMin;
-
-      /*
-      const userPos = Number(stateNum % 128n);
-      // console.log(userPos);
-      stateNum >>= 7n;
-      for (let y = 1; y < this.#height - 1; ++y) {
-        for (let x = 1; x < this.#width - 1; ++x) {
-          this.#states[y][x] = Number(stateNum & 1n);
-          stateNum >>= 1n;
-        }
-      }
-      this.#userX = (userPos % 17) + 1;
-      this.#userY = Math.floor(userPos / 17) + 1;
-      this.#states[this.#userY][this.#userX] = app.states.userMin;
-      */
-      // if (0) {
-      //   let str = '';
-      //   for (let y = 1; y < this.#height - 1; ++y) {
-      //     for (let x = 1; x < this.#width - 1; ++x) {
-      //       if (this.#states[y][x] === app.states.userMin) {
-      //         str += 's';
-      //       } else {
-      //         str += this.#states[y][x];
-      //       }
-      //     }
-      //     str += '\n';
-      //   }
-      //   console.log(str);
-      // }
-      // for (let y = 1; y < this.#height - 1; ++y) {
-      //   for (let x = 1; x < this.#width - 1; ++x) {
-      //     this.#states[y][x] = 0;
-      //   }
-      // }
-      // let y = this.#upEnd;
-      // let x = this.#leftEnd;
-      // for (const c of stateCharGenerator(stateStr)) {
-      //   if (c === '-') {
-      //     y++;
-      //     if (y > this.#downEnd) break;
-      //     x = this.#leftEnd;
-      //   } else {
-      //     if (x > this.#rightEnd) continue;
-      //     this.#states[y][x] = app.states.charToState[c];
-      //     x++;
-      //   }
-      // }
-      // this.resetMoveFlags();
     }
 
     normalize() {
@@ -333,8 +265,8 @@
       let nextTarget = app.states.targetMin;
       let nextOther = app.states.otherMin;
       let nextUser = app.states.userMin;
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           const state = this.#states[y][x];
           if (map[state] === undefined) {
             if (
@@ -364,17 +296,17 @@
     }
 
     isInsideInnerArea(x, y) {
-      if (x < this.#leftEnd) return false;
-      if (this.#rightEnd < x) return false;
-      if (y < this.#upEnd) return false;
-      if (this.#downEnd < y) return false;
+      if (x < this.#xMin) return false;
+      if (this.#xMax <= x) return false;
+      if (y < this.#yMin) return false;
+      if (this.#yMax <= y) return false;
       return true;
     }
 
     isNormalized() {
       const exists = {};
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           const state = this.#states[y][x];
           exists[state] = true;
           if (app.states.isTarget(state)) {
@@ -422,15 +354,6 @@
       // this.resetMoveFlags();
       const x0 = this.#userX;
       const y0 = this.#userY;
-      // loop: for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-      //   for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
-      //     if (this.#states[y][x] === app.states.userMin) {
-      //       x0 = x;
-      //       y0 = y;
-      //       break loop;
-      //     }
-      //   }
-      // }
       let x = x0;
       let y = y0;
       let count = 0;
@@ -458,15 +381,15 @@
       const dx = this.#moveDx;
       const dy = this.#moveDy;
 
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           if (this.#moveFlags[y + dy][x + dx]) {
             this.#setState(x, y, app.states.none);
           }
         }
       }
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           if (this.#moveFlags[y][x]) {
             this.#setState(x, y, statesTemp[y - dy][x - dx]);
           }
@@ -562,7 +485,7 @@
         }
         r = rotatedR;
       }
-      const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
+      const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
       const newLevelObj = { w, h, s, r };
       return newLevelObj;
     }
@@ -603,28 +526,27 @@
           }
           r = rotatedR;
         }
-        const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
+        const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
         newLevelObj = { w, h, s, r };
       }
       return newLevelObj;
     }
 
     #exist(isX) {
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           if (isX(this.#states[y][x])) return true;
         }
       }
       return false;
     }
 
-    #getStateStrSub(states, upEnd, rightEnd, downEnd, leftEnd) {
+    #getStateStrSub(states, xMin, xMax, yMin, yMax) {
       let res = '';
-      for (let y = upEnd; y <= downEnd; ++y) {
+      for (let y = yMin; y < yMax; ++y) {
         let line = '';
-        for (let x = leftEnd; x <= rightEnd; ++x) {
-          let c = app.states.stateToChar[states[y][x]];
-          // if (c.length > 1) c = `(${c})`;
+        for (let x = xMin; x < xMax; ++x) {
+          const c = app.states.stateToChar[states[y][x]];
           line += c;
         }
         res += line.replace(/0+$/, '');
@@ -638,8 +560,8 @@
       let maxX = 0;
       let minY = this.#height;
       let maxY = 0;
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           if (isX(this.#states[y][x])) {
             minX = Math.min(minX, x);
             maxX = Math.max(maxX, x);
@@ -747,8 +669,8 @@
     #initStates() {
       this.#width = this.#levelObj.w + 2;
       this.#height = this.#levelObj.h + 2;
-      this.#rightEnd = this.#width - 2;
-      this.#downEnd = this.#height - 2;
+      this.#xMax = this.#width - 1;
+      this.#yMax = this.#height - 1;
 
       // 初期化
       for (let y = 0; y < this.#height; ++y) {
@@ -803,8 +725,8 @@
       const statesTemp = this.#copyStates();
       let x0;
       let y0;
-      loop: for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      loop: for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           if (isX(statesTemp[y][x])) {
             x0 = x;
             y0 = y;
