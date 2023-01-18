@@ -668,11 +668,20 @@
   function onloadApp() {
     elems.init();
     elems.version.textContent = VERSION_TEXT;
-    window.onresize = resizeWindow;
-    resizeWindow();
-    applyLang(savedata.loadLang());
+
     initElems();
     updateEditLevel();
+
+    window.onresize = resizeWindow;
+    resizeWindow();
+
+    let lang = savedata.loadLang();
+    if (lang === undefined) {
+      lang = 'en';
+      savedata.saveLang(lang);
+      showHelpDialog();
+    }
+    applyLang(lang);
 
     const queryParams = app.analyzeUrl();
     settings = queryParams.settings;

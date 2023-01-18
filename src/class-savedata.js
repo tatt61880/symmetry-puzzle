@@ -28,12 +28,7 @@
     }
 
     loadLang() {
-      let lang = this.data.lang;
-      if (lang === undefined) {
-        lang = 'en';
-        this.saveLang(lang);
-      }
-      return lang;
+      return this.data.lang;
     }
 
     saveSteps(levelObj, isReflectionMode, r_) {
