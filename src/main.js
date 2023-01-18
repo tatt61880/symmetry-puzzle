@@ -297,6 +297,8 @@
   }
 
   function resetLevel() {
+    window.getSelection().removeAllRanges();
+
     clearTimeout(nextLevelTimerId);
 
     elems.level.reset.classList.add('low-contrast');
@@ -339,6 +341,8 @@
   }
 
   function execUndo() {
+    window.getSelection().removeAllRanges();
+
     if (undoInfo.isUndoable()) {
       const data = undoInfo.undo();
       const resizeFlag = level.getW() !== data.w || level.getH() !== data.h;
@@ -387,6 +391,8 @@
   }
 
   function loadLevelById(id_) {
+    window.getSelection().removeAllRanges();
+
     clearTimeout(nextLevelTimerId);
     const id = Number(id_);
     levelId = id;
@@ -529,6 +535,8 @@
   }
 
   function applyLang(lang) {
+    window.getSelection().removeAllRanges();
+
     animateIcon();
     for (const elem of document.getElementsByClassName('setting-lang-button')) {
       elem.classList.remove('active');
@@ -580,6 +588,8 @@
   }
 
   function updateLevelsDialog() {
+    window.getSelection().removeAllRanges();
+
     const hideCompletedLevelsFlag = elems.levels.hideCompletedLevels.checked;
 
     elems.levels.dialogSvg.innerHTML = '';
@@ -710,6 +720,7 @@
 
   function onloadTitle() {
     window.getSelection().removeAllRanges();
+
     updateCheckMode(null);
     showElem(elems.category.title);
     hideElem(elems.category.game);
@@ -719,6 +730,7 @@
 
   function onloadId(id_) {
     window.getSelection().removeAllRanges();
+
     if (editMode) {
       toggleEditLevel();
     }
@@ -746,6 +758,7 @@
 
   function onloadObj(obj) {
     window.getSelection().removeAllRanges();
+
     hideElem(elems.category.title);
     showElem(elems.category.game);
     showElem(elems.main.svg);
