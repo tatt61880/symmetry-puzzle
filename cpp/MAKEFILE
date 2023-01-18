@@ -1,0 +1,10 @@
+NAME=Main
+
+all:$(NAME).exe
+	$(NAME).exe
+
+$(NAME).exe: $(NAME).cpp
+	cls
+	cl.exe /nologo /utf-8 /EHsc $(NAME).cpp
+
+build: $(NAME).exe
