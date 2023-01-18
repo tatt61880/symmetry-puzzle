@@ -67,15 +67,15 @@
     #moveFlags;
     #moveDx;
     #moveDy;
-    #upEnd;
-    #leftEnd;
-    #downEnd;
-    #rightEnd;
+    #yMin;
+    #xMin;
+    #yMax;
+    #xMax;
     #isCompleted;
     #isSymmetry;
     #getSymmetryType;
 
-    constructor(obj_, checkMode, { mirrorFlag = false, rotateNum = false }) {
+    constructor(obj_, checkMode, { mirrorFlag = false, rotateNum = 0 }) {
       this.#checkMode = null;
       this.#levelObj = null;
       this.#width = null;
@@ -84,10 +84,10 @@
       this.#moveFlags = [];
       this.#moveDx = null;
       this.#moveDy = null;
-      this.#upEnd = 1;
-      this.#leftEnd = 1;
-      this.#downEnd = null;
-      this.#rightEnd = null;
+      this.#yMin = 1;
+      this.#xMin = 1;
+      this.#yMax = null;
+      this.#xMax = null;
       this.#isCompleted = null;
       this.#isSymmetry = null;
       this.#getSymmetryType = null;
@@ -133,10 +133,10 @@
     getStateStr() {
       return this.#getStateStrSub(
         this.#states,
-        this.#upEnd,
-        this.#rightEnd,
-        this.#downEnd,
-        this.#leftEnd
+        this.#xMin,
+        this.#xMax,
+        this.#yMin,
+        this.#yMax
       );
     }
 
@@ -185,15 +185,15 @@
           this.#states[y][x] = app.states.none;
         }
       }
-      let y = this.#upEnd;
-      let x = this.#leftEnd;
+      let y = this.#yMin;
+      let x = this.#xMin;
       for (const c of stateCharGenerator(stateStr)) {
         if (c === '-') {
           y++;
-          if (y > this.#downEnd) break;
-          x = this.#leftEnd;
+          if (y >= this.#yMax) break;
+          x = this.#xMin;
         } else {
-          if (x > this.#rightEnd) continue;
+          if (x >= this.#xMax) continue;
           this.#states[y][x] = app.states.charToState[c];
           x++;
         }
@@ -206,8 +206,8 @@
       let nextTarget = app.states.targetMin;
       let nextOther = app.states.otherMin;
       let nextUser = app.states.userMin;
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           const state = this.#states[y][x];
           if (map[state] === undefined) {
             if (
@@ -237,17 +237,17 @@
     }
 
     isInsideInnerArea(x, y) {
-      if (x < this.#leftEnd) return false;
-      if (this.#rightEnd < x) return false;
-      if (y < this.#upEnd) return false;
-      if (this.#downEnd < y) return false;
+      if (x < this.#xMin) return false;
+      if (this.#xMax <= x) return false;
+      if (y < this.#yMin) return false;
+      if (this.#yMax <= y) return false;
       return true;
     }
 
     isNormalized() {
       const exists = {};
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           const state = this.#states[y][x];
           exists[state] = true;
           if (app.states.isTarget(state)) {
@@ -305,8 +305,8 @@
         st.push(i);
         while (!st.empty()) {
           const state = st.pop();
-          for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-            for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+          for (let y = this.#yMin; y < this.#yMax; ++y) {
+            for (let x = this.#xMin; x < this.#xMax; ++x) {
               if (this.getState(x, y) !== state) continue;
               const neighborState = this.getState(x + dx, y + dy);
               if (neighborState === app.states.none) continue;
@@ -322,8 +322,8 @@
         }
 
         // 各座標に移動フラグを設定
-        for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-          for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+        for (let y = this.#yMin; y < this.#yMax; ++y) {
+          for (let x = this.#xMin; x < this.#xMax; ++x) {
             if (moveState[this.getState(x, y)]) {
               this.#moveFlags[y + dy][x + dx] = true;
             }
@@ -344,15 +344,15 @@
       const dx = this.#moveDx;
       const dy = this.#moveDy;
 
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           if (this.#moveFlags[y + dy][x + dx]) {
             this.#setState(x, y, app.states.none);
           }
         }
       }
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           if (this.#moveFlags[y][x]) {
             this.#setState(x, y, statesTemp[y - dy][x - dx]);
           }
@@ -448,7 +448,7 @@
         }
         r = rotatedR;
       }
-      const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
+      const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
       const newLevelObj = { w, h, s, r };
       return newLevelObj;
     }
@@ -489,26 +489,26 @@
           }
           r = rotatedR;
         }
-        const s = this.#getStateStrSub(statesTemp, 0, w - 1, h - 1, 0);
+        const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
         newLevelObj = { w, h, s, r };
       }
       return newLevelObj;
     }
 
     #exist(isX) {
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           if (isX(this.#states[y][x])) return true;
         }
       }
       return false;
     }
 
-    #getStateStrSub(states, upEnd, rightEnd, downEnd, leftEnd) {
+    #getStateStrSub(states, xMin, xMax, yMin, yMax) {
       let res = '';
-      for (let y = upEnd; y <= downEnd; ++y) {
+      for (let y = yMin; y < yMax; ++y) {
         let line = '';
-        for (let x = leftEnd; x <= rightEnd; ++x) {
+        for (let x = xMin; x < xMax; ++x) {
           let c = app.states.stateToChar[states[y][x]];
           if (c.length > 1) c = `(${c})`;
           line += c;
@@ -524,8 +524,8 @@
       let maxX = 0;
       let minY = this.#height;
       let maxY = 0;
-      for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           if (isX(this.#states[y][x])) {
             minX = Math.min(minX, x);
             maxX = Math.max(maxX, x);
@@ -633,8 +633,8 @@
     #initStates() {
       this.#width = this.#levelObj.w + 2;
       this.#height = this.#levelObj.h + 2;
-      this.#rightEnd = this.#width - 2;
-      this.#downEnd = this.#height - 2;
+      this.#xMax = this.#width - 1;
+      this.#yMax = this.#height - 1;
 
       // 初期化
       for (let y = 0; y < this.#height; ++y) {
@@ -689,8 +689,8 @@
       const statesTemp = this.#copyStates();
       let x0;
       let y0;
-      loop: for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
-        for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
+      loop: for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           if (isX(statesTemp[y][x])) {
             x0 = x;
             y0 = y;
