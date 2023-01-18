@@ -818,24 +818,20 @@
       const st = new app.Stack();
       st.push([x0, y0]);
       statesTemp[y0][x0] = app.states.none;
+      let count = 0;
       while (!st.empty()) {
         const xy = st.pop();
         for (let i = 0; i < 4; i++) {
           const xx = xy[0] + dxs[i];
           const yy = xy[1] + dys[i];
           if (isX(statesTemp[yy][xx])) {
+            count++;
             statesTemp[yy][xx] = app.states.none;
             st.push([xx, yy]);
           }
         }
       }
-
-      for (let y = 0; y < this.#height; ++y) {
-        for (let x = 0; x < this.#width; ++x) {
-          if (isX(statesTemp[y][x])) return false;
-        }
-      }
-      return true;
+      return count === 44;
     }
 
     // 点対称か否か。
