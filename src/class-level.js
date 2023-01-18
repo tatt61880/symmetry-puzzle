@@ -283,9 +283,9 @@
     }
 
     resetMoveFlags() {
-      for (let y = 0; y < this.getHeight(); ++y) {
+      for (let y = 0; y < this.#height; ++y) {
         this.#moveFlags[y] = [];
-        for (let x = 0; x < this.getWidth(); ++x) {
+        for (let x = 0; x < this.#width; ++x) {
           this.#moveFlags[y][x] = false;
         }
       }
@@ -368,8 +368,8 @@
         const rect = app.svg.createRect(blockSize, {
           x: 0,
           y: 0,
-          width: this.getWidth(),
-          height: this.getHeight(),
+          width: this.#width,
+          height: this.#height,
         });
         rect.setAttribute('fill', 'white');
         g.appendChild(rect);
@@ -382,8 +382,8 @@
       g.appendChild(gElemsNotTarget);
       g.appendChild(gElemsTarget);
 
-      for (let y = 0; y < this.getHeight(); ++y) {
-        for (let x = 0; x < this.getWidth(); ++x) {
+      for (let y = 0; y < this.#height; ++y) {
+        for (let x = 0; x < this.#width; ++x) {
           const state = this.getState(x, y);
           if (state === app.states.none) continue;
           const gElems = app.states.isTarget(state)
@@ -520,9 +520,9 @@
     }
 
     #getMinMaxXY(isX) {
-      let minX = this.getWidth();
+      let minX = this.#width;
       let maxX = 0;
-      let minY = this.getHeight();
+      let minY = this.#height;
       let maxY = 0;
       for (let y = this.#upEnd; y <= this.#downEnd; ++y) {
         for (let x = this.#leftEnd; x <= this.#rightEnd; ++x) {
@@ -658,8 +658,8 @@
     }
 
     #copyStates() {
-      const res = new Array(this.getHeight());
-      for (let y = 0; y < this.getHeight(); ++y) {
+      const res = new Array(this.#height);
+      for (let y = 0; y < this.#height; ++y) {
         res[y] = [...this.#states[y]];
       }
       return res;
@@ -716,8 +716,8 @@
         }
       }
 
-      for (let y = 0; y < this.getHeight(); ++y) {
-        for (let x = 0; x < this.getWidth(); ++x) {
+      for (let y = 0; y < this.#height; ++y) {
+        for (let x = 0; x < this.#width; ++x) {
           if (isX(statesTemp[y][x])) return false;
         }
       }
