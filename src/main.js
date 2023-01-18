@@ -700,6 +700,7 @@
   }
 
   function onloadTitle() {
+    window.getSelection().removeAllRanges();
     updateCheckMode(null);
     showElem(elems.category.title);
     hideElem(elems.category.game);
@@ -708,6 +709,7 @@
   }
 
   function onloadId(id_) {
+    window.getSelection().removeAllRanges();
     if (editMode) {
       toggleEditLevel();
     }
@@ -734,6 +736,7 @@
   }
 
   function onloadObj(obj) {
+    window.getSelection().removeAllRanges();
     hideElem(elems.category.title);
     showElem(elems.category.game);
     showElem(elems.main.svg);
