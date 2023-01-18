@@ -457,9 +457,9 @@
     #rotateLevel(levelObj, rotateNum) {
       let newLevelObj = levelObj;
       for (let i = 0; i < rotateNum; ++i) {
-        const w = levelObj.h; // 90度回転後
-        const h = levelObj.w; // 90度回転後
-        const stateStr = levelObj.s;
+        const w = newLevelObj.h; // 90度回転後
+        const h = newLevelObj.w; // 90度回転後
+        const stateStr = newLevelObj.s;
         const statesTemp = [];
         for (let y = 0; y < h; ++y) {
           statesTemp[y] = [];
@@ -481,7 +481,7 @@
             y++;
           }
         }
-        let r = levelObj.r;
+        let r = newLevelObj.r;
         if (r !== undefined) {
           let rotatedR = '';
           for (const c of r) {
