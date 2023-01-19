@@ -170,7 +170,7 @@ void applyStateStr(std::string stateStr)
             count++;
         }
     }
-    const int pos = (119 + kNum) / kNum;
+    const int pos = (119 + kNum - 1) / kNum;
     userX = stateStr[pos] - 0x30;
     userY = stateStr[pos + 1] - 0x30;
     states[userY][userX] = kStateUser;
