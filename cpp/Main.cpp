@@ -316,7 +316,7 @@ int main()
         step++;
         {
             timeEnd = time(NULL);
-            std::cout << step << " steps completed. [Time: " << (timeEnd - timeStart) << " sec.] [map.size:" << stateStrMap.size() << "]" << std::endl;
+            std::cout << step << " steps completed. [Time: " << (timeEnd - timeStart) << " sec.] [map.size: " << stateStrMap.size() << "]" << std::endl;
         }
     }
     return 0;
