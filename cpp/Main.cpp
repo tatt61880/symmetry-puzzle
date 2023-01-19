@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <stack>
-#include <set>
+#include <unordered_set>
 #include <unordered_map>
 #include <string>
 #include <algorithm>
@@ -265,7 +265,7 @@ int main()
 
     int stateCount = 0;
 
-    std::set<std::string> nextStateStrSet;
+    std::unordered_set<std::string> nextStateStrSet;
     {
         std::string stateStr = getStateStr();
         nextStateStrSet.insert(stateStr);
@@ -275,8 +275,8 @@ int main()
     int solutionNum = 0;
     for (; step < maxStep;)
     {
-        std::set<std::string> currentStateStrSet = nextStateStrSet;
-        nextStateStrSet = std::set<std::string>();
+        std::unordered_set<std::string> currentStateStrSet = nextStateStrSet;
+        nextStateStrSet = std::unordered_set<std::string>();
         for (std::string currentStateStr : currentStateStrSet)
         {
             std::string currentReplyStr = stateStrMap[currentStateStr];
