@@ -137,22 +137,22 @@ std::string getStateStr()
             if (count % kNum == 0)
             {
                 char c = '0' + val;
-                res += c;
+                res.push_back(c);
                 val = 0;
             }
         }
     }
     val <<= kNum - (count % kNum);
     char c = '0' + val;
-    res += c;
+    res.push_back(c);
 
     {
         char c = '0' + userX;
-        res += c;
+        res.push_back(c);
     }
     {
         char c = '0' + userY;
-        res += c;
+        res.push_back(c);
     }
     // std::cout << res << std::endl;
     return res;
@@ -228,7 +228,7 @@ int main()
     int step = 0;
 
     std::string prefixStep = "";
-    prefixStep = "11112113321";
+    // prefixStep = "1111211332";
     if (prefixStep != "")
     {
         std::cout << "prefixStep = \"" << prefixStep << "\" [" << prefixStep.size() << " steps]" << std::endl;
@@ -259,7 +259,7 @@ int main()
             std::cerr << "Error : Completed on prefix-step." << std::endl;
             return -1;
         }
-        replayStr += dirChar;
+        replayStr.push_back(dirChar);
         stateStrMap[stateStr] = replayStr;
     }
 
@@ -295,7 +295,8 @@ int main()
                 if (stateStrMap.find(stateStr) != stateStrMap.end())
                     continue;
 
-                std::string replayStr = currentReplyStr + (char)('0' + dir);
+                std::string replayStr = currentReplyStr;
+                replayStr.push_back((char)('0' + dir));
                 stateStrMap[stateStr] = replayStr;
 
                 const bool completedFlag = isCompleted();
