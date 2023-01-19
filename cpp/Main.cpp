@@ -178,7 +178,6 @@ void applyStateStr(std::string stateStr)
 
 bool updateMoveFlags(int dx, int dy)
 {
-    // this.resetMoveFlags();
     const int x0 = userX;
     const int y0 = userY;
     int x = x0;
@@ -229,6 +228,7 @@ int main()
 
     std::string prefixStep = "";
     // prefixStep = "1111211332";
+    // prefixStep = "1111211332121211221111033100";
     if (prefixStep != "")
     {
         std::cout << "prefixStep = \"" << prefixStep << "\" [" << prefixStep.size() << " steps]" << std::endl;
