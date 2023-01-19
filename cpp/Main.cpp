@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stack>
 #include <set>
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <algorithm>
 #include <time.h>
@@ -219,7 +219,7 @@ int main()
     time_t timeStart, timeEnd;
     timeStart = time(NULL);
 
-    std::map<std::string, std::string> stateStrMap;
+    std::unordered_map<std::string, std::string> stateStrMap;
     std::string replayStr = "";
     {
         const std::string stateStr = getStateStr();
@@ -228,7 +228,11 @@ int main()
     int step = 0;
 
     std::string prefixStep = "";
-    // prefixStep = "1111211332121211221111033";
+    prefixStep = "11112113321";
+    if (prefixStep != "")
+    {
+        std::cout << "prefixStep = \"" << prefixStep << "\" [" << prefixStep.size() << " steps]" << std::endl;
+    }
     for (char dirChar : prefixStep)
     {
         step++;
