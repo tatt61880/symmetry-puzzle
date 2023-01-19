@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.01.18';
+  const VERSION_TEXT = 'v2023.01.19';
 
   const app = window.app;
   Object.freeze(app);
@@ -562,15 +562,15 @@
     elems.icon.classList.remove('animation-rotation-icon');
     setTimeout(() => {
       elems.icon.classList.add('animation-rotation-icon');
-    }, 1);
+    }, 100);
     elems.iconPoint.classList.remove('animation-rotation-icon');
     setTimeout(() => {
       elems.iconPoint.classList.add('animation-rotation-icon');
-    }, 1);
+    }, 100);
     elems.iconReflection.classList.remove('animation-reflection1-icon');
     setTimeout(() => {
       elems.iconReflection.classList.add('animation-reflection1-icon');
-    }, 1);
+    }, 100);
   }
 
   function selectLang(lang) {
