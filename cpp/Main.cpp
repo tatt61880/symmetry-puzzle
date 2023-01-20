@@ -273,6 +273,11 @@ int main()
 
     int maxStep = 29;
     int solutionNum = 0;
+
+    int statesTemp[kHeight][kWidth];
+    int userXTemp;
+    int userYTemp;
+
     for (; step < maxStep;)
     {
         std::unordered_set<std::string> currentStateStrSet = nextStateStrSet;
@@ -280,9 +285,18 @@ int main()
         for (std::string currentStateStr : currentStateStrSet)
         {
             std::string currentReplyStr = stateStrMap[currentStateStr];
+            applyStateStr(currentStateStr);
+            memcpy(statesTemp, states, sizeof(int) * kHeight * kWidth);
+            userXTemp = userX;
+            userYTemp = userY;
             for (int dir = 0; dir < 4; ++dir)
             {
-                applyStateStr(currentStateStr);
+                if (dir != 0)
+                {
+                    memcpy(states, statesTemp, sizeof(int) * kHeight * kWidth);
+                    userX = userXTemp;
+                    userY = userYTemp;
+                }
 
                 const int dx = dxs[dir];
                 const int dy = dys[dir];
