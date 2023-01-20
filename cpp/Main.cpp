@@ -234,6 +234,8 @@ int main()
     std::string prefixStep = "";
     // prefixStep = "1111211332";
     // prefixStep = "1111211332121211221111033100";
+    int maxStep = 29;
+
     if (prefixStep != "")
     {
         std::cout << "prefixStep = \"" << prefixStep << "\" [" << prefixStep.size() << " steps]" << std::endl;
@@ -276,7 +278,6 @@ int main()
         nextStateStrSet.insert(stateStr);
     }
 
-    int maxStep = 29;
     int solutionNum = 0;
 
     int statesTemp[kHeight][kWidth];
