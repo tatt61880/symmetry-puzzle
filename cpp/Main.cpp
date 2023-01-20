@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <iostream>
 #include <stack>
 #include <unordered_set>
@@ -24,6 +23,20 @@ const int kNum = 6;
 int step = 0;
 
 void printLevel();
+bool solve(std::string prefixStep, int maxStep);
+
+int main()
+{
+    std::string prefixStep = "";
+    // prefixStep = "1111211332";
+    // prefixStep = "1111211332121211221111033100";
+    // prefixStep = "111121133212121";
+
+    int maxStep = 29;
+    // maxStep = 28;
+
+    solve(prefixStep, maxStep);
+}
 
 int states[kHeight][kWidth] = {
     {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
@@ -211,14 +224,14 @@ bool updateMoveFlags(int dx, int dy)
     return true;
 }
 
-int main()
+bool solve(std::string prefixStep, int maxStep)
 {
     // printLevel();
     const bool completedFlag = isCompleted();
     if (completedFlag)
     {
-        printf("Completed on start.");
-        return 0;
+        std::cout << "Completed on start." << std::endl;
+        return true;
     }
 
     time_t timeStart, timeEnd;
@@ -230,11 +243,6 @@ int main()
         const std::string stateStr = getStateStr();
         stateStrMap[stateStr] = replayStr;
     }
-
-    std::string prefixStep = "";
-    // prefixStep = "1111211332";
-    // prefixStep = "1111211332121211221111033100";
-    int maxStep = 29;
 
     if (prefixStep != "")
     {
@@ -251,7 +259,7 @@ int main()
         if (!moveFlag)
         {
             std::cerr << "Error: moveFlag failed on prefix-step." << std::endl;
-            return -1;
+            return false;
         }
 
         const std::string stateStr = getStateStr();
@@ -264,7 +272,7 @@ int main()
         if (completedFlag)
         {
             std::cerr << "Error : Completed on prefix-step." << std::endl;
-            return -1;
+            return false;
         }
         replayStr.push_back(dirChar);
         stateStrMap[stateStr] = replayStr;
@@ -322,9 +330,10 @@ int main()
                 const bool completedFlag = isCompleted();
                 if (completedFlag)
                 {
-                    printf("Completed!\n");
+                    timeEnd = time(NULL);
+                    std::cout << "Completed! [Time: " << (timeEnd - timeStart) << " sec.]" << std::endl;
                     std::cout << replayStr << std::endl;
-                    return 0;
+                    return true;
                 }
                 else
                 {
@@ -335,8 +344,8 @@ int main()
 
         if (nextStateStrSet.size() == 0)
         {
-            printf("No solutions\n");
-            return 0;
+            std::cout << "No solutions." << std::endl;
+            return false;
         }
         step++;
         {
@@ -344,7 +353,8 @@ int main()
             std::cout << step << " steps completed. [Time: " << (timeEnd - timeStart) << " sec.] [map.size: " << stateStrMap.size() << "]" << std::endl;
         }
     }
-    return 0;
+    std::cout << "No solutions." << std::endl;
+    return false;
 }
 
 void printLevel()
@@ -353,8 +363,8 @@ void printLevel()
     {
         for (int x = 1; x < kXMax; ++x)
         {
-            printf("%d", states[y][x]);
+            std::cout << states[y][x];
         }
-        printf("\n");
+        std::cout << std::endl;
     }
 }
