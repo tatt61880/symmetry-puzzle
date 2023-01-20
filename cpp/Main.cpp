@@ -21,6 +21,8 @@ const int kStateWall = 3;
 
 const int kNum = 6;
 
+int step = 0;
+
 void printLevel();
 
 int states[kHeight][kWidth] = {
@@ -119,6 +121,10 @@ bool isSymmetry()
 
 bool isCompleted()
 {
+    if (step < 19)
+    {
+        return false;
+    }
     return isConnected() && isSymmetry();
 }
 
@@ -224,7 +230,6 @@ int main()
         const std::string stateStr = getStateStr();
         stateStrMap[stateStr] = replayStr;
     }
-    int step = 0;
 
     std::string prefixStep = "";
     // prefixStep = "1111211332";
