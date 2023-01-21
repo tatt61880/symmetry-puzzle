@@ -12,6 +12,10 @@
   border: none;
 }
 
+#dialog-help #dialog-help-div {
+  padding: 5px 5px 10px;
+}
+
 #dialog-help .mode-title {
   padding: 5px;
   margin: 5px 20px;
@@ -37,7 +41,7 @@
 
 #dialog-help #setting-top {
   display: flex;
-  margin: 5px;
+  align-items: center;
 }
 
 #dialog-help #setting-top > button:nth-of-type(1) {
@@ -47,7 +51,7 @@
 #dialog-help .setting-lang-button {
   width: 80px;
   height: 30px;
-  margin: 5px;
+  margin: 0 5px;
   font-weight: bold;
   color: #505050;
   cursor: pointer;
@@ -67,8 +71,24 @@
   height: 90px;
 }
 
+#dialog-help .tatt61880-icon {
+  width: 32px;
+  height: 32px;
+  margin-right: 5px;
+}
+
 #dialog-help .warn {
   padding: 5px;
-  margin: 20px;
+  margin: 5px 20px 10px;
   background: #ffddbb;
+}
+
+#dialog-help .flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#dialog-help hr {
+  margin: 0;
 }
