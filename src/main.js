@@ -1362,6 +1362,21 @@
           output.src = dataUrl;
         });
         image.src = svgDataUrl;
+        output.addEventListener('click', () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = output.naturalWidth;
+          canvas.height = output.naturalHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(output, 0, 0);
+
+          canvas.toBlob(async (blob) => {
+            const item = new ClipboardItem({
+              'image/png': blob,
+            });
+            await navigator.clipboard.write([item]);
+            window.alert('画像をクリップボードにコピーしました。');
+          });
+        });
       }
     } else if (secretSequence === '3434') {
       hideElem(elems.console.widget);
@@ -1603,16 +1618,7 @@
     li.classList.add(className);
     li.textContent = str;
     elem.appendChild(li);
-    li.addEventListener('click', function () {
-      navigator.clipboard.writeText(str).then(
-        () => {
-          alert('【クリップボードにコピーしました】\n' + str);
-        },
-        () => {
-          alert('クリップボードへのコピーに失敗しました。');
-        }
-      );
-    });
+    li.addEventListener('click', copyTextToClipboard.bind(null, str));
 
     const MAX_LOG_NUM = 30;
     while (elem.childElementCount > MAX_LOG_NUM) {
@@ -1628,6 +1634,17 @@
   function consoleWarn(str) {
     console.warn(str);
     consoleAdd(str, 'warn');
+  }
+
+  function copyTextToClipboard(text) {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        alert('【クリップボードにコピーしました】\n' + text);
+      },
+      () => {
+        alert('クリップボードへのコピーに失敗しました。');
+      }
+    );
   }
 
   function resizeWindow() {
