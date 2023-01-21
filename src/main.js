@@ -1323,6 +1323,8 @@
 
   function secretSequenceAdd(c) {
     secretSequence += c;
+    consoleLog(`secretSequence = "${secretSequence}"`);
+
     let resetFlag = true;
     if (secretSequence === '1234') {
       toggleEditLevel();
@@ -1390,6 +1392,7 @@
 
   function secretSequenceReset() {
     secretSequence = '';
+    consoleLog(`secretSequence = "${secretSequence}"`);
   }
 
   function editSvg(e) {
@@ -1620,7 +1623,7 @@
     elem.appendChild(li);
     li.addEventListener('click', copyTextToClipboard.bind(null, str));
 
-    const MAX_LOG_NUM = 30;
+    const MAX_LOG_NUM = 10;
     while (elem.childElementCount > MAX_LOG_NUM) {
       elem.removeChild(elem.firstChild);
     }
