@@ -297,6 +297,7 @@ text {
 }
 
 #console-widget li.warn {
+  color: #555555;
   background-color: #fffbe5;
   border: 1px solid #fff5c2;
 }
