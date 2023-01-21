@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.01.19';
+  const VERSION_TEXT = 'v2023.01.20';
 
   const app = window.app;
   Object.freeze(app);
@@ -862,6 +862,7 @@
     {
       elems.help.button.addEventListener('click', showHelpDialog, false);
       elems.help.dialog.addEventListener('click', closeHelpDialog, false);
+      elems.help.close.addEventListener('click', closeHelpDialog, false);
       elems.help.dialogDiv.addEventListener(
         'click',
         (e) => e.stopPropagation(),

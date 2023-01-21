@@ -19,6 +19,7 @@
     help: {
       button: 'button-help',
       dialog: 'dialog-help',
+      close: 'dialog-help-close',
       dialogDiv: 'dialog-help-div',
       langEn: 'setting-lang-en',
       langJa: 'setting-lang-ja',

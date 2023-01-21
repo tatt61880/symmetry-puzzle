@@ -14,31 +14,31 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.01.15">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.01.15">
 
-  <link rel="stylesheet" href="./css/main.css?2023.01.19">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.01.19">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.01.19">
-  <link rel="stylesheet" href="./css/animation.css?2023.01.19">
+  <link rel="stylesheet" href="./css/main.css?2023.01.20">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.01.20">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.01.20">
+  <link rel="stylesheet" href="./css/animation.css?2023.01.20">
 
-  <script src="./src/states.js?2023.01.19"></script>
-  <script src="./src/colors.js?2023.01.19"></script>
-  <script src="./src/svg.js?2023.01.19"></script>
-  <script src="./src/class-stack.js?2023.01.19"></script>
-  <script src="./src/class-level.js?2023.01.19"></script>
+  <script src="./src/states.js?2023.01.20"></script>
+  <script src="./src/colors.js?2023.01.20"></script>
+  <script src="./src/svg.js?2023.01.20"></script>
+  <script src="./src/class-stack.js?2023.01.20"></script>
+  <script src="./src/class-level.js?2023.01.20"></script>
 
-  <script src="./src/class-savedata.js?2023.01.19"></script>
-  <script src="./src/class-undo-info.js?2023.01.19"></script>
-  <script src="./src/class-elems.js?2023.01.19"></script>
+  <script src="./src/class-savedata.js?2023.01.20"></script>
+  <script src="./src/class-undo-info.js?2023.01.20"></script>
+  <script src="./src/class-elems.js?2023.01.20"></script>
 
-  <script src="./src/levels-point.js?2023.01.19"></script>
-  <script src="./src/levels-point-ex.js?2023.01.19"></script>
-  <script src="./src/levels-reflection.js?2023.01.19"></script>
-  <script src="./src/levels-reflection-ex.js?2023.01.19"></script>
-  <script src="./src/elems.js?2023.01.19"></script>
+  <script src="./src/levels-point.js?2023.01.20"></script>
+  <script src="./src/levels-point-ex.js?2023.01.20"></script>
+  <script src="./src/levels-reflection.js?2023.01.20"></script>
+  <script src="./src/levels-reflection-ex.js?2023.01.20"></script>
+  <script src="./src/elems.js?2023.01.20"></script>
 
-  <script src="./src/solve.js?2023.01.19"></script>
+  <script src="./src/solve.js?2023.01.20"></script>
 
-  <script src="./src/analyze-url.js?2023.01.19"></script>
-  <script src="./src/main.js?2023.01.19"></script>
+  <script src="./src/analyze-url.js?2023.01.20"></script>
+  <script src="./src/main.js?2023.01.20"></script>
 </head>
 
 <body>
@@ -68,7 +68,14 @@
 
     <dialog id="dialog-help">
       <div id="dialog-help-div">
-        <div id="setting-lang">
+        <div id="setting-top">
+          <svg width="40" height="40">
+            <g id="dialog-help-close" class="button" transform="translate(20,20)">
+              <circle cx="0" cy="0" r="18" fill="#dddddd" stroke="none" stroke-width="1" />
+              <path d="M -9 -9 9 9" fill="none" stroke="#333333" stroke-width="1.5" />
+              <path d="M -9 9 9 -9" fill="none" stroke="#333333" stroke-width="1.5" />
+            </g>
+          </svg>
           <button id="setting-lang-ja" class="setting-lang-button">日本語</button>
           <button id="setting-lang-en" class="setting-lang-button">English</button>
         </div>
