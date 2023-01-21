@@ -554,11 +554,6 @@
   }
 
   function animateIcon() {
-    const ICON_SIZE = 32;
-    document.documentElement.style.setProperty(
-      '--animation-origin-icon',
-      `${ICON_SIZE / 2}px ${ICON_SIZE / 2}px`
-    );
     elems.icon.classList.remove('animation-rotation-icon');
     setTimeout(() => {
       elems.icon.classList.add('animation-rotation-icon');

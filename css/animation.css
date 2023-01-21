@@ -6,7 +6,6 @@
   --animation-duration-shadow: none;
   --animation-duration-symmetry: none;
   --animation-origin: 0 0;
-  --animation-origin-icon: 0 0;
 }
 
 /* blocks moving animation */
@@ -53,13 +52,13 @@
 
 /* icon animation */
 .animation-rotation-icon {
-  transform-origin: var(--animation-origin-icon);
+  transform-origin: 50% 50%;
   animation: animation-rotation ease forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
 .animation-reflection1-icon {
-  transform-origin: var(--animation-origin-icon);
+  transform-origin: 50% 50%;
   animation: animation-reflection1 ease forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
