@@ -16,13 +16,17 @@
   };
 
   const INPUT_INTERVAL_MSEC = 28; // この値を変更するときは、iOSの省電力モード時のsetIntervalの動作を確認した上で変更してください。詳細: https://github.com/tatt61880/showkoban/issues/38
-  const INPUT_INTERVAL_COUNT = 6;
-  const UNDO_INTERVAL_MSEC = 140;
-  let inputCount = INPUT_INTERVAL_COUNT;
+
+  const MOVE_INTERVAL_COUNT = 6;
+  const MOVE_INTERVAL_MSEC = MOVE_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
+
+  const UNDO_INTERVAL_COUNT = 5;
+  const UNDO_INTERVAL_MSEC = UNDO_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
+
+  let moveIntervalCount = MOVE_INTERVAL_COUNT;
   let pointerInputFlag = false;
   let inputDir = dirs.neutral;
   const inputKeys = {};
-  let autoIntervalId = null;
 
   let settings = {
     autoMode: false,
@@ -33,9 +37,9 @@
 
   const settingsAuto = {
     paused: true,
-    interval: INPUT_INTERVAL_COUNT,
+    interval: MOVE_INTERVAL_COUNT,
     INTERVAL_MIN: 1,
-    INTERVAL_MAX: INPUT_INTERVAL_COUNT * 3,
+    INTERVAL_MAX: MOVE_INTERVAL_COUNT * 3,
   };
   let nextLevelTimerId = null;
   const AUTO_NEXT_LEVEL_DELAY = 1000;
@@ -47,6 +51,7 @@
   let undoInfo;
   let undoFlag = false;
   let undoIntervalId = null;
+  let autoIntervalId = null;
 
   let completeFlag = false;
   let symmetryFlag = false;
@@ -63,12 +68,11 @@
   let level = null;
   let checkMode;
 
-  const MOVE_MSEC = INPUT_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
-  const SHADOW_MSEC = MOVE_MSEC * 2;
-  const ROTATION_MSEC = MOVE_MSEC * 3;
+  const SHADOW_MSEC = MOVE_INTERVAL_MSEC * 2;
+  const ROTATION_MSEC = MOVE_INTERVAL_MSEC * 3;
   document.documentElement.style.setProperty(
     '--animation-duration',
-    `${MOVE_MSEC}ms`
+    `${MOVE_INTERVAL_MSEC}ms`
   );
   document.documentElement.style.setProperty(
     '--animation-duration-shadow',
@@ -426,7 +430,7 @@
     initLevel(levelObj, initParam);
 
     updateStick(dirs.neutral);
-    inputCount = INPUT_INTERVAL_COUNT;
+    moveIntervalCount = MOVE_INTERVAL_COUNT;
 
     if (settings.autoMode) {
       updateAutoMode(true);
@@ -965,10 +969,10 @@
     if (level === null) return;
     if (settings.autoMode) return;
 
-    if (inputCount >= INPUT_INTERVAL_COUNT) {
+    if (moveIntervalCount >= MOVE_INTERVAL_COUNT) {
       input();
     } else {
-      inputCount++;
+      moveIntervalCount++;
     }
   }
 
@@ -986,7 +990,7 @@
       if (settings.autoMode) {
         updateStick(inputDir);
       }
-      inputCount = 0;
+      moveIntervalCount = 0;
       const moveFlag = move(inputDir);
       if (moveFlag) {
         draw();
@@ -1596,7 +1600,7 @@
 
     autoIntervalId = setTimeout(
       intervalFuncAuto,
-      INPUT_INTERVAL_MSEC * settingsAuto.interval
+      settingsAuto.interval * INPUT_INTERVAL_MSEC
     );
   }
 
