@@ -1575,7 +1575,6 @@
       gotoNextLevel();
     }
 
-    clearTimeout(autoIntervalId);
     intervalFuncAuto();
   }
 
@@ -1598,6 +1597,7 @@
       }
     }
 
+    clearTimeout(autoIntervalId);
     autoIntervalId = setTimeout(
       intervalFuncAuto,
       settingsAuto.interval * INPUT_INTERVAL_MSEC
