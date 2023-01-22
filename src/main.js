@@ -8,7 +8,7 @@
   const savedata = new app.Savedata();
 
   const dirs = {
-    neutral: 'N',
+    NEUTRAL: 'N',
     ArrowUp: '0',
     ArrowRight: '1',
     ArrowDown: '2',
@@ -25,7 +25,7 @@
 
   let moveIntervalCount = MOVE_INTERVAL_COUNT;
   let pointerInputFlag = false;
-  let inputDir = dirs.neutral;
+  let inputDir = dirs.NEUTRAL;
   const inputKeys = {};
 
   let settings = {
@@ -100,7 +100,7 @@
   function updateStick(dir) {
     inputDir = dir;
     const transforms = {
-      [dirs.neutral]: () => 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
+      [dirs.NEUTRAL]: () => 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
       [dirs.ArrowUp]: (dist) =>
         `rotateX(45deg) rotateY(0deg) translate(0, -${dist}px)`,
       [dirs.ArrowRight]: (dist) =>
@@ -166,7 +166,7 @@
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
     elems.controller.undo.classList.add('low-contrast');
-    updateStick(dirs.neutral);
+    updateStick(dirs.NEUTRAL);
     execUndo();
     undoIntervalId = setInterval(execUndo, UNDO_INTERVAL_MSEC);
   }
@@ -212,7 +212,7 @@
     const y = cursorPos.y - bcRect.height / 2;
     const minDist = 60;
     if (x ** 2 + y ** 2 < minDist ** 2) {
-      const dir = dirs.neutral;
+      const dir = dirs.NEUTRAL;
       updateStick(dir);
     } else if (Math.abs(x) > Math.abs(y)) {
       const dir = x < 0 ? dirs.ArrowLeft : dirs.ArrowRight;
@@ -227,7 +227,7 @@
     undoEnd();
     if (settings.autoMode) return;
     pointerInputFlag = false;
-    updateStick(dirs.neutral);
+    updateStick(dirs.NEUTRAL);
   }
 
   function keydown(e) {
@@ -299,7 +299,7 @@
       undoEnd();
     } else if (Object.keys(inputKeys).length === 0) {
       if (!settings.autoMode) {
-        updateStick(dirs.neutral);
+        updateStick(dirs.NEUTRAL);
       }
     }
     return false;
@@ -433,7 +433,7 @@
     resetUndo();
     initLevel(levelObj, initParam);
 
-    updateStick(dirs.neutral);
+    updateStick(dirs.NEUTRAL);
     moveIntervalCount = MOVE_INTERVAL_COUNT;
 
     if (settings.autoMode) {
@@ -990,7 +990,7 @@
       return;
     }
 
-    if (inputDir !== dirs.neutral) {
+    if (inputDir !== dirs.NEUTRAL) {
       if (settings.autoMode) {
         updateStick(inputDir);
       }
@@ -1528,7 +1528,7 @@
       settingsAuto.paused = true;
       hideElem(elems.auto.buttons);
 
-      updateStick(dirs.neutral);
+      updateStick(dirs.NEUTRAL);
     }
     updateAutoStartPauseButtons();
     updateController();
