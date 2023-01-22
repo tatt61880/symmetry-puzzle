@@ -1318,7 +1318,6 @@
 
   function secretSequenceAdd(c) {
     secretSequence += c;
-    consoleLog(`secretSequence = "${secretSequence}"`);
 
     let resetFlag = true;
     if (secretSequence === '1234') {
@@ -1387,7 +1386,6 @@
 
   function secretSequenceReset() {
     secretSequence = '';
-    consoleLog(`secretSequence = "${secretSequence}"`);
   }
 
   function editSvg(e) {
