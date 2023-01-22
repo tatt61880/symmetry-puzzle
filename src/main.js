@@ -9,10 +9,10 @@
 
   const DIRS = {
     NEUTRAL: 'N',
-    ArrowUp: '0',
-    ArrowRight: '1',
-    ArrowDown: '2',
-    ArrowLeft: '3',
+    UP: '0',
+    RIGHT: '1',
+    DOWN: '2',
+    LEFT: '3',
   };
 
   const INPUT_INTERVAL_MSEC = 28; // この値を変更するときは、iOSの省電力モード時のsetIntervalの動作を確認した上で変更してください。詳細: https://github.com/tatt61880/showkoban/issues/38
@@ -100,13 +100,13 @@
     inputDir = dir;
     const transforms = {
       [DIRS.NEUTRAL]: () => 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
-      [DIRS.ArrowUp]: (dist) =>
+      [DIRS.UP]: (dist) =>
         `rotateX(45deg) rotateY(0deg) translate(0, -${dist}px)`,
-      [DIRS.ArrowRight]: (dist) =>
+      [DIRS.RIGHT]: (dist) =>
         `rotateX(0deg) rotateY(45deg) translate(${dist}px, 0)`,
-      [DIRS.ArrowDown]: (dist) =>
+      [DIRS.DOWN]: (dist) =>
         `rotateX(-45deg) rotateY(0deg) translate(0, ${dist}px)`,
-      [DIRS.ArrowLeft]: (dist) =>
+      [DIRS.LEFT]: (dist) =>
         `rotateX(0deg) rotateY(-45deg) translate(-${dist}px, 0)`,
     };
     elems.controller.stickThickness.style.setProperty(
@@ -220,10 +220,10 @@
       const dir = DIRS.NEUTRAL;
       updateStick(dir);
     } else if (Math.abs(x) > Math.abs(y)) {
-      const dir = x < 0 ? DIRS.ArrowLeft : DIRS.ArrowRight;
+      const dir = x < 0 ? DIRS.LEFT : DIRS.RIGHT;
       updateStick(dir);
     } else {
-      const dir = y < 0 ? DIRS.ArrowUp : DIRS.ArrowDown;
+      const dir = y < 0 ? DIRS.UP : DIRS.DOWN;
       updateStick(dir);
     }
   }
@@ -265,8 +265,20 @@
       undoStart();
     } else if (e.key.length > 2) {
       if (!settings.autoMode) {
-        const dir = DIRS[e.key];
-        if (dir !== undefined) {
+        const dir = (() => {
+          switch (e.key) {
+            case 'ArrowUp':
+              return DIRS.UP;
+            case 'ArrowRight':
+              return DIRS.RIGHT;
+            case 'ArrowDown':
+              return DIRS.DOWN;
+            case 'ArrowLeft':
+              return DIRS.LEFT;
+          }
+          return null;
+        })();
+        if (dir !== null) {
           e.preventDefault();
           updateStick(dir);
           inputKeys[e.key] = true;
