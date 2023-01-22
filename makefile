@@ -1,10 +1,10 @@
 all: node_modules
-	npm run test
-	npm run test-point
-	npm run test-reflection
 	npm run eslint
 	npm run htmlhint
 	npm run stylelint
+	npm run test
+	npm run test-point
+	npm run test-reflection
 
 node_modules:
 	npm install
