@@ -23,7 +23,6 @@
   const UNDO_INTERVAL_COUNT = 5;
   const UNDO_INTERVAL_MSEC = UNDO_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
 
-  let moveIntervalCount = MOVE_INTERVAL_COUNT;
   let pointerInputFlag = false;
   let inputDir = dirs.NEUTRAL;
   const inputKeys = {};
@@ -52,6 +51,7 @@
   let undoFlag = false;
   let undoIntervalId = null;
   let autoIntervalId = null;
+  let manualIntervalId = null;
 
   let completeFlag = false;
   let symmetryFlag = false;
@@ -269,6 +269,14 @@
         if (dir !== undefined) {
           e.preventDefault();
           updateStick(dir);
+          if (Object.keys(inputKeys).length === 0) {
+            intervalFuncManual();
+            clearInterval(manualIntervalId);
+            manualIntervalId = setInterval(
+              intervalFuncManual,
+              MOVE_INTERVAL_MSEC
+            );
+          }
           inputKeys[e.key] = true;
         }
       }
@@ -305,6 +313,7 @@
     } else if (Object.keys(inputKeys).length === 0) {
       if (!settings.autoMode) {
         updateStick(dirs.NEUTRAL);
+        clearInterval(manualIntervalId);
       }
     }
     return false;
@@ -439,7 +448,6 @@
     initLevel(levelObj, initParam);
 
     updateStick(dirs.NEUTRAL);
-    moveIntervalCount = MOVE_INTERVAL_COUNT;
 
     if (settings.autoMode) {
       updateAutoMode(true);
@@ -705,8 +713,6 @@
 
     const queryParams = app.analyzeUrl();
     settings = queryParams.settings;
-
-    setInterval(intervalFunc, INPUT_INTERVAL_MSEC);
 
     const id = queryParams.id;
 
@@ -974,15 +980,11 @@
     }
   }
 
-  function intervalFunc() {
+  function intervalFuncManual() {
     if (level === null) return;
     if (settings.autoMode) return;
 
-    if (moveIntervalCount >= MOVE_INTERVAL_COUNT) {
-      input();
-    } else {
-      moveIntervalCount++;
-    }
+    input();
   }
 
   function input() {
@@ -993,7 +995,6 @@
       if (settings.autoMode) {
         updateStick(inputDir);
       }
-      moveIntervalCount = 0;
       const moveFlag = move(inputDir);
       if (moveFlag) {
         draw();
