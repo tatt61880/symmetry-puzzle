@@ -515,22 +515,24 @@
   }
 
   function updateCheckMode(mode) {
-    animateIcon();
     checkMode = mode;
-    let modeId = 'none';
-    if (mode === app.Level.CHECK_MODE.POINT) {
-      modeId = 'point';
-    } else if (mode === app.Level.CHECK_MODE.REFLECTION) {
-      modeId = 'reflection';
-    }
+    const iconClassId = (() => {
+      if (mode === app.Level.CHECK_MODE.POINT) {
+        return 'point';
+      } else if (mode === app.Level.CHECK_MODE.REFLECTION) {
+        return 'reflection';
+      }
+      return 'none';
+    })();
     for (const elem of document.getElementsByClassName('check-mode')) {
       elem.classList.add('hide-mode');
     }
     for (const elem of document.getElementsByClassName(
-      `check-mode ${modeId}`
+      `check-mode ${iconClassId}`
     )) {
       elem.classList.remove('hide-mode');
     }
+    animateIcon();
   }
 
   function applyLang(lang) {
