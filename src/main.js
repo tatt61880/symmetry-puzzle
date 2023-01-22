@@ -6,6 +6,9 @@
   Object.freeze(app);
 
   const savedata = new app.Savedata();
+  const seMove = new Audio('./sounds/move.mp3');
+  const seMoveFailed = new Audio('./sounds/move-failed.mp3');
+  const seCompleted = new Audio('./sounds/completed.mp3');
 
   const dirs = {
     neutral: 'N',
@@ -993,6 +996,10 @@
     if (inputCount >= intervalCount) {
       if (redrawFlag) {
         redrawFlag = false;
+        if (completeFlag) {
+          seCompleted.currentTime = 0;
+          seCompleted.play();
+        }
         draw(true);
       } else if (inputFlag) {
         if (inputDir !== dirs.neutral) {
@@ -1002,9 +1009,14 @@
           inputCount = 0;
           const moveFlag = move(inputDir);
           if (moveFlag) {
+            seMove.currentTime = 0;
+            seMove.play();
             draw();
             completeCheck();
             updateUrl();
+          } else {
+            seMoveFailed.currentTime = 0;
+            seMoveFailed.play();
           }
         }
       }
