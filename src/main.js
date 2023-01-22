@@ -205,6 +205,9 @@
     e.preventDefault();
     if (settings.autoMode) return;
     pointerInputFlag = true;
+    intervalFuncManual();
+    clearInterval(manualIntervalId);
+    manualIntervalId = setInterval(intervalFuncManual, MOVE_INTERVAL_MSEC);
     pointermove(e);
   }
 
@@ -232,6 +235,7 @@
     undoEnd();
     if (settings.autoMode) return;
     pointerInputFlag = false;
+    clearInterval(manualIntervalId);
     updateStick(dirs.NEUTRAL);
   }
 
