@@ -240,10 +240,13 @@
     if (e.altKey) return;
 
     if (e.shiftKey) {
-      if (e.key === 'ArrowLeft') {
-        gotoPrevLevel();
-      } else if (e.key === 'ArrowRight') {
-        gotoNextLevel();
+      switch (e.key) {
+        case 'ArrowRight':
+          gotoNextLevel();
+          break;
+        case 'ArrowLeft':
+          gotoPrevLevel();
+          break;
       }
     } else if (e.key === ' ') {
       if (settings.autoMode) {
@@ -291,16 +294,21 @@
         editboxFunctions[e.key]();
       }
     } else {
-      if (e.key === '0') {
-        secretSequenceReset();
-      } else if (e.key === '1') {
-        secretSequenceAdd('1');
-      } else if (e.key === '2') {
-        secretSequenceAdd('2');
-      } else if (e.key === '3') {
-        secretSequenceAdd('3');
-      } else if (e.key === '4') {
-        secretSequenceAdd('4');
+      switch (e.key) {
+        case '1':
+          secretSequenceAdd('1');
+          break;
+        case '2':
+          secretSequenceAdd('2');
+          break;
+        case '3':
+          secretSequenceAdd('3');
+          break;
+        case '4':
+          secretSequenceAdd('4');
+          break;
+        default:
+          secretSequenceReset();
       }
     }
     return false;
