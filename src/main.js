@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.01.22';
+  const VERSION_TEXT = 'v2023.01.23';
 
   const app = window.app;
   Object.freeze(app);
@@ -55,7 +55,6 @@
 
   let completeFlag = false;
   let symmetryFlag = false;
-  let redrawFlag = false;
 
   let drawingState = app.states.none;
   const editboxFunctions = {};
@@ -150,7 +149,13 @@
     const symmetryFlagPrev = symmetryFlag;
     completeFlag = level.isCompleted();
     symmetryFlag = level.isSymmetry(app.states.isTarget);
-    redrawFlag = completeFlag || symmetryFlag !== symmetryFlagPrev;
+    const redrawFlag = completeFlag || symmetryFlag !== symmetryFlagPrev;
+    if (redrawFlag) {
+      const delay = settings.autoMode
+        ? settingsAuto.interval * INPUT_INTERVAL_MSEC
+        : MOVE_INTERVAL_MSEC;
+      setTimeout(draw, delay, true);
+    }
 
     if (completeFlag) {
       const center = level.getCenter(app.states.isTarget);
@@ -982,13 +987,7 @@
 
   function input() {
     if (undoFlag) return;
-
-    if (completeFlag) {
-      if (redrawFlag) {
-        redraw();
-      }
-      return;
-    }
+    if (completeFlag) return;
 
     if (inputDir !== dirs.NEUTRAL) {
       if (settings.autoMode) {
@@ -1002,11 +1001,6 @@
         updateUrl();
       }
     }
-  }
-
-  function redraw() {
-    redrawFlag = false;
-    draw(true);
   }
 
   function updateController() {
@@ -1596,8 +1590,8 @@
       if (!settingsAuto.paused) {
         if (stepIndex < r.length) {
           inputDir = Number(r[stepIndex]);
+          input();
         }
-        input();
       }
     }
 
