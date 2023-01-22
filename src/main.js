@@ -281,6 +281,7 @@
           }
           return null;
         })();
+
         if (dir !== null) {
           e.preventDefault();
           updateStick(dir);
