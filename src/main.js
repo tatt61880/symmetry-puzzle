@@ -17,7 +17,7 @@
 
   const INPUT_INTERVAL_MSEC = 28; // この値を変更するときは、iOSの省電力モード時のsetIntervalの動作を確認した上で変更してください。詳細: https://github.com/tatt61880/showkoban/issues/38
   const INPUT_INTERVAL_COUNT = 6;
-  const UNDO_INTERVAL_COUNT = 5;
+  const UNDO_INTERVAL_MSEC = 140;
   let inputCount = INPUT_INTERVAL_COUNT;
   let inputFlag = false;
   let inputDir = dirs.neutral;
@@ -45,7 +45,7 @@
 
   let undoInfo;
   let undoFlag = false;
-  let undoCount = 0;
+  let undoIntervalId = null;
 
   let completeFlag = false;
   let symmetryFlag = false;
@@ -156,15 +156,17 @@
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
     elems.controller.undo.classList.add('low-contrast');
-    undoCount = UNDO_INTERVAL_COUNT;
     inputDir = dirs.neutral;
     updateStick(inputDir);
+    execUndo();
+    undoIntervalId = setInterval(execUndo, UNDO_INTERVAL_MSEC);
   }
 
   function undoEnd() {
     if (!undoFlag) return;
     undoFlag = false;
     elems.controller.undo.classList.remove('low-contrast');
+    clearInterval(undoIntervalId);
   }
 
   function undodown(e) {
@@ -961,16 +963,7 @@
 
   function intervalFunc() {
     if (level === null) return;
-
-    // アンドゥの入力を受け付けます。
-    if (undoFlag) {
-      if (undoCount === UNDO_INTERVAL_COUNT) {
-        undoCount = 0;
-        execUndo();
-      }
-      undoCount++;
-      return;
-    }
+    if (undoFlag) return;
 
     // クリア後の入力はアンドゥ以外は受け付けません。
     if (completeFlag && !redrawFlag) {
