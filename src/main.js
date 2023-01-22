@@ -516,7 +516,7 @@
 
   function updateCheckMode(mode) {
     checkMode = mode;
-    const iconClassId = (() => {
+    const className = (() => {
       if (mode === app.Level.CHECK_MODE.POINT) {
         return 'point';
       } else if (mode === app.Level.CHECK_MODE.REFLECTION) {
@@ -524,11 +524,12 @@
       }
       return 'none';
     })();
+
     for (const elem of document.getElementsByClassName('check-mode')) {
       elem.classList.add('hide-mode');
     }
     for (const elem of document.getElementsByClassName(
-      `check-mode ${iconClassId}`
+      `check-mode ${className}`
     )) {
       elem.classList.remove('hide-mode');
     }
