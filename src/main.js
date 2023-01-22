@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.01.21';
+  const VERSION_TEXT = 'v2023.01.22';
 
   const app = window.app;
   Object.freeze(app);
@@ -19,9 +19,10 @@
   const INPUT_INTERVAL_COUNT = 6;
   const UNDO_INTERVAL_MSEC = 140;
   let inputCount = INPUT_INTERVAL_COUNT;
-  let inputFlag = false;
+  let pointerInputFlag = false;
   let inputDir = dirs.neutral;
   const inputKeys = {};
+  let autoIntervalId = null;
 
   let settings = {
     autoMode: false,
@@ -93,6 +94,7 @@
   // ==========================================================================
 
   function updateStick(dir) {
+    inputDir = dir;
     const transforms = {
       N: () => 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
       0: (dist) => `rotateX(45deg) rotateY(0deg) translate(0, -${dist}px)`,
@@ -156,8 +158,7 @@
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
     elems.controller.undo.classList.add('low-contrast');
-    inputDir = dirs.neutral;
-    updateStick(inputDir);
+    updateStick(dirs.neutral);
     execUndo();
     undoIntervalId = setInterval(execUndo, UNDO_INTERVAL_MSEC);
   }
@@ -190,34 +191,35 @@
   function pointerdown(e) {
     e.preventDefault();
     if (settings.autoMode) return;
-    inputFlag = true;
+    pointerInputFlag = true;
     pointermove(e);
   }
 
   function pointermove(e) {
     e.preventDefault();
-    if (!inputFlag || settings.autoMode) return;
+    if (!pointerInputFlag || settings.autoMode) return;
     const cursorPos = getCursorPos(elems.controller.stickBase, e);
     const bcRect = elems.controller.stickBase.getBoundingClientRect();
     const x = cursorPos.x - bcRect.width / 2;
     const y = cursorPos.y - bcRect.height / 2;
     const minDist = 60;
     if (x ** 2 + y ** 2 < minDist ** 2) {
-      inputDir = dirs.neutral;
+      const dir = dirs.neutral;
+      updateStick(dir);
     } else if (Math.abs(x) > Math.abs(y)) {
-      inputDir = x < 0 ? dirs.ArrowLeft : dirs.ArrowRight;
+      const dir = x < 0 ? dirs.ArrowLeft : dirs.ArrowRight;
+      updateStick(dir);
     } else {
-      inputDir = y < 0 ? dirs.ArrowUp : dirs.ArrowDown;
+      const dir = y < 0 ? dirs.ArrowUp : dirs.ArrowDown;
+      updateStick(dir);
     }
-    updateStick(inputDir);
   }
 
   function pointerup() {
     undoEnd();
     if (settings.autoMode) return;
-    inputFlag = false;
-    inputDir = dirs.neutral;
-    updateStick(inputDir);
+    pointerInputFlag = false;
+    updateStick(dirs.neutral);
   }
 
   function keydown(e) {
@@ -253,9 +255,7 @@
         const dir = dirs[e.key];
         if (dir !== undefined) {
           e.preventDefault();
-          inputFlag = true;
-          inputDir = dir;
-          updateStick(inputDir);
+          updateStick(dir);
           inputKeys[e.key] = true;
         }
       }
@@ -291,7 +291,6 @@
       undoEnd();
     } else if (Object.keys(inputKeys).length === 0) {
       if (!settings.autoMode) {
-        inputFlag = false;
         updateStick(dirs.neutral);
       }
     }
@@ -426,9 +425,7 @@
     resetUndo();
     initLevel(levelObj, initParam);
 
-    inputFlag = false;
-    inputDir = dirs.neutral;
-    updateStick(inputDir);
+    updateStick(dirs.neutral);
     inputCount = INPUT_INTERVAL_COUNT;
 
     if (settings.autoMode) {
@@ -963,47 +960,42 @@
 
   function intervalFunc() {
     if (level === null) return;
-    if (undoFlag) return;
+    if (settings.autoMode) return;
 
-    // クリア後の入力はアンドゥ以外は受け付けません。
-    if (completeFlag && !redrawFlag) {
-      return;
-    }
-
-    let intervalCount = INPUT_INTERVAL_COUNT;
-    const r = level.getLevelObj()?.r;
-    if (!editMode && settings.autoMode && r !== undefined) {
-      intervalCount = settingsAuto.interval;
-      const steps = undoInfo.getIndex() + 1;
-      if (settingsAuto.paused || steps > r.length) {
-        inputFlag = false;
-      } else {
-        inputDir = Number(r[steps - 1]);
-        inputFlag = true;
-      }
-    }
-
-    if (inputCount >= intervalCount) {
-      if (redrawFlag) {
-        redrawFlag = false;
-        draw(true);
-      } else if (inputFlag) {
-        if (inputDir !== dirs.neutral) {
-          if (settings.autoMode) {
-            updateStick(inputDir);
-          }
-          inputCount = 0;
-          const moveFlag = move(inputDir);
-          if (moveFlag) {
-            draw();
-            completeCheck();
-            updateUrl();
-          }
-        }
-      }
+    if (inputCount >= INPUT_INTERVAL_COUNT) {
+      input();
     } else {
       inputCount++;
     }
+  }
+
+  function input() {
+    if (undoFlag) return;
+
+    if (completeFlag) {
+      if (redrawFlag) {
+        redraw();
+      }
+      return;
+    }
+
+    if (inputDir !== dirs.neutral) {
+      if (settings.autoMode) {
+        updateStick(inputDir);
+      }
+      inputCount = 0;
+      const moveFlag = move(inputDir);
+      if (moveFlag) {
+        draw();
+        completeCheck();
+        updateUrl();
+      }
+    }
+  }
+
+  function redraw() {
+    redrawFlag = false;
+    draw(true);
   }
 
   function updateController() {
@@ -1525,9 +1517,7 @@
       settingsAuto.paused = true;
       hideElem(elems.auto.buttons);
 
-      inputFlag = false;
-      inputDir = dirs.neutral;
-      updateStick(inputDir);
+      updateStick(dirs.neutral);
     }
     updateAutoStartPauseButtons();
     updateController();
@@ -1577,12 +1567,34 @@
     if (completeFlag) {
       gotoNextLevel();
     }
+
+    clearTimeout(autoIntervalId);
+    intervalFuncAuto();
   }
 
   function onButtonPause() {
     settingsAuto.paused = true;
     updateAutoStartPauseButtons();
     clearTimeout(nextLevelTimerId);
+    clearTimeout(autoIntervalId);
+  }
+
+  function intervalFuncAuto() {
+    const r = level.getLevelObj()?.r;
+    if (!editMode && settings.autoMode && r !== undefined) {
+      const stepIndex = undoInfo.getIndex();
+      if (!settingsAuto.paused) {
+        if (stepIndex < r.length) {
+          inputDir = Number(r[stepIndex]);
+        }
+        input();
+      }
+    }
+
+    autoIntervalId = setTimeout(
+      intervalFuncAuto,
+      INPUT_INTERVAL_MSEC * settingsAuto.interval
+    );
   }
 
   function onButtonSpeedDown() {
