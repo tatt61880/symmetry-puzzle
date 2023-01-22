@@ -27,7 +27,7 @@
 #dialog-help .border {
   padding: 5px;
   margin: 10px 30px;
-  border: 1px solid #888888;
+  border: 1px solid #dddddd;
 }
 
 #dialog-help .bold {
@@ -52,6 +52,7 @@
   width: 80px;
   height: 30px;
   margin: 0 5px;
+  font-size: 0.9rem;
   font-weight: bold;
   color: #505050;
   cursor: pointer;
