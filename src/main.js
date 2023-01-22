@@ -100,11 +100,15 @@
   function updateStick(dir) {
     inputDir = dir;
     const transforms = {
-      N: () => 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
-      0: (dist) => `rotateX(45deg) rotateY(0deg) translate(0, -${dist}px)`,
-      1: (dist) => `rotateX(0deg) rotateY(45deg) translate(${dist}px, 0)`,
-      2: (dist) => `rotateX(-45deg) rotateY(0deg) translate(0, ${dist}px)`,
-      3: (dist) => `rotateX(0deg) rotateY(-45deg) translate(-${dist}px, 0)`,
+      [dirs.neutral]: () => 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
+      [dirs.ArrowUp]: (dist) =>
+        `rotateX(45deg) rotateY(0deg) translate(0, -${dist}px)`,
+      [dirs.ArrowRight]: (dist) =>
+        `rotateX(0deg) rotateY(45deg) translate(${dist}px, 0)`,
+      [dirs.ArrowDown]: (dist) =>
+        `rotateX(-45deg) rotateY(0deg) translate(0, ${dist}px)`,
+      [dirs.ArrowLeft]: (dist) =>
+        `rotateX(0deg) rotateY(-45deg) translate(-${dist}px, 0)`,
     };
     elems.controller.stickThickness.style.setProperty(
       'transform',
