@@ -23,6 +23,7 @@
   const UNDO_INTERVAL_COUNT = 5;
   const UNDO_INTERVAL_MSEC = UNDO_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
 
+  let moveIntervalCount = MOVE_INTERVAL_COUNT;
   let pointerInputFlag = false;
   let inputDir = dirs.NEUTRAL;
   const inputKeys = {};
@@ -51,10 +52,10 @@
   let undoFlag = false;
   let undoIntervalId = null;
   let autoIntervalId = null;
-  let manualIntervalId = null;
 
   let completeFlag = false;
   let symmetryFlag = false;
+  let redrawFlag = false;
 
   let drawingState = app.states.none;
   const editboxFunctions = {};
@@ -149,13 +150,7 @@
     const symmetryFlagPrev = symmetryFlag;
     completeFlag = level.isCompleted();
     symmetryFlag = level.isSymmetry(app.states.isTarget);
-    const redrawFlag = completeFlag || symmetryFlag !== symmetryFlagPrev;
-    if (redrawFlag) {
-      const delay = settings.autoMode
-        ? settingsAuto.interval * INPUT_INTERVAL_MSEC
-        : MOVE_INTERVAL_MSEC;
-      setTimeout(draw, delay, true);
-    }
+    redrawFlag = completeFlag || symmetryFlag !== symmetryFlagPrev;
 
     if (completeFlag) {
       const center = level.getCenter(app.states.isTarget);
@@ -206,9 +201,6 @@
     if (settings.autoMode) return;
     pointerInputFlag = true;
     pointermove(e);
-    intervalFuncManual();
-    clearInterval(manualIntervalId);
-    manualIntervalId = setInterval(intervalFuncManual, MOVE_INTERVAL_MSEC);
   }
 
   function pointermove(e) {
@@ -235,7 +227,6 @@
     undoEnd();
     if (settings.autoMode) return;
     pointerInputFlag = false;
-    clearInterval(manualIntervalId);
     updateStick(dirs.NEUTRAL);
   }
 
@@ -273,14 +264,6 @@
         if (dir !== undefined) {
           e.preventDefault();
           updateStick(dir);
-          if (Object.keys(inputKeys).length === 0) {
-            intervalFuncManual();
-            clearInterval(manualIntervalId);
-            manualIntervalId = setInterval(
-              intervalFuncManual,
-              MOVE_INTERVAL_MSEC
-            );
-          }
           inputKeys[e.key] = true;
         }
       }
@@ -317,7 +300,6 @@
     } else if (Object.keys(inputKeys).length === 0) {
       if (!settings.autoMode) {
         updateStick(dirs.NEUTRAL);
-        clearInterval(manualIntervalId);
       }
     }
     return false;
@@ -452,6 +434,7 @@
     initLevel(levelObj, initParam);
 
     updateStick(dirs.NEUTRAL);
+    moveIntervalCount = MOVE_INTERVAL_COUNT;
 
     if (settings.autoMode) {
       updateAutoMode(true);
@@ -717,6 +700,8 @@
 
     const queryParams = app.analyzeUrl();
     settings = queryParams.settings;
+
+    setInterval(intervalFunc, INPUT_INTERVAL_MSEC);
 
     const id = queryParams.id;
 
@@ -984,21 +969,32 @@
     }
   }
 
-  function intervalFuncManual() {
+  function intervalFunc() {
     if (level === null) return;
     if (settings.autoMode) return;
 
-    input();
+    if (moveIntervalCount >= MOVE_INTERVAL_COUNT) {
+      input();
+    } else {
+      moveIntervalCount++;
+    }
   }
 
   function input() {
     if (undoFlag) return;
-    if (completeFlag) return;
+
+    if (completeFlag) {
+      if (redrawFlag) {
+        redraw();
+      }
+      return;
+    }
 
     if (inputDir !== dirs.NEUTRAL) {
       if (settings.autoMode) {
         updateStick(inputDir);
       }
+      moveIntervalCount = 0;
       const moveFlag = move(inputDir);
       if (moveFlag) {
         draw();
@@ -1006,6 +1002,11 @@
         updateUrl();
       }
     }
+  }
+
+  function redraw() {
+    redrawFlag = false;
+    draw(true);
   }
 
   function updateController() {
@@ -1595,8 +1596,8 @@
       if (!settingsAuto.paused) {
         if (stepIndex < r.length) {
           inputDir = Number(r[stepIndex]);
-          input();
         }
+        input();
       }
     }
 
