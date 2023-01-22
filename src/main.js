@@ -205,10 +205,10 @@
     e.preventDefault();
     if (settings.autoMode) return;
     pointerInputFlag = true;
+    pointermove(e);
     intervalFuncManual();
     clearInterval(manualIntervalId);
     manualIntervalId = setInterval(intervalFuncManual, MOVE_INTERVAL_MSEC);
-    pointermove(e);
   }
 
   function pointermove(e) {
