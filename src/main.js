@@ -1,13 +1,13 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.01.22';
+  const VERSION_TEXT = 'v2023.01.23';
 
   const app = window.app;
   Object.freeze(app);
 
   const savedata = new app.Savedata();
 
-  const dirs = {
+  const DIRS = {
     NEUTRAL: 'N',
     ArrowUp: '0',
     ArrowRight: '1',
@@ -23,8 +23,9 @@
   const UNDO_INTERVAL_COUNT = 5;
   const UNDO_INTERVAL_MSEC = UNDO_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
 
+  let moveIntervalCount = MOVE_INTERVAL_COUNT;
   let pointerInputFlag = false;
-  let inputDir = dirs.NEUTRAL;
+  let inputDir = DIRS.NEUTRAL;
   const inputKeys = {};
 
   let settings = {
@@ -51,7 +52,6 @@
   let undoFlag = false;
   let undoIntervalId = null;
   let autoIntervalId = null;
-  let manualIntervalId = null;
 
   let completeFlag = false;
   let symmetryFlag = false;
@@ -99,14 +99,14 @@
   function updateStick(dir) {
     inputDir = dir;
     const transforms = {
-      [dirs.NEUTRAL]: () => 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
-      [dirs.ArrowUp]: (dist) =>
+      [DIRS.NEUTRAL]: () => 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
+      [DIRS.ArrowUp]: (dist) =>
         `rotateX(45deg) rotateY(0deg) translate(0, -${dist}px)`,
-      [dirs.ArrowRight]: (dist) =>
+      [DIRS.ArrowRight]: (dist) =>
         `rotateX(0deg) rotateY(45deg) translate(${dist}px, 0)`,
-      [dirs.ArrowDown]: (dist) =>
+      [DIRS.ArrowDown]: (dist) =>
         `rotateX(-45deg) rotateY(0deg) translate(0, ${dist}px)`,
-      [dirs.ArrowLeft]: (dist) =>
+      [DIRS.ArrowLeft]: (dist) =>
         `rotateX(0deg) rotateY(-45deg) translate(-${dist}px, 0)`,
     };
     elems.controller.stickThickness.style.setProperty(
@@ -171,7 +171,7 @@
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
     elems.controller.undo.classList.add('low-contrast');
-    updateStick(dirs.NEUTRAL);
+    updateStick(DIRS.NEUTRAL);
     execUndo();
     undoIntervalId = setInterval(execUndo, UNDO_INTERVAL_MSEC);
   }
@@ -206,9 +206,6 @@
     if (settings.autoMode) return;
     pointerInputFlag = true;
     pointermove(e);
-    intervalFuncManual();
-    clearInterval(manualIntervalId);
-    manualIntervalId = setInterval(intervalFuncManual, MOVE_INTERVAL_MSEC);
   }
 
   function pointermove(e) {
@@ -220,13 +217,13 @@
     const y = cursorPos.y - bcRect.height / 2;
     const minDist = 60;
     if (x ** 2 + y ** 2 < minDist ** 2) {
-      const dir = dirs.NEUTRAL;
+      const dir = DIRS.NEUTRAL;
       updateStick(dir);
     } else if (Math.abs(x) > Math.abs(y)) {
-      const dir = x < 0 ? dirs.ArrowLeft : dirs.ArrowRight;
+      const dir = x < 0 ? DIRS.ArrowLeft : DIRS.ArrowRight;
       updateStick(dir);
     } else {
-      const dir = y < 0 ? dirs.ArrowUp : dirs.ArrowDown;
+      const dir = y < 0 ? DIRS.ArrowUp : DIRS.ArrowDown;
       updateStick(dir);
     }
   }
@@ -235,8 +232,7 @@
     undoEnd();
     if (settings.autoMode) return;
     pointerInputFlag = false;
-    clearInterval(manualIntervalId);
-    updateStick(dirs.NEUTRAL);
+    updateStick(DIRS.NEUTRAL);
   }
 
   function keydown(e) {
@@ -269,18 +265,10 @@
       undoStart();
     } else if (e.key.length > 2) {
       if (!settings.autoMode) {
-        const dir = dirs[e.key];
+        const dir = DIRS[e.key];
         if (dir !== undefined) {
           e.preventDefault();
           updateStick(dir);
-          if (Object.keys(inputKeys).length === 0) {
-            intervalFuncManual();
-            clearInterval(manualIntervalId);
-            manualIntervalId = setInterval(
-              intervalFuncManual,
-              MOVE_INTERVAL_MSEC
-            );
-          }
           inputKeys[e.key] = true;
         }
       }
@@ -316,8 +304,7 @@
       undoEnd();
     } else if (Object.keys(inputKeys).length === 0) {
       if (!settings.autoMode) {
-        updateStick(dirs.NEUTRAL);
-        clearInterval(manualIntervalId);
+        updateStick(DIRS.NEUTRAL);
       }
     }
     return false;
@@ -451,7 +438,8 @@
     resetUndo();
     initLevel(levelObj, initParam);
 
-    updateStick(dirs.NEUTRAL);
+    updateStick(DIRS.NEUTRAL);
+    moveIntervalCount = MOVE_INTERVAL_COUNT;
 
     if (settings.autoMode) {
       updateAutoMode(true);
@@ -717,6 +705,8 @@
 
     const queryParams = app.analyzeUrl();
     settings = queryParams.settings;
+
+    setInterval(intervalFunc, INPUT_INTERVAL_MSEC);
 
     const id = queryParams.id;
 
@@ -984,21 +974,26 @@
     }
   }
 
-  function intervalFuncManual() {
+  function intervalFunc() {
     if (level === null) return;
     if (settings.autoMode) return;
 
-    input();
+    if (moveIntervalCount >= MOVE_INTERVAL_COUNT) {
+      input();
+    } else {
+      moveIntervalCount++;
+    }
   }
 
   function input() {
     if (undoFlag) return;
     if (completeFlag) return;
 
-    if (inputDir !== dirs.NEUTRAL) {
+    if (inputDir !== DIRS.NEUTRAL) {
       if (settings.autoMode) {
         updateStick(inputDir);
       }
+      moveIntervalCount = 0;
       const moveFlag = move(inputDir);
       if (moveFlag) {
         draw();
@@ -1527,7 +1522,7 @@
       settingsAuto.paused = true;
       hideElem(elems.auto.buttons);
 
-      updateStick(dirs.NEUTRAL);
+      updateStick(DIRS.NEUTRAL);
     }
     updateAutoStartPauseButtons();
     updateController();
