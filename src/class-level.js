@@ -791,15 +791,17 @@
       }
 
       if (eyeFlag) {
+        const dx = this.#moveFlags[y][x] ? this.#moveDx * 0.05 : 0;
+        const dy = this.#moveFlags[y][x] ? this.#moveDy * 0.05 : 0;
         const eyeLeft = app.svg.createCircle(blockSize, {
-          cx: x + 0.3,
-          cy: y + 0.45,
+          cx: x + 0.3 + dx,
+          cy: y + 0.45 + dy,
           r: 0.1,
           fill: color.stroke,
         });
         const eyeRight = app.svg.createCircle(blockSize, {
-          cx: x + 0.7,
-          cy: y + 0.45,
+          cx: x + 0.7 + dx,
+          cy: y + 0.45 + dy,
           r: 0.1,
           fill: color.stroke,
         });
