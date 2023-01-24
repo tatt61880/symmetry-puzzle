@@ -115,15 +115,27 @@
     );
     elems.controller.stickOuter.style.setProperty(
       'transform',
-      transforms[dir](32)
+      transforms[dir](32.1)
+    );
+    elems.controller.stickOuter2.style.setProperty(
+      'transform',
+      transforms[dir](33.3)
     );
     elems.controller.stickMiddle.style.setProperty(
       'transform',
-      transforms[dir](32.7)
+      transforms[dir](32.9)
+    );
+    elems.controller.stickMiddle2.style.setProperty(
+      'transform',
+      transforms[dir](34.1)
     );
     elems.controller.stickInner.style.setProperty(
       'transform',
-      transforms[dir](33.4)
+      transforms[dir](33.7)
+    );
+    elems.controller.stickInner2.style.setProperty(
+      'transform',
+      transforms[dir](34.9)
     );
   }
 

@@ -84,10 +84,13 @@
     controller: {
       widget: 'controller-widget',
       undo: 'button-undo',
-      stickOuter: 'stick-outer',
-      stickMiddle: 'stick-middle',
-      stickInner: 'stick-inner',
       stickThickness: 'stick-thickness',
+      stickOuter: 'stick-outer',
+      stickOuter2: 'stick-outer2',
+      stickMiddle: 'stick-middle',
+      stickMiddle2: 'stick-middle2',
+      stickInner: 'stick-inner',
+      stickInner2: 'stick-inner2',
       stickBase: 'stick-base',
     },
 

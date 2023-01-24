@@ -14,31 +14,31 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.01.15">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.01.15">
 
-  <link rel="stylesheet" href="./css/main.css?2023.01.22">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.01.22">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.01.22">
-  <link rel="stylesheet" href="./css/animation.css?2023.01.22">
+  <link rel="stylesheet" href="./css/main.css?2023.01.23">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.01.23">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.01.23">
+  <link rel="stylesheet" href="./css/animation.css?2023.01.23">
 
-  <script src="./src/states.js?2023.01.22"></script>
-  <script src="./src/colors.js?2023.01.22"></script>
-  <script src="./src/svg.js?2023.01.22"></script>
-  <script src="./src/class-stack.js?2023.01.22"></script>
-  <script src="./src/class-level.js?2023.01.22"></script>
+  <script src="./src/states.js?2023.01.23"></script>
+  <script src="./src/colors.js?2023.01.23"></script>
+  <script src="./src/svg.js?2023.01.23"></script>
+  <script src="./src/class-stack.js?2023.01.23"></script>
+  <script src="./src/class-level.js?2023.01.23"></script>
 
-  <script src="./src/class-savedata.js?2023.01.22"></script>
-  <script src="./src/class-undo-info.js?2023.01.22"></script>
-  <script src="./src/class-elems.js?2023.01.22"></script>
+  <script src="./src/class-savedata.js?2023.01.23"></script>
+  <script src="./src/class-undo-info.js?2023.01.23"></script>
+  <script src="./src/class-elems.js?2023.01.23"></script>
 
-  <script src="./src/levels-point.js?2023.01.22"></script>
-  <script src="./src/levels-point-ex.js?2023.01.22"></script>
-  <script src="./src/levels-reflection.js?2023.01.22"></script>
-  <script src="./src/levels-reflection-ex.js?2023.01.22"></script>
-  <script src="./src/elems.js?2023.01.22"></script>
+  <script src="./src/levels-point.js?2023.01.23"></script>
+  <script src="./src/levels-point-ex.js?2023.01.23"></script>
+  <script src="./src/levels-reflection.js?2023.01.23"></script>
+  <script src="./src/levels-reflection-ex.js?2023.01.23"></script>
+  <script src="./src/elems.js?2023.01.23"></script>
 
-  <script src="./src/solve.js?2023.01.22"></script>
+  <script src="./src/solve.js?2023.01.23"></script>
 
-  <script src="./src/analyze-url.js?2023.01.22"></script>
-  <script src="./src/main.js?2023.01.22"></script>
+  <script src="./src/analyze-url.js?2023.01.23"></script>
+  <script src="./src/main.js?2023.01.23"></script>
 </head>
 
 <body>
@@ -145,7 +145,7 @@
 
         <hr>
         <div class="flex">
-          <img class="tatt61880-icon" alt="tatt61880 icon" src="./images/tatt61880.png?2023.01.22">
+          <img class="tatt61880-icon" alt="tatt61880 icon" src="./images/tatt61880.png?2023.01.23">
           <span>Created by Tatt (<a href="https://twitter.com/tatt61880">@tatt61880</a>)</span>
         </div>
         <div class="flex">
@@ -409,7 +409,7 @@
                 <rect x="-60" y="-60" width="120" height="120" fill="none" stroke="#555" />
               </g>
               <!-- 軸 -->
-              <circle cx="0" cy="0" r="14" fill="#00f8f8" stroke="#555" stroke-width="3" />
+              <circle cx="0" cy="0" r="14" fill="#00f0f0" stroke="#555" stroke-width="3" />
               <!-- 矢印 -->
               <g>
                 <polygon transform="translate(0, -45) rotate(0 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0"
@@ -421,17 +421,27 @@
                 <polygon transform="translate(-45, 0) rotate(270 0 0)" points="0,-12 6,0 2,0 2,12 -2,12 -2,0 -6,0"
                   fill="#0000f8" />
               </g>
+
               <!-- スティック本体 -->
               <g id="stick-thickness" class="stick">
-                <circle cx="0" cy="0" r="28" fill="#0000f8" stroke="#0000f8" stroke-width="4" />
+                <circle cx="0" cy="0" r="28" fill="#0000e8" stroke="#0000e8" stroke-width="4" />
               </g>
               <g id="stick-outer" class="stick">
-                <circle cx="0" cy="0" r="28" fill="#00f8f8" stroke="#0000f8" stroke-width="4" />
+                <circle cx="0" cy="0" r="28" fill="#00f8f8" stroke="#0000f0" stroke-width="4" />
+              </g>
+              <g id="stick-outer2" class="stick">
+                <circle cx="0" cy="0" r="28" fill="none" stroke="#0000f8" stroke-width="4" />
               </g>
               <g id="stick-middle" class="stick">
+                <circle cx="0" cy="0" r="18" fill="none" stroke="#0000d8" stroke-width="4" />
+              </g>
+              <g id="stick-middle2" class="stick">
                 <circle cx="0" cy="0" r="18" fill="none" stroke="#0000f8" stroke-width="4" />
               </g>
               <g id="stick-inner" class="stick">
+                <circle cx="0" cy="0" r="8" fill="none" stroke="#0000d8" stroke-width="4" />
+              </g>
+              <g id="stick-inner2" class="stick">
                 <circle cx="0" cy="0" r="8" fill="none" stroke="#0000f8" stroke-width="4" />
               </g>
             </g>
