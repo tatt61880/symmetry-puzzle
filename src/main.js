@@ -1184,18 +1184,6 @@
       g.appendChild(rectLb);
     }
 
-    if (!level.isNormalized()) {
-      const fontSize = `${blockSize * 0.6}px`;
-      const text = app.svg.createText(blockSize, {
-        x: (level.getWidth() + 2) / 2,
-        y: 0,
-        text: 'Not normalized',
-        fill: '#aa33aa',
-      });
-      text.setAttribute('font-size', fontSize);
-      g.appendChild(text);
-    }
-
     if (!editMode) {
       const fontSize = `${blockSize * 0.6}px`;
       const bestStep = level.getBestStep();
