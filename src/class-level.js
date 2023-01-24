@@ -382,10 +382,18 @@
       g.appendChild(gElemsNotTarget);
       g.appendChild(gElemsTarget);
 
+      const obj = {};
       for (let y = 0; y < this.#height; ++y) {
         for (let x = 0; x < this.#width; ++x) {
           const state = this.getState(x, y);
           if (state === app.states.none) continue;
+
+          const eyeFlag = (() => {
+            if (!app.states.isUser(state)) return false;
+            if (obj[state] !== undefined) return false;
+            obj[state] = true;
+            return true;
+          })();
           const gElems = app.states.isTarget(state)
             ? gElemsTarget
             : gElemsNotTarget;
@@ -395,6 +403,7 @@
             blockSize,
             symmetryType,
             showCharsFlag,
+            eyeFlag,
             gShadows,
             gElems
           );
@@ -762,6 +771,7 @@
       blockSize,
       symmetryType,
       showCharsFlag,
+      eyeFlag,
       gShadows,
       gElems
     ) {
@@ -779,6 +789,24 @@
         });
         gElem.appendChild(rect);
       }
+
+      if (eyeFlag) {
+        const eyeLeft = app.svg.createCircle(blockSize, {
+          cx: x + 0.3,
+          cy: y + 0.45,
+          r: 0.1,
+          fill: color.stroke,
+        });
+        const eyeRight = app.svg.createCircle(blockSize, {
+          cx: x + 0.7,
+          cy: y + 0.45,
+          r: 0.1,
+          fill: color.stroke,
+        });
+        gElem.appendChild(eyeLeft);
+        gElem.appendChild(eyeRight);
+      }
+
       {
         const flags = [];
         for (let dir = 0; dir < 8; ++dir) {

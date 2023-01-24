@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.01.23';
+  const VERSION_TEXT = 'v2023.01.25';
 
   const app = window.app;
   Object.freeze(app);
@@ -109,10 +109,12 @@
       [DIRS.LEFT]: (dist) =>
         `rotateX(0deg) rotateY(-45deg) translate(-${dist}px, 0)`,
     };
+
     elems.controller.stickThickness.style.setProperty(
       'transform',
       transforms[dir](28)
     );
+
     elems.controller.stickOuter.style.setProperty(
       'transform',
       transforms[dir](32.1)
@@ -121,6 +123,7 @@
       'transform',
       transforms[dir](33.3)
     );
+
     elems.controller.stickMiddle.style.setProperty(
       'transform',
       transforms[dir](32.9)
@@ -129,6 +132,7 @@
       'transform',
       transforms[dir](34.1)
     );
+
     elems.controller.stickInner.style.setProperty(
       'transform',
       transforms[dir](33.7)
