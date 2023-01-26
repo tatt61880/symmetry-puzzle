@@ -805,6 +805,10 @@
           r: 0.1,
           fill: color.stroke,
         });
+        if (showCharsFlag) {
+          eyeLeft.setAttribute('opacity', 0.2);
+          eyeRight.setAttribute('opacity', 0.2);
+        }
         gElem.appendChild(eyeLeft);
         gElem.appendChild(eyeRight);
       }
