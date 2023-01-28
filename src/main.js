@@ -1329,7 +1329,7 @@
           }
         }
 
-        if (settings.autoMode) {
+        if (settings.autoMode && !settingsAuto.paused) {
           nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
         }
       } else {
