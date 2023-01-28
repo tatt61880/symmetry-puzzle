@@ -761,8 +761,48 @@
     if (id !== null) {
       onloadId(id);
     } else {
-      onloadObj(queryParams.levelObj);
+      const id = getId(queryParams.levelObj);
+      if (id === null) {
+        onloadObj(queryParams.levelObj);
+      } else {
+        onloadId(id);
+      }
     }
+  }
+
+  function getId(queryObj) {
+    if (checkMode === app.Level.CHECK_MODE.POINT) {
+      levelsList = app.levelsPoint;
+      levelsListEx = app.levelsPointEx;
+    } else if (checkMode === app.Level.CHECK_MODE.REFLECTION) {
+      levelsList = app.levelsReflection;
+      levelsListEx = app.levelsReflectionEx;
+    } else {
+      levelsList = null;
+      levelsListEx = null;
+    }
+    for (let id = 0; id < levelsList.length; ++id) {
+      const levelObj = levelsList[id];
+      if (
+        levelObj.w === queryObj.w &&
+        levelObj.h === queryObj.h &&
+        levelObj.s === queryObj.s
+      ) {
+        return id;
+      }
+    }
+    for (const id of Object.keys(levelsListEx).sort()) {
+      if (String(id) === 'NaN') continue;
+      const levelObj = levelsListEx[id];
+      if (
+        levelObj.w === queryObj.w &&
+        levelObj.h === queryObj.h &&
+        levelObj.s === queryObj.s
+      ) {
+        return id;
+      }
+    }
+    return null;
   }
 
   function onloadTitle() {
@@ -1562,13 +1602,8 @@
       return;
     }
     const base = location.href.split('?')[0];
-    let url = `${base}`;
-    if (levelId !== null) {
-      url += `?id=${levelId}`;
-    } else {
-      const levelObj = level.getLevelObj();
-      url += `?w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
-    }
+    const levelObj = level.getLevelObj();
+    let url = `${base}?w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
     if (level.isReflectionMode()) url += '&r';
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';
