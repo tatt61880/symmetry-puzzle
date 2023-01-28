@@ -236,6 +236,30 @@
       }
     }
 
+    // 左右反転する。
+    mirror() {
+      const obj = {
+        w: this.getW(),
+        h: this.getH(),
+        s: this.getStateStr(),
+      };
+      const newObj = this.#mirrorLevel(obj);
+      this.applyObj(newObj);
+    }
+
+    // 90度回転する。
+    rotate() {
+      const obj = {
+        w: this.getW(),
+        h: this.getH(),
+        s: this.getStateStr(),
+      };
+      const newObj = this.#rotateLevel(obj, 1);
+      this.#levelObj = newObj;
+      this.#initStates();
+      this.applyObj(newObj);
+    }
+
     isInsideInnerArea(x, y) {
       if (x < this.#xMin) return false;
       if (this.#xMax <= x) return false;

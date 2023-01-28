@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.01.26';
+  const VERSION_TEXT = 'v2023.01.27';
 
   const app = window.app;
   Object.freeze(app);
@@ -879,9 +879,33 @@
       elems.edit.normalize.addEventListener(
         'click',
         () => {
-          level.normalize();
+          if (!level.isNormalized()) {
+            addUndo(null);
+            level.normalize();
+            updateUrl();
+            draw();
+          }
+        },
+        false
+      );
+      elems.edit.mirror.addEventListener(
+        'click',
+        () => {
+          addUndo(null);
+          level.mirror();
           updateUrl();
           draw();
+        },
+        false
+      );
+      elems.edit.rotate.addEventListener(
+        'click',
+        () => {
+          addUndo(null);
+          level.rotate();
+          updateUrl();
+          draw();
+          updateSvg();
         },
         false
       );

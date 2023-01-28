@@ -76,6 +76,8 @@
       hDec: 'h-dec',
       hInc: 'h-inc',
       normalize: 'edit-normalize',
+      rotate: 'edit-rotate',
+      mirror: 'edit-mirror',
       switchMode: 'edit-switch-mode',
     },
 
