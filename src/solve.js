@@ -33,6 +33,7 @@
       .option('-r, --reflection', 'reflection symmetry mode')
       .option('-p, --prefixStep <prefix-step>', 'prefixStep step')
       .option('-c, --console', 'console.info step')
+      .option('-d, --draw', 'draw target shape')
       .option('-n, --normalize', 'normalize state')
       .option('-m, --max <max-step>', 'max step', parseInt)
       .option('-t, --time <time-limit>', 'time limit', parseInt);
@@ -199,6 +200,7 @@
         return { replayStr: '' };
       }
 
+      const shapeStrMap = new Map();
       const stateStrMap = new Map();
       let replayStr = '';
       {
@@ -289,6 +291,24 @@
                 app.console.log(
                   `/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`
                 );
+                const shapeStr = level
+                  .getShapeStr(app.states.isTarget)
+                  .replace(/\n$/, '');
+                if (!shapeStrMap.has(shapeStr)) {
+                  const shapeId = shapeStrMap.size + 1;
+                  shapeStrMap.set(shapeStr, shapeId);
+                  if (options.draw) {
+                    app.console.info('/*');
+                    app.console.info(`Target shape #${shapeId}`);
+                    app.console.log(shapeStr);
+                    app.console.info('*/');
+                  }
+                } else {
+                  if (options.draw) {
+                    const shapeId = shapeStrMap.get(shapeStr);
+                    app.console.info(`(Target shape #${shapeId})`);
+                  }
+                }
               } else {
                 return { replayStr };
               }
@@ -300,7 +320,7 @@
 
         if (nextStateStrSet.size === 0) {
           if (options.all) {
-            const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Step limit: ${maxStep}]`;
+            const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Step limit: ${maxStep}] [Shape variation: ${shapeStrMap.size}]`;
             return { replayStr: null, errorMessage };
           }
           const errorMessage = `No solution. [Step: ${step}] [Step limit: ${maxStep}]`;
@@ -310,7 +330,7 @@
         if (options.console) {
           const time = performance.now();
           app.console.info(
-            `${step} steps completed. [Time: ${msToSecStr(
+            `// ${step} steps completed. [Time: ${msToSecStr(
               time - startTime
             )}] (+${msToSecStr(time - prevTime)}) [map.size: ${
               stateStrMap.size

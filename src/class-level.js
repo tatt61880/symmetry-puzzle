@@ -146,7 +146,7 @@
       const s = this.getStateStr();
       console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
       console.log(
-        `node src/solve.js -w ${w} -h ${h} -s ${s} --all --console` +
+        `node src/solve.js -w ${w} -h ${h} -s ${s} --all --console --draw` +
           (this.isReflectionMode() ? ' --reflection' : '')
       );
       return (
@@ -162,6 +162,18 @@
 
     getSymmetryType(isX) {
       return this.#getSymmetryType(isX);
+    }
+
+    getShapeStr(isX) {
+      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
+      let str = '';
+      for (let y = minY; y <= maxY; ++y) {
+        for (let x = minX; x <= maxX; ++x) {
+          str += isX(this.#states[y][x]) ? '#' : ' ';
+        }
+        str += '\n';
+      }
+      return str;
     }
 
     applyObj(obj, resizeFlag) {
