@@ -1132,10 +1132,10 @@
           });
         } else {
           return app.svg.createRect(blockSize, {
-            x: x + ddx - 0.08,
+            x: x + ddx - 0.09,
             y: y + ddy,
-            width: 0.16,
-            height: 0.05,
+            width: 0.18,
+            height: 0.07,
             fill: color.stroke,
           });
         }
