@@ -14,31 +14,31 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.01.15">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.01.15">
 
-  <link rel="stylesheet" href="./css/main.css?2023.01.28">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.01.28">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.01.28">
-  <link rel="stylesheet" href="./css/animation.css?2023.01.28">
+  <link rel="stylesheet" href="./css/main.css?2023.01.29">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.01.29">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.01.29">
+  <link rel="stylesheet" href="./css/animation.css?2023.01.29">
 
-  <script src="./src/states.js?2023.01.28"></script>
-  <script src="./src/colors.js?2023.01.28"></script>
-  <script src="./src/svg.js?2023.01.28"></script>
-  <script src="./src/class-stack.js?2023.01.28"></script>
-  <script src="./src/class-level.js?2023.01.28"></script>
+  <script src="./src/states.js?2023.01.29"></script>
+  <script src="./src/colors.js?2023.01.29"></script>
+  <script src="./src/svg.js?2023.01.29"></script>
+  <script src="./src/class-stack.js?2023.01.29"></script>
+  <script src="./src/class-level.js?2023.01.29"></script>
 
-  <script src="./src/class-savedata.js?2023.01.28"></script>
-  <script src="./src/class-undo-info.js?2023.01.28"></script>
-  <script src="./src/class-elems.js?2023.01.28"></script>
+  <script src="./src/class-savedata.js?2023.01.29"></script>
+  <script src="./src/class-undo-info.js?2023.01.29"></script>
+  <script src="./src/class-elems.js?2023.01.29"></script>
 
-  <script src="./src/levels-point.js?2023.01.28"></script>
-  <script src="./src/levels-point-ex.js?2023.01.28"></script>
-  <script src="./src/levels-reflection.js?2023.01.28"></script>
-  <script src="./src/levels-reflection-ex.js?2023.01.28"></script>
-  <script src="./src/elems.js?2023.01.28"></script>
+  <script src="./src/levels-point.js?2023.01.29"></script>
+  <script src="./src/levels-point-ex.js?2023.01.29"></script>
+  <script src="./src/levels-reflection.js?2023.01.29"></script>
+  <script src="./src/levels-reflection-ex.js?2023.01.29"></script>
+  <script src="./src/elems.js?2023.01.29"></script>
 
-  <script src="./src/solve.js?2023.01.28"></script>
+  <script src="./src/solve.js?2023.01.29"></script>
 
-  <script src="./src/analyze-url.js?2023.01.28"></script>
-  <script src="./src/main.js?2023.01.28"></script>
+  <script src="./src/analyze-url.js?2023.01.29"></script>
+  <script src="./src/main.js?2023.01.29"></script>
 </head>
 
 <body>
@@ -247,11 +247,22 @@
 
       <dialog id="dialog-levels">
         <div id="dialog-levels-div">
+          <!--
           <div class="toggle-div">
             <div class="toggle-text translatable ja" lang="ja">クリアしたレベルを隠す</div>
             <div class="toggle-text translatable en" lang="en">Hide completed levels</div>
             <div class="toggle-button">
               <input id="hide-completed-levels" type="checkbox" class="toggle-input">
+              <label class="toggle-label"></label>
+            </div>
+          </div>
+          -->
+          <div class="toggle-div">
+            <div class="toggle-text translatable ja" lang="ja">最短手数でクリアしたレベルを隠す</div>
+            <div class="toggle-text translatable en" lang="en">Hide levels completed in the shortest steps.
+            </div>
+            <div class="toggle-button">
+              <input id="hide-shortest-levels" type="checkbox" class="toggle-input">
               <label class="toggle-label"></label>
             </div>
           </div>

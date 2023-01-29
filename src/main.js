@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.01.27';
+  const VERSION_TEXT = 'v2023.01.29';
 
   const app = window.app;
   Object.freeze(app);
@@ -637,7 +637,8 @@
   function updateLevelsDialog() {
     window.getSelection().removeAllRanges();
 
-    const hideCompletedLevelsFlag = elems.levels.hideCompletedLevels.checked;
+    // const hideCompletedLevelsFlag = elems.levels.hideCompletedLevels.checked;
+    const hideShortestLevelsFlag = elems.levels.hideShortestLevels.checked;
 
     elems.levels.dialogSvg.innerHTML = '';
     const HEIGHT = 90;
@@ -661,11 +662,25 @@
     );
 
     function appendLevel(levelObj, id) {
+      const level = new app.Level(levelObj, checkMode, {});
+      const bestStep = level.getBestStep();
       const highestScore = savedata.getHighestScore(
         levelObj,
         level.isReflectionMode()
       );
-      if (highestScore !== null && hideCompletedLevelsFlag) return;
+
+      // if (highestScore !== null && hideCompletedLevelsFlag) {
+      //   return;
+      // }
+
+      if (
+        highestScore !== null &&
+        hideShortestLevelsFlag &&
+        highestScore <= bestStep
+      ) {
+        return;
+      }
+
       count++;
 
       const g = app.svg.createG();
@@ -673,9 +688,7 @@
       elems.levels.dialogSvg.appendChild(g);
 
       {
-        const level = new app.Level(levelObj, checkMode, {});
         {
-          const bestStep = level.getBestStep();
           if (highestScore !== null) {
             const color = getStepColor(highestScore, bestStep);
             const crown = app.svg.createCrown(20, { x: 0, y: 1, fill: color });
@@ -1025,7 +1038,12 @@
         (e) => e.stopPropagation(),
         false
       );
-      elems.levels.hideCompletedLevels.addEventListener(
+      // elems.levels.hideCompletedLevels.addEventListener(
+      //   'click',
+      //   toggleHideCompletedLevels,
+      //   false
+      // );
+      elems.levels.hideShortestLevels.addEventListener(
         'click',
         toggleHideCompletedLevels,
         false
