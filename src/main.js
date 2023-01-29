@@ -1713,9 +1713,11 @@
 
   function onButtonEnd() {
     const levelObj = level.getLevelObj();
-    loadLevelObj(levelObj, { reset: true });
+    const stepIndex = undoInfo.getIndex();
+    let step = 0;
 
     for (const dirChar of levelObj.r) {
+      if (step++ < stepIndex) continue;
       const dir = Number(dirChar);
       move(dir);
     }
