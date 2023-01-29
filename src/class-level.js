@@ -390,21 +390,25 @@
     }
 
     move() {
-      const statesTemp = this.#copyStates();
       const dx = this.#moveDx;
       const dy = this.#moveDy;
 
-      for (let y = this.#yMin; y < this.#yMax; ++y) {
-        for (let x = this.#xMin; x < this.#xMax; ++x) {
-          if (this.#moveFlags[y + dy][x + dx]) {
-            this.#setState(x, y, app.states.none);
+      if (dx === -1 || dy === -1) {
+        for (let y = this.#yMin; y < this.#yMax; ++y) {
+          for (let x = this.#xMin; x < this.#xMax; ++x) {
+            if (this.#moveFlags[y][x]) {
+              this.#setState(x, y, this.#states[y - dy][x - dx]);
+              this.#setState(x - dx, y - dy, app.states.none);
+            }
           }
         }
-      }
-      for (let y = this.#yMin; y < this.#yMax; ++y) {
-        for (let x = this.#xMin; x < this.#xMax; ++x) {
-          if (this.#moveFlags[y][x]) {
-            this.#setState(x, y, statesTemp[y - dy][x - dx]);
+      } else {
+        for (let y = this.#yMax - 1; y >= this.#yMin; --y) {
+          for (let x = this.#xMax - 1; x >= this.#xMin; --x) {
+            if (this.#moveFlags[y][x]) {
+              this.#setState(x, y, this.#states[y - dy][x - dx]);
+              this.#setState(x - dx, y - dy, app.states.none);
+            }
           }
         }
       }
