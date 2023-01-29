@@ -425,7 +425,9 @@
           if (state === app.states.none) continue;
 
           const eyeFlag = (() => {
-            if (!app.states.isUser(state)) return false;
+            if (!app.states.isUser(state) && !app.states.isOther(state)) {
+              return false;
+            }
             if (obj[state] !== undefined) return false;
             obj[state] = true;
             return true;
@@ -829,18 +831,8 @@
       if (eyeFlag) {
         const dx = this.#moveFlags[y][x] ? this.#moveDx * 0.05 : 0;
         const dy = this.#moveFlags[y][x] ? this.#moveDy * 0.05 : 0;
-        const eyeLeft = app.svg.createCircle(blockSize, {
-          cx: x + 0.3 + dx,
-          cy: y + 0.45 + dy,
-          r: 0.1,
-          fill: color.stroke,
-        });
-        const eyeRight = app.svg.createCircle(blockSize, {
-          cx: x + 0.7 + dx,
-          cy: y + 0.45 + dy,
-          r: 0.1,
-          fill: color.stroke,
-        });
+        const eyeLeft = createEye(state, x, y, dx, dy, 0.3, 0.45);
+        const eyeRight = createEye(state, x, y, dx, dy, 0.7, 0.45);
         if (showCharsFlag) {
           eyeLeft.setAttribute('opacity', 0.2);
           eyeRight.setAttribute('opacity', 0.2);
@@ -1129,6 +1121,25 @@
         text.setAttribute('font-weight', 'bold');
       }
       gElems.appendChild(gElem);
+
+      function createEye(state, x, y, dx, dy, ddx, ddy) {
+        if (app.states.isUser(state)) {
+          return app.svg.createCircle(blockSize, {
+            cx: x + dx + ddx,
+            cy: y + dy + ddy,
+            r: 0.1,
+            fill: color.stroke,
+          });
+        } else {
+          return app.svg.createRect(blockSize, {
+            x: x + dx + ddx - 0.08,
+            y: y + dy + ddy,
+            width: 0.16,
+            height: 0.05,
+            fill: color.stroke,
+          });
+        }
+      }
     }
   }
 
