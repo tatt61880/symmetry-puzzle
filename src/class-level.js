@@ -206,8 +206,8 @@
     }
 
     applyStateStr(stateStr) {
-      for (let y = 1; y < this.#height - 1; ++y) {
-        for (let x = 1; x < this.#width - 1; ++x) {
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           this.#states[y][x] = app.states.none;
         }
       }
@@ -709,11 +709,11 @@
       {
         for (let y = 0; y < this.#height; ++y) {
           this.#states[y][0] = app.states.wall;
-          this.#states[y][this.#width - 1] = app.states.wall;
+          this.#states[y][this.#xMax] = app.states.wall;
         }
-        for (let x = 1; x < this.#width - 1; ++x) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
           this.#states[0][x] = app.states.wall;
-          this.#states[this.#height - 1][x] = app.states.wall;
+          this.#states[this.#yMax][x] = app.states.wall;
         }
       }
     }
