@@ -357,8 +357,8 @@
           const state = st.pop();
           for (let y = this.#yMin; y < this.#yMax; ++y) {
             for (let x = this.#xMin; x < this.#xMax; ++x) {
-              if (this.getState(x, y) !== state) continue;
-              const neighborState = this.getState(x + dx, y + dy);
+              if (this.#states[y][x] !== state) continue;
+              const neighborState = this.#states[y + dy][x + dx];
               if (neighborState === app.states.none) continue;
 
               if (neighborState === app.states.wall) {
@@ -374,7 +374,7 @@
         // 各座標に移動フラグを設定
         for (let y = this.#yMin; y < this.#yMax; ++y) {
           for (let x = this.#xMin; x < this.#xMax; ++x) {
-            if (moveState[this.getState(x, y)]) {
+            if (moveState[this.#states[y][x]]) {
               this.#moveFlags[y + dy][x + dx] = true;
             }
           }
