@@ -64,6 +64,7 @@
       buttonStop: 'button-stop',
       buttonStart: 'button-start',
       buttonPause: 'button-pause',
+      buttonEnd: 'button-end',
       buttonSpeedDown: 'button-speed-down',
       buttonSpeedUp: 'button-speed-up',
     },

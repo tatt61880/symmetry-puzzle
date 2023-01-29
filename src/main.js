@@ -880,6 +880,7 @@
       elems.auto.buttonStop.addEventListener('click', onButtonStop);
       elems.auto.buttonStart.addEventListener('click', onButtonStart);
       elems.auto.buttonPause.addEventListener('click', onButtonPause);
+      elems.auto.buttonEnd.addEventListener('click', onButtonEnd);
       elems.auto.buttonSpeedDown.addEventListener('click', onButtonSpeedDown);
       elems.auto.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
     }
@@ -1707,6 +1708,17 @@
     updateAutoStartPauseButtons();
     clearTimeout(nextLevelTimerId);
     clearTimeout(autoIntervalId);
+  }
+
+  function onButtonEnd() {
+    const levelObj = level.getLevelObj();
+    loadLevelObj(levelObj, { reset: true });
+
+    for (const dirChar of levelObj.r) {
+      const dir = Number(dirChar);
+      move(dir);
+    }
+    completeCheck();
   }
 
   function intervalFuncAuto() {
