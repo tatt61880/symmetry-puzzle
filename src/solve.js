@@ -300,15 +300,14 @@
                   const shapeId = shapeStrMap.size + 1;
                   shapeStrMap.set(shapeStr, shapeId);
                   if (options.draw) {
-                    app.console.info('/*');
-                    app.console.info(`Target shape #${shapeId}`);
+                    app.console.info(`/* Target shape #${shapeId}`);
                     app.console.log(shapeStr);
                     app.console.info('*/');
                   }
                 } else {
                   if (options.draw) {
                     const shapeId = shapeStrMap.get(shapeStr);
-                    app.console.info(`(Target shape #${shapeId})`);
+                    app.console.info(`/* Target shape #${shapeId} */`);
                   }
                 }
               } else {
