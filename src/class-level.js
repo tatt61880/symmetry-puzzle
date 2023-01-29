@@ -176,6 +176,20 @@
       return str;
     }
 
+    getMaxValue(isX) {
+      let res = null;
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
+          const state = this.#states[y][x];
+          if (!isX(state)) continue;
+          if (res === null || state > res) {
+            res = state;
+          }
+        }
+      }
+      return res;
+    }
+
     applyObj(obj, resizeFlag) {
       if (resizeFlag) {
         this.#levelObj = obj;
@@ -327,11 +341,11 @@
       }
     }
 
-    updateMoveFlags(dx, dy) {
+    updateMoveFlags(dx, dy, userMax = app.states.userMax) {
       let moveFlag = false;
       this.resetMoveFlags();
 
-      loop: for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
+      loop: for (let i = app.states.userMin; i <= userMax; ++i) {
         if (!this.#exist((x) => x === i)) continue;
 
         const moveState = []; // 移動予定の状態番号

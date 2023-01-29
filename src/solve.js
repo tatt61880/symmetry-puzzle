@@ -194,6 +194,8 @@
       const dxs = [0, 1, 0, -1];
       const dys = [-1, 0, 1, 0];
 
+      const userMax = level.getMaxValue(app.states.isUser);
+
       const completedFlag = level.isCompleted();
       if (completedFlag) {
         app.console.warn('Warning: Completed on start.');
@@ -214,7 +216,7 @@
         const dx = dxs[dir];
         const dy = dys[dir];
 
-        const moveFlag = level.updateMoveFlags(dx, dy);
+        const moveFlag = level.updateMoveFlags(dx, dy, userMax);
         if (!moveFlag) {
           const errorMessage = 'Error: moveFlag failed on prefix-step.';
           return { replayStr: null, errorMessage };
@@ -266,7 +268,7 @@
 
             const dx = dxs[dir];
             const dy = dys[dir];
-            const moveFlag = level.updateMoveFlags(dx, dy);
+            const moveFlag = level.updateMoveFlags(dx, dy, userMax);
             if (!moveFlag) continue;
 
             level.move();
