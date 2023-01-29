@@ -801,9 +801,10 @@
 
     #isCompletedPoint() {
       if (!this.#exist(app.states.isTarget)) return false;
+      const isSymmetry = this.#isSymmetryPoint(app.states.isTarget);
+      if (!isSymmetry) return false;
       const isConnected = this.#isConnected(app.states.isTarget);
-      if (!isConnected) return false;
-      return this.#isSymmetryPoint(app.states.isTarget);
+      return isConnected;
     }
 
     #isCompletedReflection() {
