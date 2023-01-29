@@ -1132,8 +1132,8 @@
           });
         } else {
           return app.svg.createRect(blockSize, {
-            x: x + dx + ddx - 0.08,
-            y: y + dy + ddy,
+            x: x + ddx - 0.08,
+            y: y + ddy,
             width: 0.16,
             height: 0.05,
             fill: color.stroke,
