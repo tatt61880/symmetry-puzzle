@@ -801,19 +801,15 @@
 
     #isCompletedPoint() {
       if (!this.#exist(app.states.isTarget)) return false;
-      const isSymmetry = this.#isSymmetryPoint(app.states.isTarget);
-      if (!isSymmetry) return false;
-      const isConnected = this.#isConnected(app.states.isTarget);
-      if (!isConnected) return false;
+      if (!this.#isSymmetryPoint(app.states.isTarget)) return false;
+      if (!this.#isConnected(app.states.isTarget)) return false;
       return true;
     }
 
     #isCompletedReflection() {
       if (!this.#exist(app.states.isTarget)) return false;
-      const isSymmetry = this.#isSymmetryReflection(app.states.isTarget);
-      if (!isSymmetry) return false;
-      const isConnected = this.#isConnected(app.states.isTarget);
-      if (!isConnected) return false;
+      if (!this.#isSymmetryReflection(app.states.isTarget)) return false;
+      if (!this.#isConnected(app.states.isTarget)) return false;
       return true;
     }
 
