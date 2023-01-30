@@ -730,6 +730,14 @@
       subject: 'S字の空洞',
     },
     {
+      w: 11,
+      h: 11,
+      s: 'sss000sss-s1ss0ss2s-s00sss00s-ss00s00ss-0ss000ss-ss00s00ss-s00sss00s-s3ss0ss4s-sss000sss',
+      r: '2101231233110303220103121031',
+      step: 28,
+      subject: 'X形の空洞1',
+    },
+    {
       w: 9,
       h: 7,
       s: '0000s-0x0xsx0x-tt11-0x0x0x0x-uu23-0x0x0x0x',
