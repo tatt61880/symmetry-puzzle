@@ -336,10 +336,18 @@
     {
       w: 10,
       h: 10,
+      s: 'sss000sss-s1ss0ss2s-s00sss00s-ss00s00ss-0ss030ss-ss00s00ss-s00sss00s-s4ss0ss5s-sss000sss',
+      r: '12302102302102301231032012032013',
+      step: 32,
+      subject: 'X形の空洞1',
+    },
+    {
+      w: 10,
+      h: 10,
       s: 'sss000sss-s1ss0ss2s-s10sss0as-ss00s00ss-0ss000ss-ss00s00ss-s00sss00s-s3ss0ss4s-sss000sss',
       r: '210312310312310312302130210321023012310312',
       step: 42,
-      subject: 'X形の空洞',
+      subject: 'X形の空洞2',
     },
     {
       w: 9,
