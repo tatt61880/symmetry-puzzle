@@ -334,6 +334,14 @@
       subject: 'いびつな空洞',
     },
     {
+      w: 11,
+      h: 11,
+      s: '0000000sss-000000ss1s-00000ss23s-0000ss00ss-000ss00ss-00ss00ss-0ss00ss-ss00ss-s44ss-ssss',
+      r: '20120312031203120312031',
+      step: 23,
+      subject: 'ジグザグ空洞',
+    },
+    {
       w: 10,
       h: 10,
       s: 'sss000sss-s1ss0ss2s-s00sss00s-ss00s00ss-0ss030ss-ss00s00ss-s00sss00s-s4ss0ss5s-sss000sss',
