@@ -334,6 +334,14 @@
       subject: 'いびつな空洞',
     },
     {
+      w: 10,
+      h: 10,
+      s: 'sss000sss-s1ss0ss2s-s10sss0as-ss00s00ss-0ss000ss-ss00s00ss-s00sss00s-s3ss0ss4s-sss000sss',
+      r: '210312310312310312302130210321023012310312',
+      step: 42,
+      subject: 'X形の空洞',
+    },
+    {
       w: 9,
       h: 9,
       s: 'ssssssss-s000000s-s01ttt0s-s0100t0s-s0tu2t0s-s0tttt0s-s0000003-sssssss3',
