@@ -372,6 +372,14 @@
       subject: 'ジグザグ空洞',
     },
     {
+      w: 14,
+      h: 14,
+      s: '0000sssss-00sssts0sss-0ss001s000ss-0s00sss0s00s-ss0ss2s0ss0ss-s00s02s00s00s-s0ss0sss0ss0s-s00s00s00s00s-ss0ss000ss0ss-0s00sssss00s-0ss000s000ss-00sss000sss-0000sssss',
+      r: '122330312203322120331223201122320112321101232011210301121030121003012100310233001023301023303122232011223120331220332301023300',
+      step: 126,
+      subject: 'グルグル空洞',
+    },
+    {
       w: 10,
       h: 10,
       s: 'sss000sss-s1ss0ss2s-s00sss00s-ss00s00ss-0ss030ss-ss00s00ss-s00sss00s-s4ss0ss5s-sss000sss',
@@ -386,6 +394,14 @@
       r: '210312310312310312302130210321023012310312',
       step: 42,
       subject: 'X形の空洞2',
+    },
+    {
+      w: 10,
+      h: 10,
+      s: 'sss000sss-s1ss0ss2s-s10sss0as-ss00s00ss-0ss000ss-ss00s00ss-sb0sss0cs-s3ss0ss4s-sss000sss',
+      r: '13213021302130120312031203210312302102310312310312',
+      step: 50,
+      subject: 'X形の空洞3',
     },
     {
       w: 9,
