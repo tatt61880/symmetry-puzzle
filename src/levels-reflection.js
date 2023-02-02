@@ -374,7 +374,7 @@
     {
       w: 14,
       h: 14,
-      s: '0000sssss-00sssts2sss-0ss001s200ss-0s00sssss00s-ss0ss0s0ss0ss-s00s00s00s00s-s0ss0sss0ss0s-s00s00s00s00s-ss0ss000ss0ss-0s00sssss00s-0ss000s000ss-00sss000sss-0000sssss',
+      s: '0000sssss-00sssts1sss-0ss002s100ss-0s00sssss00s-ss0ss0s0ss0ss-s00s00s00s00s-s0ss0sss0ss0s-s00s00s00s00s-ss0ss000ss0ss-0s00sssss00s-0ss000s000ss-00sss000sss-0000sssss',
       r: '122330312203322120331223201122320112321101232011210301121030121003012100310233001231',
       step: 84,
       subject: 'グルグル空洞',
