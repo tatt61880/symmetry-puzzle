@@ -62,6 +62,10 @@
   outline: none;
 }
 
+#dialog-help .setting-lang-button:hover {
+  background-color: #cccccc;
+}
+
 #dialog-help .setting-lang-button.active {
   color: #dddddd;
   background-color: #505050;
