@@ -285,6 +285,9 @@
     } else {
       if (!settings.autoMode) {
         const dir = (() => {
+          if (editMode && e.key.length === 1) {
+            return null;
+          }
           switch (e.key) {
             case 'ArrowUp':
             case 'w':
