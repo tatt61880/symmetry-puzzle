@@ -90,6 +90,10 @@ div.level {
   user-select: none;
 }
 
+.active-hover:hover {
+  filter: contrast(90%);
+}
+
 .active-hover:active:hover {
   filter: contrast(60%);
 }
