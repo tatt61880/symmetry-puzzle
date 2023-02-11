@@ -282,17 +282,25 @@
       resetLevel();
     } else if (e.key === 'z') {
       undoStart();
-    } else if (e.key.length > 2) {
+    } else {
       if (!settings.autoMode) {
         const dir = (() => {
           switch (e.key) {
             case 'ArrowUp':
+            case 'w':
+            case 'k':
               return DIRS.UP;
             case 'ArrowRight':
+            case 'd':
+            case 'l':
               return DIRS.RIGHT;
             case 'ArrowDown':
+            case 's':
+            case 'j':
               return DIRS.DOWN;
             case 'ArrowLeft':
+            case 'a':
+            case 'h':
               return DIRS.LEFT;
           }
           return null;
