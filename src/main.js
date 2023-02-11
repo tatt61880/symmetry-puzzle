@@ -1654,6 +1654,7 @@
       settings.autoMode = true;
       showElem(elems.auto.buttons);
     } else {
+      clearTimeout(nextLevelTimerId);
       settings.autoMode = false;
       settingsAuto.paused = true;
       hideElem(elems.auto.buttons);
