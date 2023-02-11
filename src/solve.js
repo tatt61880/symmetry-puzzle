@@ -257,7 +257,7 @@
                 time - startTime
               )}] [Time limit: ${msToSecStr(
                 Number(timeLimit) * 1000
-              )}] [map.size: ${stateStrMap.size}]`;
+              )}] [map.size: ${stateStrMap.size}] [step: ${step}]`;
               return { replayStr: null, errorMessage };
             }
           }
