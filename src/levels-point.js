@@ -729,9 +729,9 @@
     {
       w: 6,
       h: 7,
-      s: '1x-0xsss-2xtts-00tus-00tts-00sss',
-      r: '2330110023330',
-      step: 13,
+      s: '1x0sss-0x0tts-2x0tus-000tts-000sss',
+      r: '223330110023330',
+      step: 15,
     },
     {
       w: 7,
