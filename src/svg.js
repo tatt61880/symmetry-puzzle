@@ -6,6 +6,11 @@
 
   const SVG_NS = 'http://www.w3.org/2000/svg';
 
+  svg.createSvg = () => {
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    return svg;
+  };
+
   svg.createG = () => {
     const g = document.createElementNS(SVG_NS, 'g');
     return g;

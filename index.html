@@ -14,31 +14,32 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.01.15">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.01.15">
 
-  <link rel="stylesheet" href="./css/main.css?2023.02.12">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.02.12">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.02.12">
-  <link rel="stylesheet" href="./css/animation.css?2023.02.12">
+  <link rel="stylesheet" href="./css/main.css?2023.02.12b">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.02.12b">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.02.12b">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.02.12b">
+  <link rel="stylesheet" href="./css/animation.css?2023.02.12b">
 
-  <script src="./src/states.js?2023.02.12"></script>
-  <script src="./src/colors.js?2023.02.12"></script>
-  <script src="./src/svg.js?2023.02.12"></script>
-  <script src="./src/class-stack.js?2023.02.12"></script>
-  <script src="./src/class-level.js?2023.02.12"></script>
+  <script src="./src/states.js?2023.02.12b"></script>
+  <script src="./src/colors.js?2023.02.12b"></script>
+  <script src="./src/svg.js?2023.02.12b"></script>
+  <script src="./src/class-stack.js?2023.02.12b"></script>
+  <script src="./src/class-level.js?2023.02.12b"></script>
 
-  <script src="./src/class-savedata.js?2023.02.12"></script>
-  <script src="./src/class-undo-info.js?2023.02.12"></script>
-  <script src="./src/class-elems.js?2023.02.12"></script>
+  <script src="./src/class-savedata.js?2023.02.12b"></script>
+  <script src="./src/class-undo-info.js?2023.02.12b"></script>
+  <script src="./src/class-elems.js?2023.02.12b"></script>
 
-  <script src="./src/levels-point.js?2023.02.12"></script>
-  <script src="./src/levels-point-ex.js?2023.02.12"></script>
-  <script src="./src/levels-reflection.js?2023.02.12"></script>
-  <script src="./src/levels-reflection-ex.js?2023.02.12"></script>
-  <script src="./src/elems.js?2023.02.12"></script>
+  <script src="./src/levels-point.js?2023.02.12b"></script>
+  <script src="./src/levels-point-ex.js?2023.02.12b"></script>
+  <script src="./src/levels-reflection.js?2023.02.12b"></script>
+  <script src="./src/levels-reflection-ex.js?2023.02.12b"></script>
+  <script src="./src/elems.js?2023.02.12b"></script>
 
-  <script src="./src/solve.js?2023.02.12"></script>
+  <script src="./src/solve.js?2023.02.12b"></script>
 
-  <script src="./src/analyze-url.js?2023.02.12"></script>
-  <script src="./src/main.js?2023.02.12"></script>
+  <script src="./src/analyze-url.js?2023.02.12b"></script>
+  <script src="./src/main.js?2023.02.12b"></script>
 </head>
 
 <body>
@@ -164,6 +165,7 @@
       <div id="title-logo">
         <img src="./images/title-logo.png?2023.01.15" alt="Application title logo image">
       </div>
+
       <div class="flex">
         <div id="button-play-point" class="title-button">
           <div class="title-button-text translatable en" lang="en">
@@ -187,11 +189,35 @@
             パズル
           </div>
         </div>
-        <!-- <div id="button-edit" class="title-button">
-        <div class="title-button-text">-</div>
-      </div> -->
+      </div>
+
+      <div class="flex">
+        <div id="button-records" class="title-button">
+          <div class="title-button-text translatable en" lang="en">
+            Records
+          </div>
+          <div class="title-button-text translatable ja hide-lang" lang="ja">
+            記録
+          </div>
+        </div>
       </div>
     </div>
+
+    <dialog id="dialog-records">
+      <div id="dialog-records-div">
+        <div id="records-top">
+          <svg width="36" height="36">
+            <g id="dialog-records-close" class="button active-hover" transform="translate(18,18)">
+              <circle cx="0" cy="0" r="18" fill="#dddddd" stroke="none" />
+              <path d="M -8 -8 8 8" fill="none" stroke="#333333" stroke-width="3" stroke-linecap="round" />
+              <path d="M -8 8 8 -8" fill="none" stroke="#333333" stroke-width="3" stroke-linecap="round" />
+            </g>
+          </svg>
+        </div>
+        <div id="records-table-div">
+        </div>
+      </div>
+    </dialog>
 
     <div id="game" class="hide">
       <div id="level-widget" class="inner level noselect">

@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+#dialog-records {
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 480px;
+  max-height: 618px;
+  padding: 0;
+  margin: 44px auto;
+  border: none;
+}
+
+#dialog-records #dialog-records-div {
+  padding: 5px 5px 10px;
+}
+
+#dialog-records .mode-title {
+  padding: 5px;
+  margin: 5px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: #ffc0cb;
+}
+
+#dialog-records .border {
+  padding: 5px;
+  margin: 10px 30px;
+  border: 1px solid #dddddd;
+}
+
+#dialog-records .bold {
+  font-weight: bold;
+}
+
+#dialog-records::backdrop {
+  cursor: pointer;
+  background-color: rgb(0 0 0 / 50%);
+}
+
+#dialog-records #records-top {
+  display: flex;
+  align-items: center;
+}
+
+#dialog-records #records-table-div table {
+  margin: auto;
+  border-collapse: collapse;
+}
+
+#dialog-records #records-table-div th,
+#dialog-records #records-table-div td {
+  padding: 5px 15px;
+  border: 1px solid black;
+}

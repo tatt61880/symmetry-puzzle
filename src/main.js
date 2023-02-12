@@ -575,6 +575,251 @@
     elems.help.dialog.close();
   }
 
+  function showRecordsDialog() {
+    const table = document.createElement('table');
+
+    {
+      const thead = document.createElement('thead');
+      const tr = document.createElement('tr');
+
+      elems.records.tableDiv.innerHTML = '';
+      elems.records.tableDiv
+        .appendChild(table)
+        .appendChild(thead)
+        .appendChild(tr);
+
+      const imgSize = '50';
+      {
+        const th = document.createElement('th');
+        tr.appendChild(th);
+      }
+      {
+        const th = document.createElement('th');
+        tr.appendChild(th);
+        const img = document.createElement('img');
+        img.src = './images/point.png';
+        img.setAttribute('width', imgSize);
+        img.setAttribute('height', imgSize);
+        th.appendChild(img);
+      }
+      {
+        const th = document.createElement('th');
+        tr.appendChild(th);
+        const img = document.createElement('img');
+        img.src = './images/reflection.png';
+        img.setAttribute('width', imgSize);
+        img.setAttribute('height', imgSize);
+        th.appendChild(img);
+      }
+      {
+        const th = document.createElement('th');
+        tr.appendChild(th);
+        th.innerText = 'Total';
+      }
+    }
+
+    {
+      const tbody = document.createElement('tbody');
+      table.appendChild(tbody);
+      const size = 30;
+
+      let numPointNotSolved = 0;
+      let numPointSolvedNormal = 0;
+      let numPointSolvedBest = 0;
+
+      {
+        const levelsList = app.levelsPoint;
+        const levelsListEx = app.levelsPointEx;
+        const levelObjs = [];
+        for (let i = 1; i < levelsList.length; ++i) {
+          const levelObj = levelsList[i];
+          levelObjs.push(levelObj);
+        }
+
+        for (const id of Object.keys(levelsListEx)) {
+          if (String(id) === 'NaN') continue;
+          const levelObj = levelsListEx[id];
+          levelObjs.push(levelObj);
+        }
+        for (let i = 0; i < levelObjs.length; ++i) {
+          const levelObj = levelObjs[i];
+          const playerScore = savedata.getHighestScore(levelObj, false);
+          const appScore = levelObj.step;
+          if (playerScore === null) {
+            ++numPointNotSolved;
+          } else if (playerScore > appScore) {
+            ++numPointSolvedNormal;
+          } else {
+            ++numPointSolvedBest;
+          }
+        }
+      }
+
+      let numReflectionNotSolved = 0;
+      let numReflectionSolvedNormal = 0;
+      let numReflectionSolvedBest = 0;
+
+      {
+        const levelsList = app.levelsReflection;
+        const levelsListEx = app.levelsReflectionEx;
+        const levelObjs = [];
+        for (let i = 1; i < levelsList.length; ++i) {
+          const levelObj = levelsList[i];
+          levelObjs.push(levelObj);
+        }
+
+        for (const id of Object.keys(levelsListEx)) {
+          if (String(id) === 'NaN') continue;
+          const levelObj = levelsListEx[id];
+          levelObjs.push(levelObj);
+        }
+        for (let i = 0; i < levelObjs.length; ++i) {
+          const levelObj = levelObjs[i];
+          const playerScore = savedata.getHighestScore(levelObj, true);
+          const appScore = levelObj.step;
+          if (playerScore === null) {
+            ++numReflectionNotSolved;
+          } else if (playerScore > appScore) {
+            ++numReflectionSolvedNormal;
+          } else {
+            ++numReflectionSolvedBest;
+          }
+        }
+      }
+
+      const numTotalNotSolved = numPointNotSolved + numReflectionNotSolved;
+      const numTotalSolvedNormal =
+        numPointSolvedNormal + numReflectionSolvedNormal;
+      const numTotalSolvedBest = numPointSolvedBest + numReflectionSolvedBest;
+
+      const numPointTotal =
+        numPointSolvedBest + numPointSolvedNormal + numPointNotSolved;
+
+      const numReflectionTotal =
+        numReflectionSolvedBest +
+        numReflectionSolvedNormal +
+        numReflectionNotSolved;
+
+      const numTotalTotal = numPointTotal + numReflectionTotal;
+
+      {
+        const tr = document.createElement('tr');
+        tbody.appendChild(tr);
+
+        {
+          const th = document.createElement('th');
+          const svg = app.svg.createSvg();
+          svg.setAttribute('width', size);
+          svg.setAttribute('height', size);
+          const color = getStepColor(1, 1);
+          const crown = app.svg.createCrown(size, { x: 0, y: 0, fill: color });
+          tr.appendChild(th);
+          th.appendChild(svg);
+          svg.appendChild(crown);
+        }
+        {
+          const td = document.createElement('td');
+          td.innerText = numPointSolvedBest;
+          tr.appendChild(td);
+        }
+        {
+          const td = document.createElement('td');
+          td.innerText = numReflectionSolvedBest;
+          tr.appendChild(td);
+        }
+        {
+          const td = document.createElement('td');
+          td.innerText = numTotalSolvedBest;
+          tr.appendChild(td);
+        }
+      }
+      {
+        const tr = document.createElement('tr');
+        tbody.appendChild(tr);
+        {
+          const th = document.createElement('th');
+          const svg = app.svg.createSvg();
+          svg.setAttribute('width', size);
+          svg.setAttribute('height', size);
+          const color = getStepColor(1, 0);
+          const crown = app.svg.createCrown(size, { x: 0, y: 0, fill: color });
+          tr.appendChild(th);
+          th.appendChild(svg);
+          svg.appendChild(crown);
+        }
+        {
+          const td = document.createElement('td');
+          td.innerText = numPointSolvedNormal;
+          tr.appendChild(td);
+        }
+        {
+          const td = document.createElement('td');
+          td.innerText = numReflectionSolvedNormal;
+          tr.appendChild(td);
+        }
+        {
+          const td = document.createElement('td');
+          td.innerText = numTotalSolvedNormal;
+          tr.appendChild(td);
+        }
+      }
+      {
+        const tr = document.createElement('tr');
+        tbody.appendChild(tr);
+        {
+          const th = document.createElement('th');
+          tr.appendChild(th);
+          th.innerText = 'Not solved';
+        }
+        {
+          const td = document.createElement('td');
+          td.innerText = numPointNotSolved;
+          tr.appendChild(td);
+        }
+        {
+          const td = document.createElement('td');
+          td.innerText = numReflectionNotSolved;
+          tr.appendChild(td);
+        }
+        {
+          const td = document.createElement('td');
+          td.innerText = numTotalNotSolved;
+          tr.appendChild(td);
+        }
+      }
+      {
+        const tr = document.createElement('tr');
+        tbody.appendChild(tr);
+        {
+          const th = document.createElement('th');
+          tr.appendChild(th);
+          th.innerText = 'Total';
+        }
+        {
+          const td = document.createElement('td');
+          td.innerText = numPointTotal;
+          tr.appendChild(td);
+        }
+        {
+          const td = document.createElement('td');
+          td.innerText = numReflectionTotal;
+          tr.appendChild(td);
+        }
+        {
+          const td = document.createElement('td');
+          td.innerText = numTotalTotal;
+          tr.appendChild(td);
+        }
+      }
+    }
+
+    elems.records.dialog.showModal();
+  }
+
+  function closeRecordsDialog() {
+    elems.records.dialog.close();
+  }
+
   function updateCheckMode(mode) {
     checkMode = mode;
     const className = (() => {
@@ -1049,6 +1294,7 @@
         },
         false
       );
+
       elems.title.buttonPlayReflection.addEventListener(
         'click',
         () => {
@@ -1057,7 +1303,20 @@
         },
         false
       );
+
       // elems.title.buttonEdit.addEventListener('click', () => onloadObj({ w: 6, h: 5, s: '' }), false);
+    }
+
+    // 記録画面用
+    {
+      elems.records.button.addEventListener('click', showRecordsDialog, false);
+      elems.records.dialog.addEventListener('click', closeRecordsDialog, false);
+      elems.records.close.addEventListener('click', closeRecordsDialog, false);
+      elems.records.dialogDiv.addEventListener(
+        'click',
+        (e) => e.stopPropagation(),
+        false
+      );
     }
 
     // レベル操作用

@@ -25,6 +25,14 @@
       langJa: 'setting-lang-ja',
     },
 
+    records: {
+      button: 'button-records',
+      dialog: 'dialog-records',
+      close: 'dialog-records-close',
+      dialogDiv: 'dialog-records-div',
+      tableDiv: 'records-table-div',
+    },
+
     category: {
       title: 'title',
       game: 'game',
