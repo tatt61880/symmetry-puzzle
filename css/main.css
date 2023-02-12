@@ -90,6 +90,7 @@ div.level {
   user-select: none;
 }
 
+#button-undo:hover,
 .active-hover:hover {
   filter: contrast(90%);
 }
