@@ -1428,7 +1428,9 @@
     } else {
       if (completeFlag) {
         hideElem(elems.controller.stickBase);
-        showElem(elems.controller.nextLevel);
+        if (!elems.level.next.classList.contains('hide')) {
+          showElem(elems.controller.nextLevel);
+        }
       } else {
         showElem(elems.controller.stickBase);
         hideElem(elems.controller.nextLevel);
