@@ -545,7 +545,7 @@
   function updateUrl() {
     if (!editMode) return;
     const url = level.getUrlStr(level.isReflectionMode());
-    elems.url.innerHTML = `<a href="${url}">現在の盤面のURL</a>`;
+    elems.url.innerHTML = `<a href="${url}">現在の盤面を0手目にする</a>`;
   }
 
   function updateEditLevel() {
