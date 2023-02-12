@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.02.11';
+  const VERSION_TEXT = 'v2023.02.12';
 
   const app = window.app;
   Object.freeze(app);
@@ -1125,6 +1125,12 @@
         undodown,
         false
       );
+
+      elems.controller.nextLevel.addEventListener(
+        'click',
+        gotoNextLevel,
+        false
+      );
     }
   }
 
@@ -1163,8 +1169,10 @@
     } else {
       if (completeFlag) {
         hideElem(elems.controller.stickBase);
+        showElem(elems.controller.nextLevel);
       } else {
         showElem(elems.controller.stickBase);
+        hideElem(elems.controller.nextLevel);
       }
     }
   }

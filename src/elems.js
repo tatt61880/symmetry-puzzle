@@ -96,6 +96,7 @@
       stickInner: 'stick-inner',
       stickInner2: 'stick-inner2',
       stickBase: 'stick-base',
+      nextLevel: 'next-level',
     },
 
     console: {
