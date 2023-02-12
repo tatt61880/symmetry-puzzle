@@ -821,19 +821,11 @@
       return true;
     }
 
-    #addOneBlock(
-      x,
-      y,
-      blockSize,
-      symmetryType,
-      showCharsFlag,
-      eyeFlag,
-      gShadows,
-      gElems
-    ) {
+    createOneBlock(x, y, blockSize, symmetryType, showCharsFlag, eyeFlag) {
       const state = this.getState(x, y);
-      const gElem = app.svg.createG();
       const color = app.colors[state];
+
+      const gElem = app.svg.createG();
       {
         const eps = 0.01; // サイズを少し大きくすることで、隙間をなくします。
         const rect = app.svg.createRect(blockSize, {
@@ -1060,15 +1052,100 @@
           }
         }
 
-        if (app.states.isTarget(state)) {
+        if (app.states.isTarget(state) && symmetryType !== null) {
           gElem.classList.add(animationClass[symmetryType]);
+        }
+      }
+
+      if (showCharsFlag) {
+        const text = app.svg.createText(blockSize, {
+          x: x + 0.5,
+          y,
+          text: app.states.stateToChar[state],
+        });
+        gElem.appendChild(text);
+        if (
+          state === app.states.wall ||
+          this.#isConnected((s) => s === state)
+        ) {
+          text.setAttribute('fill', app.colors[state].text);
+        } else {
+          text.setAttribute('fill', app.colors[state].error);
+          const rect = app.svg.createRect(blockSize, {
+            x,
+            y,
+            width: 1,
+            height: 1,
+            fill: 'black',
+          });
+          rect.setAttribute('opacity', 0.3);
+          gElem.appendChild(rect);
+        }
+        text.setAttribute('font-size', `${blockSize * 0.7}px`);
+        text.setAttribute('font-weight', 'bold');
+      }
+
+      return gElem;
+
+      function createEye(state, x, y, dx, dy, ddx, ddy) {
+        if (app.states.isUser(state)) {
+          return app.svg.createCircle(blockSize, {
+            cx: x + dx + ddx,
+            cy: y + dy + ddy,
+            r: 0.1,
+            fill: color.stroke,
+          });
+        } else {
+          return app.svg.createRect(blockSize, {
+            x: x + ddx - 0.09,
+            y: y + ddy,
+            width: 0.18,
+            height: 0.07,
+            fill: color.stroke,
+          });
+        }
+      }
+    }
+
+    #addOneBlock(
+      x,
+      y,
+      blockSize,
+      symmetryType,
+      showCharsFlag,
+      eyeFlag,
+      gShadows,
+      gElems
+    ) {
+      const state = this.getState(x, y);
+      const color = app.colors[state];
+
+      const elem = this.createOneBlock(
+        x,
+        y,
+        blockSize,
+        symmetryType,
+        showCharsFlag,
+        eyeFlag
+      );
+
+      {
+        const flags = [];
+        for (let dir = 0; dir < 8; ++dir) {
+          const dx = dxs[dir];
+          const dy = dys[dir];
+          if (this.#isInArea(x + dx, y + dy)) {
+            flags[dir] = this.getState(x + dx, y + dy) === state;
+          } else {
+            flags[dir] = true;
+          }
         }
 
         // 移動モーション
         if (this.#moveFlags[y][x]) {
           const dx = this.#moveDx;
           const dy = this.#moveDy;
-          gElem.classList.add('animation-block');
+          elem.classList.add('animation-block');
 
           // 移動時のエフェクト（残像）
           if (!this.#moveFlags[y - dy][x - dx]) {
@@ -1111,53 +1188,7 @@
         }
       }
 
-      if (showCharsFlag) {
-        const text = app.svg.createText(blockSize, {
-          x: x + 0.5,
-          y,
-          text: app.states.stateToChar[state],
-        });
-        gElem.appendChild(text);
-        if (
-          state === app.states.wall ||
-          this.#isConnected((s) => s === state)
-        ) {
-          text.setAttribute('fill', app.colors[state].text);
-        } else {
-          text.setAttribute('fill', app.colors[state].error);
-          const rect = app.svg.createRect(blockSize, {
-            x,
-            y,
-            width: 1,
-            height: 1,
-            fill: 'black',
-          });
-          rect.setAttribute('opacity', 0.3);
-          gElem.appendChild(rect);
-        }
-        text.setAttribute('font-size', `${blockSize * 0.7}px`);
-        text.setAttribute('font-weight', 'bold');
-      }
-      gElems.appendChild(gElem);
-
-      function createEye(state, x, y, dx, dy, ddx, ddy) {
-        if (app.states.isUser(state)) {
-          return app.svg.createCircle(blockSize, {
-            cx: x + dx + ddx,
-            cy: y + dy + ddy,
-            r: 0.1,
-            fill: color.stroke,
-          });
-        } else {
-          return app.svg.createRect(blockSize, {
-            x: x + ddx - 0.09,
-            y: y + ddy,
-            width: 0.18,
-            height: 0.07,
-            fill: color.stroke,
-          });
-        }
-      }
+      gElems.appendChild(elem);
     }
   }
 

@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.02.10';
+  const VERSION_TEXT = 'v2023.02.11';
 
   const app = window.app;
   Object.freeze(app);
@@ -912,27 +912,50 @@
         editboxFunctions[char] = func;
         elem.addEventListener('click', func, false);
 
-        {
-          const rect = app.svg.createRect(30, {
-            x: 0,
-            y: 0,
-            width: 1,
-            height: 1,
-            fill: app.colors[state].fill,
-          });
-          rect.setAttribute('stroke', app.colors[state].stroke);
-          rect.setAttribute('stroke-width', 4);
-          elem.appendChild(rect);
-        }
-        {
-          const text = app.svg.createText(30, {
-            x: 0.5,
-            y: 0,
-            text: char,
-            fill: app.colors[state].text,
-          });
-          text.setAttribute('font-size', '18px');
-          elem.appendChild(text);
+        if (char === '0' || char === 'x') {
+          {
+            const rect = app.svg.createRect(30, {
+              x: 0,
+              y: 0,
+              width: 1,
+              height: 1,
+              fill: app.colors[state].fill,
+            });
+            rect.setAttribute('stroke', app.colors[state].stroke);
+            rect.setAttribute('stroke-width', 4);
+            elem.appendChild(rect);
+          }
+          {
+            const text = app.svg.createText(30, {
+              x: 0.5,
+              y: 0,
+              text: char,
+              fill: app.colors[state].text,
+            });
+            text.setAttribute('font-size', '18px');
+            elem.appendChild(text);
+          }
+        } else {
+          const levelForEditChar = new app.Level(
+            { w: 1, h: 1, s: char },
+            app.Level.CHECK_MODE.POINT,
+            {}
+          );
+          const blockSize = 32;
+          const state = app.states.charToState[char];
+          const block = levelForEditChar.createOneBlock(
+            1,
+            1,
+            blockSize,
+            null,
+            true,
+            app.states.isUser(state) || app.states.isOther(state)
+          );
+          block.setAttribute(
+            'transform',
+            `translate(${-blockSize},${-blockSize})`
+          );
+          elem.appendChild(block);
         }
       }
       editboxFunctions[app.states.stateToChar[app.states.none]]();
