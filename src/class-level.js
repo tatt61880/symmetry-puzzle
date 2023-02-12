@@ -436,7 +436,7 @@
       g.appendChild(gElemsNotTarget);
       g.appendChild(gElemsTarget);
 
-      const obj = {};
+      const stateHasEyes = {};
       for (let y = 0; y < this.#height; ++y) {
         for (let x = 0; x < this.#width; ++x) {
           const state = this.getState(x, y);
@@ -446,8 +446,8 @@
             if (!app.states.isUser(state) && !app.states.isOther(state)) {
               return false;
             }
-            if (obj[state] !== undefined) return false;
-            obj[state] = true;
+            if (stateHasEyes[state]) return false;
+            stateHasEyes[state] = true;
             return true;
           })();
           const gElems = app.states.isTarget(state)
