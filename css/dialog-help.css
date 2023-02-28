@@ -21,7 +21,8 @@
   margin: 5px 20px;
   font-size: 1.2rem;
   font-weight: bold;
-  background-color: #ffc0cb;
+  color: #000055;
+  background-color: #c0cbff;
 }
 
 #dialog-help .border {
