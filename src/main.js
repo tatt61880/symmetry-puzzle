@@ -1155,6 +1155,7 @@
         const state = app.states.charToState[char];
         const elem = document.getElementById(`edit_${char}`);
         if (elem === null) continue;
+
         const func = () => {
           elems.edit.editShape.setAttribute('fill', app.colors[state].fill);
           elems.edit.editShape.setAttribute('stroke', app.colors[state].stroke);
@@ -1165,30 +1166,7 @@
         editboxFunctions[char] = func;
         elem.addEventListener('click', func, false);
 
-        if (char === '0' || char === 'x') {
-          {
-            const rect = app.svg.createRect(30, {
-              x: 0,
-              y: 0,
-              width: 1,
-              height: 1,
-              fill: app.colors[state].fill,
-            });
-            rect.setAttribute('stroke', app.colors[state].stroke);
-            rect.setAttribute('stroke-width', 4);
-            elem.appendChild(rect);
-          }
-          {
-            const text = app.svg.createText(30, {
-              x: 0.5,
-              y: 0,
-              text: char,
-              fill: app.colors[state].text,
-            });
-            text.setAttribute('font-size', '18px');
-            elem.appendChild(text);
-          }
-        } else {
+        {
           const levelForEditChar = new app.Level(
             { w: 1, h: 1, s: char },
             app.Level.CHECK_MODE.POINT,

@@ -15,13 +15,11 @@
     fill: '#ffffff',
     stroke: '#aaaaaa',
     text: '#888888',
-    error: '#f80000',
   };
   colors[app.states.wall] = {
     fill: '#222222',
     stroke: '#666666',
     text: '#bbbbbb',
-    error: '#f80000',
   };
   for (let i = app.states.targetMin; i <= app.states.targetMax; ++i) {
     colors[i] = {

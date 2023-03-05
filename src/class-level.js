@@ -1065,6 +1065,7 @@
         });
         gElem.appendChild(text);
         if (
+          state === app.states.none ||
           state === app.states.wall ||
           this.#isConnected((s) => s === state)
         ) {
