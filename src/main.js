@@ -47,6 +47,8 @@
   let editMode = false;
   let temporaryShowCharsFlag = false;
   let secretSequence = '';
+  let isDrawing = false;
+  let isRemoving = false;
 
   let undoInfo;
   let undoFlag = false;
@@ -1343,7 +1345,9 @@
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
-      elems.main.svg.addEventListener(pointerdownEventName, editSvg, false);
+      elems.main.svg.addEventListener(pointerdownEventName, pointerDown, false);
+      elems.main.svg.addEventListener(pointermoveEventName, pointerMove, false);
+      elems.main.svg.addEventListener(pointerupEventName, pointerUp, false);
       elems.main.svg.oncontextmenu = function () {
         return !editMode;
       };
@@ -1820,6 +1824,25 @@
     secretSequence = '';
   }
 
+  function pointerDown(e) {
+    isDrawing = true;
+    if (e.button !== undefined && e.button !== 0) {
+      isRemoving = true;
+    }
+    editSvg(e);
+  }
+
+  function pointerMove(e) {
+    if (isDrawing) {
+      editSvg(e);
+    }
+  }
+
+  function pointerUp() {
+    isDrawing = false;
+    isRemoving = false;
+  }
+
   function editSvg(e) {
     const curXY = getCurXY(e);
     const x = curXY.x;
@@ -1853,23 +1876,18 @@
 
     e.preventDefault();
 
-    if (
-      (e.button === 0 || e.button === undefined) &&
-      level.getState(x, y) !== drawingState
-    ) {
+    if (!isRemoving && level.getState(x, y) !== drawingState) {
       addUndo(null);
       level.applyState(x, y, drawingState);
       completeCheck();
       updateUrl();
       draw();
-    } else if (level.getState(x, y) !== app.states.none) {
-      if (e.button !== 0) {
-        addUndo(null);
-        level.applyState(x, y, app.states.none);
-        completeCheck();
-        updateUrl();
-        draw();
-      }
+    } else if (isRemoving && level.getState(x, y) !== app.states.none) {
+      addUndo(null);
+      level.applyState(x, y, app.states.none);
+      completeCheck();
+      updateUrl();
+      draw();
     }
     return;
 
