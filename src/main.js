@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.02.28';
+  const VERSION_TEXT = 'v2023.03.06';
 
   const app = window.app;
   Object.freeze(app);
@@ -49,6 +49,7 @@
   let secretSequence = '';
   let isDrawing = false;
   let isRemoving = false;
+  let touchStart = false;
 
   let undoInfo;
   let undoFlag = false;
@@ -1831,8 +1832,12 @@
 
   function pointerDown(e) {
     isDrawing = true;
-    if (e.button !== undefined && e.button !== 0) {
-      isRemoving = true;
+    if (e.button === undefined) {
+      touchStart = true;
+    } else {
+      if (e.button !== 0) {
+        isRemoving = true;
+      }
     }
     editSvg(e);
   }
@@ -1880,6 +1885,11 @@
     }
 
     e.preventDefault();
+
+    if (touchStart && level.getState(x, y) === drawingState) {
+      isRemoving = true;
+    }
+    touchStart = false;
 
     if (!isRemoving && level.getState(x, y) !== drawingState) {
       addUndo(null);
