@@ -1433,6 +1433,10 @@
     elems.main.svg.textContent = '';
     updateController();
 
+    const mainSvgG = app.svg.createG();
+    mainSvgG.style.setProperty('pointer-events', 'none');
+    elems.main.svg.appendChild(mainSvgG);
+
     {
       const symmetryType = (() => {
         if (completeCheckFlag && completeFlag) {
@@ -1452,7 +1456,8 @@
         'transform',
         `translate(${frameSize},${frameSize})`
       );
-      elems.main.svg.appendChild(levelSvgG);
+
+      mainSvgG.appendChild(levelSvgG);
     }
     level.resetMoveFlags();
 
@@ -1460,7 +1465,7 @@
     if (levelId !== 0) {
       const dasharray = '1, 4';
       const g = app.svg.createG();
-      elems.main.svg.appendChild(g);
+      mainSvgG.appendChild(g);
       // 横線
       for (let y = 1; y < level.getHeight(); ++y) {
         const line = app.svg.createLine(blockSize, {
@@ -1487,12 +1492,12 @@
       }
       g.setAttribute('transform', `translate(${frameSize},${frameSize})`);
     }
-    drawFrame();
+    drawFrame(mainSvgG);
   }
 
-  function drawFrame() {
+  function drawFrame(mainSvgG) {
     const g = app.svg.createG();
-    elems.main.svg.appendChild(g);
+    mainSvgG.appendChild(g);
 
     {
       const frameColor = app.colors.frame;
