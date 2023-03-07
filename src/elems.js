@@ -80,7 +80,6 @@
     edit: {
       editbox: 'editbox',
       editShape: 'edit-drawing-shape',
-      editState: 'edit-drawing-state',
       wDec: 'w-dec',
       wInc: 'w-inc',
       hDec: 'h-dec',

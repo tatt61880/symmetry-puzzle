@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.03.06';
+  const VERSION_TEXT = 'v2023.03.07';
 
   const app = window.app;
   Object.freeze(app);
@@ -1155,19 +1155,8 @@
     // Editモード用
     {
       for (const char in app.states.charToState) {
-        const state = app.states.charToState[char];
         const elem = document.getElementById(`edit_${char}`);
         if (elem === null) continue;
-
-        const func = () => {
-          elems.edit.editShape.setAttribute('fill', app.colors[state].fill);
-          elems.edit.editShape.setAttribute('stroke', app.colors[state].stroke);
-          elems.edit.editState.textContent = char;
-          elems.edit.editState.setAttribute('fill', app.colors[state].text);
-          drawingState = state;
-        };
-        editboxFunctions[char] = func;
-        elem.addEventListener('click', func, false);
 
         {
           const levelForEditChar = new app.Level(
@@ -1190,6 +1179,14 @@
             `translate(${-blockSize},${-blockSize})`
           );
           elem.appendChild(block);
+
+          const func = () => {
+            elems.edit.editShape.innerHTML = '';
+            elems.edit.editShape.appendChild(block.cloneNode(true));
+            drawingState = state;
+          };
+          editboxFunctions[char] = func;
+          elem.addEventListener('click', func, false);
         }
       }
       editboxFunctions[app.states.stateToChar[app.states.none]]();
