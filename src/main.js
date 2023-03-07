@@ -1621,14 +1621,19 @@
             const h = levelObj.h;
             const s = levelObj.s;
             const r = levelObj.r;
-            const levelParams =
-              `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}', step: ${replayStr.length}` +
-              (levelObj.subject !== undefined
-                ? `, subject: '${levelObj.subject}'`
-                : '');
+            const levelParams = `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}', step: ${
+              replayStr.length
+            }, subject: '${
+              levelObj.subject === undefined ? '' : levelObj.subject
+            }'`;
+
             const levelObjStr = `{ ${levelParams} },`;
-            const completedStep = undoInfo.getIndex();
+            if (levelId === null) {
+              copyTextToClipboard(levelObjStr);
+            }
             consoleLog(levelObjStr);
+
+            const completedStep = undoInfo.getIndex();
             if (r === undefined) {
               consoleWarn('参照用公式記録の情報がありません！');
             } else if (completedStep < bestStep) {
