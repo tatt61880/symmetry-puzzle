@@ -1841,12 +1841,12 @@
         isRemoving = true;
       }
     }
-    editSvg(e);
+    editSvg(e, true);
   }
 
   function pointerMove(e) {
     if (isDrawing) {
-      editSvg(e);
+      editSvg(e, false);
     }
   }
 
@@ -1855,24 +1855,26 @@
     isRemoving = false;
   }
 
-  function editSvg(e) {
+  function editSvg(e, isPointerDown) {
     const curXY = getCurXY(e);
     const x = curXY.x;
     const y = curXY.y;
 
     if (!editMode) {
-      const xMax = level.getWidth() + 1;
-      const yMax = level.getHeight() + 1;
-      if (x < 1 && y < 1) {
-        secretSequenceAdd('1');
-      } else if (x > xMax - 3 && y < 1) {
-        secretSequenceAdd('2');
-      } else if (x > xMax - 3 && y > yMax - 3) {
-        secretSequenceAdd('3');
-      } else if (x < 1 && y > yMax - 3) {
-        secretSequenceAdd('4');
-      } else {
-        secretSequenceReset();
+      if (isPointerDown) {
+        const xMax = level.getWidth() + 1;
+        const yMax = level.getHeight() + 1;
+        if (x < 1 && y < 1) {
+          secretSequenceAdd('1');
+        } else if (x > xMax - 3 && y < 1) {
+          secretSequenceAdd('2');
+        } else if (x > xMax - 3 && y > yMax - 3) {
+          secretSequenceAdd('3');
+        } else if (x < 1 && y > yMax - 3) {
+          secretSequenceAdd('4');
+        } else {
+          secretSequenceReset();
+        }
       }
       return;
     }
