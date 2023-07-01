@@ -1783,20 +1783,20 @@
           const height = input.getAttribute('height');
           const canvas = document.createElement('canvas');
 
-          canvas.setAttribute('width', width - 2 * blockSize);
-          canvas.setAttribute('height', height - 2 * blockSize);
+          canvas.setAttribute('width', width - 2 * frameSize);
+          canvas.setAttribute('height', height - 2 * frameSize);
 
           const context = canvas.getContext('2d');
           context.drawImage(
             image,
-            blockSize,
-            blockSize,
-            width - 2 * blockSize,
-            height - 2 * blockSize,
+            frameSize,
+            frameSize,
+            width - 2 * frameSize,
+            height - 2 * frameSize,
             0,
             0,
-            width - 2 * blockSize,
-            height - 2 * blockSize
+            width - 2 * frameSize,
+            height - 2 * frameSize
           );
           const dataUrl = canvas.toDataURL('image/png');
           output.src = dataUrl;
