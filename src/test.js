@@ -10,7 +10,7 @@
   program
     .version('2.1.0')
     .option('-p, --point', 'point symmetry mode')
-    .option('-r, --reflection', 'reflection symmetry mode');
+    .option('-l, --line', 'line symmetry mode');
 
   program.parse();
   const options = program.opts();
@@ -28,10 +28,10 @@
     app.levels = require('./levels-point.js');
     app.levelsEx = require('./levels-point-ex.js');
     checkLevels();
-  } else if (options.reflection) {
+  } else if (options.line) {
     // 線対称
-    app.levels = require('./levels-reflection.js');
-    app.levelsEx = require('./levels-reflection-ex.js');
+    app.levels = require('./levels-line.js');
+    app.levelsEx = require('./levels-line-ex.js');
     checkLevels();
   } else {
     testsOther();
@@ -82,7 +82,7 @@
         h: 3,
         s: 's0001-00211',
       };
-      const checkMode = app.Level.CHECK_MODE.REFLECTION;
+      const checkMode = app.Level.CHECK_MODE.LINE;
       const level = new app.Level(levelObj, checkMode, {});
       const result = app.solveLevel('Test-2', level, {
         maxStep: 1000,
@@ -136,7 +136,7 @@
   function testLevel(levelId, levelObj) {
     let checkMode = null;
     if (options.point) checkMode = app.Level.CHECK_MODE.POINT;
-    if (options.reflection) checkMode = app.Level.CHECK_MODE.REFLECTION;
+    if (options.line) checkMode = app.Level.CHECK_MODE.LINE;
     const level = new app.Level(levelObj, checkMode, {});
 
     if (!level.isNormalized()) {

@@ -13,7 +13,7 @@
     top: 'top',
     icon: 'icon',
     iconPoint: 'icon-point',
-    iconReflection: 'icon-reflection',
+    iconLine: 'icon-line',
     version: 'version',
 
     help: {
@@ -40,7 +40,7 @@
 
     title: {
       buttonPlayPoint: 'button-play-point',
-      buttonPlayReflection: 'button-play-reflection',
+      buttonPlayLine: 'button-play-line',
       // buttonEdit: 'button-edit',
     },
 

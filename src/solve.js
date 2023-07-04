@@ -18,8 +18,8 @@
     app.states = require('./states.js');
     app.levelsPoint = require('./levels-point.js');
     app.levelsPointEx = require('./levels-point-ex.js');
-    app.levelsReflection = require('./levels-reflection.js');
-    app.levelsReflectionEx = require('./levels-reflection-ex.js');
+    app.levelsLine = require('./levels-line.js');
+    app.levelsLineEx = require('./levels-line-ex.js');
     app.Level = require('./class-level.js');
 
     const program = require('commander');
@@ -30,7 +30,7 @@
       .option('-w, --w <w>', 'levelObj.w')
       .option('-h, --h <h>', 'levelObj.h')
       .option('-s, --s <s>', 'levelObj.s')
-      .option('-r, --reflection', 'reflection symmetry mode')
+      .option('-l, --line', 'line symmetry mode')
       .option('-p, --prefixStep <prefix-step>', 'prefixStep step')
       .option('-c, --console', 'console.info step')
       .option('-d, --draw', 'draw target shape')
@@ -47,12 +47,8 @@
     1;
   } else if (levelId !== undefined) {
     const levels = {};
-    const levelsList = options.reflection
-      ? app.levelsReflection
-      : app.levelsPoint;
-    const levelsExList = options.reflection
-      ? app.levelsReflectionEx
-      : app.levelsPointEx;
+    const levelsList = options.line ? app.levelsLine : app.levelsPoint;
+    const levelsExList = options.line ? app.levelsLineEx : app.levelsPointEx;
 
     for (const levelId in levelsList) {
       const levelObj = levelsList[levelId];
@@ -67,11 +63,11 @@
       for (const levelId in levels) {
         if (levelId === '0') continue;
         const levelObj = levels[levelId];
-        solveLevelObj(levelId, levelObj, options.reflection);
+        solveLevelObj(levelId, levelObj, options.line);
       }
     } else {
       const levelObj = levels[levelId];
-      solveLevelObj(levelId, levelObj, options.reflection);
+      solveLevelObj(levelId, levelObj, options.line);
     }
   } else if (options.w !== undefined) {
     if (options.w === undefined) {
@@ -103,18 +99,18 @@
       return;
     }
     const levelObj = { w, h, s };
-    solveLevelObj(null, levelObj, options.reflection);
+    solveLevelObj(null, levelObj, options.line);
   }
 
-  function solveLevelObj(levelId, levelObj, isReflection) {
+  function solveLevelObj(levelId, levelObj, isLine) {
     if (levelObj === undefined) {
       app.console.error(`Error: [LEVEL ${levelId}] levelObj === undefined`);
       process.exitCode = 1;
       return;
     }
     let checkMode = null;
-    if (isReflection) {
-      checkMode = app.Level.CHECK_MODE.REFLECTION;
+    if (isLine) {
+      checkMode = app.Level.CHECK_MODE.LINE;
     } else {
       checkMode = app.Level.CHECK_MODE.POINT;
     }

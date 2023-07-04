@@ -11,7 +11,7 @@
         s: '',
       },
       settings: {
-        r: false,
+        line: false,
         autoMode: false,
         debugFlag: false,
         mirrorFlag: false,
@@ -39,8 +39,8 @@
         case 's':
           res.levelObj.s = paramVal;
           break;
-        case 'r':
-          res.settings.r = true;
+        case 'line':
+          res.settings.line = true;
           break;
         case 'auto':
           res.settings.autoMode = true;

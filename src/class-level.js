@@ -48,15 +48,15 @@
   class Level {
     static CHECK_MODE = {
       POINT: Symbol('point'),
-      REFLECTION: Symbol('reflection'),
+      LINE: Symbol('line'),
     };
 
     static SYMMETRY_TYPE = {
       POINT: Symbol('point'),
-      REFLECTION1: Symbol('reflection1'),
-      REFLECTION2: Symbol('reflection2'),
-      REFLECTION3: Symbol('reflection3'),
-      REFLECTION4: Symbol('reflection4'),
+      LINE1: Symbol('line1'),
+      LINE2: Symbol('line2'),
+      LINE3: Symbol('line3'),
+      LINE4: Symbol('line4'),
     };
 
     #checkMode;
@@ -147,11 +147,11 @@
       console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
       console.log(
         `node src/solve.js -w ${w} -h ${h} -s ${s} --all --console --draw` +
-          (this.isReflectionMode() ? ' --reflection' : '')
+          (this.isLineMode() ? ' --line' : '')
       );
       return (
         `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}` +
-        (this.isReflectionMode() ? '&r' : '')
+        (this.isLineMode() ? '&line' : '')
       );
     }
 
@@ -328,8 +328,8 @@
       return this.#isCompleted();
     }
 
-    isReflectionMode() {
-      return this.#checkMode === Level.CHECK_MODE.REFLECTION;
+    isLineMode() {
+      return this.#checkMode === Level.CHECK_MODE.LINE;
     }
 
     resetMoveFlags() {
@@ -623,7 +623,7 @@
       return Level.SYMMETRY_TYPE.POINT;
     }
 
-    #getSymmetryTypeReflection(isX) {
+    #getSymmetryTypeLine(isX) {
       const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
 
       // 左右対称か否か。
@@ -639,7 +639,7 @@
         }
       }
       if (res) {
-        return Level.SYMMETRY_TYPE.REFLECTION1;
+        return Level.SYMMETRY_TYPE.LINE1;
       }
 
       // 上下対称か否か。
@@ -655,7 +655,7 @@
         }
       }
       if (res) {
-        return Level.SYMMETRY_TYPE.REFLECTION2;
+        return Level.SYMMETRY_TYPE.LINE2;
       }
 
       if (maxX - minX !== maxY - minY) return null; // 縦と横の長さが異なる場合、左右対称でも上下対称でもなければ線対称でないことが確定。
@@ -673,7 +673,7 @@
         }
       }
       if (res) {
-        return Level.SYMMETRY_TYPE.REFLECTION3;
+        return Level.SYMMETRY_TYPE.LINE3;
       }
 
       // 斜めに対称軸があるか否か。(2)
@@ -689,7 +689,7 @@
         }
       }
       if (res) {
-        return Level.SYMMETRY_TYPE.REFLECTION4;
+        return Level.SYMMETRY_TYPE.LINE4;
       }
 
       return null;
@@ -735,10 +735,10 @@
         this.#isCompleted = this.#isCompletedPoint;
         this.#isSymmetry = this.#isSymmetryPoint;
         this.#getSymmetryType = this.#getSymmetryTypePoint;
-      } else if (mode === Level.CHECK_MODE.REFLECTION) {
-        this.#isCompleted = this.#isCompletedReflection;
-        this.#isSymmetry = this.#isSymmetryReflection;
-        this.#getSymmetryType = this.#getSymmetryTypeReflection;
+      } else if (mode === Level.CHECK_MODE.LINE) {
+        this.#isCompleted = this.#isCompletedLine;
+        this.#isSymmetry = this.#isSymmetryLine;
+        this.#getSymmetryType = this.#getSymmetryTypeLine;
       } else {
         throw new Error('Unexpected check mode.');
       }
@@ -795,8 +795,8 @@
     }
 
     // 線対称か否か。
-    #isSymmetryReflection(isX) {
-      return this.#getSymmetryTypeReflection(isX) !== null;
+    #isSymmetryLine(isX) {
+      return this.#getSymmetryTypeLine(isX) !== null;
     }
 
     #isCompletedPoint() {
@@ -806,9 +806,9 @@
       return true;
     }
 
-    #isCompletedReflection() {
+    #isCompletedLine() {
       if (!this.#exist(app.states.isTarget)) return false;
-      if (!this.#isSymmetryReflection(app.states.isTarget)) return false;
+      if (!this.#isSymmetryLine(app.states.isTarget)) return false;
       if (!this.#isConnected(app.states.isTarget)) return false;
       return true;
     }
@@ -1195,10 +1195,10 @@
 
   const animationClass = {
     [Level.SYMMETRY_TYPE.POINT]: 'animation-rotation',
-    [Level.SYMMETRY_TYPE.REFLECTION1]: 'animation-reflection1',
-    [Level.SYMMETRY_TYPE.REFLECTION2]: 'animation-reflection2',
-    [Level.SYMMETRY_TYPE.REFLECTION3]: 'animation-reflection3',
-    [Level.SYMMETRY_TYPE.REFLECTION4]: 'animation-reflection4',
+    [Level.SYMMETRY_TYPE.LINE1]: 'animation-line1',
+    [Level.SYMMETRY_TYPE.LINE2]: 'animation-line2',
+    [Level.SYMMETRY_TYPE.LINE3]: 'animation-line3',
+    [Level.SYMMETRY_TYPE.LINE4]: 'animation-line4',
   };
 
   if (isBrowser) {

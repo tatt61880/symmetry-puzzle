@@ -4,7 +4,7 @@ all: node_modules
 	npm run stylelint
 	npm run test
 	npm run test-point
-	npm run test-reflection
+	npm run test-line
 
 node_modules:
 	npm install
@@ -12,7 +12,7 @@ node_modules:
 test:
 	npm run test
 	npm run test-point
-	npm run test-reflection
+	npm run test-line
 
 solve:
 	npm run solve -- --id 1 --max 5

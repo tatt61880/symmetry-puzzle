@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.07.02';
+  const VERSION_TEXT = 'v2023.07.05';
 
   const app = window.app;
   Object.freeze(app);
@@ -555,7 +555,7 @@
 
   function updateUrl() {
     if (!editMode) return;
-    const url = level.getUrlStr(level.isReflectionMode());
+    const url = level.getUrlStr(level.isLineMode());
     elems.url.innerHTML = `<a href="${url}">現在の盤面を0手目として完成！</a>`;
   }
 
@@ -617,7 +617,7 @@
         const th = document.createElement('th');
         tr.appendChild(th);
         const img = document.createElement('img');
-        img.src = './images/reflection.png';
+        img.src = './images/line.png';
         img.setAttribute('width', imgSize);
         img.setAttribute('height', imgSize);
         th.appendChild(img);
@@ -666,13 +666,13 @@
         }
       }
 
-      let numReflectionNotSolved = 0;
-      let numReflectionSolvedNormal = 0;
-      let numReflectionSolvedBest = 0;
+      let numLineNotSolved = 0;
+      let numLineSolvedNormal = 0;
+      let numLineSolvedBest = 0;
 
       {
-        const levelsList = app.levelsReflection;
-        const levelsListEx = app.levelsReflectionEx;
+        const levelsList = app.levelsLine;
+        const levelsListEx = app.levelsLineEx;
         const levelObjs = [];
         for (let i = 1; i < levelsList.length; ++i) {
           const levelObj = levelsList[i];
@@ -689,29 +689,26 @@
           const playerScore = savedata.getHighestScore(levelObj, true);
           const appScore = levelObj.step;
           if (playerScore === null) {
-            ++numReflectionNotSolved;
+            ++numLineNotSolved;
           } else if (playerScore > appScore) {
-            ++numReflectionSolvedNormal;
+            ++numLineSolvedNormal;
           } else {
-            ++numReflectionSolvedBest;
+            ++numLineSolvedBest;
           }
         }
       }
 
-      const numTotalNotSolved = numPointNotSolved + numReflectionNotSolved;
-      const numTotalSolvedNormal =
-        numPointSolvedNormal + numReflectionSolvedNormal;
-      const numTotalSolvedBest = numPointSolvedBest + numReflectionSolvedBest;
+      const numTotalNotSolved = numPointNotSolved + numLineNotSolved;
+      const numTotalSolvedNormal = numPointSolvedNormal + numLineSolvedNormal;
+      const numTotalSolvedBest = numPointSolvedBest + numLineSolvedBest;
 
       const numPointTotal =
         numPointSolvedBest + numPointSolvedNormal + numPointNotSolved;
 
-      const numReflectionTotal =
-        numReflectionSolvedBest +
-        numReflectionSolvedNormal +
-        numReflectionNotSolved;
+      const numLineTotal =
+        numLineSolvedBest + numLineSolvedNormal + numLineNotSolved;
 
-      const numTotalTotal = numPointTotal + numReflectionTotal;
+      const numTotalTotal = numPointTotal + numLineTotal;
 
       {
         const tr = document.createElement('tr');
@@ -735,7 +732,7 @@
         }
         {
           const td = document.createElement('td');
-          td.innerText = numReflectionSolvedBest;
+          td.innerText = numLineSolvedBest;
           tr.appendChild(td);
         }
         {
@@ -765,7 +762,7 @@
         }
         {
           const td = document.createElement('td');
-          td.innerText = numReflectionSolvedNormal;
+          td.innerText = numLineSolvedNormal;
           tr.appendChild(td);
         }
         {
@@ -789,7 +786,7 @@
         }
         {
           const td = document.createElement('td');
-          td.innerText = numReflectionNotSolved;
+          td.innerText = numLineNotSolved;
           tr.appendChild(td);
         }
         {
@@ -813,7 +810,7 @@
         }
         {
           const td = document.createElement('td');
-          td.innerText = numReflectionTotal;
+          td.innerText = numLineTotal;
           tr.appendChild(td);
         }
         {
@@ -836,8 +833,8 @@
     const className = (() => {
       if (mode === app.Level.CHECK_MODE.POINT) {
         return 'point';
-      } else if (mode === app.Level.CHECK_MODE.REFLECTION) {
-        return 'reflection';
+      } else if (mode === app.Level.CHECK_MODE.LINE) {
+        return 'line';
       }
       return 'none';
     })();
@@ -881,9 +878,9 @@
     setTimeout(() => {
       elems.iconPoint.classList.add('animation-rotation-icon');
     }, 100);
-    elems.iconReflection.classList.remove('animation-reflection1-icon');
+    elems.iconLine.classList.remove('animation-line1-icon');
     setTimeout(() => {
-      elems.iconReflection.classList.add('animation-reflection1-icon');
+      elems.iconLine.classList.add('animation-line1-icon');
     }, 100);
   }
 
@@ -933,7 +930,7 @@
       const bestStep = level.getBestStep();
       const highestScore = savedata.getHighestScore(
         levelObj,
-        level.isReflectionMode()
+        level.isLineMode()
       );
 
       // if (highestScore !== null && hideCompletedLevelsFlag) {
@@ -1032,8 +1029,8 @@
       return;
     }
 
-    if (settings.r) {
-      updateCheckMode(app.Level.CHECK_MODE.REFLECTION);
+    if (settings.line) {
+      updateCheckMode(app.Level.CHECK_MODE.LINE);
     } else {
       updateCheckMode(app.Level.CHECK_MODE.POINT);
     }
@@ -1054,9 +1051,9 @@
     if (checkMode === app.Level.CHECK_MODE.POINT) {
       levelsList = app.levelsPoint;
       levelsListEx = app.levelsPointEx;
-    } else if (checkMode === app.Level.CHECK_MODE.REFLECTION) {
-      levelsList = app.levelsReflection;
-      levelsListEx = app.levelsReflectionEx;
+    } else if (checkMode === app.Level.CHECK_MODE.LINE) {
+      levelsList = app.levelsLine;
+      levelsListEx = app.levelsLineEx;
     } else {
       levelsList = null;
       levelsListEx = null;
@@ -1104,9 +1101,9 @@
     if (checkMode === app.Level.CHECK_MODE.POINT) {
       levelsList = app.levelsPoint;
       levelsListEx = app.levelsPointEx;
-    } else if (checkMode === app.Level.CHECK_MODE.REFLECTION) {
-      levelsList = app.levelsReflection;
-      levelsListEx = app.levelsReflectionEx;
+    } else if (checkMode === app.Level.CHECK_MODE.LINE) {
+      levelsList = app.levelsLine;
+      levelsListEx = app.levelsLineEx;
     } else {
       levelsList = null;
       levelsListEx = null;
@@ -1231,10 +1228,10 @@
       elems.edit.switchMode.addEventListener(
         'click',
         () => {
-          if (level.isReflectionMode()) {
+          if (level.isLineMode()) {
             updateCheckMode(app.Level.CHECK_MODE.POINT);
           } else {
-            updateCheckMode(app.Level.CHECK_MODE.REFLECTION);
+            updateCheckMode(app.Level.CHECK_MODE.LINE);
           }
           const w = level.getW();
           const h = level.getH();
@@ -1281,10 +1278,10 @@
         false
       );
 
-      elems.title.buttonPlayReflection.addEventListener(
+      elems.title.buttonPlayLine.addEventListener(
         'click',
         () => {
-          updateCheckMode(app.Level.CHECK_MODE.REFLECTION);
+          updateCheckMode(app.Level.CHECK_MODE.LINE);
           onloadId(1);
         },
         false
@@ -1610,9 +1607,9 @@
           if (bestStep !== undefined) {
             highestScorePrev = savedata.getHighestScore(
               levelObj,
-              level.isReflectionMode()
+              level.isLineMode()
             );
-            savedata.saveSteps(levelObj, level.isReflectionMode(), replayStr);
+            savedata.saveSteps(levelObj, level.isLineMode(), replayStr);
           }
 
           // ログ出力
@@ -1701,7 +1698,7 @@
         const levelObj = level.getLevelObj();
         const highestScore = savedata.getHighestScore(
           levelObj,
-          level.isReflectionMode()
+          level.isLineMode()
         );
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
@@ -1970,7 +1967,7 @@
     const base = location.href.split('?')[0];
     const levelObj = level.getLevelObj();
     let url = `${base}?w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
-    if (level.isReflectionMode()) url += '&r';
+    if (level.isLineMode()) url += '&line';
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';
     if (settings.mirrorFlag) url += '&mirror';

@@ -14,32 +14,32 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.07.01">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.07.01">
 
-  <link rel="stylesheet" href="./css/main.css?2023.07.02">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.07.02">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.07.02">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.07.02">
-  <link rel="stylesheet" href="./css/animation.css?2023.07.02">
+  <link rel="stylesheet" href="./css/main.css?2023.07.05">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.07.05">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.07.05">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.07.05">
+  <link rel="stylesheet" href="./css/animation.css?2023.07.05">
 
-  <script src="./src/states.js?2023.07.02"></script>
-  <script src="./src/colors.js?2023.07.02"></script>
-  <script src="./src/svg.js?2023.07.02"></script>
-  <script src="./src/class-stack.js?2023.07.02"></script>
-  <script src="./src/class-level.js?2023.07.02"></script>
+  <script src="./src/states.js?2023.07.05"></script>
+  <script src="./src/colors.js?2023.07.05"></script>
+  <script src="./src/svg.js?2023.07.05"></script>
+  <script src="./src/class-stack.js?2023.07.05"></script>
+  <script src="./src/class-level.js?2023.07.05"></script>
 
-  <script src="./src/class-savedata.js?2023.07.02"></script>
-  <script src="./src/class-undo-info.js?2023.07.02"></script>
-  <script src="./src/class-elems.js?2023.07.02"></script>
+  <script src="./src/class-savedata.js?2023.07.05"></script>
+  <script src="./src/class-undo-info.js?2023.07.05"></script>
+  <script src="./src/class-elems.js?2023.07.05"></script>
 
-  <script src="./src/levels-point.js?2023.07.02"></script>
-  <script src="./src/levels-point-ex.js?2023.07.02"></script>
-  <script src="./src/levels-reflection.js?2023.07.02"></script>
-  <script src="./src/levels-reflection-ex.js?2023.07.02"></script>
-  <script src="./src/elems.js?2023.07.02"></script>
+  <script src="./src/levels-point.js?2023.07.05"></script>
+  <script src="./src/levels-point-ex.js?2023.07.05"></script>
+  <script src="./src/levels-line.js?2023.07.05"></script>
+  <script src="./src/levels-line-ex.js?2023.07.05"></script>
+  <script src="./src/elems.js?2023.07.05"></script>
 
-  <script src="./src/solve.js?2023.07.02"></script>
+  <script src="./src/solve.js?2023.07.05"></script>
 
-  <script src="./src/analyze-url.js?2023.07.02"></script>
-  <script src="./src/main.js?2023.07.02"></script>
+  <script src="./src/analyze-url.js?2023.07.05"></script>
+  <script src="./src/main.js?2023.07.05"></script>
 </head>
 
 <body>
@@ -48,14 +48,13 @@
       <div id="top" class="flex">
         <img id="icon" alt="icon" src="./images/icon-point.png?2023.01.15" class="check-mode none">
         <img id="icon-point" alt="icon" src="./images/icon-point.png?2023.01.15" class="check-mode point hide-mode">
-        <img id="icon-reflection" alt="icon" src="./images/icon-reflection.png?2023.01.15"
-          class="check-mode reflection hide-mode">
+        <img id="icon-line" alt="icon" src="./images/icon-line.png?2023.01.15" class="check-mode line hide-mode">
         <span class="title translatable en check-mode none" lang="en">Symmetry Puzzle</span>
         <span class="title translatable ja check-mode none hide-lang" lang="ja">対称パズル</span>
         <span class="title translatable en check-mode point hide-mode" lang="en">Point Symmetry Puzzle</span>
         <span class="title translatable ja check-mode point hide-lang hide-mode" lang="ja">点対称パズル</span>
-        <span class="title translatable en check-mode reflection hide-mode" lang="en">Reflection Symmetry Puzzle</span>
-        <span class="title translatable ja check-mode reflection hide-lang hide-mode" lang="ja">線対称パズル</span>
+        <span class="title translatable en check-mode line hide-mode" lang="en">Line Symmetry Puzzle</span>
+        <span class="title translatable ja check-mode line hide-lang hide-mode" lang="ja">線対称パズル</span>
         <span id="version">vXXXX.XX.XX</span>
       </div>
       <svg width="30" height="30" style="margin: 0 5px 0 auto;">
@@ -106,11 +105,11 @@
 
           <div>
             <div class="mode-title">
-              Reflection Symmetry Puzzle
+              Line Symmetry Puzzle
             </div>
             <p>
               Manipulate <span class="blue-block">Blue</span> to make<br>
-              <span class="red-block">Red</span> a <span class="bold">connected reflection symmetrical
+              <span class="red-block">Red</span> a <span class="bold">connected line symmetrical
                 one</span>.
             </p>
           </div>
@@ -178,9 +177,9 @@
             パズル
           </div>
         </div>
-        <div id="button-play-reflection" class="title-button">
+        <div id="button-play-line" class="title-button">
           <div class="title-button-text translatable en" lang="en">
-            Reflection<br>
+            Line<br>
             Symmetry<br>
             Puzzle
           </div>
@@ -414,7 +413,7 @@
 
           <g transform="translate(10,169)">
             <image href="./images/icon-point.png?2023.01.15" class="check-mode point hide-mode" />
-            <image href="./images/icon-reflection.png?2023.01.15" class="check-mode reflection hide-mode" />
+            <image href="./images/icon-line.png?2023.01.15" class="check-mode line hide-mode" />
           </g>
 
           <g transform="translate(115,185)" class="button active-hover">

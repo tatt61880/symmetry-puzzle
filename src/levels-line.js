@@ -2,8 +2,8 @@
   'use strict';
   const isBrowser = typeof window !== 'undefined';
 
-  const levelsReflection = [];
-  levelsReflection.push(
+  const levelsLine = [];
+  levelsLine.push(
     {
       w: 33,
       h: 33,
@@ -566,15 +566,15 @@
     }
   );
 
-  Object.freeze(levelsReflection);
-  for (const level of levelsReflection) {
+  Object.freeze(levelsLine);
+  for (const level of levelsLine) {
     Object.freeze(level);
   }
 
   if (isBrowser) {
     window.app = window.app || {};
-    window.app.levelsReflection = levelsReflection;
+    window.app.levelsLine = levelsLine;
   } else {
-    module.exports = levelsReflection;
+    module.exports = levelsLine;
   }
 })();

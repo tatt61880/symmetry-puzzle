@@ -31,14 +31,14 @@
       return this.data.lang;
     }
 
-    saveSteps(levelObj, isReflectionMode, r_) {
+    saveSteps(levelObj, isLineMode, r_) {
       let r = r_;
       const maxStep = 9999;
       const step = r.length;
       if (step > maxStep) {
         r = r.substring(0, maxStep);
       }
-      const key = this.#getLevelKey(levelObj, isReflectionMode);
+      const key = this.#getLevelKey(levelObj, isLineMode);
       const highestScoreR = this.data.steps[key];
       if (highestScoreR === undefined || step < highestScoreR.length) {
         this.data.steps[key] = r;
@@ -46,15 +46,15 @@
       }
     }
 
-    getHighestScore(levelObj, isReflectionMode) {
-      const key = this.#getLevelKey(levelObj, isReflectionMode);
+    getHighestScore(levelObj, isLineMode) {
+      const key = this.#getLevelKey(levelObj, isLineMode);
       const r = this.data.steps[key];
       return r === undefined ? null : r.length;
     }
 
-    #getLevelKey(levelObj, isReflectionMode) {
-      if (isReflectionMode) {
-        return `w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}&r`;
+    #getLevelKey(levelObj, isLineMode) {
+      if (isLineMode) {
+        return `w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}&line`;
       } else {
         return `w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
       }

@@ -2,7 +2,7 @@
   'use strict';
   const isBrowser = typeof window !== 'undefined';
 
-  const levelsReflectionEx = {
+  const levelsLineEx = {
     NaN: { w: 3, h: 7, s: 's-01-01-01--02', r: '12', step: 2 },
     2023: {
       w: 17,
@@ -13,15 +13,15 @@
     },
   };
 
-  Object.freeze(levelsReflectionEx);
-  for (const levelId in levelsReflectionEx) {
+  Object.freeze(levelsLineEx);
+  for (const levelId in levelsLineEx) {
     Object.freeze(levelId);
   }
 
   if (isBrowser) {
     window.app = window.app || {};
-    window.app.levelsReflectionEx = levelsReflectionEx;
+    window.app.levelsLineEx = levelsLineEx;
   } else {
-    module.exports = levelsReflectionEx;
+    module.exports = levelsLineEx;
   }
 })();

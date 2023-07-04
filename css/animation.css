@@ -26,27 +26,27 @@
   animation-duration: var(--animation-duration-symmetry);
 }
 
-.animation-reflection1 {
+.animation-line1 {
   transform-origin: var(--animation-origin);
-  animation: animation-reflection1 ease forwards;
+  animation: animation-line1 ease forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
-.animation-reflection2 {
+.animation-line2 {
   transform-origin: var(--animation-origin);
-  animation: animation-reflection2 ease forwards;
+  animation: animation-line2 ease forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
-.animation-reflection3 {
+.animation-line3 {
   transform-origin: var(--animation-origin);
-  animation: animation-reflection3 ease forwards;
+  animation: animation-line3 ease forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
-.animation-reflection4 {
+.animation-line4 {
   transform-origin: var(--animation-origin);
-  animation: animation-reflection4 ease forwards;
+  animation: animation-line4 ease forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
@@ -57,9 +57,9 @@
   animation-duration: var(--animation-duration-symmetry);
 }
 
-.animation-reflection1-icon {
+.animation-line1-icon {
   transform-origin: 50% 50%;
-  animation: animation-reflection1 ease forwards;
+  animation: animation-line1 ease forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
@@ -105,7 +105,7 @@
   }
 }
 
-@keyframes animation-reflection1 {
+@keyframes animation-line1 {
   0% {
     transform: scaleX(1);
   }
@@ -123,7 +123,7 @@
   }
 }
 
-@keyframes animation-reflection2 {
+@keyframes animation-line2 {
   0% {
     transform: scaleY(1);
   }
@@ -141,7 +141,7 @@
   }
 }
 
-@keyframes animation-reflection3 {
+@keyframes animation-line3 {
   0% {
     transform: rotate3d(1, 1, 0, 0deg);
   }
@@ -159,7 +159,7 @@
   }
 }
 
-@keyframes animation-reflection4 {
+@keyframes animation-line4 {
   0% {
     transform: rotate3d(1, -1, 0, 0deg);
   }
