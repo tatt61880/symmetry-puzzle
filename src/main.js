@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.07.05';
+  const VERSION_TEXT = 'v2023.07.15';
 
   const app = window.app;
   Object.freeze(app);
@@ -24,8 +24,7 @@
   const UNDO_INTERVAL_MSEC = UNDO_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
 
   let moveIntervalCount = MOVE_INTERVAL_COUNT;
-  let pointerInputFlag = false;
-  let inputDir = DIRS.NEUTRAL;
+  let stick;
   const inputKeys = {};
 
   let settings = {
@@ -101,53 +100,6 @@
   return;
   // ==========================================================================
 
-  function updateStick(dir) {
-    inputDir = dir;
-    const transforms = {
-      [DIRS.NEUTRAL]: () => 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
-      [DIRS.UP]: (dist) =>
-        `rotateX(45deg) rotateY(0deg) translate(0, -${dist}px)`,
-      [DIRS.RIGHT]: (dist) =>
-        `rotateX(0deg) rotateY(45deg) translate(${dist}px, 0)`,
-      [DIRS.DOWN]: (dist) =>
-        `rotateX(-45deg) rotateY(0deg) translate(0, ${dist}px)`,
-      [DIRS.LEFT]: (dist) =>
-        `rotateX(0deg) rotateY(-45deg) translate(-${dist}px, 0)`,
-    };
-
-    elems.controller.stickThickness.style.setProperty(
-      'transform',
-      transforms[dir](28)
-    );
-
-    elems.controller.stickOuter.style.setProperty(
-      'transform',
-      transforms[dir](32.1)
-    );
-    elems.controller.stickOuter2.style.setProperty(
-      'transform',
-      transforms[dir](33.3)
-    );
-
-    elems.controller.stickMiddle.style.setProperty(
-      'transform',
-      transforms[dir](32.9)
-    );
-    elems.controller.stickMiddle2.style.setProperty(
-      'transform',
-      transforms[dir](34.1)
-    );
-
-    elems.controller.stickInner.style.setProperty(
-      'transform',
-      transforms[dir](33.7)
-    );
-    elems.controller.stickInner2.style.setProperty(
-      'transform',
-      transforms[dir](34.9)
-    );
-  }
-
   function move(dir) {
     const dys = [-1, 0, 1, 0];
     const dxs = [0, 1, 0, -1];
@@ -192,7 +144,7 @@
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
     elems.controller.undo.classList.add('low-contrast');
-    updateStick(DIRS.NEUTRAL);
+    stick.update(DIRS.NEUTRAL);
     execUndo();
     undoIntervalId = setInterval(execUndo, UNDO_INTERVAL_MSEC);
   }
@@ -220,40 +172,6 @@
       const y = e.clientY - bcRect.top;
       return { x, y };
     }
-  }
-
-  function pointerdown(e) {
-    e.preventDefault();
-    if (settings.autoMode) return;
-    pointerInputFlag = true;
-    pointermove(e);
-  }
-
-  function pointermove(e) {
-    e.preventDefault();
-    if (!pointerInputFlag || settings.autoMode) return;
-    const cursorPos = getCursorPos(elems.controller.stickBase, e);
-    const bcRect = elems.controller.stickBase.getBoundingClientRect();
-    const x = cursorPos.x - bcRect.width / 2;
-    const y = cursorPos.y - bcRect.height / 2;
-    const minDist = 60;
-    if (x ** 2 + y ** 2 < minDist ** 2) {
-      const dir = DIRS.NEUTRAL;
-      updateStick(dir);
-    } else if (Math.abs(x) > Math.abs(y)) {
-      const dir = x < 0 ? DIRS.LEFT : DIRS.RIGHT;
-      updateStick(dir);
-    } else {
-      const dir = y < 0 ? DIRS.UP : DIRS.DOWN;
-      updateStick(dir);
-    }
-  }
-
-  function pointerup() {
-    undoEnd();
-    if (settings.autoMode) return;
-    pointerInputFlag = false;
-    updateStick(DIRS.NEUTRAL);
   }
 
   function keydown(e) {
@@ -316,7 +234,7 @@
 
         if (dir !== null) {
           e.preventDefault();
-          updateStick(dir);
+          stick.update(dir);
           inputKeys[e.key] = true;
         }
       }
@@ -357,7 +275,7 @@
       undoEnd();
     } else if (Object.keys(inputKeys).length === 0) {
       if (!settings.autoMode) {
-        updateStick(DIRS.NEUTRAL);
+        stick.update(DIRS.NEUTRAL);
       }
     }
     return false;
@@ -497,7 +415,7 @@
     resetUndo();
     initLevel(levelObj, initParam);
 
-    updateStick(DIRS.NEUTRAL);
+    stick.update(DIRS.NEUTRAL);
     moveIntervalCount = MOVE_INTERVAL_COUNT;
 
     if (settings.autoMode) {
@@ -1347,23 +1265,6 @@
         return !editMode;
       };
 
-      elems.controller.stickBase.addEventListener(
-        pointerdownEventName,
-        pointerdown,
-        false
-      );
-      elems.controller.stickBase.addEventListener(
-        pointermoveEventName,
-        pointermove,
-        false
-      );
-      elems.controller.stickBase.addEventListener(
-        pointerupEventName,
-        pointerup,
-        false
-      );
-      document.addEventListener(pointerupEventName, pointerup, false);
-
       elems.controller.undo.addEventListener(
         pointerdownEventName,
         undodown,
@@ -1375,6 +1276,10 @@
         gotoNextLevel,
         false
       );
+
+      document.addEventListener(pointerupEventName, undoEnd, false);
+
+      stick = new app.Stick(elems.controller);
     }
   }
 
@@ -1390,20 +1295,19 @@
   }
 
   function input() {
+    if (stick.inputDir === DIRS.NEUTRAL) return;
     if (undoFlag) return;
     if (completeFlag) return;
 
-    if (inputDir !== DIRS.NEUTRAL) {
-      if (settings.autoMode) {
-        updateStick(inputDir);
-      }
-      moveIntervalCount = 0;
-      const moveFlag = move(inputDir);
-      if (moveFlag) {
-        draw();
-        completeCheck();
-        updateUrl();
-      }
+    if (settings.autoMode) {
+      stick.update(stick.inputDir);
+    }
+    moveIntervalCount = 0;
+    const moveFlag = move(stick.inputDir);
+    if (moveFlag) {
+      draw();
+      completeCheck();
+      updateUrl();
     }
   }
 
@@ -1987,14 +1891,16 @@
   function updateAutoMode(isOn) {
     if (isOn) {
       settings.autoMode = true;
+      stick.disable();
       showElem(elems.auto.buttons);
     } else {
       clearTimeout(nextLevelTimerId);
       settings.autoMode = false;
       settingsAuto.paused = true;
+      stick.enable();
       hideElem(elems.auto.buttons);
 
-      updateStick(DIRS.NEUTRAL);
+      stick.update(DIRS.NEUTRAL);
     }
     updateAutoStartPauseButtons();
     updateController();
@@ -2074,7 +1980,7 @@
       const stepIndex = undoInfo.getIndex();
       if (!settingsAuto.paused) {
         if (stepIndex < r.length) {
-          inputDir = Number(r[stepIndex]);
+          stick.inputDir = Number(r[stepIndex]);
           input();
         }
       }
