@@ -2,25 +2,25 @@
   'use strict';
   const isBrowser = typeof window !== 'undefined';
 
-  const DIRS = {
-    NEUTRAL: 'N',
-    UP: '0',
-    RIGHT: '1',
-    DOWN: '2',
-    LEFT: '3',
-  };
-
   class Stick {
     #stick;
     #pointerInputFlag;
     #enable;
+
+    static DIRS = {
+      NEUTRAL: 'N',
+      UP: '0',
+      RIGHT: '1',
+      DOWN: '2',
+      LEFT: '3',
+    };
 
     constructor(stick) {
       this.#stick = stick;
       this.#enable = true;
       this.#pointerInputFlag = false;
 
-      this.inputDir = DIRS.NEUTRAL;
+      this.inputDir = Stick.DIRS.NEUTRAL;
 
       this.#init();
       return this;
@@ -82,13 +82,13 @@
       const minDist = 60;
 
       if (x ** 2 + y ** 2 < minDist ** 2) {
-        const dir = DIRS.NEUTRAL;
+        const dir = Stick.DIRS.NEUTRAL;
         this.update(dir);
       } else if (Math.abs(x) > Math.abs(y)) {
-        const dir = x < 0 ? DIRS.LEFT : DIRS.RIGHT;
+        const dir = x < 0 ? Stick.DIRS.LEFT : Stick.DIRS.RIGHT;
         this.update(dir);
       } else {
-        const dir = y < 0 ? DIRS.UP : DIRS.DOWN;
+        const dir = y < 0 ? Stick.DIRS.UP : Stick.DIRS.DOWN;
         this.update(dir);
       }
 
@@ -110,7 +110,7 @@
       if (!this.#enable) return;
 
       this.#pointerInputFlag = false;
-      this.update(DIRS.NEUTRAL);
+      this.update(Stick.DIRS.NEUTRAL);
     }
 
     enable() {
@@ -124,14 +124,15 @@
     update(dir) {
       this.inputDir = dir;
       const transforms = {
-        [DIRS.NEUTRAL]: () => 'rotateX(0deg) rotateY(0deg) translate(0, 0)',
-        [DIRS.UP]: (dist) =>
+        [Stick.DIRS.NEUTRAL]: () =>
+          'rotateX(0deg) rotateY(0deg) translate(0, 0)',
+        [Stick.DIRS.UP]: (dist) =>
           `rotateX(45deg) rotateY(0deg) translate(0, -${dist}px)`,
-        [DIRS.RIGHT]: (dist) =>
+        [Stick.DIRS.RIGHT]: (dist) =>
           `rotateX(0deg) rotateY(45deg) translate(${dist}px, 0)`,
-        [DIRS.DOWN]: (dist) =>
+        [Stick.DIRS.DOWN]: (dist) =>
           `rotateX(-45deg) rotateY(0deg) translate(0, ${dist}px)`,
-        [DIRS.LEFT]: (dist) =>
+        [Stick.DIRS.LEFT]: (dist) =>
           `rotateX(0deg) rotateY(-45deg) translate(-${dist}px, 0)`,
       };
 

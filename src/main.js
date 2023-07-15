@@ -7,14 +7,6 @@
 
   const savedata = new app.Savedata();
 
-  const DIRS = {
-    NEUTRAL: 'N',
-    UP: '0',
-    RIGHT: '1',
-    DOWN: '2',
-    LEFT: '3',
-  };
-
   const INPUT_INTERVAL_MSEC = 28; // この値を変更するときは、iOSの省電力モード時のsetIntervalの動作を確認した上で変更してください。詳細: https://github.com/tatt61880/symmetry-puzzle/issues/38
 
   const MOVE_INTERVAL_COUNT = 6;
@@ -144,7 +136,7 @@
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
     elems.controller.undo.classList.add('low-contrast');
-    stick.update(DIRS.NEUTRAL);
+    stick.update(app.Stick.DIRS.NEUTRAL);
     execUndo();
     undoIntervalId = setInterval(execUndo, UNDO_INTERVAL_MSEC);
   }
@@ -215,19 +207,19 @@
             case 'ArrowUp':
             case 'w':
             case 'k':
-              return DIRS.UP;
+              return app.Stick.DIRS.UP;
             case 'ArrowRight':
             case 'd':
             case 'l':
-              return DIRS.RIGHT;
+              return app.Stick.DIRS.RIGHT;
             case 'ArrowDown':
             case 's':
             case 'j':
-              return DIRS.DOWN;
+              return app.Stick.DIRS.DOWN;
             case 'ArrowLeft':
             case 'a':
             case 'h':
-              return DIRS.LEFT;
+              return app.Stick.DIRS.LEFT;
           }
           return null;
         })();
@@ -275,7 +267,7 @@
       undoEnd();
     } else if (Object.keys(inputKeys).length === 0) {
       if (!settings.autoMode) {
-        stick.update(DIRS.NEUTRAL);
+        stick.update(app.Stick.DIRS.NEUTRAL);
       }
     }
     return false;
@@ -415,7 +407,7 @@
     resetUndo();
     initLevel(levelObj, initParam);
 
-    stick.update(DIRS.NEUTRAL);
+    stick.update(app.Stick.DIRS.NEUTRAL);
     moveIntervalCount = MOVE_INTERVAL_COUNT;
 
     if (settings.autoMode) {
@@ -1295,7 +1287,7 @@
   }
 
   function input() {
-    if (stick.inputDir === DIRS.NEUTRAL) return;
+    if (stick.inputDir === app.Stick.DIRS.NEUTRAL) return;
     if (undoFlag) return;
     if (completeFlag) return;
 
@@ -1900,7 +1892,7 @@
       stick.enable();
       hideElem(elems.auto.buttons);
 
-      stick.update(DIRS.NEUTRAL);
+      stick.update(app.Stick.DIRS.NEUTRAL);
     }
     updateAutoStartPauseButtons();
     updateController();
