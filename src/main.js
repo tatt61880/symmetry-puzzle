@@ -1279,7 +1279,7 @@
 
       document.addEventListener(pointerupEventName, undoEnd, false);
 
-      stick = new app.Stick(elems.controller);
+      stick = new app.Stick(elems.stick);
     }
   }
 
@@ -1313,15 +1313,15 @@
 
   function updateController() {
     if (settings.autoMode && settingsAuto.paused) {
-      hideElem(elems.controller.stickBase);
+      hideElem(elems.stick.stickBase);
     } else {
       if (completeFlag) {
-        hideElem(elems.controller.stickBase);
+        hideElem(elems.stick.stickBase);
         if (!elems.level.next.classList.contains('hide')) {
           showElem(elems.controller.nextLevel);
         }
       } else {
-        showElem(elems.controller.stickBase);
+        showElem(elems.stick.stickBase);
         hideElem(elems.controller.nextLevel);
       }
     }
