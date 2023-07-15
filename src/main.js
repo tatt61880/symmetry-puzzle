@@ -1279,7 +1279,7 @@
 
       document.addEventListener(pointerupEventName, undoEnd, false);
 
-      stick = new app.Stick(elems.stick);
+      stick = new app.Stick(elems.controller.stick);
     }
   }
 
@@ -1313,15 +1313,15 @@
 
   function updateController() {
     if (settings.autoMode && settingsAuto.paused) {
-      hideElem(elems.stick.stickBase);
+      hideElem(elems.controller.stick.base);
     } else {
       if (completeFlag) {
-        hideElem(elems.stick.stickBase);
+        hideElem(elems.controller.stick.base);
         if (!elems.level.next.classList.contains('hide')) {
           showElem(elems.controller.nextLevel);
         }
       } else {
-        showElem(elems.stick.stickBase);
+        showElem(elems.controller.stick.base);
         hideElem(elems.controller.nextLevel);
       }
     }

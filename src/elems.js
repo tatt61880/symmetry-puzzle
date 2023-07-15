@@ -96,17 +96,17 @@
       widget: 'controller-widget',
       undo: 'button-undo',
       nextLevel: 'next-level',
-    },
 
-    stick: {
-      stickBase: 'stick-base',
-      stickThickness: 'stick-thickness',
-      stickOuter: 'stick-outer',
-      stickOuter2: 'stick-outer2',
-      stickMiddle: 'stick-middle',
-      stickMiddle2: 'stick-middle2',
-      stickInner: 'stick-inner',
-      stickInner2: 'stick-inner2',
+      stick: {
+        base: 'stick-base',
+        thickness: 'stick-thickness',
+        outer: 'stick-outer',
+        outer2: 'stick-outer2',
+        middle: 'stick-middle',
+        middle2: 'stick-middle2',
+        inner: 'stick-inner',
+        inner2: 'stick-inner2',
+      },
     },
 
     console: {

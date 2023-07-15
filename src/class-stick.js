@@ -11,12 +11,12 @@
   };
 
   class Stick {
-    #controller;
+    #stick;
     #pointerInputFlag;
     #enable;
 
-    constructor(controller) {
-      this.#controller = controller;
+    constructor(stick) {
+      this.#stick = stick;
       this.#pointerInputFlag = false;
       this.inputDir = DIRS.NEUTRAL;
       this.#enable = true;
@@ -31,21 +31,21 @@
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
-      this.#controller.stickBase.addEventListener(
+      this.#stick.base.addEventListener(
         pointerdownEventName,
         (e) => {
           this.#pointerdown(e);
         },
         false
       );
-      this.#controller.stickBase.addEventListener(
+      this.#stick.base.addEventListener(
         pointermoveEventName,
         (e) => {
           this.#pointermove(e);
         },
         false
       );
-      this.#controller.stickBase.addEventListener(
+      this.#stick.base.addEventListener(
         pointerupEventName,
         (e) => {
           this.#pointerup(e);
@@ -71,8 +71,8 @@
     #pointermove(e) {
       e.preventDefault();
       if (!this.#pointerInputFlag || !this.#enable) return;
-      const cursorPos = getCursorPos(this.#controller.stickBase, e);
-      const bcRect = this.#controller.stickBase.getBoundingClientRect();
+      const cursorPos = getCursorPos(this.#stick.base, e);
+      const bcRect = this.#stick.base.getBoundingClientRect();
       const x = cursorPos.x - bcRect.width / 2;
       const y = cursorPos.y - bcRect.height / 2;
       const minDist = 60;
@@ -129,37 +129,16 @@
           `rotateX(0deg) rotateY(-45deg) translate(-${dist}px, 0)`,
       };
 
-      this.#controller.stickThickness.style.setProperty(
-        'transform',
-        transforms[dir](28)
-      );
+      this.#stick.thickness.style.setProperty('transform', transforms[dir](28));
 
-      this.#controller.stickOuter.style.setProperty(
-        'transform',
-        transforms[dir](32.1)
-      );
-      this.#controller.stickOuter2.style.setProperty(
-        'transform',
-        transforms[dir](33.3)
-      );
+      this.#stick.outer.style.setProperty('transform', transforms[dir](32.1));
+      this.#stick.outer2.style.setProperty('transform', transforms[dir](33.3));
 
-      this.#controller.stickMiddle.style.setProperty(
-        'transform',
-        transforms[dir](32.9)
-      );
-      this.#controller.stickMiddle2.style.setProperty(
-        'transform',
-        transforms[dir](34.1)
-      );
+      this.#stick.middle.style.setProperty('transform', transforms[dir](32.9));
+      this.#stick.middle2.style.setProperty('transform', transforms[dir](34.1));
 
-      this.#controller.stickInner.style.setProperty(
-        'transform',
-        transforms[dir](33.7)
-      );
-      this.#controller.stickInner2.style.setProperty(
-        'transform',
-        transforms[dir](34.9)
-      );
+      this.#stick.inner.style.setProperty('transform', transforms[dir](33.7));
+      this.#stick.inner2.style.setProperty('transform', transforms[dir](34.9));
     }
   }
 
