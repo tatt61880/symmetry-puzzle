@@ -17,9 +17,10 @@
 
     constructor(stick) {
       this.#stick = stick;
-      this.#pointerInputFlag = false;
-      this.inputDir = DIRS.NEUTRAL;
       this.#enable = true;
+      this.#pointerInputFlag = false;
+
+      this.inputDir = DIRS.NEUTRAL;
 
       this.#init();
       return this;
@@ -64,18 +65,22 @@
     #pointerdown(e) {
       e.preventDefault();
       if (!this.#enable) return;
+
       this.#pointerInputFlag = true;
       this.#pointermove(e);
     }
 
     #pointermove(e) {
       e.preventDefault();
-      if (!this.#pointerInputFlag || !this.#enable) return;
+      if (!this.#enable) return;
+      if (!this.#pointerInputFlag) return;
+
       const cursorPos = getCursorPos(this.#stick.base, e);
       const bcRect = this.#stick.base.getBoundingClientRect();
       const x = cursorPos.x - bcRect.width / 2;
       const y = cursorPos.y - bcRect.height / 2;
       const minDist = 60;
+
       if (x ** 2 + y ** 2 < minDist ** 2) {
         const dir = DIRS.NEUTRAL;
         this.update(dir);
@@ -103,6 +108,7 @@
 
     #pointerup() {
       if (!this.#enable) return;
+
       this.#pointerInputFlag = false;
       this.update(DIRS.NEUTRAL);
     }
