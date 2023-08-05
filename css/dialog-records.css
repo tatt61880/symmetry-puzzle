@@ -51,6 +51,7 @@
 
 #dialog-records #records-table-div th,
 #dialog-records #records-table-div td {
+  height: 40px;
   padding: 5px 15px;
   border: 1px solid black;
 }
