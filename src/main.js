@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.07.15';
+  const VERSION_TEXT = 'v2023.09.09';
 
   const app = window.app;
   Object.freeze(app);
@@ -629,8 +629,7 @@
           const svg = app.svg.createSvg();
           svg.setAttribute('width', size);
           svg.setAttribute('height', size);
-          const color = getStepColor(1, 1);
-          const crown = app.svg.createCrown(size, { x: 0, y: 0, fill: color });
+          const crown = createCrown(size, 0, 0, 1, 1);
           tr.appendChild(th);
           th.appendChild(svg);
           svg.appendChild(crown);
@@ -659,8 +658,7 @@
           const svg = app.svg.createSvg();
           svg.setAttribute('width', size);
           svg.setAttribute('height', size);
-          const color = getStepColor(1, 0);
-          const crown = app.svg.createCrown(size, { x: 0, y: 0, fill: color });
+          const crown = createCrown(size, 0, 0, 1, 0);
           tr.appendChild(th);
           th.appendChild(svg);
           svg.appendChild(crown);
@@ -686,8 +684,13 @@
         tbody.appendChild(tr);
         {
           const th = document.createElement('th');
+          const svg = app.svg.createSvg();
+          svg.setAttribute('width', size);
+          svg.setAttribute('height', size);
+          const crown = createCrown(size, 0, 0, null, 1);
           tr.appendChild(th);
-          th.innerText = 'Not solved';
+          th.appendChild(svg);
+          svg.appendChild(crown);
         }
         {
           const td = document.createElement('td');
@@ -863,11 +866,8 @@
 
       {
         {
-          if (highestScore !== null) {
-            const color = getStepColor(highestScore, bestStep);
-            const crown = app.svg.createCrown(20, { x: 0, y: 1, fill: color });
-            g.appendChild(crown);
-          }
+          const crown = createCrown(20, 0, 1, highestScore, bestStep);
+          g.appendChild(crown);
         }
         {
           const text = app.svg.createText(5, {
@@ -1611,11 +1611,13 @@
           text.setAttribute('transform', `translate(${width},${height})`);
           g.appendChild(text);
 
-          const crown = app.svg.createCrown(frameSize, {
-            x: frameBorderWidth / frameSize,
-            y: frameBorderWidth / frameSize / 2,
-            fill: color,
-          });
+          const crown = createCrown(
+            frameSize,
+            frameBorderWidth / frameSize,
+            frameBorderWidth / frameSize / 2,
+            highestScore,
+            bestStep
+          );
           g.appendChild(crown);
         }
 
@@ -1642,7 +1644,7 @@
   }
 
   function getStepColor(step, bestStep) {
-    if (bestStep === undefined) {
+    if (bestStep === undefined || step === null) {
       return app.colors.stepUnknown;
     } else if (step > bestStep) {
       return app.colors.stepLose;
@@ -2044,6 +2046,28 @@
     } else {
       const width = (HEIGHT * window.innerWidth) / window.innerHeight;
       elems.viewport.setAttribute('content', `width=${width}`);
+    }
+  }
+
+  function createCrown(size, x, y, step, bestStep) {
+    const color = getStepColor(step, bestStep);
+    if (color === app.colors.stepUnknown) {
+      const g = app.svg.createG();
+      const crown = app.svg.createCrown(size, {
+        x,
+        y,
+        fill: 'none',
+        stroke: app.colors.stepUnknown,
+      });
+      g.appendChild(crown);
+      g.setAttribute('stroke-dasharray', `${size * 0.02},${size * 0.05}`);
+      return g;
+    } else {
+      return app.svg.createCrown(size, {
+        x,
+        y,
+        fill: color,
+      });
     }
   }
 })();

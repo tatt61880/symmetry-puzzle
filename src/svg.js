@@ -23,30 +23,32 @@
     line.setAttribute('x2', blockSize * x2);
     line.setAttribute('y2', blockSize * y2);
     line.setAttribute('stroke-width', `${blockSize / 50}`);
-    line.setAttribute('stroke', stroke);
+    if (stroke) line.setAttribute('stroke', stroke);
     return line;
   };
 
-  svg.createCircle = (blockSize, { cx, cy, r, fill }) => {
+  svg.createCircle = (blockSize, { cx, cy, r, fill, stroke }) => {
     const circle = document.createElementNS(SVG_NS, 'circle');
     circle.setAttribute('cx', blockSize * cx);
     circle.setAttribute('cy', blockSize * cy);
     circle.setAttribute('r', blockSize * r);
-    circle.setAttribute('fill', fill);
+    if (fill) circle.setAttribute('fill', fill);
+    if (stroke) circle.setAttribute('stroke', stroke);
     return circle;
   };
 
-  svg.createRect = (blockSize, { x, y, width, height, fill }) => {
+  svg.createRect = (blockSize, { x, y, width, height, fill, stroke }) => {
     const rect = document.createElementNS(SVG_NS, 'rect');
     rect.setAttribute('x', blockSize * x);
     rect.setAttribute('y', blockSize * y);
     rect.setAttribute('width', blockSize * width);
     rect.setAttribute('height', blockSize * height);
-    rect.setAttribute('fill', fill);
+    if (fill) rect.setAttribute('fill', fill);
+    if (stroke) rect.setAttribute('stroke', stroke);
     return rect;
   };
 
-  svg.createPolygon = (blockSize, { points, fill }) => {
+  svg.createPolygon = (blockSize, { points, fill, stroke }) => {
     const polygon = document.createElementNS(SVG_NS, 'polygon');
     let pointsStr = '';
     for (const point of points) {
@@ -54,11 +56,12 @@
       pointsStr += `${blockSize * point[0]},${blockSize * point[1]}`;
     }
     polygon.setAttribute('points', pointsStr);
-    polygon.setAttribute('fill', fill);
+    if (fill) polygon.setAttribute('fill', fill);
+    if (stroke) polygon.setAttribute('stroke', stroke);
     return polygon;
   };
 
-  svg.createCrown = (blockSize, { x, y, fill }) => {
+  svg.createCrown = (blockSize, { x, y, fill, stroke }) => {
     const g = svg.createG();
     const polygon = svg.createPolygon(blockSize, {
       points: [
@@ -71,6 +74,7 @@
         [x + 0.2, y + 0.7],
       ],
       fill,
+      stroke,
     });
     const rect = svg.createRect(blockSize, {
       x: x + 0.2,
@@ -78,16 +82,35 @@
       width: 0.6,
       height: 0.15,
       fill,
+      stroke,
     });
     g.appendChild(polygon);
     g.appendChild(
-      svg.createCircle(blockSize, { cx: x + 0.1, cy: y + 0.3, r: 0.05, fill })
+      svg.createCircle(blockSize, {
+        cx: x + 0.1,
+        cy: y + 0.3,
+        r: 0.05,
+        fill,
+        stroke,
+      })
     );
     g.appendChild(
-      svg.createCircle(blockSize, { cx: x + 0.5, cy: y + 0.15, r: 0.05, fill })
+      svg.createCircle(blockSize, {
+        cx: x + 0.5,
+        cy: y + 0.15,
+        r: 0.05,
+        fill,
+        stroke,
+      })
     );
     g.appendChild(
-      svg.createCircle(blockSize, { cx: x + 0.9, cy: y + 0.3, r: 0.05, fill })
+      svg.createCircle(blockSize, {
+        cx: x + 0.9,
+        cy: y + 0.3,
+        r: 0.05,
+        fill,
+        stroke,
+      })
     );
     g.appendChild(rect);
     return g;

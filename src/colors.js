@@ -53,8 +53,8 @@
 
   colors.stepWin = '#ff5555';
   colors.stepDraw = '#ff8800';
-  colors.stepLose = '#222222';
-  colors.stepUnknown = '#808080';
+  colors.stepLose = '#666666';
+  colors.stepUnknown = '#a0a0a0';
 
   Object.freeze(colors);
 
