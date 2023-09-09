@@ -1596,6 +1596,18 @@
           levelObj,
           level.isLineMode()
         );
+
+        {
+          const crown = createCrown(
+            frameSize,
+            frameBorderWidth / frameSize,
+            frameBorderWidth / frameSize / 2,
+            highestScore,
+            bestStep
+          );
+          g.appendChild(crown);
+        }
+
         if (highestScore !== null) {
           const color = getStepColor(highestScore, bestStep);
 
@@ -1610,15 +1622,6 @@
           text.setAttribute('font-size', fontSize);
           text.setAttribute('transform', `translate(${width},${height})`);
           g.appendChild(text);
-
-          const crown = createCrown(
-            frameSize,
-            frameBorderWidth / frameSize,
-            frameBorderWidth / frameSize / 2,
-            highestScore,
-            bestStep
-          );
-          g.appendChild(crown);
         }
 
         // 記録更新？
