@@ -15,15 +15,6 @@
     padding: 5px 5px 10px;
   }
 
-  .mode-title {
-    padding: 5px;
-    margin: 5px 20px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #000055;
-    background-color: #c0cbff;
-  }
-
   .border {
     padding: 5px;
     margin: 10px 30px;
@@ -96,5 +87,46 @@
   &::backdrop {
     cursor: pointer;
     background-color: rgb(0 0 0 / 50%);
+  }
+
+  .tab-area {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+  }
+   
+  .tab {
+    display: block;
+    order: -1;
+    float: left;
+    width: calc(100%/2);
+    height: 50px;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 50px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    background-color: #dddddd;
+  }
+   
+  & input[name="help-tab-en"],
+  & input[name="help-tab-ja"] {
+    display: none;
+  }
+   
+  & input:checked + .tab {
+    font-size: 1.2rem;
+    color: #000055;
+    background-color: #c0cbff;
+  }
+   
+  .tab-content {
+    display: none;
+    width: 100%;
+  }
+   
+  & input:checked + .tab + .tab-content {
+    display: block;
   }
 }
