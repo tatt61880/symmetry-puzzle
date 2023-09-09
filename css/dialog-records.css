@@ -55,3 +55,15 @@
   padding: 5px 15px;
   border: 1px solid black;
 }
+
+#dialog-records #records-table-div th {
+  background-color: #ddeeff;
+}
+
+#dialog-records #records-table-div .total-col {
+  border-left: double;
+}
+
+#dialog-records #records-table-div .total-row {
+  border-top: double;
+}

@@ -536,6 +536,7 @@
         const th = document.createElement('th');
         tr.appendChild(th);
         th.innerText = 'Total';
+        th.classList.add('total-col');
       }
     }
 
@@ -648,6 +649,7 @@
           const td = document.createElement('td');
           td.innerText = numTotalSolvedBest;
           tr.appendChild(td);
+          td.classList.add('total-col');
         }
       }
       {
@@ -677,6 +679,7 @@
           const td = document.createElement('td');
           td.innerText = numTotalSolvedNormal;
           tr.appendChild(td);
+          td.classList.add('total-col');
         }
       }
       {
@@ -706,6 +709,7 @@
           const td = document.createElement('td');
           td.innerText = numTotalNotSolved;
           tr.appendChild(td);
+          td.classList.add('total-col');
         }
       }
       {
@@ -715,21 +719,26 @@
           const th = document.createElement('th');
           tr.appendChild(th);
           th.innerText = 'Total';
+          th.classList.add('total-row');
         }
         {
           const td = document.createElement('td');
           td.innerText = numPointTotal;
           tr.appendChild(td);
+          td.classList.add('total-row');
         }
         {
           const td = document.createElement('td');
           td.innerText = numLineTotal;
           tr.appendChild(td);
+          td.classList.add('total-row');
         }
         {
           const td = document.createElement('td');
           td.innerText = numTotalTotal;
           tr.appendChild(td);
+          td.classList.add('total-row');
+          td.classList.add('total-col');
         }
       }
     }
