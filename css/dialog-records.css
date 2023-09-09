@@ -10,60 +10,54 @@
   padding: 0;
   margin: 44px auto;
   border: none;
-}
 
-#dialog-records #dialog-records-div {
-  padding: 5px 5px 10px;
-}
+  #dialog-records-div {
+    padding: 5px 5px 10px;
+  }
 
-#dialog-records .mode-title {
-  padding: 5px;
-  margin: 5px 20px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  background-color: #ffc0cb;
-}
+  .border {
+    padding: 5px;
+    margin: 10px 30px;
+    border: 1px solid #dddddd;
+  }
 
-#dialog-records .border {
-  padding: 5px;
-  margin: 10px 30px;
-  border: 1px solid #dddddd;
-}
+  .bold {
+    font-weight: bold;
+  }
 
-#dialog-records .bold {
-  font-weight: bold;
-}
+  #records-top {
+    display: flex;
+    align-items: center;
+  }
 
-#dialog-records::backdrop {
-  cursor: pointer;
-  background-color: rgb(0 0 0 / 50%);
-}
+  #records-table-div {
+    & table {
+      margin: auto;
+      border-collapse: collapse;
+    }
 
-#dialog-records #records-top {
-  display: flex;
-  align-items: center;
-}
+    & th,
+    & td {
+      height: 40px;
+      padding: 5px 15px;
+      border: 1px solid black;
+    }
 
-#dialog-records #records-table-div table {
-  margin: auto;
-  border-collapse: collapse;
-}
+    & th {
+      background-color: #ddeeff;
+    }
 
-#dialog-records #records-table-div th,
-#dialog-records #records-table-div td {
-  height: 40px;
-  padding: 5px 15px;
-  border: 1px solid black;
-}
+    .total-col {
+      border-left: double;
+    }
 
-#dialog-records #records-table-div th {
-  background-color: #ddeeff;
-}
+    .total-row {
+      border-top: double;
+    }
+  }
 
-#dialog-records #records-table-div .total-col {
-  border-left: double;
-}
-
-#dialog-records #records-table-div .total-row {
-  border-top: double;
+  &::backdrop {
+    cursor: pointer;
+    background-color: rgb(0 0 0 / 50%);
+  }
 }

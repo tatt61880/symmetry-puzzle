@@ -10,91 +10,91 @@
   padding: 0;
   margin: 44px auto;
   border: none;
-}
 
-#dialog-help #dialog-help-div {
-  padding: 5px 5px 10px;
-}
+  #dialog-help-div {
+    padding: 5px 5px 10px;
+  }
 
-#dialog-help .mode-title {
-  padding: 5px;
-  margin: 5px 20px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #000055;
-  background-color: #c0cbff;
-}
+  .mode-title {
+    padding: 5px;
+    margin: 5px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000055;
+    background-color: #c0cbff;
+  }
 
-#dialog-help .border {
-  padding: 5px;
-  margin: 10px 30px;
-  border: 1px solid #dddddd;
-}
+  .border {
+    padding: 5px;
+    margin: 10px 30px;
+    border: 1px solid #dddddd;
+  }
 
-#dialog-help .bold {
-  font-weight: bold;
-}
+  .bold {
+    font-weight: bold;
+  }
 
-#dialog-help::backdrop {
-  cursor: pointer;
-  background-color: rgb(0 0 0 / 50%);
-}
+  #setting-top {
+    display: flex;
+    align-items: center;
+  }
+  
+  #setting-top > button:nth-of-type(1) {
+    margin-left: auto;
+  }
 
-#dialog-help #setting-top {
-  display: flex;
-  align-items: center;
-}
+  .setting-lang-button {
+    width: 80px;
+    height: 30px;
+    margin: 0 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #505050;
+    cursor: pointer;
+    user-select: none;
+    background-color: #dddddd;
+    border: none;
+    outline: none;
+    
+    &:hover {
+      background-color: #cccccc;
+    }
+  
+    &.active {
+      color: #dddddd;
+      background-color: #505050;
+    }
+  }
+  
+  .example-image {
+    width: 310px;
+    height: 90px;
+  }
+  
+  .tatt61880-icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 5px;
+  }
+  
+  .warn {
+    padding: 5px;
+    margin: 5px 30px 10px;
+    background: #ffddbb;
+  }
+  
+  .flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  & hr {
+    margin: 0;
+  }
 
-#dialog-help #setting-top > button:nth-of-type(1) {
-  margin-left: auto;
-}
-
-#dialog-help .setting-lang-button {
-  width: 80px;
-  height: 30px;
-  margin: 0 5px;
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: #505050;
-  cursor: pointer;
-  user-select: none;
-  background-color: #dddddd;
-  border: none;
-  outline: none;
-}
-
-#dialog-help .setting-lang-button:hover {
-  background-color: #cccccc;
-}
-
-#dialog-help .setting-lang-button.active {
-  color: #dddddd;
-  background-color: #505050;
-}
-
-#dialog-help .example-image {
-  width: 310px;
-  height: 90px;
-}
-
-#dialog-help .tatt61880-icon {
-  width: 32px;
-  height: 32px;
-  margin-right: 5px;
-}
-
-#dialog-help .warn {
-  padding: 5px;
-  margin: 5px 30px 10px;
-  background: #ffddbb;
-}
-
-#dialog-help .flex {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#dialog-help hr {
-  margin: 0;
+  &::backdrop {
+    cursor: pointer;
+    background-color: rgb(0 0 0 / 50%);
+  }
 }
