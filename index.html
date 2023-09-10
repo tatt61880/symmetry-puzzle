@@ -14,33 +14,33 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.07.01">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.07.01">
 
-  <link rel="stylesheet" href="./css/main.css?2023.09.10c">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.09.10c">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.09.10c">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.09.10c">
-  <link rel="stylesheet" href="./css/animation.css?2023.09.10c">
+  <link rel="stylesheet" href="./css/main.css?2023.09.10d">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.09.10d">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.09.10d">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.09.10d">
+  <link rel="stylesheet" href="./css/animation.css?2023.09.10d">
 
-  <script src="./src/states.js?2023.09.10c"></script>
-  <script src="./src/colors.js?2023.09.10c"></script>
-  <script src="./src/svg.js?2023.09.10c"></script>
-  <script src="./src/class-stack.js?2023.09.10c"></script>
-  <script src="./src/class-level.js?2023.09.10c"></script>
+  <script src="./src/states.js?2023.09.10d"></script>
+  <script src="./src/colors.js?2023.09.10d"></script>
+  <script src="./src/svg.js?2023.09.10d"></script>
+  <script src="./src/class-stack.js?2023.09.10d"></script>
+  <script src="./src/class-level.js?2023.09.10d"></script>
 
-  <script src="./src/class-savedata.js?2023.09.10c"></script>
-  <script src="./src/class-undo-info.js?2023.09.10c"></script>
-  <script src="./src/class-elems.js?2023.09.10c"></script>
-  <script src="./src/class-stick.js?2023.09.10c"></script>
+  <script src="./src/class-savedata.js?2023.09.10d"></script>
+  <script src="./src/class-undo-info.js?2023.09.10d"></script>
+  <script src="./src/class-elems.js?2023.09.10d"></script>
+  <script src="./src/class-stick.js?2023.09.10d"></script>
 
-  <script src="./src/levels-point.js?2023.09.10c"></script>
-  <script src="./src/levels-point-ex.js?2023.09.10c"></script>
-  <script src="./src/levels-line.js?2023.09.10c"></script>
-  <script src="./src/levels-line-ex.js?2023.09.10c"></script>
-  <script src="./src/elems.js?2023.09.10c"></script>
+  <script src="./src/levels-point.js?2023.09.10d"></script>
+  <script src="./src/levels-point-ex.js?2023.09.10d"></script>
+  <script src="./src/levels-line.js?2023.09.10d"></script>
+  <script src="./src/levels-line-ex.js?2023.09.10d"></script>
+  <script src="./src/elems.js?2023.09.10d"></script>
 
-  <script src="./src/solve.js?2023.09.10c"></script>
+  <script src="./src/solve.js?2023.09.10d"></script>
 
-  <script src="./src/analyze-url.js?2023.09.10c"></script>
-  <script src="./src/main.js?2023.09.10c"></script>
+  <script src="./src/analyze-url.js?2023.09.10d"></script>
+  <script src="./src/main.js?2023.09.10d"></script>
 </head>
 
 <body>
@@ -80,77 +80,79 @@
           <button id="setting-lang-en" class="setting-lang-button">English</button>
         </div>
 
-        <div class="translatable en" lang="en">
-          <p class="warn">
-            Note: This web application is in beta version.<br>
-            Levels are added/removed as needed.<br>
-          </p>
-          <p class="warn">
-            Data is saved in localStorage.
-          </p>
-
-          <div class="tab-area">
-            <input type="radio" name="help-tab-en" id="help-tab-en-point" checked>
-            <label class="tab" for="help-tab-en-point">Point Symmetry Puzzle</label>
-            <div class="tab-content">
-              <p>
-                Manipulate <span class="blue-block">Blue</span> to make<br>
-                <span class="red-block">Red</span> a <span class="bold">connected point symmetrical one</span>.
-              </p>
-              <p class="border">
-                <img class="example-image" alt="example point symmetry"
-                  src="./images/example-point.png?2023.09.10c"><br>
-                Examples of <span class="bold">connected point symmetrical shape</span>.
-              </p>
-            </div>
-            <input type="radio" name="help-tab-en" id="help-tab-en-line">
-            <label class="tab" for="help-tab-en-line">Line Symmetry Puzzle</label>
-            <div class="tab-content">
-              <p>
-                Manipulate <span class="blue-block">Blue</span> to make<br>
-                <span class="red-block">Red</span> a <span class="bold">connected line symmetrical one</span>.
-              </p>
-              <p class="border">
-                <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.09.10c"><br>
-                Examples of <span class="bold">connected line symmetrical shape</span>.
-              </p>
-            </div>
+        <div>
+          <div class="translatable en" lang="en">
+            <p class="warn">
+              Note: This web application is in beta version.<br>
+              Levels are added/removed as needed.<br>
+            </p>
+            <p class="warn">
+              Data is saved in localStorage.
+            </p>
           </div>
-        </div>
-
-        <div class="translatable ja" lang="ja">
-          <p class="warn">
-            このWebアプリはベータ版（未完成）です。<br>
-            随時、レベルを追加/変更しています。<br>
-          </p>
-          <p class="warn">
-            データはlocalStorageに保存されます。
-          </p>
+          <div class="translatable ja" lang="ja">
+            <p class="warn">
+              このWebアプリはベータ版（未完成）です。<br>
+              随時、レベルを追加/変更しています。<br>
+            </p>
+            <p class="warn">
+              データはlocalStorageに保存されます。
+            </p>
+          </div>
 
           <div class="tab-area">
-            <input type="radio" name="help-tab-ja" id="help-tab-ja-point" checked>
-            <label class="tab" for="help-tab-ja-point">点対称パズル</label>
+            <input type="radio" name="help-tab" id="help-tab-point" checked>
+            <label class="tab translatable-toggle" for="help-tab-point" data-en="Point Symmetry Puzzle"
+              data-ja="点対称パズル"></label>
             <div class="tab-content">
-              <p>
-                <span class="blue-block">青色の図形</span>を操作し、<br>
-                <span class="red-block">赤色の図形</span>を<span class="bold">1つながりの点対称図形</span>にしてください。
-              </p>
-              <p class="border">
-                <img class="example-image" alt="example point symmetry" src="./images/example-point.png?2023.09.10"><br>
-                <span class="bold">1つながりの点対称図形</span>の3つの例
-              </p>
+              <div class="translatable en" lang="en">
+                <p>
+                  Manipulate <span class="blue-block">Blue</span> to make<br>
+                  <span class="red-block">Red</span> a <span class="bold">connected point symmetrical one</span>.
+                </p>
+                <p class="border">
+                  <img class="example-image" alt="example point symmetry"
+                    src="./images/example-point.png?2023.09.10"><br>
+                  Examples of <span class="bold">connected point symmetrical shape</span>.
+                </p>
+              </div>
+              <div class="translatable ja" lang="ja">
+                <p>
+                  <span class="blue-block">青色の図形</span>を操作し、<br>
+                  <span class="red-block">赤色の図形</span>を<span class="bold">1つながりの点対称図形</span>にしてください。
+                </p>
+                <p class="border">
+                  <img class="example-image" alt="example point symmetry"
+                    src="./images/example-point.png?2023.09.10"><br>
+                  <span class="bold">1つながりの点対称図形</span>の3つの例
+                </p>
+              </div>
             </div>
-            <input type="radio" name="help-tab-ja" id="help-tab-ja-line">
-            <label class="tab" for="help-tab-ja-line">線対称パズル</label>
+
+            <input type="radio" name="help-tab" id="help-tab-line">
+            <label class="tab translatable-toggle" for="help-tab-line" data-en="Line Symmetry Puzzle"
+              data-ja="線対称パズル"></label>
             <div class="tab-content">
-              <p>
-                <span class="blue-block">青色の図形</span>を操作し、<br>
-                <span class="red-block">赤色の図形</span>を<span class="bold">1つながりの線対称図形</span>にしてください。
-              </p>
-              <p class="border">
-                <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.09.10"><br>
-                <span class="bold">1つながりの線対称図形</span>の3つの例
-              </p>
+              <div class="translatable en" lang="en">
+                <p>
+                  Manipulate <span class="blue-block">Blue</span> to make<br>
+                  <span class="red-block">Red</span> a <span class="bold">connected line symmetrical one</span>.
+                </p>
+                <p class="border">
+                  <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.09.11"><br>
+                  Examples of <span class="bold">connected line symmetrical shape</span>.
+                </p>
+              </div>
+              <div class="translatable ja" lang="ja">
+                <p>
+                  <span class="blue-block">青色の図形</span>を操作し、<br>
+                  <span class="red-block">赤色の図形</span>を<span class="bold">1つながりの線対称図形</span>にしてください。
+                </p>
+                <p class="border">
+                  <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.09.11"><br>
+                  <span class="bold">1つながりの線対称図形</span>の3つの例
+                </p>
+              </div>
             </div>
           </div>
         </div>

@@ -110,8 +110,7 @@
     background-color: #dddddd;
   }
    
-  & input[name="help-tab-en"],
-  & input[name="help-tab-ja"] {
+  & input[name="help-tab"] {
     display: none;
   }
    

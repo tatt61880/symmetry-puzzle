@@ -23,10 +23,8 @@
       dialogDiv: 'dialog-help-div',
       langEn: 'setting-lang-en',
       langJa: 'setting-lang-ja',
-      tabEnPoint: 'help-tab-en-point',
-      tabEnLine: 'help-tab-en-line',
-      tabJaPoint: 'help-tab-ja-point',
-      tabJaLine: 'help-tab-ja-line',
+      tabPoint: 'help-tab-point',
+      tabLine: 'help-tab-line',
     },
 
     records: {

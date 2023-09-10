@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.09.10';
+  const VERSION_TEXT = 'v2023.09.10d';
 
   const app = window.app;
   Object.freeze(app);
@@ -489,6 +489,12 @@
   }
 
   function showHelpDialog() {
+    if (checkMode === app.Level.CHECK_MODE.POINT) {
+      elems.help.tabPoint.checked = true;
+    } else if (checkMode === app.Level.CHECK_MODE.LINE) {
+      elems.help.tabLine.checked = true;
+    }
+
     elems.help.dialog.showModal();
   }
 
@@ -760,14 +766,6 @@
       }
       return 'none';
     })();
-
-    if (mode === app.Level.CHECK_MODE.POINT) {
-      elems.help.tabJaPoint.checked = true;
-      elems.help.tabEnPoint.checked = true;
-    } else if (mode === app.Level.CHECK_MODE.LINE) {
-      elems.help.tabJaLine.checked = true;
-      elems.help.tabEnLine.checked = true;
-    }
 
     for (const elem of document.getElementsByClassName('check-mode')) {
       elem.classList.add('hide-mode');
@@ -1199,35 +1197,6 @@
       elems.help.langJa.addEventListener(
         'click',
         () => selectLang('ja'),
-        false
-      );
-
-      elems.help.tabEnPoint.addEventListener(
-        'change',
-        () => {
-          elems.help.tabJaPoint.checked = elems.help.tabEnPoint.checked;
-        },
-        false
-      );
-      elems.help.tabEnLine.addEventListener(
-        'change',
-        () => {
-          elems.help.tabJaLine.checked = elems.help.tabEnLine.checked;
-        },
-        false
-      );
-      elems.help.tabJaPoint.addEventListener(
-        'change',
-        () => {
-          elems.help.tabEnPoint.checked = elems.help.tabJaPoint.checked;
-        },
-        false
-      );
-      elems.help.tabJaLine.addEventListener(
-        'change',
-        () => {
-          elems.help.tabEnLine.checked = elems.help.tabJaLine.checked;
-        },
         false
       );
     }
