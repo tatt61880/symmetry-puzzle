@@ -916,11 +916,11 @@
       const x = ((count - 1) % COLS) * WIDTH;
       const y = Math.floor((count - 1) / COLS) * HEIGHT;
       g.setAttribute('transform', `translate(${x},${y})`);
-      g.setAttribute('data-id', id);
+      g.dataset.id = id;
       g.addEventListener(
         'click',
         function () {
-          const id = Number(g.getAttribute('data-id'));
+          const id = Number(g.dataset.id);
           loadLevelById(id);
           closeLevelsDialog();
         },

@@ -52,8 +52,9 @@
     }
   
     &.active {
-      color: #dddddd;
-      background-color: #505050;
+      font-size: 1rem;
+      color: #000055;
+      background-color: #c0cbff;
     }
   }
   
@@ -101,13 +102,17 @@
     float: left;
     width: calc(100%/2);
     height: 50px;
-    font-size: 15px;
+    font-size: 1rem;
     font-weight: bold;
     line-height: 50px;
     text-align: center;
     cursor: pointer;
     user-select: none;
     background-color: #dddddd;
+
+    &:hover {
+      background-color: #cccccc;
+    }
   }
    
   & input[name="help-tab"] {
@@ -115,7 +120,7 @@
   }
    
   & input:checked + .tab {
-    font-size: 1.2rem;
+    font-size: 1.1em;
     color: #000055;
     background-color: #c0cbff;
   }
