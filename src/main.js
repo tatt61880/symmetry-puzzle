@@ -792,10 +792,19 @@
     for (const elem of document.getElementsByClassName('translatable')) {
       elem.classList.add('hide-lang');
     }
+
     for (const elem of document.getElementsByClassName(
       `translatable ${lang}`
     )) {
       elem.classList.remove('hide-lang');
+    }
+
+    for (const elem of document.getElementsByClassName(`translatable-toggle`)) {
+      if (elem instanceof SVGTextElement) {
+        elem.textContent = elem.dataset[lang];
+      } else {
+        elem.innerText = elem.dataset[lang];
+      }
     }
   }
 

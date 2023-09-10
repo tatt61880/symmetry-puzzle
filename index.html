@@ -14,33 +14,33 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.07.01">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.07.01">
 
-  <link rel="stylesheet" href="./css/main.css?2023.09.10b">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.09.10b">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.09.10b">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.09.10b">
-  <link rel="stylesheet" href="./css/animation.css?2023.09.10b">
+  <link rel="stylesheet" href="./css/main.css?2023.09.10c">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.09.10c">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.09.10c">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.09.10c">
+  <link rel="stylesheet" href="./css/animation.css?2023.09.10c">
 
-  <script src="./src/states.js?2023.09.10b"></script>
-  <script src="./src/colors.js?2023.09.10b"></script>
-  <script src="./src/svg.js?2023.09.10b"></script>
-  <script src="./src/class-stack.js?2023.09.10b"></script>
-  <script src="./src/class-level.js?2023.09.10b"></script>
+  <script src="./src/states.js?2023.09.10c"></script>
+  <script src="./src/colors.js?2023.09.10c"></script>
+  <script src="./src/svg.js?2023.09.10c"></script>
+  <script src="./src/class-stack.js?2023.09.10c"></script>
+  <script src="./src/class-level.js?2023.09.10c"></script>
 
-  <script src="./src/class-savedata.js?2023.09.10b"></script>
-  <script src="./src/class-undo-info.js?2023.09.10b"></script>
-  <script src="./src/class-elems.js?2023.09.10b"></script>
-  <script src="./src/class-stick.js?2023.09.10b"></script>
+  <script src="./src/class-savedata.js?2023.09.10c"></script>
+  <script src="./src/class-undo-info.js?2023.09.10c"></script>
+  <script src="./src/class-elems.js?2023.09.10c"></script>
+  <script src="./src/class-stick.js?2023.09.10c"></script>
 
-  <script src="./src/levels-point.js?2023.09.10b"></script>
-  <script src="./src/levels-point-ex.js?2023.09.10b"></script>
-  <script src="./src/levels-line.js?2023.09.10b"></script>
-  <script src="./src/levels-line-ex.js?2023.09.10b"></script>
-  <script src="./src/elems.js?2023.09.10b"></script>
+  <script src="./src/levels-point.js?2023.09.10c"></script>
+  <script src="./src/levels-point-ex.js?2023.09.10c"></script>
+  <script src="./src/levels-line.js?2023.09.10c"></script>
+  <script src="./src/levels-line-ex.js?2023.09.10c"></script>
+  <script src="./src/elems.js?2023.09.10c"></script>
 
-  <script src="./src/solve.js?2023.09.10b"></script>
+  <script src="./src/solve.js?2023.09.10c"></script>
 
-  <script src="./src/analyze-url.js?2023.09.10b"></script>
-  <script src="./src/main.js?2023.09.10b"></script>
+  <script src="./src/analyze-url.js?2023.09.10c"></script>
+  <script src="./src/main.js?2023.09.10c"></script>
 </head>
 
 <body>
@@ -50,12 +50,11 @@
         <img id="icon" alt="icon" src="./images/icon-point.png?2023.01.15" class="check-mode none">
         <img id="icon-point" alt="icon" src="./images/icon-point.png?2023.01.15" class="check-mode point hide-mode">
         <img id="icon-line" alt="icon" src="./images/icon-line.png?2023.01.15" class="check-mode line hide-mode">
-        <span class="title translatable en check-mode none" lang="en">Symmetry Puzzle</span>
-        <span class="title translatable ja check-mode none hide-lang" lang="ja">対称パズル</span>
-        <span class="title translatable en check-mode point hide-mode" lang="en">Point Symmetry Puzzle</span>
-        <span class="title translatable ja check-mode point hide-lang hide-mode" lang="ja">点対称パズル</span>
-        <span class="title translatable en check-mode line hide-mode" lang="en">Line Symmetry Puzzle</span>
-        <span class="title translatable ja check-mode line hide-lang hide-mode" lang="ja">線対称パズル</span>
+        <span class="title translatable-toggle check-mode none" data-en="Symmetry Puzzle" data-ja="対称パズル"></span>
+        <span class="title translatable-toggle check-mode point hide-mode" data-en="Point Symmetry Puzzle"
+          data-ja="点対称パズル"></span>
+        <span class="title translatable-toggle check-mode line hide-mode" data-en="Line Symmetry Puzzle"
+          data-ja="線対称パズル"></span>
         <span id="version">vXXXX.XX.XX</span>
       </div>
       <svg width="30" height="30" style="margin: 0 5px 0 auto;">
@@ -100,7 +99,7 @@
               </p>
               <p class="border">
                 <img class="example-image" alt="example point symmetry"
-                  src="./images/example-point.png?2023.09.10b"><br>
+                  src="./images/example-point.png?2023.09.10c"><br>
                 Examples of <span class="bold">connected point symmetrical shape</span>.
               </p>
             </div>
@@ -112,7 +111,7 @@
                 <span class="red-block">Red</span> a <span class="bold">connected line symmetrical one</span>.
               </p>
               <p class="border">
-                <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.09.10b"><br>
+                <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.09.10c"><br>
                 Examples of <span class="bold">connected line symmetrical shape</span>.
               </p>
             </div>
@@ -137,8 +136,7 @@
                 <span class="red-block">赤色の図形</span>を<span class="bold">1つながりの点対称図形</span>にしてください。
               </p>
               <p class="border">
-                <img class="example-image" alt="example point symmetry"
-                  src="./images/example-point.png?2023.09.10b"><br>
+                <img class="example-image" alt="example point symmetry" src="./images/example-point.png?2023.09.10"><br>
                 <span class="bold">1つながりの点対称図形</span>の3つの例
               </p>
             </div>
@@ -150,7 +148,7 @@
                 <span class="red-block">赤色の図形</span>を<span class="bold">1つながりの線対称図形</span>にしてください。
               </p>
               <p class="border">
-                <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.09.10b"><br>
+                <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.09.10"><br>
                 <span class="bold">1つながりの線対称図形</span>の3つの例
               </p>
             </div>
@@ -170,42 +168,21 @@
 
     <div id="title">
       <div id="title-logo">
-        <img src="./images/title-logo.png?2023.01.15" alt="Application title logo image">
+        <img src="./images/title-logo.png?2023.09.10" alt="Application title logo image">
       </div>
 
       <div class="flex">
-        <div id="button-play-point" class="title-button">
-          <div class="title-button-text translatable en" lang="en">
-            Point<br>
-            Symmetry<br>
-            Puzzle
-          </div>
-          <div class="title-button-text translatable ja hide-lang" lang="ja">
-            点対称<br>
-            パズル
-          </div>
+        <div id="button-play-point" class="title-button title-button-text translatable-toggle"
+          data-en="Point&#10;Symmetry&#10;Puzzle" data-ja="点対称&#10;パズル">
         </div>
-        <div id="button-play-line" class="title-button">
-          <div class="title-button-text translatable en" lang="en">
-            Line<br>
-            Symmetry<br>
-            Puzzle
-          </div>
-          <div class="title-button-text translatable ja hide-lang" lang="ja">
-            線対称<br>
-            パズル
-          </div>
+        <div id="button-play-line" class="title-button title-button-text translatable-toggle"
+          data-en="Line&#10;Symmetry&#10;Puzzle" data-ja="線対称&#10;パズル">
         </div>
       </div>
 
       <div class="flex">
-        <div id="button-records" class="title-button">
-          <div class="title-button-text translatable en" lang="en">
-            Records
-          </div>
-          <div class="title-button-text translatable ja hide-lang" lang="ja">
-            記録
-          </div>
+        <div id="button-records" class="title-button title-button-text translatable-toggle" data-en="Records"
+          data-ja="記録">
         </div>
       </div>
     </div>
@@ -228,8 +205,7 @@
 
     <div id="game" class="hide">
       <div id="level-widget" class="inner level noselect">
-        <h2 class="translatable en" lang="en">LEVEL</h2>
-        <h2 class="translatable ja" lang="ja">レベル</h2>
+        <h2 class="translatable-toggle" data-en="LEVEL" data-ja="レベル"></h2>
         <div>
           <svg width="450" height="85">
             <!-- Reset -->
@@ -289,8 +265,7 @@
         <div id="dialog-levels-div">
           <!--
           <div class="toggle-div">
-            <div class="toggle-text translatable ja" lang="ja">クリアしたレベルを隠す</div>
-            <div class="toggle-text translatable en" lang="en">Hide completed levels</div>
+            <div class="toggle-text translatable-toggle" data-en="Hide completed levels" data-ja="クリアしたレベルを隠す"></div>
             <div class="toggle-button">
               <input id="hide-completed-levels" type="checkbox" class="toggle-input">
               <label class="toggle-label"></label>
@@ -298,8 +273,8 @@
           </div>
           -->
           <div class="toggle-div">
-            <div class="toggle-text translatable ja" lang="ja">最短手数でクリアしたレベルを隠す</div>
-            <div class="toggle-text translatable en" lang="en">Hide levels completed in the shortest steps.
+            <div class="toggle-text translatable-toggle" data-en="Hide levels completed in the shortest steps."
+              data-ja="最短手数でクリアしたレベルを隠す">
             </div>
             <div class="toggle-button">
               <input id="hide-shortest-levels" type="checkbox" class="toggle-input">
@@ -428,36 +403,28 @@
             <rect id="edit-switch-mode" x="-65" y="-15" width="130" height="30" fill="#e5a0e5" stroke="#aa33aa"
               stroke-width="4" />
             <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px"
-              fill="#aa33aa" class="translatable en" lang="en">Switch mode</text>
-            <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px"
-              fill="#aa33aa" class="translatable ja" lang="ja">モード変更</text>
+              fill="#aa33aa" class="translatable-toggle" data-en="Switch mode" data-ja="モード変更"></text>
           </g>
 
           <g transform="translate(235,185)" class="button active-hover">
             <rect id="edit-rotate" x="-35" y="-15" width="70" height="30" fill="#e5a0e5" stroke="#aa33aa"
               stroke-width="4" />
             <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px"
-              fill="#aa33aa" class="translatable en" lang="en">Rotate</text>
-            <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px"
-              fill="#aa33aa" class="translatable ja" lang="ja">回転</text>
+              fill="#aa33aa" class="translatable-toggle" data-en="Rotate" data-ja="回転"></text>
           </g>
 
           <g transform="translate(315,185)" class="button active-hover">
             <rect id="edit-mirror" x="-35" y="-15" width="70" height="30" fill="#e5a0e5" stroke="#aa33aa"
               stroke-width="4" />
             <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px"
-              fill="#aa33aa" class="translatable en" lang="en">Mirror</text>
-            <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px"
-              fill="#aa33aa" class="translatable ja" lang="ja">鏡映</text>
+              fill="#aa33aa" class="translatable-toggle" data-en="Mirror" data-ja="鏡映"></text>
           </g>
 
           <g transform="translate(410,185)" class="button active-hover">
             <rect id="edit-normalize" x="-50" y="-15" width="100" height="30" fill="#e5a0e5" stroke="#aa33aa"
               stroke-width="4" />
             <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px"
-              fill="#aa33aa" class="translatable en" lang="en">Normalize</text>
-            <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px"
-              fill="#aa33aa" class="translatable ja" lang="ja">正規化</text>
+              fill="#aa33aa" class="translatable-toggle" data-en="Normalize" data-ja="正規化"></text>
           </g>
         </svg>
       </div>
@@ -532,9 +499,7 @@
             <g id="next-level" class="button active-hover hide" transform="translate(115,0)">
               <rect x="-90" y="-25" width="180" height="50" fill="#cceeff" stroke="#335577" stroke-width="4" />
               <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="24px"
-                fill="#335577" class="translatable en" lang="en">Next Level</text>
-              <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="24px"
-                fill="#335577" class="translatable ja" lang="ja">次のレベルへ</text>
+                fill="#335577" class="translatable-toggle" data-en="Next Level" data-ja="次のレベルへ"></text>
             </g>
           </g>
         </svg>
