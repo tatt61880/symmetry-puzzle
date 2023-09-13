@@ -281,6 +281,9 @@ text {
   }
 
   &#button-records {
+    color: #000055;
+    background-color: #00f8f8;
+    border-color: #0000f8;
     border-radius: 20%;
   }
 }
