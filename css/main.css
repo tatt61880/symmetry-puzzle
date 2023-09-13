@@ -271,6 +271,18 @@ text {
   user-select: none;
   background-color: #ffc0cb;
   border: 6px solid #ed1c24;
+
+  &#button-play-point {
+    border-radius: 0 66% / 0 33%;
+  }
+
+  &#button-play-line {
+    border-radius: 50% 50% 0 0 / 33% 33% 0 0;
+  }
+
+  &#button-records {
+    border-radius: 20%;
+  }
 }
 
 .title-button:hover {
