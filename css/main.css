@@ -273,11 +273,11 @@ text {
   border: 6px solid #ed1c24;
 
   &#button-play-point {
-    border-radius: 0 66% / 0 33%;
+    border-radius: 10% 66% / 10% 33%;
   }
 
   &#button-play-line {
-    border-radius: 50% 50% 0 0 / 33% 33% 0 0;
+    border-radius: 50% 50% 10% 10% / 33% 33% 10% 10%;
   }
 
   &#button-records {
