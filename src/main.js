@@ -503,17 +503,20 @@
   }
 
   function showRecordsDialog() {
+    elems.records.tableDiv.innerHTML = '';
+    elems.records.tableDiv.appendChild(createRecordsTable());
+    elems.records.dialog.showModal();
+  }
+
+  function createRecordsTable() {
     const table = document.createElement('table');
 
     {
       const thead = document.createElement('thead');
-      const tr = document.createElement('tr');
+      table.appendChild(thead);
 
-      elems.records.tableDiv.innerHTML = '';
-      elems.records.tableDiv
-        .appendChild(table)
-        .appendChild(thead)
-        .appendChild(tr);
+      const tr = document.createElement('tr');
+      thead.appendChild(tr);
 
       const imgSize = '50';
       {
@@ -749,7 +752,7 @@
       }
     }
 
-    elems.records.dialog.showModal();
+    return table;
   }
 
   function closeRecordsDialog() {
