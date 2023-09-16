@@ -24,31 +24,31 @@
       margin: 5px;
     }
 
-    & > button:nth-of-type(1) {
+    > button:nth-of-type(1) {
       margin-left: auto;
     }
-  }
 
-  .setting-lang-button {
-    width: 100px;
-    height: 40px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #505050;
-    cursor: pointer;
-    user-select: none;
-    background-color: #dddddd;
-    border: none;
-    outline: none;
-
-    &:hover {
-      background-color: #cccccc;
-    }
-
-    &.active {
-      font-size: 1rem;
-      color: #000055;
-      background-color: #c0cbff;
+    .setting-lang-button {
+      width: calc(calc(100%/4) - 10px);
+      height: 40px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #505050;
+      cursor: pointer;
+      user-select: none;
+      background-color: #dddddd;
+      border: none;
+      outline: none;
+  
+      &:hover {
+        background-color: #cccccc;
+      }
+  
+      &.active {
+        font-size: 1rem;
+        color: #000055;
+        background-color: #c0cbff;
+      }
     }
   }
 
