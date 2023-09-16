@@ -20,16 +20,16 @@
     box-sizing: border-box;
     width: 450px;
     margin: 0;
-    
+
     .level-select {
       cursor: pointer;
     }
-    
+
     & text {
       font-size: 16px;
     }
   }
-  
+
   &::backdrop {
     cursor: pointer;
     background-color: rgb(0 0 0 / 50%);

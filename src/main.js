@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.09.12';
+  const VERSION_TEXT = 'v2023.09.17';
 
   const app = window.app;
   Object.freeze(app);
@@ -834,7 +834,7 @@
   function updateLevelsDialog() {
     window.getSelection().removeAllRanges();
 
-    // const hideCompletedLevelsFlag = elems.levels.hideCompletedLevels.checked;
+    // const hideCompletedLevelsFlag = elems.levels.hideClearedLevels.checked;
     const hideShortestLevelsFlag = elems.levels.hideShortestLevels.checked;
 
     elems.levels.dialogSvg.innerHTML = '';
@@ -1245,7 +1245,7 @@
         (e) => e.stopPropagation(),
         false
       );
-      // elems.levels.hideCompletedLevels.addEventListener(
+      // elems.levels.hideClearedLevels.addEventListener(
       //   'click',
       //   toggleHideCompletedLevels,
       //   false

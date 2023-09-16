@@ -58,7 +58,7 @@
     levels: {
       button: 'button-levels',
       dialog: 'dialog-levels',
-      // hideCompletedLevels: 'hide-completed-levels',
+      // hideClearedLevels: 'hide-cleared-levels',
       hideShortestLevels: 'hide-shortest-levels',
       dialogDiv: 'dialog-levels-div',
       dialogSvg: 'dialog-levels-svg',
