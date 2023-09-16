@@ -12,24 +12,15 @@
   border: none;
 
   #dialog-help-div {
-    padding: 5px 5px 10px;
-  }
-
-  .border {
     padding: 5px;
-    margin: 10px 30px;
-    border: 1px solid #dddddd;
-  }
-
-  .bold {
-    font-weight: bold;
+    padding-bottom: 10px;
   }
 
   #setting-top {
     display: flex;
     align-items: center;
   }
-  
+
   #setting-top > button:nth-of-type(1) {
     margin-left: auto;
   }
@@ -46,11 +37,11 @@
     background-color: #dddddd;
     border: none;
     outline: none;
-    
+
     &:hover {
       background-color: #cccccc;
     }
-  
+
     &.active {
       font-size: 1rem;
       color: #000055;
@@ -58,27 +49,12 @@
     }
   }
 
-  .flex {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  & hr {
-    margin: 0;
-  }
-
-  &::backdrop {
-    cursor: pointer;
-    background-color: rgb(0 0 0 / 50%);
-  }
-
   .tab-area {
     display: flex;
     flex-wrap: wrap;
     margin: auto;
   }
-   
+
   .tab {
     display: block;
     order: -1;
@@ -98,40 +74,67 @@
       background-color: #cccccc;
     }
   }
-   
-  & input[name="help-tab"] {
-    display: none;
-  }
-   
-  & input:checked + .tab {
-    font-size: 1.1em;
-    color: #000055;
-    background-color: #c0cbff;
-  }
-   
+
   .tab-content {
     display: none;
     width: 100%;
   }
-   
-  & input:checked + .tab + .tab-content {
-    display: block;
+
+  & input {
+    &[name="help-tab"] {
+      display: none;
+    }
+
+    &:checked + .tab {
+      font-size: 1.1em;
+      color: #000055;
+      background-color: #c0cbff;
+
+      & + .tab-content {
+        display: block;
+      }
+    }
   }
-  
+
+  .border {
+    padding: 5px;
+    margin: 10px 30px;
+    border: 1px solid #dddddd;
+  }
+
+  .bold {
+    font-weight: bold;
+  }
+
   .example-image {
     width: 310px;
     height: 90px;
   }
-  
+
+  & hr {
+    margin: 0;
+  }
+
   .warn {
     padding: 5px;
     margin: 5px;
     background: #ffddbb;
   }
-  
+
+  .flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .tatt61880-icon {
     width: 32px;
     height: 32px;
     margin-right: 5px;
+  }
+
+  &::backdrop {
+    cursor: pointer;
+    background-color: rgb(0 0 0 / 50%);
   }
 }
