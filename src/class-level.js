@@ -954,101 +954,109 @@
 
         if (app.states.isOther(state)) {
           const size = blockBorderWidth * 1.75;
-          // 右上
-          if (!flags[dirs.u] && !flags[dirs.r]) {
-            const rect = app.svg.createRect(blockSize, {
-              x: x + 1 - size,
-              y,
-              width: size,
-              height: size,
-              fill: color.stroke,
-            });
-            gElem.appendChild(rect);
+          if (!flags[dirs.u]) {
+            // 左上
+            if (!flags[dirs.l]) {
+              const rect = app.svg.createRect(blockSize, {
+                x,
+                y,
+                width: size,
+                height: size,
+                fill: color.stroke,
+              });
+              gElem.appendChild(rect);
+            }
+            // 右上
+            if (!flags[dirs.r]) {
+              const rect = app.svg.createRect(blockSize, {
+                x: x + 1 - size,
+                y,
+                width: size,
+                height: size,
+                fill: color.stroke,
+              });
+              gElem.appendChild(rect);
+            }
           }
-          // 右下
-          if (!flags[dirs.d] && !flags[dirs.r]) {
-            const rect = app.svg.createRect(blockSize, {
-              x: x + 1 - size,
-              y: y + 1 - size,
-              width: size,
-              height: size,
-              fill: color.stroke,
-            });
-            gElem.appendChild(rect);
-          }
-          // 左下
-          if (!flags[dirs.d] && !flags[dirs.l]) {
-            const rect = app.svg.createRect(blockSize, {
-              x,
-              y: y + 1 - size,
-              width: size,
-              height: size,
-              fill: color.stroke,
-            });
-            gElem.appendChild(rect);
-          }
-          // 左上
-          if (!flags[dirs.u] && !flags[dirs.l]) {
-            const rect = app.svg.createRect(blockSize, {
-              x,
-              y,
-              width: size,
-              height: size,
-              fill: color.stroke,
-            });
-            gElem.appendChild(rect);
+          if (!flags[dirs.d]) {
+            // 右下
+            if (!flags[dirs.r]) {
+              const rect = app.svg.createRect(blockSize, {
+                x: x + 1 - size,
+                y: y + 1 - size,
+                width: size,
+                height: size,
+                fill: color.stroke,
+              });
+              gElem.appendChild(rect);
+            }
+            // 左下
+            if (!flags[dirs.l]) {
+              const rect = app.svg.createRect(blockSize, {
+                x,
+                y: y + 1 - size,
+                width: size,
+                height: size,
+                fill: color.stroke,
+              });
+              gElem.appendChild(rect);
+            }
           }
         }
 
         if (app.states.isUser(state)) {
           const size = blockBorderWidth * 3;
-          // 右上
-          if (!flags[dirs.u] && !flags[dirs.r]) {
-            const polygon = app.svg.createPolygon(blockSize, {
-              points: [
-                [x + 1 - size, y],
-                [x + 1, y],
-                [x + 1, y + size],
-              ],
-              fill: color.stroke,
-            });
-            gElem.appendChild(polygon);
+          if (!flags[dirs.u]) {
+            // 右上
+            if (!flags[dirs.r]) {
+              const polygon = app.svg.createPolygon(blockSize, {
+                points: [
+                  [x + 1 - size, y],
+                  [x + 1, y],
+                  [x + 1, y + size],
+                ],
+                fill: color.stroke,
+              });
+              gElem.appendChild(polygon);
+            }
+            // 左上
+            if (!flags[dirs.l]) {
+              const polygon = app.svg.createPolygon(blockSize, {
+                points: [
+                  [x, y],
+                  [x + size, y],
+                  [x, y + size],
+                ],
+                fill: color.stroke,
+              });
+              gElem.appendChild(polygon);
+            }
           }
-          // 右下
-          if (!flags[dirs.d] && !flags[dirs.r]) {
-            const polygon = app.svg.createPolygon(blockSize, {
-              points: [
-                [x + 1, y + 1 - size],
-                [x + 1, y + 1],
-                [x + 1 - size, y + 1],
-              ],
-              fill: color.stroke,
-            });
-            gElem.appendChild(polygon);
-          }
-          // 左下
-          if (!flags[dirs.d] && !flags[dirs.l]) {
-            const polygon = app.svg.createPolygon(blockSize, {
-              points: [
-                [x, y + 1 - size],
-                [x + size, y + 1],
-                [x, y + 1],
-              ],
-              fill: color.stroke,
-            });
-            gElem.appendChild(polygon);
-          }
-          // 左上
-          if (!flags[dirs.u] && !flags[dirs.l]) {
-            const polygon = app.svg.createPolygon(blockSize, {
-              points: [
-                [x, y],
-                [x + size, y],
-                [x, y + size],
-              ],
-              fill: color.stroke,
-            });
-            gElem.appendChild(polygon);
+          if (!flags[dirs.d]) {
+            // 右下
+            if (!flags[dirs.r]) {
+              const polygon = app.svg.createPolygon(blockSize, {
+                points: [
+                  [x + 1, y + 1 - size],
+                  [x + 1, y + 1],
+                  [x + 1 - size, y + 1],
+                ],
+                fill: color.stroke,
+              });
+              gElem.appendChild(polygon);
+            }
+            // 左下
+            if (!flags[dirs.l]) {
+              const polygon = app.svg.createPolygon(blockSize, {
+                points: [
+                  [x, y + 1 - size],
+                  [x + size, y + 1],
+                  [x, y + 1],
+                ],
+                fill: color.stroke,
+              });
+              gElem.appendChild(polygon);
+            }
           }
         }
 
