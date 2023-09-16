@@ -524,7 +524,7 @@
         const th = document.createElement('th');
         tr.appendChild(th);
         const img = document.createElement('img');
-        img.src = './images/point.png';
+        img.src = './images/line.png';
         img.setAttribute('width', imgSize);
         img.setAttribute('height', imgSize);
         th.appendChild(img);
@@ -533,7 +533,7 @@
         const th = document.createElement('th');
         tr.appendChild(th);
         const img = document.createElement('img');
-        img.src = './images/line.png';
+        img.src = './images/point.png';
         img.setAttribute('width', imgSize);
         img.setAttribute('height', imgSize);
         th.appendChild(img);
@@ -550,38 +550,6 @@
       const tbody = document.createElement('tbody');
       table.appendChild(tbody);
       const size = 30;
-
-      let numPointNotSolved = 0;
-      let numPointSolvedNormal = 0;
-      let numPointSolvedBest = 0;
-
-      {
-        const levelsList = app.levelsPoint;
-        const levelsListEx = app.levelsPointEx;
-        const levelObjs = [];
-        for (let i = 1; i < levelsList.length; ++i) {
-          const levelObj = levelsList[i];
-          levelObjs.push(levelObj);
-        }
-
-        for (const id of Object.keys(levelsListEx)) {
-          if (String(id) === 'NaN') continue;
-          const levelObj = levelsListEx[id];
-          levelObjs.push(levelObj);
-        }
-        for (let i = 0; i < levelObjs.length; ++i) {
-          const levelObj = levelObjs[i];
-          const playerScore = savedata.getHighestScore(levelObj, false);
-          const appScore = levelObj.step;
-          if (playerScore === null) {
-            ++numPointNotSolved;
-          } else if (playerScore > appScore) {
-            ++numPointSolvedNormal;
-          } else {
-            ++numPointSolvedBest;
-          }
-        }
-      }
 
       let numLineNotSolved = 0;
       let numLineSolvedNormal = 0;
@@ -615,17 +583,49 @@
         }
       }
 
-      const numTotalNotSolved = numPointNotSolved + numLineNotSolved;
-      const numTotalSolvedNormal = numPointSolvedNormal + numLineSolvedNormal;
-      const numTotalSolvedBest = numPointSolvedBest + numLineSolvedBest;
+      let numPointNotSolved = 0;
+      let numPointSolvedNormal = 0;
+      let numPointSolvedBest = 0;
 
-      const numPointTotal =
-        numPointSolvedBest + numPointSolvedNormal + numPointNotSolved;
+      {
+        const levelsList = app.levelsPoint;
+        const levelsListEx = app.levelsPointEx;
+        const levelObjs = [];
+        for (let i = 1; i < levelsList.length; ++i) {
+          const levelObj = levelsList[i];
+          levelObjs.push(levelObj);
+        }
+
+        for (const id of Object.keys(levelsListEx)) {
+          if (String(id) === 'NaN') continue;
+          const levelObj = levelsListEx[id];
+          levelObjs.push(levelObj);
+        }
+        for (let i = 0; i < levelObjs.length; ++i) {
+          const levelObj = levelObjs[i];
+          const playerScore = savedata.getHighestScore(levelObj, false);
+          const appScore = levelObj.step;
+          if (playerScore === null) {
+            ++numPointNotSolved;
+          } else if (playerScore > appScore) {
+            ++numPointSolvedNormal;
+          } else {
+            ++numPointSolvedBest;
+          }
+        }
+      }
+
+      const numTotalNotSolved = numLineNotSolved + numPointNotSolved;
+      const numTotalSolvedNormal = numLineSolvedNormal + numPointSolvedNormal;
+      const numTotalSolvedBest = numLineSolvedBest + numPointSolvedBest;
 
       const numLineTotal =
         numLineSolvedBest + numLineSolvedNormal + numLineNotSolved;
 
-      const numTotalTotal = numPointTotal + numLineTotal;
+      const numPointTotal =
+        numPointSolvedBest + numPointSolvedNormal + numPointNotSolved;
+
+      const numTotalTotal = numLineTotal + numPointTotal;
 
       {
         const tr = document.createElement('tr');
@@ -643,12 +643,12 @@
         }
         {
           const td = document.createElement('td');
-          td.innerText = numPointSolvedBest;
+          td.innerText = numLineSolvedBest;
           tr.appendChild(td);
         }
         {
           const td = document.createElement('td');
-          td.innerText = numLineSolvedBest;
+          td.innerText = numPointSolvedBest;
           tr.appendChild(td);
         }
         {
@@ -673,12 +673,12 @@
         }
         {
           const td = document.createElement('td');
-          td.innerText = numPointSolvedNormal;
+          td.innerText = numLineSolvedNormal;
           tr.appendChild(td);
         }
         {
           const td = document.createElement('td');
-          td.innerText = numLineSolvedNormal;
+          td.innerText = numPointSolvedNormal;
           tr.appendChild(td);
         }
         {
@@ -703,12 +703,12 @@
         }
         {
           const td = document.createElement('td');
-          td.innerText = numPointNotSolved;
+          td.innerText = numLineNotSolved;
           tr.appendChild(td);
         }
         {
           const td = document.createElement('td');
-          td.innerText = numLineNotSolved;
+          td.innerText = numPointNotSolved;
           tr.appendChild(td);
         }
         {
@@ -729,13 +729,13 @@
         }
         {
           const td = document.createElement('td');
-          td.innerText = numPointTotal;
+          td.innerText = numLineTotal;
           tr.appendChild(td);
           td.classList.add('total-row');
         }
         {
           const td = document.createElement('td');
-          td.innerText = numLineTotal;
+          td.innerText = numPointTotal;
           tr.appendChild(td);
           td.classList.add('total-row');
         }

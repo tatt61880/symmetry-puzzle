@@ -277,7 +277,7 @@ text {
   }
 
   &#button-play-point {
-    border-radius: 10% 66% / 10% 33%;
+    border-radius: 66% 10% / 33% 10%;
   }
 
   &#button-play-line {
