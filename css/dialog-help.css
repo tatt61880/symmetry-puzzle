@@ -28,7 +28,6 @@
   #setting-top {
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
   }
   
   #setting-top > button:nth-of-type(1) {
@@ -38,7 +37,7 @@
   .setting-lang-button {
     width: 100px;
     height: 40px;
-    margin: 0 2px;
+    margin: 5px;
     font-size: 0.9rem;
     font-weight: bold;
     color: #505050;
@@ -58,24 +57,7 @@
       background-color: #c0cbff;
     }
   }
-  
-  .example-image {
-    width: 310px;
-    height: 90px;
-  }
-  
-  .tatt61880-icon {
-    width: 32px;
-    height: 32px;
-    margin-right: 5px;
-  }
-  
-  .warn {
-    padding: 5px;
-    margin: 5px 10px 10px;
-    background: #ffddbb;
-  }
-  
+
   .flex {
     display: flex;
     align-items: center;
@@ -101,8 +83,9 @@
     display: block;
     order: -1;
     float: left;
-    width: calc(100%/2);
+    width: calc(calc(100%/2) - 10px);
     height: 50px;
+    margin: 5px;
     font-size: 1rem;
     font-weight: bold;
     line-height: 50px;
@@ -133,5 +116,22 @@
    
   & input:checked + .tab + .tab-content {
     display: block;
+  }
+  
+  .example-image {
+    width: 310px;
+    height: 90px;
+  }
+  
+  .warn {
+    padding: 5px;
+    margin: 5px 10px 10px;
+    background: #ffddbb;
+  }
+  
+  .tatt61880-icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 5px;
   }
 }
