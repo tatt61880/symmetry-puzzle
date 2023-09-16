@@ -11,28 +11,33 @@
   margin: 132px auto;
   border: none;
 
-  &,
-  &::backdrop {
-    animation: fade-in-dialog 0.1s ease-out 1 forwards;
+  #dialog-levels-div {
+    padding: 5px;
+    padding-bottom: 10px;
   }
 
+  #dialog-levels-svg {
+    box-sizing: border-box;
+    width: 450px;
+    margin: 0;
+    
+    .level-select {
+      cursor: pointer;
+    }
+    
+    & text {
+      font-size: 16px;
+    }
+  }
+  
   &::backdrop {
     cursor: pointer;
     background-color: rgb(0 0 0 / 50%);
   }
-}
 
-#dialog-levels-svg {
-  box-sizing: border-box;
-  width: 450px;
-  margin: 0;
-  
-  .level-select {
-    cursor: pointer;
-  }
-  
-  & text {
-    font-size: 16px;
+  &,
+  &::backdrop {
+    animation: fade-in-dialog 0.1s ease-out 1 forwards;
   }
 }
 
