@@ -33,19 +33,19 @@ header {
   text-align: left;
   background-color: #c0cbff;
   border: 1px solid #c0cbff;
-}
 
-.title {
-  margin: 10px;
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #000055;
-}
+  .title {
+    margin: 10px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #000055;
+  }
 
-#version {
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: #7777aa;
+  #version {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #7777aa;
+  }
 }
 
 footer {
@@ -60,29 +60,8 @@ footer {
   background-color: #c0cbff;
 }
 
-#level-widget {
-  box-sizing: border-box;
-  height: 108px;
-}
-
-h2 {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 21px;
-  margin: 0;
-  font-size: 1.1rem;
-  color: #335577;
-  background-color: #87ceeb;
-}
-
 div.noselect {
   user-select: none;
-}
-
-div.level {
-  background-color: #cceeff;
 }
 
 .button {
@@ -234,11 +213,6 @@ text {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-#game {
-  box-sizing: border-box;
-  width: 500px;
 }
 
 #top {
