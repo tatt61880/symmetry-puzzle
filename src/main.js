@@ -2079,7 +2079,7 @@
       const crown = app.svg.createCrown(size, {
         x,
         y,
-        fill: 'none',
+        fill: '#ffffff00', // クリックできるようにします。透明です。
         stroke: app.colors.stepUnknown,
       });
       g.appendChild(crown);
