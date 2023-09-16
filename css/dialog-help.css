@@ -19,16 +19,19 @@
   #setting-top {
     display: flex;
     align-items: center;
-  }
 
-  #setting-top > button:nth-of-type(1) {
-    margin-left: auto;
+    & * {
+      margin: 5px;
+    }
+
+    & > button:nth-of-type(1) {
+      margin-left: auto;
+    }
   }
 
   .setting-lang-button {
     width: 100px;
     height: 40px;
-    margin: 5px;
     font-size: 0.9rem;
     font-weight: bold;
     color: #505050;
