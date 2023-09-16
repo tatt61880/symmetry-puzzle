@@ -236,68 +236,9 @@ text {
   justify-content: center;
 }
 
-#title {
-  box-sizing: border-box;
-  width: 500px;
-  height: 648px;
-}
-
 #game {
   box-sizing: border-box;
   width: 500px;
-}
-
-#title-logo {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  height: 300px;
-  pointer-events: none;
-}
-
-.title-button {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 135px;
-  height: 135px;
-  margin: 10px;
-  font-size: 1.3rem;
-  color: #550000;
-  cursor: pointer;
-  user-select: none;
-  background-color: #ffc0cb;
-  border: 6px solid #ed1c24;
-
-  &:hover {
-    background-color: #ffd6dd;
-  }
-
-  &#button-play-point {
-    border-radius: 10% 33% / 10% 66%;
-  }
-
-  &#button-play-line {
-    border-radius: 10% 10% 50% 50% / 10% 10% 33% 33%;
-  }
-
-  &#button-records {
-    color: #000055;
-    background-color: #c0cbff;
-    border-color: #7777aa;
-    border-radius: 20%;
-
-    &:hover {
-      background-color: #d6ddff;
-    }
-  }
-}
-
-.title-button-text {
-  font-weight: bold;
 }
 
 #top {
