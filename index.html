@@ -31,10 +31,11 @@
   <script src="./src/class-elems.js?2023.09.17"></script>
   <script src="./src/class-stick.js?2023.09.17"></script>
 
-  <script src="./src/levels-point.js?2023.09.17"></script>
-  <script src="./src/levels-point-ex.js?2023.09.17"></script>
   <script src="./src/levels-line.js?2023.09.17"></script>
   <script src="./src/levels-line-ex.js?2023.09.17"></script>
+  <script src="./src/levels-point.js?2023.09.17"></script>
+  <script src="./src/levels-point-ex.js?2023.09.17"></script>
+
   <script src="./src/elems.js?2023.09.17"></script>
 
   <script src="./src/solve.js?2023.09.17"></script>
@@ -50,11 +51,13 @@
         <img id="icon" alt="icon" src="./images/icon.png?2023.09.17" class="check-mode none">
         <img id="icon-point" alt="icon" src="./images/icon-point.png?2023.01.15" class="check-mode point hide-mode">
         <img id="icon-line" alt="icon" src="./images/icon-line.png?2023.01.15" class="check-mode line hide-mode">
+
         <span class="title translatable-toggle check-mode none" data-en="Symmetry Puzzle" data-ja="対称パズル"></span>
-        <span class="title translatable-toggle check-mode point hide-mode" data-en="Point Symmetry Puzzle"
-          data-ja="点対称パズル"></span>
         <span class="title translatable-toggle check-mode line hide-mode" data-en="Line Symmetry Puzzle"
           data-ja="線対称パズル"></span>
+        <span class="title translatable-toggle check-mode point hide-mode" data-en="Point Symmetry Puzzle"
+          data-ja="点対称パズル"></span>
+
         <span id="version">vXXXX.XX.XX</span>
       </div>
       <svg width="30" height="30" style="margin: 0 5px 0 auto;">
@@ -82,7 +85,34 @@
 
         <div>
           <div class="tab-area">
-            <input type="radio" name="help-tab" id="help-tab-point" checked>
+            <input type="radio" name="help-tab" id="help-tab-line" checked>
+            <label class="tab translatable-toggle" for="help-tab-line" data-en="Line Symmetry Puzzle"
+              data-ja="線対称パズル"></label>
+            <div class="tab-content">
+              <div class="translatable en" lang="en">
+                <p>
+                  Manipulate <span class="blue-block">Blue</span> to make<br>
+                  <span class="red-block">Red</span> a <span class="bold">connected line symmetrical one</span>.
+                </p>
+                <div class="border">
+                  <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.09.11"><br>
+                  Examples of <span class="bold">connected line symmetrical shape</span>.
+                </div>
+              </div>
+
+              <div class="translatable ja" lang="ja">
+                <p>
+                  <span class="blue-block">青色の図形</span>を操作し、<br>
+                  <span class="red-block">赤色の図形</span>を<span class="bold">1つながりの線対称図形</span>にしてください。
+                </p>
+                <p class="border">
+                  <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.09.11"><br>
+                  <span class="bold">1つながりの線対称図形</span>の3つの例
+                </p>
+              </div>
+            </div>
+
+            <input type="radio" name="help-tab" id="help-tab-point">
             <label class="tab translatable-toggle" for="help-tab-point" data-en="Point Symmetry Puzzle"
               data-ja="点対称パズル"></label>
             <div class="tab-content">
@@ -97,6 +127,7 @@
                   Examples of <span class="bold">connected point symmetrical shape</span>.
                 </div>
               </div>
+
               <div class="translatable ja" lang="ja">
                 <p>
                   <span class="blue-block">青色の図形</span>を操作し、<br>
@@ -107,32 +138,6 @@
                     src="./images/example-point.png?2023.09.10"><br>
                   <span class="bold">1つながりの点対称図形</span>の3つの例
                 </div>
-              </div>
-            </div>
-
-            <input type="radio" name="help-tab" id="help-tab-line">
-            <label class="tab translatable-toggle" for="help-tab-line" data-en="Line Symmetry Puzzle"
-              data-ja="線対称パズル"></label>
-            <div class="tab-content">
-              <div class="translatable en" lang="en">
-                <p>
-                  Manipulate <span class="blue-block">Blue</span> to make<br>
-                  <span class="red-block">Red</span> a <span class="bold">connected line symmetrical one</span>.
-                </p>
-                <p class="border">
-                  <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.09.11"><br>
-                  Examples of <span class="bold">connected line symmetrical shape</span>.
-                </p>
-              </div>
-              <div class="translatable ja" lang="ja">
-                <p>
-                  <span class="blue-block">青色の図形</span>を操作し、<br>
-                  <span class="red-block">赤色の図形</span>を<span class="bold">1つながりの線対称図形</span>にしてください。
-                </p>
-                <p class="border">
-                  <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.09.11"><br>
-                  <span class="bold">1つながりの線対称図形</span>の3つの例
-                </p>
               </div>
             </div>
           </div>
@@ -173,15 +178,16 @@
 
     <div id="title">
       <div id="title-logo">
-        <img src="./images/title-logo.png?2023.09.10" alt="Application title logo image">
+        <img src="./images/title-logo.png?2023.09.17" alt="Application title logo image">
       </div>
 
       <div class="flex">
-        <div id="button-play-point" class="title-button title-button-text translatable-toggle"
-          data-en="Point&#10;Symmetry&#10;Puzzle" data-ja="点対称&#10;パズル">
-        </div>
         <div id="button-play-line" class="title-button title-button-text translatable-toggle"
           data-en="Line&#10;Symmetry&#10;Puzzle" data-ja="線対称&#10;パズル">
+        </div>
+
+        <div id="button-play-point" class="title-button title-button-text translatable-toggle"
+          data-en="Point&#10;Symmetry&#10;Puzzle" data-ja="点対称&#10;パズル">
         </div>
       </div>
 
