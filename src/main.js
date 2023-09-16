@@ -510,12 +510,12 @@
 
   function createRecordsTable() {
     const table = document.createElement('table');
-    table.appendChild(createRecordsHead());
-    table.appendChild(createRecordsBody());
+    table.appendChild(createRecordsThead());
+    table.appendChild(createRecordsTbody());
     return table;
   }
 
-  function createRecordsHead() {
+  function createRecordsThead() {
     const thead = document.createElement('thead');
 
     const tr = document.createElement('tr');
@@ -554,7 +554,7 @@
     return thead;
   }
 
-  function createRecordsBody() {
+  function createRecordsTbody() {
     const tbody = document.createElement('tbody');
     const size = 30;
 
