@@ -21,4 +21,8 @@
       background-color: #87ceeb;
     }
   }
+  
+  .low-contrast {
+    opacity: 0.7;
+  }
 }
