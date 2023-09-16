@@ -272,6 +272,10 @@ text {
   background-color: #ffc0cb;
   border: 6px solid #ed1c24;
 
+  &:hover {
+    background-color: #ffd6dd;
+  }
+
   &#button-play-point {
     border-radius: 10% 66% / 10% 33%;
   }
@@ -285,11 +289,11 @@ text {
     background-color: #c0cbff;
     border-color: #7777aa;
     border-radius: 20%;
-  }
-}
 
-.title-button:hover {
-  background-color: #ffd6dd;
+    &:hover {
+      background-color: #d6ddff;
+    }
+  }
 }
 
 .title-button-text {
