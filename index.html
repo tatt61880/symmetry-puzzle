@@ -180,25 +180,37 @@
     </dialog>
 
     <div id="title">
-      <div id="title-logo">
-        <img src="./images/title-logo.png?2023.09.17" alt="Application title logo image">
-      </div>
-
-      <div class="flex">
-        <div id="button-play-line" class="title-button title-button-text translatable-toggle"
-          data-en="Line&#10;Symmetry&#10;Puzzle" data-ja="線対称&#10;パズル">
-        </div>
-
-        <div id="button-play-point" class="title-button title-button-text translatable-toggle"
-          data-en="Point&#10;Symmetry&#10;Puzzle" data-ja="点対称&#10;パズル">
-        </div>
-      </div>
-
-      <div class="flex">
-        <div id="button-records" class="title-button title-button-text translatable-toggle" data-en="Records"
-          data-ja="記録">
-        </div>
-      </div>
+      <table>
+        <tr>
+          <td>
+            <img src="./images/line.png?2023.09.17" alt="Application title logo image">
+          </td>
+          <td>
+            <img src="./images/point.png?2023.09.17" alt="Application title logo image">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div id="button-play-line" class="title-button title-button-text translatable-toggle"
+              data-en="Line&#10;Symmetry&#10;Puzzle" data-ja="線対称&#10;パズル">
+            </div>
+          </td>
+          <td>
+            <div id="button-play-point" class="title-button title-button-text translatable-toggle"
+              data-en="Point&#10;Symmetry&#10;Puzzle" data-ja="点対称&#10;パズル">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div class="flex">
+              <div id="button-records" class="title-button title-button-text translatable-toggle" data-en="Records"
+                data-ja="記録">
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <dialog id="dialog-records">

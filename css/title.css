@@ -5,14 +5,13 @@
   width: 500px;
   height: 648px;
 
-  #title-logo {
+  & table {
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
     width: auto;
-    height: 300px;
-    pointer-events: none;
+    height: 648px;
   }
 
   .title-button {
