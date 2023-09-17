@@ -8,7 +8,7 @@
     box-sizing: border-box;
     height: 108px;
     background-color: #cceeff;
-    
+
     & h2 {
       position: relative;
       display: flex;
@@ -21,7 +21,7 @@
       background-color: #87ceeb;
     }
   }
-  
+
   #main {
     position: relative;
     box-sizing: border-box;
@@ -45,7 +45,7 @@
       filter: contrast(90%);
     }
   }
- 
+
   .stick-area {
     cursor: pointer;
     user-select: none;
