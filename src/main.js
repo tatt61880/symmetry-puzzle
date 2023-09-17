@@ -947,7 +947,13 @@
 
     let lang = savedata.loadLang();
     if (lang === undefined) {
-      lang = 'en';
+      switch (window.navigator.language) {
+        case 'ja':
+          lang = 'ja';
+          break;
+        default:
+          lang = 'en';
+      }
       savedata.saveLang(lang);
       showHelpDialog();
     }
