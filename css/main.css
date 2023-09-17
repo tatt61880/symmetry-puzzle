@@ -7,13 +7,8 @@ html {
 
 body {
   margin: 0;
-  font-family:
-    "Helvetica Neue",
-    Arial,
-    "Hiragino Kaku Gothic ProN",
-    "Hiragino Sans",
-    Meiryo,
-    sans-serif;
+  font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN',
+    'Hiragino Sans', Meiryo, sans-serif;
   background-color: #ccffff;
 }
 
@@ -128,7 +123,7 @@ text {
       z-index: 1;
       width: 35px;
       height: 35px;
-      content: "";
+      content: '';
       background-color: #ffffff;
       border-radius: 100%;
       box-shadow: 0 0 5px rgb(0 0 0 / 50%);
