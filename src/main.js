@@ -1385,8 +1385,10 @@
     level.resetMoveFlags();
 
     // 点線
-    if (levelId !== 0) {
-      const dasharray = '1, 4';
+    {
+      const size = blockSize / 40;
+      const dasharray = `${size} ${4 * size}`;
+      console.log(dasharray);
       const g = app.svg.createG();
       mainSvgG.appendChild(g);
       // 横線
@@ -2095,7 +2097,7 @@
         stroke: app.colors.stepUnknown,
       });
       g.appendChild(crown);
-      g.setAttribute('stroke-dasharray', `${size * 0.02},${size * 0.05}`);
+      g.setAttribute('stroke-dasharray', `${size * 0.02} ${size * 0.05}`);
       return g;
     } else {
       return app.svg.createCrown(size, {
