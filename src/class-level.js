@@ -414,8 +414,16 @@
       }
     }
 
-    createSvgG(blockSize, symmetryType = null, showCharsFlag = false) {
+    createSvgG(
+      blockSize,
+      symmetryAnimationFlag = false,
+      showCharsFlag = false
+    ) {
       const g = app.svg.createG();
+
+      const symmetryType = symmetryAnimationFlag
+        ? this.getSymmetryType(app.states.isTarget)
+        : null;
 
       // 背景
       {

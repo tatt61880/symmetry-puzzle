@@ -1361,18 +1361,13 @@
     elems.main.svg.appendChild(mainSvgG);
 
     {
-      const symmetryType = (() => {
-        if (completeCheckFlag && completeFlag) {
-          return level.getSymmetryType(app.states.isTarget);
-        }
-        return null;
-      })();
-
+      const symmetryAnimationFlag = completeCheckFlag && completeFlag;
       const showCharsFlag =
         editMode || settings.debugFlag || temporaryShowCharsFlag;
+
       const levelSvgG = level.createSvgG(
         blockSize,
-        symmetryType,
+        symmetryAnimationFlag,
         showCharsFlag
       );
       levelSvgG.setAttribute(
@@ -1388,7 +1383,6 @@
     {
       const size = blockSize / 40;
       const dasharray = `${size} ${4 * size}`;
-      console.log(dasharray);
       const g = app.svg.createG();
       mainSvgG.appendChild(g);
       // 横線
