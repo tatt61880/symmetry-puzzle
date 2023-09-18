@@ -4,7 +4,6 @@
     "stylelint-config-recess-order"
   ],
   "rules": {
-    "color-hex-length": "long",
-    "endOfLine": "auto"
+    "color-hex-length": "long"
   }
 }
