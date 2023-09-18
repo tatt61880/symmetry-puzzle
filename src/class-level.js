@@ -474,6 +474,69 @@
         }
       }
 
+      if (symmetryType !== null) {
+        const center = this.getCenter(app.states.isTarget);
+        const gg = app.svg.createG();
+        g.appendChild(gg);
+        gg.classList.add('animation-symmetry');
+        switch (symmetryType) {
+          case Level.SYMMETRY_TYPE.POINT: {
+            const line = app.svg.createCircle(blockSize, {
+              cx: center.x,
+              cy: center.y,
+              r: 0.1,
+              fill: app.colors.symmetryPoint,
+            });
+            gg.appendChild(line);
+            break;
+          }
+          case Level.SYMMETRY_TYPE.LINE1: {
+            const line = app.svg.createLine(blockSize, {
+              x1: center.x,
+              y1: 0,
+              x2: center.x,
+              y2: this.getHeight(),
+              stroke: app.colors.symmetryLine,
+            });
+            gg.appendChild(line);
+            break;
+          }
+          case Level.SYMMETRY_TYPE.LINE2: {
+            const line = app.svg.createLine(blockSize, {
+              x1: 0,
+              y1: center.y,
+              x2: this.getWidth(),
+              y2: center.y,
+              stroke: app.colors.symmetryLine,
+            });
+            gg.appendChild(line);
+            break;
+          }
+          case Level.SYMMETRY_TYPE.LINE3: {
+            const line = app.svg.createLine(blockSize, {
+              x1: center.x - center.y,
+              y1: 0,
+              x2: center.x + this.getHeight() - center.y,
+              y2: this.getHeight(),
+              stroke: app.colors.symmetryLine,
+            });
+            gg.appendChild(line);
+            break;
+          }
+          case Level.SYMMETRY_TYPE.LINE4: {
+            const line = app.svg.createLine(blockSize, {
+              x1: center.x + center.y,
+              y1: 0,
+              x2: center.x - this.getHeight() + center.y,
+              y2: this.getHeight(),
+              stroke: app.colors.symmetryLine,
+            });
+            gg.appendChild(line);
+            break;
+          }
+        }
+      }
+
       return g;
     }
 

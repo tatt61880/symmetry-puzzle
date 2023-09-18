@@ -50,6 +50,11 @@
   animation-duration: var(--animation-duration-symmetry);
 }
 
+.animation-symmetry {
+  animation: animation-symmetry ease forwards;
+  animation-duration: var(--animation-duration-symmetry);
+}
+
 /* icon animation */
 .animation-rotation-icon {
   transform-origin: 50% 50%;
@@ -174,5 +179,19 @@
 
   100% {
     transform: rotate3d(1, -1, 0, 0deg);
+  }
+}
+
+@keyframes animation-symmetry {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0;
   }
 }
