@@ -1394,7 +1394,7 @@
       // 横線
       for (let y = 1; y < level.getHeight(); ++y) {
         const line = app.svg.createLine(blockSize, {
-          x1: 0,
+          x1: -1 / 80,
           y1: y,
           x2: level.getWidth(),
           y2: y,
@@ -1407,7 +1407,7 @@
       for (let x = 1; x < level.getWidth(); ++x) {
         const line = app.svg.createLine(blockSize, {
           x1: x,
-          y1: 0,
+          y1: -1 / 80,
           x2: x,
           y2: level.getHeight(),
           stroke: app.colors.line,
