@@ -478,7 +478,7 @@
         const center = this.getCenter(app.states.isTarget);
         const gg = app.svg.createG();
         g.appendChild(gg);
-        gg.classList.add('animation-symmetry');
+        gg.classList.add('animation-symmetry-axis');
         switch (symmetryType) {
           case Level.SYMMETRY_TYPE.POINT: {
             const line = app.svg.createCircle(blockSize, {

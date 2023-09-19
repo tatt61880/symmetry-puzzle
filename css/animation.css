@@ -50,8 +50,8 @@
   animation-duration: var(--animation-duration-symmetry);
 }
 
-.animation-symmetry {
-  animation: animation-symmetry ease forwards;
+.animation-symmetry-axis {
+  animation: animation-symmetry-axis ease forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
@@ -182,7 +182,7 @@
   }
 }
 
-@keyframes animation-symmetry {
+@keyframes animation-symmetry-axis {
   0% {
     opacity: 1;
   }
