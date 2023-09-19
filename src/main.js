@@ -167,16 +167,33 @@
   }
 
   function keydown(e) {
+    // どの画面でも有効
+    if (e.key === '?') {
+      toggleHelpDialog();
+    }
+
     if (!elems.category.title.classList.contains('hide')) return;
+    // タイトル画面以外で有効
+
     if (e.altKey) return;
+
+    if (e.key === '#') {
+      if (!elems.levels.button.classList.contains('hide')) {
+        toggleLevelsDialog();
+        return false;
+      }
+    }
 
     if (e.shiftKey) {
       switch (e.key) {
-        case 'ArrowRight':
-          gotoNextLevel();
-          break;
-        case 'ArrowLeft':
+        case 'ArrowLeft': {
+          // Shift + ←
           gotoPrevLevel();
+          break;
+        }
+        case 'ArrowRight':
+          // Shift + →
+          gotoNextLevel();
           break;
       }
     } else if (e.key === ' ') {
@@ -486,6 +503,14 @@
     updateLevelVisibility();
     updateEditLevel();
     draw();
+  }
+
+  function toggleHelpDialog() {
+    if (!elems.help.dialog.open) {
+      showHelpDialog();
+    } else {
+      closeHelpDialog();
+    }
   }
 
   function showHelpDialog() {
@@ -826,6 +851,14 @@
   function selectLang(lang) {
     applyLang(lang);
     savedata.saveLang(lang);
+  }
+
+  function toggleLevelsDialog() {
+    if (!elems.levels.dialog.open) {
+      showLevelsDialog();
+    } else {
+      closeLevelsDialog();
+    }
   }
 
   function showLevelsDialog() {
