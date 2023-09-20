@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.09.18';
+  const VERSION_TEXT = 'v2023.09.21';
 
   const app = window.app;
   Object.freeze(app);
@@ -188,12 +188,20 @@
       switch (e.key) {
         case 'ArrowLeft': {
           // Shift + ←
-          gotoPrevLevel();
+          if (elems.levels.dialog.open) {
+            gotoPrevLevelPage();
+          } else {
+            gotoPrevLevel();
+          }
           break;
         }
         case 'ArrowRight':
           // Shift + →
-          gotoNextLevel();
+          if (elems.levels.dialog.open) {
+            gotoNextLevelPage();
+          } else {
+            gotoNextLevel();
+          }
           break;
       }
     } else if (e.key === ' ') {
@@ -870,7 +878,22 @@
     updateLevelsDialog();
   }
 
-  function updateLevelsDialog() {
+  function gotoPrevLevelPage() {
+    if (!elems.levels.prev.classList.contains('hide')) {
+      const page = Number(elems.levels.dialog.dataset.page) - 1;
+      updateLevelsDialog(page);
+    }
+  }
+
+  function gotoNextLevelPage() {
+    if (!elems.levels.next.classList.contains('hide')) {
+      const page = Number(elems.levels.dialog.dataset.page) + 1;
+      updateLevelsDialog(page);
+    }
+  }
+
+  function updateLevelsDialog(page_ = null) {
+    let page = page_;
     window.getSelection().removeAllRanges();
 
     // const hideCompletedLevelsFlag = elems.levels.hideClearedLevels.checked;
@@ -881,21 +904,50 @@
     const WIDTH = 90;
     const COLS = 5;
 
-    let count = 0;
+    const numPerPage = 20;
+    let totalNum = 0;
     for (let id = 1; id < levelsList.length; ++id) {
-      const levelObj = levelsList[id];
-      appendLevel(levelObj, id);
+      if (page === null && id === levelId) {
+        page = Math.floor(totalNum / numPerPage);
+      }
+      totalNum++;
     }
     for (const id of Object.keys(levelsListEx).sort()) {
       if (String(id) === 'NaN') continue;
-      const levelObj = levelsListEx[id];
-      appendLevel(levelObj, id);
+      if (page === null && id === levelId) {
+        page = Math.floor(totalNum / numPerPage);
+      }
+      totalNum++;
     }
 
-    elems.levels.dialogSvg.style.setProperty(
-      'height',
-      `${HEIGHT * Math.ceil(count / COLS)}px`
-    );
+    elems.levels.dialog.dataset.page = page;
+    if (page === 0) {
+      hideElem(elems.levels.prev);
+    } else {
+      showElem(elems.levels.prev);
+    }
+    if (page + 1 === Math.floor((totalNum + numPerPage - 1) / numPerPage)) {
+      hideElem(elems.levels.next);
+    } else {
+      showElem(elems.levels.next);
+    }
+
+    let count = 0;
+    for (let id = 1; id < levelsList.length; ++id) {
+      if (page * numPerPage <= count && count < (page + 1) * numPerPage) {
+        const levelObj = levelsList[id];
+        appendLevel(levelObj, id);
+      }
+      count++;
+    }
+    for (const id of Object.keys(levelsListEx).sort()) {
+      if (String(id) === 'NaN') continue;
+      if (page * numPerPage <= count && count < (page + 1) * numPerPage) {
+        const levelObj = levelsListEx[id];
+        appendLevel(levelObj, id);
+      }
+      count++;
+    }
 
     function appendLevel(levelObj, id) {
       const level = new app.Level(levelObj, checkMode, {});
@@ -916,8 +968,6 @@
       ) {
         return;
       }
-
-      count++;
 
       const g = app.svg.createG();
       g.classList.add('level-select');
@@ -948,8 +998,8 @@
           g.appendChild(levelSvgG);
         }
       }
-      const x = ((count - 1) % COLS) * WIDTH;
-      const y = Math.floor((count - 1) / COLS) * HEIGHT;
+      const x = (count % COLS) * WIDTH;
+      const y = Math.floor((count % numPerPage) / COLS) * HEIGHT;
       g.setAttribute('transform', `translate(${x},${y})`);
       g.dataset.id = id;
       g.addEventListener(
@@ -1300,6 +1350,12 @@
         toggleHideCompletedLevels,
         false
       );
+    }
+
+    // レベル一覧ダイアログ
+    {
+      elems.levels.prev.addEventListener('click', gotoPrevLevelPage, false);
+      elems.levels.next.addEventListener('click', gotoNextLevelPage, false);
     }
 
     // キー入力用

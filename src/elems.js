@@ -62,6 +62,8 @@
       hideShortestLevels: 'hide-shortest-levels',
       dialogDiv: 'dialog-levels-div',
       dialogSvg: 'dialog-levels-svg',
+      prev: 'button-levels-prev',
+      next: 'button-levels-next',
     },
 
     main: {

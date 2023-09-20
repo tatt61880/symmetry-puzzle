@@ -19,6 +19,7 @@
   #dialog-levels-svg {
     box-sizing: border-box;
     width: 450px;
+    height: 360px;
     margin: 0;
 
     .level-select {

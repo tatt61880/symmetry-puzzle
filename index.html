@@ -14,36 +14,36 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.09.17">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.09.17">
 
-  <link rel="stylesheet" href="./css/main.css?2023.09.18">
-  <link rel="stylesheet" href="./css/title.css?2023.09.18">
-  <link rel="stylesheet" href="./css/game.css?2023.09.18">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.09.18">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.09.18">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.09.18">
-  <link rel="stylesheet" href="./css/animation.css?2023.09.18">
+  <link rel="stylesheet" href="./css/main.css?2023.09.21">
+  <link rel="stylesheet" href="./css/title.css?2023.09.21">
+  <link rel="stylesheet" href="./css/game.css?2023.09.21">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.09.21">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.09.21">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.09.21">
+  <link rel="stylesheet" href="./css/animation.css?2023.09.21">
 
-  <script src="./src/states.js?2023.09.18"></script>
-  <script src="./src/colors.js?2023.09.18"></script>
-  <script src="./src/svg.js?2023.09.18"></script>
-  <script src="./src/class-stack.js?2023.09.18"></script>
-  <script src="./src/class-level.js?2023.09.18"></script>
+  <script src="./src/states.js?2023.09.21"></script>
+  <script src="./src/colors.js?2023.09.21"></script>
+  <script src="./src/svg.js?2023.09.21"></script>
+  <script src="./src/class-stack.js?2023.09.21"></script>
+  <script src="./src/class-level.js?2023.09.21"></script>
 
-  <script src="./src/class-savedata.js?2023.09.18"></script>
-  <script src="./src/class-undo-info.js?2023.09.18"></script>
-  <script src="./src/class-elems.js?2023.09.18"></script>
-  <script src="./src/class-stick.js?2023.09.18"></script>
+  <script src="./src/class-savedata.js?2023.09.21"></script>
+  <script src="./src/class-undo-info.js?2023.09.21"></script>
+  <script src="./src/class-elems.js?2023.09.21"></script>
+  <script src="./src/class-stick.js?2023.09.21"></script>
 
-  <script src="./src/levels-line.js?2023.09.18"></script>
-  <script src="./src/levels-line-ex.js?2023.09.18"></script>
-  <script src="./src/levels-point.js?2023.09.18"></script>
-  <script src="./src/levels-point-ex.js?2023.09.18"></script>
+  <script src="./src/levels-line.js?2023.09.21"></script>
+  <script src="./src/levels-line-ex.js?2023.09.21"></script>
+  <script src="./src/levels-point.js?2023.09.21"></script>
+  <script src="./src/levels-point-ex.js?2023.09.21"></script>
 
-  <script src="./src/elems.js?2023.09.18"></script>
+  <script src="./src/elems.js?2023.09.21"></script>
 
-  <script src="./src/solve.js?2023.09.18"></script>
+  <script src="./src/solve.js?2023.09.21"></script>
 
-  <script src="./src/analyze-url.js?2023.09.18"></script>
-  <script src="./src/main.js?2023.09.18"></script>
+  <script src="./src/analyze-url.js?2023.09.21"></script>
+  <script src="./src/main.js?2023.09.21"></script>
 </head>
 
 <body>
@@ -310,7 +310,27 @@
               <label class="toggle-label"> </label>
             </div>
           </div>
-          <svg id="dialog-levels-svg"></svg>
+
+          <svg id="dialog-levels-svg">
+          </svg>
+
+          <svg width="450" height="80">
+            <g id="button-levels-prev" class="button active-hover" transform="translate(95,7)">
+              <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb"
+                stroke-width="4" />
+              <path d="M 50 14 24 28 50 42 Z" fill="#87ceeb" />
+              <text x="40" y="69" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14px"
+                fill="#7799bb">Shift ←</text>
+            </g>
+            <g id="button-levels-next" class="button active-hover" transform="translate(275,7)">
+              <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb"
+                stroke-width="4" />
+              <path d="M 30 14 55 28 30 42 Z" fill="#87ceeb" />
+              <text x="40" y="69" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14px"
+                fill="#7799bb">Shift →</text>
+            </g>
+          </svg>
+          <!-- Level -->
         </div>
       </dialog>
 
