@@ -875,7 +875,8 @@
   }
 
   function toggleHideCompletedLevels() {
-    updateLevelsDialog();
+    const page = Number(elems.levels.dialog.dataset.page);
+    updateLevelsDialog(page);
   }
 
   function gotoPrevLevelPage() {
