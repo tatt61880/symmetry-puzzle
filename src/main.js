@@ -921,6 +921,9 @@
       totalNum++;
     }
 
+    if (page === null) {
+      page = 0;
+    }
     elems.levels.dialog.dataset.page = page;
     if (page === 0) {
       hideElem(elems.levels.prev);
