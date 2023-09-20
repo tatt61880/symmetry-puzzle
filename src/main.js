@@ -914,7 +914,7 @@
     }
     for (const id of Object.keys(levelsListEx).sort()) {
       if (String(id) === 'NaN') continue;
-      if (page === null && id === levelId) {
+      if (page === null && Number(id) === levelId) {
         page = Math.floor(totalNum / numPerPage);
       }
       totalNum++;
