@@ -978,6 +978,16 @@
       elems.levels.dialogSvg.appendChild(g);
 
       {
+        if (id === levelId) {
+          const rect = app.svg.createRect(1, {
+            x: 0,
+            y: 0,
+            width: WIDTH,
+            height: HEIGHT,
+            fill: app.colors.levelsDialogCurrentLevel,
+          });
+          g.appendChild(rect);
+        }
         {
           const crown = createCrown(20, 0, 1, highestScore, bestStep);
           g.appendChild(crown);
