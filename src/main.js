@@ -937,6 +937,9 @@
   }
 
   function levelSelectUpdate(selectCount) {
+    if (isTouchDevice()) {
+      return;
+    }
     const currentPage = Number(elems.levels.dialog.dataset.page);
     const page = Math.floor(selectCount / LEVEL_SELECT_NUM_PER_PAGE);
     if (page !== currentPage) {
@@ -1064,7 +1067,8 @@
     }
     elems.levels.dialog.dataset.selectIds = JSON.stringify(selectIds);
 
-    {
+    // 選択枠
+    if (!isTouchDevice()) {
       if (
         Number(elems.levels.dialog.dataset.selectCount) >
         Number(elems.levels.dialog.dataset.maxCount)
@@ -1545,7 +1549,7 @@
 
     // タッチ入力用
     {
-      const touchDevice = document.ontouchstart !== undefined;
+      const touchDevice = isTouchDevice();
       const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
@@ -2371,5 +2375,9 @@
         fill: color,
       });
     }
+  }
+
+  function isTouchDevice() {
+    return document.ontouchstart !== undefined;
   }
 })();
