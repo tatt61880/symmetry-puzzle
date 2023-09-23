@@ -1038,7 +1038,7 @@
     }
 
     let count = 0;
-    const ids = {};
+    const selectIds = {};
     for (let id = 1; id < levelsList.length; ++id) {
       if (
         page * LEVEL_SELECT_NUM_PER_PAGE <= count &&
@@ -1046,7 +1046,7 @@
       ) {
         const levelObj = levelsList[id];
         appendLevel(levelObj, id);
-        ids[count] = id;
+        selectIds[count] = id;
       }
       count++;
     }
@@ -1058,11 +1058,11 @@
       ) {
         const levelObj = levelsListEx[id];
         appendLevel(levelObj, id);
-        ids[count] = id;
+        selectIds[count] = id;
       }
       count++;
     }
-    elems.levels.dialog.dataset.selectIds = JSON.stringify(ids);
+    elems.levels.dialog.dataset.selectIds = JSON.stringify(selectIds);
 
     {
       if (
@@ -1124,60 +1124,62 @@
       g.classList.add('level-select');
       elems.levels.dialogSvg.appendChild(g);
 
-      {
-        if (id === levelId) {
-          const rect = app.svg.createRect(1, {
-            x: 0,
-            y: 0,
-            width: LEVEL_SELECT_WIDTH,
-            height: LEVEL_SELECT_HEIGHT,
-            fill: app.colors.levelsDialogCurrentLevel,
-          });
-          rect.setAttribute('rx', '5');
-          rect.setAttribute('ry', '5');
-          g.appendChild(rect);
-        } else {
-          const rect = app.svg.createRect(1, {
-            x: 0,
-            y: 0,
-            width: LEVEL_SELECT_WIDTH,
-            height: LEVEL_SELECT_HEIGHT,
-            fill: '#ffffff',
-            stroke: '#dddddd',
-          });
-          rect.setAttribute('rx', '5');
-          rect.setAttribute('ry', '5');
-          g.appendChild(rect);
-        }
-        {
-          const crown = createCrown(20, 0, 1, highestScore, bestStep);
-          g.appendChild(crown);
-        }
-        {
-          const text = app.svg.createText(1, {
-            x: LEVEL_SELECT_WIDTH / 2,
-            y: 12,
-            text: id,
-            fill: 'black',
-          });
-          g.appendChild(text);
-          g.setAttribute('transform', 'translate(20,20)');
-        }
-        {
-          const blockSize = Math.min(
-            (LEVEL_SELECT_WIDTH - 25) / level.getWidth(),
-            (LEVEL_SELECT_HEIGHT - 25) / level.getHeight()
-          );
-          const levelSvgG = level.createSvgG(blockSize);
-          levelSvgG.setAttribute('transform', 'translate(20,20)');
-          g.appendChild(levelSvgG);
-        }
+      if (String(id) === String(levelId)) {
+        const rect = app.svg.createRect(1, {
+          x: 0,
+          y: 0,
+          width: LEVEL_SELECT_WIDTH,
+          height: LEVEL_SELECT_HEIGHT,
+          fill: app.colors.levelsDialogCurrentLevel,
+        });
+        rect.setAttribute('rx', '5');
+        rect.setAttribute('ry', '5');
+        g.appendChild(rect);
+      } else {
+        const rect = app.svg.createRect(1, {
+          x: 0,
+          y: 0,
+          width: LEVEL_SELECT_WIDTH,
+          height: LEVEL_SELECT_HEIGHT,
+          fill: '#ffffff',
+          stroke: '#dddddd',
+        });
+        rect.setAttribute('rx', '5');
+        rect.setAttribute('ry', '5');
+        g.appendChild(rect);
       }
-      const x = (count % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH;
-      const y =
-        Math.floor((count % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) *
-        LEVEL_SELECT_HEIGHT;
-      g.setAttribute('transform', `translate(${x},${y})`);
+
+      {
+        const crown = createCrown(20, 0, 1, highestScore, bestStep);
+        g.appendChild(crown);
+      }
+      {
+        const text = app.svg.createText(1, {
+          x: LEVEL_SELECT_WIDTH / 2,
+          y: 12,
+          text: id,
+          fill: 'black',
+        });
+        g.appendChild(text);
+        g.setAttribute('transform', 'translate(20,20)');
+      }
+      {
+        const blockSize = Math.min(
+          (LEVEL_SELECT_WIDTH - 25) / level.getWidth(),
+          (LEVEL_SELECT_HEIGHT - 25) / level.getHeight()
+        );
+        const levelSvgG = level.createSvgG(blockSize);
+        levelSvgG.setAttribute('transform', 'translate(20,20)');
+        g.appendChild(levelSvgG);
+      }
+
+      {
+        const x = (count % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH;
+        const y =
+          Math.floor((count % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) *
+          LEVEL_SELECT_HEIGHT;
+        g.setAttribute('transform', `translate(${x},${y})`);
+      }
       g.dataset.id = id;
       g.addEventListener(
         'click',
