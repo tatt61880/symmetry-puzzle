@@ -57,6 +57,11 @@
   const frameSize = 32;
   const frameBorderWidth = 3;
 
+  const LEVEL_SELECT_NUM_PER_PAGE = 20;
+  const LEVEL_SELECT_HEIGHT = 90;
+  const LEVEL_SELECT_WIDTH = 90;
+  const LEVEL_SELECT_COLS = 5;
+
   let levelsList = null;
   let levelsListEx = null;
   let levelId = null;
@@ -172,8 +177,48 @@
       toggleHelpDialog();
     }
 
-    if (!elems.category.title.classList.contains('hide')) return;
-    // タイトル画面以外で有効
+    // タイトル画面で有効
+    if (!elems.category.title.classList.contains('hide')) {
+      return false;
+    }
+
+    // レベル一覧画面で有効
+    if (elems.levels.dialog.open) {
+      switch (e.key) {
+        case 'ArrowUp':
+        case 'w':
+        case 'k':
+          levelSelectUp();
+          break;
+        case 'ArrowRight':
+        case 'd':
+        case 'l':
+          if (e.shiftKey) {
+            gotoNextLevelPage();
+          } else {
+            levelSelectRight();
+          }
+          break;
+        case 'ArrowDown':
+        case 's':
+        case 'j':
+          levelSelectDown();
+          break;
+        case 'ArrowLeft':
+        case 'a':
+        case 'h':
+          if (e.shiftKey) {
+            gotoPrevLevelPage();
+          } else {
+            levelSelectLeft();
+          }
+          break;
+        case 'Enter':
+          levelSelectEnter();
+          break;
+      }
+      return false;
+    }
 
     if (e.altKey) return;
 
@@ -188,20 +233,12 @@
       switch (e.key) {
         case 'ArrowLeft': {
           // Shift + ←
-          if (elems.levels.dialog.open) {
-            gotoPrevLevelPage();
-          } else {
-            gotoPrevLevel();
-          }
+          gotoPrevLevel();
           break;
         }
         case 'ArrowRight':
           // Shift + →
-          if (elems.levels.dialog.open) {
-            gotoNextLevelPage();
-          } else {
-            gotoNextLevel();
-          }
+          gotoNextLevel();
           break;
       }
     } else if (e.key === ' ') {
@@ -881,6 +918,9 @@
 
   function gotoPrevLevelPage() {
     if (!elems.levels.prev.classList.contains('hide')) {
+      elems.levels.dialog.dataset.selectCount =
+        Number(elems.levels.dialog.dataset.selectCount) -
+        LEVEL_SELECT_NUM_PER_PAGE;
       const page = Number(elems.levels.dialog.dataset.page) - 1;
       updateLevelsDialog(page);
     }
@@ -888,9 +928,66 @@
 
   function gotoNextLevelPage() {
     if (!elems.levels.next.classList.contains('hide')) {
+      elems.levels.dialog.dataset.selectCount =
+        Number(elems.levels.dialog.dataset.selectCount) +
+        LEVEL_SELECT_NUM_PER_PAGE;
       const page = Number(elems.levels.dialog.dataset.page) + 1;
       updateLevelsDialog(page);
     }
+  }
+
+  function levelSelectUpdate(selectCount) {
+    const currentPage = Number(elems.levels.dialog.dataset.page);
+    const page = Math.floor(selectCount / LEVEL_SELECT_NUM_PER_PAGE);
+    if (page !== currentPage) {
+      updateLevelsDialog(page);
+    }
+
+    elems.levels.dialog.dataset.selectCount = selectCount;
+    const g = document.getElementById('levelSelect');
+    const x = (selectCount % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH;
+    const y =
+      Math.floor(
+        (selectCount % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS
+      ) * LEVEL_SELECT_HEIGHT;
+    g.setAttribute('transform', `translate(${x},${y})`);
+  }
+
+  function levelSelectUp() {
+    const selectCount =
+      Number(elems.levels.dialog.dataset.selectCount) - LEVEL_SELECT_COLS;
+    if (selectCount >= 0) {
+      levelSelectUpdate(selectCount);
+    }
+  }
+
+  function levelSelectRight() {
+    const selectCount = Number(elems.levels.dialog.dataset.selectCount) + 1;
+    if (selectCount <= Number(elems.levels.dialog.dataset.maxCount)) {
+      levelSelectUpdate(selectCount);
+    }
+  }
+
+  function levelSelectDown() {
+    const selectCount =
+      Number(elems.levels.dialog.dataset.selectCount) + LEVEL_SELECT_COLS;
+    if (selectCount <= Number(elems.levels.dialog.dataset.maxCount)) {
+      levelSelectUpdate(selectCount);
+    }
+  }
+
+  function levelSelectLeft() {
+    const selectCount = Number(elems.levels.dialog.dataset.selectCount) - 1;
+    if (selectCount >= 0) {
+      levelSelectUpdate(selectCount);
+    }
+  }
+
+  function levelSelectEnter() {
+    const selectCount = Number(elems.levels.dialog.dataset.selectCount);
+    const id = JSON.parse(elems.levels.dialog.dataset.selectIds)[selectCount];
+    loadLevelById(id);
+    elems.levels.dialog.close();
   }
 
   function updateLevelsDialog(page_ = null) {
@@ -901,25 +998,24 @@
     const hideShortestLevelsFlag = elems.levels.hideShortestLevels.checked;
 
     elems.levels.dialogSvg.innerHTML = '';
-    const HEIGHT = 90;
-    const WIDTH = 90;
-    const COLS = 5;
 
-    const numPerPage = 20;
     let totalNum = 0;
     for (let id = 1; id < levelsList.length; ++id) {
       if (page === null && id === levelId) {
-        page = Math.floor(totalNum / numPerPage);
+        page = Math.floor(totalNum / LEVEL_SELECT_NUM_PER_PAGE);
+        elems.levels.dialog.dataset.selectCount = totalNum;
       }
       totalNum++;
     }
     for (const id of Object.keys(levelsListEx).sort()) {
       if (String(id) === 'NaN') continue;
       if (page === null && Number(id) === levelId) {
-        page = Math.floor(totalNum / numPerPage);
+        page = Math.floor(totalNum / LEVEL_SELECT_NUM_PER_PAGE);
+        elems.levels.dialog.dataset.selectCount = totalNum;
       }
       totalNum++;
     }
+    elems.levels.dialog.dataset.maxCount = totalNum - 1;
 
     if (page === null) {
       page = 0;
@@ -930,27 +1026,78 @@
     } else {
       showElem(elems.levels.prev);
     }
-    if (page + 1 === Math.floor((totalNum + numPerPage - 1) / numPerPage)) {
+    if (
+      page + 1 ===
+      Math.floor(
+        (totalNum + LEVEL_SELECT_NUM_PER_PAGE - 1) / LEVEL_SELECT_NUM_PER_PAGE
+      )
+    ) {
       hideElem(elems.levels.next);
     } else {
       showElem(elems.levels.next);
     }
 
     let count = 0;
+    const ids = {};
     for (let id = 1; id < levelsList.length; ++id) {
-      if (page * numPerPage <= count && count < (page + 1) * numPerPage) {
+      if (
+        page * LEVEL_SELECT_NUM_PER_PAGE <= count &&
+        count < (page + 1) * LEVEL_SELECT_NUM_PER_PAGE
+      ) {
         const levelObj = levelsList[id];
         appendLevel(levelObj, id);
+        ids[count] = id;
       }
       count++;
     }
     for (const id of Object.keys(levelsListEx).sort()) {
       if (String(id) === 'NaN') continue;
-      if (page * numPerPage <= count && count < (page + 1) * numPerPage) {
+      if (
+        page * LEVEL_SELECT_NUM_PER_PAGE <= count &&
+        count < (page + 1) * LEVEL_SELECT_NUM_PER_PAGE
+      ) {
         const levelObj = levelsListEx[id];
         appendLevel(levelObj, id);
+        ids[count] = id;
       }
       count++;
+    }
+    elems.levels.dialog.dataset.selectIds = JSON.stringify(ids);
+
+    {
+      if (
+        Number(elems.levels.dialog.dataset.selectCount) >
+        Number(elems.levels.dialog.dataset.maxCount)
+      ) {
+        elems.levels.dialog.dataset.selectCount = Number(
+          elems.levels.dialog.dataset.maxCount
+        );
+      }
+
+      const selectCount = Number(elems.levels.dialog.dataset.selectCount);
+      const rect = app.svg.createRect(1, {
+        x: 1,
+        y: 1,
+        width: LEVEL_SELECT_WIDTH - 2,
+        height: LEVEL_SELECT_HEIGHT - 2,
+        fill: 'none',
+        stroke: app.colors.levelsDialogSelect,
+      });
+      rect.setAttribute('stroke-width', '2');
+      rect.setAttribute('rx', '5');
+      rect.setAttribute('ry', '5');
+
+      const g = app.svg.createG();
+      g.appendChild(rect);
+      elems.levels.dialogSvg.appendChild(g);
+
+      const x = (selectCount % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH;
+      const y =
+        Math.floor(
+          (selectCount % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS
+        ) * LEVEL_SELECT_HEIGHT;
+      g.setAttribute('id', 'levelSelect');
+      g.setAttribute('transform', `translate(${x},${y})`);
     }
 
     function appendLevel(levelObj, id) {
@@ -982,10 +1129,24 @@
           const rect = app.svg.createRect(1, {
             x: 0,
             y: 0,
-            width: WIDTH,
-            height: HEIGHT,
+            width: LEVEL_SELECT_WIDTH,
+            height: LEVEL_SELECT_HEIGHT,
             fill: app.colors.levelsDialogCurrentLevel,
           });
+          rect.setAttribute('rx', '5');
+          rect.setAttribute('ry', '5');
+          g.appendChild(rect);
+        } else {
+          const rect = app.svg.createRect(1, {
+            x: 0,
+            y: 0,
+            width: LEVEL_SELECT_WIDTH,
+            height: LEVEL_SELECT_HEIGHT,
+            fill: '#ffffff',
+            stroke: '#dddddd',
+          });
+          rect.setAttribute('rx', '5');
+          rect.setAttribute('ry', '5');
           g.appendChild(rect);
         }
         {
@@ -993,27 +1154,29 @@
           g.appendChild(crown);
         }
         {
-          const text = app.svg.createText(5, {
-            x: 10.5,
-            y: 2,
+          const text = app.svg.createText(1, {
+            x: LEVEL_SELECT_WIDTH / 2,
+            y: 12,
             text: id,
             fill: 'black',
           });
           g.appendChild(text);
-          g.setAttribute('transform', `translate(20,20)`);
+          g.setAttribute('transform', 'translate(20,20)');
         }
         {
           const blockSize = Math.min(
-            (WIDTH - 25) / level.getWidth(),
-            (HEIGHT - 25) / level.getHeight()
+            (LEVEL_SELECT_WIDTH - 25) / level.getWidth(),
+            (LEVEL_SELECT_HEIGHT - 25) / level.getHeight()
           );
           const levelSvgG = level.createSvgG(blockSize);
-          levelSvgG.setAttribute('transform', `translate(20,20)`);
+          levelSvgG.setAttribute('transform', 'translate(20,20)');
           g.appendChild(levelSvgG);
         }
       }
-      const x = (count % COLS) * WIDTH;
-      const y = Math.floor((count % numPerPage) / COLS) * HEIGHT;
+      const x = (count % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH;
+      const y =
+        Math.floor((count % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) *
+        LEVEL_SELECT_HEIGHT;
       g.setAttribute('transform', `translate(${x},${y})`);
       g.dataset.id = id;
       g.addEventListener(
@@ -2173,12 +2336,15 @@
   }
 
   function resizeWindow() {
-    const WIDTH = 500;
-    const HEIGHT = 688;
-    if (window.innerHeight * WIDTH >= window.innerWidth * HEIGHT) {
+    const WINDOW_WIDTH = 500;
+    const WINDOW_HEIGHT = 688;
+    if (
+      window.innerHeight * WINDOW_WIDTH >=
+      window.innerWidth * WINDOW_HEIGHT
+    ) {
       elems.viewport.setAttribute('content', 'width=500');
     } else {
-      const width = (HEIGHT * window.innerWidth) / window.innerHeight;
+      const width = (WINDOW_HEIGHT * window.innerWidth) / window.innerHeight;
       elems.viewport.setAttribute('content', `width=${width}`);
     }
   }

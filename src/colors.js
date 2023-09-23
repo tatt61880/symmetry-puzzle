@@ -59,6 +59,7 @@
   colors.stepUnknown = '#a0a0a0';
 
   colors.levelsDialogCurrentLevel = '#cceeff';
+  colors.levelsDialogSelect = 'red';
 
   Object.freeze(colors);
 
