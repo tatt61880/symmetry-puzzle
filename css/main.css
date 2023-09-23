@@ -95,7 +95,6 @@ text {
   align-items: center;
 
   .toggle-text {
-    margin: 10px;
     font-weight: bold;
   }
 
@@ -112,6 +111,7 @@ text {
     display: inline-block;
     width: 70px;
     height: 35px;
+    margin-left: 5px;
     background: #cccccc;
     border-radius: 40px;
     transition: 0.2s;

@@ -11,9 +11,28 @@
   margin: 128px auto;
   border: none;
 
+  #levels-toggle-crown {
+    width: 20px;
+    height: 20px;
+  }
+
   #dialog-levels-div {
     padding: 5px;
     padding-bottom: 10px;
+  }
+
+  #dialog-levels-top {
+    display: flex;
+    align-items: center;
+
+    &:first-child {
+      margin-left: 5px;
+    }
+
+    .toggle-div {
+      margin-right: 10px;
+      margin-left: auto;
+    }
   }
 
   #dialog-levels-svg {

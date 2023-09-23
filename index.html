@@ -74,7 +74,7 @@
 
     <dialog id="dialog-help">
       <div id="dialog-help-div">
-        <div id="setting-top">
+        <div id="dialog-help-top">
           <svg width="36" height="36">
             <g id="dialog-help-close" class="button active-hover" transform="translate(18,18)">
               <circle cx="0" cy="0" r="18" fill="#dddddd" stroke="none" />
@@ -292,22 +292,24 @@
 
       <dialog id="dialog-levels">
         <div id="dialog-levels-div">
-          <!--
-          <div class="toggle-div">
-            <div class="toggle-text translatable-toggle" data-en="Hide cleared levels" data-ja="クリアしたレベルを隠す"></div>
-            <div class="toggle-button">
-              <input id="hide-cleared-levels" type="checkbox" class="toggle-input">
-              <label class="toggle-label"></label>
-            </div>
-          </div>
-          -->
-          <div class="toggle-div">
-            <div class="toggle-text translatable-toggle" data-en="Hide the levels cleared in the shortest step."
-              data-ja="最短手数でクリアしたレベルを隠す">
-            </div>
-            <div class="toggle-button">
-              <input id="hide-shortest-levels" type="checkbox" class="toggle-input">
-              <label class="toggle-label"> </label>
+          <div id="dialog-levels-top">
+            <svg width="36" height="36">
+              <g id="dialog-levels-close" class="button active-hover" transform="translate(18,18)">
+                <circle cx="0" cy="0" r="18" fill="#dddddd" stroke="none" />
+                <path d="M -8 -8 8 8" fill="none" stroke="#333333" stroke-width="3" stroke-linecap="round" />
+                <path d="M -8 8 8 -8" fill="none" stroke="#333333" stroke-width="3" stroke-linecap="round" />
+              </g>
+            </svg>
+            <div class="toggle-div">
+              <div class="toggle-text translatable-toggle" data-en="Hide the&nbsp;" data-ja="">
+              </div>
+              <svg id="levels-toggle-crown"></svg>
+              <div class="toggle-text translatable-toggle" data-en="&nbsp;levels" data-ja="&nbsp;を獲得したレベルを表示しない">
+              </div>
+              <div class="toggle-button">
+                <input id="hide-shortest-levels" type="checkbox" class="toggle-input">
+                <label class="toggle-label"> </label>
+              </div>
             </div>
           </div>
 

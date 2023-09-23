@@ -997,6 +997,10 @@
     let page = page_;
     window.getSelection().removeAllRanges();
 
+    if (!elems.levels.toggleCrown.hasChildNodes()) {
+      elems.levels.toggleCrown.appendChild(createCrown(20, 0, 0, 1, 1));
+    }
+
     // const hideCompletedLevelsFlag = elems.levels.hideClearedLevels.checked;
     const hideShortestLevelsFlag = elems.levels.hideShortestLevels.checked;
 
@@ -1537,6 +1541,7 @@
 
     // レベル一覧ダイアログ
     {
+      elems.levels.close.addEventListener('click', closeLevelsDialog, false);
       elems.levels.prev.addEventListener('click', gotoPrevLevelPage, false);
       elems.levels.next.addEventListener('click', gotoNextLevelPage, false);
     }
