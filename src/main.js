@@ -1622,11 +1622,12 @@
 
   // 描画
   function drawMainSvg(completeCheckFlag = false) {
-    elems.main.svg.textContent = '';
     updateController();
 
     const mainSvgG = app.svg.createG();
     mainSvgG.style.setProperty('pointer-events', 'none');
+
+    elems.main.svg.textContent = '';
     elems.main.svg.appendChild(mainSvgG);
 
     {
