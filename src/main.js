@@ -93,7 +93,7 @@
     4: '000111001111111001111111001111111',
   };
 
-  document.addEventListener('DOMContentLoaded', onloadApp, false);
+  document.addEventListener('DOMContentLoaded', onloadApp);
   return;
   // ==========================================================================
 
@@ -1181,15 +1181,11 @@
         g.setAttribute('transform', `translate(${x},${y})`);
       }
       g.dataset.id = id;
-      g.addEventListener(
-        'click',
-        function () {
-          const id = Number(g.dataset.id);
-          loadLevelById(id);
-          closeLevelsDialog();
-        },
-        false
-      );
+      g.addEventListener('click', function () {
+        const id = Number(g.dataset.id);
+        loadLevelById(id);
+        closeLevelsDialog();
+      });
     }
   }
 
@@ -1341,7 +1337,7 @@
   }
 
   function initElems() {
-    elems.top.addEventListener('click', onloadTitle, false);
+    elems.top.addEventListener('click', onloadTitle);
 
     // Autoモード用
     {
@@ -1387,161 +1383,115 @@
             drawingState = state;
           };
           editboxFunctions[char] = func;
-          elem.addEventListener('click', func, false);
+          elem.addEventListener('click', func);
         }
       }
       editboxFunctions[app.states.stateToChar[app.states.none]]();
 
-      elems.edit.wDec.addEventListener('click', (e) => resize(e, -1, 0), false);
-      elems.edit.wInc.addEventListener('click', (e) => resize(e, 1, 0), false);
-      elems.edit.hDec.addEventListener('click', (e) => resize(e, 0, -1), false);
-      elems.edit.hInc.addEventListener('click', (e) => resize(e, 0, 1), false);
-      elems.edit.normalize.addEventListener(
-        'click',
-        () => {
-          if (!level.isNormalized()) {
-            addUndo(null);
-            level.normalize();
-            updateLinkUrl();
-            drawMainSvg();
-          }
-        },
-        false
-      );
-      elems.edit.mirror.addEventListener(
-        'click',
-        () => {
+      elems.edit.wDec.addEventListener('click', (e) => resizeLevel(e, -1, 0));
+      elems.edit.wInc.addEventListener('click', (e) => resizeLevel(e, 1, 0));
+      elems.edit.hDec.addEventListener('click', (e) => resizeLevel(e, 0, -1));
+      elems.edit.hInc.addEventListener('click', (e) => resizeLevel(e, 0, 1));
+      elems.edit.normalize.addEventListener('click', () => {
+        if (!level.isNormalized()) {
           addUndo(null);
-          level.mirror();
+          level.normalize();
           updateLinkUrl();
           drawMainSvg();
-        },
-        false
-      );
-      elems.edit.rotate.addEventListener(
-        'click',
-        () => {
-          addUndo(null);
-          level.rotate(1);
-          updateLinkUrl();
-          drawMainSvg();
-          updateSvg();
-        },
-        false
-      );
-      elems.edit.switchMode.addEventListener(
-        'click',
-        () => {
-          if (level.isLineMode()) {
-            updateCheckMode(app.Level.CHECK_MODE.POINT);
-          } else {
-            updateCheckMode(app.Level.CHECK_MODE.LINE);
-          }
-          const w = level.getW();
-          const h = level.getH();
-          const s = level.getStateStr();
-          level = new app.Level({ w, h, s }, checkMode, {});
-          completeCheck();
-          updateLinkUrl();
-          drawMainSvg();
-        },
-        false
-      );
+        }
+      });
+      elems.edit.mirror.addEventListener('click', () => {
+        addUndo(null);
+        level.mirror();
+        updateLinkUrl();
+        drawMainSvg();
+      });
+      elems.edit.rotate.addEventListener('click', () => {
+        addUndo(null);
+        level.rotate(1);
+        updateLinkUrl();
+        drawMainSvg();
+        updateSvg();
+      });
+      elems.edit.switchMode.addEventListener('click', () => {
+        if (level.isLineMode()) {
+          updateCheckMode(app.Level.CHECK_MODE.POINT);
+        } else {
+          updateCheckMode(app.Level.CHECK_MODE.LINE);
+        }
+        const w = level.getW();
+        const h = level.getH();
+        const s = level.getStateStr();
+        level = new app.Level({ w, h, s }, checkMode, {});
+        completeCheck();
+        updateLinkUrl();
+        drawMainSvg();
+      });
     }
 
     // ヘルプ画面用
     {
-      elems.help.button.addEventListener('click', showHelpDialog, false);
-      elems.help.dialog.addEventListener('click', closeHelpDialog, false);
-      elems.help.close.addEventListener('click', closeHelpDialog, false);
-      elems.help.dialogDiv.addEventListener(
-        'click',
-        (e) => e.stopPropagation(),
-        false
+      elems.help.button.addEventListener('click', showHelpDialog);
+      elems.help.dialog.addEventListener('click', closeHelpDialog);
+      elems.help.close.addEventListener('click', closeHelpDialog);
+      elems.help.dialogDiv.addEventListener('click', (e) =>
+        e.stopPropagation()
       );
-      elems.help.langEn.addEventListener(
-        'click',
-        () => selectLang('en'),
-        false
-      );
-      elems.help.langJa.addEventListener(
-        'click',
-        () => selectLang('ja'),
-        false
-      );
+      elems.help.langEn.addEventListener('click', () => selectLang('en'));
+      elems.help.langJa.addEventListener('click', () => selectLang('ja'));
     }
 
     // タイトル画面用
     {
-      elems.title.buttonPlayPoint.addEventListener(
-        'click',
-        () => {
-          updateCheckMode(app.Level.CHECK_MODE.POINT);
-          onloadId(1);
-        },
-        false
-      );
+      elems.title.buttonPlayPoint.addEventListener('click', () => {
+        updateCheckMode(app.Level.CHECK_MODE.POINT);
+        onloadId(1);
+      });
 
-      elems.title.buttonPlayLine.addEventListener(
-        'click',
-        () => {
-          updateCheckMode(app.Level.CHECK_MODE.LINE);
-          onloadId(1);
-        },
-        false
-      );
-
-      // elems.title.buttonEdit.addEventListener('click', () => onloadObj({ w: 6, h: 5, s: '' }), false);
+      elems.title.buttonPlayLine.addEventListener('click', () => {
+        updateCheckMode(app.Level.CHECK_MODE.LINE);
+        onloadId(1);
+      });
     }
 
     // 記録画面用
     {
-      elems.records.button.addEventListener('click', showRecordsDialog, false);
-      elems.records.dialog.addEventListener('click', closeRecordsDialog, false);
-      elems.records.close.addEventListener('click', closeRecordsDialog, false);
-      elems.records.dialogDiv.addEventListener(
-        'click',
-        (e) => e.stopPropagation(),
-        false
+      elems.records.button.addEventListener('click', showRecordsDialog);
+      elems.records.dialog.addEventListener('click', closeRecordsDialog);
+      elems.records.close.addEventListener('click', closeRecordsDialog);
+      elems.records.dialogDiv.addEventListener('click', (e) =>
+        e.stopPropagation()
       );
     }
 
     // レベル操作用
     {
-      elems.level.reset.addEventListener('click', resetLevel, false);
-      elems.level.prev.addEventListener('click', gotoPrevLevel, false);
-      elems.level.next.addEventListener('click', gotoNextLevel, false);
-      elems.level.edit.addEventListener('click', toggleEditLevel, false);
-      elems.levels.button.addEventListener('click', showLevelsDialog, false);
-      elems.levels.dialog.addEventListener('click', closeLevelsDialog, false);
-      elems.levels.dialogDiv.addEventListener(
-        'click',
-        (e) => e.stopPropagation(),
-        false
+      elems.level.reset.addEventListener('click', resetLevel);
+      elems.level.prev.addEventListener('click', gotoPrevLevel);
+      elems.level.next.addEventListener('click', gotoNextLevel);
+      elems.level.edit.addEventListener('click', toggleEditLevel);
+      elems.levels.button.addEventListener('click', showLevelsDialog);
+      elems.levels.dialog.addEventListener('click', closeLevelsDialog);
+      elems.levels.dialogDiv.addEventListener('click', (e) =>
+        e.stopPropagation()
       );
-      // elems.levels.hideClearedLevels.addEventListener(
-      //   'click',
-      //   toggleHideCompletedLevels,
-      //   false
-      // );
       elems.levels.hideShortestLevels.addEventListener(
         'click',
-        toggleHideCompletedLevels,
-        false
+        toggleHideCompletedLevels
       );
     }
 
     // レベル一覧ダイアログ
     {
-      elems.levels.close.addEventListener('click', closeLevelsDialog, false);
-      elems.levels.prev.addEventListener('click', gotoPrevLevelPage, false);
-      elems.levels.next.addEventListener('click', gotoNextLevelPage, false);
+      elems.levels.close.addEventListener('click', closeLevelsDialog);
+      elems.levels.prev.addEventListener('click', gotoPrevLevelPage);
+      elems.levels.next.addEventListener('click', gotoNextLevelPage);
     }
 
     // キー入力用
     {
-      document.addEventListener('keydown', keydown, false);
-      document.addEventListener('keyup', keyup, false);
+      document.addEventListener('keydown', keydown);
+      document.addEventListener('keyup', keyup);
     }
 
     // タッチ入力用
@@ -1551,26 +1501,18 @@
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
-      elems.main.svg.addEventListener(pointerdownEventName, pointerDown, false);
-      elems.main.svg.addEventListener(pointermoveEventName, pointerMove, false);
-      elems.main.svg.addEventListener(pointerupEventName, pointerUp, false);
+      elems.main.svg.addEventListener(pointerdownEventName, pointerDown);
+      elems.main.svg.addEventListener(pointermoveEventName, pointerMove);
+      elems.main.svg.addEventListener(pointerupEventName, pointerUp);
       elems.main.svg.oncontextmenu = function () {
         return !editMode;
       };
 
-      elems.controller.undo.addEventListener(
-        pointerdownEventName,
-        undodown,
-        false
-      );
+      elems.controller.undo.addEventListener(pointerdownEventName, undodown);
 
-      elems.controller.nextLevel.addEventListener(
-        'click',
-        gotoNextLevel,
-        false
-      );
+      elems.controller.nextLevel.addEventListener('click', gotoNextLevel);
 
-      document.addEventListener(pointerupEventName, undoEnd, false);
+      document.addEventListener(pointerupEventName, undoEnd);
 
       stick = new app.Stick(elems.controller.stick);
     }
@@ -1998,7 +1940,9 @@
           const dataUrl = canvas.toDataURL('image/png');
           output.src = dataUrl;
         });
+
         image.src = svgDataUrl;
+
         output.addEventListener('click', () => {
           const canvas = document.createElement('canvas');
           canvas.width = output.naturalWidth;
@@ -2133,7 +2077,7 @@
     elem.classList.add('hide');
   }
 
-  function resize(e, dx, dy) {
+  function resizeLevel(e, dx, dy) {
     const w = level.getW() + dx;
     const h = level.getH() + dy;
     if (w < 1) return;

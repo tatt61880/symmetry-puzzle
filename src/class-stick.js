@@ -32,34 +32,18 @@
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
-      this.#stick.base.addEventListener(
-        pointerdownEventName,
-        (e) => {
-          this.#pointerdown(e);
-        },
-        false
-      );
-      this.#stick.base.addEventListener(
-        pointermoveEventName,
-        (e) => {
-          this.#pointermove(e);
-        },
-        false
-      );
-      this.#stick.base.addEventListener(
-        pointerupEventName,
-        (e) => {
-          this.#pointerup(e);
-        },
-        false
-      );
-      document.addEventListener(
-        pointerupEventName,
-        (e) => {
-          this.#pointerup(e);
-        },
-        false
-      );
+      this.#stick.base.addEventListener(pointerdownEventName, (e) => {
+        this.#pointerdown(e);
+      });
+      this.#stick.base.addEventListener(pointermoveEventName, (e) => {
+        this.#pointermove(e);
+      });
+      this.#stick.base.addEventListener(pointerupEventName, (e) => {
+        this.#pointerup(e);
+      });
+      document.addEventListener(pointerupEventName, (e) => {
+        this.#pointerup(e);
+      });
     }
 
     #pointerdown(e) {
