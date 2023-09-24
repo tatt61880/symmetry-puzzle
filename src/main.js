@@ -124,7 +124,7 @@
       const delay = settings.autoMode
         ? settingsAuto.interval * INPUT_INTERVAL_MSEC
         : MOVE_INTERVAL_MSEC;
-      setTimeout(draw, delay, true);
+      setTimeout(drawMainSvg, delay, true);
     }
 
     if (completeFlag) {
@@ -254,7 +254,7 @@
       } else if (!temporaryShowCharsFlag) {
         e.preventDefault();
         temporaryShowCharsFlag = true;
-        draw();
+        drawMainSvg();
       }
     } else if (e.key === '@') {
       toggleEditLevel();
@@ -327,7 +327,7 @@
     delete inputKeys[e.key];
     if (temporaryShowCharsFlag && e.key === ' ') {
       temporaryShowCharsFlag = false;
-      draw();
+      drawMainSvg();
     } else if (e.key === 'z') {
       undoEnd();
     } else if (Object.keys(inputKeys).length === 0) {
@@ -385,7 +385,7 @@
       'height',
       blockSize * level.getHeight() + 2 * frameSize
     );
-    draw();
+    drawMainSvg();
   }
 
   function execUndo() {
@@ -550,7 +550,7 @@
     levelId = null;
     updateLevelVisibility();
     updateEditLevel();
-    draw();
+    drawMainSvg();
   }
 
   function toggleHelpDialog() {
@@ -1407,7 +1407,7 @@
             addUndo(null);
             level.normalize();
             updateLinkUrl();
-            draw();
+            drawMainSvg();
           }
         },
         false
@@ -1418,7 +1418,7 @@
           addUndo(null);
           level.mirror();
           updateLinkUrl();
-          draw();
+          drawMainSvg();
         },
         false
       );
@@ -1428,7 +1428,7 @@
           addUndo(null);
           level.rotate();
           updateLinkUrl();
-          draw();
+          drawMainSvg();
           updateSvg();
         },
         false
@@ -1447,7 +1447,7 @@
           level = new app.Level({ w, h, s }, checkMode, {});
           completeCheck();
           updateLinkUrl();
-          draw();
+          drawMainSvg();
         },
         false
       );
@@ -1602,7 +1602,7 @@
     moveIntervalCount = 0;
     const movedFlag = tryMoving(stick.inputDir);
     if (movedFlag) {
-      draw();
+      drawMainSvg();
       completeCheck();
       updateLinkUrl();
     }
@@ -1625,7 +1625,7 @@
   }
 
   // 描画
-  function draw(completeCheckFlag = false) {
+  function drawMainSvg(completeCheckFlag = false) {
     elems.main.svg.textContent = '';
     updateController();
 
@@ -2100,13 +2100,13 @@
       level.applyState(x, y, drawingState);
       completeCheck();
       updateLinkUrl();
-      draw();
+      drawMainSvg();
     } else if (isRemoving && level.getState(x, y) !== app.states.none) {
       addUndo(null);
       level.applyState(x, y, app.states.none);
       completeCheck();
       updateLinkUrl();
-      draw();
+      drawMainSvg();
     }
     return;
 
