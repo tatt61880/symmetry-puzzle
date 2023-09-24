@@ -274,13 +274,13 @@
     }
 
     // 90度回転する。
-    rotate() {
+    rotate(rotateNum) {
       const obj = {
         w: this.getW(),
         h: this.getH(),
         s: this.getStateStr(),
       };
-      const newObj = this.#rotateLevel(obj, 1);
+      const newObj = this.#rotateLevel(obj, rotateNum);
       this.#levelObj = newObj;
       this.#initStates();
       this.applyObj(newObj);

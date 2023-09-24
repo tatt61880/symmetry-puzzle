@@ -1422,7 +1422,7 @@
         'click',
         () => {
           addUndo(null);
-          level.rotate();
+          level.rotate(1);
           updateLinkUrl();
           drawMainSvg();
           updateSvg();
@@ -2142,15 +2142,13 @@
     addUndo(null);
 
     if (e.shiftKey) {
-      level.rotate();
-      level.rotate();
+      level.rotate(2);
     }
     const s = level.getStateStr();
     const obj = { w, h, s };
     applyObj(obj, { resizeFlag: true });
     if (e.shiftKey) {
-      level.rotate();
-      level.rotate();
+      level.rotate(2);
       const s = level.getStateStr();
       const obj = { w, h, s };
       applyObj(obj, { resizeFlag: false });
