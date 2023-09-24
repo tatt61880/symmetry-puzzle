@@ -1112,10 +1112,6 @@
         level.isLineMode()
       );
 
-      // if (highestScore !== null && hideCompletedLevelsFlag) {
-      //   return;
-      // }
-
       if (
         highestScore !== null &&
         hideShortestLevelsFlag &&
@@ -1637,23 +1633,23 @@
       const symmetryAnimationFlag = completeCheckFlag && completeFlag;
       const showCharsFlag =
         editMode || settings.debugFlag || temporaryShowCharsFlag;
-
-      const levelSvgG = level.createSvgG(
-        blockSize,
-        symmetryAnimationFlag,
-        showCharsFlag
-      );
-      levelSvgG.setAttribute(
-        'transform',
-        `translate(${frameSize},${frameSize})`
-      );
-
-      mainSvgG.appendChild(levelSvgG);
+      drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag);
     }
     level.resetMoveFlags();
 
     drawDotLines(mainSvgG);
     drawFrame(mainSvgG);
+  }
+
+  function drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag) {
+    const levelSvgG = level.createSvgG(
+      blockSize,
+      symmetryAnimationFlag,
+      showCharsFlag
+    );
+    levelSvgG.setAttribute('transform', `translate(${frameSize},${frameSize})`);
+
+    mainSvgG.appendChild(levelSvgG);
   }
 
   function drawDotLines(mainSvgG) {
