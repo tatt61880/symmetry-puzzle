@@ -220,15 +220,18 @@
         case 'Enter':
           levelSelectEnter();
           break;
+        case '#':
+          closeLevelsDialog();
+          break;
+        default:
+          break;
       }
       return;
     }
 
     if (e.key === '#') {
-      if (!elems.levels.button.classList.contains('hide')) {
-        toggleLevelsDialog();
-        return;
-      }
+      showLevelsDialog();
+      return;
     }
 
     if (e.shiftKey) {
@@ -899,14 +902,6 @@
   function selectLang(lang) {
     applyLang(lang);
     savedata.saveLang(lang);
-  }
-
-  function toggleLevelsDialog() {
-    if (!elems.levels.dialog.open) {
-      showLevelsDialog();
-    } else {
-      closeLevelsDialog();
-    }
   }
 
   function showLevelsDialog() {
