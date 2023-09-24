@@ -851,13 +851,13 @@
     )) {
       elem.classList.remove('hide-mode');
     }
-    animateIcon();
+    animateIcons();
   }
 
   function applyLang(lang) {
     window.getSelection().removeAllRanges();
 
-    animateIcon();
+    animateIcons();
     for (const elem of document.getElementsByClassName('setting-lang-button')) {
       elem.classList.remove('active');
     }
@@ -882,15 +882,16 @@
     }
   }
 
-  function animateIcon() {
-    elems.iconPoint.classList.remove('animation-rotation-icon');
-    setTimeout(() => {
-      elems.iconPoint.classList.add('animation-rotation-icon');
-    }, 100);
-    elems.iconLine.classList.remove('animation-line1-icon');
-    setTimeout(() => {
-      elems.iconLine.classList.add('animation-line1-icon');
-    }, 100);
+  function animateIcons() {
+    animateIcon(elems.iconPoint.classList, 'animation-rotation-icon');
+    animateIcon(elems.iconLine.classList, 'animation-line1-icon');
+
+    function animateIcon(elem, className) {
+      elem.remove(className);
+      setTimeout(() => {
+        elem.add(className);
+      }, 100);
+    }
   }
 
   function selectLang(lang) {
