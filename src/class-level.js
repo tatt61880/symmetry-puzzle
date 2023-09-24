@@ -227,6 +227,7 @@
       this.resetMoveFlags();
     }
 
+    // 正規化
     normalize() {
       const map = {};
       let nextTarget = app.states.targetMin;
@@ -262,7 +263,7 @@
       }
     }
 
-    // 左右反転する。
+    // 左右反転
     mirror() {
       const obj = {
         w: this.getW(),
@@ -273,7 +274,7 @@
       this.applyObj(newObj);
     }
 
-    // 90度回転する。
+    // 90度回転
     rotate(rotateNum) {
       const obj = {
         w: this.getW(),
