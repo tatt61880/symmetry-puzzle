@@ -172,17 +172,21 @@
   }
 
   function keydown(e) {
+    if (e.altKey) return;
+    if (e.ctrlKey) return;
+
     // どの画面でも有効
     if (e.key === '?') {
       toggleHelpDialog();
+      return;
     }
 
     // タイトル画面で有効
     if (!elems.category.title.classList.contains('hide')) {
-      return false;
+      return;
     }
 
-    // レベル一覧画面で有効
+    // レベル一覧ダイアログで有効
     if (elems.levels.dialog.open) {
       switch (e.key) {
         case 'ArrowUp':
@@ -217,15 +221,13 @@
           levelSelectEnter();
           break;
       }
-      return false;
+      return;
     }
-
-    if (e.altKey) return;
 
     if (e.key === '#') {
       if (!elems.levels.button.classList.contains('hide')) {
         toggleLevelsDialog();
-        return false;
+        return;
       }
     }
 
@@ -316,7 +318,7 @@
           secretSequenceReset();
       }
     }
-    return false;
+    return;
   }
 
   function keyup(e) {
