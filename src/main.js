@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.09.21';
+  const VERSION_TEXT = 'v2023.09.23';
 
   const app = window.app;
   Object.freeze(app);
@@ -1392,10 +1392,10 @@
       }
       editboxFunctions[app.states.stateToChar[app.states.none]]();
 
-      elems.edit.wDec.addEventListener('click', () => resize(-1, 0), false);
-      elems.edit.wInc.addEventListener('click', () => resize(1, 0), false);
-      elems.edit.hDec.addEventListener('click', () => resize(0, -1), false);
-      elems.edit.hInc.addEventListener('click', () => resize(0, 1), false);
+      elems.edit.wDec.addEventListener('click', (e) => resize(e, -1, 0), false);
+      elems.edit.wInc.addEventListener('click', (e) => resize(e, 1, 0), false);
+      elems.edit.hDec.addEventListener('click', (e) => resize(e, 0, -1), false);
+      elems.edit.hInc.addEventListener('click', (e) => resize(e, 0, 1), false);
       elems.edit.normalize.addEventListener(
         'click',
         () => {
@@ -2133,15 +2133,28 @@
     elem.classList.add('hide');
   }
 
-  function resize(dx, dy) {
+  function resize(e, dx, dy) {
     const w = level.getW() + dx;
     const h = level.getH() + dy;
-    const s = level.getStateStr();
     if (w < 1) return;
     if (h < 1) return;
-    const obj = { w, h, s };
+
     addUndo(null);
+
+    if (e.shiftKey) {
+      level.rotate();
+      level.rotate();
+    }
+    const s = level.getStateStr();
+    const obj = { w, h, s };
     applyObj(obj, { resizeFlag: true });
+    if (e.shiftKey) {
+      level.rotate();
+      level.rotate();
+      const s = level.getStateStr();
+      const obj = { w, h, s };
+      applyObj(obj, { resizeFlag: false });
+    }
   }
 
   function addUndo(dir) {
