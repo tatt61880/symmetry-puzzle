@@ -179,7 +179,7 @@
         return false;
       }
 
-      level.move();
+      level.execMoveFlags();
 
       const stateStr = level.getStateStr();
       if (stateStrMap[stateStr] !== undefined) {

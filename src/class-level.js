@@ -389,7 +389,7 @@
       return moveFlag;
     }
 
-    move() {
+    execMoveFlags() {
       const dx = this.#moveDx;
       const dy = this.#moveDy;
 

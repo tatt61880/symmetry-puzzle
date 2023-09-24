@@ -97,7 +97,7 @@
   return;
   // ==========================================================================
 
-  function move(dir) {
+  function execMoveFlags(dir) {
     const dys = [-1, 0, 1, 0];
     const dxs = [0, 1, 0, -1];
     const dx = dxs[dir];
@@ -110,7 +110,7 @@
         `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`
       );
       addUndo(dir);
-      level.move();
+      level.execMoveFlags();
     }
     return moveFlag;
   }
@@ -1605,7 +1605,7 @@
       stick.update(stick.inputDir);
     }
     moveIntervalCount = 0;
-    const moveFlag = move(stick.inputDir);
+    const moveFlag = execMoveFlags(stick.inputDir);
     if (moveFlag) {
       draw();
       completeCheck();
@@ -2273,7 +2273,7 @@
     for (const dirChar of levelObj.r) {
       if (step++ < stepIndex) continue;
       const dir = Number(dirChar);
-      move(dir);
+      execMoveFlags(dir);
     }
     completeCheck();
   }

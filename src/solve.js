@@ -218,7 +218,7 @@
           return { replayStr: null, errorMessage };
         }
 
-        level.move();
+        level.execMoveFlags();
         const stateStr = level.getStateStr();
         if (stateStrMap.has(stateStr)) {
           app.console.warn('Warning: Same state exists.');
@@ -267,7 +267,7 @@
             const moveFlag = level.updateMoveFlags(dx, dy, userMax);
             if (!moveFlag) continue;
 
-            level.move();
+            level.execMoveFlags();
 
             if (options.normalize) level.normalize();
             const stateStr = level.getStateStr();
