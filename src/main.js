@@ -97,7 +97,7 @@
   return;
   // ==========================================================================
 
-  function execMoveFlags(dir) {
+  function tryMoving(dir) {
     const dys = [-1, 0, 1, 0];
     const dxs = [0, 1, 0, -1];
     const dx = dxs[dir];
@@ -372,7 +372,7 @@
       (svgMaxHeight - 2 * frameSize) / level.getHeight()
     );
     completeCheck();
-    updateUrl();
+    updateLinkUrl();
 
     elems.main.svg.setAttribute(
       'width',
@@ -525,7 +525,7 @@
     loadLevelById(levelId + 1);
   }
 
-  function updateUrl() {
+  function updateLinkUrl() {
     if (!editMode) return;
     const url = level.getUrlStr(level.isLineMode());
     elems.url.innerHTML = `<a href="${url}">現在の盤面を0手目として完成！</a>`;
@@ -539,7 +539,7 @@
       hideElem(elems.url);
       hideElem(elems.edit.editbox);
     }
-    updateUrl();
+    updateLinkUrl();
   }
 
   function toggleEditLevel() {
@@ -1411,7 +1411,7 @@
           if (!level.isNormalized()) {
             addUndo(null);
             level.normalize();
-            updateUrl();
+            updateLinkUrl();
             draw();
           }
         },
@@ -1422,7 +1422,7 @@
         () => {
           addUndo(null);
           level.mirror();
-          updateUrl();
+          updateLinkUrl();
           draw();
         },
         false
@@ -1432,7 +1432,7 @@
         () => {
           addUndo(null);
           level.rotate();
-          updateUrl();
+          updateLinkUrl();
           draw();
           updateSvg();
         },
@@ -1451,7 +1451,7 @@
           const s = level.getStateStr();
           level = new app.Level({ w, h, s }, checkMode, {});
           completeCheck();
-          updateUrl();
+          updateLinkUrl();
           draw();
         },
         false
@@ -1605,11 +1605,11 @@
       stick.update(stick.inputDir);
     }
     moveIntervalCount = 0;
-    const moveFlag = execMoveFlags(stick.inputDir);
-    if (moveFlag) {
+    const movedFlag = tryMoving(stick.inputDir);
+    if (movedFlag) {
       draw();
       completeCheck();
-      updateUrl();
+      updateLinkUrl();
     }
   }
 
@@ -2104,13 +2104,13 @@
       addUndo(null);
       level.applyState(x, y, drawingState);
       completeCheck();
-      updateUrl();
+      updateLinkUrl();
       draw();
     } else if (isRemoving && level.getState(x, y) !== app.states.none) {
       addUndo(null);
       level.applyState(x, y, app.states.none);
       completeCheck();
-      updateUrl();
+      updateLinkUrl();
       draw();
     }
     return;
@@ -2273,7 +2273,7 @@
     for (const dirChar of levelObj.r) {
       if (step++ < stepIndex) continue;
       const dir = Number(dirChar);
-      execMoveFlags(dir);
+      tryMoving(dir);
     }
     completeCheck();
   }
