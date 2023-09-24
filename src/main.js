@@ -1657,39 +1657,40 @@
     }
     level.resetMoveFlags();
 
-    // 点線
-    {
-      const size = blockSize / 40;
-      const dasharray = `${size} ${4 * size}`;
-      const g = app.svg.createG();
-      mainSvgG.appendChild(g);
-      // 横線
-      for (let y = 1; y < level.getHeight(); ++y) {
-        const line = app.svg.createLine(blockSize, {
-          x1: -1 / 80,
-          y1: y,
-          x2: level.getWidth(),
-          y2: y,
-          stroke: app.colors.line,
-        });
-        line.setAttribute('stroke-dasharray', dasharray);
-        g.appendChild(line);
-      }
-      // 縦線
-      for (let x = 1; x < level.getWidth(); ++x) {
-        const line = app.svg.createLine(blockSize, {
-          x1: x,
-          y1: -1 / 80,
-          x2: x,
-          y2: level.getHeight(),
-          stroke: app.colors.line,
-        });
-        line.setAttribute('stroke-dasharray', dasharray);
-        g.appendChild(line);
-      }
-      g.setAttribute('transform', `translate(${frameSize},${frameSize})`);
-    }
+    drawDotLines(mainSvgG);
     drawFrame(mainSvgG);
+  }
+
+  function drawDotLines(mainSvgG) {
+    const size = blockSize / 40;
+    const dasharray = `${size} ${4 * size}`;
+    const g = app.svg.createG();
+    mainSvgG.appendChild(g);
+    // 横線
+    for (let y = 1; y < level.getHeight(); ++y) {
+      const line = app.svg.createLine(blockSize, {
+        x1: -1 / 80,
+        y1: y,
+        x2: level.getWidth(),
+        y2: y,
+        stroke: app.colors.line,
+      });
+      line.setAttribute('stroke-dasharray', dasharray);
+      g.appendChild(line);
+    }
+    // 縦線
+    for (let x = 1; x < level.getWidth(); ++x) {
+      const line = app.svg.createLine(blockSize, {
+        x1: x,
+        y1: -1 / 80,
+        x2: x,
+        y2: level.getHeight(),
+        stroke: app.colors.line,
+      });
+      line.setAttribute('stroke-dasharray', dasharray);
+      g.appendChild(line);
+    }
+    g.setAttribute('transform', `translate(${frameSize},${frameSize})`);
   }
 
   function drawFrame(mainSvgG) {
