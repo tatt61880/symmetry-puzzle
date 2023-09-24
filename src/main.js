@@ -223,8 +223,6 @@
         case '#':
           closeLevelsDialog();
           break;
-        default:
-          break;
       }
       return;
     }
