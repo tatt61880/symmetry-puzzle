@@ -69,7 +69,7 @@
 
     main: {
       div: 'main',
-      svg: 'svg-main',
+      svg: 'main-svg',
     },
 
     auto: {
