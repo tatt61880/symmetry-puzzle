@@ -4,12 +4,9 @@
 
   class Elems {
     #elems;
+
     constructor(elems) {
       this.#elems = elems;
-      return this;
-    }
-
-    init() {
       this.#initElems(this, this.#elems);
       Object.freeze(this.#elems);
     }
@@ -21,10 +18,17 @@
           obj[key] = {};
           this.#initElems(obj[key], value);
         } else {
-          obj[key] = document.getElementById(value);
-          if (obj[key] === null) {
-            console.error(`Elem not exist. [id=${value}]`);
-          }
+          Object.defineProperty(obj, key, {
+            get() {
+              delete this[key];
+              const elem = document.getElementById(value);
+              if (elem === null) {
+                console.error(`Elem not exist. (#${value})`);
+              }
+              return (this[key] = elem);
+            },
+            configurable: true,
+          });
         }
       }
     }
