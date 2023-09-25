@@ -5,6 +5,7 @@
   const app = window.app;
   Object.freeze(app);
 
+  const elems = app.elems;
   const savedata = new app.Savedata();
 
   const INPUT_INTERVAL_MSEC = 28; // この値を変更するときは、iOSの省電力モード時のsetIntervalの動作を確認した上で変更してください。詳細: https://github.com/tatt61880/symmetry-puzzle/issues/38
@@ -82,8 +83,6 @@
     '--animation-duration-symmetry',
     `${ROTATION_MSEC}ms`
   );
-
-  const elems = app.elems;
 
   const digitStates = {
     0: '000111001111111101111111111111111',
