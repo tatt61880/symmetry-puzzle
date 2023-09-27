@@ -1173,7 +1173,7 @@
       }
 
       {
-        const x = (count % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH;
+        const x = (count % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH + 1;
         const y =
           Math.floor((count % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) *
           LEVEL_SELECT_HEIGHT;
