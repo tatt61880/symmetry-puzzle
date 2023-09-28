@@ -856,6 +856,18 @@
     animateIcons();
   }
 
+  function animateIcons() {
+    animateIcon(elems.iconPoint.classList, 'animation-rotation-icon');
+    animateIcon(elems.iconLine.classList, 'animation-line1-icon');
+
+    function animateIcon(elem, className) {
+      elem.remove(className);
+      setTimeout(() => {
+        elem.add(className);
+      }, 100);
+    }
+  }
+
   function applyLang(lang) {
     window.getSelection().removeAllRanges();
 
@@ -880,18 +892,6 @@
       } else {
         elem.innerText = elem.dataset[lang];
       }
-    }
-  }
-
-  function animateIcons() {
-    animateIcon(elems.iconPoint.classList, 'animation-rotation-icon');
-    animateIcon(elems.iconLine.classList, 'animation-line1-icon');
-
-    function animateIcon(elem, className) {
-      elem.remove(className);
-      setTimeout(() => {
-        elem.add(className);
-      }, 100);
     }
   }
 
