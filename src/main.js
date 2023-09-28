@@ -859,7 +859,6 @@
   function applyLang(lang) {
     window.getSelection().removeAllRanges();
 
-    animateIcons();
     for (const elem of document.getElementsByClassName('setting-lang-button')) {
       elem.classList.remove('active');
     }
