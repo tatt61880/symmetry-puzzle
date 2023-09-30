@@ -23,6 +23,7 @@
       dialogDiv: 'dialog-help-div',
       langEn: 'setting-lang-en',
       langJa: 'setting-lang-ja',
+      tabSymmetry: 'help-tab-symmetry',
       tabPoint: 'help-tab-point',
       tabLine: 'help-tab-line',
     },

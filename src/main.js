@@ -565,6 +565,8 @@
       elems.help.tabPoint.checked = true;
     } else if (checkMode === app.Level.CHECK_MODE.LINE) {
       elems.help.tabLine.checked = true;
+    } else {
+      elems.help.tabSymmetry.checked = true;
     }
 
     elems.help.dialog.showModal();
