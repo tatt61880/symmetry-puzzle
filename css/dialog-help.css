@@ -6,7 +6,7 @@
   left: 0;
   box-sizing: border-box;
   width: 480px;
-  max-height: 618px;
+  max-height: 640px;
   padding: 0;
   margin: 44px auto;
   border: none;
@@ -120,6 +120,10 @@
         display: block;
       }
     }
+  }
+
+  .logo-image {
+    width: 60px;
   }
 
   .border {
