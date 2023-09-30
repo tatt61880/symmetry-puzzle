@@ -62,7 +62,7 @@
     display: block;
     order: -1;
     float: left;
-    width: calc(100% / 2 - 10px);
+    width: calc(100% / 3 - 10px);
     height: 50px;
     margin: 5px;
     font-size: 1rem;

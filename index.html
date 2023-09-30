@@ -89,7 +89,28 @@
 
         <div>
           <div class="tab-area">
-            <input type="radio" name="help-tab" id="help-tab-line" checked>
+            <!-- 対称パズル -->
+            <input type="radio" name="help-tab" id="help-tab-symmetry" checked>
+            <label class="tab" for="help-tab-symmetry">
+              <img class="logo-image" src="./images/symmetry.png?2023.09.27" alt="Application title logo image">
+            </label>
+            <div class="tab-content">
+              <h1 class="translatable-toggle" data-en="Symmetry Puzzle" data-ja="対称パズル"></h1>
+              <div class="translatable en" lang="en">
+                <p>
+                  "Line Symmetry Puzzle" + "Point Symmetry Puzzle"
+                </p>
+              </div>
+
+              <div class="translatable ja" lang="ja">
+                <p>
+                  『線対称パズル』+『点対称パズル』
+                </p>
+              </div>
+            </div>
+
+            <!-- 線対称パズル -->
+            <input type="radio" name="help-tab" id="help-tab-line">
             <label class="tab" for="help-tab-line">
               <img class="logo-image" src="./images/line.png?2023.09.27" alt="Application title logo image">
             </label>
@@ -118,6 +139,7 @@
               </div>
             </div>
 
+            <!-- 点対称パズル -->
             <input type="radio" name="help-tab" id="help-tab-point">
             <label class="tab" for="help-tab-point">
               <img class="logo-image" src="./images/point.png?2023.09.27" alt="Application title logo image">
