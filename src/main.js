@@ -1148,7 +1148,7 @@
       }
 
       {
-        const crown = createCrown(20, 0, 1, highestScore, bestStep);
+        const crown = createCrown(20, 0, 0, highestScore, bestStep);
         g.appendChild(crown);
       }
       {
@@ -1163,11 +1163,16 @@
       }
       {
         const blockSize = Math.min(
-          (LEVEL_SELECT_WIDTH - 25) / level.getWidth(),
+          (LEVEL_SELECT_WIDTH - 8) / level.getWidth(),
           (LEVEL_SELECT_HEIGHT - 25) / level.getHeight()
         );
         const levelSvgG = level.createSvgG(blockSize);
-        levelSvgG.setAttribute('transform', 'translate(20,20)');
+        levelSvgG.setAttribute(
+          'transform',
+          `translate(${
+            (LEVEL_SELECT_WIDTH - blockSize * level.getWidth()) / 2
+          },20)`
+        );
         g.appendChild(levelSvgG);
       }
 
