@@ -15,36 +15,36 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.09.26">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.09.26">
 
-  <link rel="stylesheet" href="./css/main.css?2023.09.25">
-  <link rel="stylesheet" href="./css/title.css?2023.09.25">
-  <link rel="stylesheet" href="./css/game.css?2023.09.25">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.09.25">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.09.25">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.09.25">
-  <link rel="stylesheet" href="./css/animation.css?2023.09.25">
+  <link rel="stylesheet" href="./css/main.css?2023.09.28">
+  <link rel="stylesheet" href="./css/title.css?2023.09.28">
+  <link rel="stylesheet" href="./css/game.css?2023.09.28">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.09.28">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.09.28">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.09.28">
+  <link rel="stylesheet" href="./css/animation.css?2023.09.28">
 
-  <script src="./src/states.js?2023.09.25"></script>
-  <script src="./src/colors.js?2023.09.25"></script>
-  <script src="./src/svg.js?2023.09.25"></script>
-  <script src="./src/class-stack.js?2023.09.25"></script>
-  <script src="./src/class-level.js?2023.09.25"></script>
+  <script src="./src/states.js?2023.09.28"></script>
+  <script src="./src/colors.js?2023.09.28"></script>
+  <script src="./src/svg.js?2023.09.28"></script>
+  <script src="./src/class-stack.js?2023.09.28"></script>
+  <script src="./src/class-level.js?2023.09.28"></script>
 
-  <script src="./src/class-savedata.js?2023.09.25"></script>
-  <script src="./src/class-undo-info.js?2023.09.25"></script>
-  <script src="./src/class-elems.js?2023.09.25"></script>
-  <script src="./src/class-stick.js?2023.09.25"></script>
+  <script src="./src/class-savedata.js?2023.09.28"></script>
+  <script src="./src/class-undo-info.js?2023.09.28"></script>
+  <script src="./src/class-elems.js?2023.09.28"></script>
+  <script src="./src/class-stick.js?2023.09.28"></script>
 
-  <script src="./src/levels-line.js?2023.09.25"></script>
-  <script src="./src/levels-line-ex.js?2023.09.25"></script>
-  <script src="./src/levels-point.js?2023.09.25"></script>
-  <script src="./src/levels-point-ex.js?2023.09.25"></script>
+  <script src="./src/levels-line.js?2023.09.28"></script>
+  <script src="./src/levels-line-ex.js?2023.09.28"></script>
+  <script src="./src/levels-point.js?2023.09.28"></script>
+  <script src="./src/levels-point-ex.js?2023.09.28"></script>
 
-  <script src="./src/elems.js?2023.09.25"></script>
+  <script src="./src/elems.js?2023.09.28"></script>
 
-  <script src="./src/solve.js?2023.09.25"></script>
+  <script src="./src/solve.js?2023.09.28"></script>
 
-  <script src="./src/analyze-url.js?2023.09.25"></script>
-  <script src="./src/main.js?2023.09.25"></script>
+  <script src="./src/analyze-url.js?2023.09.28"></script>
+  <script src="./src/main.js?2023.09.28"></script>
 </head>
 
 <body>
@@ -90,10 +90,11 @@
         <div>
           <div class="tab-area">
             <input type="radio" name="help-tab" id="help-tab-line" checked>
-            <label class="tab translatable-toggle" for="help-tab-line" data-en="Line Symmetry Puzzle"
-              data-ja="線対称パズル"></label>
-            <div class="tab-content">
+            <label class="tab" for="help-tab-line">
               <img class="logo-image" src="./images/line.png?2023.09.26" alt="Application title logo image">
+            </label>
+            <div class="tab-content">
+              <h1 class="translatable-toggle" data-en="Line Symmetry Puzzle" data-ja="線対称パズル"></h1>
               <div class="translatable en" lang="en">
                 <p>
                   Manipulate <span class="blue-block">Blue</span> to make<br>
@@ -118,10 +119,11 @@
             </div>
 
             <input type="radio" name="help-tab" id="help-tab-point">
-            <label class="tab translatable-toggle" for="help-tab-point" data-en="Point Symmetry Puzzle"
-              data-ja="点対称パズル"></label>
-            <div class="tab-content">
+            <label class="tab" for="help-tab-point">
               <img class="logo-image" src="./images/point.png?2023.09.26" alt="Application title logo image">
+            </label>
+            <div class="tab-content">
+              <h1 class="translatable-toggle" data-en="Point Symmetry Puzzle" data-ja="点対称パズル"></h1>
               <div class="translatable en" lang="en">
                 <p>
                   Manipulate <span class="blue-block">Blue</span> to make<br>

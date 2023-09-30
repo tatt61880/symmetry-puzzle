@@ -104,6 +104,10 @@
         border: solid 2px #0000f8;
       }
     }
+
+    & h1 {
+      font-size: 1.5rem;
+    }
   }
 
   & input {
@@ -123,7 +127,7 @@
   }
 
   .logo-image {
-    width: 60px;
+    width: 50px;
   }
 
   .border {
