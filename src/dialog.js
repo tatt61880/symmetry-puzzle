@@ -13,9 +13,36 @@
   const elems = app.elems;
 
   const dialog = {
+    toggleHelpDialog,
+    showHelpDialog,
+    closeHelpDialog,
     showRecordsDialog,
     closeRecordsDialog,
   };
+
+  function toggleHelpDialog() {
+    if (!elems.help.dialog.open) {
+      showHelpDialog();
+    } else {
+      closeHelpDialog();
+    }
+  }
+
+  function showHelpDialog() {
+    if (app.common.checkMode === app.Level.CHECK_MODE.POINT) {
+      elems.help.tabPoint.checked = true;
+    } else if (app.common.checkMode === app.Level.CHECK_MODE.LINE) {
+      elems.help.tabLine.checked = true;
+    } else {
+      elems.help.tabSymmetry.checked = true;
+    }
+
+    elems.help.dialog.showModal();
+  }
+
+  function closeHelpDialog() {
+    elems.help.dialog.close();
+  }
 
   function showRecordsDialog() {
     elems.records.tableDiv.innerHTML = '';

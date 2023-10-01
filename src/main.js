@@ -174,7 +174,7 @@
 
     // どの画面でも有効
     if (e.key === '?') {
-      toggleHelpDialog();
+      app.dialog.toggleHelpDialog();
       return;
     }
 
@@ -548,30 +548,6 @@
     updateLevelVisibility();
     updateEditLevel();
     drawMainSvg();
-  }
-
-  function toggleHelpDialog() {
-    if (!elems.help.dialog.open) {
-      showHelpDialog();
-    } else {
-      closeHelpDialog();
-    }
-  }
-
-  function showHelpDialog() {
-    if (app.common.checkMode === app.Level.CHECK_MODE.POINT) {
-      elems.help.tabPoint.checked = true;
-    } else if (app.common.checkMode === app.Level.CHECK_MODE.LINE) {
-      elems.help.tabLine.checked = true;
-    } else {
-      elems.help.tabSymmetry.checked = true;
-    }
-
-    elems.help.dialog.showModal();
-  }
-
-  function closeHelpDialog() {
-    elems.help.dialog.close();
   }
 
   function updateCheckMode(mode) {
@@ -957,7 +933,7 @@
           lang = 'en';
       }
       app.savedata.saveLang(lang);
-      showHelpDialog();
+      app.dialog.showHelpDialog();
     }
     applyLang(lang);
 
@@ -1175,9 +1151,9 @@
 
     // ヘルプ画面用
     {
-      elems.help.button.addEventListener('click', showHelpDialog);
-      elems.help.dialog.addEventListener('click', closeHelpDialog);
-      elems.help.close.addEventListener('click', closeHelpDialog);
+      elems.help.button.addEventListener('click', app.dialog.showHelpDialog);
+      elems.help.dialog.addEventListener('click', app.dialog.closeHelpDialog);
+      elems.help.close.addEventListener('click', app.dialog.closeHelpDialog);
       elems.help.dialogDiv.addEventListener('click', (e) =>
         e.stopPropagation()
       );
