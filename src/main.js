@@ -1,12 +1,11 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.09.25';
+  const VERSION_TEXT = 'v2023.09.29';
 
   const app = window.app;
   Object.freeze(app);
 
   const elems = app.elems;
-  const savedata = new app.Savedata();
 
   const INPUT_INTERVAL_MSEC = 28; // この値を変更するときは、iOSの省電力モード時のsetIntervalの動作を確認した上で変更してください。詳細: https://github.com/tatt61880/symmetry-puzzle/issues/38
 
@@ -576,266 +575,6 @@
     elems.help.dialog.close();
   }
 
-  function showRecordsDialog() {
-    elems.records.tableDiv.innerHTML = '';
-    elems.records.tableDiv.appendChild(createRecordsTable());
-    elems.records.dialog.showModal();
-  }
-
-  function createRecordsTable() {
-    const table = document.createElement('table');
-    table.appendChild(createRecordsThead());
-    table.appendChild(createRecordsTbody());
-    return table;
-  }
-
-  function createRecordsThead() {
-    const thead = document.createElement('thead');
-
-    const tr = document.createElement('tr');
-    thead.appendChild(tr);
-
-    const imgSize = '50';
-    {
-      const th = document.createElement('th');
-      tr.appendChild(th);
-    }
-    {
-      const th = document.createElement('th');
-      tr.appendChild(th);
-      const img = document.createElement('img');
-      img.src = './images/line.png';
-      img.setAttribute('width', imgSize);
-      img.setAttribute('height', imgSize);
-      th.appendChild(img);
-    }
-    {
-      const th = document.createElement('th');
-      tr.appendChild(th);
-      const img = document.createElement('img');
-      img.src = './images/point.png';
-      img.setAttribute('width', imgSize);
-      img.setAttribute('height', imgSize);
-      th.appendChild(img);
-    }
-    {
-      const th = document.createElement('th');
-      tr.appendChild(th);
-      th.innerText = 'Total';
-      th.classList.add('total-col');
-    }
-
-    return thead;
-  }
-
-  function createRecordsTbody() {
-    const tbody = document.createElement('tbody');
-    const size = 30;
-
-    let numLineNotSolved = 0;
-    let numLineSolvedNormal = 0;
-    let numLineSolvedBest = 0;
-
-    {
-      const levelsList = app.levelsLine;
-      const levelsListEx = app.levelsLineEx;
-      const levelObjs = [];
-      for (let i = 1; i < levelsList.length; ++i) {
-        const levelObj = levelsList[i];
-        levelObjs.push(levelObj);
-      }
-
-      for (const id of Object.keys(levelsListEx)) {
-        if (String(id) === 'NaN') continue;
-        const levelObj = levelsListEx[id];
-        levelObjs.push(levelObj);
-      }
-      for (let i = 0; i < levelObjs.length; ++i) {
-        const levelObj = levelObjs[i];
-        const playerScore = savedata.getHighestScore(levelObj, true);
-        const appScore = levelObj.step;
-        if (playerScore === null) {
-          ++numLineNotSolved;
-        } else if (playerScore > appScore) {
-          ++numLineSolvedNormal;
-        } else {
-          ++numLineSolvedBest;
-        }
-      }
-    }
-
-    let numPointNotSolved = 0;
-    let numPointSolvedNormal = 0;
-    let numPointSolvedBest = 0;
-
-    {
-      const levelsList = app.levelsPoint;
-      const levelsListEx = app.levelsPointEx;
-      const levelObjs = [];
-      for (let i = 1; i < levelsList.length; ++i) {
-        const levelObj = levelsList[i];
-        levelObjs.push(levelObj);
-      }
-
-      for (const id of Object.keys(levelsListEx)) {
-        if (String(id) === 'NaN') continue;
-        const levelObj = levelsListEx[id];
-        levelObjs.push(levelObj);
-      }
-      for (let i = 0; i < levelObjs.length; ++i) {
-        const levelObj = levelObjs[i];
-        const playerScore = savedata.getHighestScore(levelObj, false);
-        const appScore = levelObj.step;
-        if (playerScore === null) {
-          ++numPointNotSolved;
-        } else if (playerScore > appScore) {
-          ++numPointSolvedNormal;
-        } else {
-          ++numPointSolvedBest;
-        }
-      }
-    }
-
-    const numTotalNotSolved = numLineNotSolved + numPointNotSolved;
-    const numTotalSolvedNormal = numLineSolvedNormal + numPointSolvedNormal;
-    const numTotalSolvedBest = numLineSolvedBest + numPointSolvedBest;
-
-    const numLineTotal =
-      numLineSolvedBest + numLineSolvedNormal + numLineNotSolved;
-
-    const numPointTotal =
-      numPointSolvedBest + numPointSolvedNormal + numPointNotSolved;
-
-    const numTotalTotal = numLineTotal + numPointTotal;
-
-    {
-      const tr = document.createElement('tr');
-      tbody.appendChild(tr);
-
-      {
-        const th = document.createElement('th');
-        const svg = app.svg.createSvg();
-        svg.setAttribute('width', size);
-        svg.setAttribute('height', size);
-        const crown = createCrown(size, 0, 0, 1, 1);
-        tr.appendChild(th);
-        th.appendChild(svg);
-        svg.appendChild(crown);
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numLineSolvedBest;
-        tr.appendChild(td);
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numPointSolvedBest;
-        tr.appendChild(td);
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numTotalSolvedBest;
-        tr.appendChild(td);
-        td.classList.add('total-col');
-      }
-    }
-    {
-      const tr = document.createElement('tr');
-      tbody.appendChild(tr);
-      {
-        const th = document.createElement('th');
-        const svg = app.svg.createSvg();
-        svg.setAttribute('width', size);
-        svg.setAttribute('height', size);
-        const crown = createCrown(size, 0, 0, 1, 0);
-        tr.appendChild(th);
-        th.appendChild(svg);
-        svg.appendChild(crown);
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numLineSolvedNormal;
-        tr.appendChild(td);
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numPointSolvedNormal;
-        tr.appendChild(td);
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numTotalSolvedNormal;
-        tr.appendChild(td);
-        td.classList.add('total-col');
-      }
-    }
-    {
-      const tr = document.createElement('tr');
-      tbody.appendChild(tr);
-      {
-        const th = document.createElement('th');
-        const svg = app.svg.createSvg();
-        svg.setAttribute('width', size);
-        svg.setAttribute('height', size);
-        const crown = createCrown(size, 0, 0, null, 1);
-        tr.appendChild(th);
-        th.appendChild(svg);
-        svg.appendChild(crown);
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numLineNotSolved;
-        tr.appendChild(td);
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numPointNotSolved;
-        tr.appendChild(td);
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numTotalNotSolved;
-        tr.appendChild(td);
-        td.classList.add('total-col');
-      }
-    }
-    {
-      const tr = document.createElement('tr');
-      tbody.appendChild(tr);
-      {
-        const th = document.createElement('th');
-        tr.appendChild(th);
-        th.innerText = 'Total';
-        th.classList.add('total-row');
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numLineTotal;
-        tr.appendChild(td);
-        td.classList.add('total-row');
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numPointTotal;
-        tr.appendChild(td);
-        td.classList.add('total-row');
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numTotalTotal;
-        tr.appendChild(td);
-        td.classList.add('total-row');
-        td.classList.add('total-col');
-      }
-    }
-
-    return tbody;
-  }
-
-  function closeRecordsDialog() {
-    elems.records.dialog.close();
-  }
-
   function updateCheckMode(mode) {
     checkMode = mode;
     const className = (() => {
@@ -899,7 +638,7 @@
 
   function selectLang(lang) {
     applyLang(lang);
-    savedata.saveLang(lang);
+    app.savedata.saveLang(lang);
   }
 
   function showLevelsDialog() {
@@ -994,7 +733,9 @@
     window.getSelection().removeAllRanges();
 
     if (!elems.levels.toggleCrown.hasChildNodes()) {
-      elems.levels.toggleCrown.appendChild(createCrown(20, 0, 0, 1, 1));
+      elems.levels.toggleCrown.appendChild(
+        app.common.createCrown(20, 0, 0, 1, 1)
+      );
     }
 
     // const hideCompletedLevelsFlag = elems.levels.hideClearedLevels.checked;
@@ -1107,7 +848,7 @@
     function appendLevel(levelObj, id) {
       const level = new app.Level(levelObj, checkMode, {});
       const bestStep = level.getBestStep();
-      const highestScore = savedata.getHighestScore(
+      const highestScore = app.savedata.getHighestScore(
         levelObj,
         level.isLineMode()
       );
@@ -1150,7 +891,7 @@
       }
 
       {
-        const crown = createCrown(20, 0, 0, highestScore, bestStep);
+        const crown = app.common.createCrown(20, 0, 0, highestScore, bestStep);
         g.appendChild(crown);
       }
       {
@@ -1207,7 +948,7 @@
     window.onresize = resizeWindow;
     resizeWindow();
 
-    let lang = savedata.loadLang();
+    let lang = app.savedata.loadLang();
     if (lang === undefined) {
       switch (window.navigator.language) {
         case 'ja':
@@ -1216,7 +957,7 @@
         default:
           lang = 'en';
       }
-      savedata.saveLang(lang);
+      app.savedata.saveLang(lang);
       showHelpDialog();
     }
     applyLang(lang);
@@ -1460,9 +1201,18 @@
 
     // 記録画面用
     {
-      elems.records.button.addEventListener('click', showRecordsDialog);
-      elems.records.dialog.addEventListener('click', closeRecordsDialog);
-      elems.records.close.addEventListener('click', closeRecordsDialog);
+      elems.records.button.addEventListener(
+        'click',
+        app.dialog.showRecordsDialog
+      );
+      elems.records.dialog.addEventListener(
+        'click',
+        app.dialog.closeRecordsDialog
+      );
+      elems.records.close.addEventListener(
+        'click',
+        app.dialog.closeRecordsDialog
+      );
       elems.records.dialogDiv.addEventListener('click', (e) =>
         e.stopPropagation()
       );
@@ -1746,11 +1496,11 @@
 
           // 記録保存
           if (bestStep !== undefined) {
-            highestScorePrev = savedata.getHighestScore(
+            highestScorePrev = app.savedata.getHighestScore(
               levelObj,
               level.isLineMode()
             );
-            savedata.saveSteps(levelObj, level.isLineMode(), replayStr);
+            app.savedata.saveSteps(levelObj, level.isLineMode(), replayStr);
           }
 
           // ログ出力
@@ -1818,7 +1568,7 @@
       {
         const currentStep = undoInfo.getIndex();
         const color = completeFlag
-          ? getStepColor(currentStep, bestStep)
+          ? app.common.getStepColor(currentStep, bestStep)
           : 'black';
         const text = app.svg.createText(frameSize, {
           x: 0,
@@ -1837,13 +1587,13 @@
       // 自己最高記録
       if (levelId !== null) {
         const levelObj = level.getLevelObj();
-        const highestScore = savedata.getHighestScore(
+        const highestScore = app.savedata.getHighestScore(
           levelObj,
           level.isLineMode()
         );
 
         {
-          const crown = createCrown(
+          const crown = app.common.createCrown(
             frameSize,
             frameBorderWidth / frameSize,
             frameBorderWidth / frameSize / 2,
@@ -1854,7 +1604,7 @@
         }
 
         if (highestScore !== null) {
-          const color = getStepColor(highestScore, bestStep);
+          const color = app.common.getStepColor(highestScore, bestStep);
 
           const text = app.svg.createText(frameSize, {
             x: 0,
@@ -1888,18 +1638,6 @@
           g.appendChild(text);
         }
       }
-    }
-  }
-
-  function getStepColor(step, bestStep) {
-    if (bestStep === undefined || step === null) {
-      return app.colors.stepUnknown;
-    } else if (step > bestStep) {
-      return app.colors.stepLose;
-    } else if (step === bestStep) {
-      return app.colors.stepDraw;
-    } else {
-      return app.colors.stepWin;
     }
   }
 
@@ -2310,28 +2048,6 @@
     } else {
       const width = (WINDOW_HEIGHT * window.innerWidth) / window.innerHeight;
       elems.viewport.setAttribute('content', `width=${width}`);
-    }
-  }
-
-  function createCrown(size, x, y, step, bestStep) {
-    const color = getStepColor(step, bestStep);
-    if (color === app.colors.stepUnknown) {
-      const g = app.svg.createG();
-      const crown = app.svg.createCrown(size, {
-        x,
-        y,
-        fill: '#ffffff00', // クリックできるようにします。透明です。
-        stroke: app.colors.stepUnknown,
-      });
-      g.appendChild(crown);
-      g.setAttribute('stroke-dasharray', `${size * 0.02} ${size * 0.05}`);
-      return g;
-    } else {
-      return app.svg.createCrown(size, {
-        x,
-        y,
-        fill: color,
-      });
     }
   }
 

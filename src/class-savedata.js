@@ -1,6 +1,9 @@
 (function () {
   'use strict';
   const isBrowser = typeof window !== 'undefined';
+  if (!isBrowser) return;
+
+  if (window?.app.savedata) return;
 
   const LOCAL_STORAGE_KEY = 'tatt61880-symmetry-puzzle';
 
@@ -63,6 +66,7 @@
 
   if (isBrowser) {
     window.app = window.app || {};
-    window.app.Savedata = Savedata;
+    const savedata = new Savedata();
+    window.app.savedata = savedata;
   }
 })();
