@@ -12,7 +12,10 @@
     app.svg = require('./svg.js');
   }
 
+  let checkMode;
+
   const common = {
+    checkMode,
     getStepColor,
     createCrown,
   };

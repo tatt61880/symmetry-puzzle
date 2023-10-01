@@ -66,7 +66,6 @@
   let levelsListEx = null;
   let levelId = null;
   let level = null;
-  let checkMode;
 
   const SHADOW_MSEC = MOVE_INTERVAL_MSEC * 2;
   const ROTATION_MSEC = MOVE_INTERVAL_MSEC * 3;
@@ -356,7 +355,7 @@
   }
 
   function initLevel(obj, initParam) {
-    level = new app.Level(obj, checkMode, initParam);
+    level = new app.Level(obj, app.common.checkMode, initParam);
     updateSvg();
   }
 
@@ -560,9 +559,9 @@
   }
 
   function showHelpDialog() {
-    if (checkMode === app.Level.CHECK_MODE.POINT) {
+    if (app.common.checkMode === app.Level.CHECK_MODE.POINT) {
       elems.help.tabPoint.checked = true;
-    } else if (checkMode === app.Level.CHECK_MODE.LINE) {
+    } else if (app.common.checkMode === app.Level.CHECK_MODE.LINE) {
       elems.help.tabLine.checked = true;
     } else {
       elems.help.tabSymmetry.checked = true;
@@ -576,7 +575,7 @@
   }
 
   function updateCheckMode(mode) {
-    checkMode = mode;
+    app.common.checkMode = mode;
     const className = (() => {
       if (mode === app.Level.CHECK_MODE.POINT) {
         return 'point';
@@ -846,7 +845,7 @@
     }
 
     function appendLevel(levelObj, id) {
-      const level = new app.Level(levelObj, checkMode, {});
+      const level = new app.Level(levelObj, app.common.checkMode, {});
       const bestStep = level.getBestStep();
       const highestScore = app.savedata.getHighestScore(
         levelObj,
@@ -993,10 +992,10 @@
   }
 
   function getId(queryObj) {
-    if (checkMode === app.Level.CHECK_MODE.POINT) {
+    if (app.common.checkMode === app.Level.CHECK_MODE.POINT) {
       levelsList = app.levelsPoint;
       levelsListEx = app.levelsPointEx;
-    } else if (checkMode === app.Level.CHECK_MODE.LINE) {
+    } else if (app.common.checkMode === app.Level.CHECK_MODE.LINE) {
       levelsList = app.levelsLine;
       levelsListEx = app.levelsLineEx;
     } else {
@@ -1043,10 +1042,10 @@
     if (editMode) {
       toggleEditLevel();
     }
-    if (checkMode === app.Level.CHECK_MODE.POINT) {
+    if (app.common.checkMode === app.Level.CHECK_MODE.POINT) {
       levelsList = app.levelsPoint;
       levelsListEx = app.levelsPointEx;
-    } else if (checkMode === app.Level.CHECK_MODE.LINE) {
+    } else if (app.common.checkMode === app.Level.CHECK_MODE.LINE) {
       levelsList = app.levelsLine;
       levelsListEx = app.levelsLineEx;
     } else {
@@ -1167,7 +1166,7 @@
         const w = level.getW();
         const h = level.getH();
         const s = level.getStateStr();
-        level = new app.Level({ w, h, s }, checkMode, {});
+        level = new app.Level({ w, h, s }, app.common.checkMode, {});
         completeCheck();
         updateLinkUrl();
         drawMainSvg();
@@ -1923,7 +1922,7 @@
       const levelObj = { w, h, s };
       // TODO low-contrastを盤面に反映させてから計算する。Promiseを使うといけそう。
       // elems.auto.buttonStart.classList.add('low-contrast');
-      const levelTemp = new app.Level(levelObj, checkMode, {});
+      const levelTemp = new app.Level(levelObj, app.common.checkMode, {});
       const maxStep = 1000; // 探索ステップ数上限値は大きな値にしておきます。時間制限もあるので、この制限にかかることはほぼないはずです。
       const timeLimit = 10;
       const result = app.solveLevel(null, levelTemp, { maxStep, timeLimit });
