@@ -13,12 +13,38 @@
   }
 
   let checkMode;
+  let levelId;
+
+  let levelsList;
+  let levelsListEx;
+  let loadLevelById;
 
   const common = {
+    levelId,
     checkMode,
+    levelsList,
+    levelsListEx,
+    loadLevelById,
+    isTouchDevice,
+    showElem,
+    hideElem,
     getStepColor,
     createCrown,
   };
+
+  function isTouchDevice() {
+    return document.ontouchstart !== undefined;
+  }
+
+  function showElem(elem) {
+    if (!elem) return;
+    elem.classList.remove('hide');
+  }
+
+  function hideElem(elem) {
+    if (!elem) return;
+    elem.classList.add('hide');
+  }
 
   function getStepColor(step, bestStep) {
     if (bestStep === undefined || step === null) {

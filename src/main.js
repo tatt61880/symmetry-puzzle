@@ -6,6 +6,7 @@
   Object.freeze(app);
 
   const elems = app.elems;
+  app.common.loadLevelById = loadLevelById;
 
   const INPUT_INTERVAL_MSEC = 28; // この値を変更するときは、iOSの省電力モード時のsetIntervalの動作を確認した上で変更してください。詳細: https://github.com/tatt61880/symmetry-puzzle/issues/38
 
@@ -57,14 +58,6 @@
   const frameSize = 32;
   const frameBorderWidth = 3;
 
-  const LEVEL_SELECT_NUM_PER_PAGE = 20;
-  const LEVEL_SELECT_HEIGHT = 90;
-  const LEVEL_SELECT_WIDTH = 90;
-  const LEVEL_SELECT_COLS = 5;
-
-  let levelsList = null;
-  let levelsListEx = null;
-  let levelId = null;
   let level = null;
 
   const SHADOW_MSEC = MOVE_INTERVAL_MSEC * 2;
@@ -189,43 +182,43 @@
         case 'ArrowUp':
         case 'w':
         case 'k':
-          levelSelectUp();
+          app.dialog.levelSelectUp();
           break;
         case 'ArrowRight':
         case 'd':
         case 'l':
           if (e.shiftKey) {
-            gotoNextLevelPage();
+            app.dialog.gotoNextLevelPage();
           } else {
-            levelSelectRight();
+            app.dialog.levelSelectRight();
           }
           break;
         case 'ArrowDown':
         case 's':
         case 'j':
-          levelSelectDown();
+          app.dialog.levelSelectDown();
           break;
         case 'ArrowLeft':
         case 'a':
         case 'h':
           if (e.shiftKey) {
-            gotoPrevLevelPage();
+            app.dialog.gotoPrevLevelPage();
           } else {
-            levelSelectLeft();
+            app.dialog.levelSelectLeft();
           }
           break;
         case 'Enter':
-          levelSelectEnter();
+          app.dialog.levelSelectEnter();
           break;
         case '#':
-          closeLevelsDialog();
+          app.dialog.closeLevelsDialog();
           break;
       }
       return;
     }
 
     if (e.key === '#') {
-      showLevelsDialog();
+      app.dialog.showLevelsDialog();
       return;
     }
 
@@ -402,7 +395,7 @@
       loadLevelById(id);
       return;
     }
-    levelId = id;
+    app.common.levelId = id;
     let isMinus = false;
     if (id < 0) {
       id = -id;
@@ -440,12 +433,12 @@
 
     clearTimeout(nextLevelTimerId);
     const id = Number(id_);
-    levelId = id;
+    app.common.levelId = id;
     let levelObj;
-    if (levelsList[levelId] !== undefined) {
-      levelObj = levelsList[levelId];
-    } else if (levelsListEx[levelId] !== undefined) {
-      levelObj = levelsListEx[levelId];
+    if (app.common.levelsList[app.common.levelId] !== undefined) {
+      levelObj = app.common.levelsList[app.common.levelId];
+    } else if (app.common.levelsListEx[app.common.levelId] !== undefined) {
+      levelObj = app.common.levelsListEx[app.common.levelId];
     }
     consoleLog(
       `[LEVEL ${id}]${
@@ -453,9 +446,11 @@
       }`
     );
 
-    loadLevelObj(levelObj !== undefined ? levelObj : createObjById(levelId));
+    loadLevelObj(
+      levelObj !== undefined ? levelObj : createObjById(app.common.levelId)
+    );
     updateLevelVisibility();
-    elems.level.id.textContent = levelId;
+    elems.level.id.textContent = app.common.levelId;
     replaceUrl();
   }
 
@@ -478,51 +473,61 @@
   }
 
   function showLevelPrev() {
-    if (levelId === null) return false;
-    if (levelId === 0) return false;
-    if (levelId === 1) return false;
-    if (levelsList[levelId] !== undefined)
-      return levelsList[levelId - 1] !== undefined;
-    if (isNaN(levelId)) return false;
-    if (levelsListEx[levelId] !== undefined)
-      return levelsListEx[levelId - 1] !== undefined;
+    if (app.common.levelId === null) return false;
+    if (app.common.levelId === 0) return false;
+    if (app.common.levelId === 1) return false;
+    if (app.common.levelsList[app.common.levelId] !== undefined)
+      return app.common.levelsList[app.common.levelId - 1] !== undefined;
+    if (isNaN(app.common.levelId)) return false;
+    if (app.common.levelsListEx[app.common.levelId] !== undefined)
+      return app.common.levelsListEx[app.common.levelId - 1] !== undefined;
     return (
-      levelsList[levelId - 1] === undefined &&
-      levelsListEx[levelId - 1] === undefined
+      app.common.levelsList[app.common.levelId - 1] === undefined &&
+      app.common.levelsListEx[app.common.levelId - 1] === undefined
     );
   }
 
   function showLevelNext() {
-    if (levelId === null) return false;
-    if (levelId === -1) return false;
-    if (levelId === 0) return false;
-    if (levelsList[levelId] !== undefined)
-      return levelsList[levelId + 1] !== undefined;
-    if (isNaN(levelId)) return false;
-    if (levelsListEx[levelId] !== undefined)
-      return levelsListEx[levelId + 1] !== undefined;
+    if (app.common.levelId === null) return false;
+    if (app.common.levelId === -1) return false;
+    if (app.common.levelId === 0) return false;
+    if (app.common.levelsList[app.common.levelId] !== undefined)
+      return app.common.levelsList[app.common.levelId + 1] !== undefined;
+    if (isNaN(app.common.levelId)) return false;
+    if (app.common.levelsListEx[app.common.levelId] !== undefined)
+      return app.common.levelsListEx[app.common.levelId + 1] !== undefined;
     return (
-      levelsList[levelId + 1] === undefined &&
-      levelsListEx[levelId + 1] === undefined
+      app.common.levelsList[app.common.levelId + 1] === undefined &&
+      app.common.levelsListEx[app.common.levelId + 1] === undefined
     );
   }
 
   function updateLevelVisibility() {
-    (showLevelPrev() ? showElem : hideElem)(elems.level.prev);
-    (showLevelNext() ? showElem : hideElem)(elems.level.next);
-    (levelId !== null ? showElem : hideElem)(elems.level.id);
-    (levelId !== null ? showElem : hideElem)(elems.levels.button);
-    (levelId === null ? showElem : hideElem)(elems.level.edit);
+    (showLevelPrev() ? app.common.showElem : app.common.hideElem)(
+      elems.level.prev
+    );
+    (showLevelNext() ? app.common.showElem : app.common.hideElem)(
+      elems.level.next
+    );
+    (app.common.levelId !== null ? app.common.showElem : app.common.hideElem)(
+      elems.level.id
+    );
+    (app.common.levelId !== null ? app.common.showElem : app.common.hideElem)(
+      elems.levels.button
+    );
+    (app.common.levelId === null ? app.common.showElem : app.common.hideElem)(
+      elems.level.edit
+    );
   }
 
   function gotoPrevLevel() {
     if (!showLevelPrev()) return;
-    loadLevelById(levelId - 1);
+    loadLevelById(app.common.levelId - 1);
   }
 
   function gotoNextLevel() {
     if (!showLevelNext()) return;
-    loadLevelById(levelId + 1);
+    loadLevelById(app.common.levelId + 1);
   }
 
   function updateLinkUrl() {
@@ -533,18 +538,18 @@
 
   function updateEditLevel() {
     if (editMode) {
-      showElem(elems.url);
-      showElem(elems.edit.editbox);
+      app.common.showElem(elems.url);
+      app.common.showElem(elems.edit.editbox);
     } else {
-      hideElem(elems.url);
-      hideElem(elems.edit.editbox);
+      app.common.hideElem(elems.url);
+      app.common.hideElem(elems.edit.editbox);
     }
     updateLinkUrl();
   }
 
   function toggleEditLevel() {
     editMode = !editMode;
-    levelId = null;
+    app.common.levelId = null;
     updateLevelVisibility();
     updateEditLevel();
     drawMainSvg();
@@ -616,304 +621,6 @@
     app.savedata.saveLang(lang);
   }
 
-  function showLevelsDialog() {
-    updateLevelsDialog();
-    elems.levels.dialog.showModal();
-  }
-
-  function toggleHideCompletedLevels() {
-    const page = Number(elems.levels.dialog.dataset.page);
-    updateLevelsDialog(page);
-  }
-
-  function gotoPrevLevelPage() {
-    if (!elems.levels.prev.classList.contains('hide')) {
-      elems.levels.dialog.dataset.selectCount =
-        Number(elems.levels.dialog.dataset.selectCount) -
-        LEVEL_SELECT_NUM_PER_PAGE;
-      const page = Number(elems.levels.dialog.dataset.page) - 1;
-      updateLevelsDialog(page);
-    }
-  }
-
-  function gotoNextLevelPage() {
-    if (!elems.levels.next.classList.contains('hide')) {
-      elems.levels.dialog.dataset.selectCount =
-        Number(elems.levels.dialog.dataset.selectCount) +
-        LEVEL_SELECT_NUM_PER_PAGE;
-      const page = Number(elems.levels.dialog.dataset.page) + 1;
-      updateLevelsDialog(page);
-    }
-  }
-
-  function levelSelectUpdate(selectCount) {
-    if (isTouchDevice()) {
-      return;
-    }
-    const currentPage = Number(elems.levels.dialog.dataset.page);
-    const page = Math.floor(selectCount / LEVEL_SELECT_NUM_PER_PAGE);
-    if (page !== currentPage) {
-      updateLevelsDialog(page);
-    }
-
-    elems.levels.dialog.dataset.selectCount = selectCount;
-    const g = document.getElementById('levelSelect');
-    const x = (selectCount % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH;
-    const y =
-      Math.floor(
-        (selectCount % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS
-      ) * LEVEL_SELECT_HEIGHT;
-    g.setAttribute('transform', `translate(${x},${y})`);
-  }
-
-  function levelSelectUp() {
-    const selectCount =
-      Number(elems.levels.dialog.dataset.selectCount) - LEVEL_SELECT_COLS;
-    if (selectCount >= 0) {
-      levelSelectUpdate(selectCount);
-    }
-  }
-
-  function levelSelectRight() {
-    const selectCount = Number(elems.levels.dialog.dataset.selectCount) + 1;
-    if (selectCount <= Number(elems.levels.dialog.dataset.maxCount)) {
-      levelSelectUpdate(selectCount);
-    }
-  }
-
-  function levelSelectDown() {
-    const selectCount =
-      Number(elems.levels.dialog.dataset.selectCount) + LEVEL_SELECT_COLS;
-    if (selectCount <= Number(elems.levels.dialog.dataset.maxCount)) {
-      levelSelectUpdate(selectCount);
-    }
-  }
-
-  function levelSelectLeft() {
-    const selectCount = Number(elems.levels.dialog.dataset.selectCount) - 1;
-    if (selectCount >= 0) {
-      levelSelectUpdate(selectCount);
-    }
-  }
-
-  function levelSelectEnter() {
-    const selectCount = Number(elems.levels.dialog.dataset.selectCount);
-    const id = JSON.parse(elems.levels.dialog.dataset.selectIds)[selectCount];
-    loadLevelById(id);
-    elems.levels.dialog.close();
-  }
-
-  function updateLevelsDialog(page_ = null) {
-    let page = page_;
-    window.getSelection().removeAllRanges();
-
-    if (!elems.levels.toggleCrown.hasChildNodes()) {
-      elems.levels.toggleCrown.appendChild(
-        app.common.createCrown(20, 0, 0, 1, 1)
-      );
-    }
-
-    // const hideCompletedLevelsFlag = elems.levels.hideClearedLevels.checked;
-    const hideShortestLevelsFlag = elems.levels.hideShortestLevels.checked;
-
-    elems.levels.dialogSvg.innerHTML = '';
-
-    let totalNum = 0;
-    for (let id = 1; id < levelsList.length; ++id) {
-      if (page === null && id === levelId) {
-        page = Math.floor(totalNum / LEVEL_SELECT_NUM_PER_PAGE);
-        elems.levels.dialog.dataset.selectCount = totalNum;
-      }
-      totalNum++;
-    }
-    for (const id of Object.keys(levelsListEx).sort()) {
-      if (String(id) === 'NaN') continue;
-      if (page === null && Number(id) === levelId) {
-        page = Math.floor(totalNum / LEVEL_SELECT_NUM_PER_PAGE);
-        elems.levels.dialog.dataset.selectCount = totalNum;
-      }
-      totalNum++;
-    }
-    elems.levels.dialog.dataset.maxCount = totalNum - 1;
-
-    if (page === null) {
-      page = 0;
-    }
-    elems.levels.dialog.dataset.page = page;
-    if (page === 0) {
-      hideElem(elems.levels.prev);
-    } else {
-      showElem(elems.levels.prev);
-    }
-    if (
-      page + 1 ===
-      Math.floor(
-        (totalNum + LEVEL_SELECT_NUM_PER_PAGE - 1) / LEVEL_SELECT_NUM_PER_PAGE
-      )
-    ) {
-      hideElem(elems.levels.next);
-    } else {
-      showElem(elems.levels.next);
-    }
-
-    let count = 0;
-    const selectIds = {};
-    for (let id = 1; id < levelsList.length; ++id) {
-      if (
-        page * LEVEL_SELECT_NUM_PER_PAGE <= count &&
-        count < (page + 1) * LEVEL_SELECT_NUM_PER_PAGE
-      ) {
-        const levelObj = levelsList[id];
-        appendLevel(levelObj, id);
-        selectIds[count] = id;
-      }
-      count++;
-    }
-    for (const id of Object.keys(levelsListEx).sort()) {
-      if (String(id) === 'NaN') continue;
-      if (
-        page * LEVEL_SELECT_NUM_PER_PAGE <= count &&
-        count < (page + 1) * LEVEL_SELECT_NUM_PER_PAGE
-      ) {
-        const levelObj = levelsListEx[id];
-        appendLevel(levelObj, id);
-        selectIds[count] = id;
-      }
-      count++;
-    }
-    elems.levels.dialog.dataset.selectIds = JSON.stringify(selectIds);
-
-    // 選択枠
-    if (!isTouchDevice()) {
-      if (
-        Number(elems.levels.dialog.dataset.selectCount) >
-        Number(elems.levels.dialog.dataset.maxCount)
-      ) {
-        elems.levels.dialog.dataset.selectCount = Number(
-          elems.levels.dialog.dataset.maxCount
-        );
-      }
-
-      const selectCount = Number(elems.levels.dialog.dataset.selectCount);
-      const rect = app.svg.createRect(1, {
-        x: 1,
-        y: 1,
-        width: LEVEL_SELECT_WIDTH - 2,
-        height: LEVEL_SELECT_HEIGHT - 2,
-        fill: 'none',
-        stroke: app.colors.levelsDialogSelect,
-      });
-      rect.setAttribute('stroke-width', '2');
-      rect.setAttribute('rx', '5');
-      rect.setAttribute('ry', '5');
-
-      const g = app.svg.createG();
-      g.appendChild(rect);
-      elems.levels.dialogSvg.appendChild(g);
-
-      const x = (selectCount % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH;
-      const y =
-        Math.floor(
-          (selectCount % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS
-        ) * LEVEL_SELECT_HEIGHT;
-      g.setAttribute('id', 'levelSelect');
-      g.setAttribute('transform', `translate(${x},${y})`);
-    }
-
-    function appendLevel(levelObj, id) {
-      const level = new app.Level(levelObj, app.common.checkMode, {});
-      const bestStep = level.getBestStep();
-      const highestScore = app.savedata.getHighestScore(
-        levelObj,
-        level.isLineMode()
-      );
-
-      if (
-        highestScore !== null &&
-        hideShortestLevelsFlag &&
-        highestScore <= bestStep
-      ) {
-        return;
-      }
-
-      const g = app.svg.createG();
-      g.classList.add('level-select');
-      elems.levels.dialogSvg.appendChild(g);
-
-      if (String(id) === String(levelId)) {
-        const rect = app.svg.createRect(1, {
-          x: 0,
-          y: 0,
-          width: LEVEL_SELECT_WIDTH,
-          height: LEVEL_SELECT_HEIGHT,
-          fill: app.colors.levelsDialogCurrentLevel,
-        });
-        rect.setAttribute('rx', '5');
-        rect.setAttribute('ry', '5');
-        g.appendChild(rect);
-      } else {
-        const rect = app.svg.createRect(1, {
-          x: 0,
-          y: 0,
-          width: LEVEL_SELECT_WIDTH,
-          height: LEVEL_SELECT_HEIGHT,
-          fill: '#ffffff',
-          stroke: '#dddddd',
-        });
-        rect.setAttribute('rx', '5');
-        rect.setAttribute('ry', '5');
-        g.appendChild(rect);
-      }
-
-      {
-        const crown = app.common.createCrown(20, 0, 0, highestScore, bestStep);
-        g.appendChild(crown);
-      }
-      {
-        const text = app.svg.createText(1, {
-          x: LEVEL_SELECT_WIDTH / 2,
-          y: 12,
-          text: id,
-          fill: 'black',
-        });
-        g.appendChild(text);
-        g.setAttribute('transform', 'translate(20,20)');
-      }
-      {
-        const blockSize = Math.min(
-          (LEVEL_SELECT_WIDTH - 8) / level.getWidth(),
-          (LEVEL_SELECT_HEIGHT - 25) / level.getHeight()
-        );
-        const levelSvgG = level.createSvgG(blockSize);
-        levelSvgG.setAttribute(
-          'transform',
-          `translate(${
-            (LEVEL_SELECT_WIDTH - blockSize * level.getWidth()) / 2
-          },20)`
-        );
-        g.appendChild(levelSvgG);
-      }
-
-      {
-        const x = (count % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH + 1;
-        const y =
-          Math.floor((count % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) *
-          LEVEL_SELECT_HEIGHT;
-        g.setAttribute('transform', `translate(${x},${y})`);
-      }
-      g.dataset.id = id;
-      g.addEventListener('click', function () {
-        const id = Number(g.dataset.id);
-        loadLevelById(id);
-        closeLevelsDialog();
-      });
-    }
-  }
-
-  function closeLevelsDialog() {
-    elems.levels.dialog.close();
-  }
-
   function onloadApp() {
     elems.version.textContent = VERSION_TEXT;
 
@@ -969,17 +676,17 @@
 
   function getId(queryObj) {
     if (app.common.checkMode === app.Level.CHECK_MODE.POINT) {
-      levelsList = app.levelsPoint;
-      levelsListEx = app.levelsPointEx;
+      app.common.levelsList = app.levelsPoint;
+      app.common.levelsListEx = app.levelsPointEx;
     } else if (app.common.checkMode === app.Level.CHECK_MODE.LINE) {
-      levelsList = app.levelsLine;
-      levelsListEx = app.levelsLineEx;
+      app.common.levelsList = app.levelsLine;
+      app.common.levelsListEx = app.levelsLineEx;
     } else {
-      levelsList = null;
-      levelsListEx = null;
+      app.common.levelsList = null;
+      app.common.levelsListEx = null;
     }
-    for (let id = 0; id < levelsList.length; ++id) {
-      const levelObj = levelsList[id];
+    for (let id = 0; id < app.common.levelsList.length; ++id) {
+      const levelObj = app.common.levelsList[id];
       if (
         levelObj.w === queryObj.w &&
         levelObj.h === queryObj.h &&
@@ -988,9 +695,9 @@
         return id;
       }
     }
-    for (const id of Object.keys(levelsListEx).sort()) {
+    for (const id of Object.keys(app.common.levelsListEx).sort()) {
       if (String(id) === 'NaN') continue;
-      const levelObj = levelsListEx[id];
+      const levelObj = app.common.levelsListEx[id];
       if (
         levelObj.w === queryObj.w &&
         levelObj.h === queryObj.h &&
@@ -1006,8 +713,8 @@
     window.getSelection().removeAllRanges();
 
     updateCheckMode(null);
-    showElem(elems.category.title);
-    hideElem(elems.category.game);
+    app.common.showElem(elems.category.title);
+    app.common.hideElem(elems.category.game);
     updateAutoMode(false);
     replaceUrlTitle();
   }
@@ -1019,21 +726,21 @@
       toggleEditLevel();
     }
     if (app.common.checkMode === app.Level.CHECK_MODE.POINT) {
-      levelsList = app.levelsPoint;
-      levelsListEx = app.levelsPointEx;
+      app.common.levelsList = app.levelsPoint;
+      app.common.levelsListEx = app.levelsPointEx;
     } else if (app.common.checkMode === app.Level.CHECK_MODE.LINE) {
-      levelsList = app.levelsLine;
-      levelsListEx = app.levelsLineEx;
+      app.common.levelsList = app.levelsLine;
+      app.common.levelsListEx = app.levelsLineEx;
     } else {
-      levelsList = null;
-      levelsListEx = null;
+      app.common.levelsList = null;
+      app.common.levelsListEx = null;
     }
-    hideElem(elems.category.title);
-    showElem(elems.category.game);
-    showElem(elems.main.div);
-    showElem(elems.level.widget);
-    showElem(elems.svgDiv);
-    showElem(elems.controller.widget);
+    app.common.hideElem(elems.category.title);
+    app.common.showElem(elems.category.game);
+    app.common.showElem(elems.main.div);
+    app.common.showElem(elems.level.widget);
+    app.common.showElem(elems.svgDiv);
+    app.common.showElem(elems.controller.widget);
 
     let id = id_;
     if (id === null) id = 1;
@@ -1043,15 +750,15 @@
   function onloadObj(obj) {
     window.getSelection().removeAllRanges();
 
-    hideElem(elems.category.title);
-    showElem(elems.category.game);
-    showElem(elems.main.svg);
-    showElem(elems.level.widget);
-    showElem(elems.svgDiv);
-    hideElem(elems.auto.buttons);
-    showElem(elems.controller.widget);
+    app.common.hideElem(elems.category.title);
+    app.common.showElem(elems.category.game);
+    app.common.showElem(elems.main.svg);
+    app.common.showElem(elems.level.widget);
+    app.common.showElem(elems.svgDiv);
+    app.common.hideElem(elems.auto.buttons);
+    app.common.showElem(elems.controller.widget);
 
-    levelId = null;
+    app.common.levelId = null;
     updateLevelVisibility();
     loadLevelObj(obj);
   }
@@ -1199,22 +906,31 @@
       elems.level.prev.addEventListener('click', gotoPrevLevel);
       elems.level.next.addEventListener('click', gotoNextLevel);
       elems.level.edit.addEventListener('click', toggleEditLevel);
-      elems.levels.button.addEventListener('click', showLevelsDialog);
-      elems.levels.dialog.addEventListener('click', closeLevelsDialog);
+      elems.levels.button.addEventListener(
+        'click',
+        app.dialog.showLevelsDialog
+      );
+      elems.levels.dialog.addEventListener(
+        'click',
+        app.dialog.closeLevelsDialog
+      );
       elems.levels.dialogDiv.addEventListener('click', (e) =>
         e.stopPropagation()
       );
       elems.levels.hideShortestLevels.addEventListener(
         'click',
-        toggleHideCompletedLevels
+        app.dialog.toggleHideCompletedLevels
       );
     }
 
     // レベル一覧ダイアログ
     {
-      elems.levels.close.addEventListener('click', closeLevelsDialog);
-      elems.levels.prev.addEventListener('click', gotoPrevLevelPage);
-      elems.levels.next.addEventListener('click', gotoNextLevelPage);
+      elems.levels.close.addEventListener(
+        'click',
+        app.dialog.closeLevelsDialog
+      );
+      elems.levels.prev.addEventListener('click', app.dialog.gotoPrevLevelPage);
+      elems.levels.next.addEventListener('click', app.dialog.gotoNextLevelPage);
     }
 
     // キー入力用
@@ -1225,7 +941,7 @@
 
     // タッチ入力用
     {
-      const touchDevice = isTouchDevice();
+      const touchDevice = app.common.isTouchDevice();
       const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
@@ -1277,16 +993,16 @@
 
   function updateController() {
     if (settings.autoMode && settingsAuto.paused) {
-      hideElem(elems.controller.stick.base);
+      app.common.hideElem(elems.controller.stick.base);
     } else {
       if (completeFlag) {
-        hideElem(elems.controller.stick.base);
+        app.common.hideElem(elems.controller.stick.base);
         if (!elems.level.next.classList.contains('hide')) {
-          showElem(elems.controller.nextLevel);
+          app.common.showElem(elems.controller.nextLevel);
         }
       } else {
-        showElem(elems.controller.stick.base);
-        hideElem(elems.controller.nextLevel);
+        app.common.showElem(elems.controller.stick.base);
+        app.common.hideElem(elems.controller.nextLevel);
       }
     }
   }
@@ -1491,7 +1207,7 @@
             }'`;
 
             const levelObjStr = `{ ${levelParams} },`;
-            if (levelId === null) {
+            if (app.common.levelId === null) {
               copyTextToClipboard(levelObjStr);
             }
             consoleLog(levelObjStr);
@@ -1560,7 +1276,7 @@
       }
 
       // 自己最高記録
-      if (levelId !== null) {
+      if (app.common.levelId !== null) {
         const levelObj = level.getLevelObj();
         const highestScore = app.savedata.getHighestScore(
           levelObj,
@@ -1625,7 +1341,7 @@
     } else if (secretSequence === '1414') {
       updateAutoMode(true);
     } else if (secretSequence === '4343') {
-      showElem(elems.console.widget);
+      app.common.showElem(elems.console.widget);
       {
         const input = elems.main.svg;
         const output = elems.console.image;
@@ -1677,7 +1393,7 @@
         });
       }
     } else if (secretSequence === '3434') {
-      hideElem(elems.console.widget);
+      app.common.hideElem(elems.console.widget);
     } else {
       resetFlag = false;
     }
@@ -1784,16 +1500,6 @@
     }
   }
 
-  function showElem(elem) {
-    if (!elem) return;
-    elem.classList.remove('hide');
-  }
-
-  function hideElem(elem) {
-    if (!elem) return;
-    elem.classList.add('hide');
-  }
-
   function resizeLevel(e, dx, dy) {
     const w = level.getW() + dx;
     const h = level.getH() + dy;
@@ -1848,10 +1554,10 @@
   }
 
   function updateButtonSpeedDisplay() {
-    (settingsAuto.interval === settingsAuto.INTERVAL_MAX ? hideElem : showElem)(
-      elems.auto.buttonSpeedDown
-    );
-    (settingsAuto.interval === 1 ? hideElem : showElem)(
+    (settingsAuto.interval === settingsAuto.INTERVAL_MAX
+      ? app.common.hideElem
+      : app.common.showElem)(elems.auto.buttonSpeedDown);
+    (settingsAuto.interval === 1 ? app.common.hideElem : app.common.showElem)(
       elems.auto.buttonSpeedUp
     );
   }
@@ -1860,13 +1566,13 @@
     if (isOn) {
       settings.autoMode = true;
       stick.disable();
-      showElem(elems.auto.buttons);
+      app.common.showElem(elems.auto.buttons);
     } else {
       clearTimeout(nextLevelTimerId);
       settings.autoMode = false;
       settingsAuto.paused = true;
       stick.enable();
-      hideElem(elems.auto.buttons);
+      app.common.hideElem(elems.auto.buttons);
 
       stick.update(app.Stick.DIRS.NEUTRAL);
     }
@@ -1877,11 +1583,11 @@
 
   function updateAutoStartPauseButtons() {
     if (settingsAuto.paused) {
-      showElem(elems.auto.buttonStart);
-      hideElem(elems.auto.buttonPause);
+      app.common.showElem(elems.auto.buttonStart);
+      app.common.hideElem(elems.auto.buttonPause);
     } else {
-      hideElem(elems.auto.buttonStart);
-      showElem(elems.auto.buttonPause);
+      app.common.hideElem(elems.auto.buttonStart);
+      app.common.showElem(elems.auto.buttonPause);
     }
   }
 
@@ -2024,9 +1730,5 @@
       const width = (WINDOW_HEIGHT * window.innerWidth) / window.innerHeight;
       elems.viewport.setAttribute('content', `width=${width}`);
     }
-  }
-
-  function isTouchDevice() {
-    return document.ontouchstart !== undefined;
   }
 })();
