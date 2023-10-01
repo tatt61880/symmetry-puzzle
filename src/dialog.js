@@ -26,6 +26,7 @@
     levelSelectDown,
     levelSelectLeft,
     levelSelectEnter,
+    closeLevelsDialog,
 
     showRecordsDialog,
     closeRecordsDialog,
