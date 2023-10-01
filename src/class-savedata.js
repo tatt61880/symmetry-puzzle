@@ -2,7 +2,6 @@
   'use strict';
   const isBrowser = typeof window !== 'undefined';
   if (!isBrowser) return;
-
   if (window?.app.savedata) return;
 
   const LOCAL_STORAGE_KEY = 'tatt61880-symmetry-puzzle';

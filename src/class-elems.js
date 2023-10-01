@@ -1,6 +1,8 @@
 (function () {
   'use strict';
   const isBrowser = typeof window !== 'undefined';
+  if (!isBrowser) return;
+  if (window?.app.Elems) return;
 
   class Elems {
     #elems;
@@ -34,8 +36,6 @@
     }
   }
 
-  if (isBrowser) {
-    window.app = window.app || {};
-    window.app.Elems = Elems;
-  }
+  window.app = window.app || {};
+  window.app.Elems = Elems;
 })();
