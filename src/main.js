@@ -107,8 +107,8 @@
 
   function completeCheck() {
     const symmetryFlagPrev = symmetryFlag;
-    completeFlag = level.isCompleted();
-    symmetryFlag = level.isSymmetry(app.states.isTarget);
+    completeFlag = level.isCompleted(); // 連結した対称図形であるとき
+    symmetryFlag = level.isSymmetry(app.states.isTarget); // 連結しているか否かに関わらず対称図形であるとき
     const redrawFlag = completeFlag || symmetryFlag !== symmetryFlagPrev;
     if (redrawFlag) {
       const delay = settings.autoMode
