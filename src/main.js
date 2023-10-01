@@ -167,7 +167,7 @@
 
     // どの画面でも有効
     if (e.key === '?') {
-      app.dialog.toggleHelpDialog();
+      app.dialog.help.toggle();
       return;
     }
 
@@ -182,43 +182,43 @@
         case 'ArrowUp':
         case 'w':
         case 'k':
-          app.dialog.levelSelectUp();
+          app.dialog.levels.selectUp();
           break;
         case 'ArrowRight':
         case 'd':
         case 'l':
           if (e.shiftKey) {
-            app.dialog.gotoNextLevelPage();
+            app.dialog.levels.nextPage();
           } else {
-            app.dialog.levelSelectRight();
+            app.dialog.levels.selectRight();
           }
           break;
         case 'ArrowDown':
         case 's':
         case 'j':
-          app.dialog.levelSelectDown();
+          app.dialog.levels.selectDown();
           break;
         case 'ArrowLeft':
         case 'a':
         case 'h':
           if (e.shiftKey) {
-            app.dialog.gotoPrevLevelPage();
+            app.dialog.levels.prevPage();
           } else {
-            app.dialog.levelSelectLeft();
+            app.dialog.levels.selectLeft();
           }
           break;
         case 'Enter':
-          app.dialog.levelSelectEnter();
+          app.dialog.levels.selectEnter();
           break;
         case '#':
-          app.dialog.closeLevelsDialog();
+          app.dialog.levels.close();
           break;
       }
       return;
     }
 
     if (e.key === '#') {
-      app.dialog.showLevelsDialog();
+      app.dialog.levels.show();
       return;
     }
 
@@ -640,7 +640,7 @@
           lang = 'en';
       }
       app.savedata.saveLang(lang);
-      app.dialog.showHelpDialog();
+      app.dialog.help.show();
     }
     applyLang(lang);
 
@@ -858,9 +858,9 @@
 
     // ヘルプ画面用
     {
-      elems.help.button.addEventListener('click', app.dialog.showHelpDialog);
-      elems.help.dialog.addEventListener('click', app.dialog.closeHelpDialog);
-      elems.help.close.addEventListener('click', app.dialog.closeHelpDialog);
+      elems.help.button.addEventListener('click', app.dialog.help.show);
+      elems.help.dialog.addEventListener('click', app.dialog.help.close);
+      elems.help.close.addEventListener('click', app.dialog.help.close);
       elems.help.dialogDiv.addEventListener('click', (e) =>
         e.stopPropagation()
       );
@@ -883,18 +883,9 @@
 
     // 記録画面用
     {
-      elems.records.button.addEventListener(
-        'click',
-        app.dialog.showRecordsDialog
-      );
-      elems.records.dialog.addEventListener(
-        'click',
-        app.dialog.closeRecordsDialog
-      );
-      elems.records.close.addEventListener(
-        'click',
-        app.dialog.closeRecordsDialog
-      );
+      elems.records.button.addEventListener('click', app.dialog.records.show);
+      elems.records.dialog.addEventListener('click', app.dialog.records.close);
+      elems.records.close.addEventListener('click', app.dialog.records.close);
       elems.records.dialogDiv.addEventListener('click', (e) =>
         e.stopPropagation()
       );
@@ -906,31 +897,22 @@
       elems.level.prev.addEventListener('click', gotoPrevLevel);
       elems.level.next.addEventListener('click', gotoNextLevel);
       elems.level.edit.addEventListener('click', toggleEditLevel);
-      elems.levels.button.addEventListener(
-        'click',
-        app.dialog.showLevelsDialog
-      );
-      elems.levels.dialog.addEventListener(
-        'click',
-        app.dialog.closeLevelsDialog
-      );
+      elems.levels.button.addEventListener('click', app.dialog.levels.show);
+      elems.levels.dialog.addEventListener('click', app.dialog.levels.close);
       elems.levels.dialogDiv.addEventListener('click', (e) =>
         e.stopPropagation()
       );
       elems.levels.hideShortestLevels.addEventListener(
         'click',
-        app.dialog.toggleHideCompletedLevels
+        app.dialog.levels.toggleHideCompleted
       );
     }
 
     // レベル一覧ダイアログ
     {
-      elems.levels.close.addEventListener(
-        'click',
-        app.dialog.closeLevelsDialog
-      );
-      elems.levels.prev.addEventListener('click', app.dialog.gotoPrevLevelPage);
-      elems.levels.next.addEventListener('click', app.dialog.gotoNextLevelPage);
+      elems.levels.close.addEventListener('click', app.dialog.levels.close);
+      elems.levels.prev.addEventListener('click', app.dialog.levels.prevPage);
+      elems.levels.next.addEventListener('click', app.dialog.levels.nextPage);
     }
 
     // キー入力用

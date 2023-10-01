@@ -13,23 +13,29 @@
   const elems = app.elems;
 
   const dialog = {
-    toggleHelpDialog,
-    showHelpDialog,
-    closeHelpDialog,
+    help: {
+      toggle: toggleHelpDialog,
+      show: showHelpDialog,
+      close: closeHelpDialog,
+    },
 
-    showLevelsDialog,
-    toggleHideCompletedLevels,
-    gotoPrevLevelPage,
-    gotoNextLevelPage,
-    levelSelectUp,
-    levelSelectRight,
-    levelSelectDown,
-    levelSelectLeft,
-    levelSelectEnter,
-    closeLevelsDialog,
+    levels: {
+      show: showLevelsDialog,
+      toggleHideCompleted: toggleHideCompletedLevels,
+      prevPage: gotoPrevLevelPage,
+      nextPage: gotoNextLevelPage,
+      selectUp: levelSelectUp,
+      selectRight: levelSelectRight,
+      selectDown: levelSelectDown,
+      selectLeft: levelSelectLeft,
+      selectEnter: levelSelectEnter,
+      close: closeLevelsDialog,
+    },
 
-    showRecordsDialog,
-    closeRecordsDialog,
+    records: {
+      show: showRecordsDialog,
+      close: closeRecordsDialog,
+    },
   };
 
   // --------------------------------------------------------------------------
