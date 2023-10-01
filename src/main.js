@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.09.29';
+  const VERSION_TEXT = 'v2023.09.30';
 
   const app = window.app;
   Object.freeze(app);
@@ -558,12 +558,14 @@
   function updateCheckMode(mode) {
     app.common.checkMode = mode;
     const className = (() => {
-      if (mode === app.Level.CHECK_MODE.POINT) {
-        return 'point';
-      } else if (mode === app.Level.CHECK_MODE.LINE) {
-        return 'line';
+      switch (mode) {
+        case app.Level.CHECK_MODE.POINT:
+          return 'point';
+        case app.Level.CHECK_MODE.LINE:
+          return 'line';
+        default:
+          return 'none';
       }
-      return 'none';
     })();
 
     for (const elem of document.getElementsByClassName('check-mode')) {
@@ -675,16 +677,20 @@
   }
 
   function getId(queryObj) {
-    if (app.common.checkMode === app.Level.CHECK_MODE.POINT) {
-      app.common.levelsList = app.levelsPoint;
-      app.common.levelsListEx = app.levelsPointEx;
-    } else if (app.common.checkMode === app.Level.CHECK_MODE.LINE) {
-      app.common.levelsList = app.levelsLine;
-      app.common.levelsListEx = app.levelsLineEx;
-    } else {
-      app.common.levelsList = null;
-      app.common.levelsListEx = null;
+    switch (app.common.checkMode) {
+      case app.Level.CHECK_MODE.POINT:
+        app.common.levelsList = app.levelsPoint;
+        app.common.levelsListEx = app.levelsPointEx;
+        break;
+      case app.Level.CHECK_MODE.LINE:
+        app.common.levelsList = app.levelsLine;
+        app.common.levelsListEx = app.levelsLineEx;
+        break;
+      default:
+        app.common.levelsList = null;
+        app.common.levelsListEx = null;
     }
+
     for (let id = 0; id < app.common.levelsList.length; ++id) {
       const levelObj = app.common.levelsList[id];
       if (
@@ -725,16 +731,21 @@
     if (editMode) {
       toggleEditLevel();
     }
-    if (app.common.checkMode === app.Level.CHECK_MODE.POINT) {
-      app.common.levelsList = app.levelsPoint;
-      app.common.levelsListEx = app.levelsPointEx;
-    } else if (app.common.checkMode === app.Level.CHECK_MODE.LINE) {
-      app.common.levelsList = app.levelsLine;
-      app.common.levelsListEx = app.levelsLineEx;
-    } else {
-      app.common.levelsList = null;
-      app.common.levelsListEx = null;
+
+    switch (app.common.checkMode) {
+      case app.Level.CHECK_MODE.POINT:
+        app.common.levelsList = app.levelsPoint;
+        app.common.levelsListEx = app.levelsPointEx;
+        break;
+      case app.Level.CHECK_MODE.LINE:
+        app.common.levelsList = app.levelsLine;
+        app.common.levelsListEx = app.levelsLineEx;
+        break;
+      default:
+        app.common.levelsList = null;
+        app.common.levelsListEx = null;
     }
+
     app.common.hideElem(elems.category.title);
     app.common.showElem(elems.category.game);
     app.common.showElem(elems.main.div);
