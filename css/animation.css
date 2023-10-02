@@ -188,19 +188,19 @@
 
 .animation-new-record {
   animation: animation-new-record linear forwards;
-  animation-duration: calc(var(--animation-duration-symmetry) * 5);
+  animation-duration: calc(var(--animation-duration-symmetry) * 4);
 }
 
 @keyframes animation-new-record {
   0%,
-  50%,
-  70%,
-  90% {
+  25%,
+  55%,
+  85% {
     opacity: 0;
   }
 
-  60%,
-  80%,
+  40%,
+  70%,
   100% {
     opacity: 1;
   }
