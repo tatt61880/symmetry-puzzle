@@ -192,6 +192,7 @@
 @keyframes animation-next-level {
   0% {
     display: none;
+    opacity: 0;
   }
 
   80% {
