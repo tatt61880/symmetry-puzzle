@@ -1190,12 +1190,13 @@
           x: 0,
           y: 0.05,
           text: 'Congratulations!',
-          fill: 'white',
+          fill: '#ffffdd',
         });
         const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
         const height = (level.getHeight() - 1) * blockSize + frameSize;
         text.setAttribute('font-size', fontSize2);
         text.setAttribute('transform', `translate(${width},${height})`);
+        text.classList.add('animation-congratulations');
         g.appendChild(text);
         {
           const levelObj = level.getLevelObj();

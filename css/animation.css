@@ -203,6 +203,22 @@
   }
 }
 
+.animation-congratulations {
+  transform-origin: center;
+  animation: animation-congratulations ease forwards;
+  animation-duration: var(--animation-duration-symmetry);
+}
+
+@keyframes animation-congratulations {
+  0% {
+    scale: 0;
+  }
+
+  100% {
+    scale: 1;
+  }
+}
+
 /* icon animation */
 .animation-rotation-icon {
   transform-origin: 50% 50%;
