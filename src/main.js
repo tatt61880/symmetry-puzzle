@@ -166,13 +166,29 @@
     if (e.ctrlKey) return;
 
     // どの画面でも有効
-    if (e.key === '?') {
-      app.dialog.help.toggle();
-      return;
+    switch (e.key) {
+      case '?':
+        app.dialog.help.toggle();
+        return;
+      case '+':
+        onloadTitle();
+        return;
     }
 
     // タイトル画面で有効
     if (!elems.category.title.classList.contains('hide')) {
+      if (!e.shiftKey) {
+        switch (e.key) {
+          case 'u':
+            updateCheckMode(app.Level.CHECK_MODE.LINE);
+            onloadId(1);
+            break;
+          case 'z':
+            updateCheckMode(app.Level.CHECK_MODE.POINT);
+            onloadId(1);
+            break;
+        }
+      }
       return;
     }
 
@@ -881,13 +897,13 @@
 
     // タイトル画面用
     {
-      elems.title.buttonPlayPoint.addEventListener('click', () => {
-        updateCheckMode(app.Level.CHECK_MODE.POINT);
+      elems.title.buttonPlayLine.addEventListener('click', () => {
+        updateCheckMode(app.Level.CHECK_MODE.LINE);
         onloadId(1);
       });
 
-      elems.title.buttonPlayLine.addEventListener('click', () => {
-        updateCheckMode(app.Level.CHECK_MODE.LINE);
+      elems.title.buttonPlayPoint.addEventListener('click', () => {
+        updateCheckMode(app.Level.CHECK_MODE.POINT);
         onloadId(1);
       });
     }
