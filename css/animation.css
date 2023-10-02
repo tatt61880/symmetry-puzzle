@@ -52,7 +52,7 @@
 
 .animation-symmetry-axis {
   animation: animation-symmetry-axis ease forwards;
-  animation-duration: var(--animation-duration-symmetry);
+  animation-duration: calc(var(--animation-duration-symmetry) * 3);
 }
 
 /* icon animation */
