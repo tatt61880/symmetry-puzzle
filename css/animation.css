@@ -205,13 +205,17 @@
 
 .animation-congratulations {
   transform-origin: center;
-  animation: animation-congratulations ease forwards;
+  animation: animation-congratulations;
   animation-duration: var(--animation-duration-symmetry);
 }
 
 @keyframes animation-congratulations {
   0% {
     scale: 0;
+  }
+
+  50% {
+    scale: 1.05;
   }
 
   100% {
@@ -221,13 +225,13 @@
 
 /* icon animation */
 .animation-rotation-icon {
-  transform-origin: 50% 50%;
+  transform-origin: center;
   animation: animation-rotation ease forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
 .animation-line1-icon {
-  transform-origin: 50% 50%;
+  transform-origin: center;
   animation: animation-line1 ease forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
