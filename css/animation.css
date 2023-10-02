@@ -205,11 +205,12 @@
 
 .animation-congratulations {
   animation: animation-congratulations ease forwards;
-  animation-duration: var(--animation-duration-symmetry);
+  animation-duration: calc(var(--animation-duration-symmetry) * 2);
 }
 
 @keyframes animation-congratulations {
-  0% {
+  0%,
+  30% {
     opacity: 0;
   }
 
