@@ -548,7 +548,7 @@
 
   function gotoNextLevelButton() {
     const style = window.getComputedStyle(elems.controller.nextLevel);
-    if (style.opacity !== 0) {
+    if (style.opacity > 0.5) {
       gotoNextLevel();
     }
   }
