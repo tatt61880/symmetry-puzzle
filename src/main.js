@@ -1191,7 +1191,7 @@
           x: 0,
           y: 0.05,
           text: 'Congratulations!',
-          fill: '#ffffdd',
+          fill: app.colors.congratulations,
         });
         const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
         const height = (level.getHeight() - 1) * blockSize + frameSize;
@@ -1339,12 +1339,13 @@
             x: 0,
             y: -0.05,
             text: 'New record!',
-            fill: 'white',
+            fill: app.colors.newRecords,
           });
           const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
           const height = frameSize;
           text.setAttribute('font-size', fontSize2);
           text.setAttribute('transform', `translate(${width},${height})`);
+          text.classList.add('animation-new-record');
           g.appendChild(text);
         }
       }

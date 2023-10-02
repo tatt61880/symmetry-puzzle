@@ -51,20 +51,14 @@
 }
 
 @keyframes animation-rotation {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  40% {
-    transform: rotate(180deg);
-  }
-
-  80% {
-    transform: rotate(180deg);
-  }
-
+  0%,
   100% {
     transform: rotate(0deg);
+  }
+
+  40%,
+  80% {
+    transform: rotate(180deg);
   }
 }
 
@@ -75,20 +69,14 @@
 }
 
 @keyframes animation-line1 {
-  0% {
-    transform: scaleX(1);
-  }
-
-  40% {
-    transform: scaleX(-1);
-  }
-
-  80% {
-    transform: scaleX(-1);
-  }
-
+  0%,
   100% {
     transform: scaleX(1);
+  }
+
+  40%,
+  80% {
+    transform: scaleX(-1);
   }
 }
 
@@ -99,20 +87,14 @@
 }
 
 @keyframes animation-line2 {
-  0% {
-    transform: scaleY(1);
-  }
-
-  40% {
-    transform: scaleY(-1);
-  }
-
-  80% {
-    transform: scaleY(-1);
-  }
-
+  0%,
   100% {
     transform: scaleY(1);
+  }
+
+  40%,
+  80% {
+    transform: scaleY(-1);
   }
 }
 
@@ -123,20 +105,14 @@
 }
 
 @keyframes animation-line3 {
-  0% {
-    transform: rotate3d(1, 1, 0, 0deg);
-  }
-
-  40% {
-    transform: rotate3d(1, 1, 0, 180deg);
-  }
-
-  80% {
-    transform: rotate3d(1, 1, 0, 180deg);
-  }
-
+  0%,
   100% {
     transform: rotate3d(1, 1, 0, 0deg);
+  }
+
+  40%,
+  80% {
+    transform: rotate3d(1, 1, 0, 180deg);
   }
 }
 
@@ -147,20 +123,14 @@
 }
 
 @keyframes animation-line4 {
-  0% {
-    transform: rotate3d(1, -1, 0, 0deg);
-  }
-
-  40% {
-    transform: rotate3d(1, -1, 0, 180deg);
-  }
-
-  80% {
-    transform: rotate3d(1, -1, 0, 180deg);
-  }
-
+  0%,
   100% {
     transform: rotate3d(1, -1, 0, 0deg);
+  }
+
+  40%,
+  80% {
+    transform: rotate3d(1, -1, 0, 180deg);
   }
 }
 
@@ -190,10 +160,7 @@
 }
 
 @keyframes animation-next-level {
-  0% {
-    opacity: 0;
-  }
-
+  0%,
   80% {
     opacity: 0;
   }
@@ -214,6 +181,26 @@
     opacity: 0;
   }
 
+  100% {
+    opacity: 1;
+  }
+}
+
+.animation-new-record {
+  animation: animation-new-record linear forwards;
+  animation-duration: calc(var(--animation-duration-symmetry) * 5);
+}
+
+@keyframes animation-new-record {
+  0%,
+  50%,
+  70%,
+  90% {
+    opacity: 0;
+  }
+
+  60%,
+  80%,
   100% {
     opacity: 1;
   }
