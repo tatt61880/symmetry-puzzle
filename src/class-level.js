@@ -482,13 +482,21 @@
         gg.classList.add('animation-symmetry-axis');
         switch (symmetryType) {
           case Level.SYMMETRY_TYPE.POINT: {
-            const line = app.svg.createCircle(blockSize, {
+            const circle = app.svg.createCircle(blockSize, {
               cx: center.x,
               cy: center.y,
-              r: 0.1,
+              r: 0.08,
               fill: app.colors.symmetryPoint,
             });
-            gg.appendChild(line);
+            gg.appendChild(circle);
+            const circle2 = app.svg.createCircle(blockSize, {
+              cx: center.x,
+              cy: center.y,
+              r: 0.15,
+              fill: 'none',
+              stroke: app.colors.symmetryPoint,
+            });
+            gg.appendChild(circle2);
             break;
           }
           case Level.SYMMETRY_TYPE.LINE1: {
