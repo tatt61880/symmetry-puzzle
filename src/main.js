@@ -739,6 +739,7 @@
   }
 
   function onloadTitle() {
+    completeFlag = false;
     window.getSelection().removeAllRanges();
 
     updateCheckMode(null);
