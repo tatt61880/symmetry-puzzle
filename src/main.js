@@ -546,6 +546,13 @@
     loadLevelById(app.common.levelId + 1);
   }
 
+  function gotoNextLevelButton() {
+    const style = window.getComputedStyle(elems.controller.nextLevel);
+    if (style.opacity !== 0) {
+      gotoNextLevel();
+    }
+  }
+
   function updateLinkUrl() {
     if (!editMode) return;
     const url = level.getUrlStr(level.isLineMode());
@@ -964,7 +971,7 @@
 
       elems.controller.undo.addEventListener(pointerdownEventName, undodown);
 
-      elems.controller.nextLevel.addEventListener('click', gotoNextLevel);
+      elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
 
       document.addEventListener(pointerupEventName, undoEnd);
 
