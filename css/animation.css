@@ -204,8 +204,8 @@
 }
 
 .animation-congratulations {
-  transform-origin: center;
-  animation: animation-congratulations;
+  transform-origin: 0 0;
+  animation: animation-congratulations ease forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
@@ -214,8 +214,8 @@
     scale: 0;
   }
 
-  50% {
-    scale: 1.05;
+  70% {
+    scale: 1.1;
   }
 
   100% {

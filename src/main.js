@@ -1196,9 +1196,13 @@
         const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
         const height = (level.getHeight() - 1) * blockSize + frameSize;
         text.setAttribute('font-size', fontSize2);
-        text.setAttribute('transform', `translate(${width},${height})`);
         text.classList.add('animation-congratulations');
-        g.appendChild(text);
+
+        const gText = app.svg.createG();
+        gText.setAttribute('transform', `translate(${width},${height})`);
+
+        gText.appendChild(text);
+        g.appendChild(gText);
         {
           const levelObj = level.getLevelObj();
           const replayStr = undoInfo.getReplayStr();
