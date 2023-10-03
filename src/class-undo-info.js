@@ -3,18 +3,14 @@
   const isBrowser = typeof window !== 'undefined';
 
   class UndoInfo {
-    #elemUndoButton;
     #undoIdx;
 
-    constructor(elemUndoButton) {
-      this.#elemUndoButton = elemUndoButton;
+    constructor() {
       this.undoArray = [];
       this.#undoIdx = 0;
-      hideElem(this.#elemUndoButton);
     }
 
     pushData(data) {
-      showElem(this.#elemUndoButton);
       this.undoArray[this.#undoIdx++] = data;
     }
 
@@ -23,11 +19,10 @@
     }
 
     undo() {
-      this.#undoIdx--;
-      if (this.#undoIdx === 0) {
-        hideElem(this.#elemUndoButton);
+      if (this.isUndoable()) {
+        this.#undoIdx--;
+        return this.undoArray[this.#undoIdx];
       }
-      return this.undoArray[this.#undoIdx];
     }
 
     getIndex() {
@@ -43,16 +38,6 @@
       }
       return replayStr;
     }
-  }
-
-  function showElem(elem) {
-    if (elem === undefined) return;
-    elem.classList.remove('hide');
-  }
-
-  function hideElem(elem) {
-    if (elem === undefined) return;
-    elem.classList.add('hide');
   }
 
   if (isBrowser) {

@@ -361,6 +361,7 @@
 
   function resetUndo() {
     undoInfo = new app.UndoInfo(elems.controller.undo);
+    app.common.hideElem(elems.controller.undo);
   }
 
   function initLevel(obj, initParam) {
@@ -399,6 +400,9 @@
 
     if (undoInfo.isUndoable()) {
       const data = undoInfo.undo();
+      if (!undoInfo.isUndoable()) {
+        app.common.hideElem(elems.controller.undo);
+      }
       const resizeFlag = level.getW() !== data.w || level.getH() !== data.h;
       applyObj(data, { resizeFlag });
     }
@@ -1549,6 +1553,7 @@
       h: level.getH(),
       s: level.getStateStr(),
     });
+    app.common.showElem(elems.controller.undo);
   }
 
   function replaceUrlTitle() {
