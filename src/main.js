@@ -360,7 +360,7 @@
   }
 
   function resetUndo() {
-    undoInfo = new app.UndoInfo(elems.controller.undo);
+    undoInfo = new app.UndoInfo();
     app.common.hideElem(elems.controller.undo);
   }
 
