@@ -171,16 +171,17 @@
 }
 
 .animation-congratulations {
-  animation: animation-congratulations ease forwards;
+  animation: animation-congratulations linear forwards;
   animation-duration: calc(var(--animation-duration-symmetry) * 2);
 }
 
 @keyframes animation-congratulations {
   0%,
-  30% {
+  20% {
     opacity: 0;
   }
 
+  50%,
   100% {
     opacity: 1;
   }
