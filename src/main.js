@@ -922,6 +922,9 @@
 
     // 記録画面用
     {
+      const size = 60;
+      const crown = app.common.createCrown(size, 0, 0, 1, 1);
+      elems.records.buttonSvg.appendChild(crown);
       elems.records.button.addEventListener('click', app.dialog.records.show);
       elems.records.dialog.addEventListener('click', app.dialog.records.close);
       elems.records.close.addEventListener('click', app.dialog.records.close);

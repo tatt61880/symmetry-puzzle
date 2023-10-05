@@ -30,6 +30,7 @@
 
     records: {
       button: 'button-records',
+      buttonSvg: 'button-records-svg',
       dialog: 'dialog-records',
       close: 'dialog-records-close',
       dialogDiv: 'dialog-records-div',
