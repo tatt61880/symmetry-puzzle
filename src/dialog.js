@@ -331,9 +331,21 @@
           text: id,
           fill: 'black',
         });
+        text.setAttribute('font-size', '16px');
         g.appendChild(text);
-        g.setAttribute('transform', 'translate(20,20)');
       }
+      if (highestScore !== null) {
+        const text = app.svg.createText(1, {
+          x: LEVEL_SELECT_WIDTH - 5,
+          y: 7,
+          text: highestScore,
+          fill: '#888888',
+        });
+        text.setAttribute('font-size', '8px');
+        text.setAttribute('text-anchor', 'end');
+        g.appendChild(text);
+      }
+
       {
         const blockSize = Math.min(
           (LEVEL_SELECT_WIDTH - 8) / level.getWidth(),

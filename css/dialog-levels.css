@@ -44,10 +44,6 @@
     .level-select {
       cursor: pointer;
     }
-
-    & text {
-      font-size: 16px;
-    }
   }
 
   &::backdrop {
