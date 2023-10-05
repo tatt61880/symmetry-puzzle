@@ -44,12 +44,12 @@
 
     &#button-records {
       color: #000055;
-      background-color: #c0cbff;
-      border-color: #7777aa;
+      background-color: #ddeeff;
+      border-color: #aabbff;
       border-radius: 20%;
 
       &:hover {
-        background-color: #d6ddff;
+        background-color: #e4f8ff;
       }
     }
   }
