@@ -37,8 +37,7 @@
     }
 
     &#button-play-line {
-      padding-bottom: 8px;
-      border-radius: 10% 10% 50% 50% / 10% 10% 33% 33%;
+      border-radius: 10% 10% 33% 33% / 10% 10% 50% 50%;
     }
 
     &#button-records {
