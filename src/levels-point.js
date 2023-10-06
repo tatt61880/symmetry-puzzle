@@ -860,14 +860,6 @@
       subject: 'マトリョーシカ',
     },
     {
-      w: 8,
-      h: 7,
-      s: 'sssss0s-s1t2s0s-s0sus0s-s0sss0s-s00000s-sssssss',
-      r: '20312220032320322110132221110000121300030',
-      step: 41,
-      subject: '蚊取り線香2',
-    },
-    {
       w: 10,
       h: 7,
       s: '000000000s-000000000s-000000000s-11ttuuu22s-v11ttuw22-vaaa33www-vva33bbbb',
