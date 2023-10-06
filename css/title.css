@@ -23,14 +23,13 @@
     height: 135px;
     margin: 10px;
     font-size: 1.3rem;
-    color: #550000;
     cursor: pointer;
     user-select: none;
-    background-color: #ffc0cb;
-    border: 6px solid #ed1c24;
+    background-color: #ffebee;
+    border: 6px solid #ff99aa;
 
     &:hover {
-      background-color: #ffd6dd;
+      background-color: #fff5f7;
     }
 
     &#button-play-point {
