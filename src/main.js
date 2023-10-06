@@ -165,33 +165,6 @@
     if (e.altKey) return;
     if (e.ctrlKey) return;
 
-    // どの画面でも有効
-    switch (e.key) {
-      case '?':
-        app.dialog.help.toggle();
-        return;
-      case '+':
-        onloadTitle();
-        return;
-    }
-
-    // タイトル画面で有効
-    if (!elems.category.title.classList.contains('hide')) {
-      if (!e.shiftKey) {
-        switch (e.key) {
-          case 'u':
-            updateCheckMode(app.Level.CHECK_MODE.LINE);
-            onloadId(1);
-            break;
-          case 'z':
-            updateCheckMode(app.Level.CHECK_MODE.POINT);
-            onloadId(1);
-            break;
-        }
-      }
-      return;
-    }
-
     // レベル一覧ダイアログで有効
     if (elems.levels.dialog.open) {
       switch (e.key) {
@@ -229,6 +202,34 @@
         case '#':
           app.dialog.levels.close();
           break;
+      }
+      return;
+    }
+
+    // どの画面でも有効
+    switch (e.key) {
+      case '?':
+        app.dialog.help.toggle();
+        return;
+      case '+':
+      case 'Home':
+        onloadTitle();
+        return;
+    }
+
+    // タイトル画面で有効
+    if (!elems.category.title.classList.contains('hide')) {
+      if (!e.shiftKey) {
+        switch (e.key) {
+          case 't':
+            updateCheckMode(app.Level.CHECK_MODE.LINE);
+            onloadId(1);
+            break;
+          case 'z':
+            updateCheckMode(app.Level.CHECK_MODE.POINT);
+            onloadId(1);
+            break;
+        }
       }
       return;
     }
