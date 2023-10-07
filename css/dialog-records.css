@@ -43,6 +43,10 @@
       background-color: #ddeeff;
     }
 
+    & thead th * {
+      vertical-align: middle;
+    }
+
     .total-col {
       border-left: double;
     }
