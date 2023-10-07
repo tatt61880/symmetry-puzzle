@@ -709,64 +709,81 @@
       return Level.SYMMETRY_TYPE.POINT;
     }
 
-    #getSymmetryTypeLine(isX) {
-      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
-
-      // 左右対称か否か。
-      let res = true;
+    // 左右対称か否か。(｜)
+    #isLine1(isX, minX, maxX, minY, maxY) {
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
           if (!isX(this.#states[y][x])) continue;
           if (!isX(this.#states[y][minX + maxX - x])) {
-            res = false;
+            return false;
           }
         }
       }
-      if (res) {
-        return Level.SYMMETRY_TYPE.LINE1;
-      }
+      return true;
+    }
 
-      // 上下対称か否か。
-      res = true;
+    // 上下対称か否か。(―)
+    #isLine2(isX, minX, maxX, minY, maxY) {
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
           if (!isX(this.#states[y][x])) continue;
           if (!isX(this.#states[minY + maxY - y][x])) {
-            res = false;
+            return false;
           }
         }
       }
-      if (res) {
+      return true;
+    }
+
+    // 斜めに対称軸があるか否か。(＼)
+    #isLine3(isX, minX, maxX, minY, maxY) {
+      for (let y = minY; y <= maxY; ++y) {
+        for (let x = minX; x <= maxX; ++x) {
+          if (!isX(this.#states[y][x])) continue;
+          if (!isX(this.#states[minY + x - minX][minX + y - minY])) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
+    // 斜めに対称軸があるか否か。(／)
+    #isLine4(isX, minX, maxX, minY, maxY) {
+      for (let y = minY; y <= maxY; ++y) {
+        for (let x = minX; x <= maxX; ++x) {
+          if (!isX(this.#states[y][x])) continue;
+          if (!isX(this.#states[minY + maxX - x][minX + maxY - y])) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
+    #getSymmetryTypeLine(isX) {
+      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
+
+      // 左右対称か否か。(｜)
+      const isLine1 = this.#isLine1(isX, minX, maxX, minY, maxY);
+      if (isLine1) {
+        return Level.SYMMETRY_TYPE.LINE1;
+      }
+
+      const isLine2 = this.#isLine2(isX, minX, maxX, minY, maxY);
+      if (isLine2) {
         return Level.SYMMETRY_TYPE.LINE2;
       }
 
       if (maxX - minX !== maxY - minY) return null; // 縦と横の長さが異なる場合、左右対称でも上下対称でもなければ線対称でないことが確定。
 
-      // 斜めに対称軸があるか否か。(＼)
-      res = true;
-      for (let y = minY; y <= maxY; ++y) {
-        for (let x = minX; x <= maxX; ++x) {
-          if (!isX(this.#states[y][x])) continue;
-          if (!isX(this.#states[minY + x - minX][minX + y - minY])) {
-            res = false;
-          }
-        }
-      }
-      if (res) {
+      const isLine3 = this.#isLine3(isX, minX, maxX, minY, maxY);
+      if (isLine3) {
         return Level.SYMMETRY_TYPE.LINE3;
       }
 
-      // 斜めに対称軸があるか否か。(／)
-      res = true;
-      for (let y = minY; y <= maxY; ++y) {
-        for (let x = minX; x <= maxX; ++x) {
-          if (!isX(this.#states[y][x])) continue;
-          if (!isX(this.#states[minY + maxX - x][minX + maxY - y])) {
-            res = false;
-          }
-        }
-      }
-      if (res) {
+      const isLine4 = this.#isLine4(isX, minX, maxX, minY, maxY);
+      if (isLine4) {
         return Level.SYMMETRY_TYPE.LINE4;
       }
 
