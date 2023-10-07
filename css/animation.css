@@ -137,7 +137,7 @@
 .animation-plus1 {
   transform-origin: var(--animation-origin);
   animation: animation-plus1 ease forwards;
-  animation-duration: calc(var(--animation-duration-symmetry) * 2);
+  animation-duration: calc(var(--animation-duration-symmetry) * 3);
 }
 
 @keyframes animation-plus1 {
@@ -162,7 +162,7 @@
 .animation-plus2 {
   transform-origin: var(--animation-origin);
   animation: animation-plus2 ease forwards;
-  animation-duration: calc(var(--animation-duration-symmetry) * 2);
+  animation-duration: calc(var(--animation-duration-symmetry) * 3);
 }
 
 @keyframes animation-plus2 {
@@ -181,6 +181,34 @@
 
   75% {
     transform: rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 180deg);
+  }
+}
+
+.animation-plus3 {
+  transform-origin: var(--animation-origin);
+  animation: animation-plus3 ease forwards;
+  animation-duration: calc(var(--animation-duration-symmetry) * 3);
+}
+
+@keyframes animation-plus3 {
+  0%,
+  100% {
+    transform: scaleX(1) scaleY(1);
+  }
+
+  25% {
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 0deg)
+      rotate3d(1, 1, 0, 0deg);
+  }
+
+  50% {
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
+      rotate3d(1, 1, 0, 0deg);
+  }
+
+  75% {
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
+      rotate3d(1, 1, 0, 180deg);
   }
 }
 

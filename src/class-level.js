@@ -504,46 +504,39 @@
             gg.appendChild(circle2);
             break;
           }
-          // ―
-          case Level.SYMMETRY_TYPE.LINE1: {
-            gg.appendChild(createLine1(center, height));
-            break;
-          }
           // ｜
-          case Level.SYMMETRY_TYPE.LINE2: {
+          case Level.SYMMETRY_TYPE.LINE1:
+            gg.appendChild(createLine1(center, height));
+            break;
+          // ―
+          case Level.SYMMETRY_TYPE.LINE2:
             gg.appendChild(createLine2(center, width));
             break;
-          }
           // ＼
-          case Level.SYMMETRY_TYPE.LINE3: {
+          case Level.SYMMETRY_TYPE.LINE3:
             gg.appendChild(createLine3(center, height));
             break;
-          }
           // ／
-          case Level.SYMMETRY_TYPE.LINE4: {
+          case Level.SYMMETRY_TYPE.LINE4:
             gg.appendChild(createLine4(center, height));
             break;
-          }
           // ―｜
-          case Level.SYMMETRY_TYPE.PLUS1: {
+          case Level.SYMMETRY_TYPE.PLUS1:
             gg.appendChild(createLine1(center, height));
             gg.appendChild(createLine2(center, width));
             break;
-          }
           // ＼／
-          case Level.SYMMETRY_TYPE.PLUS2: {
+          case Level.SYMMETRY_TYPE.PLUS2:
             gg.appendChild(createLine3(center, height));
             gg.appendChild(createLine4(center, height));
             break;
-          }
           // ―｜＼／
-          case Level.SYMMETRY_TYPE.PLUS3: {
+          case Level.SYMMETRY_TYPE.PLUS3:
             gg.appendChild(createLine1(center, height));
             gg.appendChild(createLine2(center, width));
             gg.appendChild(createLine3(center, height));
             gg.appendChild(createLine4(center, height));
             break;
-          }
         }
       }
 
@@ -803,7 +796,6 @@
     #getSymmetryTypeLine(isX) {
       const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
 
-      // 左右対称か否か。(｜)
       const isLine1 = this.#isLine1(isX, minX, maxX, minY, maxY);
       const isLine2 = this.#isLine2(isX, minX, maxX, minY, maxY);
       const isLine3 = this.#isLine3(isX, minX, maxX, minY, maxY);
@@ -1348,7 +1340,7 @@
     [Level.SYMMETRY_TYPE.LINE4]: 'animation-line4',
     [Level.SYMMETRY_TYPE.PLUS1]: 'animation-plus1',
     [Level.SYMMETRY_TYPE.PLUS2]: 'animation-plus2',
-    [Level.SYMMETRY_TYPE.PLUS3]: 'animation-plus1',
+    [Level.SYMMETRY_TYPE.PLUS3]: 'animation-plus3',
   };
 
   if (isBrowser) {
