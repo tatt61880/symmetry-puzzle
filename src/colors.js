@@ -53,8 +53,8 @@
   colors.frame = '#fff8dd';
   colors.frameBorder = '#ffdd33';
 
-  colors.congratulations = '#fff8dd';
-  colors.newRecords = '#fff8dd';
+  colors.congratulations = '#ffdd33';
+  colors.newRecords = '#ffdd33';
 
   colors.stepWin = '#ff5555';
   colors.stepDraw = '#ff8800';
