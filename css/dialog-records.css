@@ -36,15 +36,15 @@
       height: 40px;
       padding: 5px 15px;
       border: 1px solid black;
+
+      & * {
+        vertical-align: middle;
+      }
     }
 
     & th {
       color: #000033;
       background-color: #ddeeff;
-    }
-
-    & thead th * {
-      vertical-align: middle;
     }
 
     .total-col {
