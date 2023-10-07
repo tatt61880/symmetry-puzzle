@@ -506,43 +506,43 @@
           }
           // ｜
           case Level.SYMMETRY_TYPE.LINE1:
-            gg.appendChild(createLine1(center, height));
+            gg.appendChild(createAxisLine1(center, height));
             break;
           // ―
           case Level.SYMMETRY_TYPE.LINE2:
-            gg.appendChild(createLine2(center, width));
+            gg.appendChild(createAxisLine2(center, width));
             break;
           // ＼
           case Level.SYMMETRY_TYPE.LINE3:
-            gg.appendChild(createLine3(center, height));
+            gg.appendChild(createAxisLine3(center, height));
             break;
           // ／
           case Level.SYMMETRY_TYPE.LINE4:
-            gg.appendChild(createLine4(center, height));
+            gg.appendChild(createAxisLine4(center, height));
             break;
           // ―｜
           case Level.SYMMETRY_TYPE.PLUS1:
-            gg.appendChild(createLine1(center, height));
-            gg.appendChild(createLine2(center, width));
+            gg.appendChild(createAxisLine1(center, height));
+            gg.appendChild(createAxisLine2(center, width));
             break;
           // ＼／
           case Level.SYMMETRY_TYPE.PLUS2:
-            gg.appendChild(createLine3(center, height));
-            gg.appendChild(createLine4(center, height));
+            gg.appendChild(createAxisLine3(center, height));
+            gg.appendChild(createAxisLine4(center, height));
             break;
           // ―｜＼／
           case Level.SYMMETRY_TYPE.PLUS3:
-            gg.appendChild(createLine1(center, height));
-            gg.appendChild(createLine2(center, width));
-            gg.appendChild(createLine3(center, height));
-            gg.appendChild(createLine4(center, height));
+            gg.appendChild(createAxisLine1(center, height));
+            gg.appendChild(createAxisLine2(center, width));
+            gg.appendChild(createAxisLine3(center, height));
+            gg.appendChild(createAxisLine4(center, height));
             break;
         }
       }
 
       return g;
 
-      function createLine1(center, height) {
+      function createAxisLine1(center, height) {
         return app.svg.createLine(blockSize, {
           x1: center.x,
           y1: 0,
@@ -553,7 +553,7 @@
         });
       }
 
-      function createLine2(center, width) {
+      function createAxisLine2(center, width) {
         return app.svg.createLine(blockSize, {
           x1: 0,
           y1: center.y,
@@ -564,7 +564,7 @@
         });
       }
 
-      function createLine3(center, height) {
+      function createAxisLine3(center, height) {
         return app.svg.createLine(blockSize, {
           x1: center.x - center.y - 1,
           y1: 0 - 1,
@@ -575,7 +575,7 @@
         });
       }
 
-      function createLine4(center, height) {
+      function createAxisLine4(center, height) {
         return app.svg.createLine(blockSize, {
           x1: center.x + center.y + 1,
           y1: 0 - 1,
