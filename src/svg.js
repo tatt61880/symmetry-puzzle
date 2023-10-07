@@ -16,7 +16,7 @@
     return g;
   };
 
-  svg.createLine = (blockSize, { x1, y1, x2, y2, stroke }) => {
+  svg.createLine = (blockSize, { x1, y1, x2, y2, stroke, strokeWidth }) => {
     const line = document.createElementNS(SVG_NS, 'line');
     line.setAttribute('x1', blockSize * x1);
     line.setAttribute('y1', blockSize * y1);
@@ -24,6 +24,7 @@
     line.setAttribute('y2', blockSize * y2);
     line.setAttribute('stroke-width', `${blockSize / 50}`);
     if (stroke) line.setAttribute('stroke', stroke);
+    if (strokeWidth) line.setAttribute('stroke-width', strokeWidth);
     return line;
   };
 

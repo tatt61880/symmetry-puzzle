@@ -499,6 +499,7 @@
             gg.appendChild(circle2);
             break;
           }
+          // ―
           case Level.SYMMETRY_TYPE.LINE1: {
             const line = app.svg.createLine(blockSize, {
               x1: center.x,
@@ -506,10 +507,12 @@
               x2: center.x,
               y2: this.getHeight(),
               stroke: app.colors.symmetryLine,
+              strokeWidth: 3,
             });
             gg.appendChild(line);
             break;
           }
+          // ｜
           case Level.SYMMETRY_TYPE.LINE2: {
             const line = app.svg.createLine(blockSize, {
               x1: 0,
@@ -517,28 +520,33 @@
               x2: this.getWidth(),
               y2: center.y,
               stroke: app.colors.symmetryLine,
+              strokeWidth: 3,
             });
             gg.appendChild(line);
             break;
           }
+          // ＼
           case Level.SYMMETRY_TYPE.LINE3: {
             const line = app.svg.createLine(blockSize, {
-              x1: center.x - center.y,
-              y1: 0,
-              x2: center.x + this.getHeight() - center.y,
-              y2: this.getHeight(),
+              x1: center.x - center.y - 1,
+              y1: 0 - 1,
+              x2: center.x + this.getHeight() - center.y + 1,
+              y2: this.getHeight() + 1,
               stroke: app.colors.symmetryLine,
+              strokeWidth: 3,
             });
             gg.appendChild(line);
             break;
           }
+          // ／
           case Level.SYMMETRY_TYPE.LINE4: {
             const line = app.svg.createLine(blockSize, {
-              x1: center.x + center.y,
-              y1: 0,
-              x2: center.x - this.getHeight() + center.y,
-              y2: this.getHeight(),
+              x1: center.x + center.y + 1,
+              y1: 0 - 1,
+              x2: center.x - this.getHeight() + center.y - 1,
+              y2: this.getHeight() + 1,
               stroke: app.colors.symmetryLine,
+              strokeWidth: 3,
             });
             gg.appendChild(line);
             break;
