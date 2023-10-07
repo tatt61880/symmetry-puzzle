@@ -748,7 +748,7 @@
 
       if (maxX - minX !== maxY - minY) return null; // 縦と横の長さが異なる場合、左右対称でも上下対称でもなければ線対称でないことが確定。
 
-      // 斜めに対称軸があるか否か。(1)
+      // 斜めに対称軸があるか否か。(＼)
       res = true;
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
@@ -764,7 +764,7 @@
         return Level.SYMMETRY_TYPE.LINE3;
       }
 
-      // 斜めに対称軸があるか否か。(2)
+      // 斜めに対称軸があるか否か。(／)
       res = true;
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
