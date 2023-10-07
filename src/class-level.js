@@ -700,10 +700,8 @@
       const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
-          if (
-            isX(this.#states[y][x]) &&
-            !isX(this.#states[minY + maxY - y][minX + maxX - x])
-          ) {
+          if (!isX(this.#states[y][x])) continue;
+          if (!isX(this.#states[minY + maxY - y][minX + maxX - x])) {
             return null;
           }
         }
@@ -718,10 +716,8 @@
       let res = true;
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
-          if (
-            isX(this.#states[y][x]) &&
-            !isX(this.#states[y][minX + maxX - x])
-          ) {
+          if (!isX(this.#states[y][x])) continue;
+          if (!isX(this.#states[y][minX + maxX - x])) {
             res = false;
           }
         }
@@ -734,10 +730,8 @@
       res = true;
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
-          if (
-            isX(this.#states[y][x]) &&
-            !isX(this.#states[minY + maxY - y][x])
-          ) {
+          if (!isX(this.#states[y][x])) continue;
+          if (!isX(this.#states[minY + maxY - y][x])) {
             res = false;
           }
         }
@@ -752,10 +746,8 @@
       res = true;
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
-          if (
-            isX(this.#states[y][x]) &&
-            !isX(this.#states[minY + x - minX][minX + y - minY])
-          ) {
+          if (!isX(this.#states[y][x])) continue;
+          if (!isX(this.#states[minY + x - minX][minX + y - minY])) {
             res = false;
           }
         }
@@ -768,10 +760,8 @@
       res = true;
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
-          if (
-            isX(this.#states[y][x]) &&
-            !isX(this.#states[minY + maxX - x][minX + maxY - y])
-          ) {
+          if (!isX(this.#states[y][x])) continue;
+          if (!isX(this.#states[minY + maxX - x][minX + maxY - y])) {
             res = false;
           }
         }
