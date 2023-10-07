@@ -939,7 +939,7 @@
 
     // 記録画面用
     {
-      const size = 60;
+      const size = 50;
       const crown = app.common.createCrown(size, 0, 0, 1, 1);
       elems.records.buttonSvg.appendChild(crown);
       elems.records.button.addEventListener('click', app.dialog.records.show);
