@@ -12,51 +12,51 @@
   <meta property="og:description" content="図形を点対称や線対称にするパズルです。">
   <meta name="google" content="notranslate">
 
-  <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.09.27">
-  <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.09.27">
+  <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.10.05">
+  <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.10.05">
 
-  <link rel="stylesheet" href="./css/main.css?2023.10.05">
-  <link rel="stylesheet" href="./css/title.css?2023.10.05">
-  <link rel="stylesheet" href="./css/game.css?2023.10.05">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.10.05">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.10.05">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.10.05">
-  <link rel="stylesheet" href="./css/animation.css?2023.10.05">
+  <link rel="stylesheet" href="./css/main.css?2023.10.06">
+  <link rel="stylesheet" href="./css/title.css?2023.10.06">
+  <link rel="stylesheet" href="./css/game.css?2023.10.06">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.10.06">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.10.06">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.10.06">
+  <link rel="stylesheet" href="./css/animation.css?2023.10.06">
 
-  <script src="./src/states.js?2023.10.05"></script>
-  <script src="./src/colors.js?2023.10.05"></script>
-  <script src="./src/svg.js?2023.10.05"></script>
-  <script src="./src/class-stack.js?2023.10.05"></script>
-  <script src="./src/class-level.js?2023.10.05"></script>
+  <script src="./src/states.js?2023.10.06"></script>
+  <script src="./src/colors.js?2023.10.06"></script>
+  <script src="./src/svg.js?2023.10.06"></script>
+  <script src="./src/class-stack.js?2023.10.06"></script>
+  <script src="./src/class-level.js?2023.10.06"></script>
 
-  <script src="./src/class-savedata.js?2023.10.05"></script>
-  <script src="./src/class-undo-info.js?2023.10.05"></script>
-  <script src="./src/class-elems.js?2023.10.05"></script>
-  <script src="./src/class-stick.js?2023.10.05"></script>
+  <script src="./src/class-savedata.js?2023.10.06"></script>
+  <script src="./src/class-undo-info.js?2023.10.06"></script>
+  <script src="./src/class-elems.js?2023.10.06"></script>
+  <script src="./src/class-stick.js?2023.10.06"></script>
 
-  <script src="./src/levels-line.js?2023.10.05"></script>
-  <script src="./src/levels-line-ex.js?2023.10.05"></script>
-  <script src="./src/levels-point.js?2023.10.05"></script>
-  <script src="./src/levels-point-ex.js?2023.10.05"></script>
+  <script src="./src/levels-line.js?2023.10.06"></script>
+  <script src="./src/levels-line-ex.js?2023.10.06"></script>
+  <script src="./src/levels-point.js?2023.10.06"></script>
+  <script src="./src/levels-point-ex.js?2023.10.06"></script>
 
-  <script src="./src/elems.js?2023.10.05"></script>
+  <script src="./src/elems.js?2023.10.06"></script>
 
-  <script src="./src/solve.js?2023.10.05"></script>
+  <script src="./src/solve.js?2023.10.06"></script>
 
-  <script src="./src/common.js?2023.10.05"></script>
-  <script src="./src/dialog.js?2023.10.05"></script>
+  <script src="./src/common.js?2023.10.06"></script>
+  <script src="./src/dialog.js?2023.10.06"></script>
 
-  <script src="./src/analyze-url.js?2023.10.05"></script>
-  <script src="./src/main.js?2023.10.05"></script>
+  <script src="./src/analyze-url.js?2023.10.06"></script>
+  <script src="./src/main.js?2023.10.06"></script>
 </head>
 
 <body>
   <div id="contents">
     <header>
       <div id="top" class="flex">
-        <img id="icon" alt="icon" src="./images/icon.png?2023.09.27" class="check-mode none">
-        <img id="icon-point" alt="icon" src="./images/icon-point.png?2023.09.27" class="check-mode point hide-mode">
-        <img id="icon-line" alt="icon" src="./images/icon-line.png?2023.09.27" class="check-mode line hide-mode">
+        <img id="icon" alt="icon" src="./images/icon.png?2023.10.05" class="check-mode none">
+        <img id="icon-point" alt="icon" src="./images/icon-point.png?2023.10.05" class="check-mode point hide-mode">
+        <img id="icon-line" alt="icon" src="./images/icon-line.png?2023.10.05" class="check-mode line hide-mode">
 
         <span class="title translatable-toggle check-mode none" data-en="Symmetry Puzzle" data-ja="対称パズル"></span>
         <span class="title translatable-toggle check-mode line hide-mode" data-en="Line Symmetry Puzzle"
@@ -95,7 +95,7 @@
             <!-- 対称パズル -->
             <input type="radio" name="help-tab" id="help-tab-symmetry" checked>
             <label class="tab" for="help-tab-symmetry">
-              <img class="logo-image" src="./images/symmetry.png?2023.09.27" alt="Application title logo image">
+              <img class="logo-image" src="./images/symmetry.png?2023.10.05" alt="Application title logo image">
             </label>
             <div class="tab-content">
               <h1 class="translatable-toggle" data-en="Symmetry Puzzle" data-ja="対称パズル"></h1>
@@ -115,7 +115,7 @@
             <!-- 線対称パズル -->
             <input type="radio" name="help-tab" id="help-tab-line">
             <label class="tab" for="help-tab-line">
-              <img class="logo-image" src="./images/line.png?2023.09.27" alt="Application title logo image">
+              <img class="logo-image" src="./images/line.png?2023.10.05" alt="Application title logo image">
             </label>
             <div class="tab-content">
               <h1 class="translatable-toggle" data-en="Line Symmetry Puzzle" data-ja="線対称パズル"></h1>
@@ -125,7 +125,7 @@
                   <span class="red-block">Red</span> a <span class="bold">connected line symmetrical one</span>.
                 </p>
                 <div class="border">
-                  <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.09.27"><br>
+                  <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.10.05"><br>
                   Examples of <span class="bold">connected line symmetrical shape</span>.
                 </div>
               </div>
@@ -136,7 +136,7 @@
                   <span class="red-block">赤色の図形</span>を<span class="bold">1つながりの線対称図形</span>にしてください。
                 </p>
                 <p class="border">
-                  <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.09.27"><br>
+                  <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.10.05"><br>
                   <span class="bold">1つながりの線対称図形</span>の3つの例
                 </p>
               </div>
@@ -145,7 +145,7 @@
             <!-- 点対称パズル -->
             <input type="radio" name="help-tab" id="help-tab-point">
             <label class="tab" for="help-tab-point">
-              <img class="logo-image" src="./images/point.png?2023.09.27" alt="Application title logo image">
+              <img class="logo-image" src="./images/point.png?2023.10.05" alt="Application title logo image">
             </label>
             <div class="tab-content">
               <h1 class="translatable-toggle" data-en="Point Symmetry Puzzle" data-ja="点対称パズル"></h1>
@@ -156,7 +156,7 @@
                 </p>
                 <div class="border">
                   <img class="example-image" alt="example point symmetry"
-                    src="./images/example-point.png?2023.09.27"><br>
+                    src="./images/example-point.png?2023.10.05"><br>
                   Examples of <span class="bold">connected point symmetrical shape</span>.
                 </div>
               </div>
@@ -168,7 +168,7 @@
                 </p>
                 <div class="border">
                   <img class="example-image" alt="example point symmetry"
-                    src="./images/example-point.png?2023.09.27"><br>
+                    src="./images/example-point.png?2023.10.05"><br>
                   <span class="bold">1つながりの点対称図形</span>の3つの例
                 </div>
               </div>
@@ -198,7 +198,7 @@
 
         <hr>
         <div class="flex">
-          <img class="tatt61880-icon" alt="icon: tatt61880" src="./images/tatt61880.png?2023.09.27">
+          <img class="tatt61880-icon" alt="icon: tatt61880" src="./images/tatt61880.png?2023.10.05">
           <span class="translatable-toggle" data-en="Created by Tatt" data-ja="作者: Tatt">
           </span>
           <span>&nbsp;(<a href="https://twitter.com/tatt61880">@tatt61880</a>)</span>
@@ -212,12 +212,12 @@
         <tr>
           <td>
             <div id="button-play-line" class="title-button">
-              <img src="./images/line.png?2023.09.27" width="80" height="80">
+              <img src="./images/line.png?2023.10.05" width="80" height="80">
             </div>
           </td>
           <td>
             <div id="button-play-point" class="title-button">
-              <img src="./images/point.png?2023.09.27" width="80" height="80">
+              <img src="./images/point.png?2023.10.05" width="80" height="80">
             </div>
           </td>
         </tr>
@@ -252,7 +252,6 @@
 
     <div id="game" class="hide">
       <div id="level-widget" class="inner noselect">
-        <h2 class="translatable-toggle" data-en="LEVEL" data-ja="レベル"></h2>
         <div>
           <svg width="450" height="85">
             <!-- Reset -->
@@ -272,8 +271,10 @@
               <text x="40" y="69" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14px"
                 fill="#7799bb">Shift ←</text>
             </g>
-            <g transform="translate(225,40)">
-              <text id="level-id" x="0" y="0" fill="#335577" dominant-baseline="middle" text-anchor="middle"
+            <g transform="translate(225,0)">
+              <text id="level-text" x="0" y="14" fill="#335577" dominant-baseline="middle" text-anchor="middle"
+                font-size="14" class="translatable-toggle" data-en="LEVEL" data-ja="レベル" />
+              <text id="level-id" x="0" y="45" fill="#335577" dominant-baseline="middle" text-anchor="middle"
                 font-size="40" />
             </g>
             <g id="button-level-next" class="button active-hover" transform="translate(275,7)">
@@ -466,8 +467,8 @@
           <g id="edit_h" class="button active-hover" transform="translate(430,120)"></g>
 
           <g transform="translate(10,169)">
-            <image href="./images/icon-point.png?2023.09.27" class="check-mode point hide-mode" />
-            <image href="./images/icon-line.png?2023.09.27" class="check-mode line hide-mode" />
+            <image href="./images/icon-point.png?2023.10.05" class="check-mode point hide-mode" />
+            <image href="./images/icon-line.png?2023.10.05" class="check-mode line hide-mode" />
           </g>
 
           <g transform="translate(115,185)" class="button active-hover">

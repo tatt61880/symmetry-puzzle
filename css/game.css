@@ -6,20 +6,8 @@
 
   #level-widget {
     box-sizing: border-box;
-    height: 108px;
+    height: 84px;
     background-color: #cceeff;
-
-    & h2 {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 24px;
-      margin: 0;
-      font-size: 1.1rem;
-      color: #335577;
-      background-color: #87ceeb;
-    }
   }
 
   #main {
