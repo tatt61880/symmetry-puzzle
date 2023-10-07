@@ -165,9 +165,17 @@
     if (e.altKey) return;
     if (e.ctrlKey) return;
 
+    // 記録ダイアログで有効
+    if (elems.records.dialog.open) {
+      return;
+    }
+
     // ヘルプダイアログで有効
     if (elems.help.dialog.open) {
       switch (e.key) {
+        case '?':
+          app.dialog.help.close();
+          break;
         case '+':
           elems.help.tabSymmetry.checked = true;
           break;
@@ -225,7 +233,7 @@
     // どの画面でも有効
     switch (e.key) {
       case '?':
-        app.dialog.help.toggle();
+        app.dialog.help.show();
         return;
       case '+':
       case 'Home':
