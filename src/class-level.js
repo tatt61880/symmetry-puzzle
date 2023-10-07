@@ -57,6 +57,9 @@
       LINE2: Symbol('line2'),
       LINE3: Symbol('line3'),
       LINE4: Symbol('line4'),
+      PLUS1: Symbol('plus1'),
+      PLUS2: Symbol('plus2'),
+      PLUS3: Symbol('plus3'),
     };
 
     #checkMode;
@@ -477,6 +480,8 @@
 
       if (symmetryType !== null) {
         const center = this.getCenter(app.states.isTarget);
+        const width = this.getWidth();
+        const height = this.getHeight();
         const gg = app.svg.createG();
         g.appendChild(gg);
         gg.classList.add('animation-symmetry-axis');
@@ -501,60 +506,92 @@
           }
           // ―
           case Level.SYMMETRY_TYPE.LINE1: {
-            const line = app.svg.createLine(blockSize, {
-              x1: center.x,
-              y1: 0,
-              x2: center.x,
-              y2: this.getHeight(),
-              stroke: app.colors.symmetryLine,
-              strokeWidth: 3,
-            });
-            gg.appendChild(line);
+            gg.appendChild(createLine1(center, height));
             break;
           }
           // ｜
           case Level.SYMMETRY_TYPE.LINE2: {
-            const line = app.svg.createLine(blockSize, {
-              x1: 0,
-              y1: center.y,
-              x2: this.getWidth(),
-              y2: center.y,
-              stroke: app.colors.symmetryLine,
-              strokeWidth: 3,
-            });
-            gg.appendChild(line);
+            gg.appendChild(createLine2(center, width));
             break;
           }
           // ＼
           case Level.SYMMETRY_TYPE.LINE3: {
-            const line = app.svg.createLine(blockSize, {
-              x1: center.x - center.y - 1,
-              y1: 0 - 1,
-              x2: center.x + this.getHeight() - center.y + 1,
-              y2: this.getHeight() + 1,
-              stroke: app.colors.symmetryLine,
-              strokeWidth: 3,
-            });
-            gg.appendChild(line);
+            gg.appendChild(createLine3(center, height));
             break;
           }
           // ／
           case Level.SYMMETRY_TYPE.LINE4: {
-            const line = app.svg.createLine(blockSize, {
-              x1: center.x + center.y + 1,
-              y1: 0 - 1,
-              x2: center.x - this.getHeight() + center.y - 1,
-              y2: this.getHeight() + 1,
-              stroke: app.colors.symmetryLine,
-              strokeWidth: 3,
-            });
-            gg.appendChild(line);
+            gg.appendChild(createLine4(center, height));
+            break;
+          }
+          // ―｜
+          case Level.SYMMETRY_TYPE.PLUS1: {
+            gg.appendChild(createLine1(center, height));
+            gg.appendChild(createLine2(center, width));
+            break;
+          }
+          // ＼／
+          case Level.SYMMETRY_TYPE.PLUS2: {
+            gg.appendChild(createLine3(center, height));
+            gg.appendChild(createLine4(center, height));
+            break;
+          }
+          // ―｜＼／
+          case Level.SYMMETRY_TYPE.PLUS3: {
+            gg.appendChild(createLine1(center, height));
+            gg.appendChild(createLine2(center, width));
+            gg.appendChild(createLine3(center, height));
+            gg.appendChild(createLine4(center, height));
             break;
           }
         }
       }
 
       return g;
+
+      function createLine1(center, height) {
+        return app.svg.createLine(blockSize, {
+          x1: center.x,
+          y1: 0,
+          x2: center.x,
+          y2: height,
+          stroke: app.colors.symmetryLine,
+          strokeWidth: 3,
+        });
+      }
+
+      function createLine2(center, width) {
+        return app.svg.createLine(blockSize, {
+          x1: 0,
+          y1: center.y,
+          x2: width,
+          y2: center.y,
+          stroke: app.colors.symmetryLine,
+          strokeWidth: 3,
+        });
+      }
+
+      function createLine3(center, height) {
+        return app.svg.createLine(blockSize, {
+          x1: center.x - center.y - 1,
+          y1: 0 - 1,
+          x2: center.x + height - center.y + 1,
+          y2: height + 1,
+          stroke: app.colors.symmetryLine,
+          strokeWidth: 3,
+        });
+      }
+
+      function createLine4(center, height) {
+        return app.svg.createLine(blockSize, {
+          x1: center.x + center.y + 1,
+          y1: 0 - 1,
+          x2: center.x - height + center.y - 1,
+          y2: height + 1,
+          stroke: app.colors.symmetryLine,
+          strokeWidth: 3,
+        });
+      }
     }
 
     #removeR() {
@@ -737,6 +774,7 @@
 
     // 斜めに対称軸があるか否か。(＼)
     #isLine3(isX, minX, maxX, minY, maxY) {
+      if (maxX - minX !== maxY - minY) return false;
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
           if (!isX(this.#states[y][x])) continue;
@@ -750,6 +788,7 @@
 
     // 斜めに対称軸があるか否か。(／)
     #isLine4(isX, minX, maxX, minY, maxY) {
+      if (maxX - minX !== maxY - minY) return false;
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
           if (!isX(this.#states[y][x])) continue;
@@ -766,23 +805,28 @@
 
       // 左右対称か否か。(｜)
       const isLine1 = this.#isLine1(isX, minX, maxX, minY, maxY);
+      const isLine2 = this.#isLine2(isX, minX, maxX, minY, maxY);
+      const isLine3 = this.#isLine3(isX, minX, maxX, minY, maxY);
+      const isLine4 = this.#isLine4(isX, minX, maxX, minY, maxY);
+
       if (isLine1) {
+        if (isLine2) {
+          if (isLine3) {
+            return Level.SYMMETRY_TYPE.PLUS3;
+          }
+          return Level.SYMMETRY_TYPE.PLUS1;
+        }
         return Level.SYMMETRY_TYPE.LINE1;
       }
-
-      const isLine2 = this.#isLine2(isX, minX, maxX, minY, maxY);
       if (isLine2) {
         return Level.SYMMETRY_TYPE.LINE2;
       }
-
-      if (maxX - minX !== maxY - minY) return null; // 縦と横の長さが異なる場合、左右対称でも上下対称でもなければ線対称でないことが確定。
-
-      const isLine3 = this.#isLine3(isX, minX, maxX, minY, maxY);
       if (isLine3) {
+        if (isLine4) {
+          return Level.SYMMETRY_TYPE.PLUS2;
+        }
         return Level.SYMMETRY_TYPE.LINE3;
       }
-
-      const isLine4 = this.#isLine4(isX, minX, maxX, minY, maxY);
       if (isLine4) {
         return Level.SYMMETRY_TYPE.LINE4;
       }
@@ -1302,6 +1346,9 @@
     [Level.SYMMETRY_TYPE.LINE2]: 'animation-line2',
     [Level.SYMMETRY_TYPE.LINE3]: 'animation-line3',
     [Level.SYMMETRY_TYPE.LINE4]: 'animation-line4',
+    [Level.SYMMETRY_TYPE.PLUS1]: 'animation-plus1',
+    [Level.SYMMETRY_TYPE.PLUS2]: 'animation-plus2',
+    [Level.SYMMETRY_TYPE.PLUS3]: 'animation-plus1',
   };
 
   if (isBrowser) {

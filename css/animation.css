@@ -134,6 +134,56 @@
   }
 }
 
+.animation-plus1 {
+  transform-origin: var(--animation-origin);
+  animation: animation-plus1 ease forwards;
+  animation-duration: calc(var(--animation-duration-symmetry) * 2);
+}
+
+@keyframes animation-plus1 {
+  0%,
+  100% {
+    transform: scaleX(1) scaleY(1);
+  }
+
+  25% {
+    transform: scaleX(-1) scaleY(1);
+  }
+
+  50% {
+    transform: scaleX(-1) scaleY(-1);
+  }
+
+  75% {
+    transform: scaleX(1) scaleY(-1);
+  }
+}
+
+.animation-plus2 {
+  transform-origin: var(--animation-origin);
+  animation: animation-plus2 ease forwards;
+  animation-duration: calc(var(--animation-duration-symmetry) * 2);
+}
+
+@keyframes animation-plus2 {
+  0%,
+  100% {
+    transform: rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
+  }
+
+  25% {
+    transform: rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 0deg);
+  }
+
+  50% {
+    transform: rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 180deg);
+  }
+
+  75% {
+    transform: rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 180deg);
+  }
+}
+
 .animation-symmetry-axis {
   animation: animation-symmetry-axis ease forwards;
   animation-duration: calc(var(--animation-duration-symmetry) * 3);
