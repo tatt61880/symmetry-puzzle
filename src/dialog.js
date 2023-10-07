@@ -519,6 +519,7 @@
       const tr = document.createElement('tr');
       tbody.appendChild(tr);
 
+      // 最短記録達成
       {
         const th = document.createElement('th');
         const svg = app.svg.createSvg();
@@ -546,6 +547,8 @@
         td.classList.add('total-col');
       }
     }
+
+    // クリア済み
     {
       const tr = document.createElement('tr');
       tbody.appendChild(tr);
@@ -576,6 +579,8 @@
         td.classList.add('total-col');
       }
     }
+
+    // 未クリア
     {
       const tr = document.createElement('tr');
       tbody.appendChild(tr);
@@ -606,6 +611,8 @@
         td.classList.add('total-col');
       }
     }
+
+    // 合計
     {
       const tr = document.createElement('tr');
       tbody.appendChild(tr);
