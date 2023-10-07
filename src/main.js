@@ -165,6 +165,22 @@
     if (e.altKey) return;
     if (e.ctrlKey) return;
 
+    // ヘルプダイアログで有効
+    if (elems.help.dialog.open) {
+      switch (e.key) {
+        case '+':
+          elems.help.tabSymmetry.checked = true;
+          break;
+        case 't':
+          elems.help.tabLine.checked = true;
+          break;
+        case 'z':
+          elems.help.tabPoint.checked = true;
+          break;
+      }
+      return;
+    }
+
     // レベル一覧ダイアログで有効
     if (elems.levels.dialog.open) {
       switch (e.key) {
