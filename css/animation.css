@@ -174,18 +174,22 @@
 
 @keyframes animation-plus1 {
   0%,
+  90%,
   100% {
     transform: scaleX(1) scaleY(1);
   }
 
+  15%,
   25% {
     transform: scaleX(-1) scaleY(1);
   }
 
+  40%,
   50% {
     transform: scaleX(-1) scaleY(-1);
   }
 
+  65%,
   75% {
     transform: scaleX(1) scaleY(-1);
   }
@@ -199,18 +203,22 @@
 
 @keyframes animation-plus2 {
   0%,
+  90%,
   100% {
     transform: rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
+  15%,
   25% {
     transform: rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 0deg);
   }
 
+  40%,
   50% {
     transform: rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 180deg);
   }
 
+  65%,
   75% {
     transform: rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 180deg);
   }
@@ -224,20 +232,24 @@
 
 @keyframes animation-plus3 {
   0%,
+  90%,
   100% {
     transform: scaleX(1) scaleY(1);
   }
 
+  15%,
   25% {
     transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 0deg)
       rotate3d(1, 1, 0, 0deg);
   }
 
+  40%,
   50% {
     transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
       rotate3d(1, 1, 0, 0deg);
   }
 
+  65%,
   75% {
     transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
       rotate3d(1, 1, 0, 180deg);
