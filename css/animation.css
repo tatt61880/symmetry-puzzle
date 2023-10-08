@@ -302,7 +302,11 @@
 }
 
 @keyframes animation-congratulations {
-  0%,
+  0% {
+    opacity: 0;
+    transform: scaleX(1) scaleY(1);
+  }
+
   20% {
     opacity: 0;
     transform: scaleX(0.8) scaleY(0.8);
@@ -321,7 +325,11 @@
 }
 
 @keyframes animation-new-record {
-  0%,
+  0% {
+    opacity: 0;
+    transform: scaleX(1) scaleY(1);
+  }
+
   25%,
   55%,
   85% {
