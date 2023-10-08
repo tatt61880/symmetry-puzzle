@@ -1229,6 +1229,7 @@
         const height = (level.getHeight() - 1) * blockSize + frameSize;
         text.setAttribute('font-size', fontSize2);
         text.setAttribute('transform', `translate(${width},${height})`);
+        text.setAttribute('transform-origin', `${width}px ${height}px`);
         text.classList.add('animation-congratulations');
 
         g.appendChild(text);
@@ -1258,9 +1259,9 @@
             }'`;
 
             const levelObjStr = `{ ${levelParams} },`;
-            if (app.common.levelId === null) {
-              copyTextToClipboard(levelObjStr);
-            }
+            // if (app.common.levelId === null) {
+            //   copyTextToClipboard(levelObjStr);
+            // }
             consoleLog(levelObjStr);
 
             const completedStep = undoInfo.getIndex();
