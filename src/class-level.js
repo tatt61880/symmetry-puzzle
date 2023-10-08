@@ -488,8 +488,10 @@
         gg.classList.add('animation-symmetry-axis');
         switch (symmetryType) {
           case Level.SYMMETRY_TYPE.POINT1: // 2
-          case Level.SYMMETRY_TYPE.POINT2: // 4
             gg.appendChild(createAxisPoint1(center));
+            break;
+          case Level.SYMMETRY_TYPE.POINT2: // 4
+            gg.appendChild(createAxisPoint2(center));
             break;
           case Level.SYMMETRY_TYPE.LINE1: // m (｜)
             gg.appendChild(createAxisLine1(center, height));
@@ -523,23 +525,28 @@
       return g;
 
       function createAxisPoint1(center) {
-        const g = app.svg.createG();
-        const circle = app.svg.createCircle(blockSize, {
+        return app.svg.createEllipse(blockSize, {
           cx: center.x,
           cy: center.y,
-          r: 0.08,
+          rx: 0.12,
+          ry: 0.2,
           fill: app.colors.symmetryPoint,
         });
-        g.appendChild(circle);
-        const circle2 = app.svg.createCircle(blockSize, {
-          cx: center.x,
-          cy: center.y,
-          r: 0.15,
-          fill: 'none',
-          stroke: app.colors.symmetryPoint,
+      }
+
+      function createAxisPoint2(center) {
+        const x = center.x;
+        const y = center.y;
+        const size = 0.25;
+        return app.svg.createPolygon(blockSize, {
+          points: [
+            [x, y - size],
+            [x + size, y],
+            [x, y + size],
+            [x - size, y],
+          ],
+          fill: app.colors.symmetryPoint,
         });
-        g.appendChild(circle2);
-        return g;
       }
 
       function createAxisLine1(center, height) {

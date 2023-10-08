@@ -38,6 +38,17 @@
     return circle;
   };
 
+  svg.createEllipse = (blockSize, { cx, cy, rx, ry, fill, stroke }) => {
+    const circle = document.createElementNS(SVG_NS, 'ellipse');
+    circle.setAttribute('cx', blockSize * cx);
+    circle.setAttribute('cy', blockSize * cy);
+    circle.setAttribute('rx', blockSize * rx);
+    circle.setAttribute('ry', blockSize * ry);
+    if (fill) circle.setAttribute('fill', fill);
+    if (stroke) circle.setAttribute('stroke', stroke);
+    return circle;
+  };
+
   svg.createRect = (blockSize, { x, y, width, height, fill, stroke }) => {
     const rect = document.createElementNS(SVG_NS, 'rect');
     rect.setAttribute('x', blockSize * x);
