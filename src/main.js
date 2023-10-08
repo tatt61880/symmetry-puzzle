@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.10.06';
+  const VERSION_TEXT = 'v2023.10.07';
 
   const app = window.app;
   Object.freeze(app);
@@ -632,8 +632,8 @@
   }
 
   function animateIcons() {
-    animateIcon(elems.iconPoint.classList, 'animation-rotation-icon');
     animateIcon(elems.iconLine.classList, 'animation-line1-icon');
+    animateIcon(elems.iconPoint.classList, 'animation-point1-icon');
 
     function animateIcon(elem, className) {
       elem.remove(className);

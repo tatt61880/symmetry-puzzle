@@ -44,13 +44,13 @@
 }
 
 /* blocks completed animation */
-.animation-rotation {
+.animation-point1 {
   transform-origin: var(--animation-origin);
-  animation: animation-rotation ease forwards;
+  animation: animation-point1 linear forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
-@keyframes animation-rotation {
+@keyframes animation-point1 {
   0%,
   100% {
     transform: rotate(0deg);
@@ -62,9 +62,41 @@
   }
 }
 
+.animation-point2 {
+  transform-origin: var(--animation-origin);
+  animation: animation-point2 linear forwards;
+  animation-duration: calc(var(--animation-duration-symmetry) * 2.5);
+}
+
+@keyframes animation-point2 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  10%,
+  25% {
+    transform: rotate(90deg);
+  }
+
+  35%,
+  50% {
+    transform: rotate(180deg);
+  }
+
+  60%,
+  75% {
+    transform: rotate(270deg);
+  }
+
+  85%,
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .animation-line1 {
   transform-origin: var(--animation-origin);
-  animation: animation-line1 ease forwards;
+  animation: animation-line1 linear forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
@@ -82,7 +114,7 @@
 
 .animation-line2 {
   transform-origin: var(--animation-origin);
-  animation: animation-line2 ease forwards;
+  animation: animation-line2 linear forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
@@ -100,7 +132,7 @@
 
 .animation-line3 {
   transform-origin: var(--animation-origin);
-  animation: animation-line3 ease forwards;
+  animation: animation-line3 linear forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
@@ -118,7 +150,7 @@
 
 .animation-line4 {
   transform-origin: var(--animation-origin);
-  animation: animation-line4 ease forwards;
+  animation: animation-line4 linear forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
@@ -136,8 +168,8 @@
 
 .animation-plus1 {
   transform-origin: var(--animation-origin);
-  animation: animation-plus1 ease forwards;
-  animation-duration: calc(var(--animation-duration-symmetry) * 3);
+  animation: animation-plus1 linear forwards;
+  animation-duration: calc(var(--animation-duration-symmetry) * 2.5);
 }
 
 @keyframes animation-plus1 {
@@ -161,8 +193,8 @@
 
 .animation-plus2 {
   transform-origin: var(--animation-origin);
-  animation: animation-plus2 ease forwards;
-  animation-duration: calc(var(--animation-duration-symmetry) * 3);
+  animation: animation-plus2 linear forwards;
+  animation-duration: calc(var(--animation-duration-symmetry) * 2.5);
 }
 
 @keyframes animation-plus2 {
@@ -186,8 +218,8 @@
 
 .animation-plus3 {
   transform-origin: var(--animation-origin);
-  animation: animation-plus3 ease forwards;
-  animation-duration: calc(var(--animation-duration-symmetry) * 3);
+  animation: animation-plus3 linear forwards;
+  animation-duration: calc(var(--animation-duration-symmetry) * 2.5);
 }
 
 @keyframes animation-plus3 {
@@ -294,9 +326,9 @@
 }
 
 /* icon animation */
-.animation-rotation-icon {
+.animation-point1-icon {
   transform-origin: center;
-  animation: animation-rotation ease forwards;
+  animation: animation-point1 ease forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 

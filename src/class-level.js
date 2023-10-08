@@ -52,7 +52,8 @@
     };
 
     static SYMMETRY_TYPE = {
-      POINT: Symbol('point'), // 2
+      POINT1: Symbol('point1'), // 2
+      POINT2: Symbol('point2'), // 4
       LINE1: Symbol('line1'), // m (｜)
       LINE2: Symbol('line2'), // m (―)
       LINE3: Symbol('line3'), // m (＼)
@@ -486,7 +487,8 @@
         g.appendChild(gg);
         gg.classList.add('animation-symmetry-axis');
         switch (symmetryType) {
-          case Level.SYMMETRY_TYPE.POINT: // 2
+          case Level.SYMMETRY_TYPE.POINT1: // 2
+          case Level.SYMMETRY_TYPE.POINT2: // 4
             gg.appendChild(createAxisPoint1(center));
             break;
           case Level.SYMMETRY_TYPE.LINE1: // m (｜)
@@ -734,7 +736,22 @@
           }
         }
       }
-      return Level.SYMMETRY_TYPE.POINT;
+
+      if (maxX - minX !== maxY - minY) {
+        return Level.SYMMETRY_TYPE.POINT1;
+      }
+
+      for (let y = minY; y <= maxY; ++y) {
+        for (let x = minX; x <= maxX; ++x) {
+          if (!isX(this.#states[y][x])) continue;
+          const x0 = x - minX;
+          const y0 = y - minY;
+          if (!isX(this.#states[maxY - x0][minX + y0])) {
+            return Level.SYMMETRY_TYPE.POINT1;
+          }
+        }
+      }
+      return Level.SYMMETRY_TYPE.POINT2;
     }
 
     // 左右対称か否か。(｜)
@@ -1331,7 +1348,8 @@
   }
 
   const animationClass = {
-    [Level.SYMMETRY_TYPE.POINT]: 'animation-rotation',
+    [Level.SYMMETRY_TYPE.POINT1]: 'animation-point1',
+    [Level.SYMMETRY_TYPE.POINT2]: 'animation-point2',
     [Level.SYMMETRY_TYPE.LINE1]: 'animation-line1',
     [Level.SYMMETRY_TYPE.LINE2]: 'animation-line2',
     [Level.SYMMETRY_TYPE.LINE3]: 'animation-line3',
