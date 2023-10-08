@@ -528,8 +528,8 @@
         return app.svg.createEllipse(blockSize, {
           cx: center.x,
           cy: center.y,
-          rx: 0.12,
-          ry: 0.2,
+          rx: 0.15,
+          ry: 0.25,
           fill: app.colors.symmetryPoint,
         });
       }
