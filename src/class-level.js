@@ -52,14 +52,14 @@
     };
 
     static SYMMETRY_TYPE = {
-      POINT: Symbol('point'),
-      LINE1: Symbol('line1'),
-      LINE2: Symbol('line2'),
-      LINE3: Symbol('line3'),
-      LINE4: Symbol('line4'),
-      PLUS1: Symbol('plus1'),
-      PLUS2: Symbol('plus2'),
-      PLUS3: Symbol('plus3'),
+      POINT: Symbol('point'), // 2
+      LINE1: Symbol('line1'), // m (｜)
+      LINE2: Symbol('line2'), // m (―)
+      LINE3: Symbol('line3'), // m (＼)
+      LINE4: Symbol('line4'), // m (／)
+      PLUS1: Symbol('plus1'), // 2mm (｜―)
+      PLUS2: Symbol('plus2'), // 2mm (＼／)
+      PLUS3: Symbol('plus3'), // 4mm (｜―＼／)
     };
 
     #checkMode;
@@ -486,52 +486,30 @@
         g.appendChild(gg);
         gg.classList.add('animation-symmetry-axis');
         switch (symmetryType) {
-          case Level.SYMMETRY_TYPE.POINT: {
-            const circle = app.svg.createCircle(blockSize, {
-              cx: center.x,
-              cy: center.y,
-              r: 0.08,
-              fill: app.colors.symmetryPoint,
-            });
-            gg.appendChild(circle);
-            const circle2 = app.svg.createCircle(blockSize, {
-              cx: center.x,
-              cy: center.y,
-              r: 0.15,
-              fill: 'none',
-              stroke: app.colors.symmetryPoint,
-            });
-            gg.appendChild(circle2);
+          case Level.SYMMETRY_TYPE.POINT: // 2
+            gg.appendChild(createAxisPoint1(center));
             break;
-          }
-          // ｜
-          case Level.SYMMETRY_TYPE.LINE1:
+          case Level.SYMMETRY_TYPE.LINE1: // m (｜)
             gg.appendChild(createAxisLine1(center, height));
             break;
-          // ―
-          case Level.SYMMETRY_TYPE.LINE2:
+          case Level.SYMMETRY_TYPE.LINE2: // m (―)
             gg.appendChild(createAxisLine2(center, width));
             break;
-          // ＼
-          case Level.SYMMETRY_TYPE.LINE3:
+          case Level.SYMMETRY_TYPE.LINE3: // m (＼)
             gg.appendChild(createAxisLine3(center, height));
             break;
-          // ／
-          case Level.SYMMETRY_TYPE.LINE4:
+          case Level.SYMMETRY_TYPE.LINE4: // m (／)
             gg.appendChild(createAxisLine4(center, height));
             break;
-          // ―｜
-          case Level.SYMMETRY_TYPE.PLUS1:
+          case Level.SYMMETRY_TYPE.PLUS1: // 2mm (｜―)
             gg.appendChild(createAxisLine1(center, height));
             gg.appendChild(createAxisLine2(center, width));
             break;
-          // ＼／
-          case Level.SYMMETRY_TYPE.PLUS2:
+          case Level.SYMMETRY_TYPE.PLUS2: // 2mm (＼／)
             gg.appendChild(createAxisLine3(center, height));
             gg.appendChild(createAxisLine4(center, height));
             break;
-          // ―｜＼／
-          case Level.SYMMETRY_TYPE.PLUS3:
+          case Level.SYMMETRY_TYPE.PLUS3: // 4mm (｜―＼／)
             gg.appendChild(createAxisLine1(center, height));
             gg.appendChild(createAxisLine2(center, width));
             gg.appendChild(createAxisLine3(center, height));
@@ -541,6 +519,26 @@
       }
 
       return g;
+
+      function createAxisPoint1(center) {
+        const g = app.svg.createG();
+        const circle = app.svg.createCircle(blockSize, {
+          cx: center.x,
+          cy: center.y,
+          r: 0.08,
+          fill: app.colors.symmetryPoint,
+        });
+        g.appendChild(circle);
+        const circle2 = app.svg.createCircle(blockSize, {
+          cx: center.x,
+          cy: center.y,
+          r: 0.15,
+          fill: 'none',
+          stroke: app.colors.symmetryPoint,
+        });
+        g.appendChild(circle2);
+        return g;
+      }
 
       function createAxisLine1(center, height) {
         return app.svg.createLine(blockSize, {
