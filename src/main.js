@@ -1228,10 +1228,13 @@
           fill: app.colors.congratulations,
         });
         text.setAttribute('font-size', fontSize2);
-        text.setAttribute('transform-origin', `${width}px ${height}px`);
-        text.classList.add('animation-congratulations');
 
-        g.appendChild(text);
+        const gg = app.svg.createG();
+        gg.setAttribute('transform-origin', `${width}px ${height}px`);
+        gg.classList.add('animation-congratulations');
+
+        gg.appendChild(text);
+        g.appendChild(gg);
         {
           const levelObj = level.getLevelObj();
           const replayStr = undoInfo.getReplayStr();
@@ -1376,9 +1379,13 @@
             fill: app.colors.newRecords,
           });
           text.setAttribute('font-size', fontSize2);
-          text.setAttribute('transform-origin', `${width}px ${height}px`);
-          text.classList.add('animation-new-record');
-          g.appendChild(text);
+
+          const gg = app.svg.createG();
+          gg.setAttribute('transform-origin', `${width}px ${height}px`);
+          gg.classList.add('animation-new-record');
+
+          gg.appendChild(text);
+          g.appendChild(gg);
         }
       }
     }

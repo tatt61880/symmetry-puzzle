@@ -303,16 +303,14 @@
 
 @keyframes animation-congratulations {
   0%,
-  19.9% {
-    transform: scale(0);
-  }
-
   20% {
+    opacity: 0;
     transform: scale(0.8);
   }
 
   50%,
   100% {
+    opacity: 1;
     transform: scale(1);
   }
 }
@@ -324,19 +322,17 @@
 
 @keyframes animation-new-record {
   0%,
-  24.9% {
-    transform: scale(0);
-  }
-
   25%,
   55%,
   85% {
+    opacity: 0;
     transform: scale(0.8);
   }
 
   40%,
   70%,
   100% {
+    opacity: 1;
     transform: scale(1);
   }
 }
