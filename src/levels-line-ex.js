@@ -3,7 +3,14 @@
   const isBrowser = typeof window !== 'undefined';
 
   const levelsLineEx = {
-    NaN: { w: 3, h: 7, s: 's-01-01-01--02', r: '12', step: 2 },
+    NaN: {
+      w: 7,
+      h: 7,
+      s: 's-010203-010203-010203--040506',
+      r: '210122001111230322',
+      step: 18,
+      subject: 'NaN',
+    },
     2023: {
       w: 17,
       h: 7,

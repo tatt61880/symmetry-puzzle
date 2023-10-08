@@ -759,11 +759,12 @@
       subject: '囲い囲われ',
     },
     {
-      w: 6,
-      h: 7,
-      s: '1x0sss-0x0tts-2x0tus-000tts-000sss',
-      r: '223330110023330',
+      w: 7,
+      h: 6,
+      s: 'sssss-stuts-sttts--xxx-102',
+      r: '112220302331223',
       step: 15,
+      subject: '過保護',
     },
     {
       w: 7,
