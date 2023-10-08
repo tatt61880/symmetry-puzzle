@@ -145,7 +145,8 @@
     }
 
     if (level.getWidth() < level.getHeight()) {
-      app.console.warn(`Warning: ${levelInfo()} x < y.`);
+      app.console.error(`: ${levelInfo()} x < y.`);
+      return false;
     }
 
     const stateStrMap = {};
