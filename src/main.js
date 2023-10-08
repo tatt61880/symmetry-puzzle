@@ -1379,6 +1379,8 @@
           const height = frameSize;
           text.setAttribute('font-size', fontSize2);
           text.setAttribute('transform', `translate(${width},${height})`);
+          const textCenterY = height + 0.5 * blockSize;
+          text.setAttribute('transform-origin', `${width}px ${textCenterY}px`);
           text.classList.add('animation-new-record');
           g.appendChild(text);
         }
