@@ -1229,7 +1229,8 @@
         const height = (level.getHeight() - 1) * blockSize + frameSize;
         text.setAttribute('font-size', fontSize2);
         text.setAttribute('transform', `translate(${width},${height})`);
-        text.setAttribute('transform-origin', `${width}px ${height}px`);
+        const textCenterY = height + 0.5 * blockSize;
+        text.setAttribute('transform-origin', `${width}px ${textCenterY}px`);
         text.classList.add('animation-congratulations');
 
         g.appendChild(text);
