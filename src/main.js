@@ -1219,18 +1219,16 @@
 
       // クリア時のメッセージ
       if (completeFlag) {
+        const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
+        const height = (level.getHeight() - 0.95) * blockSize + frameSize;
         const text = app.svg.createText(blockSize, {
-          x: 0,
-          y: 0.05,
+          x: width / blockSize,
+          y: height / blockSize,
           text: 'Congratulations!',
           fill: app.colors.congratulations,
         });
-        const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
-        const height = (level.getHeight() - 1) * blockSize + frameSize;
         text.setAttribute('font-size', fontSize2);
-        text.setAttribute('transform', `translate(${width},${height})`);
-        const textCenterY = height + 0.5 * blockSize;
-        text.setAttribute('transform-origin', `${width}px ${textCenterY}px`);
+        text.setAttribute('transform-origin', `${width}px ${height}px`);
         text.classList.add('animation-congratulations');
 
         g.appendChild(text);
@@ -1369,18 +1367,16 @@
           highestScorePrev !== null &&
           highestScore < highestScorePrev
         ) {
+          const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
+          const height = frameSize - 0.05 * blockSize;
           const text = app.svg.createText(blockSize, {
-            x: 0,
-            y: -0.05,
+            x: width / blockSize,
+            y: height / blockSize,
             text: 'New record!',
             fill: app.colors.newRecords,
           });
-          const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
-          const height = frameSize;
           text.setAttribute('font-size', fontSize2);
-          text.setAttribute('transform', `translate(${width},${height})`);
-          const textCenterY = height + 0.5 * blockSize;
-          text.setAttribute('transform-origin', `${width}px ${textCenterY}px`);
+          text.setAttribute('transform-origin', `${width}px ${height}px`);
           text.classList.add('animation-new-record');
           g.appendChild(text);
         }
