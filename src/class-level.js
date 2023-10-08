@@ -751,9 +751,9 @@
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
           if (!isX(this.#states[y][x])) continue;
-          const x0 = x - minX;
-          const y0 = y - minY;
-          if (!isX(this.#states[maxY - x0][minX + y0])) {
+          const xx = x - minX;
+          const yy = y - minY;
+          if (!isX(this.#states[maxY - xx][minX + yy])) {
             return Level.SYMMETRY_TYPE.POINT1;
           }
         }
