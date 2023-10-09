@@ -530,7 +530,9 @@
           cy: center.y,
           rx: 0.15,
           ry: 0.25,
-          fill: app.colors.symmetryPoint,
+          fill: app.colors.symmetryAxis,
+          stroke: app.colors.symmetryAxisStroke,
+          strokeWidth: 0.08,
         });
       }
 
@@ -545,7 +547,9 @@
             [x, y + size],
             [x - size, y],
           ],
-          fill: app.colors.symmetryPoint,
+          fill: app.colors.symmetryAxis,
+          stroke: app.colors.symmetryAxisStroke,
+          strokeWidth: 0.08,
         });
       }
 
@@ -555,8 +559,8 @@
           y1: 0,
           x2: center.x,
           y2: height,
-          stroke: app.colors.symmetryLine,
-          strokeWidth: 3,
+          stroke: app.colors.symmetryAxisStroke,
+          strokeWidth: 0.1,
         });
       }
 
@@ -566,8 +570,8 @@
           y1: center.y,
           x2: width,
           y2: center.y,
-          stroke: app.colors.symmetryLine,
-          strokeWidth: 3,
+          stroke: app.colors.symmetryAxisStroke,
+          strokeWidth: 0.1,
         });
       }
 
@@ -577,8 +581,8 @@
           y1: 0 - 1,
           x2: center.x + height - center.y + 1,
           y2: height + 1,
-          stroke: app.colors.symmetryLine,
-          strokeWidth: 3,
+          stroke: app.colors.symmetryAxisStroke,
+          strokeWidth: 0.1,
         });
       }
 
@@ -588,8 +592,8 @@
           y1: 0 - 1,
           x2: center.x - height + center.y - 1,
           y2: height + 1,
-          stroke: app.colors.symmetryLine,
-          strokeWidth: 3,
+          stroke: app.colors.symmetryAxisStroke,
+          strokeWidth: 0.1,
         });
       }
     }
