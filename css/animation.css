@@ -297,7 +297,7 @@
 }
 
 .animation-congratulations {
-  animation: animation-congratulations linear forwards;
+  animation: animation-congratulations ease-out forwards;
   animation-duration: calc(var(--animation-duration-symmetry) * 2);
 }
 
