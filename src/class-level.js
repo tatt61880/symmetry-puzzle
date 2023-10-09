@@ -1259,7 +1259,7 @@
       if (showCharsFlag) {
         const text = app.svg.createText(blockSize, {
           x: x + 0.5,
-          y,
+          y: y + 0.5,
           text: app.states.stateToChar[state],
         });
         gElem.appendChild(text);

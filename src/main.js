@@ -1196,7 +1196,7 @@
       const fontSize = `${frameSize * 0.7}px`;
       const text = app.svg.createText(frameSize, {
         x: 0,
-        y: 0,
+        y: 0.5,
         text: 'Not normalized',
         fill: '#aa33aa',
       });
@@ -1217,7 +1217,7 @@
       // クリア時のメッセージ
       if (completeFlag) {
         const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
-        const height = (level.getHeight() - 0.95) * blockSize + frameSize;
+        const height = (level.getHeight() - 0.5 + 0.05) * blockSize + frameSize;
         const text = app.svg.createText(blockSize, {
           x: width / blockSize,
           y: height / blockSize,
@@ -1294,8 +1294,8 @@
         if (symmetryFlag) {
           const text = app.svg.createText(blockSize, {
             x: 0,
-            y: 0.05,
-            text: 'Not connected.',
+            y: 0.5 + 0.05,
+            text: 'Not connected',
             fill: 'white',
           });
           const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
@@ -1314,7 +1314,7 @@
           : 'black';
         const text = app.svg.createText(frameSize, {
           x: 0,
-          y: 0,
+          y: 0.5,
           text: `${currentStep} steps`,
           fill: color,
         });
@@ -1350,7 +1350,7 @@
 
           const text = app.svg.createText(frameSize, {
             x: 0,
-            y: 0,
+            y: 0.5,
             text: `Your best: ${highestScore} steps`,
             fill: color,
           });
@@ -1368,7 +1368,7 @@
           highestScore < highestScorePrev
         ) {
           const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
-          const height = frameSize - 0.05 * blockSize;
+          const height = frameSize + (0.5 - 0.05) * blockSize;
           const text = app.svg.createText(blockSize, {
             x: width / blockSize,
             y: height / blockSize,
