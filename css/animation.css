@@ -6,6 +6,8 @@
   --animation-duration-shadow: none;
   --animation-duration-symmetry: none;
   --animation-origin: 0 0;
+  --animation-axis-2: 1.5;
+  --animation-axis-4: 1;
 }
 
 /* blocks moving animation */
@@ -169,11 +171,15 @@
 .animation-axis-plus1 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-plus1 linear forwards;
-  animation-duration: calc(var(--animation-duration-symmetry) * 2);
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * 2 * var(--animation-axis-2)
+  );
 }
 
 @keyframes animation-axis-plus1 {
   0%,
+  40%,
+  50%,
   90%,
   100% {
     transform: scaleX(1) scaleY(1);
@@ -182,11 +188,6 @@
   15%,
   25% {
     transform: scaleX(-1) scaleY(1);
-  }
-
-  40%,
-  50% {
-    transform: scaleX(-1) scaleY(-1);
   }
 
   65%,
@@ -198,11 +199,15 @@
 .animation-axis-plus2 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-plus2 linear forwards;
-  animation-duration: calc(var(--animation-duration-symmetry) * 2);
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * 2 * var(--animation-axis-2)
+  );
 }
 
 @keyframes animation-axis-plus2 {
   0%,
+  40%,
+  50%,
   90%,
   100% {
     transform: rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
@@ -211,11 +216,6 @@
   15%,
   25% {
     transform: rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 0deg);
-  }
-
-  40%,
-  50% {
-    transform: rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 180deg);
   }
 
   65%,
@@ -227,7 +227,9 @@
 .animation-axis-plus3 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-plus3 linear forwards;
-  animation-duration: calc(var(--animation-duration-symmetry) * 2);
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * 4 * var(--animation-axis-4)
+  );
 }
 
 @keyframes animation-axis-plus3 {
@@ -257,7 +259,7 @@
 }
 
 .animation-symmetry-axis {
-  animation: animation-symmetry-axis linear forwards;
+  animation: animation-symmetry-axis linear both;
   animation-duration: calc(var(--animation-duration-symmetry) * 2);
 }
 
@@ -279,6 +281,56 @@
   }
 }
 
+.axis-2-1 {
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
+  );
+  animation-delay: calc(var(--animation-duration-symmetry) * 0);
+}
+
+.axis-2-2 {
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
+  );
+  animation-delay: calc(
+    var(--animation-duration-symmetry) * 1 * var(--animation-axis-2)
+  );
+}
+
+.axis-4-1 {
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-4)
+  );
+  animation-delay: calc(var(--animation-duration-symmetry) * 0);
+}
+
+.axis-4-2 {
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-4)
+  );
+  animation-delay: calc(
+    var(--animation-duration-symmetry) * 1 * var(--animation-axis-4)
+  );
+}
+
+.axis-4-3 {
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-4)
+  );
+  animation-delay: calc(
+    var(--animation-duration-symmetry) * 2 * var(--animation-axis-4)
+  );
+}
+
+.axis-4-4 {
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-4)
+  );
+  animation-delay: calc(
+    var(--animation-duration-symmetry) * 3 * var(--animation-axis-4)
+  );
+}
+
 /* 次のレベルへ */
 #next-level:not(.hide) {
   animation: animation-next-level linear forwards;
@@ -297,7 +349,7 @@
 }
 
 .animation-congratulations {
-  animation: animation-congratulations ease-out forwards;
+  animation: animation-congratulations ease-out both;
   animation-duration: calc(var(--animation-duration-symmetry) * 2);
 }
 
@@ -316,7 +368,7 @@
 }
 
 .animation-new-record {
-  animation: animation-new-record linear forwards;
+  animation: animation-new-record linear both;
   animation-duration: calc(var(--animation-duration-symmetry) * 4);
 }
 
