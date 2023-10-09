@@ -6,6 +6,7 @@
   --animation-duration-shadow: none;
   --animation-duration-symmetry: none;
   --animation-origin: 0 0;
+  --animation-axis-1: 1;
   --animation-axis-2: 1.5;
   --animation-axis-4: 1;
 }
@@ -99,7 +100,9 @@
 .animation-axis-line1 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-line1 linear forwards;
-  animation-duration: var(--animation-duration-symmetry);
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-1)
+  );
 }
 
 @keyframes animation-axis-line1 {
@@ -117,7 +120,9 @@
 .animation-axis-line2 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-line2 linear forwards;
-  animation-duration: var(--animation-duration-symmetry);
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-1)
+  );
 }
 
 @keyframes animation-axis-line2 {
@@ -135,7 +140,9 @@
 .animation-axis-line3 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-line3 linear forwards;
-  animation-duration: var(--animation-duration-symmetry);
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-1)
+  );
 }
 
 @keyframes animation-axis-line3 {
@@ -153,7 +160,9 @@
 .animation-axis-line4 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-line4 linear forwards;
-  animation-duration: var(--animation-duration-symmetry);
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-1)
+  );
 }
 
 @keyframes animation-axis-line4 {
@@ -172,7 +181,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-plus1 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * 2 * var(--animation-axis-2)
+    var(--animation-duration-symmetry) * var(--animation-axis-2) * 2
   );
 }
 
@@ -200,7 +209,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-plus2 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * 2 * var(--animation-axis-2)
+    var(--animation-duration-symmetry) * var(--animation-axis-2) * 2
   );
 }
 
@@ -228,7 +237,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-plus3 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * 4 * var(--animation-axis-4)
+    var(--animation-duration-symmetry) * var(--animation-axis-4) * 4
   );
 }
 
@@ -260,7 +269,9 @@
 
 .animation-symmetry-axis {
   animation: animation-symmetry-axis linear both;
-  animation-duration: calc(var(--animation-duration-symmetry) * 2);
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-1)
+  );
 }
 
 @keyframes animation-symmetry-axis {
@@ -285,7 +296,7 @@
   animation-duration: calc(
     var(--animation-duration-symmetry) * var(--animation-axis-2)
   );
-  animation-delay: calc(var(--animation-duration-symmetry) * 0);
+  animation-delay: 0;
 }
 
 .axis-2-2 {
@@ -293,7 +304,7 @@
     var(--animation-duration-symmetry) * var(--animation-axis-2)
   );
   animation-delay: calc(
-    var(--animation-duration-symmetry) * 1 * var(--animation-axis-2)
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
   );
 }
 
@@ -301,7 +312,7 @@
   animation-duration: calc(
     var(--animation-duration-symmetry) * var(--animation-axis-4)
   );
-  animation-delay: calc(var(--animation-duration-symmetry) * 0);
+  animation-delay: 0;
 }
 
 .axis-4-2 {
@@ -309,7 +320,7 @@
     var(--animation-duration-symmetry) * var(--animation-axis-4)
   );
   animation-delay: calc(
-    var(--animation-duration-symmetry) * 1 * var(--animation-axis-4)
+    var(--animation-duration-symmetry) * var(--animation-axis-4)
   );
 }
 
@@ -318,7 +329,7 @@
     var(--animation-duration-symmetry) * var(--animation-axis-4)
   );
   animation-delay: calc(
-    var(--animation-duration-symmetry) * 2 * var(--animation-axis-4)
+    var(--animation-duration-symmetry) * var(--animation-axis-4) * 2
   );
 }
 
@@ -327,7 +338,7 @@
     var(--animation-duration-symmetry) * var(--animation-axis-4)
   );
   animation-delay: calc(
-    var(--animation-duration-symmetry) * 3 * var(--animation-axis-4)
+    var(--animation-duration-symmetry) * var(--animation-axis-4) * 3
   );
 }
 
