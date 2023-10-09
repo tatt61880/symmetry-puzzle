@@ -11,7 +11,7 @@
   const elems = new app.Elems({
     viewport: 'viewport',
     top: 'top',
-    icon: 'icon',
+    iconApp: 'icon-app',
     iconPoint: 'icon-point',
     iconLine: 'icon-line',
     version: 'version',
