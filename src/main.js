@@ -425,6 +425,7 @@
 
     if (undoInfo.isUndoable()) {
       const data = undoInfo.undo();
+      updateController();
       if (!undoInfo.isUndoable()) {
         app.common.hideElem(elems.controller.undo);
       }
@@ -1041,18 +1042,14 @@
   }
 
   function updateController() {
-    if (settings.autoMode && settingsAuto.paused) {
+    if (completeFlag) {
       app.common.hideElem(elems.controller.stick.base);
-    } else {
-      if (completeFlag) {
-        app.common.hideElem(elems.controller.stick.base);
-        if (!elems.level.next.classList.contains('hide')) {
-          app.common.showElem(elems.controller.nextLevel);
-        }
-      } else {
-        app.common.showElem(elems.controller.stick.base);
-        app.common.hideElem(elems.controller.nextLevel);
+      if (!elems.level.next.classList.contains('hide')) {
+        app.common.showElem(elems.controller.nextLevel);
       }
+    } else {
+      app.common.showElem(elems.controller.stick.base);
+      app.common.hideElem(elems.controller.nextLevel);
     }
   }
 
