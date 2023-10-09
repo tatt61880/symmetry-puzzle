@@ -411,7 +411,7 @@
       const th = document.createElement('th');
       tr.appendChild(th);
       const img = document.createElement('img');
-      img.src = './images/line.png';
+      img.src = './images/logo-line.png';
       img.setAttribute('width', imgSize);
       img.setAttribute('height', imgSize);
       th.appendChild(img);
@@ -420,7 +420,7 @@
       const th = document.createElement('th');
       tr.appendChild(th);
       const img = document.createElement('img');
-      img.src = './images/point.png';
+      img.src = './images/logo-point.png';
       img.setAttribute('width', imgSize);
       img.setAttribute('height', imgSize);
       th.appendChild(img);
