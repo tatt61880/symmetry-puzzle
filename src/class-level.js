@@ -1363,15 +1363,15 @@
   }
 
   const animationClass = {
-    [Level.SYMMETRY_TYPE.POINT1]: 'animation-point1',
-    [Level.SYMMETRY_TYPE.POINT2]: 'animation-point2',
-    [Level.SYMMETRY_TYPE.LINE1]: 'animation-line1',
-    [Level.SYMMETRY_TYPE.LINE2]: 'animation-line2',
-    [Level.SYMMETRY_TYPE.LINE3]: 'animation-line3',
-    [Level.SYMMETRY_TYPE.LINE4]: 'animation-line4',
-    [Level.SYMMETRY_TYPE.PLUS1]: 'animation-plus1',
-    [Level.SYMMETRY_TYPE.PLUS2]: 'animation-plus2',
-    [Level.SYMMETRY_TYPE.PLUS3]: 'animation-plus3',
+    [Level.SYMMETRY_TYPE.POINT1]: 'animation-axis-point1',
+    [Level.SYMMETRY_TYPE.POINT2]: 'animation-axis-point2',
+    [Level.SYMMETRY_TYPE.LINE1]: 'animation-axis-line1',
+    [Level.SYMMETRY_TYPE.LINE2]: 'animation-axis-line2',
+    [Level.SYMMETRY_TYPE.LINE3]: 'animation-axis-line3',
+    [Level.SYMMETRY_TYPE.LINE4]: 'animation-axis-line4',
+    [Level.SYMMETRY_TYPE.PLUS1]: 'animation-axis-plus1',
+    [Level.SYMMETRY_TYPE.PLUS2]: 'animation-axis-plus2',
+    [Level.SYMMETRY_TYPE.PLUS3]: 'animation-axis-plus3',
   };
 
   if (isBrowser) {
