@@ -632,8 +632,8 @@
   }
 
   function animateIcons() {
-    animateIcon(elems.iconLine.classList, 'animation-line1-icon');
-    animateIcon(elems.iconPoint.classList, 'animation-point1-icon');
+    animateIcon(elems.iconLine.classList, 'animation-icon-line');
+    animateIcon(elems.iconPoint.classList, 'animation-icon-point');
 
     function animateIcon(elem, className) {
       elem.remove(className);

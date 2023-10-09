@@ -338,13 +338,13 @@
 }
 
 /* icon animation */
-.animation-point1-icon {
+.animation-icon-point {
   transform-origin: center;
   animation: animation-axis-point1 ease forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
-.animation-line1-icon {
+.animation-icon-line {
   transform-origin: center;
   animation: animation-axis-line1 ease forwards;
   animation-duration: var(--animation-duration-symmetry);
