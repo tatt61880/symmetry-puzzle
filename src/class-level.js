@@ -1060,49 +1060,53 @@
           });
           gElem.appendChild(line);
         }
-        // 右上
-        if (flags[dirs.u] && flags[dirs.r] && !flags[dirs.ur]) {
-          const rect = app.svg.createRect(blockSize, {
-            x: x + 1 - blockBorderWidth,
-            y,
-            width: blockBorderWidth,
-            height: blockBorderWidth,
-            fill: color.stroke,
-          });
-          gElem.appendChild(rect);
+        if (flags[dirs.u]) {
+          // 左上
+          if (flags[dirs.l] && !flags[dirs.ul]) {
+            const rect = app.svg.createRect(blockSize, {
+              x,
+              y,
+              width: blockBorderWidth,
+              height: blockBorderWidth,
+              fill: color.stroke,
+            });
+            gElem.appendChild(rect);
+          }
+          // 右上
+          if (flags[dirs.r] && !flags[dirs.ur]) {
+            const rect = app.svg.createRect(blockSize, {
+              x: x + 1 - blockBorderWidth,
+              y,
+              width: blockBorderWidth,
+              height: blockBorderWidth,
+              fill: color.stroke,
+            });
+            gElem.appendChild(rect);
+          }
         }
-        // 右下
-        if (flags[dirs.d] && flags[dirs.r] && !flags[dirs.dr]) {
-          const rect = app.svg.createRect(blockSize, {
-            x: x + 1 - blockBorderWidth,
-            y: y + 1 - blockBorderWidth,
-            width: blockBorderWidth,
-            height: blockBorderWidth,
-            fill: color.stroke,
-          });
-          gElem.appendChild(rect);
-        }
-        // 左下
-        if (flags[dirs.d] && flags[dirs.l] && !flags[dirs.dl]) {
-          const rect = app.svg.createRect(blockSize, {
-            x,
-            y: y + 1 - blockBorderWidth,
-            width: blockBorderWidth,
-            height: blockBorderWidth,
-            fill: color.stroke,
-          });
-          gElem.appendChild(rect);
-        }
-        // 左上
-        if (flags[dirs.u] && flags[dirs.l] && !flags[dirs.ul]) {
-          const rect = app.svg.createRect(blockSize, {
-            x,
-            y,
-            width: blockBorderWidth,
-            height: blockBorderWidth,
-            fill: color.stroke,
-          });
-          gElem.appendChild(rect);
+        if (flags[dirs.d]) {
+          // 右下
+          if (flags[dirs.r] && !flags[dirs.dr]) {
+            const rect = app.svg.createRect(blockSize, {
+              x: x + 1 - blockBorderWidth,
+              y: y + 1 - blockBorderWidth,
+              width: blockBorderWidth,
+              height: blockBorderWidth,
+              fill: color.stroke,
+            });
+            gElem.appendChild(rect);
+          }
+          // 左下
+          if (flags[dirs.l] && !flags[dirs.dl]) {
+            const rect = app.svg.createRect(blockSize, {
+              x,
+              y: y + 1 - blockBorderWidth,
+              width: blockBorderWidth,
+              height: blockBorderWidth,
+              fill: color.stroke,
+            });
+            gElem.appendChild(rect);
+          }
         }
 
         if (app.states.isOther(state)) {
@@ -1160,18 +1164,6 @@
         if (app.states.isUser(state)) {
           const size = blockBorderWidth * 3;
           if (!flags[dirs.u]) {
-            // 右上
-            if (!flags[dirs.r]) {
-              const polygon = app.svg.createPolygon(blockSize, {
-                points: [
-                  [x + 1 - size, y],
-                  [x + 1, y],
-                  [x + 1, y + size],
-                ],
-                fill: color.stroke,
-              });
-              gElem.appendChild(polygon);
-            }
             // 左上
             if (!flags[dirs.l]) {
               const polygon = app.svg.createPolygon(blockSize, {
@@ -1179,6 +1171,18 @@
                   [x, y],
                   [x + size, y],
                   [x, y + size],
+                ],
+                fill: color.stroke,
+              });
+              gElem.appendChild(polygon);
+            }
+            // 右上
+            if (!flags[dirs.r]) {
+              const polygon = app.svg.createPolygon(blockSize, {
+                points: [
+                  [x + 1 - size, y],
+                  [x + 1, y],
+                  [x + 1, y + size],
                 ],
                 fill: color.stroke,
               });
