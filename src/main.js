@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.10.07';
+  const VERSION_TEXT = 'v2023.10.10';
 
   const app = window.app;
   Object.freeze(app);
@@ -633,6 +633,7 @@
   }
 
   function animateIcons() {
+    animateIcon(elems.iconApp.classList, 'animation-icon-app');
     animateIcon(elems.iconLine.classList, 'animation-icon-line');
     animateIcon(elems.iconPoint.classList, 'animation-icon-point');
 
