@@ -633,6 +633,8 @@
   }
 
   function animateIcons() {
+    if (elems.help.dialog.open) return; // ダイアログ表示中にアニメーションするとSafariで画面がちらつく問題があるため。
+
     animateIcon(elems.iconApp.classList, 'animation-icon-app');
     animateIcon(elems.iconLine.classList, 'animation-icon-line');
     animateIcon(elems.iconPoint.classList, 'animation-icon-point');
