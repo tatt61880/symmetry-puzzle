@@ -385,10 +385,14 @@
 
 @keyframes animation-new-record {
   0%,
-  25%,
+  25% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
   55%,
   85% {
-    opacity: 0;
+    opacity: 1;
     transform: scale(0.8);
   }
 
