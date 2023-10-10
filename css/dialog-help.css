@@ -130,6 +130,11 @@
     width: 50px;
   }
 
+  .logo-inline {
+    width: 32px;
+    margin: 0 2px;
+  }
+
   .border {
     padding: 5px;
     margin: 10px 30px;
