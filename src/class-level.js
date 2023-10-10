@@ -555,18 +555,16 @@
         return app.svg.createEllipse(blockSize, {
           cx: center.x,
           cy: center.y,
-          rx: 0.15,
-          ry: 0.25,
+          rx: 0.2,
+          ry: 0.3,
           fill: app.colors.symmetryAxis,
-          stroke: app.colors.symmetryAxisStroke,
-          strokeWidth: 0.08,
         });
       }
 
       function createAxisPoint2(center) {
         const x = center.x;
         const y = center.y;
-        const size = 0.25;
+        const size = 0.3;
         return app.svg.createPolygon(blockSize, {
           points: [
             [x, y - size],
@@ -575,8 +573,6 @@
             [x - size, y],
           ],
           fill: app.colors.symmetryAxis,
-          stroke: app.colors.symmetryAxisStroke,
-          strokeWidth: 0.08,
         });
       }
 
@@ -586,7 +582,7 @@
           y1: 0,
           x2: center.x,
           y2: height,
-          stroke: app.colors.symmetryAxisStroke,
+          stroke: app.colors.symmetryAxis,
           strokeWidth: 0.1,
         });
       }
@@ -597,7 +593,7 @@
           y1: center.y,
           x2: width,
           y2: center.y,
-          stroke: app.colors.symmetryAxisStroke,
+          stroke: app.colors.symmetryAxis,
           strokeWidth: 0.1,
         });
       }
@@ -608,7 +604,7 @@
           y1: 0 - 1,
           x2: center.x + height - center.y + 1,
           y2: height + 1,
-          stroke: app.colors.symmetryAxisStroke,
+          stroke: app.colors.symmetryAxis,
           strokeWidth: 0.1,
         });
       }
@@ -619,7 +615,7 @@
           y1: 0 - 1,
           x2: center.x - height + center.y - 1,
           y2: height + 1,
-          stroke: app.colors.symmetryAxisStroke,
+          stroke: app.colors.symmetryAxis,
           strokeWidth: 0.1,
         });
       }
