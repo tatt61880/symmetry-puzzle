@@ -386,7 +386,7 @@
 }
 
 .animation-congratulations {
-  filter: drop-shadow(2px 2px 3px #7e7e00);
+  filter: drop-shadow(2px 2px 4px #7e7e00);
   animation: animation-congratulations ease-out both;
   animation-duration: calc(var(--animation-duration-symmetry) * 2);
 }
@@ -406,7 +406,7 @@
 }
 
 .animation-new-record {
-  filter: drop-shadow(2px 2px 3px #7e7e00);
+  filter: drop-shadow(2px 2px 4px #7e7e00);
   animation: animation-new-record linear both;
   animation-duration: calc(var(--animation-duration-symmetry) * 4);
 }
