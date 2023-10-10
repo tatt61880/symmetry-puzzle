@@ -55,6 +55,12 @@ footer {
   background-color: #c0cbff;
 }
 
+image.check-mode,
+img.check-mode {
+  width: 32px;
+  height: 32px;
+}
+
 div.noselect {
   user-select: none;
 }
