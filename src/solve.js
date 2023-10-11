@@ -242,7 +242,8 @@
       }
 
       let solutionNum = 0;
-      let firstSolutionStep;
+      let solutionStepFirst;
+      let solutionStepSecond;
       for (; step < maxStep; ) {
         const currentStateStrSet = nextStateStrSet;
         nextStateStrSet = new Set();
@@ -281,8 +282,13 @@
             if (completedFlag) {
               if (options.all) {
                 solutionNum++;
-                if (solutionNum === 1) {
-                  firstSolutionStep = step + 1;
+                switch (solutionNum) {
+                  case 1:
+                    solutionStepFirst = step + 1;
+                    break;
+                  case 2:
+                    solutionStepSecond = step + 1;
+                    break;
                 }
                 const r = replayStr;
                 const prefixStepInfo =
@@ -322,8 +328,15 @@
         if (nextStateStrSet.size === 0) {
           if (options.all) {
             const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Step limit: ${maxStep}] [Shape variation: ${shapeStrMap.size}]`;
-            if (solutionNum !== 0) {
-              app.console.log(`First solution step: ${firstSolutionStep}`);
+            if (solutionNum > 0) {
+              app.console.log(` First solution step: ${solutionStepFirst}`);
+              if (solutionNum > 1) {
+                app.console.log(
+                  `Second solution step: ${solutionStepSecond} (+${
+                    solutionStepSecond - solutionStepFirst
+                  })`
+                );
+              }
             }
             return { replayStr: null, errorMessage };
           }
