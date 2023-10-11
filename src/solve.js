@@ -244,6 +244,7 @@
       let solutionNum = 0;
       let solutionStepFirst;
       let solutionStepSecond;
+      const shapeStrInfoArray = [];
       for (; step < maxStep; ) {
         const currentStateStrSet = nextStateStrSet;
         nextStateStrSet = new Set();
@@ -303,6 +304,7 @@
                   .getShapeStr(app.states.isTarget)
                   .replace(/\n$/, '');
                 if (!shapeStrMap.has(shapeStr)) {
+                  shapeStrInfoArray.push([shapeStr, step + 1]);
                   const shapeId = shapeStrMap.size + 1;
                   shapeStrMap.set(shapeStr, shapeId);
                   if (options.draw) {
@@ -327,17 +329,21 @@
 
         if (nextStateStrSet.size === 0) {
           if (options.all) {
-            const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Step limit: ${maxStep}] [Shape variation: ${shapeStrMap.size}]`;
             if (solutionNum > 0) {
-              app.console.log(` First solution step: ${solutionStepFirst}`);
+              app.console.log(` First solution: ${solutionStepFirst} steps`);
               if (solutionNum > 1) {
                 app.console.log(
-                  `Second solution step: ${solutionStepSecond} (+${
+                  `Second solution: ${solutionStepSecond} steps (+${
                     solutionStepSecond - solutionStepFirst
                   })`
                 );
               }
             }
+            for (const shapeStrInfo of shapeStrInfoArray) {
+              app.console.info(`${shapeStrInfo[1]} steps`);
+              app.console.log(shapeStrInfo[0]);
+            }
+            const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Step limit: ${maxStep}] [Shape variation: ${shapeStrMap.size}]`;
             return { replayStr: null, errorMessage };
           }
           const errorMessage = `No solution. [Step: ${step}] [Step limit: ${maxStep}]`;

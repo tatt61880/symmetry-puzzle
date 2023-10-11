@@ -15,7 +15,8 @@
       console.log(message);
     },
 
-    info(message) {
+    info(message_) {
+      const message = new String(message_);
       for (const line of message.split('\n')) {
         console.info(colorizedText(line, 120, 120, 120));
       }
