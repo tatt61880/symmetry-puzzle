@@ -495,6 +495,9 @@
     loadLevelObj(
       levelObj !== undefined ? levelObj : createObjById(app.common.levelId)
     );
+    if (isLocalhost()) {
+      level.printSolveJsStr();
+    }
     updateLevelVisibility();
     elems.level.id.textContent = app.common.levelId;
     replaceUrl();
@@ -1776,6 +1779,13 @@
         alert('クリップボードへのコピーに失敗しました。');
       }
     );
+  }
+
+  function isLocalhost() {
+    if (location.href.match(/^http:\/\/127\.0\.0\.1[:/]/)) {
+      return true;
+    }
+    return false;
   }
 
   function resizeWindow() {

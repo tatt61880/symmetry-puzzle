@@ -144,19 +144,29 @@
       );
     }
 
+    printSolveJsStr() {
+      const w = this.getW();
+      const h = this.getH();
+      const s = this.getStateStr();
+
+      const solveJsStr =
+        `node src/solve.js -w ${w} -h ${h} -s ${s} --all --console --draw` +
+        (this.isLineMode() ? ' --line' : '');
+      console.log(solveJsStr);
+    }
+
     getUrlStr() {
       const w = this.getW();
       const h = this.getH();
       const s = this.getStateStr();
+
       console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
-      console.log(
-        `node src/solve.js -w ${w} -h ${h} -s ${s} --all --console --draw` +
-          (this.isLineMode() ? ' --line' : '')
-      );
-      return (
+      this.printSolveJsStr();
+
+      const urlStr =
         `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}` +
-        (this.isLineMode() ? '&line' : '')
-      );
+        (this.isLineMode() ? '&line' : '');
+      return urlStr;
     }
 
     getCenter(isX) {
