@@ -329,6 +329,7 @@
 
         if (nextStateStrSet.size === 0) {
           if (options.all) {
+            app.console.log('----------------------------------------');
             if (solutionNum > 0) {
               app.console.log(` First solution: ${solutionStepFirst} steps`);
               if (solutionNum > 1) {
