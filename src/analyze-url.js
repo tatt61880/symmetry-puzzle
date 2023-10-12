@@ -2,7 +2,7 @@
   'use strict';
   const isBrowser = typeof window !== 'undefined';
   if (!isBrowser) return;
-  if (window?.app.analyzeUrl) return;
+  if (window.app?.analyzeUrl) return;
 
   function analyzeUrl() {
     const res = {

@@ -2,7 +2,7 @@
   'use strict';
   const isBrowser = typeof window !== 'undefined';
   if (!isBrowser) return;
-  if (window?.app.Elems) return;
+  if (window.app?.Elems) return;
 
   class Elems {
     #elems;
