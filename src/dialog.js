@@ -7,6 +7,8 @@
     return;
   }
 
+  const levelSelectId = 'level-select';
+
   const app = window.app;
   if (app.elems === undefined) app.console.error('app.elems is undefined.');
 
@@ -112,7 +114,7 @@
     }
 
     elems.levels.dialog.dataset.selectCount = selectCount;
-    const g = document.getElementById('levelSelect');
+    const g = document.getElementById(levelSelectId);
     const x = (selectCount % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH;
     const y =
       Math.floor(
@@ -271,7 +273,7 @@
         Math.floor(
           (selectCount % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS
         ) * LEVEL_SELECT_HEIGHT;
-      g.setAttribute('id', 'levelSelect');
+      g.setAttribute('id', levelSelectId);
       g.setAttribute('transform', `translate(${x},${y})`);
     }
 
