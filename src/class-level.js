@@ -30,7 +30,7 @@
   const dxs = [0, 1, 0, -1, 1, 1, -1, -1];
   const dys = [-1, 0, 1, 0, -1, 1, 1, -1];
 
-  const blockBorderWidth = 0.14;
+  const blockBorderWidth = 0.125;
 
   function* stateCharGenerator(stateStr) {
     for (let i = 0; i < stateStr.length; ++i) {
