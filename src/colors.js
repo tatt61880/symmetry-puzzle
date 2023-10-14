@@ -51,6 +51,7 @@
 
   colors.frame = '#fff8dd';
   colors.frameBorder = '#ffdd33';
+  colors.frameEditSize = '#ffdd33';
 
   colors.congratulations = '#ffdd33';
   colors.newRecords = '#ffdd33';
