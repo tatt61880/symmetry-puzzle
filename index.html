@@ -15,39 +15,39 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.10.10">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.10.10">
 
-  <link rel="stylesheet" href="./css/main.css?2023.10.11">
-  <link rel="stylesheet" href="./css/title.css?2023.10.11">
-  <link rel="stylesheet" href="./css/game.css?2023.10.11">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.10.11">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.10.11">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.10.11">
-  <link rel="stylesheet" href="./css/animation.css?2023.10.11">
+  <link rel="stylesheet" href="./css/main.css?2023.10.13">
+  <link rel="stylesheet" href="./css/title.css?2023.10.13">
+  <link rel="stylesheet" href="./css/game.css?2023.10.13">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.10.13">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.10.13">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.10.13">
+  <link rel="stylesheet" href="./css/animation.css?2023.10.13">
 
-  <script src="./src/states.js?2023.10.11"></script>
-  <script src="./src/colors.js?2023.10.11"></script>
-  <script src="./src/svg.js?2023.10.11"></script>
-  <script src="./src/class-stack.js?2023.10.11"></script>
-  <script src="./src/class-level.js?2023.10.11"></script>
+  <script src="./src/states.js?2023.10.13"></script>
+  <script src="./src/colors.js?2023.10.13"></script>
+  <script src="./src/svg.js?2023.10.13"></script>
+  <script src="./src/class-stack.js?2023.10.13"></script>
+  <script src="./src/class-level.js?2023.10.13"></script>
 
-  <script src="./src/class-savedata.js?2023.10.11"></script>
-  <script src="./src/class-undo-info.js?2023.10.11"></script>
-  <script src="./src/class-elems.js?2023.10.11"></script>
-  <script src="./src/class-stick.js?2023.10.11"></script>
+  <script src="./src/class-savedata.js?2023.10.13"></script>
+  <script src="./src/class-undo-info.js?2023.10.13"></script>
+  <script src="./src/class-elems.js?2023.10.13"></script>
+  <script src="./src/class-stick.js?2023.10.13"></script>
 
-  <script src="./src/levels-line.js?2023.10.11"></script>
-  <script src="./src/levels-line-ex.js?2023.10.11"></script>
-  <script src="./src/levels-point.js?2023.10.11"></script>
-  <script src="./src/levels-point-ex.js?2023.10.11"></script>
+  <script src="./src/levels-line.js?2023.10.13"></script>
+  <script src="./src/levels-line-ex.js?2023.10.13"></script>
+  <script src="./src/levels-point.js?2023.10.13"></script>
+  <script src="./src/levels-point-ex.js?2023.10.13"></script>
 
-  <script src="./src/elems.js?2023.10.11"></script>
+  <script src="./src/elems.js?2023.10.13"></script>
 
-  <script src="./src/solve.js?2023.10.11"></script>
+  <script src="./src/solve.js?2023.10.13"></script>
 
-  <script src="./src/common.js?2023.10.11"></script>
-  <script src="./src/dialog.js?2023.10.11"></script>
+  <script src="./src/common.js?2023.10.13"></script>
+  <script src="./src/dialog.js?2023.10.13"></script>
 
-  <script src="./src/analyze-url.js?2023.10.11"></script>
-  <script src="./src/main.js?2023.10.11"></script>
+  <script src="./src/analyze-url.js?2023.10.13"></script>
+  <script src="./src/main.js?2023.10.13"></script>
 </head>
 
 <body>
@@ -91,26 +91,6 @@
         </div>
 
         <hr>
-        <div class="translatable en" lang="en">
-          <p class="warn">
-            Note: This web application is in beta version.<br>
-            Levels are added/removed as needed.<br>
-          </p>
-          <p class="warn">
-            Data is saved in localStorage.
-          </p>
-        </div>
-        <div class="translatable ja" lang="ja">
-          <p class="warn">
-            このWebアプリはベータ版（未完成）です。<br>
-            随時、レベルを追加/変更しています。<br>
-          </p>
-          <p class="warn">
-            データはlocalStorageに保存されます。
-          </p>
-        </div>
-
-        <hr>
         <div>
           <div class="tab-area">
             <!-- 対称パズル -->
@@ -122,17 +102,38 @@
               <h1 class="translatable-toggle" data-en="Symmetry Puzzle" data-ja="対称パズル"></h1>
 
               <div>
-                <span class="flex">
-                  <img class="logo-inline" src="./images/logo-line.png?2023.10.10" alt="line symmetry logo">
-                  <span class="translatable-toggle" data-en="Line Symmetry Puzzle" data-ja="線対称パズル"></span>
-                </span>
-                <span>+</span>
-                <span class="flex">
-                  <img class="logo-inline" src="./images/logo-point.png?2023.10.10" alt="line symmetry logo">
-                  <span class="translatable-toggle" data-en="Point Symmetry Puzzle" data-ja="点対称パズル"></span>
-                </span>
+                <p>
+                  <span class="flex">
+                    <img class="logo-inline" src="./images/logo-line.png?2023.10.10" alt="line symmetry logo">
+                    <span class="translatable-toggle" data-en="Line Symmetry Puzzle" data-ja="線対称パズル"></span>
+                  </span>
+                  <span>+</span>
+                  <span class="flex">
+                    <img class="logo-inline" src="./images/logo-point.png?2023.10.10" alt="line symmetry logo">
+                    <span class="translatable-toggle" data-en="Point Symmetry Puzzle" data-ja="点対称パズル"></span>
+                  </span>
+                </p>
               </div>
-              <br>
+
+              <hr>
+              <div class="translatable en" lang="en">
+                <p class="warn">
+                  Note: This web application is in beta version.<br>
+                  Levels are added/removed as needed.<br>
+                </p>
+                <p class="warn">
+                  Data is saved in localStorage.
+                </p>
+              </div>
+              <div class="translatable ja" lang="ja">
+                <p class="warn">
+                  このWebアプリはベータ版（未完成）です。<br>
+                  随時、レベルを追加/変更しています。<br>
+                </p>
+                <p class="warn">
+                  データはlocalStorageに保存されます。
+                </p>
+              </div>
             </div>
 
             <!-- 線対称パズル -->
