@@ -1074,7 +1074,8 @@
     updateController();
 
     const mainSvgG = app.svg.createG();
-    // mainSvgG.style.setProperty('pointer-events', 'none');
+
+    mainSvgG.style.setProperty('pointer-events', 'none'); // スマホ等での操作時にtouchstartからtouchendまで連続して図形描画するため。
 
     elems.main.svg.textContent = '';
     elems.main.svg.appendChild(mainSvgG);
@@ -1226,49 +1227,48 @@
 
       // サイズ変更ボタンの追加
       {
-        const cx1 = frameSize / blockSize;
-        const cx2 = frameSize / blockSize + (level.getWidth() - 1.3) / 2;
-        const cx3 = frameSize / blockSize + (level.getWidth() + 1.3) / 2;
-        const cx4 = frameSize / blockSize + level.getWidth();
-        const cy1 = frameSize / blockSize;
-        const cy2 = frameSize / blockSize + (level.getHeight() - 1.3) / 2;
-        const cy3 = frameSize / blockSize + (level.getHeight() + 1.3) / 2;
-        const cy4 = frameSize / blockSize + level.getHeight();
-        const buttons = [
-          { cx: cx1, cy: cy2, dx: -1, dy: 0, flag: true },
-          { cx: cx1, cy: cy3, dx: +1, dy: 0, flag: true },
-          { cx: cx4, cy: cy2, dx: -1, dy: 0, flag: false },
-          { cx: cx4, cy: cy3, dx: +1, dy: 0, flag: false },
-          { cx: cx2, cy: cy1, dx: 0, dy: -1, flag: true },
-          { cx: cx3, cy: cy1, dx: 0, dy: 1, flag: true },
-          { cx: cx2, cy: cy4, dx: 0, dy: -1, flag: false },
-          { cx: cx3, cy: cy4, dx: 0, dy: 1, flag: false },
-        ];
-        buttons.forEach((button) => {
-          const circle = app.svg.createCircle(blockSize, {
-            cx: button.cx,
-            cy: button.cy,
-            r: 0.5,
-            fill: '#e5a0e5',
-            stroke: '#aa33aa',
-            strokeWidth: 0.1,
-          });
-          circle.classList.add('button');
-          circle.addEventListener('click', () => {
-            resizeLevelSub(button.dx, button.dy, button.flag);
-          });
-          g.appendChild(circle);
-
-          const char = button.dx + button.dy > 0 ? '+' : '-';
-          const text = app.svg.createText(blockSize, {
-            x: button.cx,
-            y: button.cy,
-            text: char,
-            fill: '#aa33aa',
-          });
-          text.setAttribute('font-size', `${blockSize * 0.7}px`);
-          g.appendChild(text);
-        });
+        // const cx1 = frameSize / blockSize;
+        // const cx2 = frameSize / blockSize + (level.getWidth() - 1.3) / 2;
+        // const cx3 = frameSize / blockSize + (level.getWidth() + 1.3) / 2;
+        // const cx4 = frameSize / blockSize + level.getWidth();
+        // const cy1 = frameSize / blockSize;
+        // const cy2 = frameSize / blockSize + (level.getHeight() - 1.3) / 2;
+        // const cy3 = frameSize / blockSize + (level.getHeight() + 1.3) / 2;
+        // const cy4 = frameSize / blockSize + level.getHeight();
+        // const buttons = [
+        //   { cx: cx1, cy: cy2, dx: -1, dy: 0, flag: true },
+        //   { cx: cx1, cy: cy3, dx: +1, dy: 0, flag: true },
+        //   { cx: cx4, cy: cy2, dx: -1, dy: 0, flag: false },
+        //   { cx: cx4, cy: cy3, dx: +1, dy: 0, flag: false },
+        //   { cx: cx2, cy: cy1, dx: 0, dy: -1, flag: true },
+        //   { cx: cx3, cy: cy1, dx: 0, dy: 1, flag: true },
+        //   { cx: cx2, cy: cy4, dx: 0, dy: -1, flag: false },
+        //   { cx: cx3, cy: cy4, dx: 0, dy: 1, flag: false },
+        // ];
+        // buttons.forEach((button) => {
+        //   const circle = app.svg.createCircle(blockSize, {
+        //     cx: button.cx,
+        //     cy: button.cy,
+        //     r: 0.5,
+        //     fill: '#e5a0e5',
+        //     stroke: '#aa33aa',
+        //     strokeWidth: 0.1,
+        //   });
+        //   circle.classList.add('button');
+        //   circle.addEventListener('click', () => {
+        //     resizeLevelSub(button.dx, button.dy, button.flag);
+        //   });
+        //   g.appendChild(circle);
+        //   const char = button.dx + button.dy > 0 ? '+' : '-';
+        //   const text = app.svg.createText(blockSize, {
+        //     x: button.cx,
+        //     y: button.cy,
+        //     text: char,
+        //     fill: '#aa33aa',
+        //   });
+        //   text.setAttribute('font-size', `${blockSize * 0.7}px`);
+        //   g.appendChild(text);
+        // });
       }
     } else {
       const fontSize = `${frameSize * 0.7}px`;
