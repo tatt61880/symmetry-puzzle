@@ -501,6 +501,16 @@
     updateLevelVisibility();
     elems.level.id.textContent = app.common.levelId;
     replaceUrl();
+
+    if (id_ === 1) {
+      // レベル1をロード時、レベル1を未クリアのときはヘルプ画面を表示する。
+      const isLineMode = level.isLineMode();
+      const playerScore = app.savedata.getHighestScore(levelObj, isLineMode);
+      console.log(playerScore, levelObj);
+      if (playerScore === null) {
+        app.dialog.help.show();
+      }
+    }
   }
 
   function loadLevelObj(levelObj, param = {}) {
