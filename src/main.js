@@ -1241,6 +1241,8 @@
           { cx: cx3, cy: cy4, dx: 0, dy: 1, flag: false },
         ];
         buttons.forEach((button) => {
+          if (button.dx === -1 && level.getWidth() <= 3) return;
+          if (button.dy === -1 && level.getHeight() <= 3) return;
           const circle = app.svg.createCircle(blockSize, {
             cx: button.cx,
             cy: button.cy,
