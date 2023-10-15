@@ -298,7 +298,7 @@
                     : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
                 const completedLevelObj = getCompletedLevelObj(r);
                 app.console.log(
-                  `/* [LEVEL ${levelId}] */ ${completedLevelObj}${prefixStepInfo}`
+                  `/* [LEVEL ${levelId}][map.size: ${stateStrMap.size}] */ ${completedLevelObj}${prefixStepInfo}`
                 );
                 const shapeStr = level
                   .getShapeStr(app.states.isTarget)
