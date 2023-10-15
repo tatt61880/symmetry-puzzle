@@ -506,7 +506,6 @@
       // レベル1をロード時、レベル1を未クリアのときはヘルプ画面を表示する。
       const isLineMode = level.isLineMode();
       const playerScore = app.savedata.getHighestScore(levelObj, isLineMode);
-      console.log(playerScore, levelObj);
       if (playerScore === null) {
         app.dialog.help.show();
       }
