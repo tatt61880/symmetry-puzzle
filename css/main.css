@@ -61,7 +61,8 @@ img.check-mode {
   height: 32px;
 }
 
-div.noselect {
+div.user-select-none {
+  -webkit-user-select: none;
   user-select: none;
 }
 
