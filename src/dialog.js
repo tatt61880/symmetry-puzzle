@@ -197,11 +197,18 @@
       page = 0;
     }
     elems.levels.dialog.dataset.page = page;
+
+    let prevHide = false;
+
+    // ←
     if (page === 0) {
       app.common.hideElem(elems.levels.prev);
+      prevHide = true;
     } else {
       app.common.showElem(elems.levels.prev);
     }
+
+    // →
     if (
       page + 1 ===
       Math.floor(
@@ -209,6 +216,9 @@
       )
     ) {
       app.common.hideElem(elems.levels.next);
+      if (prevHide) {
+        app.common.hideElem(elems.levels.buttonSvg);
+      }
     } else {
       app.common.showElem(elems.levels.next);
     }

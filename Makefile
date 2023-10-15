@@ -32,3 +32,6 @@ solveall:
 
 solveall2:
 	npm run solve -- --id all --all --max 1000 --time 10
+
+solveall2line:
+	npm run solve -- --id all --all --max 1000 --time 10 --line
