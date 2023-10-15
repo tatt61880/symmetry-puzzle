@@ -20,7 +20,6 @@
       step: 29,
       subject: '2022',
     },
-    */
     2023: {
       w: 17,
       h: 7,
@@ -29,6 +28,7 @@
       step: 33,
       subject: '2023',
     },
+    */
   };
 
   Object.freeze(levelsPointEx);
