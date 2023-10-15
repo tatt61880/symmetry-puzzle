@@ -349,11 +349,11 @@
       if (highestScore !== null) {
         const text = app.svg.createText(1, {
           x: LEVEL_SELECT_WIDTH - 5,
-          y: 8,
+          y: 9,
           text: highestScore,
           fill: app.common.getStepColor(highestScore, bestStep),
         });
-        text.setAttribute('font-size', '9px');
+        text.setAttribute('font-size', '11px');
         text.setAttribute('text-anchor', 'end');
         g.appendChild(text);
       }
