@@ -869,7 +869,7 @@
             app.Level.CHECK_MODE.POINT,
             {}
           );
-          const blockSize = 32;
+          const blockSize = 40;
           const state = app.states.charToState[char];
           const block = levelForEditChar.createOneBlock(
             1,
