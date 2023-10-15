@@ -1226,14 +1226,14 @@
 
       // サイズ変更ボタンの追加
       {
-        const cx1 = frameSize / blockSize;
-        const cx2 = frameSize / blockSize + (level.getWidth() - 1.3) / 2;
-        const cx3 = frameSize / blockSize + (level.getWidth() + 1.3) / 2;
-        const cx4 = frameSize / blockSize + level.getWidth();
-        const cy1 = frameSize / blockSize;
-        const cy2 = frameSize / blockSize + (level.getHeight() - 1.3) / 2;
-        const cy3 = frameSize / blockSize + (level.getHeight() + 1.3) / 2;
-        const cy4 = frameSize / blockSize + level.getHeight();
+        const cx1 = frameSize / blockSize + 0.5;
+        const cx2 = frameSize / blockSize + level.getWidth() * 0.3;
+        const cx3 = frameSize / blockSize + level.getWidth() * 0.7;
+        const cx4 = frameSize / blockSize + level.getWidth() - 0.5;
+        const cy1 = frameSize / blockSize + 0.5;
+        const cy2 = frameSize / blockSize + level.getHeight() * 0.3;
+        const cy3 = frameSize / blockSize + level.getHeight() * 0.7;
+        const cy4 = frameSize / blockSize + level.getHeight() - 0.5;
         const buttons = [
           { cx: cx1, cy: cy2, dx: -1, dy: 0, flag: true },
           { cx: cx1, cy: cy3, dx: +1, dy: 0, flag: true },
@@ -1248,7 +1248,7 @@
           const circle = app.svg.createCircle(blockSize, {
             cx: button.cx,
             cy: button.cy,
-            r: 0.5,
+            r: 0.45,
             fill: '#e5a0e5',
             stroke: '#aa33aa',
             strokeWidth: 0.1,
