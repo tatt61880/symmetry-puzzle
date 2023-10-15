@@ -896,10 +896,6 @@
       }
       editboxFunctions[app.states.stateToChar[app.states.none]]();
 
-      elems.edit.wDec.addEventListener('click', (e) => resizeLevel(e, -1, 0));
-      elems.edit.wInc.addEventListener('click', (e) => resizeLevel(e, 1, 0));
-      elems.edit.hDec.addEventListener('click', (e) => resizeLevel(e, 0, -1));
-      elems.edit.hInc.addEventListener('click', (e) => resizeLevel(e, 0, 1));
       elems.edit.normalize.addEventListener('click', () => {
         if (!level.isNormalized()) {
           addUndo(null);
@@ -1255,7 +1251,7 @@
           });
           circle.classList.add('button');
           circle.addEventListener('click', () => {
-            resizeLevelSub(button.dx, button.dy, button.flag);
+            resizeLevel(button.dx, button.dy, button.flag);
           });
           g.appendChild(circle);
 
@@ -1619,7 +1615,7 @@
     }
   }
 
-  function resizeLevelSub(dx, dy, flag) {
+  function resizeLevel(dx, dy, flag) {
     const w = level.getW() + dx;
     const h = level.getH() + dy;
     if (w < 1) return;
@@ -1639,10 +1635,6 @@
       const obj = { w, h, s };
       applyObj(obj, { resizeFlag: false });
     }
-  }
-
-  function resizeLevel(e, dx, dy) {
-    resizeLevelSub(dx, dy, e.shiftKey);
   }
 
   function addUndo(dir) {

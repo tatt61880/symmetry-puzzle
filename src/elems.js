@@ -87,10 +87,6 @@
     edit: {
       editbox: 'editbox',
       editShape: 'edit-drawing-shape',
-      wDec: 'w-dec',
-      wInc: 'w-inc',
-      hDec: 'h-dec',
-      hInc: 'h-inc',
       normalize: 'edit-normalize',
       rotate: 'edit-rotate',
       mirror: 'edit-mirror',
