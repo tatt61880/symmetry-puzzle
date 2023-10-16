@@ -32,6 +32,16 @@
     .active-hover:hover {
       filter: contrast(90%);
     }
+
+    #stick-base {
+      display: block;
+      opacity: 1;
+      transition: 0.5s;
+
+      &.hide {
+        opacity: 0;
+      }
+    }
   }
 
   .stick-area {
