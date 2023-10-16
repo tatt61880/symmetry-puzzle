@@ -224,14 +224,17 @@
 }
 
 @keyframes animation-axis-point1 {
-  0%,
-  100% {
+  0% {
     transform: rotate(0deg);
   }
 
-  40%,
-  80% {
+  35%,
+  65% {
     transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }
 
