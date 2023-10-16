@@ -401,7 +401,7 @@
 
   function updateSvg() {
     const svgMaxWidth = 490;
-    const svgMaxHeight = 280;
+    const svgMaxHeight = 330;
     blockSize = Math.min(
       (svgMaxWidth - 2 * frameSize) / level.getWidth(),
       (svgMaxHeight - 2 * frameSize) / level.getHeight()
