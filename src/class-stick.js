@@ -63,7 +63,7 @@
       const bcRect = this.#stick.base.getBoundingClientRect();
       const x = cursorPos.x - bcRect.width / 2;
       const y = cursorPos.y - bcRect.height / 2;
-      const minDist = 60;
+      const minDist = 48;
 
       if (x ** 2 + y ** 2 < minDist ** 2) {
         const dir = Stick.DIRS.NEUTRAL;
