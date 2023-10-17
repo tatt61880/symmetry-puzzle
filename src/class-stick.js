@@ -3,6 +3,7 @@
   const isBrowser = typeof window !== 'undefined';
 
   class Stick {
+    #buttons;
     #stick;
     #pointerInputFlag;
     #enable;
@@ -15,8 +16,9 @@
       LEFT: '3',
     };
 
-    constructor(stick) {
+    constructor(stick, buttons) {
       this.#stick = stick;
+      this.#buttons = buttons;
       this.#enable = true;
       this.#pointerInputFlag = false;
 
@@ -130,6 +132,25 @@
 
       this.#stick.inner.style.setProperty('transform', transforms[dir](33.7));
       this.#stick.inner2.style.setProperty('transform', transforms[dir](34.9));
+
+      this.#buttons.up.classList.remove('low-contrast');
+      this.#buttons.right.classList.remove('low-contrast');
+      this.#buttons.down.classList.remove('low-contrast');
+      this.#buttons.left.classList.remove('low-contrast');
+      switch (dir) {
+        case Stick.DIRS.UP:
+          this.#buttons.up.classList.add('low-contrast');
+          break;
+        case Stick.DIRS.RIGHT:
+          this.#buttons.right.classList.add('low-contrast');
+          break;
+        case Stick.DIRS.DOWN:
+          this.#buttons.down.classList.add('low-contrast');
+          break;
+        case Stick.DIRS.LEFT:
+          this.#buttons.left.classList.add('low-contrast');
+          break;
+      }
     }
   }
 

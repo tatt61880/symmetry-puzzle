@@ -15,40 +15,40 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.10.10">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.10.10">
 
-  <link rel="stylesheet" href="./css/main.css?2023.10.16">
-  <link rel="stylesheet" href="./css/title.css?2023.10.16">
-  <link rel="stylesheet" href="./css/game.css?2023.10.16">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.10.16">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.10.16">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.10.16">
-  <link rel="stylesheet" href="./css/animation.css?2023.10.16">
+  <link rel="stylesheet" href="./css/main.css?2023.10.17">
+  <link rel="stylesheet" href="./css/title.css?2023.10.17">
+  <link rel="stylesheet" href="./css/game.css?2023.10.17">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.10.17">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.10.17">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.10.17">
+  <link rel="stylesheet" href="./css/animation.css?2023.10.17">
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-  <script src="./src/states.js?2023.10.16"></script>
-  <script src="./src/colors.js?2023.10.16"></script>
-  <script src="./src/svg.js?2023.10.16"></script>
-  <script src="./src/class-stack.js?2023.10.16"></script>
-  <script src="./src/class-level.js?2023.10.16"></script>
+  <script src="./src/states.js?2023.10.17"></script>
+  <script src="./src/colors.js?2023.10.17"></script>
+  <script src="./src/svg.js?2023.10.17"></script>
+  <script src="./src/class-stack.js?2023.10.17"></script>
+  <script src="./src/class-level.js?2023.10.17"></script>
 
-  <script src="./src/class-savedata.js?2023.10.16"></script>
-  <script src="./src/class-undo-info.js?2023.10.16"></script>
-  <script src="./src/class-elems.js?2023.10.16"></script>
-  <script src="./src/class-stick.js?2023.10.16"></script>
+  <script src="./src/class-savedata.js?2023.10.17"></script>
+  <script src="./src/class-undo-info.js?2023.10.17"></script>
+  <script src="./src/class-elems.js?2023.10.17"></script>
+  <script src="./src/class-stick.js?2023.10.17"></script>
 
-  <script src="./src/levels-line.js?2023.10.16"></script>
-  <script src="./src/levels-line-ex.js?2023.10.16"></script>
-  <script src="./src/levels-point.js?2023.10.16"></script>
-  <script src="./src/levels-point-ex.js?2023.10.16"></script>
+  <script src="./src/levels-line.js?2023.10.17"></script>
+  <script src="./src/levels-line-ex.js?2023.10.17"></script>
+  <script src="./src/levels-point.js?2023.10.17"></script>
+  <script src="./src/levels-point-ex.js?2023.10.17"></script>
 
-  <script src="./src/elems.js?2023.10.16"></script>
+  <script src="./src/elems.js?2023.10.17"></script>
 
-  <script src="./src/solve.js?2023.10.16"></script>
+  <script src="./src/solve.js?2023.10.17"></script>
 
-  <script src="./src/common.js?2023.10.16"></script>
-  <script src="./src/dialog.js?2023.10.16"></script>
+  <script src="./src/common.js?2023.10.17"></script>
+  <script src="./src/dialog.js?2023.10.17"></script>
 
-  <script src="./src/analyze-url.js?2023.10.16"></script>
-  <script src="./src/main.js?2023.10.16"></script>
+  <script src="./src/analyze-url.js?2023.10.17"></script>
+  <script src="./src/main.js?2023.10.17"></script>
 </head>
 
 <body>
@@ -493,7 +493,7 @@
             <rect x="-250" y="-125" width="500" height="250" fill="#eee" stroke="none" />
 
             <!-- Undoボタン -->
-            <g id="button-undo" class="button" transform="translate(-90,0) scale(1.6,1.6)">
+            <g id="button-undo" class="button" transform="translate(-165,0) scale(1.2,1.2)">
               <circle cx="0" cy="0" r="28" fill="lightgray" stroke="#888888" stroke-width="4" />
               <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#888888" stroke-width="4" />
               <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#888888" stroke="none" stroke-width="4" />
@@ -501,58 +501,86 @@
                 fill="#888888">z</text>
             </g>
 
-            <!-- スティック -->
-            <g id="stick-base" class="stick-area" transform="translate(90,0) scale(1.6,1.6)">
-              <!-- 範囲 -->
-              <rect x="-60" y="-60" width="120" height="120" fill="lightgray" stroke="none" />
-              <!-- 線 -->
-              <g>
-                <polygon points="-59.2,-60 -60,-60 -60,-59.2 -21.75,-20.25 -20.25,-21.75" fill="#555" stroke="none" />
-                <polygon points="59.2,-60 60,-60 60,-59.2 21.75,-20.25 20.25,-21.75" fill="#555" stroke="none" />
-                <polygon points="59.2,60 60,60 60,59.2 21.75,20.25 20.25,21.75" fill="#555" stroke="none" />
-                <polygon points="-59.2,60 -60,60 -60,59.2 -21.75,20.25 -20.25,21.75" fill="#555" stroke="none" />
-                <circle cx="0" cy="0" r="29" fill="none" stroke="#555555" stroke-width="2" />
-                <rect x="-60" y="-60" width="120" height="120" fill="none" stroke="#555" />
-              </g>
-              <!-- 軸 -->
-              <circle cx="0" cy="0" r="14" fill="#00f0f0" stroke="#555" stroke-width="3" />
-              <!-- 矢印 -->
-              <g>
-                <polygon transform="translate(0, -45) rotate(0 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0"
-                  fill="#0000f8" />
-                <polygon transform="translate(45, 0) rotate(90 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0"
-                  fill="#0000f8" />
-                <polygon transform="translate(0, 45) rotate(180 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0"
-                  fill="#0000f8" />
-                <polygon transform="translate(-45, 0) rotate(270 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0"
-                  fill="#0000f8" />
-              </g>
-
-              <!-- スティック本体 -->
-              <g id="stick-thickness" class="stick">
-                <circle cx="0" cy="0" r="28" fill="#0000e8" stroke="#0000e8" stroke-width="4" />
-              </g>
-              <g id="stick-outer" class="stick">
-                <circle cx="0" cy="0" r="28" fill="#00f8f8" stroke="#0000f0" stroke-width="4" />
-              </g>
-              <g id="stick-outer2" class="stick">
-                <circle cx="0" cy="0" r="28" fill="none" stroke="#0000f8" stroke-width="4" />
-              </g>
-              <g id="stick-middle" class="stick">
-                <circle cx="0" cy="0" r="18" fill="none" stroke="#0000d8" stroke-width="4" />
-              </g>
-              <g id="stick-middle2" class="stick">
-                <circle cx="0" cy="0" r="18" fill="none" stroke="#0000f8" stroke-width="4" />
-              </g>
-              <g id="stick-inner" class="stick">
-                <circle cx="0" cy="0" r="8" fill="none" stroke="#0000d8" stroke-width="4" />
-              </g>
-              <g id="stick-inner2" class="stick">
-                <circle cx="0" cy="0" r="8" fill="none" stroke="#0000f8" stroke-width="4" />
+            <!-- 操作ボタン -->
+            <g id="controller-buttons-root">
+              <g id="controller-buttons-base" transform="translate(0,0) scale(1.6,1.6)">
+                <g id="controller-buttons-up" class="button" transform="translate(0,-40)">
+                  <rect x="-20" y="-20" rx="8" ry="8" width="40" height="40" fill="#cceeff" stroke="#0000f8"
+                    stroke-width="2" />
+                  <polygon transform="rotate(0 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0" fill="#0000f8" />
+                </g>
+                <g id="controller-buttons-right" class="button" transform="translate(40,0)">
+                  <rect x="-20" y="-20" rx="8" ry="8" width="40" height="40" fill="#cceeff" stroke="#0000f8"
+                    stroke-width="2" />
+                  <polygon transform="rotate(90 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0" fill="#0000f8" />
+                </g>
+                <g id="controller-buttons-down" class="button" transform="translate(0,40)">
+                  <rect x="-20" y="-20" rx="8" ry="8" width="40" height="40" fill="#cceeff" stroke="#0000f8"
+                    stroke-width="2" />
+                  <polygon transform="rotate(180 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0" fill="#0000f8" />
+                </g>
+                <g id="controller-buttons-left" class="button" transform="translate(-40,0)">
+                  <rect x="-20" y="-20" rx="8" ry="8" width="40" height="40" fill="#cceeff" stroke="#0000f8"
+                    stroke-width="2" />
+                  <polygon transform="rotate(270 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0" fill="#0000f8" />
+                </g>
               </g>
             </g>
 
-            <g id="next-level" class="button active-hover hide" transform="translate(90,0)">
+            <!-- スティック -->
+            <g id="controller-stick-root" class="hide">
+              <g id="controller-stick-base" class="controller-stick-area" transform="translate(0,0) scale(1.6,1.6)">
+                <!-- 範囲 -->
+                <rect x="-60" y="-60" width="120" height="120" fill="lightgray" stroke="none" />
+                <!-- 線 -->
+                <g>
+                  <polygon points="-59.2,-60 -60,-60 -60,-59.2 -21.75,-20.25 -20.25,-21.75" fill="#555" stroke="none" />
+                  <polygon points="59.2,-60 60,-60 60,-59.2 21.75,-20.25 20.25,-21.75" fill="#555" stroke="none" />
+                  <polygon points="59.2,60 60,60 60,59.2 21.75,20.25 20.25,21.75" fill="#555" stroke="none" />
+                  <polygon points="-59.2,60 -60,60 -60,59.2 -21.75,20.25 -20.25,21.75" fill="#555" stroke="none" />
+                  <circle cx="0" cy="0" r="29" fill="none" stroke="#555555" stroke-width="2" />
+                  <rect x="-60" y="-60" width="120" height="120" fill="none" stroke="#555" />
+                </g>
+                <!-- 軸 -->
+                <circle cx="0" cy="0" r="14" fill="#00f0f0" stroke="#555" stroke-width="3" />
+                <!-- 矢印 -->
+                <g>
+                  <polygon transform="translate(0, -45) rotate(0 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0"
+                    fill="#0000f8" />
+                  <polygon transform="translate(45, 0) rotate(90 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0"
+                    fill="#0000f8" />
+                  <polygon transform="translate(0, 45) rotate(180 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0"
+                    fill="#0000f8" />
+                  <polygon transform="translate(-45, 0) rotate(270 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0"
+                    fill="#0000f8" />
+                </g>
+
+                <!-- スティック本体 -->
+                <g id="controller-stick-thickness" class="stick">
+                  <circle cx="0" cy="0" r="28" fill="#0000e8" stroke="#0000e8" stroke-width="4" />
+                </g>
+                <g id="controller-stick-outer" class="stick">
+                  <circle cx="0" cy="0" r="28" fill="#00f8f8" stroke="#0000f0" stroke-width="4" />
+                </g>
+                <g id="controller-stick-outer2" class="stick">
+                  <circle cx="0" cy="0" r="28" fill="none" stroke="#0000f8" stroke-width="4" />
+                </g>
+                <g id="controller-stick-middle" class="stick">
+                  <circle cx="0" cy="0" r="18" fill="none" stroke="#0000d8" stroke-width="4" />
+                </g>
+                <g id="controller-stick-middle2" class="stick">
+                  <circle cx="0" cy="0" r="18" fill="none" stroke="#0000f8" stroke-width="4" />
+                </g>
+                <g id="controller-stick-inner" class="stick">
+                  <circle cx="0" cy="0" r="8" fill="none" stroke="#0000d8" stroke-width="4" />
+                </g>
+                <g id="controller-stick-inner2" class="stick">
+                  <circle cx="0" cy="0" r="8" fill="none" stroke="#0000f8" stroke-width="4" />
+                </g>
+              </g>
+            </g>
+
+            <g id="next-level" class="button active-hover hide" transform="translate(0,0)">
               <rect x="-90" y="-25" rx="10" ry="10" width="180" height="50" fill="#cceeff" stroke="#335577"
                 stroke-width="4" />
               <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22px"

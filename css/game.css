@@ -33,7 +33,7 @@
       filter: contrast(90%);
     }
 
-    #stick-base {
+    #controller-stick-base {
       display: block;
       opacity: 1;
       transition: 0.5s;
@@ -44,7 +44,7 @@
     }
   }
 
-  .stick-area {
+  .controller-stick-area {
     cursor: pointer;
     user-select: none;
   }

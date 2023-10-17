@@ -101,15 +101,23 @@
       undo: 'button-undo',
       nextLevel: 'next-level',
 
+      buttons: {
+        base: 'controller-buttons-base',
+        up: 'controller-buttons-up',
+        right: 'controller-buttons-right',
+        down: 'controller-buttons-down',
+        left: 'controller-buttons-left',
+      },
+
       stick: {
-        base: 'stick-base',
-        thickness: 'stick-thickness',
-        outer: 'stick-outer',
-        outer2: 'stick-outer2',
-        middle: 'stick-middle',
-        middle2: 'stick-middle2',
-        inner: 'stick-inner',
-        inner2: 'stick-inner2',
+        base: 'controller-stick-base',
+        thickness: 'controller-stick-thickness',
+        outer: 'controller-stick-outer',
+        outer2: 'controller-stick-outer2',
+        middle: 'controller-stick-middle',
+        middle2: 'controller-stick-middle2',
+        inner: 'controller-stick-inner',
+        inner2: 'controller-stick-inner2',
       },
     },
 

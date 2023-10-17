@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.10.16';
+  const VERSION_TEXT = 'v2023.10.17';
 
   const app = window.app;
   Object.freeze(app);
@@ -126,6 +126,26 @@
     }
   }
 
+  function buttonsUpStart() {
+    elems.controller.buttons.up.classList.add('low-contrast');
+    stick.update(app.Stick.DIRS.UP);
+  }
+
+  function buttonsRightStart() {
+    elems.controller.buttons.right.classList.add('low-contrast');
+    stick.update(app.Stick.DIRS.RIGHT);
+  }
+
+  function buttonsDownStart() {
+    elems.controller.buttons.down.classList.add('low-contrast');
+    stick.update(app.Stick.DIRS.DOWN);
+  }
+
+  function buttonsLeftStart() {
+    elems.controller.buttons.left.classList.add('low-contrast');
+    stick.update(app.Stick.DIRS.LEFT);
+  }
+
   function undoStart() {
     if (undoFlag) return;
     undoFlag = true;
@@ -146,6 +166,14 @@
   function undodown(e) {
     e.preventDefault();
     undoStart();
+  }
+
+  function pointerup() {
+    undoEnd();
+    elems.controller.buttons.up.classList.remove('low-contrast');
+    elems.controller.buttons.right.classList.remove('low-contrast');
+    elems.controller.buttons.down.classList.remove('low-contrast');
+    elems.controller.buttons.left.classList.remove('low-contrast');
   }
 
   function getCursorPos(elem, e) {
@@ -1023,12 +1051,28 @@
       };
 
       elems.controller.undo.addEventListener(pointerdownEventName, undodown);
+      elems.controller.buttons.up.addEventListener(
+        pointerdownEventName,
+        buttonsUpStart
+      );
+      elems.controller.buttons.right.addEventListener(
+        pointerdownEventName,
+        buttonsRightStart
+      );
+      elems.controller.buttons.down.addEventListener(
+        pointerdownEventName,
+        buttonsDownStart
+      );
+      elems.controller.buttons.left.addEventListener(
+        pointerdownEventName,
+        buttonsLeftStart
+      );
 
       elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
 
-      document.addEventListener(pointerupEventName, undoEnd);
+      document.addEventListener(pointerupEventName, pointerup);
 
-      stick = new app.Stick(elems.controller.stick);
+      stick = new app.Stick(elems.controller.stick, elems.controller.buttons);
     }
   }
 
@@ -1062,11 +1106,13 @@
 
   function updateController() {
     if (completeFlag) {
+      app.common.hideElem(elems.controller.buttons.base);
       app.common.hideElem(elems.controller.stick.base);
       if (!elems.level.next.classList.contains('hide')) {
         app.common.showElem(elems.controller.nextLevel);
       }
     } else {
+      app.common.showElem(elems.controller.buttons.base);
       app.common.showElem(elems.controller.stick.base);
       app.common.hideElem(elems.controller.nextLevel);
     }
