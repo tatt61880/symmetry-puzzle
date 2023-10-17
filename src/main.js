@@ -732,6 +732,7 @@
     elems.version.textContent = VERSION_TEXT;
 
     initElems();
+    updateTitle();
     updateEditLevel();
 
     window.onresize = resizeWindow;
@@ -882,7 +883,6 @@
 
   function initElems() {
     window.addEventListener('resize', updateWindows);
-    updateTitle();
 
     {
       const touchDevice = document.ontouchstart !== undefined;
