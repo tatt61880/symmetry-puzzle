@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.10.17e';
+  const VERSION_TEXT = 'v2023.10.17f';
 
   const app = window.app;
   Object.freeze(app);
@@ -438,7 +438,7 @@
   function updateSvg() {
     if (elems.category.game.classList.contains('hide')) return;
 
-    const divMainHeight = window.innerHeight - 354;
+    const divMainHeight = window.innerHeight - 394;
     elems.main.div.style.setProperty('height', `${divMainHeight}px`);
 
     const svgMaxWidth = 490;
@@ -639,16 +639,18 @@
   function updateLinkUrl() {
     if (!editMode) return;
     const url = level.getUrlStr(level.isLineMode());
-    elems.url.innerHTML = `<a href="${url}">現在の盤面を0手目として完成！</a>`;
+    elems.url.a.innerHTML = `<a href="${url}">現在の盤面を0手目として完成！</a>`;
   }
 
   function updateEditLevel() {
     if (editMode) {
-      app.common.showElem(elems.url);
+      app.common.showElem(elems.url.div);
       app.common.showElem(elems.edit.editbox);
+      app.common.hideElem(elems.controller.widget);
     } else {
-      app.common.hideElem(elems.url);
+      app.common.hideElem(elems.url.div);
       app.common.hideElem(elems.edit.editbox);
+      app.common.showElem(elems.controller.widget);
     }
     updateLinkUrl();
   }

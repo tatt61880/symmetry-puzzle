@@ -95,7 +95,10 @@
       switchMode: 'edit-switch-mode',
     },
 
-    url: 'url',
+    url: {
+      div: 'url-div',
+      a: 'url',
+    },
 
     controller: {
       widget: 'controller-widget',

@@ -27,6 +27,10 @@
     }
   }
 
+  #url-div {
+    padding: 1.2px;
+  }
+
   #controller-widget {
     #button-undo:hover,
     .active-hover:hover {
