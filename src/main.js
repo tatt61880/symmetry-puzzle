@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.10.17b';
+  const VERSION_TEXT = 'v2023.10.17c';
 
   const app = window.app;
   Object.freeze(app);
@@ -423,11 +423,21 @@
     updateSvg();
   }
 
+  function updateWindows() {
+    updateTitle();
+    updateSvg();
+  }
+
+  function updateTitle() {
+    const divTitleHeight = window.innerHeight - 60;
+    elems.category.title.style.setProperty('height', `${divTitleHeight}px`);
+  }
+
   function updateSvg() {
-    const divHeight = window.innerHeight - 354;
-    elems.main.div.style.setProperty('height', `${divHeight}px`);
+    const divMainHeight = window.innerHeight - 354;
+    elems.main.div.style.setProperty('height', `${divMainHeight}px`);
     const svgMaxWidth = 490;
-    const svgMaxHeight = divHeight;
+    const svgMaxHeight = divMainHeight;
     blockSize = Math.min(
       (svgMaxWidth - 2 * frameSize) / level.getWidth(),
       (svgMaxHeight - 2 * frameSize) / level.getHeight()
@@ -870,7 +880,8 @@
   }
 
   function initElems() {
-    window.addEventListener('resize', updateSvg);
+    window.addEventListener('resize', updateWindows);
+    updateTitle();
 
     {
       const touchDevice = document.ontouchstart !== undefined;
