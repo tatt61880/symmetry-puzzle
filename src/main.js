@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.10.17';
+  const VERSION_TEXT = 'v2023.10.17b';
 
   const app = window.app;
   Object.freeze(app);
@@ -126,23 +126,23 @@
     }
   }
 
-  function buttonsUpStart() {
-    elems.controller.buttons.up.classList.add('low-contrast');
+  function buttonsUpStart(e) {
+    e.preventDefault();
     stick.update(app.Stick.DIRS.UP);
   }
 
-  function buttonsRightStart() {
-    elems.controller.buttons.right.classList.add('low-contrast');
+  function buttonsRightStart(e) {
+    e.preventDefault();
     stick.update(app.Stick.DIRS.RIGHT);
   }
 
-  function buttonsDownStart() {
-    elems.controller.buttons.down.classList.add('low-contrast');
+  function buttonsDownStart(e) {
+    e.preventDefault();
     stick.update(app.Stick.DIRS.DOWN);
   }
 
-  function buttonsLeftStart() {
-    elems.controller.buttons.left.classList.add('low-contrast');
+  function buttonsLeftStart(e) {
+    e.preventDefault();
     stick.update(app.Stick.DIRS.LEFT);
   }
 
@@ -170,10 +170,6 @@
 
   function pointerup() {
     undoEnd();
-    elems.controller.buttons.up.classList.remove('low-contrast');
-    elems.controller.buttons.right.classList.remove('low-contrast');
-    elems.controller.buttons.down.classList.remove('low-contrast');
-    elems.controller.buttons.left.classList.remove('low-contrast');
   }
 
   function getCursorPos(elem, e) {
