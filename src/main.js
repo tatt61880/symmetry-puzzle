@@ -429,11 +429,15 @@
   }
 
   function updateTitle() {
+    if (elems.category.title.classList.contains('hide')) return;
+
     const divTitleHeight = window.innerHeight - 60;
     elems.title.inner1.style.setProperty('height', `${divTitleHeight}px`);
   }
 
   function updateSvg() {
+    if (elems.category.game.classList.contains('hide')) return;
+
     const divMainHeight = window.innerHeight - 354;
     elems.main.div.style.setProperty('height', `${divMainHeight}px`);
 
