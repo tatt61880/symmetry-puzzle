@@ -870,8 +870,14 @@
   function initElems() {
     {
       const touchDevice = document.ontouchstart !== undefined;
+      const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
+      elems.controller.widget.addEventListener(pointerdownEventName, (e) => {
+        // ダブルタップしたときの画面の拡大縮小をしないようにする。
+        e.preventDefault();
+      });
       elems.controller.widget.addEventListener(pointermoveEventName, (e) => {
+        // スワイプ操作を無効化する。
         e.preventDefault();
       });
     }
