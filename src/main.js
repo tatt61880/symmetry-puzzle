@@ -896,7 +896,6 @@
       elems.contents.addEventListener('mousedown', (e) => {
         // ダブルタップしたときの画面の拡大縮小をしないようにする。
         e.preventDefault();
-        console.log(123);
       });
 
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
