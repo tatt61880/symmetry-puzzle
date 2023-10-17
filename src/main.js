@@ -892,13 +892,15 @@
 
     {
       const touchDevice = document.ontouchstart !== undefined;
+
+      // 「次のレベルへ」ボタンが動作しなくなる問題があるので、いったんコメントアウト。
       // const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
-      const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       // elems.controller.widget.addEventListener(pointerdownEventName, (e) => {
       //   // ダブルタップしたときの画面の拡大縮小をしないようにする。
       //   e.preventDefault();
       // });
 
+      const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       elems.contents.addEventListener(pointermoveEventName, (e) => {
         // スワイプ操作を無効化する。
         e.preventDefault();
