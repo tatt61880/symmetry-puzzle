@@ -424,8 +424,10 @@
   }
 
   function updateSvg() {
+    const divHeight = window.innerHeight - 355;
+    elems.main.div.style.setProperty('height', `${divHeight}px`);
     const svgMaxWidth = 490;
-    const svgMaxHeight = 330;
+    const svgMaxHeight = divHeight;
     blockSize = Math.min(
       (svgMaxWidth - 2 * frameSize) / level.getWidth(),
       (svgMaxHeight - 2 * frameSize) / level.getHeight()
@@ -868,6 +870,8 @@
   }
 
   function initElems() {
+    window.addEventListener('resize', updateSvg);
+
     {
       const touchDevice = document.ontouchstart !== undefined;
       // const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
