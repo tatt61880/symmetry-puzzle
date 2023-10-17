@@ -10,7 +10,7 @@
     background-color: #cceeff;
   }
 
-  #main {
+  #main-div {
     position: relative;
     box-sizing: border-box;
     width: 490px;
@@ -18,7 +18,7 @@
     padding: 0;
     margin: 5px;
 
-    #svg-main {
+    #main-svg {
       position: absolute;
       top: 50%;
       left: 50%;

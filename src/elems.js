@@ -72,7 +72,7 @@
     },
 
     main: {
-      div: 'main',
+      div: 'main-div',
       svg: 'main-svg',
     },
 
