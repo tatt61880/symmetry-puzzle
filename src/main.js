@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.10.17d';
+  const VERSION_TEXT = 'v2023.10.17e';
 
   const app = window.app;
   Object.freeze(app);
@@ -896,9 +896,12 @@
       //   // ダブルタップしたときの画面の拡大縮小をしないようにする。
       //   e.preventDefault();
       // });
-      elems.controller.widget.addEventListener(pointermoveEventName, (e) => {
-        // スワイプ操作を無効化する。
-        e.preventDefault();
+
+      [elems.category.title, elems.category.game].forEach((elem) => {
+        elem.addEventListener(pointermoveEventName, (e) => {
+          // スワイプ操作を無効化する。
+          e.preventDefault();
+        });
       });
     }
 
