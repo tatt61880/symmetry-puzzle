@@ -28,6 +28,7 @@
   #records-table-div {
     & table {
       margin: auto;
+      font-size: 25px;
       border-collapse: collapse;
     }
 

@@ -396,15 +396,18 @@
   // --------------------------------------------------------------------------
 
   function showRecordsDialog() {
+    const table = createRecordsTable();
     elems.records.tableDiv.innerHTML = '';
-    elems.records.tableDiv.appendChild(createRecordsTable());
+    elems.records.tableDiv.appendChild(table);
     elems.records.dialog.showModal();
   }
 
   function createRecordsTable() {
     const table = document.createElement('table');
-    table.appendChild(createRecordsThead());
-    table.appendChild(createRecordsTbody());
+    const thead = createRecordsThead();
+    const tbody = createRecordsTbody();
+    table.appendChild(thead);
+    table.appendChild(tbody);
     return table;
   }
 
@@ -414,7 +417,7 @@
     const tr = document.createElement('tr');
     thead.appendChild(tr);
 
-    const imgSize = '50';
+    const imgSize = '75';
     {
       const th = document.createElement('th');
       tr.appendChild(th);
@@ -449,7 +452,7 @@
 
   function createRecordsTbody() {
     const tbody = document.createElement('tbody');
-    const size = 30;
+    const crownSize = 50;
 
     let numLineNotSolved = 0;
     let numLineSolvedNormal = 0;
@@ -535,9 +538,9 @@
       {
         const th = document.createElement('th');
         const svg = app.svg.createSvg();
-        svg.setAttribute('width', size);
-        svg.setAttribute('height', size);
-        const crown = app.common.createCrown(size, 0, 0, 1, 1);
+        svg.setAttribute('width', crownSize);
+        svg.setAttribute('height', crownSize);
+        const crown = app.common.createCrown(crownSize, 0, 0, 1, 1);
         tr.appendChild(th);
         th.appendChild(svg);
         svg.appendChild(crown);
@@ -567,9 +570,9 @@
       {
         const th = document.createElement('th');
         const svg = app.svg.createSvg();
-        svg.setAttribute('width', size);
-        svg.setAttribute('height', size);
-        const crown = app.common.createCrown(size, 0, 0, 1, 0);
+        svg.setAttribute('width', crownSize);
+        svg.setAttribute('height', crownSize);
+        const crown = app.common.createCrown(crownSize, 0, 0, 1, 0);
         tr.appendChild(th);
         th.appendChild(svg);
         svg.appendChild(crown);
@@ -599,9 +602,9 @@
       {
         const th = document.createElement('th');
         const svg = app.svg.createSvg();
-        svg.setAttribute('width', size);
-        svg.setAttribute('height', size);
-        const crown = app.common.createCrown(size, 0, 0, null, 1);
+        svg.setAttribute('width', crownSize);
+        svg.setAttribute('height', crownSize);
+        const crown = app.common.createCrown(crownSize, 0, 0, null, 1);
         tr.appendChild(th);
         th.appendChild(svg);
         svg.appendChild(crown);
