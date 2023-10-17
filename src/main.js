@@ -424,7 +424,7 @@
   }
 
   function updateSvg() {
-    const divHeight = window.innerHeight - 355;
+    const divHeight = window.innerHeight - 354;
     elems.main.div.style.setProperty('height', `${divHeight}px`);
     const svgMaxWidth = 490;
     const svgMaxHeight = divHeight;
