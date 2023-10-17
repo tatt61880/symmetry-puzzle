@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.10.14';
+  const VERSION_TEXT = 'v2023.10.16';
 
   const app = window.app;
   Object.freeze(app);
@@ -844,6 +844,14 @@
   }
 
   function initElems() {
+    {
+      const touchDevice = document.ontouchstart !== undefined;
+      const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
+      elems.controller.widget.addEventListener(pointermoveEventName, (e) => {
+        e.preventDefault();
+      });
+    }
+
     elems.top.addEventListener('click', onloadTitle);
 
     // Autoモード用
