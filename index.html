@@ -15,40 +15,40 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.10.10">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.10.10">
 
-  <link rel="stylesheet" href="./css/main.css?2023.10.17">
-  <link rel="stylesheet" href="./css/title.css?2023.10.17">
-  <link rel="stylesheet" href="./css/game.css?2023.10.17">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.10.17">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.10.17">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.10.17">
-  <link rel="stylesheet" href="./css/animation.css?2023.10.17">
+  <link rel="stylesheet" href="./css/main.css?2023.10.17d">
+  <link rel="stylesheet" href="./css/title.css?2023.10.17d">
+  <link rel="stylesheet" href="./css/game.css?2023.10.17d">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.10.17d">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.10.17d">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.10.17d">
+  <link rel="stylesheet" href="./css/animation.css?2023.10.17d">
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-  <script src="./src/states.js?2023.10.17"></script>
-  <script src="./src/colors.js?2023.10.17"></script>
-  <script src="./src/svg.js?2023.10.17"></script>
-  <script src="./src/class-stack.js?2023.10.17"></script>
-  <script src="./src/class-level.js?2023.10.17"></script>
+  <script src="./src/states.js?2023.10.17d"></script>
+  <script src="./src/colors.js?2023.10.17d"></script>
+  <script src="./src/svg.js?2023.10.17d"></script>
+  <script src="./src/class-stack.js?2023.10.17d"></script>
+  <script src="./src/class-level.js?2023.10.17d"></script>
 
-  <script src="./src/class-savedata.js?2023.10.17"></script>
-  <script src="./src/class-undo-info.js?2023.10.17"></script>
-  <script src="./src/class-elems.js?2023.10.17"></script>
-  <script src="./src/class-stick.js?2023.10.17"></script>
+  <script src="./src/class-savedata.js?2023.10.17d"></script>
+  <script src="./src/class-undo-info.js?2023.10.17d"></script>
+  <script src="./src/class-elems.js?2023.10.17d"></script>
+  <script src="./src/class-stick.js?2023.10.17d"></script>
 
-  <script src="./src/levels-line.js?2023.10.17"></script>
-  <script src="./src/levels-line-ex.js?2023.10.17"></script>
-  <script src="./src/levels-point.js?2023.10.17"></script>
-  <script src="./src/levels-point-ex.js?2023.10.17"></script>
+  <script src="./src/levels-line.js?2023.10.17d"></script>
+  <script src="./src/levels-line-ex.js?2023.10.17d"></script>
+  <script src="./src/levels-point.js?2023.10.17d"></script>
+  <script src="./src/levels-point-ex.js?2023.10.17d"></script>
 
-  <script src="./src/elems.js?2023.10.17"></script>
+  <script src="./src/elems.js?2023.10.17d"></script>
 
-  <script src="./src/solve.js?2023.10.17"></script>
+  <script src="./src/solve.js?2023.10.17d"></script>
 
-  <script src="./src/common.js?2023.10.17"></script>
-  <script src="./src/dialog.js?2023.10.17"></script>
+  <script src="./src/common.js?2023.10.17d"></script>
+  <script src="./src/dialog.js?2023.10.17d"></script>
 
-  <script src="./src/analyze-url.js?2023.10.17"></script>
-  <script src="./src/main.js?2023.10.17"></script>
+  <script src="./src/analyze-url.js?2023.10.17d"></script>
+  <script src="./src/main.js?2023.10.17d"></script>
 </head>
 
 <body>
@@ -213,30 +213,34 @@
     </dialog>
 
     <div id="title">
-      <table>
-        <tr>
-          <td>
-            <div id="button-play-line" class="title-button">
-              <img src="./images/logo-line.png?2023.10.10" width="80" height="80">
-            </div>
-          </td>
-          <td>
-            <div id="button-play-point" class="title-button">
-              <img src="./images/logo-point.png?2023.10.10" width="80" height="80">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <div class="flex">
-              <div id="button-records" class="title-button">
-                <svg id="button-records-svg" width="50" height="50">
-                </svg>
-              </div>
-            </div>
-          </td>
-        </tr>
-      </table>
+      <div id="title-inner1">
+        <div id="title-inner2">
+          <table>
+            <tr>
+              <td>
+                <div id="button-play-line" class="title-button">
+                  <img src="./images/logo-line.png?2023.10.10" width="80" height="80">
+                </div>
+              </td>
+              <td>
+                <div id="button-play-point" class="title-button">
+                  <img src="./images/logo-point.png?2023.10.10" width="80" height="80">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <div class="flex">
+                  <div id="button-records" class="title-button">
+                    <svg id="button-records-svg" width="50" height="50">
+                    </svg>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
     </div>
 
     <dialog id="dialog-records">

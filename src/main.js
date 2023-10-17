@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.10.17c';
+  const VERSION_TEXT = 'v2023.10.17d';
 
   const app = window.app;
   Object.freeze(app);
@@ -430,12 +430,13 @@
 
   function updateTitle() {
     const divTitleHeight = window.innerHeight - 60;
-    elems.category.title.style.setProperty('height', `${divTitleHeight}px`);
+    elems.title.inner1.style.setProperty('height', `${divTitleHeight}px`);
   }
 
   function updateSvg() {
     const divMainHeight = window.innerHeight - 354;
     elems.main.div.style.setProperty('height', `${divMainHeight}px`);
+
     const svgMaxWidth = 490;
     const svgMaxHeight = divMainHeight;
     blockSize = Math.min(

@@ -2,16 +2,24 @@
 
 #title {
   box-sizing: border-box;
-  width: 500px;
-  height: 624px;
+
+  #title-inner1 {
+    display: table;
+    width: 500px;
+    height: auto;
+  }
+
+  #title-inner2 {
+    display: table-cell;
+    vertical-align: middle;
+  }
 
   & table {
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: auto;
-    height: 648px;
+    margin: auto;
   }
 
   .title-button {
