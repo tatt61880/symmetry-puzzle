@@ -889,6 +889,7 @@
 
   function initElems() {
     window.addEventListener('resize', updateWindows);
+    screen.orientation.addEventListener('change', updateWindows);
 
     {
       const touchDevice = document.ontouchstart !== undefined;
