@@ -899,11 +899,9 @@
       //   e.preventDefault();
       // });
 
-      [elems.category.title, elems.category.game].forEach((elem) => {
-        elem.addEventListener(pointermoveEventName, (e) => {
-          // スワイプ操作を無効化する。
-          e.preventDefault();
-        });
+      elems.contents.addEventListener(pointermoveEventName, (e) => {
+        // スワイプ操作を無効化する。
+        e.preventDefault();
       });
     }
 
