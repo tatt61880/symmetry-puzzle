@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.10.17f';
+  const VERSION_TEXT = 'v2023.10.17g';
 
   const app = window.app;
   Object.freeze(app);
@@ -893,12 +893,11 @@
     {
       const touchDevice = document.ontouchstart !== undefined;
 
-      // 「次のレベルへ」ボタンが動作しなくなる問題があるので、いったんコメントアウト。
-      // const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
-      // elems.controller.widget.addEventListener(pointerdownEventName, (e) => {
-      //   // ダブルタップしたときの画面の拡大縮小をしないようにする。
-      //   e.preventDefault();
-      // });
+      elems.contents.addEventListener('mousedown', (e) => {
+        // ダブルタップしたときの画面の拡大縮小をしないようにする。
+        e.preventDefault();
+        console.log(123);
+      });
 
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       elems.contents.addEventListener(pointermoveEventName, (e) => {
