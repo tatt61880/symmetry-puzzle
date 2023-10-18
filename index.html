@@ -261,63 +261,68 @@
 
     <div id="game" class="hide">
       <div id="level-widget" class="inner">
-        <div>
-          <svg width="450" height="85">
-            <!-- Reset -->
-            <g id="button-level-reset" class="button active-hover" transform="translate(35,35)">
-              <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
-              <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#87ceeb" stroke-width="4" />
-              <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#87ceeb" stroke="none" stroke-width="4" />
-              <text x="0" y="40" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
-                fill="#7799bb">r</text>
-            </g>
+        <svg width="450" height="100">
+          <!-- Reset -->
+          <g id="button-level-reset" class="button active-hover" transform="translate(35,50)">
+            <text x="0" y="-38" fill="#7799bb" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
+              font-size="14" class="translatable-toggle" data-en="RESET" data-ja="リセット" />
+            <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
+            <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#87ceeb" stroke-width="4" />
+            <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#87ceeb" stroke="none" stroke-width="4" />
+            <text x="0" y="40" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
+              fill="#7799bb">r</text>
+          </g>
 
-            <!-- Level -->
-            <g id="button-level-prev" class="button active-hover" transform="translate(95,7)">
-              <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb"
-                stroke-width="4" />
-              <path d="M 50 14 24 28 50 42 Z" fill="#87ceeb" />
-              <text x="40" y="69" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14px"
-                fill="#7799bb">Shift ←</text>
-            </g>
-            <g transform="translate(225,0)">
-              <text id="level-text" x="0" y="14" fill="#335577" dominant-baseline="middle" text-anchor="middle"
-                font-size="14" class="translatable-toggle" data-en="LEVEL" data-ja="レベル" />
-              <text id="level-id" x="0" y="45" fill="#335577" dominant-baseline="middle" text-anchor="middle"
-                font-size="40" />
-            </g>
-            <g id="button-level-next" class="button active-hover" transform="translate(275,7)">
-              <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb"
-                stroke-width="4" />
-              <path d="M 30 14 55 28 30 42 Z" fill="#87ceeb" />
-              <text x="40" y="69" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14px"
-                fill="#7799bb">Shift →</text>
-            </g>
+          <!-- Level -->
+          <g id="button-level-prev" class="button active-hover" transform="translate(95,22)">
+            <text x="40" y="-9" fill="#7799bb" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
+              font-size="14" class="translatable-toggle" data-en="PREV" data-ja="前" />
+            <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
+            <path d="M 50 14 24 28 50 42 Z" fill="#87ceeb" />
+            <text x="40" y="69" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14px"
+              fill="#7799bb">Shift ←</text>
+          </g>
+          <g transform="translate(225,0)">
+            <text id="level-text" x="0" y="14" fill="#335577" dominant-baseline="middle" font-weight="bold"
+              text-anchor="middle" font-size="14" class="translatable-toggle" data-en="LEVEL" data-ja="レベル" />
+            <text id="level-id" x="0" y="55" fill="#335577" dominant-baseline="middle" text-anchor="middle"
+              font-size="40" />
+          </g>
+          <g id="button-level-next" class="button active-hover" transform="translate(275,22)">
+            <text x="40" y="-9" fill="#7799bb" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
+              font-size="14" class="translatable-toggle" data-en="NEXT" data-ja="次" />
+            <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
+            <path d="M 30 14 55 28 30 42 Z" fill="#87ceeb" />
+            <text x="40" y="69" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14px"
+              fill="#7799bb">Shift →</text>
+          </g>
 
-            <!-- Edit -->
-            <g id="button-level-edit" class="button active-hover" transform="translate(415,35)">
-              <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
-              <text x="0" y="40" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
-                fill="#7799bb">@</text>
-            </g>
+          <!-- Edit -->
+          <g id="button-level-edit" class="button active-hover" transform="translate(415,50)">
+            <circle cx="0" cy="0" r="28" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
+            <text x="0" y="40" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
+              fill="#7799bb">@</text>
+          </g>
 
-            <!-- Levels -->
-            <g id="button-levels" class="button active-hover" transform="translate(415,35)">
-              <rect x="-28" y="-28" width="56" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
-              <rect x="-22" y="-22" width="12" height="12" fill="#87ceeb" />
-              <rect x="-6" y="-22" width="12" height="12" fill="#87ceeb" />
-              <rect x="10" y="-22" width="12" height="12" fill="#87ceeb" />
-              <rect x="-22" y="-6" width="12" height="12" fill="#87ceeb" />
-              <rect x="-6" y="-6" width="12" height="12" fill="#87ceeb" />
-              <rect x="10" y="-6" width="12" height="12" fill="#87ceeb" />
-              <rect x="-22" y="10" width="12" height="12" fill="#87ceeb" />
-              <rect x="-6" y="10" width="12" height="12" fill="#87ceeb" />
-              <rect x="10" y="10" width="12" height="12" fill="#87ceeb" />
-              <text x="0" y="40" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
-                fill="#7799bb">#</text>
-            </g>
-          </svg>
-        </div>
+          <!-- Levels -->
+          <g id="button-levels" class="button active-hover" transform="translate(415,50)">
+            <text x="0" y="-38" fill="#7799bb" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
+              font-size="14" class="translatable-toggle" data-en="LEVELS" data-ja="一覧" />
+
+            <rect x="-28" y="-28" width="56" height="56" fill="#eef0ff" stroke="#87ceeb" stroke-width="4" />
+            <rect x="-22" y="-22" width="12" height="12" fill="#87ceeb" />
+            <rect x="-6" y="-22" width="12" height="12" fill="#87ceeb" />
+            <rect x="10" y="-22" width="12" height="12" fill="#87ceeb" />
+            <rect x="-22" y="-6" width="12" height="12" fill="#87ceeb" />
+            <rect x="-6" y="-6" width="12" height="12" fill="#87ceeb" />
+            <rect x="10" y="-6" width="12" height="12" fill="#87ceeb" />
+            <rect x="-22" y="10" width="12" height="12" fill="#87ceeb" />
+            <rect x="-6" y="10" width="12" height="12" fill="#87ceeb" />
+            <rect x="10" y="10" width="12" height="12" fill="#87ceeb" />
+            <text x="0" y="40" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
+              fill="#7799bb">#</text>
+          </g>
+        </svg>
       </div>
 
       <dialog id="dialog-levels">
