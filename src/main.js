@@ -299,6 +299,9 @@
           gotoNextLevel();
           break;
       }
+    } else if (e.key === 'Enter') {
+      if (elems.controller.nextLevel.classList.contains('hide')) return;
+      gotoNextLevel();
     } else if (e.key === ' ') {
       if (settings.autoMode) {
         if (settingsAuto.paused) {
