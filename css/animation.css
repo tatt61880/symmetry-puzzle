@@ -61,8 +61,8 @@
     transform: scaleX(1);
   }
 
-  40%,
-  80% {
+  30%,
+  70% {
     transform: scaleX(-1);
   }
 }
@@ -81,8 +81,8 @@
     transform: scaleY(1);
   }
 
-  40%,
-  80% {
+  30%,
+  70% {
     transform: scaleY(-1);
   }
 }
@@ -101,8 +101,8 @@
     transform: rotate3d(1, 1, 0, 0deg);
   }
 
-  40%,
-  80% {
+  30%,
+  70% {
     transform: rotate3d(1, 1, 0, 180deg);
   }
 }
@@ -121,8 +121,8 @@
     transform: rotate3d(1, -1, 0, 0deg);
   }
 
-  40%,
-  80% {
+  30%,
+  70% {
     transform: rotate3d(1, -1, 0, 180deg);
   }
 }
@@ -228,8 +228,8 @@
     transform: rotate(0deg);
   }
 
-  35%,
-  65% {
+  30%,
+  70% {
     transform: rotate(180deg);
   }
 
