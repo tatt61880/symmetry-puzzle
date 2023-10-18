@@ -10,6 +10,8 @@
 
   const elems = new app.Elems({
     viewport: 'viewport',
+    header: 'header',
+    footer: 'footer',
     top: 'top',
     iconApp: 'icon-app',
     iconPoint: 'icon-point',

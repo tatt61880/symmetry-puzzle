@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.10.17g';
+  const VERSION_TEXT = 'v2023.10.18';
 
   const app = window.app;
   Object.freeze(app);
@@ -431,14 +431,27 @@
   function updateTitle() {
     if (elems.category.title.classList.contains('hide')) return;
 
-    const divTitleHeight = window.innerHeight - 60;
+    const divTitleHeight =
+      window.innerHeight -
+      [elems.header, elems.footer].reduce(
+        (sum, elem) => sum + elem.getBoundingClientRect().height,
+        0
+      );
     elems.title.inner1.style.setProperty('height', `${divTitleHeight}px`);
   }
 
   function updateSvg() {
     if (elems.category.game.classList.contains('hide')) return;
 
-    const divMainHeight = window.innerHeight - 394;
+    const divMainHeight =
+      window.innerHeight -
+      10 -
+      [
+        elems.header,
+        elems.level.widget,
+        elems.controller.widget,
+        elems.footer,
+      ].reduce((sum, elem) => sum + elem.getBoundingClientRect().height, 0);
     elems.main.div.style.setProperty('height', `${divMainHeight}px`);
 
     const svgMaxWidth = 490;
@@ -888,6 +901,7 @@
   }
 
   function initElems() {
+    updateWindows();
     window.addEventListener('resize', updateWindows);
 
     {
