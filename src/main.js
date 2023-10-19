@@ -452,7 +452,10 @@
       [
         elems.header,
         elems.level.widget,
+        elems.auto.buttons,
         elems.controller.widget,
+        elems.edit.editbox,
+        elems.url.div,
         elems.footer,
       ].reduce((sum, elem) => sum + elem.getBoundingClientRect().height, 0);
     elems.main.div.style.setProperty('height', `${divMainHeight}px`);
@@ -1791,6 +1794,7 @@
     }
     updateAutoStartPauseButtons();
     updateController();
+    updateSvg();
     replaceUrl();
   }
 
