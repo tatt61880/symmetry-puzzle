@@ -1328,23 +1328,59 @@
         const cy2 = frameSize / blockSize + level.getHeight() * 0.3;
         const cy3 = frameSize / blockSize + level.getHeight() * 0.7;
         const cy4 = frameSize / blockSize + level.getHeight() - 0.5;
+
+        const points1 = [
+          [0, -1],
+          [1, 0],
+          [0, 1],
+          [-1, 1],
+          [-1, -1],
+        ];
+        const points2 = [
+          [0, -1],
+          [1, -1],
+          [1, 1],
+          [0, 1],
+          [-1, 0],
+        ];
+        const points3 = [
+          [1, -1],
+          [1, 0],
+          [0, 1],
+          [-1, 0],
+          [-1, -1],
+        ];
+        const points4 = [
+          [0, -1],
+          [1, 0],
+          [1, 1],
+          [-1, 1],
+          [-1, 0],
+        ];
+
         const buttons = [
-          { cx: cx1, cy: cy2, dx: -1, dy: 0, flag: true },
-          { cx: cx1, cy: cy3, dx: +1, dy: 0, flag: true },
-          { cx: cx4, cy: cy2, dx: -1, dy: 0, flag: false },
-          { cx: cx4, cy: cy3, dx: +1, dy: 0, flag: false },
-          { cx: cx2, cy: cy1, dx: 0, dy: -1, flag: true },
-          { cx: cx3, cy: cy1, dx: 0, dy: 1, flag: true },
-          { cx: cx2, cy: cy4, dx: 0, dy: -1, flag: false },
-          { cx: cx3, cy: cy4, dx: 0, dy: 1, flag: false },
+          { cx: cx1, cy: cy2, points: points1, dx: -1, dy: 0, flag: true },
+          { cx: cx1, cy: cy3, points: points2, dx: +1, dy: 0, flag: true },
+          { cx: cx4, cy: cy2, points: points2, dx: -1, dy: 0, flag: false },
+          { cx: cx4, cy: cy3, points: points1, dx: +1, dy: 0, flag: false },
+          { cx: cx2, cy: cy1, points: points3, dx: 0, dy: -1, flag: true },
+          { cx: cx3, cy: cy1, points: points4, dx: 0, dy: +1, flag: true },
+          { cx: cx2, cy: cy4, points: points4, dx: 0, dy: -1, flag: false },
+          { cx: cx3, cy: cy4, points: points3, dx: 0, dy: +1, flag: false },
         ];
         buttons.forEach((button) => {
           if (button.dx === -1 && level.getWidth() <= 3) return;
           if (button.dy === -1 && level.getHeight() <= 3) return;
-          const circle = app.svg.createCircle(blockSize, {
-            cx: button.cx,
-            cy: button.cy,
-            r: 0.45,
+          const points = [];
+          for (const point of button.points) {
+            points.push([
+              button.cx + 0.45 * point[0],
+              button.cy + 0.45 * point[1],
+            ]);
+          }
+
+          const circle = app.svg.createPolygon(blockSize, {
+            points,
             fill: '#e5a0e5',
             stroke: '#aa33aa',
             strokeWidth: 0.1,
