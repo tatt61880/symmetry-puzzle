@@ -1199,7 +1199,7 @@
   function drawDotLines(mainSvgG) {
     const dotRatio = 1 / 40;
     const size = blockSize * dotRatio;
-    const dasharray = `${size} ${4 * size}`;
+    const strokeDasharray = `${size} ${4 * size}`;
     const g = app.svg.createG();
     mainSvgG.appendChild(g);
     // 横線
@@ -1211,7 +1211,7 @@
         y2: y,
         stroke: app.colors.line,
       });
-      line.setAttribute('stroke-dasharray', dasharray);
+      line.setAttribute('stroke-dasharray', strokeDasharray);
       g.appendChild(line);
     }
     // 縦線
@@ -1223,7 +1223,7 @@
         y2: level.getHeight(),
         stroke: app.colors.line,
       });
-      line.setAttribute('stroke-dasharray', dasharray);
+      line.setAttribute('stroke-dasharray', strokeDasharray);
       g.appendChild(line);
     }
     g.setAttribute('transform', `translate(${frameSize},${frameSize})`);
