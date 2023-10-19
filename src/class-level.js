@@ -21,14 +21,14 @@
     r: 1,
     d: 2,
     l: 3,
-    ur: 4,
-    dr: 5,
-    dl: 6,
-    ul: 7,
+    ul: 4,
+    ur: 5,
+    dr: 6,
+    dl: 7,
   };
 
-  const dxs = [0, 1, 0, -1, 1, 1, -1, -1];
-  const dys = [-1, 0, 1, 0, -1, 1, 1, -1];
+  const dxs = [0, 1, 0, -1, -1, 1, 1, -1];
+  const dys = [-1, 0, 1, 0, -1, -1, 1, 1];
 
   const blockBorderWidth = 0.125;
 
