@@ -1197,14 +1197,15 @@
   }
 
   function drawDotLines(mainSvgG) {
-    const size = blockSize / 40;
+    const dotRatio = 1 / 40;
+    const size = blockSize * dotRatio;
     const dasharray = `${size} ${4 * size}`;
     const g = app.svg.createG();
     mainSvgG.appendChild(g);
     // 横線
     for (let y = 1; y < level.getHeight(); ++y) {
       const line = app.svg.createLine(blockSize, {
-        x1: -1 / 80,
+        x1: -0.5 * dotRatio,
         y1: y,
         x2: level.getWidth(),
         y2: y,
@@ -1217,7 +1218,7 @@
     for (let x = 1; x < level.getWidth(); ++x) {
       const line = app.svg.createLine(blockSize, {
         x1: x,
-        y1: -1 / 80,
+        y1: -0.5 * dotRatio,
         x2: x,
         y2: level.getHeight(),
         stroke: app.colors.line,
