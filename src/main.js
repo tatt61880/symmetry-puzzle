@@ -1325,6 +1325,7 @@
         const cx2 = frameSize / blockSize + level.getWidth() * 0.3;
         const cx3 = frameSize / blockSize + level.getWidth() * 0.7;
         const cx4 = frameSize / blockSize + level.getWidth() - 0.5;
+
         const cy1 = frameSize / blockSize + 0.5;
         const cy2 = frameSize / blockSize + level.getHeight() * 0.3;
         const cy3 = frameSize / blockSize + level.getHeight() * 0.7;
