@@ -148,6 +148,11 @@
     font-weight: bold;
   }
 
+  .example-div {
+    width: calc(100% - 20px);
+    margin: 10px auto;
+  }
+
   .example-image {
     width: 329px;
     height: 90px;
