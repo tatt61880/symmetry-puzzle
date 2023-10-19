@@ -126,7 +126,7 @@
     }
   }
 
-  function moveButton(dir, e) {
+  function moveButtonStart(dir, e) {
     e.preventDefault();
     stick.update(dir);
   }
@@ -1083,19 +1083,19 @@
       elems.controller.undo.addEventListener(pointerdownEventName, undodown);
       elems.controller.buttons.up.addEventListener(
         pointerdownEventName,
-        moveButton.bind(null, app.Stick.DIRS.UP)
+        moveButtonStart.bind(null, app.Stick.DIRS.UP)
       );
       elems.controller.buttons.right.addEventListener(
         pointerdownEventName,
-        moveButton.bind(null, app.Stick.DIRS.RIGHT)
+        moveButtonStart.bind(null, app.Stick.DIRS.RIGHT)
       );
       elems.controller.buttons.down.addEventListener(
         pointerdownEventName,
-        moveButton.bind(null, app.Stick.DIRS.DOWN)
+        moveButtonStart.bind(null, app.Stick.DIRS.DOWN)
       );
       elems.controller.buttons.left.addEventListener(
         pointerdownEventName,
-        moveButton.bind(null, app.Stick.DIRS.LEFT)
+        moveButtonStart.bind(null, app.Stick.DIRS.LEFT)
       );
 
       elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
