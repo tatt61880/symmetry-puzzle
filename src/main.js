@@ -1330,28 +1330,28 @@
         const cy3 = frameSize / blockSize + level.getHeight() * 0.7;
         const cy4 = frameSize / blockSize + level.getHeight() - 0.5;
 
-        const points1 = [
+        const pointsR = [
           [0, -1],
           [1, 0],
           [0, 1],
           [-1, 1],
           [-1, -1],
         ];
-        const points2 = [
+        const pointsL = [
           [0, -1],
           [1, -1],
           [1, 1],
           [0, 1],
           [-1, 0],
         ];
-        const points3 = [
+        const pointsD = [
           [1, -1],
           [1, 0],
           [0, 1],
           [-1, 0],
           [-1, -1],
         ];
-        const points4 = [
+        const pointsU = [
           [0, -1],
           [1, 0],
           [1, 1],
@@ -1360,14 +1360,17 @@
         ];
 
         const buttons = [
-          { cx: cx1, cy: cy2, points: points1, dx: -1, dy: 0, flag: true },
-          { cx: cx1, cy: cy3, points: points2, dx: +1, dy: 0, flag: true },
-          { cx: cx4, cy: cy2, points: points2, dx: -1, dy: 0, flag: false },
-          { cx: cx4, cy: cy3, points: points1, dx: +1, dy: 0, flag: false },
-          { cx: cx2, cy: cy1, points: points3, dx: 0, dy: -1, flag: true },
-          { cx: cx3, cy: cy1, points: points4, dx: 0, dy: +1, flag: true },
-          { cx: cx2, cy: cy4, points: points4, dx: 0, dy: -1, flag: false },
-          { cx: cx3, cy: cy4, points: points3, dx: 0, dy: +1, flag: false },
+          // 左右
+          { cx: cx1, cy: cy2, points: pointsR, dx: -1, dy: 0, flag: true },
+          { cx: cx1, cy: cy3, points: pointsL, dx: +1, dy: 0, flag: true },
+          { cx: cx4, cy: cy2, points: pointsL, dx: -1, dy: 0, flag: false },
+          { cx: cx4, cy: cy3, points: pointsR, dx: +1, dy: 0, flag: false },
+
+          // 上下
+          { cx: cx2, cy: cy1, points: pointsD, dx: 0, dy: -1, flag: true },
+          { cx: cx3, cy: cy1, points: pointsU, dx: 0, dy: +1, flag: true },
+          { cx: cx2, cy: cy4, points: pointsU, dx: 0, dy: -1, flag: false },
+          { cx: cx3, cy: cy4, points: pointsD, dx: 0, dy: +1, flag: false },
         ];
         buttons.forEach((button) => {
           if (button.dx === -1 && level.getWidth() <= 3) return;
