@@ -137,7 +137,7 @@
       this.#buttons.right.classList.remove('low-contrast');
       this.#buttons.down.classList.remove('low-contrast');
       this.#buttons.left.classList.remove('low-contrast');
-      switch (dir) {
+      switch (String(dir)) {
         case Stick.DIRS.UP:
           this.#buttons.up.classList.add('low-contrast');
           break;
