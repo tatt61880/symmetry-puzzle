@@ -417,7 +417,7 @@
     const tr = document.createElement('tr');
     thead.appendChild(tr);
 
-    const imgSize = '75';
+    const imgSize = '50';
     {
       const th = document.createElement('th');
       tr.appendChild(th);
@@ -452,7 +452,7 @@
 
   function createRecordsTbody() {
     const tbody = document.createElement('tbody');
-    const crownSize = 50;
+    const crownSize = 35;
 
     let numLineNotSolved = 0;
     let numLineSolvedNormal = 0;
