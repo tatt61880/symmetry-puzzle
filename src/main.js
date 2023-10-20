@@ -912,153 +912,13 @@
 
     elems.top.addEventListener('click', onloadTitle);
 
-    // Autoモード用
-    {
-      elems.auto.buttonStop.addEventListener('click', onButtonStop);
-      elems.auto.buttonStart.addEventListener('click', onButtonStart);
-      elems.auto.buttonPause.addEventListener('click', onButtonPause);
-      elems.auto.buttonEnd.addEventListener('click', onButtonEnd);
-      elems.auto.buttonSpeedDown.addEventListener('click', onButtonSpeedDown);
-      elems.auto.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
-    }
-
-    // Editモード用
-    {
-      for (const char in app.states.charToState) {
-        const elem = document.getElementById(`edit_${char}`);
-        if (elem === null) continue;
-
-        {
-          const levelForEditChar = new app.Level(
-            { w: 1, h: 1, s: char },
-            app.Level.CHECK_MODE.POINT,
-            {}
-          );
-          const blockSize = 40;
-          const state = app.states.charToState[char];
-          const block = levelForEditChar.createOneBlock(
-            1,
-            1,
-            blockSize,
-            null,
-            true,
-            app.states.isUser(state) || app.states.isOther(state)
-          );
-          block.setAttribute(
-            'transform',
-            `translate(${-blockSize},${-blockSize})`
-          );
-          elem.appendChild(block);
-
-          const func = () => {
-            elems.edit.editShape.innerHTML = '';
-            elems.edit.editShape.appendChild(block.cloneNode(true));
-            drawingState = state;
-          };
-          editboxFunctions[char] = func;
-          elem.addEventListener('click', func);
-        }
-      }
-      editboxFunctions[app.states.stateToChar[app.states.none]]();
-
-      elems.edit.normalize.addEventListener('click', () => {
-        if (!level.isNormalized()) {
-          addUndo(null);
-          level.normalize();
-          updateLinkUrl();
-          drawMainSvg();
-        }
-      });
-      elems.edit.mirror.addEventListener('click', () => {
-        addUndo(null);
-        level.mirror();
-        updateLinkUrl();
-        drawMainSvg();
-      });
-      elems.edit.rotate.addEventListener('click', () => {
-        addUndo(null);
-        level.rotate(1);
-        updateLinkUrl();
-        drawMainSvg();
-        updateSvg();
-      });
-      elems.edit.switchMode.addEventListener('click', () => {
-        if (level.isLineMode()) {
-          updateCheckMode(app.Level.CHECK_MODE.POINT);
-        } else {
-          updateCheckMode(app.Level.CHECK_MODE.LINE);
-        }
-        const w = level.getW();
-        const h = level.getH();
-        const s = level.getStateStr();
-        level = new app.Level({ w, h, s }, app.common.checkMode, {});
-        completeCheck();
-        updateLinkUrl();
-        drawMainSvg();
-      });
-    }
-
-    // ヘルプ画面用
-    {
-      elems.help.button.addEventListener('click', app.dialog.help.show);
-      elems.help.dialog.addEventListener('click', app.dialog.help.close);
-      elems.help.close.addEventListener('click', app.dialog.help.close);
-      elems.help.dialogDiv.addEventListener('click', (e) =>
-        e.stopPropagation()
-      );
-      elems.help.langEn.addEventListener('click', () => selectLang('en'));
-      elems.help.langJa.addEventListener('click', () => selectLang('ja'));
-    }
-
-    // タイトル画面用
-    {
-      elems.title.buttonPlayLine.addEventListener('click', () => {
-        updateCheckMode(app.Level.CHECK_MODE.LINE);
-        onloadId(1);
-      });
-
-      elems.title.buttonPlayPoint.addEventListener('click', () => {
-        updateCheckMode(app.Level.CHECK_MODE.POINT);
-        onloadId(1);
-      });
-    }
-
-    // 記録画面用
-    {
-      const size = 50;
-      const crown = app.common.createCrown(size, 0, 0, 1, 1);
-      elems.records.buttonSvg.appendChild(crown);
-      elems.records.button.addEventListener('click', app.dialog.records.show);
-      elems.records.dialog.addEventListener('click', app.dialog.records.close);
-      elems.records.close.addEventListener('click', app.dialog.records.close);
-      elems.records.dialogDiv.addEventListener('click', (e) =>
-        e.stopPropagation()
-      );
-    }
-
-    // レベル操作用
-    {
-      elems.level.reset.addEventListener('click', resetLevel);
-      elems.level.prev.addEventListener('click', gotoPrevLevel);
-      elems.level.next.addEventListener('click', gotoNextLevel);
-      elems.level.edit.addEventListener('click', toggleEditLevel);
-      elems.levels.button.addEventListener('click', app.dialog.levels.show);
-      elems.levels.dialog.addEventListener('click', app.dialog.levels.close);
-      elems.levels.dialogDiv.addEventListener('click', (e) =>
-        e.stopPropagation()
-      );
-      elems.levels.hideShortestLevels.addEventListener(
-        'click',
-        app.dialog.levels.toggleHideCompleted
-      );
-    }
-
-    // レベル一覧ダイアログ
-    {
-      elems.levels.close.addEventListener('click', app.dialog.levels.close);
-      elems.levels.prev.addEventListener('click', app.dialog.levels.prevPage);
-      elems.levels.next.addEventListener('click', app.dialog.levels.nextPage);
-    }
+    initElemsAuto();
+    initElemsEdit();
+    initElemsHelp();
+    initElemsTitle();
+    initElemsRecords();
+    initElemsLevelWidget();
+    initElemsLevelsDialog();
 
     // キー入力用
     {
@@ -1104,6 +964,152 @@
 
       stick = new app.Stick(elems.controller.stick, elems.controller.buttons);
     }
+  }
+
+  // Autoモード用
+  function initElemsAuto() {
+    elems.auto.buttonStop.addEventListener('click', onButtonStop);
+    elems.auto.buttonStart.addEventListener('click', onButtonStart);
+    elems.auto.buttonPause.addEventListener('click', onButtonPause);
+    elems.auto.buttonEnd.addEventListener('click', onButtonEnd);
+    elems.auto.buttonSpeedDown.addEventListener('click', onButtonSpeedDown);
+    elems.auto.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
+  }
+
+  // Editモード用
+  function initElemsEdit() {
+    for (const char in app.states.charToState) {
+      const elem = document.getElementById(`edit_${char}`);
+      if (elem === null) continue;
+
+      {
+        const levelForEditChar = new app.Level(
+          { w: 1, h: 1, s: char },
+          app.Level.CHECK_MODE.POINT,
+          {}
+        );
+        const blockSize = 40;
+        const state = app.states.charToState[char];
+        const block = levelForEditChar.createOneBlock(
+          1,
+          1,
+          blockSize,
+          null,
+          true,
+          app.states.isUser(state) || app.states.isOther(state)
+        );
+        block.setAttribute(
+          'transform',
+          `translate(${-blockSize},${-blockSize})`
+        );
+        elem.appendChild(block);
+
+        const func = () => {
+          elems.edit.editShape.innerHTML = '';
+          elems.edit.editShape.appendChild(block.cloneNode(true));
+          drawingState = state;
+        };
+        editboxFunctions[char] = func;
+        elem.addEventListener('click', func);
+      }
+    }
+    editboxFunctions[app.states.stateToChar[app.states.none]]();
+
+    elems.edit.normalize.addEventListener('click', () => {
+      if (!level.isNormalized()) {
+        addUndo(null);
+        level.normalize();
+        updateLinkUrl();
+        drawMainSvg();
+      }
+    });
+    elems.edit.mirror.addEventListener('click', () => {
+      addUndo(null);
+      level.mirror();
+      updateLinkUrl();
+      drawMainSvg();
+    });
+    elems.edit.rotate.addEventListener('click', () => {
+      addUndo(null);
+      level.rotate(1);
+      updateLinkUrl();
+      drawMainSvg();
+      updateSvg();
+    });
+    elems.edit.switchMode.addEventListener('click', () => {
+      if (level.isLineMode()) {
+        updateCheckMode(app.Level.CHECK_MODE.POINT);
+      } else {
+        updateCheckMode(app.Level.CHECK_MODE.LINE);
+      }
+      const w = level.getW();
+      const h = level.getH();
+      const s = level.getStateStr();
+      level = new app.Level({ w, h, s }, app.common.checkMode, {});
+      completeCheck();
+      updateLinkUrl();
+      drawMainSvg();
+    });
+  }
+
+  // ヘルプ画面用
+  function initElemsHelp() {
+    elems.help.button.addEventListener('click', app.dialog.help.show);
+    elems.help.dialog.addEventListener('click', app.dialog.help.close);
+    elems.help.close.addEventListener('click', app.dialog.help.close);
+    elems.help.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
+    elems.help.langEn.addEventListener('click', () => selectLang('en'));
+    elems.help.langJa.addEventListener('click', () => selectLang('ja'));
+  }
+
+  // タイトル画面用
+  function initElemsTitle() {
+    elems.title.buttonPlayLine.addEventListener('click', () => {
+      updateCheckMode(app.Level.CHECK_MODE.LINE);
+      onloadId(1);
+    });
+
+    elems.title.buttonPlayPoint.addEventListener('click', () => {
+      updateCheckMode(app.Level.CHECK_MODE.POINT);
+      onloadId(1);
+    });
+  }
+
+  // 記録画面用
+  function initElemsRecords() {
+    const size = 50;
+    const crown = app.common.createCrown(size, 0, 0, 1, 1);
+    elems.records.buttonSvg.appendChild(crown);
+    elems.records.button.addEventListener('click', app.dialog.records.show);
+    elems.records.dialog.addEventListener('click', app.dialog.records.close);
+    elems.records.close.addEventListener('click', app.dialog.records.close);
+    elems.records.dialogDiv.addEventListener('click', (e) =>
+      e.stopPropagation()
+    );
+  }
+
+  // レベル操作用
+  function initElemsLevelWidget() {
+    elems.level.reset.addEventListener('click', resetLevel);
+    elems.level.prev.addEventListener('click', gotoPrevLevel);
+    elems.level.next.addEventListener('click', gotoNextLevel);
+    elems.level.edit.addEventListener('click', toggleEditLevel);
+    elems.levels.button.addEventListener('click', app.dialog.levels.show);
+    elems.levels.dialog.addEventListener('click', app.dialog.levels.close);
+    elems.levels.dialogDiv.addEventListener('click', (e) =>
+      e.stopPropagation()
+    );
+    elems.levels.hideShortestLevels.addEventListener(
+      'click',
+      app.dialog.levels.toggleHideCompleted
+    );
+  }
+
+  // レベル一覧ダイアログ
+  function initElemsLevelsDialog() {
+    elems.levels.close.addEventListener('click', app.dialog.levels.close);
+    elems.levels.prev.addEventListener('click', app.dialog.levels.prevPage);
+    elems.levels.next.addEventListener('click', app.dialog.levels.nextPage);
   }
 
   function intervalFunc() {
