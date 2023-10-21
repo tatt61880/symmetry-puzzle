@@ -412,20 +412,7 @@
   }
 
   function updateWindows() {
-    updateTitle();
     updateSvg();
-  }
-
-  function updateTitle() {
-    if (elems.category.title.classList.contains('hide')) return;
-
-    const divTitleHeight =
-      window.innerHeight -
-      [elems.header, elems.footer].reduce(
-        (sum, elem) => sum + elem.getBoundingClientRect().height,
-        0
-      );
-    elems.title.inner1.style.setProperty('height', `${divTitleHeight}px`);
   }
 
   function updateSvg() {
@@ -742,7 +729,6 @@
     elems.version.textContent = VERSION_TEXT;
 
     initElems();
-    updateTitle();
     updateEditLevel();
 
     window.onresize = resizeWindow;
