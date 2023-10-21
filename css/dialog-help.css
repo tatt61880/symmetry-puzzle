@@ -158,6 +158,11 @@
     height: 90px;
   }
 
+  .example-image-2 {
+    width: 209px;
+    height: 90px;
+  }
+
   & hr {
     margin: 0;
   }
