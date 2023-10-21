@@ -411,7 +411,7 @@
     updateSvg();
   }
 
-  function updateWindows() {
+  function onWindowResize() {
     updateSvg();
   }
 
@@ -878,8 +878,8 @@
   }
 
   function initElems() {
-    updateWindows();
-    window.addEventListener('resize', updateWindows);
+    onWindowResize();
+    window.addEventListener('resize', onWindowResize);
 
     {
       const touchDevice = document.ontouchstart !== undefined;
