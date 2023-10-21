@@ -6,7 +6,7 @@
   #title-inner1 {
     display: table;
     width: 500px;
-    height: calc(100vh - 68px);
+    height: calc(100svh - 68px);
   }
 
   #title-inner2 {
