@@ -438,6 +438,7 @@
       (svgMaxWidth - 2 * frameSize) / level.getWidth(),
       (svgMaxHeight - 2 * frameSize) / level.getHeight()
     );
+    blockSize = Math.max(blockSize, 0);
     completeCheck();
     updateLinkUrl();
 
@@ -879,7 +880,14 @@
 
   function initElems() {
     onWindowResize();
-    window.addEventListener('resize', onWindowResize);
+
+    let setTimeoutIdOnWindowResize = null;
+    window.addEventListener('resize', () => {
+      if (setTimeoutIdOnWindowResize !== null) {
+        clearTimeout(setTimeoutIdOnWindowResize);
+      }
+      setTimeoutIdOnWindowResize = setTimeout(onWindowResize, 100);
+    });
 
     {
       const touchDevice = document.ontouchstart !== undefined;
