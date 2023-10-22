@@ -8,7 +8,7 @@
   width: 480px;
   max-height: 640px;
   padding: 0;
-  margin: 44px auto;
+  margin: 42px auto;
   border: none;
 
   #dialog-help-div {
@@ -155,12 +155,12 @@
 
   .example-image {
     width: 329px;
-    height: 90px;
+    height: 81px;
   }
 
   .example-image-2 {
     width: 209px;
-    height: 90px;
+    height: 81px;
   }
 
   & hr {
