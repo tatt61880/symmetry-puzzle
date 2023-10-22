@@ -899,6 +899,7 @@
 
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       elems.contents.addEventListener(pointermoveEventName, (e) => {
+        if (!elems.console.widget.classList.contains('hide')) return;
         // スワイプ操作を無効化する。
         e.preventDefault();
       });
