@@ -144,7 +144,7 @@
   svg.createText = (blockSize, { x, y, text, fill }) => {
     const textElem = document.createElementNS(SVG_NS, 'text');
     textElem.setAttribute('x', blockSize * x);
-    textElem.setAttribute('y', blockSize * (y + 0.05));
+    textElem.setAttribute('y', blockSize * (y + 0.08));
     textElem.textContent = text;
     textElem.setAttribute('dominant-baseline', 'middle');
     textElem.setAttribute('text-anchor', 'middle');
