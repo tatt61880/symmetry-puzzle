@@ -105,10 +105,12 @@
       }
     }
 
-    & h1 {
+    .help-mode {
+      display: block;
       padding: 7px 0;
       margin: 5px;
       font-size: 1.5rem;
+      font-weight: bold;
       background-color: #c0cbff;
     }
   }
