@@ -991,7 +991,7 @@
           blockSize,
           null,
           true,
-          app.states.isUser(state) || app.states.isOther(state)
+          app.states.isUser(state)
         );
         block.setAttribute(
           'transform',
