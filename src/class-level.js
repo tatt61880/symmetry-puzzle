@@ -1035,6 +1035,7 @@
 
         if (app.states.isUser(state)) {
           const radius = 0.25;
+          const radius2 = radius * 2;
 
           // 左上
           if (!flags[dirs.u] && !flags[dirs.l]) {
@@ -1274,7 +1275,7 @@
               x,
               y: y + radius,
               width: 1,
-              height: 1 - 2 * radius,
+              height: 1 - radius2,
               fill: color.fill,
             });
             gElem.appendChild(rect);
@@ -1283,7 +1284,7 @@
             const rect = app.svg.createRect(blockSize, {
               x: x + radius,
               y,
-              width: 1 - 2 * radius,
+              width: 1 - radius2,
               height: 1,
               fill: color.fill,
             });
@@ -1293,9 +1294,9 @@
           // 上側
           if (!flags[dirs.u]) {
             const line = app.svg.createRect(blockSize, {
-              x: x + radius,
+              x: x + radius - eps,
               y,
-              width: 1 - 2 * radius,
+              width: 1 - radius2 + eps2,
               height: blockBorderWidth,
               fill: color.stroke,
             });
@@ -1305,9 +1306,9 @@
           if (!flags[dirs.r]) {
             const line = app.svg.createRect(blockSize, {
               x: x + 1 - blockBorderWidth,
-              y: y + radius,
+              y: y + radius - eps,
               width: blockBorderWidth,
-              height: 1 - 2 * radius,
+              height: 1 - radius2 + eps2,
               fill: color.stroke,
             });
             gElem.appendChild(line);
@@ -1315,9 +1316,9 @@
           // 下側
           if (!flags[dirs.d]) {
             const line = app.svg.createRect(blockSize, {
-              x: x + radius,
+              x: x + radius - eps,
               y: y + 1 - blockBorderWidth,
-              width: 1 - 2 * radius,
+              width: 1 - radius2 + eps2,
               height: blockBorderWidth,
               fill: color.stroke,
             });
@@ -1327,9 +1328,9 @@
           if (!flags[dirs.l]) {
             const line = app.svg.createRect(blockSize, {
               x,
-              y: y + radius,
+              y: y + radius - eps,
               width: blockBorderWidth,
-              height: 1 - 2 * radius,
+              height: 1 - radius2 + eps2,
               fill: color.stroke,
             });
             gElem.appendChild(line);
