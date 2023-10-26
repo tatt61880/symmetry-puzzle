@@ -1030,6 +1030,9 @@
           }
         }
 
+        const eps = 0.01; // 隙間を埋めます。
+        const eps2 = eps * 2;
+
         if (app.states.isUser(state)) {
           // 左上
           if (!flags[dirs.u] && !flags[dirs.l]) {
@@ -1052,8 +1055,8 @@
               const rect = app.svg.createRect(blockSize, {
                 x,
                 y,
-                width: 0.25,
-                height: 0.25,
+                width: 0.25 + eps,
+                height: 0.25 + eps,
                 fill: color.fill,
               });
               gElem.appendChild(rect);
@@ -1061,9 +1064,9 @@
 
             if (!flags[dirs.u]) {
               const rect = app.svg.createRect(blockSize, {
-                x,
+                x: x - eps,
                 y,
-                width: 0.25,
+                width: 0.25 + eps2,
                 height: blockBorderWidth,
                 fill: color.stroke,
               });
@@ -1071,9 +1074,9 @@
             } else if (!flags[dirs.l]) {
               const rect = app.svg.createRect(blockSize, {
                 x,
-                y,
+                y: y - eps,
                 width: blockBorderWidth,
-                height: 0.25,
+                height: 0.25 + eps2,
                 fill: color.stroke,
               });
               gElem.appendChild(rect);
@@ -1108,10 +1111,10 @@
           } else {
             {
               const rect = app.svg.createRect(blockSize, {
-                x: x + 0.75,
+                x: x + 0.75 - eps,
                 y,
-                width: 0.25,
-                height: 0.25,
+                width: 0.25 + eps,
+                height: 0.25 + eps,
                 fill: color.fill,
               });
               gElem.appendChild(rect);
@@ -1119,9 +1122,9 @@
 
             if (!flags[dirs.u]) {
               const rect = app.svg.createRect(blockSize, {
-                x: x + 0.75,
+                x: x + 0.75 - eps,
                 y,
-                width: 0.25,
+                width: 0.25 + eps2,
                 height: blockBorderWidth,
                 fill: color.stroke,
               });
@@ -1129,9 +1132,9 @@
             } else if (!flags[dirs.r]) {
               const rect = app.svg.createRect(blockSize, {
                 x: x + 1 - blockBorderWidth,
-                y,
+                y: y - eps,
                 width: blockBorderWidth,
-                height: 0.25,
+                height: 0.25 + eps2,
                 fill: color.stroke,
               });
               gElem.appendChild(rect);
@@ -1166,10 +1169,10 @@
           } else {
             {
               const rect = app.svg.createRect(blockSize, {
-                x: x + 0.75,
-                y: y + 0.75,
-                width: 0.25,
-                height: 0.25,
+                x: x + 0.75 - eps,
+                y: y + 0.75 - eps,
+                width: 0.25 + eps,
+                height: 0.25 + eps,
                 fill: color.fill,
               });
               gElem.appendChild(rect);
@@ -1177,9 +1180,9 @@
 
             if (!flags[dirs.d]) {
               const rect = app.svg.createRect(blockSize, {
-                x: x + 0.75,
+                x: x + 0.75 - eps,
                 y: y + 1 - blockBorderWidth,
-                width: 0.25,
+                width: 0.25 + eps2,
                 height: blockBorderWidth,
                 fill: color.stroke,
               });
@@ -1187,9 +1190,9 @@
             } else if (!flags[dirs.r]) {
               const rect = app.svg.createRect(blockSize, {
                 x: x + 1 - blockBorderWidth,
-                y: y + 0.75,
+                y: y + 0.75 - eps,
                 width: blockBorderWidth,
-                height: 0.25,
+                height: 0.25 + eps2,
                 fill: color.stroke,
               });
               gElem.appendChild(rect);
@@ -1225,9 +1228,9 @@
             {
               const rect = app.svg.createRect(blockSize, {
                 x,
-                y: y + 0.75,
-                width: 0.25,
-                height: 0.25,
+                y: y + 0.75 - eps,
+                width: 0.25 + eps,
+                height: 0.25 + eps,
                 fill: color.fill,
               });
               gElem.appendChild(rect);
@@ -1235,9 +1238,9 @@
 
             if (!flags[dirs.d]) {
               const rect = app.svg.createRect(blockSize, {
-                x,
+                x: x - eps,
                 y: y + 1 - blockBorderWidth,
-                width: 0.25,
+                width: 0.25 + eps2,
                 height: blockBorderWidth,
                 fill: color.stroke,
               });
@@ -1245,9 +1248,9 @@
             } else if (!flags[dirs.l]) {
               const rect = app.svg.createRect(blockSize, {
                 x,
-                y: y + 0.75,
+                y: y + 0.75 - eps,
                 width: blockBorderWidth,
-                height: 0.25,
+                height: 0.25 + eps2,
                 fill: color.stroke,
               });
               gElem.appendChild(rect);
@@ -1400,14 +1403,12 @@
             gElem.appendChild(line);
           }
 
-          const eps = 0.01; // 隙間を埋めます。
-
           if (flags[dirs.l]) {
             {
               const rect = app.svg.createRect(blockSize, {
                 x: x - eps,
                 y: y + blockBorderWidth,
-                width: eps * 2,
+                width: eps2,
                 height: 1 - blockBorderWidth * 2,
                 fill: color.fill,
               });
@@ -1419,7 +1420,7 @@
               const rect = app.svg.createRect(blockSize, {
                 x: x - eps,
                 y,
-                width: eps * 2,
+                width: eps2,
                 height: blockBorderWidth,
                 fill: color.fill,
               });
@@ -1430,7 +1431,7 @@
               const rect = app.svg.createRect(blockSize, {
                 x: x - eps,
                 y: y + 1 - blockBorderWidth,
-                width: eps * 2,
+                width: eps2,
                 height: blockBorderWidth,
                 fill: color.fill,
               });
@@ -1444,7 +1445,7 @@
                 x: x + blockBorderWidth,
                 y: y - eps,
                 width: 1 - blockBorderWidth * 2,
-                height: eps * 2,
+                height: eps2,
                 fill: color.fill,
               });
               gElem.appendChild(rect);
@@ -1466,7 +1467,7 @@
                   x,
                   y: y - eps,
                   width: blockBorderWidth,
-                  height: eps * 2,
+                  height: eps2,
                   fill: color.fill,
                 });
                 gElem.appendChild(rect);
@@ -1488,7 +1489,7 @@
                   x: x + 1 - blockBorderWidth,
                   y: y - eps,
                   width: blockBorderWidth,
-                  height: eps * 2,
+                  height: eps2,
                   fill: color.fill,
                 });
                 gElem.appendChild(rect);
