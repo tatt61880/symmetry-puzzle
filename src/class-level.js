@@ -1268,20 +1268,20 @@
           // 中央付近の塗りつぶし
           {
             const rect = app.svg.createRect(blockSize, {
-              x: x - eps,
-              y: y + 0.25 - eps,
-              width: 1 + eps * 2,
-              height: 0.5 + eps * 2,
+              x,
+              y: y + 0.25,
+              width: 1,
+              height: 0.5,
               fill: color.fill,
             });
             gElem.appendChild(rect);
           }
           {
             const rect = app.svg.createRect(blockSize, {
-              x: x + 0.25 - eps,
-              y: y - eps,
-              width: 0.5 + eps * 2,
-              height: 1 + eps * 2,
+              x: x + 0.25,
+              y,
+              width: 0.5,
+              height: 1,
               fill: color.fill,
             });
             gElem.appendChild(rect);
@@ -1347,13 +1347,17 @@
         } else {
           // 塗りつぶし
           {
-            const rect = app.svg.createRect(blockSize, {
-              x: x - eps,
-              y: y - eps,
-              width: 1 + eps * 2,
-              height: 1 + eps * 2,
-              fill: color.fill,
-            });
+            const rect = app.svg.createRect(
+              blockSize,
+              {
+                x,
+                y,
+                width: 1,
+                height: 1,
+                fill: color.fill,
+              },
+              eps
+            );
             gElem.appendChild(rect);
           }
 
