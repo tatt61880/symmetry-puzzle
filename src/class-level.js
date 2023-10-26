@@ -1030,8 +1030,6 @@
           }
         }
 
-        const eps = 0.01; // サイズを少し大きくすることで、隙間をなくします。
-
         if (app.states.isUser(state)) {
           // 左上
           if (!flags[dirs.u] && !flags[dirs.l]) {
@@ -1347,21 +1345,17 @@
         } else {
           // 塗りつぶし
           {
-            const rect = app.svg.createRect(
-              blockSize,
-              {
-                x,
-                y,
-                width: 1,
-                height: 1,
-                fill: color.fill,
-              },
-              eps
-            );
+            const rect = app.svg.createRect(blockSize, {
+              x,
+              y,
+              width: 1,
+              height: 1,
+              fill: color.fill,
+            });
             gElem.appendChild(rect);
           }
 
-          // 上側
+          // 上側の境界線
           if (!flags[dirs.u]) {
             const line = app.svg.createRect(blockSize, {
               x,
@@ -1372,7 +1366,7 @@
             });
             gElem.appendChild(line);
           }
-          // 右側
+          // 右側の境界線
           if (!flags[dirs.r]) {
             const line = app.svg.createRect(blockSize, {
               x: x + 1 - blockBorderWidth,
@@ -1383,7 +1377,7 @@
             });
             gElem.appendChild(line);
           }
-          // 下側
+          // 下側の境界線
           if (!flags[dirs.d]) {
             const line = app.svg.createRect(blockSize, {
               x,
@@ -1394,7 +1388,7 @@
             });
             gElem.appendChild(line);
           }
-          // 左側
+          // 左側の境界線
           if (!flags[dirs.l]) {
             const line = app.svg.createRect(blockSize, {
               x,
@@ -1406,30 +1400,102 @@
             gElem.appendChild(line);
           }
 
-          if (flags[dirs.u]) {
-            // 左上
-            if (flags[dirs.l] && !flags[dirs.ul]) {
+          const eps = 0.01; // 隙間を埋めます。
+
+          if (flags[dirs.l]) {
+            {
               const rect = app.svg.createRect(blockSize, {
-                x,
-                y,
-                width: blockBorderWidth,
-                height: blockBorderWidth,
-                fill: color.stroke,
+                x: x - eps,
+                y: y + blockBorderWidth,
+                width: eps * 2,
+                height: 1 - blockBorderWidth * 2,
+                fill: color.fill,
               });
               gElem.appendChild(rect);
             }
-            // 右上
-            if (flags[dirs.r] && !flags[dirs.ur]) {
+
+            // 左上
+            if (flags[dirs.u] && flags[dirs.ul]) {
               const rect = app.svg.createRect(blockSize, {
-                x: x + 1 - blockBorderWidth,
+                x: x - eps,
                 y,
-                width: blockBorderWidth,
+                width: eps * 2,
                 height: blockBorderWidth,
-                fill: color.stroke,
+                fill: color.fill,
+              });
+              gElem.appendChild(rect);
+            }
+            // 左下
+            if (flags[dirs.d] && flags[dirs.dl]) {
+              const rect = app.svg.createRect(blockSize, {
+                x: x - eps,
+                y: y + 1 - blockBorderWidth,
+                width: eps * 2,
+                height: blockBorderWidth,
+                fill: color.fill,
               });
               gElem.appendChild(rect);
             }
           }
+
+          if (flags[dirs.u]) {
+            {
+              const rect = app.svg.createRect(blockSize, {
+                x: x + blockBorderWidth,
+                y: y - eps,
+                width: 1 - blockBorderWidth * 2,
+                height: eps * 2,
+                fill: color.fill,
+              });
+              gElem.appendChild(rect);
+            }
+
+            // 左上
+            if (flags[dirs.l]) {
+              if (!flags[dirs.ul]) {
+                const rect = app.svg.createRect(blockSize, {
+                  x,
+                  y,
+                  width: blockBorderWidth,
+                  height: blockBorderWidth,
+                  fill: color.stroke,
+                });
+                gElem.appendChild(rect);
+              } else {
+                const rect = app.svg.createRect(blockSize, {
+                  x,
+                  y: y - eps,
+                  width: blockBorderWidth,
+                  height: eps * 2,
+                  fill: color.fill,
+                });
+                gElem.appendChild(rect);
+              }
+            }
+            // 右上
+            if (flags[dirs.r]) {
+              if (!flags[dirs.ur]) {
+                const rect = app.svg.createRect(blockSize, {
+                  x: x + 1 - blockBorderWidth,
+                  y,
+                  width: blockBorderWidth,
+                  height: blockBorderWidth,
+                  fill: color.stroke,
+                });
+                gElem.appendChild(rect);
+              } else {
+                const rect = app.svg.createRect(blockSize, {
+                  x: x + 1 - blockBorderWidth,
+                  y: y - eps,
+                  width: blockBorderWidth,
+                  height: eps * 2,
+                  fill: color.fill,
+                });
+                gElem.appendChild(rect);
+              }
+            }
+          }
+
           if (flags[dirs.d]) {
             // 右下
             if (flags[dirs.r] && !flags[dirs.dr]) {
@@ -1455,6 +1521,7 @@
             }
           }
 
+          // 邪魔ブロック
           if (app.states.isOther(state)) {
             const size = blockBorderWidth * 1.75;
             if (!flags[dirs.u]) {

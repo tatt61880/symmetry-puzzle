@@ -58,14 +58,13 @@
 
   svg.createRect = (
     blockSize,
-    { x, y, width, height, fill, stroke, strokeWidth },
-    eps = 0
+    { x, y, width, height, fill, stroke, strokeWidth }
   ) => {
     const rect = document.createElementNS(SVG_NS, 'rect');
-    rect.setAttribute('x', blockSize * (x - eps));
-    rect.setAttribute('y', blockSize * (y - eps));
-    rect.setAttribute('width', blockSize * (width + eps * 2));
-    rect.setAttribute('height', blockSize * (height + eps * 2));
+    rect.setAttribute('x', blockSize * x);
+    rect.setAttribute('y', blockSize * y);
+    rect.setAttribute('width', blockSize * width);
+    rect.setAttribute('height', blockSize * height);
     if (fill) rect.setAttribute('fill', fill);
     if (stroke) rect.setAttribute('stroke', stroke);
     if (strokeWidth) rect.setAttribute('stroke-width', blockSize * strokeWidth);
