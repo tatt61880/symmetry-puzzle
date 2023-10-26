@@ -46,6 +46,46 @@
   }
 }
 
+/* 左右に振動させる */
+.animation-illegal-move-lr {
+  transform-origin: center;
+  animation: animation-illegal-move-lr linear;
+  animation-duration: var(--animation-duration);
+}
+
+@keyframes animation-illegal-move-lr {
+  0%,
+  50%,
+  100% {
+    transform: translate(0, -50%) scaleX(1);
+  }
+
+  25%,
+  75% {
+    transform: translate(0, -50%) scaleX(1.02);
+  }
+}
+
+/* 上下に振動させる */
+.animation-illegal-move-ud {
+  transform-origin: center;
+  animation: animation-illegal-move-ud linear;
+  animation-duration: var(--animation-duration);
+}
+
+@keyframes animation-illegal-move-ud {
+  0%,
+  50%,
+  100% {
+    transform: translate(0, -50%) scaleY(1);
+  }
+
+  25%,
+  75% {
+    transform: translate(0, -50%) scaleY(1.02);
+  }
+}
+
 /* blocks completed animation */
 .animation-axis-line1 {
   transform-origin: var(--animation-origin);

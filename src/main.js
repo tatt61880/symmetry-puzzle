@@ -682,16 +682,20 @@
   function animateIcons() {
     if (elems.help.dialog.open) return; // ダイアログ表示中にアニメーションするとSafariで画面がちらつく問題があるため。
 
-    animateIcon(elems.iconApp.classList, 'animation-icon-app');
-    animateIcon(elems.iconLine.classList, 'animation-icon-line');
-    animateIcon(elems.iconPoint.classList, 'animation-icon-point');
+    addAnimationClass(elems.iconApp, 'animation-icon-app');
+    addAnimationClass(elems.iconLine, 'animation-icon-line');
+    addAnimationClass(elems.iconPoint, 'animation-icon-point');
+  }
 
-    function animateIcon(elem, className) {
-      elem.remove(className);
-      setTimeout(() => {
-        elem.add(className);
-      }, 100);
-    }
+  function removeAnimationClass(elem, className) {
+    elem.classList.remove(className);
+  }
+
+  function addAnimationClass(elem, className) {
+    removeAnimationClass(elem, className);
+    setTimeout(() => {
+      elem.classList.add(className);
+    }, 100);
   }
 
   function applyLang(lang) {
@@ -1127,11 +1131,29 @@
       stick.update(stick.inputDir);
     }
     moveIntervalCount = 0;
+
+    const classAnimationIllegalMoveLr = 'animation-illegal-move-lr';
+    const classAnimationIllegalMoveUd = 'animation-illegal-move-ud';
+    elems.main.svg.classList.remove(classAnimationIllegalMoveLr);
+    elems.main.svg.classList.remove(classAnimationIllegalMoveUd);
+
     const movedFlag = tryMoving(stick.inputDir);
     if (movedFlag) {
       drawMainSvg();
       completeCheck();
       updateLinkUrl();
+    } else {
+      // 動けないときは盤面を振動させます。
+      switch (stick.inputDir) {
+        case app.Stick.DIRS.RIGHT:
+        case app.Stick.DIRS.LEFT:
+          addAnimationClass(elems.main.svg, classAnimationIllegalMoveLr);
+          break;
+        case app.Stick.DIRS.UP:
+        case app.Stick.DIRS.DOWN:
+          addAnimationClass(elems.main.svg, classAnimationIllegalMoveUd);
+          break;
+      }
     }
   }
 
