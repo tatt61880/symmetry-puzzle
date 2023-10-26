@@ -39,7 +39,7 @@
   }
   for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
     colors[i] = {
-      fill: '#00f8f8',
+      fill: '#aaccff',
       stroke: '#0000f8',
       text: '#333399',
       error: '#f80000',
