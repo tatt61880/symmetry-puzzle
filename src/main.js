@@ -1132,10 +1132,8 @@
     }
     moveIntervalCount = 0;
 
-    const classAnimationIllegalMoveLr = 'animation-illegal-move-lr';
-    const classAnimationIllegalMoveUd = 'animation-illegal-move-ud';
-    elems.main.svg.classList.remove(classAnimationIllegalMoveLr);
-    elems.main.svg.classList.remove(classAnimationIllegalMoveUd);
+    const classAnimationIllegalMove = 'animation-illegal-move';
+    elems.main.svg.classList.remove(classAnimationIllegalMove);
 
     const movedFlag = tryMoving(stick.inputDir);
     if (movedFlag) {
@@ -1143,17 +1141,19 @@
       completeCheck();
       updateLinkUrl();
     } else {
+      const dys = [-1, 0, 1, 0];
+      const dxs = [0, 1, 0, -1];
+      const dy = dys[stick.inputDir];
+      const dx = dxs[stick.inputDir];
+
+      const pixel = 4;
+      document.documentElement.style.setProperty(
+        '--animation-illegal-move',
+        `translate(${dx * pixel}px, ${dy * pixel}px)`
+      );
+
       // 動けないときは盤面を振動させます。
-      switch (stick.inputDir) {
-        case app.Stick.DIRS.RIGHT:
-        case app.Stick.DIRS.LEFT:
-          addAnimationClass(elems.main.svg, classAnimationIllegalMoveLr);
-          break;
-        case app.Stick.DIRS.UP:
-        case app.Stick.DIRS.DOWN:
-          addAnimationClass(elems.main.svg, classAnimationIllegalMoveUd);
-          break;
-      }
+      addAnimationClass(elems.main.svg, classAnimationIllegalMove);
     }
   }
 

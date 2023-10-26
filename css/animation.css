@@ -9,6 +9,7 @@
   --animation-axis-1: 1;
   --animation-axis-2: 1.5;
   --animation-axis-4: 1;
+  --animation-illegal-move: translate(0, 0);
 }
 
 /* blocks moving animation */
@@ -46,43 +47,23 @@
   }
 }
 
-/* 左右に振動させる */
-.animation-illegal-move-lr {
+/* 動けないときに振動させる */
+.animation-illegal-move {
   transform-origin: center;
-  animation: animation-illegal-move-lr linear;
+  animation: animation-illegal-move linear;
   animation-duration: var(--animation-duration);
 }
 
-@keyframes animation-illegal-move-lr {
+@keyframes animation-illegal-move {
   0%,
   50%,
   100% {
-    transform: translate(0, -50%) scaleX(1);
+    transform: translateY(-50%) translateX(0);
   }
 
   25%,
   75% {
-    transform: translate(0, -50%) scaleX(1.02);
-  }
-}
-
-/* 上下に振動させる */
-.animation-illegal-move-ud {
-  transform-origin: center;
-  animation: animation-illegal-move-ud linear;
-  animation-duration: var(--animation-duration);
-}
-
-@keyframes animation-illegal-move-ud {
-  0%,
-  50%,
-  100% {
-    transform: translate(0, -50%) scaleY(1);
-  }
-
-  25%,
-  75% {
-    transform: translate(0, -50%) scaleY(1.02);
+    transform: translateY(-50%) var(--animation-illegal-move);
   }
 }
 
