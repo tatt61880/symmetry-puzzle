@@ -1034,19 +1034,21 @@
         const eps2 = eps * 2;
 
         if (app.states.isUser(state)) {
+          const radius = 0.25;
+
           // 左上
           if (!flags[dirs.u] && !flags[dirs.l]) {
             const circle = app.svg.createCircle(blockSize, {
-              cx: x + 0.25,
-              cy: y + 0.25,
-              r: 0.25,
+              cx: x + radius,
+              cy: y + radius,
+              r: radius,
               fill: color.stroke,
             });
             gElem.appendChild(circle);
             const circle2 = app.svg.createCircle(blockSize, {
-              cx: x + 0.25,
-              cy: y + 0.25,
-              r: 0.25 - blockBorderWidth,
+              cx: x + radius,
+              cy: y + radius,
+              r: radius - blockBorderWidth,
               fill: color.fill,
             });
             gElem.appendChild(circle2);
@@ -1055,8 +1057,8 @@
               const rect = app.svg.createRect(blockSize, {
                 x,
                 y,
-                width: 0.25 + eps,
-                height: 0.25 + eps,
+                width: radius + eps,
+                height: radius + eps,
                 fill: color.fill,
               });
               gElem.appendChild(rect);
@@ -1066,7 +1068,7 @@
               const rect = app.svg.createRect(blockSize, {
                 x: x - eps,
                 y,
-                width: 0.25 + eps2,
+                width: radius + eps2,
                 height: blockBorderWidth,
                 fill: color.stroke,
               });
@@ -1076,7 +1078,7 @@
                 x,
                 y: y - eps,
                 width: blockBorderWidth,
-                height: 0.25 + eps2,
+                height: radius + eps2,
                 fill: color.stroke,
               });
               gElem.appendChild(rect);
@@ -1095,26 +1097,26 @@
           // 右上
           if (!flags[dirs.u] && !flags[dirs.r]) {
             const circle = app.svg.createCircle(blockSize, {
-              cx: x + 0.75,
-              cy: y + 0.25,
-              r: 0.25,
+              cx: x + 1 - radius,
+              cy: y + radius,
+              r: radius,
               fill: color.stroke,
             });
             gElem.appendChild(circle);
             const circle2 = app.svg.createCircle(blockSize, {
-              cx: x + 0.75,
-              cy: y + 0.25,
-              r: 0.25 - blockBorderWidth,
+              cx: x + 1 - radius,
+              cy: y + radius,
+              r: radius - blockBorderWidth,
               fill: color.fill,
             });
             gElem.appendChild(circle2);
           } else {
             {
               const rect = app.svg.createRect(blockSize, {
-                x: x + 0.75 - eps,
+                x: x + 1 - radius - eps,
                 y,
-                width: 0.25 + eps,
-                height: 0.25 + eps,
+                width: radius + eps,
+                height: radius + eps,
                 fill: color.fill,
               });
               gElem.appendChild(rect);
@@ -1122,9 +1124,9 @@
 
             if (!flags[dirs.u]) {
               const rect = app.svg.createRect(blockSize, {
-                x: x + 0.75 - eps,
+                x: x + 1 - radius - eps,
                 y,
-                width: 0.25 + eps2,
+                width: radius + eps2,
                 height: blockBorderWidth,
                 fill: color.stroke,
               });
@@ -1134,7 +1136,7 @@
                 x: x + 1 - blockBorderWidth,
                 y: y - eps,
                 width: blockBorderWidth,
-                height: 0.25 + eps2,
+                height: radius + eps2,
                 fill: color.stroke,
               });
               gElem.appendChild(rect);
@@ -1153,26 +1155,26 @@
           // 右下
           if (!flags[dirs.d] && !flags[dirs.r]) {
             const circle = app.svg.createCircle(blockSize, {
-              cx: x + 0.75,
-              cy: y + 0.75,
-              r: 0.25,
+              cx: x + 1 - radius,
+              cy: y + 1 - radius,
+              r: radius,
               fill: color.stroke,
             });
             gElem.appendChild(circle);
             const circle2 = app.svg.createCircle(blockSize, {
-              cx: x + 0.75,
-              cy: y + 0.75,
-              r: 0.25 - blockBorderWidth,
+              cx: x + 1 - radius,
+              cy: y + 1 - radius,
+              r: radius - blockBorderWidth,
               fill: color.fill,
             });
             gElem.appendChild(circle2);
           } else {
             {
               const rect = app.svg.createRect(blockSize, {
-                x: x + 0.75 - eps,
-                y: y + 0.75 - eps,
-                width: 0.25 + eps,
-                height: 0.25 + eps,
+                x: x + 1 - radius - eps,
+                y: y + 1 - radius - eps,
+                width: radius + eps,
+                height: radius + eps,
                 fill: color.fill,
               });
               gElem.appendChild(rect);
@@ -1180,9 +1182,9 @@
 
             if (!flags[dirs.d]) {
               const rect = app.svg.createRect(blockSize, {
-                x: x + 0.75 - eps,
+                x: x + 1 - radius - eps,
                 y: y + 1 - blockBorderWidth,
-                width: 0.25 + eps2,
+                width: radius + eps2,
                 height: blockBorderWidth,
                 fill: color.stroke,
               });
@@ -1190,9 +1192,9 @@
             } else if (!flags[dirs.r]) {
               const rect = app.svg.createRect(blockSize, {
                 x: x + 1 - blockBorderWidth,
-                y: y + 0.75 - eps,
+                y: y + 1 - radius - eps,
                 width: blockBorderWidth,
-                height: 0.25 + eps2,
+                height: radius + eps2,
                 fill: color.stroke,
               });
               gElem.appendChild(rect);
@@ -1211,16 +1213,16 @@
           // 左下
           if (!flags[dirs.d] && !flags[dirs.l]) {
             const circle = app.svg.createCircle(blockSize, {
-              cx: x + 0.25,
-              cy: y + 0.75,
-              r: 0.25,
+              cx: x + radius,
+              cy: y + 1 - radius,
+              r: radius,
               fill: color.stroke,
             });
             gElem.appendChild(circle);
             const circle2 = app.svg.createCircle(blockSize, {
-              cx: x + 0.25,
-              cy: y + 0.75,
-              r: 0.25 - blockBorderWidth,
+              cx: x + radius,
+              cy: y + 1 - radius,
+              r: radius - blockBorderWidth,
               fill: color.fill,
             });
             gElem.appendChild(circle2);
@@ -1228,9 +1230,9 @@
             {
               const rect = app.svg.createRect(blockSize, {
                 x,
-                y: y + 0.75 - eps,
-                width: 0.25 + eps,
-                height: 0.25 + eps,
+                y: y + 1 - radius - eps,
+                width: radius + eps,
+                height: radius + eps,
                 fill: color.fill,
               });
               gElem.appendChild(rect);
@@ -1240,7 +1242,7 @@
               const rect = app.svg.createRect(blockSize, {
                 x: x - eps,
                 y: y + 1 - blockBorderWidth,
-                width: 0.25 + eps2,
+                width: radius + eps2,
                 height: blockBorderWidth,
                 fill: color.stroke,
               });
@@ -1248,9 +1250,9 @@
             } else if (!flags[dirs.l]) {
               const rect = app.svg.createRect(blockSize, {
                 x,
-                y: y + 0.75 - eps,
+                y: y + 1 - radius - eps,
                 width: blockBorderWidth,
-                height: 0.25 + eps2,
+                height: radius + eps2,
                 fill: color.stroke,
               });
               gElem.appendChild(rect);
@@ -1270,18 +1272,18 @@
           {
             const rect = app.svg.createRect(blockSize, {
               x,
-              y: y + 0.25,
+              y: y + radius,
               width: 1,
-              height: 0.5,
+              height: 1 - 2 * radius,
               fill: color.fill,
             });
             gElem.appendChild(rect);
           }
           {
             const rect = app.svg.createRect(blockSize, {
-              x: x + 0.25,
+              x: x + radius,
               y,
-              width: 0.5,
+              width: 1 - 2 * radius,
               height: 1,
               fill: color.fill,
             });
@@ -1291,9 +1293,9 @@
           // 上側
           if (!flags[dirs.u]) {
             const line = app.svg.createRect(blockSize, {
-              x: x + 0.25,
+              x: x + radius,
               y,
-              width: 0.5,
+              width: 1 - 2 * radius,
               height: blockBorderWidth,
               fill: color.stroke,
             });
@@ -1303,9 +1305,9 @@
           if (!flags[dirs.r]) {
             const line = app.svg.createRect(blockSize, {
               x: x + 1 - blockBorderWidth,
-              y: y + 0.25,
+              y: y + radius,
               width: blockBorderWidth,
-              height: 0.5,
+              height: 1 - 2 * radius,
               fill: color.stroke,
             });
             gElem.appendChild(line);
@@ -1313,9 +1315,9 @@
           // 下側
           if (!flags[dirs.d]) {
             const line = app.svg.createRect(blockSize, {
-              x: x + 0.25,
+              x: x + radius,
               y: y + 1 - blockBorderWidth,
-              width: 0.5,
+              width: 1 - 2 * radius,
               height: blockBorderWidth,
               fill: color.stroke,
             });
@@ -1325,9 +1327,9 @@
           if (!flags[dirs.l]) {
             const line = app.svg.createRect(blockSize, {
               x,
-              y: y + 0.25,
+              y: y + radius,
               width: blockBorderWidth,
-              height: 0.5,
+              height: 1 - 2 * radius,
               fill: color.stroke,
             });
             gElem.appendChild(line);
