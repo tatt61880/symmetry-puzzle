@@ -1034,7 +1034,7 @@
         const eps2 = eps * 2;
 
         if (app.states.isUser(state)) {
-          const radius = 0.25;
+          const radius = 0.3;
           const radius2 = radius * 2;
 
           // 左上
