@@ -30,7 +30,7 @@
   const dxs = [0, 1, 0, -1, -1, 1, 1, -1];
   const dys = [-1, 0, 1, 0, -1, -1, 1, 1];
 
-  const blockBorderWidth = 0.125;
+  const blockBorderWidth = 1 / 8;
 
   function* stateCharGenerator(stateStr) {
     for (let i = 0; i < stateStr.length; ++i) {
@@ -1036,6 +1036,7 @@
         if (app.states.isUser(state)) {
           const radius = 0.3;
           const radius2 = radius * 2;
+          const blockBorderWidth = 0.1;
 
           // 左上
           if (!flags[dirs.u] && !flags[dirs.l]) {
