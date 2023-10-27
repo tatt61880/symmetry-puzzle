@@ -5,7 +5,7 @@
 
   #title-inner1 {
     display: table;
-    width: 500px;
+    width: 100%;
     height: calc(100svh - 68px);
   }
 
