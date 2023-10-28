@@ -1133,7 +1133,7 @@
     moveIntervalCount = 0;
 
     const classAnimationIllegalMove = 'animation-illegal-move';
-    elems.main.svg.classList.remove(classAnimationIllegalMove);
+    removeAnimationClass(elems.main.svg, classAnimationIllegalMove);
 
     const movedFlag = tryMoving(stick.inputDir);
     if (movedFlag) {
@@ -1177,6 +1177,7 @@
 
     const mainSvgG = app.svg.createG();
 
+    removeAnimationClass(elems.main.svg, 'animation-illegal-move');
     elems.main.svg.textContent = '';
     elems.main.svg.appendChild(mainSvgG);
 
