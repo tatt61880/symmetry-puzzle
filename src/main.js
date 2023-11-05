@@ -1152,6 +1152,7 @@
         `translate(${dx * pixel}px, ${dy * pixel}px)`
       );
 
+      drawMainSvg(); // 目の向きをリセットするために、描画し直します。
       // 動けないときは盤面を振動させます。
       addAnimationClass(elems.main.svg, classAnimationIllegalMove);
     }
