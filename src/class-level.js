@@ -5,10 +5,10 @@
   let app = {};
   if (isBrowser) {
     app = window.app;
-    if (app?.states === undefined) console.error('app.states is undefined.');
-    if (app?.colors === undefined) console.error('app.colors is undefined.');
-    if (app?.svg === undefined) console.error('app.svg is undefined.');
-    if (app?.Stack === undefined) console.error('app.Stack is undefined.');
+    console.assert(app?.states !== undefined);
+    console.assert(app?.colors !== undefined);
+    console.assert(app?.svg !== undefined);
+    console.assert(app?.Stack !== undefined);
   } else {
     app.states = require('./states.js');
     app.colors = require('./colors.js');

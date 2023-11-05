@@ -7,8 +7,8 @@
   if (isBrowser) {
     app = window.app;
     app.console = console;
-    if (app.states === undefined) app.console.error('app.states is undefined.');
-    if (app.Level === undefined) app.console.error('app.Level is undefined.');
+    console.assert(app?.states !== undefined);
+    console.assert(app?.Level !== undefined);
     options = {};
     window.process = {
       exitCode: 0,

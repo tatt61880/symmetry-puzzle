@@ -5,8 +5,8 @@
   let app = {};
   if (isBrowser) {
     app = window.app;
-    if (app?.colors === undefined) console.error('app.colors is undefined.');
-    if (app?.svg === undefined) console.error('app.svg is undefined.');
+    console.assert(app?.colors !== undefined);
+    console.assert(app?.svg !== undefined);
   } else {
     app.colors = require('./colors.js');
     app.svg = require('./svg.js');

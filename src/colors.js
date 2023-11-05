@@ -6,7 +6,7 @@
   const colors = {};
   if (isBrowser) {
     app = window.app;
-    if (app?.states === undefined) console.error('app.states is undefined.');
+    console.assert(app?.states !== undefined);
   } else {
     app.states = require('./states.js');
   }

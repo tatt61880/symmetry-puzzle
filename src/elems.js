@@ -5,7 +5,7 @@
   let app = {};
   if (isBrowser) {
     app = window.app;
-    if (app?.Elems === undefined) console.error('app.Elems is undefined.');
+    console.assert(app?.Elems !== undefined);
   }
 
   const elems = new app.Elems({

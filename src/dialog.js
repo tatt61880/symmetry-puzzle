@@ -10,7 +10,7 @@
   const levelSelectId = 'level-select';
 
   const app = window.app;
-  if (app.elems === undefined) app.console.error('app.elems is undefined.');
+  console.assert(app?.elems !== undefined);
 
   const elems = app.elems;
 
