@@ -1178,7 +1178,8 @@
 
     const mainSvgG = app.svg.createG();
 
-    removeAnimationClass(elems.main.svg, 'animation-illegal-move');
+    const classAnimationIllegalMove = 'animation-illegal-move';
+    removeAnimationClass(elems.main.svg, classAnimationIllegalMove);
     elems.main.svg.textContent = '';
     elems.main.svg.appendChild(mainSvgG);
 
