@@ -31,11 +31,6 @@
   }
 
   #controller-widget {
-    #button-undo:hover,
-    .active-hover:hover {
-      filter: contrast(90%);
-    }
-
     #controller-stick-base {
       display: block;
       opacity: 1;

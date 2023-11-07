@@ -15,40 +15,40 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.10.22">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.10.22">
 
-  <link rel="stylesheet" href="./css/main.css?2023.10.28">
-  <link rel="stylesheet" href="./css/title.css?2023.10.28">
-  <link rel="stylesheet" href="./css/game.css?2023.10.28">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.10.28">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.10.28">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.10.28">
-  <link rel="stylesheet" href="./css/animation.css?2023.10.28">
+  <link rel="stylesheet" href="./css/main.css?2023.11.07">
+  <link rel="stylesheet" href="./css/title.css?2023.11.07">
+  <link rel="stylesheet" href="./css/game.css?2023.11.07">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.11.07">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.11.07">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.11.07">
+  <link rel="stylesheet" href="./css/animation.css?2023.11.07">
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-  <script src="./src/states.js?2023.10.28"></script>
-  <script src="./src/colors.js?2023.10.28"></script>
-  <script src="./src/svg.js?2023.10.28"></script>
-  <script src="./src/class-stack.js?2023.10.28"></script>
-  <script src="./src/class-level.js?2023.10.28"></script>
+  <script src="./src/states.js?2023.11.07"></script>
+  <script src="./src/colors.js?2023.11.07"></script>
+  <script src="./src/svg.js?2023.11.07"></script>
+  <script src="./src/class-stack.js?2023.11.07"></script>
+  <script src="./src/class-level.js?2023.11.07"></script>
 
-  <script src="./src/class-savedata.js?2023.10.28"></script>
-  <script src="./src/class-undo-info.js?2023.10.28"></script>
-  <script src="./src/class-elems.js?2023.10.28"></script>
-  <script src="./src/class-stick.js?2023.10.28"></script>
+  <script src="./src/class-savedata.js?2023.11.07"></script>
+  <script src="./src/class-undo-info.js?2023.11.07"></script>
+  <script src="./src/class-elems.js?2023.11.07"></script>
+  <script src="./src/class-stick.js?2023.11.07"></script>
 
-  <script src="./src/levels-line.js?2023.10.28"></script>
-  <script src="./src/levels-line-ex.js?2023.10.28"></script>
-  <script src="./src/levels-point.js?2023.10.28"></script>
-  <script src="./src/levels-point-ex.js?2023.10.28"></script>
+  <script src="./src/levels-line.js?2023.11.07"></script>
+  <script src="./src/levels-line-ex.js?2023.11.07"></script>
+  <script src="./src/levels-point.js?2023.11.07"></script>
+  <script src="./src/levels-point-ex.js?2023.11.07"></script>
 
-  <script src="./src/elems.js?2023.10.28"></script>
+  <script src="./src/elems.js?2023.11.07"></script>
 
-  <script src="./src/solve.js?2023.10.28"></script>
+  <script src="./src/solve.js?2023.11.07"></script>
 
-  <script src="./src/common.js?2023.10.28"></script>
-  <script src="./src/dialog.js?2023.10.28"></script>
+  <script src="./src/common.js?2023.11.07"></script>
+  <script src="./src/dialog.js?2023.11.07"></script>
 
-  <script src="./src/analyze-url.js?2023.10.28"></script>
-  <script src="./src/main.js?2023.10.28"></script>
+  <script src="./src/analyze-url.js?2023.11.07"></script>
+  <script src="./src/main.js?2023.11.07"></script>
 </head>
 
 <body>
@@ -524,7 +524,7 @@
             <rect x="-250" y="-125" width="500" height="250" fill="#eee" stroke="none" />
 
             <!-- Undoボタン -->
-            <g id="button-undo" class="button" transform="translate(-175,0) scale(1.2,1.2)">
+            <g id="button-undo" class="button active-hover" transform="translate(-175,0) scale(1.2,1.2)">
               <text x="0" y="-42" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="12px"
                 fill="#888888" class="translatable-toggle" data-en="Step backward" data-ja="1ステップ戻す"></text>
               <circle cx="0" cy="0" r="28" fill="lightgray" stroke="#888888" stroke-width="4" />
@@ -537,28 +537,38 @@
             <!-- 操作ボタン -->
             <g id="controller-buttons-root">
               <g id="controller-buttons-base" transform="translate(0,0) scale(1.75,1.75)">
-                <g id="controller-buttons-up" class="button" transform="translate(0,-40)">
+                <g id="controller-buttons-up" class="button active-hover" transform="translate(0,-40)">
                   <rect x="-20" y="-20" rx="8" ry="8" width="40" height="40" fill="#aaccff" stroke="#0000f8"
                     stroke-width="2.5" />
                   <polygon transform="rotate(0 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0" fill="#0000f8" />
                 </g>
-                <g id="controller-buttons-right" class="button" transform="translate(40,0)">
+                <g id="controller-buttons-right" class="button active-hover" transform="translate(40,0)">
                   <rect x="-20" y="-20" rx="8" ry="8" width="40" height="40" fill="#aaccff" stroke="#0000f8"
                     stroke-width="2.5" />
                   <polygon transform="rotate(90 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0" fill="#0000f8" />
                 </g>
-                <g id="controller-buttons-down" class="button" transform="translate(0,40)">
+                <g id="controller-buttons-down" class="button active-hover" transform="translate(0,40)">
                   <rect x="-20" y="-20" rx="8" ry="8" width="40" height="40" fill="#aaccff" stroke="#0000f8"
                     stroke-width="2.5" />
                   <polygon transform="rotate(180 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0" fill="#0000f8" />
                 </g>
-                <g id="controller-buttons-left" class="button" transform="translate(-40,0)">
+                <g id="controller-buttons-left" class="button active-hover" transform="translate(-40,0)">
                   <rect x="-20" y="-20" rx="8" ry="8" width="40" height="40" fill="#aaccff" stroke="#0000f8"
                     stroke-width="2.5" />
                   <polygon transform="rotate(270 0 0)" points="0,-12 6,0 2,0 2.3,12 -2.3,12 -2,0 -6,0" fill="#0000f8" />
                 </g>
               </g>
             </g>
+
+            <!--
+              <g id="controller-buttons-menu" class="button active-hover" transform="translate(175,0) scale(1.75,1.75)">
+                <rect x="-20" y="-20" rx="8" ry="8" width="40" height="40" fill="lightgray" stroke="#888888"
+                stroke-width="2.5" />
+                <rect x="-13" y="-13" rx="3" ry="3" width="26" height="6" fill="#888888" />
+                <rect x="-13" y="-3" rx="3" ry="3" width="26" height="6" fill="#888888" />
+                <rect x="-13" y="7" rx="3" ry="3" width="26" height="6" fill="#888888" />
+              </g>
+            -->
 
             <!-- スティック -->
             <g id="controller-stick-root" class="hide">
