@@ -956,14 +956,15 @@
         pointerdownEventName,
         moveButtonStart.bind(null, app.Stick.DIRS.LEFT)
       );
+
+      elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
+
       elems.controller.buttons.menu.addEventListener(
         pointerdownEventName,
         onButtonMenu
       );
       elems.controller.buttons.title.addEventListener('click', gotoTitlePage);
       elems.controller.buttons.retry.addEventListener('click', retryLevel);
-
-      elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
 
       document.addEventListener(pointerupEventName, pointerup);
 
