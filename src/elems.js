@@ -111,6 +111,7 @@
       menu: 'controller-menu',
 
       buttons: {
+        root: 'controller-buttons-root',
         base: 'controller-buttons-base',
         up: 'controller-buttons-up',
         right: 'controller-buttons-right',

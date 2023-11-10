@@ -971,11 +971,11 @@
     }
 
     function onButtonMenu() {
-      if (app.common.isShownElem(elems.controller.buttons.base)) {
-        app.common.hideElem(elems.controller.buttons.base);
+      if (app.common.isShownElem(elems.controller.buttons.root)) {
+        app.common.hideElem(elems.controller.buttons.root);
         app.common.showElem(elems.controller.menu);
       } else {
-        app.common.showElem(elems.controller.buttons.base);
+        app.common.showElem(elems.controller.buttons.root);
         app.common.hideElem(elems.controller.menu);
       }
     }
@@ -1175,6 +1175,7 @@
   }
 
   function updateController() {
+    app.common.showElem(elems.controller.buttons.root);
     app.common.hideElem(elems.controller.menu);
     if (completeFlag) {
       app.common.hideElem(elems.controller.buttons.base);
