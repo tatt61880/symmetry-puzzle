@@ -84,7 +84,7 @@
   }
 
   function gotoPrevLevelPage() {
-    if (!elems.levels.prev.classList.contains('hide')) {
+    if (app.common.isShownElem(elems.levels.prev)) {
       elems.levels.dialog.dataset.selectCount =
         Number(elems.levels.dialog.dataset.selectCount) -
         LEVEL_SELECT_NUM_PER_PAGE;
@@ -94,7 +94,7 @@
   }
 
   function gotoNextLevelPage() {
-    if (!elems.levels.next.classList.contains('hide')) {
+    if (app.common.isShownElem(elems.levels.next)) {
       elems.levels.dialog.dataset.selectCount =
         Number(elems.levels.dialog.dataset.selectCount) +
         LEVEL_SELECT_NUM_PER_PAGE;
