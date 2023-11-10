@@ -251,7 +251,7 @@
     }
 
     // タイトル画面で有効
-    if (!elems.category.title.classList.contains('hide')) {
+    if (app.common.isShownElem(elems.category.title)) {
       if (!e.shiftKey) {
         switch (e.key) {
           case 't':
@@ -285,7 +285,7 @@
           break;
       }
     } else if (e.key === 'Enter') {
-      if (elems.controller.nextLevel.classList.contains('hide')) return;
+      if (app.common.isHiddenElem(elems.controller.nextLevel)) return;
       gotoNextLevel();
     } else if (e.key === ' ') {
       if (settings.autoMode) {
@@ -366,7 +366,7 @@
   }
 
   function keyup(e) {
-    if (!elems.category.title.classList.contains('hide')) return;
+    if (app.common.isShownElem(elems.category.title)) return;
     delete inputKeys[e.key];
     if (temporaryShowCharsFlag && e.key === ' ') {
       temporaryShowCharsFlag = false;
@@ -416,7 +416,7 @@
   }
 
   function updateSvg() {
-    if (elems.category.game.classList.contains('hide')) return;
+    if (app.common.isHiddenElem(elems.category.game)) return;
 
     const divMainHeight =
       window.innerHeight -
@@ -903,7 +903,7 @@
 
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       elems.contents.addEventListener(pointermoveEventName, (e) => {
-        if (!elems.console.widget.classList.contains('hide')) return;
+        if (app.common.isShownElem(elems.console.widget)) return;
         // スワイプ操作を無効化する。
         e.preventDefault();
       });
@@ -1179,7 +1179,7 @@
     if (completeFlag) {
       app.common.hideElem(elems.controller.buttons.base);
       app.common.hideElem(elems.controller.stick.base);
-      if (!elems.level.next.classList.contains('hide')) {
+      if (app.common.isShownElem(elems.level.next)) {
         app.common.showElem(elems.controller.nextLevel);
       }
     } else {
@@ -1823,7 +1823,7 @@
   }
 
   function replaceUrl() {
-    if (!elems.category.title.classList.contains('hide')) {
+    if (app.common.isShownElem(elems.category.title)) {
       replaceUrlTitle();
       return;
     }
