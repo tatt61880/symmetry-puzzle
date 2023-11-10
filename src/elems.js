@@ -55,7 +55,7 @@
 
     level: {
       widget: 'level-widget',
-      reset: 'button-level-reset',
+      retry: 'button-level-retry',
       prev: 'button-level-prev',
       id: 'level-id',
       next: 'button-level-next',
@@ -108,6 +108,7 @@
       widget: 'controller-widget',
       undo: 'button-undo',
       nextLevel: 'next-level',
+      menu: 'controller-menu',
 
       buttons: {
         base: 'controller-buttons-base',
@@ -115,6 +116,9 @@
         right: 'controller-buttons-right',
         down: 'controller-buttons-down',
         left: 'controller-buttons-left',
+        menu: 'controller-buttons-menu',
+        title: 'controller-buttons-title',
+        retry: 'controller-buttons-retry',
       },
 
       stick: {

@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.11.07';
+  const VERSION_TEXT = 'v2023.11.10';
 
   const app = window.app;
   Object.freeze(app);
@@ -246,7 +246,7 @@
         return;
       case '+':
       case 'Home':
-        onloadTitle();
+        gotoTitlePage();
         return;
     }
 
@@ -302,7 +302,7 @@
     } else if (e.key === '@') {
       toggleEditLevel();
     } else if (e.key === 'r') {
-      resetLevel();
+      retryLevel();
     } else if (e.key === 'z') {
       undoStart();
     } else {
@@ -381,17 +381,17 @@
     return false;
   }
 
-  function resetLevel() {
+  function retryLevel() {
     window.getSelection().removeAllRanges();
 
     clearTimeout(nextLevelTimerId);
 
-    elems.level.reset.classList.add('low-contrast');
+    elems.level.retry.classList.add('low-contrast');
     elems.main.svg.textContent = '';
 
     const RESET_DELAY = 50;
     setTimeout(() => {
-      elems.level.reset.classList.remove('low-contrast');
+      elems.level.retry.classList.remove('low-contrast');
       loadLevelObj(level.getLevelObj(), { reset: true });
     }, RESET_DELAY);
   }
@@ -761,7 +761,7 @@
     const id = queryParams.id;
 
     if (id === null && queryParams.levelObj.s === '') {
-      onloadTitle();
+      gotoTitlePage();
       return;
     }
 
@@ -822,7 +822,7 @@
     return null;
   }
 
-  function onloadTitle() {
+  function gotoTitlePage() {
     completeFlag = false;
     window.getSelection().removeAllRanges();
 
@@ -909,7 +909,7 @@
       });
     }
 
-    elems.top.addEventListener('click', onloadTitle);
+    elems.top.addEventListener('click', gotoTitlePage);
 
     initElemsAuto();
     initElemsEdit();
@@ -956,12 +956,28 @@
         pointerdownEventName,
         moveButtonStart.bind(null, app.Stick.DIRS.LEFT)
       );
+      elems.controller.buttons.menu.addEventListener(
+        pointerdownEventName,
+        onButtonMenu
+      );
+      elems.controller.buttons.title.addEventListener('click', gotoTitlePage);
+      elems.controller.buttons.retry.addEventListener('click', retryLevel);
 
       elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
 
       document.addEventListener(pointerupEventName, pointerup);
 
       stick = new app.Stick(elems.controller.stick, elems.controller.buttons);
+    }
+
+    function onButtonMenu() {
+      if (app.common.isShownElem(elems.controller.buttons.base)) {
+        app.common.hideElem(elems.controller.buttons.base);
+        app.common.showElem(elems.controller.menu);
+      } else {
+        app.common.showElem(elems.controller.buttons.base);
+        app.common.hideElem(elems.controller.menu);
+      }
     }
   }
 
@@ -1089,7 +1105,7 @@
 
   // レベル操作用
   function initElemsLevelWidget() {
-    elems.level.reset.addEventListener('click', resetLevel);
+    elems.level.retry.addEventListener('click', retryLevel);
     elems.level.prev.addEventListener('click', gotoPrevLevel);
     elems.level.next.addEventListener('click', gotoNextLevel);
     elems.level.edit.addEventListener('click', toggleEditLevel);
@@ -1159,6 +1175,7 @@
   }
 
   function updateController() {
+    app.common.hideElem(elems.controller.menu);
     if (completeFlag) {
       app.common.hideElem(elems.controller.buttons.base);
       app.common.hideElem(elems.controller.stick.base);

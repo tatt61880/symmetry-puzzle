@@ -26,6 +26,8 @@
     levelsListEx,
     loadLevelById,
     isTouchDevice,
+    isShownElem,
+    isHiddenElem,
     showElem,
     hideElem,
     getStepColor,
@@ -34,6 +36,16 @@
 
   function isTouchDevice() {
     return document.ontouchstart !== undefined;
+  }
+
+  function isShownElem(elem) {
+    if (!elem) return false;
+    return !elem.classList.contains('hide');
+  }
+
+  function isHiddenElem(elem) {
+    if (!elem) return true;
+    return elem.classList.contains('hide');
   }
 
   function showElem(elem) {
