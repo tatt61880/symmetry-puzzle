@@ -1414,17 +1414,17 @@
             ]);
           }
 
-          const circle = app.svg.createPolygon(blockSize, {
+          const polygon = app.svg.createPolygon(blockSize, {
             points,
             fill: '#e5a0e5',
             stroke: '#aa33aa',
             strokeWidth: 0.1,
           });
-          circle.classList.add('button');
-          circle.addEventListener('click', () => {
+          polygon.classList.add('button');
+          polygon.addEventListener('click', () => {
             resizeLevel(button.dx, button.dy, button.flag);
           });
-          g.appendChild(circle);
+          g.appendChild(polygon);
 
           const char = button.dx + button.dy > 0 ? '+' : '-';
           const text = app.svg.createText(blockSize, {
