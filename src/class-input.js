@@ -39,9 +39,15 @@
       if (!this.#enable) return;
       this.update(Input.DIRS.NEUTRAL);
     }
+
+    isEnable() {
+      return this.#enable;
+    }
+
     enable() {
       this.#enable = true;
     }
+
     disable() {
       this.#enable = false;
     }

@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.11.13';
+  const VERSION_TEXT = 'v2023.11.13b';
 
   const app = window.app;
   Object.freeze(app);
@@ -127,6 +127,7 @@
   }
 
   function moveButtonStart(dir, e) {
+    if (!input.isEnable()) return;
     e.preventDefault();
     input.update(dir);
   }
