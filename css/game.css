@@ -29,25 +29,4 @@
   #url-div {
     padding: 1.2px;
   }
-
-  #controller-widget {
-    #controller-stick-base {
-      display: block;
-      opacity: 1;
-      transition: 0.5s;
-
-      &.hide {
-        opacity: 0;
-      }
-    }
-  }
-
-  .controller-stick-area {
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .stick {
-    transition: 0.1s;
-  }
 }

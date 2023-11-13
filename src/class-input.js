@@ -19,8 +19,11 @@
 
     constructor(buttons) {
       this.#buttons = buttons;
-      this.inputDir = Input.DIRS.NEUTRAL;
+      this.#enable = true;
       this.#init();
+
+      this.inputDir = Input.DIRS.NEUTRAL;
+
       return this;
     }
 

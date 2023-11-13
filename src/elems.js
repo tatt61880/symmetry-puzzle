@@ -121,17 +121,6 @@
         title: 'controller-buttons-title',
         retry: 'controller-buttons-retry',
       },
-
-      stick: {
-        base: 'controller-stick-base',
-        thickness: 'controller-stick-thickness',
-        outer: 'controller-stick-outer',
-        outer2: 'controller-stick-outer2',
-        middle: 'controller-stick-middle',
-        middle2: 'controller-stick-middle2',
-        inner: 'controller-stick-inner',
-        inner2: 'controller-stick-inner2',
-      },
     },
 
     console: {
