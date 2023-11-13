@@ -50,8 +50,4 @@
   .stick {
     transition: 0.1s;
   }
-
-  .low-contrast {
-    opacity: 0.7;
-  }
 }

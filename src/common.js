@@ -30,6 +30,8 @@
     isHiddenElem,
     showElem,
     hideElem,
+    activeElem,
+    inactiveElem,
     getStepColor,
     createCrown,
   };
@@ -56,6 +58,16 @@
   function hideElem(elem) {
     if (!elem) return;
     elem.classList.add('hide');
+  }
+
+  function activeElem(elem) {
+    if (!elem) return;
+    elem.classList.add('active-elem');
+  }
+
+  function inactiveElem(elem) {
+    if (!elem) return;
+    elem.classList.remove('active-elem');
   }
 
   function getStepColor(step, bestStep) {

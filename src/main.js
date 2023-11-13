@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.11.10';
+  const VERSION_TEXT = 'v2023.11.11';
 
   const app = window.app;
   Object.freeze(app);
@@ -135,7 +135,7 @@
     if (undoFlag) return;
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
-    elems.controller.undo.classList.add('low-contrast');
+    app.common.activeElem(elems.controller.undo);
     stick.update(app.Stick.DIRS.NEUTRAL);
     execUndo();
     undoIntervalId = setInterval(execUndo, UNDO_INTERVAL_MSEC);
@@ -144,7 +144,7 @@
   function undoEnd() {
     if (!undoFlag) return;
     undoFlag = false;
-    elems.controller.undo.classList.remove('low-contrast');
+    app.common.inactiveElem(elems.controller.undo);
     clearInterval(undoIntervalId);
   }
 
@@ -386,12 +386,12 @@
 
     clearTimeout(nextLevelTimerId);
 
-    elems.level.retry.classList.add('low-contrast');
+    app.common.activeElem(elems.level.retry);
     elems.main.svg.textContent = '';
 
     const RESET_DELAY = 50;
     setTimeout(() => {
-      elems.level.retry.classList.remove('low-contrast');
+      app.common.inactiveElem(elems.level.retry);
       loadLevelObj(level.getLevelObj(), { reset: true });
     }, RESET_DELAY);
   }
@@ -1890,13 +1890,13 @@
       const h = level.getH();
       const s = level.getStateStr();
       const levelObj = { w, h, s };
-      // TODO low-contrastを盤面に反映させてから計算する。Promiseを使うといけそう。
-      // elems.auto.buttonStart.classList.add('low-contrast');
+      // TODO activeElem を盤面に反映させてから計算する。Promiseを使うといけそう。
+      // app.common.activeElem(elems.auto.buttonStart);
       const levelTemp = new app.Level(levelObj, app.common.checkMode, {});
       const maxStep = 1000; // 探索ステップ数上限値は大きな値にしておきます。時間制限もあるので、この制限にかかることはほぼないはずです。
       const timeLimit = 10;
       const result = app.solveLevel(null, levelTemp, { maxStep, timeLimit });
-      // elems.auto.buttonStart.classList.remove('low-contrast');
+      // app.common.inactiveElem(elems.auto.buttonStart);
       if (result.replayStr === null) {
         window.alert(result.errorMessage);
         return;

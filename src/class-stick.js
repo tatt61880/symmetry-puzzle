@@ -1,6 +1,9 @@
 (function () {
   'use strict';
   const isBrowser = typeof window !== 'undefined';
+  if (!isBrowser) return;
+
+  const app = window.app;
 
   class Stick {
     #buttons;
@@ -133,22 +136,22 @@
       this.#stick.inner.style.setProperty('transform', transforms[dir](33.7));
       this.#stick.inner2.style.setProperty('transform', transforms[dir](34.9));
 
-      this.#buttons.up.classList.remove('low-contrast');
-      this.#buttons.right.classList.remove('low-contrast');
-      this.#buttons.down.classList.remove('low-contrast');
-      this.#buttons.left.classList.remove('low-contrast');
+      app.common.inactiveElem(this.#buttons.up);
+      app.common.inactiveElem(this.#buttons.right);
+      app.common.inactiveElem(this.#buttons.down);
+      app.common.inactiveElem(this.#buttons.left);
       switch (String(dir)) {
         case Stick.DIRS.UP:
-          this.#buttons.up.classList.add('low-contrast');
+          app.common.activeElem(this.#buttons.up);
           break;
         case Stick.DIRS.RIGHT:
-          this.#buttons.right.classList.add('low-contrast');
+          app.common.activeElem(this.#buttons.right);
           break;
         case Stick.DIRS.DOWN:
-          this.#buttons.down.classList.add('low-contrast');
+          app.common.activeElem(this.#buttons.down);
           break;
         case Stick.DIRS.LEFT:
-          this.#buttons.left.classList.add('low-contrast');
+          app.common.activeElem(this.#buttons.left);
           break;
       }
     }

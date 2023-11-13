@@ -75,6 +75,7 @@ div.user-select-none {
   opacity: 0.9;
 }
 
+.active-elem,
 .active-hover:active:hover {
   opacity: 0.7;
 }
