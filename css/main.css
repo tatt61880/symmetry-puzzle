@@ -89,14 +89,8 @@ text {
   pointer-events: none;
 }
 
-.hide {
-  display: none;
-}
-
-.hide-lang {
-  display: none;
-}
-
+.hide,
+.hide-lang,
 .hide-mode {
   display: none;
 }
