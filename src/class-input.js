@@ -4,6 +4,7 @@
   if (!isBrowser) return;
 
   const app = window.app;
+  console.assert(app?.common !== undefined);
 
   class Input {
     #buttons;
@@ -75,10 +76,5 @@
     }
   }
 
-  if (isBrowser) {
-    window.app = window.app || {};
-    window.app.Input = Input;
-  } else {
-    module.exports = Input;
-  }
+  window.app.Input = Input;
 })();

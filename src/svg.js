@@ -1,6 +1,7 @@
 (function () {
   'use strict';
   const isBrowser = typeof window !== 'undefined';
+  if (!isBrowser) return;
 
   const svg = {};
 
@@ -155,8 +156,6 @@
 
   Object.freeze(svg);
 
-  if (isBrowser) {
-    window.app = window.app || {};
-    window.app.svg = svg;
-  }
+  window.app = window.app || {};
+  window.app.svg = svg;
 })();
