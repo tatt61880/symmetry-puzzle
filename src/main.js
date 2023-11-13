@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.11.11';
+  const VERSION_TEXT = 'v2023.11.12';
 
   const app = window.app;
   Object.freeze(app);
@@ -17,7 +17,7 @@
   const UNDO_INTERVAL_MSEC = UNDO_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
 
   let moveIntervalCount = MOVE_INTERVAL_COUNT;
-  let stick;
+  let input;
   const inputKeys = {};
 
   let settings = {
@@ -128,7 +128,7 @@
 
   function moveButtonStart(dir, e) {
     e.preventDefault();
-    stick.update(dir);
+    input.update(dir);
   }
 
   function undoStart() {
@@ -136,7 +136,7 @@
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
     app.common.activeElem(elems.controller.undo);
-    stick.update(app.Stick.DIRS.NEUTRAL);
+    input.update(app.Input.DIRS.NEUTRAL);
     execUndo();
     undoIntervalId = setInterval(execUndo, UNDO_INTERVAL_MSEC);
   }
@@ -315,26 +315,26 @@
             case 'ArrowUp':
             case 'w':
             case 'k':
-              return app.Stick.DIRS.UP;
+              return app.Input.DIRS.UP;
             case 'ArrowRight':
             case 'd':
             case 'l':
-              return app.Stick.DIRS.RIGHT;
+              return app.Input.DIRS.RIGHT;
             case 'ArrowDown':
             case 's':
             case 'j':
-              return app.Stick.DIRS.DOWN;
+              return app.Input.DIRS.DOWN;
             case 'ArrowLeft':
             case 'a':
             case 'h':
-              return app.Stick.DIRS.LEFT;
+              return app.Input.DIRS.LEFT;
           }
           return null;
         })();
 
         if (dir !== null) {
           e.preventDefault();
-          stick.update(dir);
+          input.update(dir);
           inputKeys[e.key] = true;
         }
       }
@@ -375,7 +375,7 @@
       undoEnd();
     } else if (Object.keys(inputKeys).length === 0) {
       if (!settings.autoMode) {
-        stick.update(app.Stick.DIRS.NEUTRAL);
+        input.update(app.Input.DIRS.NEUTRAL);
       }
     }
     return false;
@@ -555,7 +555,7 @@
     resetUndo();
     initLevel(levelObj, initParam);
 
-    stick.update(app.Stick.DIRS.NEUTRAL);
+    input.update(app.Input.DIRS.NEUTRAL);
     moveIntervalCount = MOVE_INTERVAL_COUNT;
 
     if (settings.autoMode) {
@@ -942,19 +942,19 @@
       elems.controller.undo.addEventListener(pointerdownEventName, undodown);
       elems.controller.buttons.up.addEventListener(
         pointerdownEventName,
-        moveButtonStart.bind(null, app.Stick.DIRS.UP)
+        moveButtonStart.bind(null, app.Input.DIRS.UP)
       );
       elems.controller.buttons.right.addEventListener(
         pointerdownEventName,
-        moveButtonStart.bind(null, app.Stick.DIRS.RIGHT)
+        moveButtonStart.bind(null, app.Input.DIRS.RIGHT)
       );
       elems.controller.buttons.down.addEventListener(
         pointerdownEventName,
-        moveButtonStart.bind(null, app.Stick.DIRS.DOWN)
+        moveButtonStart.bind(null, app.Input.DIRS.DOWN)
       );
       elems.controller.buttons.left.addEventListener(
         pointerdownEventName,
-        moveButtonStart.bind(null, app.Stick.DIRS.LEFT)
+        moveButtonStart.bind(null, app.Input.DIRS.LEFT)
       );
 
       elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
@@ -968,7 +968,7 @@
 
       document.addEventListener(pointerupEventName, pointerup);
 
-      stick = new app.Stick(elems.controller.stick, elems.controller.buttons);
+      input = new app.Input(elems.controller.buttons);
     }
 
     function onButtonMenu() {
@@ -1133,26 +1133,26 @@
     if (settings.autoMode) return;
 
     if (moveIntervalCount >= MOVE_INTERVAL_COUNT) {
-      input();
+      inputFunc();
     } else {
       moveIntervalCount++;
     }
   }
 
-  function input() {
-    if (stick.inputDir === app.Stick.DIRS.NEUTRAL) return;
+  function inputFunc() {
+    if (input.inputDir === app.Input.DIRS.NEUTRAL) return;
     if (undoFlag) return;
     if (completeFlag) return;
 
     if (settings.autoMode) {
-      stick.update(stick.inputDir);
+      input.update(input.inputDir);
     }
     moveIntervalCount = 0;
 
     const classAnimationIllegalMove = 'animation-illegal-move';
     removeAnimationClass(elems.main.svg, classAnimationIllegalMove);
 
-    const movedFlag = tryMoving(stick.inputDir);
+    const movedFlag = tryMoving(input.inputDir);
     if (movedFlag) {
       drawMainSvg();
       completeCheck();
@@ -1160,8 +1160,8 @@
     } else {
       const dys = [-1, 0, 1, 0];
       const dxs = [0, 1, 0, -1];
-      const dy = dys[stick.inputDir];
-      const dx = dxs[stick.inputDir];
+      const dy = dys[input.inputDir];
+      const dx = dxs[input.inputDir];
 
       const pixel = 4;
       document.documentElement.style.setProperty(
@@ -1180,13 +1180,11 @@
     app.common.hideElem(elems.controller.menu);
     if (completeFlag) {
       app.common.hideElem(elems.controller.buttons.base);
-      app.common.hideElem(elems.controller.stick.base);
       if (app.common.isShownElem(elems.level.next)) {
         app.common.showElem(elems.controller.nextLevel);
       }
     } else {
       app.common.showElem(elems.controller.buttons.base);
-      app.common.showElem(elems.controller.stick.base);
       app.common.hideElem(elems.controller.nextLevel);
     }
   }
@@ -1852,16 +1850,16 @@
   function updateAutoMode(isOn) {
     if (isOn) {
       settings.autoMode = true;
-      stick.disable();
+      input.disable();
       app.common.showElem(elems.auto.buttons);
     } else {
       clearTimeout(nextLevelTimerId);
       settings.autoMode = false;
       settingsAuto.paused = true;
-      stick.enable();
+      input.enable();
       app.common.hideElem(elems.auto.buttons);
 
-      stick.update(app.Stick.DIRS.NEUTRAL);
+      input.update(app.Input.DIRS.NEUTRAL);
     }
     updateAutoStartPauseButtons();
     updateController();
@@ -1942,8 +1940,8 @@
       const stepIndex = undoInfo.getIndex();
       if (!settingsAuto.paused) {
         if (stepIndex < r.length) {
-          stick.inputDir = Number(r[stepIndex]);
-          input();
+          input.inputDir = Number(r[stepIndex]);
+          inputFunc();
         }
       }
     }
