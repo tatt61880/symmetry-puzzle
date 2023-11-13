@@ -1,12 +1,10 @@
 (function () {
   'use strict';
   const isBrowser = typeof window !== 'undefined';
+  if (!isBrowser) return;
 
-  let app = {};
-  if (isBrowser) {
-    app = window.app;
-    console.assert(app?.Elems !== undefined);
-  }
+  const app = window.app;
+  console.assert(app?.Elems !== undefined);
 
   const elems = new app.Elems({
     viewport: 'viewport',
@@ -23,21 +21,21 @@
     help: {
       button: 'button-help',
       dialog: 'dialog-help',
-      close: 'dialog-help-close',
       dialogDiv: 'dialog-help-div',
-      langEn: 'setting-lang-en',
+      close: 'dialog-help-close',
       langJa: 'setting-lang-ja',
+      langEn: 'setting-lang-en',
       tabSymmetry: 'help-tab-symmetry',
-      tabPoint: 'help-tab-point',
       tabLine: 'help-tab-line',
+      tabPoint: 'help-tab-point',
     },
 
     records: {
       button: 'button-records',
       buttonSvg: 'button-records-svg',
       dialog: 'dialog-records',
-      close: 'dialog-records-close',
       dialogDiv: 'dialog-records-div',
+      close: 'dialog-records-close',
       tableDiv: 'records-table-div',
     },
 
@@ -65,10 +63,10 @@
     levels: {
       button: 'button-levels',
       dialog: 'dialog-levels',
+      dialogDiv: 'dialog-levels-div',
       close: 'dialog-levels-close',
       toggleCrown: 'levels-toggle-crown',
       hideShortestLevels: 'hide-shortest-levels',
-      dialogDiv: 'dialog-levels-div',
       dialogSvg: 'dialog-levels-svg',
       buttonSvg: 'button-levels-svg',
       prev: 'button-levels-prev',
@@ -130,8 +128,5 @@
     },
   });
 
-  if (isBrowser) {
-    window.app = window.app || {};
-    window.app.elems = elems;
-  }
+  window.app.elems = elems;
 })();
