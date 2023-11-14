@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.11.13b';
+  const VERSION_TEXT = 'v2023.11.14';
 
   const app = window.app;
   Object.freeze(app);
@@ -427,7 +427,7 @@
         elems.level.widget,
         elems.auto.buttons,
         elems.controller.widget,
-        elems.edit.editbox,
+        elems.edit.widget,
         elems.url.div,
         elems.footer,
       ].reduce((sum, elem) => sum + elem.getBoundingClientRect().height, 0);
@@ -638,11 +638,11 @@
   function updateEditLevel() {
     if (editMode) {
       app.common.showElem(elems.url.div);
-      app.common.showElem(elems.edit.editbox);
+      app.common.showElem(elems.edit.widget);
       app.common.hideElem(elems.controller.widget);
     } else {
       app.common.hideElem(elems.url.div);
-      app.common.hideElem(elems.edit.editbox);
+      app.common.hideElem(elems.edit.widget);
       app.common.showElem(elems.controller.widget);
     }
     updateLinkUrl();
@@ -1022,8 +1022,8 @@
         elem.appendChild(block);
 
         const func = () => {
-          elems.edit.editShape.innerHTML = '';
-          elems.edit.editShape.appendChild(block.cloneNode(true));
+          elems.edit.drawing.innerHTML = '';
+          elems.edit.drawing.appendChild(block.cloneNode(true));
           drawingState = state;
         };
         editboxFunctions[char] = func;
@@ -1032,13 +1032,19 @@
     }
     editboxFunctions[app.states.stateToChar[app.states.none]]();
 
-    elems.edit.normalize.addEventListener('click', () => {
-      if (!level.isNormalized()) {
-        addUndo(null);
-        level.normalize();
-        updateLinkUrl();
-        drawMainSvg();
+    elems.edit.switchMode.addEventListener('click', () => {
+      if (level.isLineMode()) {
+        updateCheckMode(app.Level.CHECK_MODE.POINT);
+      } else {
+        updateCheckMode(app.Level.CHECK_MODE.LINE);
       }
+      const w = level.getW();
+      const h = level.getH();
+      const s = level.getStateStr();
+      level = new app.Level({ w, h, s }, app.common.checkMode, {});
+      completeCheck();
+      updateLinkUrl();
+      drawMainSvg();
     });
     elems.edit.mirror.addEventListener('click', () => {
       addUndo(null);
@@ -1053,19 +1059,13 @@
       drawMainSvg();
       updateSvg();
     });
-    elems.edit.switchMode.addEventListener('click', () => {
-      if (level.isLineMode()) {
-        updateCheckMode(app.Level.CHECK_MODE.POINT);
-      } else {
-        updateCheckMode(app.Level.CHECK_MODE.LINE);
+    elems.edit.normalize.addEventListener('click', () => {
+      if (!level.isNormalized()) {
+        addUndo(null);
+        level.normalize();
+        updateLinkUrl();
+        drawMainSvg();
       }
-      const w = level.getW();
-      const h = level.getH();
-      const s = level.getStateStr();
-      level = new app.Level({ w, h, s }, app.common.checkMode, {});
-      completeCheck();
-      updateLinkUrl();
-      drawMainSvg();
     });
   }
 

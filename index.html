@@ -12,53 +12,53 @@
   <meta property="og:description" content="図形を点対称や線対称にするパズルです。">
   <meta name="google" content="notranslate">
 
-  <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.10.22">
-  <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.10.22">
+  <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.11.11">
+  <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.11.11">
 
-  <link rel="stylesheet" href="./css/main.css?2023.11.13b">
-  <link rel="stylesheet" href="./css/title.css?2023.11.13b">
-  <link rel="stylesheet" href="./css/game.css?2023.11.13b">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.11.13b">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.11.13b">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.11.13b">
-  <link rel="stylesheet" href="./css/animation.css?2023.11.13b">
+  <link rel="stylesheet" href="./css/main.css?2023.11.14">
+  <link rel="stylesheet" href="./css/title.css?2023.11.14">
+  <link rel="stylesheet" href="./css/game.css?2023.11.14">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.11.14">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.11.14">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.11.14">
+  <link rel="stylesheet" href="./css/animation.css?2023.11.14">
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-  <script src="./src/states.js?2023.11.13b"></script>
-  <script src="./src/colors.js?2023.11.13b"></script>
-  <script src="./src/svg.js?2023.11.13b"></script>
-  <script src="./src/common.js?2023.11.13b"></script>
+  <script src="./src/states.js?2023.11.14"></script>
+  <script src="./src/colors.js?2023.11.14"></script>
+  <script src="./src/svg.js?2023.11.14"></script>
+  <script src="./src/common.js?2023.11.14"></script>
 
-  <script src="./src/class-stack.js?2023.11.13b"></script>
-  <script src="./src/class-level.js?2023.11.13b"></script>
+  <script src="./src/class-stack.js?2023.11.14"></script>
+  <script src="./src/class-level.js?2023.11.14"></script>
 
-  <script src="./src/class-savedata.js?2023.11.13b"></script>
-  <script src="./src/class-undo-info.js?2023.11.13b"></script>
-  <script src="./src/class-elems.js?2023.11.13b"></script>
-  <script src="./src/class-input.js?2023.11.13b"></script>
+  <script src="./src/class-savedata.js?2023.11.14"></script>
+  <script src="./src/class-undo-info.js?2023.11.14"></script>
+  <script src="./src/class-elems.js?2023.11.14"></script>
+  <script src="./src/class-input.js?2023.11.14"></script>
 
-  <script src="./src/levels-line.js?2023.11.13b"></script>
-  <script src="./src/levels-line-ex.js?2023.11.13b"></script>
-  <script src="./src/levels-point.js?2023.11.13b"></script>
-  <script src="./src/levels-point-ex.js?2023.11.13b"></script>
+  <script src="./src/levels-line.js?2023.11.14"></script>
+  <script src="./src/levels-line-ex.js?2023.11.14"></script>
+  <script src="./src/levels-point.js?2023.11.14"></script>
+  <script src="./src/levels-point-ex.js?2023.11.14"></script>
 
-  <script src="./src/elems.js?2023.11.13b"></script>
+  <script src="./src/elems.js?2023.11.14"></script>
 
-  <script src="./src/solve.js?2023.11.13b"></script>
+  <script src="./src/solve.js?2023.11.14"></script>
 
-  <script src="./src/dialog.js?2023.11.13b"></script>
+  <script src="./src/dialog.js?2023.11.14"></script>
 
-  <script src="./src/analyze-url.js?2023.11.13b"></script>
-  <script src="./src/main.js?2023.11.13b"></script>
+  <script src="./src/analyze-url.js?2023.11.14"></script>
+  <script src="./src/main.js?2023.11.14"></script>
 </head>
 
 <body>
   <div id="contents" class="user-select-none">
     <header id="header">
       <div id="top" class="flex">
-        <img id="icon-app" alt="icon" src="./images/icon-app.png?2023.10.22" class="check-mode none">
-        <img id="icon-point" alt="icon" src="./images/icon-point.png?2023.10.22" class="check-mode point hide-mode">
-        <img id="icon-line" alt="icon" src="./images/icon-line.png?2023.10.22" class="check-mode line hide-mode">
+        <img id="icon-app" alt="icon" src="./images/icon-app.png?2023.11.11" class="check-mode none">
+        <img id="icon-point" alt="icon" src="./images/icon-point.png?2023.11.11" class="check-mode point hide-mode">
+        <img id="icon-line" alt="icon" src="./images/icon-line.png?2023.11.11" class="check-mode line hide-mode">
 
         <span class="title translatable-toggle check-mode none" data-en="Symmetry Puzzle" data-ja="対称パズル"></span>
         <span class="title translatable-toggle check-mode line hide-mode" data-en="Line Symmetry Puzzle"
@@ -98,7 +98,7 @@
             <!-- 対称パズル -->
             <input type="radio" name="help-tab" id="help-tab-symmetry" checked>
             <label class="tab" for="help-tab-symmetry">
-              <img class="logo-image" src="./images/logo-app.png?2023.10.22" alt="app logo">
+              <img class="logo-image" src="./images/logo-app.png?2023.11.11" alt="app logo">
             </label>
             <div class="tab-content">
               <span class="help-mode translatable-toggle" data-en="Symmetry Puzzle" data-ja="対称パズル"></span>
@@ -106,12 +106,12 @@
               <div>
                 <p>
                   <span class="flex">
-                    <img class="logo-inline" src="./images/logo-line.png?2023.10.22" alt="line symmetry logo">
+                    <img class="logo-inline" src="./images/logo-line.png?2023.11.11" alt="line symmetry logo">
                     <span class="translatable-toggle" data-en="Line Symmetry Puzzle" data-ja="線対称パズル"></span>
                   </span>
                   <span>+</span>
                   <span class="flex">
-                    <img class="logo-inline" src="./images/logo-point.png?2023.10.22" alt="line symmetry logo">
+                    <img class="logo-inline" src="./images/logo-point.png?2023.11.11" alt="line symmetry logo">
                     <span class="translatable-toggle" data-en="Point Symmetry Puzzle" data-ja="点対称パズル"></span>
                   </span>
                 </p>
@@ -141,7 +141,7 @@
             <!-- 線対称パズル -->
             <input type="radio" name="help-tab" id="help-tab-line">
             <label class="tab" for="help-tab-line">
-              <img class="logo-image" src="./images/logo-line.png?2023.10.22" alt="line symmetry logo">
+              <img class="logo-image" src="./images/logo-line.png?2023.11.11" alt="line symmetry logo">
             </label>
             <div class="tab-content">
               <span class="help-mode translatable-toggle" data-en="Line Symmetry Puzzle" data-ja="線対称パズル"></span>
@@ -160,7 +160,7 @@
               </div>
 
               <div class="border example-div">
-                <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.10.22"><br>
+                <img class="example-image" alt="example line symmetry" src="./images/example-line.png?2023.11.11"><br>
                 <div class="translatable en" lang="en">
                   Examples of <span class="bold">connected line symmetrical shape</span>.
                 </div>
@@ -171,7 +171,7 @@
 
               <div class="border example-div">
                 <img class="example-image-2" alt="example line symmetry"
-                  src="./images/example-line-not-connected.png?2023.10.22"><br>
+                  src="./images/example-line-not-connected.png?2023.11.11"><br>
                 <div class="translatable en" lang="en">
                   Examples of <span class="bold">NOT</span> connected line symmetrical shape.
                 </div>
@@ -184,7 +184,7 @@
             <!-- 点対称パズル -->
             <input type="radio" name="help-tab" id="help-tab-point">
             <label class="tab" for="help-tab-point">
-              <img class="logo-image" src="./images/logo-point.png?2023.10.22" alt="point symmetry logo">
+              <img class="logo-image" src="./images/logo-point.png?2023.11.11" alt="point symmetry logo">
             </label>
             <div class="tab-content">
               <span class="help-mode translatable-toggle" data-en="Point Symmetry Puzzle" data-ja="点対称パズル"></span>
@@ -203,7 +203,7 @@
               </div>
 
               <div class="border example-div">
-                <img class="example-image" alt="example point symmetry" src="./images/example-point.png?2023.10.22"><br>
+                <img class="example-image" alt="example point symmetry" src="./images/example-point.png?2023.11.11"><br>
                 <div class="translatable en" lang="en">
                   Examples of <span class="bold">connected point symmetrical shape</span>.
                 </div>
@@ -214,7 +214,7 @@
 
               <div class="border example-div">
                 <img class="example-image-2" alt="example point symmetry"
-                  src="./images/example-point-not-connected.png?2023.10.22"><br>
+                  src="./images/example-point-not-connected.png?2023.11.11"><br>
                 <div class="translatable en" lang="en">
                   Examples of <span class="bold">NOT</span> connected point symmetrical shape.
                 </div>
@@ -228,7 +228,7 @@
 
         <hr>
         <div class="flex">
-          <img class="tatt61880-icon" alt="icon: tatt61880" src="./images/tatt61880.png?2023.10.22">
+          <img class="tatt61880-icon" alt="icon: tatt61880" src="./images/tatt61880.png?2023.11.11">
           <span class="translatable-toggle" data-en="Created by Tatt" data-ja="作者: Tatt">
           </span>
           <span>&nbsp;(<a href="https://twitter.com/tatt61880">@tatt61880</a>)</span>
@@ -244,12 +244,12 @@
             <tr>
               <td>
                 <div id="button-play-line" class="title-button">
-                  <img src="./images/logo-line.png?2023.10.22" alt="line button" width="80" height="80">
+                  <img src="./images/logo-line.png?2023.11.11" alt="line button" width="80" height="80">
                 </div>
               </td>
               <td>
                 <div id="button-play-point" class="title-button">
-                  <img src="./images/logo-point.png?2023.10.22" alt="point button" width="80" height="80">
+                  <img src="./images/logo-point.png?2023.11.11" alt="point button" width="80" height="80">
                 </div>
               </td>
             </tr>
@@ -442,7 +442,7 @@
         </svg>
       </div>
 
-      <div id="editbox">
+      <div id="edit-widget">
         <svg width="474" height="220">
           <rect x="2" y="2" width="470" height="216" fill="#def" stroke="skyblue" stroke-width="4" />
 
@@ -482,9 +482,9 @@
           <g id="edit_h" class="button active-hover" transform="translate(420,120)"></g>
 
           <g transform="translate(15,170)">
-            <image href="./images/icon-point.png?2023.10.22" width="40" height="40"
+            <image href="./images/icon-point.png?2023.11.11" width="40" height="40"
               class="check-mode point hide-mode" />
-            <image href="./images/icon-line.png?2023.10.22" width="40" height="40" class="check-mode line hide-mode" />
+            <image href="./images/icon-line.png?2023.11.11" width="40" height="40" class="check-mode line hide-mode" />
           </g>
 
           <g transform="translate(130,190)" class="button active-hover">
@@ -495,17 +495,17 @@
           </g>
 
           <g transform="translate(235,190)" class="button active-hover">
-            <rect id="edit-rotate" x="-35" y="-15" width="70" height="30" fill="#e5a0e5" stroke="#aa33aa"
-              stroke-width="4" />
-            <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px"
-              fill="#aa33aa" class="translatable-toggle" data-en="Rotate" data-ja="回転"></text>
-          </g>
-
-          <g transform="translate(315,190)" class="button active-hover">
             <rect id="edit-mirror" x="-35" y="-15" width="70" height="30" fill="#e5a0e5" stroke="#aa33aa"
               stroke-width="4" />
             <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px"
               fill="#aa33aa" class="translatable-toggle" data-en="Mirror" data-ja="鏡映"></text>
+          </g>
+
+          <g transform="translate(315,190)" class="button active-hover">
+            <rect id="edit-rotate" x="-35" y="-15" width="70" height="30" fill="#e5a0e5" stroke="#aa33aa"
+              stroke-width="4" />
+            <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18px"
+              fill="#aa33aa" class="translatable-toggle" data-en="Rotate" data-ja="回転"></text>
           </g>
 
           <g transform="translate(410,190)" class="button active-hover">

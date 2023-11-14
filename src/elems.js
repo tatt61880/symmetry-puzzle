@@ -89,12 +89,13 @@
     },
 
     edit: {
-      editbox: 'editbox',
-      editShape: 'edit-drawing-shape',
-      normalize: 'edit-normalize',
-      rotate: 'edit-rotate',
-      mirror: 'edit-mirror',
+      widget: 'edit-widget',
+      drawing: 'edit-drawing-shape',
+
       switchMode: 'edit-switch-mode',
+      mirror: 'edit-mirror',
+      rotate: 'edit-rotate',
+      normalize: 'edit-normalize',
     },
 
     url: {
