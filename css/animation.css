@@ -51,18 +51,16 @@
 .animation-illegal-move {
   transform-origin: center;
   animation: animation-illegal-move linear;
-  animation-duration: var(--animation-duration);
+  animation-duration: calc(var(--animation-duration) * 0.5);
 }
 
 @keyframes animation-illegal-move {
   0%,
-  50%,
   100% {
     transform: translateY(-50%) translateX(0);
   }
 
-  25%,
-  75% {
+  50% {
     transform: translateY(-50%) var(--animation-illegal-move);
   }
 }
