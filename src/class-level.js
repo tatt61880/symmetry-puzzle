@@ -563,7 +563,7 @@
         return app.svg.createEllipse(blockSize, {
           cx: center.x,
           cy: center.y,
-          rx: 0.2,
+          rx: 0.13,
           ry: 0.3,
           fill: app.colors.symmetryAxis,
         });
