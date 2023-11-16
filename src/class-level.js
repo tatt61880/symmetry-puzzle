@@ -1375,6 +1375,16 @@
               fill: color.stroke,
             });
             gElem.appendChild(line);
+            if (flags[dirs.l]) {
+              const line = app.svg.createRect(blockSize, {
+                x: x - eps,
+                y,
+                width: eps2,
+                height: blockBorderWidth,
+                fill: color.stroke,
+              });
+              gElem.appendChild(line);
+            }
           }
           // 右側の境界枠
           if (!flags[dirs.r]) {
@@ -1386,6 +1396,16 @@
               fill: color.stroke,
             });
             gElem.appendChild(line);
+            if (flags[dirs.u]) {
+              const line = app.svg.createRect(blockSize, {
+                x: x + 1 - blockBorderWidth,
+                y: y - eps,
+                width: blockBorderWidth,
+                height: eps2,
+                fill: color.stroke,
+              });
+              gElem.appendChild(line);
+            }
           }
           // 下側の境界枠
           if (!flags[dirs.d]) {
@@ -1397,6 +1417,16 @@
               fill: color.stroke,
             });
             gElem.appendChild(line);
+            if (flags[dirs.l]) {
+              const line = app.svg.createRect(blockSize, {
+                x: x - eps,
+                y: y + 1 - blockBorderWidth,
+                width: eps2,
+                height: blockBorderWidth,
+                fill: color.stroke,
+              });
+              gElem.appendChild(line);
+            }
           }
           // 左側の境界枠
           if (!flags[dirs.l]) {
@@ -1408,6 +1438,16 @@
               fill: color.stroke,
             });
             gElem.appendChild(line);
+            if (flags[dirs.u]) {
+              const line = app.svg.createRect(blockSize, {
+                x,
+                y: y - eps,
+                width: blockBorderWidth,
+                height: eps2,
+                fill: color.stroke,
+              });
+              gElem.appendChild(line);
+            }
           }
 
           // 左側の境界線上
