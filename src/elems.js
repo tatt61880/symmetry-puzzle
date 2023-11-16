@@ -91,6 +91,7 @@
     edit: {
       widget: 'edit-widget',
       drawing: 'edit-drawing-shape',
+      undo: 'button-undo-edit',
 
       switchMode: 'edit-switch-mode',
       mirror: 'edit-mirror',

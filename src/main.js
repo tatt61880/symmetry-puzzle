@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.11.16';
+  const VERSION_TEXT = 'v2023.11.17';
 
   const app = window.app;
   Object.freeze(app);
@@ -137,6 +137,7 @@
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
     app.common.activeElem(elems.controller.undo);
+    app.common.activeElem(elems.edit.undo);
     input.update(app.Input.DIRS.NEUTRAL);
     execUndo();
     undoIntervalId = setInterval(execUndo, UNDO_INTERVAL_MSEC);
@@ -146,6 +147,7 @@
     if (!undoFlag) return;
     undoFlag = false;
     app.common.inactiveElem(elems.controller.undo);
+    app.common.inactiveElem(elems.edit.undo);
     clearInterval(undoIntervalId);
   }
 
@@ -400,6 +402,7 @@
   function resetUndo() {
     undoInfo = new app.UndoInfo();
     app.common.hideElem(elems.controller.undo);
+    app.common.hideElem(elems.edit.undo);
   }
 
   function initLevel(obj, initParam) {
@@ -462,6 +465,7 @@
       updateController();
       if (!undoInfo.isUndoable()) {
         app.common.hideElem(elems.controller.undo);
+        app.common.hideElem(elems.edit.undo);
       }
       const resizeFlag = level.getW() !== data.w || level.getH() !== data.h;
       applyObj(data, { resizeFlag });
@@ -941,6 +945,7 @@
       };
 
       elems.controller.undo.addEventListener(pointerdownEventName, undodown);
+      elems.edit.undo.addEventListener(pointerdownEventName, undodown);
       elems.controller.buttons.up.addEventListener(
         pointerdownEventName,
         moveButtonStart.bind(null, app.Input.DIRS.UP)
@@ -1815,6 +1820,7 @@
       s: level.getStateStr(),
     });
     app.common.showElem(elems.controller.undo);
+    app.common.showElem(elems.edit.undo);
   }
 
   function replaceUrlTitle() {
