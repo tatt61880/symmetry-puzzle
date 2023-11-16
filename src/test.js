@@ -1,10 +1,7 @@
 (function () {
   'use strict';
   const isBrowser = typeof window !== 'undefined';
-  if (isBrowser) {
-    console.error("Error: test.js isn't for browser.");
-    return;
-  }
+  console.assert(!isBrowser);
 
   const program = require('commander');
   program

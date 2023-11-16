@@ -1,10 +1,7 @@
 (function () {
   'use strict';
   const isBrowser = typeof window !== 'undefined';
-  if (isBrowser) {
-    console.error("Error: console.js isn't for browser.");
-    return;
-  }
+  console.assert(!isBrowser);
 
   function colorizedText(text, r, g, b) {
     return `\x1b[38;2;${r};${g};${b}m${text}\x1b[0m`;
