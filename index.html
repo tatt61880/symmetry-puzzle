@@ -295,7 +295,7 @@
             <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#87ceeb" stroke-width="4" />
             <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#87ceeb" stroke="none" stroke-width="4" />
             <text x="0" y="42" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
-              fill="#7799bb">r</text>
+              fill="#7799bb">R</text>
           </g>
 
           <!-- Level -->
@@ -527,14 +527,16 @@
             <rect x="-250" y="-125" width="500" height="250" fill="#eee" stroke="none" />
 
             <!-- Undoボタン -->
-            <g id="button-undo" class="button active-hover" transform="translate(-185,0) scale(1.2,1.2)">
-              <text x="0" y="-42" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="12px"
-                fill="#888888" class="translatable-toggle" data-en="Step backward" data-ja="1ステップ戻す"></text>
-              <circle cx="0" cy="0" r="28" fill="lightgray" stroke="#888888" stroke-width="4" />
-              <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#888888" stroke-width="4" />
-              <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#888888" stroke="none" stroke-width="4" />
-              <text x="0" y="42" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
-                fill="#888888">z</text>
+            <g id="button-undo" class="button active-hover" transform="translate(-185,0)">
+              <text x="0" y="-46" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
+                fill="#888888" class="translatable-toggle" data-en="STEP BACKWARD" data-ja="1ステップ戻す"></text>
+              <g transform=" scale(1.2,1.2)">
+                <circle cx="0" cy="0" r="28" fill="lightgray" stroke="#888888" stroke-width="4" />
+                <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#888888" stroke-width="4" />
+                <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#888888" stroke="none" stroke-width="4" />
+              </g>
+              <text x="0" y="50" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
+                fill="#888888">Z</text>
             </g>
 
             <!-- 操作ボタン -->
@@ -570,12 +572,14 @@
               </g>
             </g>
 
-            <g id="controller-buttons-menu" class="button active-hover" transform="translate(185,0) scale(1.75,1.75)">
-              <rect x="-20" y="-20" rx="8" ry="8" width="40" height="40" fill="lightgray" stroke="#888888"
-                stroke-width="2.5" />
-              <rect x="-13" y="-13" rx="3" ry="3" width="26" height="6" fill="#888888" />
-              <rect x="-13" y="-3" rx="3" ry="3" width="26" height="6" fill="#888888" />
-              <rect x="-13" y="7" rx="3" ry="3" width="26" height="6" fill="#888888" />
+            <g id="controller-buttons-menu" class="button active-hover" transform="translate(185,0)">
+              <text x="0" y="-46" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
+                fill="#888888" class="translatable-toggle" data-en="MENU" data-ja="メニュー"></text>
+              <rect x="-35" y="-35" rx="12" ry="12" width="70" height="70" fill="lightgray" stroke="#888888"
+                stroke-width="4" />
+              <rect x="-22" y="-23" rx="5" ry="5" width="44" height="10" fill="#888888" />
+              <rect x="-22" y="-5" rx="5" ry="5" width="44" height="10" fill="#888888" />
+              <rect x="-22" y="13" rx="5" ry="5" width="44" height="10" fill="#888888" />
             </g>
 
             <g id="controller-menu" class="hide">
