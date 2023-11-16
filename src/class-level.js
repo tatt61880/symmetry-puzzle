@@ -1033,6 +1033,7 @@
         const eps = 0.01; // 隙間を埋めます。
         const eps2 = eps * 2;
 
+        // 操作キャラ
         if (app.states.isUser(state)) {
           const radius = 0.3;
           const radius2 = radius * 2;
@@ -1350,6 +1351,8 @@
             gElem.appendChild(eyeRight);
           }
         } else {
+          // 操作キャラ以外
+
           // 塗りつぶし
           {
             const rect = app.svg.createRect(blockSize, {
@@ -1362,7 +1365,7 @@
             gElem.appendChild(rect);
           }
 
-          // 上側の境界線
+          // 上側の境界枠
           if (!flags[dirs.u]) {
             const line = app.svg.createRect(blockSize, {
               x,
@@ -1373,7 +1376,7 @@
             });
             gElem.appendChild(line);
           }
-          // 右側の境界線
+          // 右側の境界枠
           if (!flags[dirs.r]) {
             const line = app.svg.createRect(blockSize, {
               x: x + 1 - blockBorderWidth,
@@ -1384,7 +1387,7 @@
             });
             gElem.appendChild(line);
           }
-          // 下側の境界線
+          // 下側の境界枠
           if (!flags[dirs.d]) {
             const line = app.svg.createRect(blockSize, {
               x,
@@ -1395,7 +1398,7 @@
             });
             gElem.appendChild(line);
           }
-          // 左側の境界線
+          // 左側の境界枠
           if (!flags[dirs.l]) {
             const line = app.svg.createRect(blockSize, {
               x,
@@ -1407,7 +1410,9 @@
             gElem.appendChild(line);
           }
 
+          // 左側の境界線上
           if (flags[dirs.l]) {
+            // 左中央 fill
             {
               const rect = app.svg.createRect(blockSize, {
                 x: x - eps,
@@ -1419,7 +1424,7 @@
               gElem.appendChild(rect);
             }
 
-            // 左上
+            // 左上 fill
             if (flags[dirs.u] && flags[dirs.ul]) {
               const rect = app.svg.createRect(blockSize, {
                 x: x - eps,
@@ -1430,7 +1435,7 @@
               });
               gElem.appendChild(rect);
             }
-            // 左下
+            // 左下 fill
             if (flags[dirs.d] && flags[dirs.dl]) {
               const rect = app.svg.createRect(blockSize, {
                 x: x - eps,
@@ -1443,7 +1448,9 @@
             }
           }
 
+          // 上側の境界線上 + 上側の境界枠上
           if (flags[dirs.u]) {
+            // 上中央 fill
             {
               const rect = app.svg.createRect(blockSize, {
                 x: x + blockBorderWidth,
@@ -1458,6 +1465,7 @@
             // 左上
             if (flags[dirs.l]) {
               if (!flags[dirs.ul]) {
+                // 左上 stroke
                 const rect = app.svg.createRect(blockSize, {
                   x,
                   y,
@@ -1467,6 +1475,7 @@
                 });
                 gElem.appendChild(rect);
               } else {
+                // 左上 fill
                 const rect = app.svg.createRect(blockSize, {
                   x,
                   y: y - eps,
@@ -1480,6 +1489,7 @@
             // 右上
             if (flags[dirs.r]) {
               if (!flags[dirs.ur]) {
+                // 右上 stroke
                 const rect = app.svg.createRect(blockSize, {
                   x: x + 1 - blockBorderWidth,
                   y,
@@ -1489,6 +1499,7 @@
                 });
                 gElem.appendChild(rect);
               } else {
+                // 右上 fill
                 const rect = app.svg.createRect(blockSize, {
                   x: x + 1 - blockBorderWidth,
                   y: y - eps,
@@ -1501,8 +1512,9 @@
             }
           }
 
+          // 下側の境界枠上
           if (flags[dirs.d]) {
-            // 右下
+            // 右下 fill
             if (flags[dirs.r] && !flags[dirs.dr]) {
               const rect = app.svg.createRect(blockSize, {
                 x: x + 1 - blockBorderWidth,
@@ -1513,7 +1525,7 @@
               });
               gElem.appendChild(rect);
             }
-            // 左下
+            // 左下 fill
             if (flags[dirs.l] && !flags[dirs.dl]) {
               const rect = app.svg.createRect(blockSize, {
                 x,
