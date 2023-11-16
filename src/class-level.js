@@ -1435,6 +1435,7 @@
               });
               gElem.appendChild(rect);
             }
+
             // 左下 fill
             if (flags[dirs.d] && flags[dirs.dl]) {
               const rect = app.svg.createRect(blockSize, {
@@ -1467,10 +1468,10 @@
               if (!flags[dirs.ul]) {
                 // 左上 stroke
                 const rect = app.svg.createRect(blockSize, {
-                  x,
-                  y,
-                  width: blockBorderWidth,
-                  height: blockBorderWidth,
+                  x: x - eps,
+                  y: y - eps,
+                  width: blockBorderWidth + eps,
+                  height: blockBorderWidth + eps,
                   fill: color.stroke,
                 });
                 gElem.appendChild(rect);
@@ -1486,15 +1487,16 @@
                 gElem.appendChild(rect);
               }
             }
+
             // 右上
             if (flags[dirs.r]) {
               if (!flags[dirs.ur]) {
                 // 右上 stroke
                 const rect = app.svg.createRect(blockSize, {
                   x: x + 1 - blockBorderWidth,
-                  y,
-                  width: blockBorderWidth,
-                  height: blockBorderWidth,
+                  y: y - eps,
+                  width: blockBorderWidth + eps,
+                  height: blockBorderWidth + eps,
                   fill: color.stroke,
                 });
                 gElem.appendChild(rect);
@@ -1519,8 +1521,8 @@
               const rect = app.svg.createRect(blockSize, {
                 x: x + 1 - blockBorderWidth,
                 y: y + 1 - blockBorderWidth,
-                width: blockBorderWidth,
-                height: blockBorderWidth,
+                width: blockBorderWidth + eps,
+                height: blockBorderWidth + eps,
                 fill: color.stroke,
               });
               gElem.appendChild(rect);
@@ -1528,10 +1530,10 @@
             // 左下 fill
             if (flags[dirs.l] && !flags[dirs.dl]) {
               const rect = app.svg.createRect(blockSize, {
-                x,
+                x: x - eps,
                 y: y + 1 - blockBorderWidth,
-                width: blockBorderWidth,
-                height: blockBorderWidth,
+                width: blockBorderWidth + eps,
+                height: blockBorderWidth + eps,
                 fill: color.stroke,
               });
               gElem.appendChild(rect);
