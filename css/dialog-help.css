@@ -87,21 +87,22 @@
       line-height: 1.5rem;
 
       &.red-block {
-        padding: 2px 4px;
+        padding: 2px 6px;
         margin: 4px;
         font-weight: bold;
         color: #f80000;
         background-color: #ffc0cb;
-        border: solid 2px #f80000;
+        border: solid 3px #f80000;
       }
 
       &.blue-block {
-        padding: 2px 4px;
+        padding: 2px 6px;
         margin: 4px;
         font-weight: bold;
         color: #0000f8;
-        background-color: #00f8f8;
-        border: solid 2px #0000f8;
+        background-color: #aaccff;
+        border: solid 3px #0000f8;
+        border-radius: 8px;
       }
     }
 
