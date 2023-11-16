@@ -5,6 +5,7 @@
 
   const app = window.app;
   console.assert(app?.elems !== undefined);
+  console.assert(app?.common !== undefined);
 
   window.app = window.app || {};
   window.app.dialog = window.app.dialog || {};
