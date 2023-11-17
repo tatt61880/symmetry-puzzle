@@ -563,8 +563,8 @@
         return app.svg.createEllipse(blockSize, {
           cx: center.x,
           cy: center.y,
-          rx: 0.13,
-          ry: 0.3,
+          rx: 1 / 8,
+          ry: 3 / 8,
           fill: app.colors.symmetryAxis,
         });
       }
@@ -572,7 +572,7 @@
       function createAxisPoint2(center) {
         const x = center.x;
         const y = center.y;
-        const size = 0.3;
+        const size = 3 / 8;
         return app.svg.createPolygon(blockSize, {
           points: [
             [x, y - size],
