@@ -671,11 +671,11 @@
       }
       let r = levelObj.r;
       if (r !== undefined) {
-        let rotatedR = '';
+        let newR = '';
         for (const c of r) {
-          rotatedR += (4 - Number(c)) % 4;
+          newR += (4 - Number(c)) % 4;
         }
-        r = rotatedR;
+        r = newR;
       }
       const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
       const newLevelObj = { w, h, s, r };
@@ -712,11 +712,11 @@
         }
         let r = newLevelObj.r;
         if (r !== undefined) {
-          let rotatedR = '';
+          let newR = '';
           for (const c of r) {
-            rotatedR += (Number(c) + 1) % 4;
+            newR += (Number(c) + 1) % 4;
           }
-          r = rotatedR;
+          r = newR;
         }
         const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
         newLevelObj = { w, h, s, r };
