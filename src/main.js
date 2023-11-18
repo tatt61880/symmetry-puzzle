@@ -1408,8 +1408,22 @@
           { cx: cx3, cy: cy4, points: pointsD, dx: 0, dy: +1, flag: false },
         ];
         buttons.forEach((button) => {
-          if (button.dx === -1 && level.getWidth() <= 3) return;
-          if (button.dy === -1 && level.getHeight() <= 3) return;
+          const wallOffset = 2; // 周囲の壁の分
+          if (button.dx === -1 && level.getWidth() <= 1 + wallOffset) return;
+          if (button.dy === -1 && level.getHeight() <= 1 + wallOffset) return;
+          if (
+            button.dx === 1 &&
+            level.getWidth() >= app.common.maxWidth + wallOffset
+          ) {
+            return;
+          }
+          if (
+            button.dy === 1 &&
+            level.getHeight() >= app.common.maxHeight + wallOffset
+          ) {
+            return;
+          }
+
           const points = [];
           for (const point of button.points) {
             points.push([
