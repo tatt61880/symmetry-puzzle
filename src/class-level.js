@@ -9,9 +9,11 @@
     console.assert(app?.colors !== undefined);
     console.assert(app?.svg !== undefined);
     console.assert(app?.Stack !== undefined);
+    console.assert(app?.common !== undefined);
   } else {
     app.states = require('./states.js');
     app.colors = require('./colors.js');
+    app.common = require('./common.js');
     app.svg = require('./svg.js');
     app.Stack = require('./class-stack.js');
   }
@@ -101,10 +103,10 @@
       if (mirrorFlag) obj = this.#mirrorLevel(obj);
       if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
       this.#levelObj = obj;
-      if (this.#levelObj.w > app.common.maxWidth)
-        this.#levelObj.w = app.common.maxWidth;
-      if (this.#levelObj.h > app.common.maxHeight)
-        this.#levelObj.h = app.common.maxHeight;
+      if (this.#levelObj.w > app.common.maxW)
+        this.#levelObj.w = app.common.maxW;
+      if (this.#levelObj.h > app.common.maxH)
+        this.#levelObj.h = app.common.maxH;
       Object.freeze(this.#levelObj);
       this.#initStates();
       this.applyStateStr(obj.s);
@@ -278,6 +280,28 @@
           }
           this.#states[y][x] = map[state];
         }
+      }
+    }
+
+    resize(dx, dy, flag) {
+      const w = this.getW() + dx;
+      const h = this.getH() + dy;
+      if (w < 1) return;
+      if (h < 1) return;
+      if (w > app.common.maxW) return;
+      if (h > app.common.maxH) return;
+
+      if (flag) {
+        this.rotate(2);
+      }
+      const s = this.getStateStr();
+      const obj = { w, h, s };
+      this.applyObj(obj, true);
+      if (flag) {
+        this.rotate(2);
+        const s = this.getStateStr();
+        const obj = { w, h, s };
+        this.applyObj(obj, false);
       }
     }
 

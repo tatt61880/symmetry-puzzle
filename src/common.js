@@ -19,17 +19,18 @@
   let levelsListEx;
   let loadLevelById;
 
-  const maxWidth = 50;
-  const maxHeight = 50;
+  const maxW = 50;
+  const maxH = 50;
 
   const common = {
-    maxWidth,
-    maxHeight,
+    maxW,
+    maxH,
     levelId,
     checkMode,
     levelsList,
     levelsListEx,
     loadLevelById,
+
     isTouchDevice,
     isShownElem,
     isHiddenElem,

@@ -410,11 +410,6 @@
     updateSvg();
   }
 
-  function applyObj(obj, { resizeFlag = false }) {
-    level.applyObj(obj, resizeFlag);
-    updateSvg();
-  }
-
   function onWindowResize() {
     updateSvg();
   }
@@ -468,7 +463,8 @@
         app.common.hideElem(elems.edit.undo);
       }
       const resizeFlag = level.getW() !== data.w || level.getH() !== data.h;
-      applyObj(data, { resizeFlag });
+      level.applyObj(data, resizeFlag);
+      updateSvg();
     }
   }
 
@@ -1409,21 +1405,10 @@
         ];
 
         buttons.forEach((button) => {
-          const wallNum = 2; // 周囲の壁の分
-          if (button.dx === -1 && level.getWidth() <= 1 + wallNum) return;
-          if (button.dy === -1 && level.getHeight() <= 1 + wallNum) return;
-          if (
-            button.dx === 1 &&
-            level.getWidth() >= app.common.maxWidth + wallNum
-          ) {
-            return;
-          }
-          if (
-            button.dy === 1 &&
-            level.getHeight() >= app.common.maxHeight + wallNum
-          ) {
-            return;
-          }
+          if (button.dx === -1 && level.getW() <= 1) return;
+          if (button.dy === -1 && level.getH() <= 1) return;
+          if (button.dx === 1 && level.getW() >= app.common.maxW) return;
+          if (button.dy === 1 && level.getH() >= app.common.maxH) return;
 
           const points = [];
           for (const point of button.points) {
@@ -1810,21 +1795,12 @@
     const h = level.getH() + dy;
     if (w < 1) return;
     if (h < 1) return;
+    if (w > app.common.maxW) return;
+    if (h > app.common.maxH) return;
 
     addUndo(null);
-
-    if (flag) {
-      level.rotate(2);
-    }
-    const s = level.getStateStr();
-    const obj = { w, h, s };
-    applyObj(obj, { resizeFlag: true });
-    if (flag) {
-      level.rotate(2);
-      const s = level.getStateStr();
-      const obj = { w, h, s };
-      applyObj(obj, { resizeFlag: false });
-    }
+    level.resize(dx, dy, flag);
+    updateSvg();
   }
 
   function addUndo(dir) {
