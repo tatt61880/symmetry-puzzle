@@ -101,6 +101,10 @@
       if (mirrorFlag) obj = this.#mirrorLevel(obj);
       if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
       this.#levelObj = obj;
+      if (this.#levelObj.w >= app.common.maxWidth)
+        this.#levelObj.w = app.common.maxWidth;
+      if (this.#levelObj.h >= app.common.maxHeight)
+        this.#levelObj.h = app.common.maxHeight;
       Object.freeze(this.#levelObj);
       this.#initStates();
       this.applyStateStr(obj.s);
