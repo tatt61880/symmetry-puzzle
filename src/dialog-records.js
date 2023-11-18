@@ -19,6 +19,9 @@
   function show() {
     const table = createRecordsTable();
     elems.records.tableDiv.innerHTML = '';
+    const span = document.createElement('span');
+    span.textContent = `${elems.appTitle.textContent} ${elems.version.textContent}`;
+    elems.records.tableDiv.appendChild(span);
     elems.records.tableDiv.appendChild(table);
     elems.records.dialog.showModal();
   }
@@ -179,8 +182,8 @@
       {
         const td = document.createElement('td');
         td.innerText = numTotalSolvedBest;
-        tr.appendChild(td);
         td.classList.add('total-col');
+        tr.appendChild(td);
       }
     }
 
@@ -211,8 +214,8 @@
       {
         const td = document.createElement('td');
         td.innerText = numTotalSolvedNormal;
-        tr.appendChild(td);
         td.classList.add('total-col');
+        tr.appendChild(td);
       }
     }
 
@@ -243,8 +246,8 @@
       {
         const td = document.createElement('td');
         td.innerText = numTotalNotSolved;
-        tr.appendChild(td);
         td.classList.add('total-col');
+        tr.appendChild(td);
       }
     }
 
@@ -254,28 +257,28 @@
       tbody.appendChild(tr);
       {
         const th = document.createElement('th');
-        tr.appendChild(th);
         th.innerText = 'Total';
         th.classList.add('total-row');
+        tr.appendChild(th);
       }
       {
         const td = document.createElement('td');
         td.innerText = numLineTotal;
-        tr.appendChild(td);
         td.classList.add('total-row');
+        tr.appendChild(td);
       }
       {
         const td = document.createElement('td');
         td.innerText = numPointTotal;
-        tr.appendChild(td);
         td.classList.add('total-row');
+        tr.appendChild(td);
       }
       {
         const td = document.createElement('td');
         td.innerText = numTotalTotal;
-        tr.appendChild(td);
         td.classList.add('total-row');
         td.classList.add('total-col');
+        tr.appendChild(td);
       }
     }
 

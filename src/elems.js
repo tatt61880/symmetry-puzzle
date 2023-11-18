@@ -11,6 +11,7 @@
     header: 'header',
     footer: 'footer',
     top: 'top',
+    appTitle: 'app-title',
     iconApp: 'icon-app',
     iconPoint: 'icon-point',
     iconLine: 'icon-line',
