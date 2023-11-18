@@ -19,7 +19,12 @@
   let levelsListEx;
   let loadLevelById;
 
+  const maxWidth = 50;
+  const maxHeight = 50;
+
   const common = {
+    maxWidth,
+    maxHeight,
     levelId,
     checkMode,
     levelsList,
