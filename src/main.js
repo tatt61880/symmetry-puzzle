@@ -395,11 +395,12 @@
     if (temporaryShowCharsFlag && e.key === ' ') {
       temporaryShowCharsFlag = false;
       drawMainSvg();
-    } else if (e.key === 'z') {
+    }
+
+    if (Object.keys(inputKeys).length === 0) {
       undoEnd();
-    } else if (e.key === 'y' || e.key === 'Z') {
       redoEnd();
-    } else if (Object.keys(inputKeys).length === 0) {
+
       if (!settings.autoMode) {
         input.update(app.Input.DIRS.NEUTRAL);
       }
@@ -1181,6 +1182,7 @@
   function inputFunc() {
     if (input.inputDir === app.Input.DIRS.NEUTRAL) return;
     if (undoFlag) return;
+    if (redoFlag) return;
     if (completeFlag) return;
 
     if (settings.autoMode) {
