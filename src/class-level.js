@@ -7,9 +7,9 @@
     app = window.app;
     console.assert(app?.states !== undefined);
     console.assert(app?.colors !== undefined);
+    console.assert(app?.common !== undefined);
     console.assert(app?.svg !== undefined);
     console.assert(app?.Stack !== undefined);
-    console.assert(app?.common !== undefined);
   } else {
     app.states = require('./states.js');
     app.colors = require('./colors.js');
@@ -1368,6 +1368,7 @@
             gElem.appendChild(line);
           }
 
+          // 左側の境界線上
           if (flags[dirs.l]) {
             if (flags[dirs.u] && flags[dirs.ul]) {
               // eps 左 上 fill
@@ -1406,7 +1407,7 @@
             }
           }
 
-          // 上側の境界線上 + 上側の境界枠上
+          // 上側の境界線上
           if (flags[dirs.u]) {
             if (flags[dirs.l] && flags[dirs.ul]) {
               // eps 上 左 fill
