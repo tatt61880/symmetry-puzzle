@@ -4,24 +4,36 @@
 
   class UndoInfo {
     #undoIdx;
+    #undoMaxIdx;
 
     constructor() {
       this.undoArray = [];
-      this.#undoIdx = 0;
+      this.#undoIdx = -1;
+      this.#undoMaxIdx = 0;
     }
 
     pushData(data) {
-      this.undoArray[this.#undoIdx++] = data;
+      this.undoArray[++this.#undoIdx] = data;
+      this.#undoMaxIdx = this.#undoIdx;
     }
 
     isUndoable() {
-      return this.#undoIdx !== 0;
+      return this.#undoIdx > 0;
+    }
+
+    isRedoable() {
+      return this.#undoIdx < this.#undoMaxIdx;
     }
 
     undo() {
       if (this.isUndoable()) {
-        this.#undoIdx--;
-        return this.undoArray[this.#undoIdx];
+        return this.undoArray[--this.#undoIdx];
+      }
+    }
+
+    redo() {
+      if (this.isRedoable()) {
+        return this.undoArray[++this.#undoIdx];
       }
     }
 
@@ -31,7 +43,7 @@
 
     getReplayStr() {
       let replayStr = '';
-      for (let i = 0; i < this.#undoIdx; ++i) {
+      for (let i = 1; i <= this.#undoIdx; ++i) {
         if (this.undoArray[i].dir !== null) {
           replayStr += this.undoArray[i].dir;
         }

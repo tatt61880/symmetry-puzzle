@@ -45,7 +45,9 @@
 
   let undoInfo;
   let undoFlag = false;
+  let redoFlag = false;
   let undoIntervalId = null;
+  let redoIntervalId = null;
   let autoIntervalId = null;
 
   let completeFlag = false;
@@ -99,8 +101,8 @@
         '--animation-transform',
         `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`
       );
-      addUndo(dir);
       level.execMoveFlags();
+      addUndo(dir);
     }
     return moveFlag;
   }
@@ -154,6 +156,19 @@
   function undodown(e) {
     e.preventDefault();
     undoStart();
+  }
+
+  function redoStart() {
+    if (redoFlag) return;
+    redoFlag = true;
+    execRedo();
+    redoIntervalId = setInterval(execRedo, UNDO_INTERVAL_MSEC);
+  }
+
+  function redoEnd() {
+    if (!redoFlag) return;
+    redoFlag = false;
+    clearInterval(redoIntervalId);
   }
 
   function pointerup() {
@@ -308,6 +323,8 @@
       retryLevel();
     } else if (e.key === 'z') {
       undoStart();
+    } else if (e.key === 'y') {
+      redoStart();
     } else {
       if (!settings.autoMode) {
         const dir = (() => {
@@ -376,6 +393,8 @@
       drawMainSvg();
     } else if (e.key === 'z') {
       undoEnd();
+    } else if (e.key === 'y') {
+      redoEnd();
     } else if (Object.keys(inputKeys).length === 0) {
       if (!settings.autoMode) {
         input.update(app.Input.DIRS.NEUTRAL);
@@ -407,6 +426,7 @@
 
   function initLevel(obj, initParam) {
     level = new app.Level(obj, app.common.checkMode, initParam);
+    addUndo(null);
     updateSvg();
   }
 
@@ -465,6 +485,19 @@
       const resizeFlag = level.getW() !== data.w || level.getH() !== data.h;
       level.applyObj(data, resizeFlag);
       updateSvg();
+    }
+  }
+
+  function execRedo() {
+    window.getSelection().removeAllRanges();
+
+    if (undoInfo.isRedoable()) {
+      const data = undoInfo.redo();
+      const resizeFlag = level.getW() !== data.w || level.getH() !== data.h;
+      level.applyObj(data, resizeFlag);
+      updateSvg();
+      app.common.showElem(elems.controller.undo);
+      app.common.showElem(elems.edit.undo);
     }
   }
 
@@ -1048,22 +1081,22 @@
       drawMainSvg();
     });
     elems.edit.mirror.addEventListener('click', () => {
-      addUndo(null);
       level.mirror();
+      addUndo(null);
       updateLinkUrl();
       drawMainSvg();
     });
     elems.edit.rotate.addEventListener('click', () => {
-      addUndo(null);
       level.rotate(1);
+      addUndo(null);
       updateLinkUrl();
       drawMainSvg();
       updateSvg();
     });
     elems.edit.normalize.addEventListener('click', () => {
       if (!level.isNormalized()) {
-        addUndo(null);
         level.normalize();
+        addUndo(null);
         updateLinkUrl();
         drawMainSvg();
       }
@@ -1760,14 +1793,14 @@
     touchStart = false;
 
     if (!isRemoving && level.getState(x, y) !== drawingState) {
-      addUndo(null);
       level.applyState(x, y, drawingState);
+      addUndo(null);
       completeCheck();
       updateLinkUrl();
       drawMainSvg();
     } else if (isRemoving && level.getState(x, y) !== app.states.none) {
-      addUndo(null);
       level.applyState(x, y, app.states.none);
+      addUndo(null);
       completeCheck();
       updateLinkUrl();
       drawMainSvg();
@@ -1798,8 +1831,8 @@
     if (w > app.common.maxW) return;
     if (h > app.common.maxH) return;
 
-    addUndo(null);
     level.resize(dx, dy, flag);
+    addUndo(null);
     updateSvg();
   }
 
