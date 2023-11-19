@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.11.18';
+  const VERSION_TEXT = 'v2023.11.19';
 
   const app = window.app;
   Object.freeze(app);
@@ -301,6 +301,10 @@
           // Shift + →
           gotoNextLevel();
           break;
+        case 'Z':
+          // Shift + Z
+          redoStart();
+          break;
       }
     } else if (e.key === 'Enter') {
       if (app.common.isHiddenElem(elems.controller.nextLevel)) return;
@@ -393,7 +397,7 @@
       drawMainSvg();
     } else if (e.key === 'z') {
       undoEnd();
-    } else if (e.key === 'y') {
+    } else if (e.key === 'y' || e.key === 'Z') {
       redoEnd();
     } else if (Object.keys(inputKeys).length === 0) {
       if (!settings.autoMode) {
