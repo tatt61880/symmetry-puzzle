@@ -1155,7 +1155,7 @@
     elems.levels.dialogDiv.addEventListener('click', (e) =>
       e.stopPropagation()
     );
-    elems.levels.showShortestLevels.addEventListener(
+    elems.levels.checkbox.shortest.addEventListener(
       'click',
       app.dialog.levels.toggleShowCompleted
     );

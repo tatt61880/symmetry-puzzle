@@ -122,14 +122,14 @@
     let page = page_;
     window.getSelection().removeAllRanges();
 
-    if (!elems.levels.toggleCrown.hasChildNodes()) {
-      elems.levels.toggleCrown.appendChild(
+    if (!elems.levels.crown.shortest.hasChildNodes()) {
+      elems.levels.crown.shortest.appendChild(
         app.common.createCrown(32, 0.1, 0.1, 1, 1)
       );
     }
 
     // const hideCompletedLevelsFlag = elems.levels.hideClearedLevels.checked;
-    const hideShortestLevelsFlag = !elems.levels.showShortestLevels.checked;
+    const hideShortestLevelsFlag = !elems.levels.checkbox.shortest.checked;
 
     elems.levels.dialogSvg.innerHTML = '';
 
