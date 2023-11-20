@@ -124,17 +124,17 @@
 
     if (!elems.levels.crown.shortest.hasChildNodes()) {
       elems.levels.crown.shortest.appendChild(
-        app.common.createCrown(32, 0.1, 0.1, 1, 1)
+        app.common.createCrown(40, 0.1, 0.1, 1, 1)
       );
     }
     if (!elems.levels.crown.cleared.hasChildNodes()) {
       elems.levels.crown.cleared.appendChild(
-        app.common.createCrown(32, 0.1, 0.1, 1, 0)
+        app.common.createCrown(40, 0.1, 0.1, 1, 0)
       );
     }
     if (!elems.levels.crown.notCleared.hasChildNodes()) {
       elems.levels.crown.notCleared.appendChild(
-        app.common.createCrown(32, 0.1, 0.1, null, 0)
+        app.common.createCrown(40, 0.1, 0.1, null, 0)
       );
     }
 
