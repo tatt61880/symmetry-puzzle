@@ -73,8 +73,8 @@
       },
       checkbox: {
         shortest: 'show-shortest-levels',
-        showClearedLevels: 'show-cleared-levels',
-        showNotClearedLevels: 'show-not-cleared-levels',
+        cleared: 'show-cleared-levels',
+        notCleared: 'show-not-cleared-levels',
       },
       dialogSvg: 'dialog-levels-svg',
       buttonSvg: 'button-levels-svg',

@@ -11,7 +11,7 @@
   window.app.dialog = window.app.dialog || {};
   window.app.dialog.levels = {
     show,
-    toggleShowCompleted,
+    update,
     prevPage,
     nextPage,
     selectUp,
@@ -36,7 +36,7 @@
     elems.levels.dialog.showModal();
   }
 
-  function toggleShowCompleted() {
+  function update() {
     const page = Number(elems.levels.dialog.dataset.page);
     updateLevelsDialog(page);
   }
@@ -127,9 +127,21 @@
         app.common.createCrown(32, 0.1, 0.1, 1, 1)
       );
     }
+    if (!elems.levels.crown.cleared.hasChildNodes()) {
+      elems.levels.crown.cleared.appendChild(
+        app.common.createCrown(32, 0.1, 0.1, 1, 0)
+      );
+    }
+    if (!elems.levels.crown.notCleared.hasChildNodes()) {
+      elems.levels.crown.notCleared.appendChild(
+        app.common.createCrown(32, 0.1, 0.1, null, 0)
+      );
+    }
 
     // const hideCompletedLevelsFlag = elems.levels.hideClearedLevels.checked;
     const hideShortestLevelsFlag = !elems.levels.checkbox.shortest.checked;
+    const hideClearedLevelsFlag = !elems.levels.checkbox.cleared.checked;
+    const hideNotClearedLevelsFlag = !elems.levels.checkbox.notCleared.checked;
 
     elems.levels.dialogSvg.innerHTML = '';
 
@@ -253,12 +265,16 @@
         level.isLineMode()
       );
 
-      if (
-        highestScore !== null &&
-        hideShortestLevelsFlag &&
-        highestScore <= bestStep
-      ) {
-        return;
+      if (highestScore !== null) {
+        if (highestScore <= bestStep) {
+          if (hideShortestLevelsFlag) return;
+        } else {
+          if (hideClearedLevelsFlag) return;
+        }
+      } else {
+        if (hideNotClearedLevelsFlag) {
+          return;
+        }
       }
 
       const g = app.svg.createG();
