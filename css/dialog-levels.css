@@ -11,7 +11,7 @@
   margin: 124px auto;
   border: none;
 
-  #levels-toggle-crown {
+  .toggle-label svg {
     width: 40px;
     height: 40px;
   }
