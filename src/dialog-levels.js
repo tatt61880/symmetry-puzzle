@@ -11,7 +11,7 @@
   window.app.dialog = window.app.dialog || {};
   window.app.dialog.levels = {
     show,
-    toggleHideCompleted,
+    toggleShowCompleted,
     prevPage,
     nextPage,
     selectUp,
@@ -36,7 +36,7 @@
     elems.levels.dialog.showModal();
   }
 
-  function toggleHideCompleted() {
+  function toggleShowCompleted() {
     const page = Number(elems.levels.dialog.dataset.page);
     updateLevelsDialog(page);
   }
@@ -124,12 +124,12 @@
 
     if (!elems.levels.toggleCrown.hasChildNodes()) {
       elems.levels.toggleCrown.appendChild(
-        app.common.createCrown(20, 0, 0, 1, 1)
+        app.common.createCrown(32, 0.1, 0.1, 1, 1)
       );
     }
 
     // const hideCompletedLevelsFlag = elems.levels.hideClearedLevels.checked;
-    const hideShortestLevelsFlag = elems.levels.hideShortestLevels.checked;
+    const hideShortestLevelsFlag = !elems.levels.showShortestLevels.checked;
 
     elems.levels.dialogSvg.innerHTML = '';
 

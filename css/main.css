@@ -106,8 +106,8 @@ text {
 
   .toggle-button {
     position: relative;
-    width: 70px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     margin: 10px 5px;
   }
 
@@ -115,26 +115,12 @@ text {
     position: relative;
     box-sizing: border-box;
     display: inline-block;
-    width: 70px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     margin-left: 5px;
     background: #cccccc;
     border-radius: 40px;
     transition: 0.2s;
-
-    &::after {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      width: 35px;
-      height: 35px;
-      content: '';
-      background-color: #ffffff;
-      border-radius: 100%;
-      box-shadow: 0 0 5px rgb(0 0 0 / 50%);
-      transition: 0.2s;
-    }
   }
 
   .toggle-input {

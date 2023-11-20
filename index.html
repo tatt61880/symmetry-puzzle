@@ -15,43 +15,43 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.11.11">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.11.11">
 
-  <link rel="stylesheet" href="./css/main.css?2023.11.19">
-  <link rel="stylesheet" href="./css/title.css?2023.11.19">
-  <link rel="stylesheet" href="./css/game.css?2023.11.19">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.11.19">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.11.19">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.11.19">
-  <link rel="stylesheet" href="./css/animation.css?2023.11.19">
+  <link rel="stylesheet" href="./css/main.css?2023.11.20">
+  <link rel="stylesheet" href="./css/title.css?2023.11.20">
+  <link rel="stylesheet" href="./css/game.css?2023.11.20">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.11.20">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.11.20">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.11.20">
+  <link rel="stylesheet" href="./css/animation.css?2023.11.20">
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-  <script src="./src/states.js?2023.11.19"></script>
-  <script src="./src/colors.js?2023.11.19"></script>
-  <script src="./src/svg.js?2023.11.19"></script>
-  <script src="./src/common.js?2023.11.19"></script>
+  <script src="./src/states.js?2023.11.20"></script>
+  <script src="./src/colors.js?2023.11.20"></script>
+  <script src="./src/svg.js?2023.11.20"></script>
+  <script src="./src/common.js?2023.11.20"></script>
 
-  <script src="./src/class-stack.js?2023.11.19"></script>
-  <script src="./src/class-level.js?2023.11.19"></script>
+  <script src="./src/class-stack.js?2023.11.20"></script>
+  <script src="./src/class-level.js?2023.11.20"></script>
 
-  <script src="./src/class-savedata.js?2023.11.19"></script>
-  <script src="./src/class-undo-info.js?2023.11.19"></script>
-  <script src="./src/class-elems.js?2023.11.19"></script>
-  <script src="./src/class-input.js?2023.11.19"></script>
+  <script src="./src/class-savedata.js?2023.11.20"></script>
+  <script src="./src/class-undo-info.js?2023.11.20"></script>
+  <script src="./src/class-elems.js?2023.11.20"></script>
+  <script src="./src/class-input.js?2023.11.20"></script>
 
-  <script src="./src/levels-line.js?2023.11.19"></script>
-  <script src="./src/levels-line-ex.js?2023.11.19"></script>
-  <script src="./src/levels-point.js?2023.11.19"></script>
-  <script src="./src/levels-point-ex.js?2023.11.19"></script>
+  <script src="./src/levels-line.js?2023.11.20"></script>
+  <script src="./src/levels-line-ex.js?2023.11.20"></script>
+  <script src="./src/levels-point.js?2023.11.20"></script>
+  <script src="./src/levels-point-ex.js?2023.11.20"></script>
 
-  <script src="./src/elems.js?2023.11.19"></script>
+  <script src="./src/elems.js?2023.11.20"></script>
 
-  <script src="./src/solve.js?2023.11.19"></script>
+  <script src="./src/solve.js?2023.11.20"></script>
 
-  <script src="./src/dialog-help.js?2023.11.19"></script>
-  <script src="./src/dialog-levels.js?2023.11.19"></script>
-  <script src="./src/dialog-records.js?2023.11.19"></script>
+  <script src="./src/dialog-help.js?2023.11.20"></script>
+  <script src="./src/dialog-levels.js?2023.11.20"></script>
+  <script src="./src/dialog-records.js?2023.11.20"></script>
 
-  <script src="./src/analyze-url.js?2023.11.19"></script>
-  <script src="./src/main.js?2023.11.19"></script>
+  <script src="./src/analyze-url.js?2023.11.20"></script>
+  <script src="./src/main.js?2023.11.20"></script>
 </head>
 
 <body>
@@ -361,14 +361,11 @@
               </g>
             </svg>
             <div class="toggle-div">
-              <div class="toggle-text translatable-toggle" data-en="Hide the&nbsp;" data-ja="">
-              </div>
-              <svg id="levels-toggle-crown"></svg>
-              <div class="toggle-text translatable-toggle" data-en="&nbsp;levels" data-ja="&nbsp;を獲得したレベルを表示しない">
+              <div class="toggle-text translatable-toggle" data-en="Display" data-ja="表示">
               </div>
               <div class="toggle-button">
-                <input id="hide-shortest-levels" type="checkbox" class="toggle-input">
-                <label class="toggle-label" for="hide-shortest-levels"> </label>
+                <input id="show-shortest-levels" type="checkbox" class="toggle-input" checked>
+                <label class="toggle-label" for="show-shortest-levels"><svg id="levels-toggle-crown"></svg></label>
               </div>
             </div>
           </div>

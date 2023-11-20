@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.11.19';
+  const VERSION_TEXT = 'v2023.11.20';
 
   const app = window.app;
   Object.freeze(app);
@@ -1155,9 +1155,9 @@
     elems.levels.dialogDiv.addEventListener('click', (e) =>
       e.stopPropagation()
     );
-    elems.levels.hideShortestLevels.addEventListener(
+    elems.levels.showShortestLevels.addEventListener(
       'click',
-      app.dialog.levels.toggleHideCompleted
+      app.dialog.levels.toggleShowCompleted
     );
   }
 
