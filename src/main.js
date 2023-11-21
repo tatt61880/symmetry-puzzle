@@ -188,9 +188,8 @@
     }
   }
 
-  function keydown(e) {
+  async function keydown(e) {
     if (e.altKey) return;
-    if (e.ctrlKey) return;
 
     // 記録ダイアログで有効
     if (elems.records.dialog.open) {
@@ -199,6 +198,7 @@
 
     // ヘルプダイアログで有効
     if (elems.help.dialog.open) {
+      if (e.ctrlKey) return;
       switch (e.key) {
         case '?':
           app.dialog.help.close();
@@ -218,6 +218,7 @@
 
     // レベル一覧ダイアログで有効
     if (elems.levels.dialog.open) {
+      if (e.ctrlKey) return;
       switch (e.key) {
         case 'ArrowUp':
         case 'w':
@@ -260,37 +261,59 @@
     // どの画面でも有効
     switch (e.key) {
       case '?':
-        app.dialog.help.show();
-        return;
+        if (!e.ctrlKey) {
+          app.dialog.help.show();
+          return;
+        }
+        break;
       case '+':
       case 'Home':
-        gotoTitlePage();
-        return;
+        if (!e.ctrlKey) {
+          gotoTitlePage();
+          return;
+        }
+        break;
     }
 
     // タイトル画面で有効
     if (app.common.isShownElem(elems.category.title)) {
-      if (!e.shiftKey) {
-        switch (e.key) {
-          case 't':
-            updateCheckMode(app.Level.CHECK_MODE.LINE);
-            onloadId(1);
-            break;
-          case 'z':
-            updateCheckMode(app.Level.CHECK_MODE.POINT);
-            onloadId(1);
-            break;
-        }
+      if (e.shiftKey) return;
+      if (e.ctrlKey) return;
+      switch (e.key) {
+        case 't':
+          updateCheckMode(app.Level.CHECK_MODE.LINE);
+          onloadId(1);
+          break;
+        case 'z':
+          updateCheckMode(app.Level.CHECK_MODE.POINT);
+          onloadId(1);
+          break;
       }
       return;
     }
 
     if (e.key === '#') {
+      if (e.ctrlKey) return;
       app.dialog.levels.show();
       return;
     }
 
-    if (e.shiftKey) {
+    if (e.ctrlKey) {
+      switch (e.key) {
+        // Ctrl + V: クリップボード内のオブジェクトデータを実行
+        case 'v': {
+          let clip = await navigator.clipboard.readText();
+          clip = clip.replace(/(\w+):/g, '"$1":');
+          clip = clip.replace(/[\d\D]*?({.*})[\d\D]*/, '$1');
+          clip = clip.replaceAll("'", '"');
+          const levelObj = JSON.parse(clip);
+          onloadObj(levelObj);
+          updateAutoMode(true);
+          onButtonStart();
+          break;
+        }
+      }
+    } else if (e.shiftKey) {
       switch (e.key) {
         case 'ArrowLeft': {
           // Shift + ←
