@@ -702,12 +702,12 @@
       app.common.showElem(elems.url.div);
       app.common.showElem(elems.edit.widget);
       app.common.hideElem(elems.controller.widget);
+      updateLinkUrl();
     } else {
       app.common.hideElem(elems.url.div);
       app.common.hideElem(elems.edit.widget);
       app.common.showElem(elems.controller.widget);
     }
-    updateLinkUrl();
   }
 
   function toggleEditLevel() {
