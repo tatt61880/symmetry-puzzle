@@ -304,7 +304,11 @@
                   .getShapeStr(app.states.isTarget)
                   .replace(/\n$/, '');
                 if (!shapeStrMap.has(shapeStr)) {
-                  shapeStrInfoArray.push({ str: shapeStr, step: step + 1 });
+                  shapeStrInfoArray.push({
+                    str: shapeStr,
+                    step: step + 1,
+                    obj: completedLevelObj,
+                  });
                   const shapeId = shapeStrMap.size + 1;
                   shapeStrMap.set(shapeStr, shapeId);
                   if (options.draw) {
@@ -343,6 +347,7 @@
             for (const shapeStrInfo of shapeStrInfoArray) {
               app.console.info(`${shapeStrInfo.step} steps`);
               app.console.log(shapeStrInfo.str);
+              app.console.log(shapeStrInfo.obj);
             }
             const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Step limit: ${maxStep}] [Shape variation: ${shapeStrMap.size}]`;
             return { replayStr: null, errorMessage };
