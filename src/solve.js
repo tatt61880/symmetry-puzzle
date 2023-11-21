@@ -27,16 +27,16 @@
       .version('2.2.0')
       .option('-i, --id <id>', 'id of level')
       .option('-a, --all', 'list up all solutions')
-      .option('-w, --w <w>', 'levelObj.w')
-      .option('-h, --h <h>', 'levelObj.h')
+      .option('-w, --w <w>', 'levelObj.w', Number)
+      .option('-h, --h <h>', 'levelObj.h', Number)
       .option('-s, --s <s>', 'levelObj.s')
       .option('-l, --line', 'line symmetry mode')
       .option('-p, --prefixStep <prefix-step>', 'prefixStep step')
       .option('-c, --console', 'console.info step')
       .option('-d, --draw', 'draw target shape')
       .option('-n, --normalize', 'normalize state')
-      .option('-m, --max <max-step>', 'max step', parseInt)
-      .option('-t, --time <time-limit>', 'time limit', parseInt);
+      .option('-m, --max <max-step>', 'max step', Number)
+      .option('-t, --time <time-limit>', 'time limit', Number);
 
     program.parse();
     options = program.opts();
@@ -85,8 +85,8 @@
       process.exitCode = 1;
       return;
     }
-    const w = Number(options.w);
-    const h = Number(options.h);
+    const w = options.w;
+    const h = options.h;
     const s = options.s;
     if (isNaN(w)) {
       app.console.error('Error: w is NaN');
