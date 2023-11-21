@@ -696,7 +696,8 @@
     elems.url.a.innerHTML = `<a href="${url}">現在の盤面を0手目として完成！</a>`;
   }
 
-  function updateEditLevel() {
+  function updateEditMode(isOn) {
+    editMode = isOn;
     if (editMode) {
       app.common.showElem(elems.url.div);
       app.common.showElem(elems.edit.widget);
@@ -713,7 +714,7 @@
     editMode = !editMode;
     app.common.levelId = null;
     updateLevelVisibility();
-    updateEditLevel();
+    updateEditMode(editMode);
     drawMainSvg();
   }
 
@@ -796,7 +797,7 @@
     elems.version.textContent = VERSION_TEXT;
 
     initElems();
-    updateEditLevel();
+    updateEditMode(false);
 
     window.onresize = resizeWindow;
     resizeWindow();
@@ -1915,6 +1916,7 @@
       settings.autoMode = true;
       input.disable();
       app.common.showElem(elems.auto.buttons);
+      updateEditMode(false);
     } else {
       clearTimeout(nextLevelTimerId);
       settings.autoMode = false;
