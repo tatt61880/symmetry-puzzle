@@ -183,7 +183,7 @@
 
       level.execMoveFlags();
 
-      const stateStr = level.getStateStr();
+      const stateStr = level.getS();
       if (stateStrMap[stateStr] !== undefined) {
         app.console.warn(
           `Warning: ${levelInfo()} Same state exists. [index: ${index}]`

@@ -140,7 +140,7 @@
       return this.#states[y][x];
     }
 
-    getStateStr() {
+    getS() {
       return this.#getStateStrSub(
         this.#states,
         this.#xMin,
@@ -153,7 +153,7 @@
     printSolveJsStr() {
       const w = this.getW();
       const h = this.getH();
-      const s = this.getStateStr();
+      const s = this.getS();
 
       const solveJsStr =
         `node src/solve.js -w ${w} -h ${h} -s ${s} --all --console --draw` +
@@ -164,7 +164,7 @@
     getUrlStr() {
       const w = this.getW();
       const h = this.getH();
-      const s = this.getStateStr();
+      const s = this.getS();
 
       console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
       this.printSolveJsStr();
@@ -294,12 +294,12 @@
       if (flag) {
         this.rotate(2);
       }
-      const s = this.getStateStr();
+      const s = this.getS();
       const obj = { w, h, s };
       this.applyObj(obj, true);
       if (flag) {
         this.rotate(2);
-        const s = this.getStateStr();
+        const s = this.getS();
         const obj = { w, h, s };
         this.applyObj(obj, false);
       }
@@ -310,7 +310,7 @@
       const obj = {
         w: this.getW(),
         h: this.getH(),
-        s: this.getStateStr(),
+        s: this.getS(),
       };
       const newObj = this.#mirrorLevel(obj);
       this.applyObj(newObj);
@@ -321,7 +321,7 @@
       const obj = {
         w: this.getW(),
         h: this.getH(),
-        s: this.getStateStr(),
+        s: this.getS(),
       };
       const newObj = this.#rotateLevel(obj, rotateNum);
       this.#levelObj = newObj;

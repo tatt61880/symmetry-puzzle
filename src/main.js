@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v2023.11.21b';
+  const VERSION_TEXT = 'v' + '2023.11.22';
 
   const app = window.app;
   Object.freeze(app);
@@ -1104,7 +1104,7 @@
       }
       const w = level.getW();
       const h = level.getH();
-      const s = level.getStateStr();
+      const s = level.getS();
       level = new app.Level({ w, h, s }, app.common.checkMode, {});
       completeCheck();
       updateLinkUrl();
@@ -1875,10 +1875,12 @@
       dir,
       w: level.getW(),
       h: level.getH(),
-      s: level.getStateStr(),
+      s: level.getS(),
     });
-    app.common.showElem(elems.controller.undo);
-    app.common.showElem(elems.edit.undo);
+    if (undoInfo.isUndoable()) {
+      app.common.showElem(elems.controller.undo);
+      app.common.showElem(elems.edit.undo);
+    }
   }
 
   function replaceUrlTitle() {
@@ -1952,7 +1954,7 @@
     if (level.getBestStep() === undefined) {
       const w = level.getW();
       const h = level.getH();
-      const s = level.getStateStr();
+      const s = level.getS();
       const levelObj = { w, h, s };
       // TODO activeElem を盤面に反映させてから計算する。Promiseを使うといけそう。
       // app.common.activeElem(elems.auto.buttonStart);

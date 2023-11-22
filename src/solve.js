@@ -202,7 +202,7 @@
       const stateStrMap = new Map();
       let replayStr = '';
       {
-        const stateStr = level.getStateStr();
+        const stateStr = level.getS();
         stateStrMap.set(stateStr, replayStr);
       }
       let step = 0;
@@ -219,7 +219,7 @@
         }
 
         level.execMoveFlags();
-        const stateStr = level.getStateStr();
+        const stateStr = level.getS();
         if (stateStrMap.has(stateStr)) {
           app.console.warn('Warning: Same state exists.');
         }
@@ -237,7 +237,7 @@
 
       let nextStateStrSet = new Set();
       {
-        const stateStr = level.getStateStr();
+        const stateStr = level.getS();
         nextStateStrSet.add(stateStr);
       }
 
@@ -273,7 +273,7 @@
             level.execMoveFlags();
 
             if (options.normalize) level.normalize();
-            const stateStr = level.getStateStr();
+            const stateStr = level.getS();
             if (stateStrMap.has(stateStr)) continue;
 
             const replayStr = currentReplyStr + dir;
