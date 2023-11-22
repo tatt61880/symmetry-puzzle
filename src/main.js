@@ -1474,8 +1474,8 @@
         buttons.forEach((button) => {
           if (button.dx === -1 && level.getW() <= 1) return;
           if (button.dy === -1 && level.getH() <= 1) return;
-          if (button.dx === 1 && level.getW() >= app.common.maxW) return;
-          if (button.dy === 1 && level.getH() >= app.common.maxH) return;
+          if (button.dx === 1 && level.getW() >= app.common.maxEditW) return;
+          if (button.dy === 1 && level.getH() >= app.common.maxEditH) return;
 
           const points = [];
           for (const point of button.points) {

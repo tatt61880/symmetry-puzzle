@@ -21,10 +21,14 @@
 
   const maxW = 50;
   const maxH = 50;
+  const maxEditW = 10;
+  const maxEditH = 10;
 
   const common = {
     maxW,
     maxH,
+    maxEditW,
+    maxEditH,
     levelId,
     checkMode,
     levelsList,
