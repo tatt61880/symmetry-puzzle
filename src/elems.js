@@ -116,6 +116,7 @@
     controller: {
       widget: 'controller-widget',
       undo: 'button-undo',
+      redo: 'button-redo',
       nextLevel: 'next-level',
       menu: 'controller-menu',
 

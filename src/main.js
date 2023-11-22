@@ -132,17 +132,18 @@
     clearTimeout(nextLevelTimerId);
     app.common.activeElem(elems.controller.undo);
     app.common.activeElem(elems.edit.undo);
+
     input.update(app.Input.DIRS.NEUTRAL);
     execUndo();
     undoIntervalId = setInterval(execUndo, UNDO_INTERVAL_MSEC);
   }
 
   function undoEnd() {
+    clearInterval(undoIntervalId);
     if (!undoFlag) return;
     undoFlag = false;
     app.common.inactiveElem(elems.controller.undo);
     app.common.inactiveElem(elems.edit.undo);
-    clearInterval(undoIntervalId);
   }
 
   function undodown(e) {
@@ -153,18 +154,26 @@
   function redoStart() {
     if (redoFlag) return;
     redoFlag = true;
+    app.common.activeElem(elems.controller.redo);
     execRedo();
     redoIntervalId = setInterval(execRedo, UNDO_INTERVAL_MSEC);
   }
 
   function redoEnd() {
+    clearInterval(redoIntervalId);
     if (!redoFlag) return;
     redoFlag = false;
-    clearInterval(redoIntervalId);
+    app.common.inactiveElem(elems.controller.redo);
+  }
+
+  function redodown(e) {
+    e.preventDefault();
+    redoStart();
   }
 
   function pointerup() {
     undoEnd();
+    redoEnd();
   }
 
   function getCursorPos(elem, e) {
@@ -442,6 +451,7 @@
     undoInfo = new app.UndoInfo();
     app.common.hideElem(elems.controller.undo);
     app.common.hideElem(elems.edit.undo);
+    app.common.hideElem(elems.controller.redo);
   }
 
   function initLevel(obj, initParam) {
@@ -498,6 +508,8 @@
     if (undoInfo.isUndoable()) {
       const data = undoInfo.undo();
       updateController();
+
+      app.common.showElem(elems.controller.redo);
       if (!undoInfo.isUndoable()) {
         app.common.hideElem(elems.controller.undo);
         app.common.hideElem(elems.edit.undo);
@@ -518,6 +530,9 @@
       updateSvg();
       app.common.showElem(elems.controller.undo);
       app.common.showElem(elems.edit.undo);
+      if (!undoInfo.isRedoable()) {
+        app.common.hideElem(elems.controller.redo);
+      }
     }
   }
 
@@ -1005,6 +1020,8 @@
 
       elems.controller.undo.addEventListener(pointerdownEventName, undodown);
       elems.edit.undo.addEventListener(pointerdownEventName, undodown);
+      elems.controller.redo.addEventListener(pointerdownEventName, redodown);
+
       elems.controller.buttons.up.addEventListener(
         pointerdownEventName,
         moveButtonStart.bind(null, app.Input.DIRS.UP)
@@ -1877,6 +1894,8 @@
       h: level.getH(),
       s: level.getS(),
     });
+
+    app.common.hideElem(elems.controller.redo);
     if (undoInfo.isUndoable()) {
       app.common.showElem(elems.controller.undo);
       app.common.showElem(elems.edit.undo);

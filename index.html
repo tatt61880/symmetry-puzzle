@@ -15,43 +15,43 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.11.11">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.11.11">
 
-  <link rel="stylesheet" href="./css/main.css?2023.11.22">
-  <link rel="stylesheet" href="./css/title.css?2023.11.22">
-  <link rel="stylesheet" href="./css/game.css?2023.11.22">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.11.22">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.11.22">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.11.22">
-  <link rel="stylesheet" href="./css/animation.css?2023.11.22">
+  <link rel="stylesheet" href="./css/main.css?2023.11.23">
+  <link rel="stylesheet" href="./css/title.css?2023.11.23">
+  <link rel="stylesheet" href="./css/game.css?2023.11.23">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.11.23">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.11.23">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.11.23">
+  <link rel="stylesheet" href="./css/animation.css?2023.11.23">
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-  <script src="./src/states.js?2023.11.22"></script>
-  <script src="./src/colors.js?2023.11.22"></script>
-  <script src="./src/svg.js?2023.11.22"></script>
-  <script src="./src/common.js?2023.11.22"></script>
+  <script src="./src/states.js?2023.11.23"></script>
+  <script src="./src/colors.js?2023.11.23"></script>
+  <script src="./src/svg.js?2023.11.23"></script>
+  <script src="./src/common.js?2023.11.23"></script>
 
-  <script src="./src/class-stack.js?2023.11.22"></script>
-  <script src="./src/class-level.js?2023.11.22"></script>
+  <script src="./src/class-stack.js?2023.11.23"></script>
+  <script src="./src/class-level.js?2023.11.23"></script>
 
-  <script src="./src/class-savedata.js?2023.11.22"></script>
-  <script src="./src/class-undo-info.js?2023.11.22"></script>
-  <script src="./src/class-elems.js?2023.11.22"></script>
-  <script src="./src/class-input.js?2023.11.22"></script>
+  <script src="./src/class-savedata.js?2023.11.23"></script>
+  <script src="./src/class-undo-info.js?2023.11.23"></script>
+  <script src="./src/class-elems.js?2023.11.23"></script>
+  <script src="./src/class-input.js?2023.11.23"></script>
 
-  <script src="./src/levels-line.js?2023.11.22"></script>
-  <script src="./src/levels-line-ex.js?2023.11.22"></script>
-  <script src="./src/levels-point.js?2023.11.22"></script>
-  <script src="./src/levels-point-ex.js?2023.11.22"></script>
+  <script src="./src/levels-line.js?2023.11.23"></script>
+  <script src="./src/levels-line-ex.js?2023.11.23"></script>
+  <script src="./src/levels-point.js?2023.11.23"></script>
+  <script src="./src/levels-point-ex.js?2023.11.23"></script>
 
-  <script src="./src/elems.js?2023.11.22"></script>
+  <script src="./src/elems.js?2023.11.23"></script>
 
-  <script src="./src/solve.js?2023.11.22"></script>
+  <script src="./src/solve.js?2023.11.23"></script>
 
-  <script src="./src/dialog-help.js?2023.11.22"></script>
-  <script src="./src/dialog-levels.js?2023.11.22"></script>
-  <script src="./src/dialog-records.js?2023.11.22"></script>
+  <script src="./src/dialog-help.js?2023.11.23"></script>
+  <script src="./src/dialog-levels.js?2023.11.23"></script>
+  <script src="./src/dialog-records.js?2023.11.23"></script>
 
-  <script src="./src/analyze-url.js?2023.11.22"></script>
-  <script src="./src/main.js?2023.11.22"></script>
+  <script src="./src/analyze-url.js?2023.11.23"></script>
+  <script src="./src/main.js?2023.11.23"></script>
 </head>
 
 <body>
@@ -552,7 +552,7 @@
             <rect x="-250" y="-125" width="500" height="250" fill="#eee" stroke="none" />
 
             <!-- Undoボタン -->
-            <g id="button-undo" class="button active-hover" transform="translate(-185,0)">
+            <g id="button-undo" class="button active-hover" transform="translate(-185,55)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
                 fill="#888888" class="translatable-toggle" data-en="STEP BACKWARD" data-ja="1ステップ戻す"></text>
               <g transform="scale(1.2,1.2)">
@@ -597,7 +597,8 @@
               </g>
             </g>
 
-            <g id="controller-buttons-menu" class="button active-hover" transform="translate(185,0)">
+            <!-- メニューボタン -->
+            <g id="controller-buttons-menu" class="button active-hover" transform="translate(185,-56)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
                 fill="#888888" class="translatable-toggle" data-en="MENU" data-ja="メニュー"></text>
               <rect x="-35" y="-35" rx="12" ry="12" width="70" height="70" fill="lightgray" stroke="#888888"
@@ -620,6 +621,19 @@
                 <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22px"
                   fill="#888888" class="translatable-toggle" data-en="RETRY" data-ja="リトライ"></text>
               </g>
+            </g>
+
+            <!-- Redoボタン -->
+            <g id="button-redo" class="button active-hover" transform="translate(185,55)">
+              <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
+                fill="#888888" class="translatable-toggle" data-en="STEP FORWARD" data-ja="1ステップ進める"></text>
+              <g transform="scale(-1.2,1.2)">
+                <circle cx="0" cy="0" r="28" fill="lightgray" stroke="#888888" stroke-width="4" />
+                <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#888888" stroke-width="4" />
+                <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#888888" stroke="none" stroke-width="4" />
+              </g>
+              <text x="0" y="50" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
+                fill="#888888">Y</text>
             </g>
           </g>
         </svg>
