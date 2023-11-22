@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.23';
+  const VERSION_TEXT = 'v' + '2023.11.23b';
 
   const app = window.app;
   Object.freeze(app);
@@ -155,6 +155,7 @@
     if (redoFlag) return;
     redoFlag = true;
     app.common.activeElem(elems.controller.redo);
+    app.common.activeElem(elems.edit.redo);
     execRedo();
     redoIntervalId = setInterval(execRedo, UNDO_INTERVAL_MSEC);
   }
@@ -164,6 +165,7 @@
     if (!redoFlag) return;
     redoFlag = false;
     app.common.inactiveElem(elems.controller.redo);
+    app.common.inactiveElem(elems.edit.redo);
   }
 
   function redodown(e) {
@@ -452,6 +454,7 @@
     app.common.hideElem(elems.controller.undo);
     app.common.hideElem(elems.edit.undo);
     app.common.hideElem(elems.controller.redo);
+    app.common.hideElem(elems.edit.redo);
   }
 
   function initLevel(obj, initParam) {
@@ -510,6 +513,7 @@
       updateController();
 
       app.common.showElem(elems.controller.redo);
+      app.common.showElem(elems.edit.redo);
       if (!undoInfo.isUndoable()) {
         app.common.hideElem(elems.controller.undo);
         app.common.hideElem(elems.edit.undo);
@@ -532,6 +536,7 @@
       app.common.showElem(elems.edit.undo);
       if (!undoInfo.isRedoable()) {
         app.common.hideElem(elems.controller.redo);
+        app.common.hideElem(elems.edit.redo);
       }
     }
   }
@@ -1020,7 +1025,9 @@
 
       elems.controller.undo.addEventListener(pointerdownEventName, undodown);
       elems.edit.undo.addEventListener(pointerdownEventName, undodown);
+
       elems.controller.redo.addEventListener(pointerdownEventName, redodown);
+      elems.edit.redo.addEventListener(pointerdownEventName, redodown);
 
       elems.controller.buttons.up.addEventListener(
         pointerdownEventName,
@@ -1896,6 +1903,7 @@
     });
 
     app.common.hideElem(elems.controller.redo);
+    app.common.hideElem(elems.edit.redo);
     if (undoInfo.isUndoable()) {
       app.common.showElem(elems.controller.undo);
       app.common.showElem(elems.edit.undo);
