@@ -723,11 +723,13 @@
       app.common.showElem(elems.url.div);
       app.common.showElem(elems.edit.widget);
       app.common.hideElem(elems.controller.widget);
+      app.common.hideElem(elems.level.retry);
       updateLinkUrl();
     } else {
       app.common.hideElem(elems.url.div);
       app.common.hideElem(elems.edit.widget);
       app.common.showElem(elems.controller.widget);
+      app.common.showElem(elems.level.retry);
     }
   }
 
