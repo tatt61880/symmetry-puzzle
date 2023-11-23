@@ -83,6 +83,11 @@
     display: none;
     width: 100%;
 
+    .blue-block,
+    .orange-block {
+      margin: 7px;
+    }
+
     .help-mode {
       display: block;
       padding: 7px 0;
@@ -157,6 +162,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 30px;
   }
 
   .tatt61880-icon {
