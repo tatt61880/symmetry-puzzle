@@ -26,6 +26,43 @@
   }
 
   function show() {
+    {
+      const addBlock = (elem, char, w) => {
+        const levelForEditChar = new app.Level(
+          { w, h: 1, s: char.repeat(w) },
+          app.Level.CHECK_MODE.POINT,
+          {}
+        );
+        const blockSize = 30;
+        const state = app.states.charToState[char];
+
+        for (let i = 0; i < w; i++) {
+          const block = levelForEditChar.createOneBlock(
+            i + 1,
+            1,
+            blockSize,
+            null,
+            false,
+            app.states.isUser(state)
+          );
+          block.setAttribute(
+            'transform',
+            `translate(${-blockSize},${-blockSize})`
+          );
+          elem.appendChild(block);
+        }
+        elem.setAttribute('width', blockSize * w);
+        elem.setAttribute('height', blockSize);
+      };
+
+      for (const elem of document.getElementsByClassName('blue-block')) {
+        addBlock(elem, 's', 1);
+      }
+      for (const elem of document.getElementsByClassName('orange-block')) {
+        addBlock(elem, '1', 2);
+      }
+    }
+
     if (app.common.checkMode === app.Level.CHECK_MODE.POINT) {
       elems.help.tabPoint.checked = true;
     } else if (app.common.checkMode === app.Level.CHECK_MODE.LINE) {

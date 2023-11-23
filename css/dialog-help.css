@@ -83,31 +83,6 @@
     display: none;
     width: 100%;
 
-    & span {
-      &.blue-block,
-      &.orange-block {
-        box-sizing: border-box;
-        display: inline-block;
-        width: 28px;
-        height: 28px;
-        padding: 0;
-        margin: 2px 0 6px;
-        vertical-align: middle;
-      }
-
-      &.blue-block {
-        background-color: #aaccff;
-        border: solid 3px #0000f8;
-        border-radius: 8px;
-      }
-
-      &.orange-block {
-        width: 56px;
-        background-color: #ffbb88;
-        border: solid 4px #ff7700;
-      }
-    }
-
     .help-mode {
       display: block;
       padding: 7px 0;
