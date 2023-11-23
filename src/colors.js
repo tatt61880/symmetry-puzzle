@@ -23,8 +23,8 @@
   };
   for (let i = app.states.targetMin; i <= app.states.targetMax; ++i) {
     colors[i] = {
-      fill: '#ffc0cb',
-      stroke: '#f80000',
+      fill: '#ffbb88',
+      stroke: '#ff7700',
       text: '#773333',
       error: '#f80000',
     };

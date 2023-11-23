@@ -33,11 +33,11 @@
     font-size: 1.3rem;
     cursor: pointer;
     user-select: none;
-    background-color: #ffebee;
-    border: 6px solid #ff99aa;
+    background-color: #ffeedd;
+    border: 6px solid #ffbb77;
 
     &:hover {
-      background-color: #fff5f7;
+      opacity: 0.8;
     }
 
     &#button-play-point {
@@ -54,7 +54,7 @@
       border-radius: 20%;
 
       &:hover {
-        background-color: #e4f8ff;
+        opacity: 0.8;
       }
     }
   }

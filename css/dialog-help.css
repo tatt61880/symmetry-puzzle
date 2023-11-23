@@ -86,13 +86,13 @@
     & span {
       line-height: 1.5rem;
 
-      &.red-block {
+      &.orange-block {
         padding: 2px 6px;
         margin: 4px;
         font-weight: bold;
-        color: #f80000;
-        background-color: #ffc0cb;
-        border: solid 3px #f80000;
+        color: #ff7700;
+        background-color: #ffbb88;
+        border: solid 3px #ff7700;
       }
 
       &.blue-block {
