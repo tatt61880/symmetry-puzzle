@@ -555,6 +555,32 @@
           <g transform="translate(250,120)">
             <rect x="-250" y="-125" width="500" height="250" fill="#eee" stroke="none" />
 
+            <!-- メニューボタン -->
+            <g id="controller-buttons-menu" class="button active-hover" transform="translate(-185,-56)">
+              <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
+                fill="#888888" class="translatable-toggle" data-en="MENU" data-ja="メニュー"></text>
+              <rect x="-35" y="-35" rx="12" ry="12" width="70" height="70" fill="lightgray" stroke="#888888"
+                stroke-width="4" />
+              <rect x="-22" y="-23" rx="5" ry="5" width="44" height="10" fill="#888888" />
+              <rect x="-22" y="-5" rx="5" ry="5" width="44" height="10" fill="#888888" />
+              <rect x="-22" y="13" rx="5" ry="5" width="44" height="10" fill="#888888" />
+            </g>
+
+            <g id="controller-menu" class="hide">
+              <g id="controller-buttons-title" class="button active-hover" transform="translate(0,-40)">
+                <rect x="-120" y="-25" rx="10" ry="10" width="240" height="50" fill="lightgray" stroke="#888888"
+                  stroke-width="4" />
+                <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22px"
+                  fill="#888888" class="translatable-toggle" data-en="RETURN TO TITLE" data-ja="タイトル画面に戻る"></text>
+              </g>
+              <g id="controller-buttons-retry" class="button active-hover" transform="translate(0,40)">
+                <rect x="-120" y="-25" rx="10" ry="10" width="240" height="50" fill="lightgray" stroke="#888888"
+                  stroke-width="4" />
+                <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22px"
+                  fill="#888888" class="translatable-toggle" data-en="RETRY" data-ja="リトライ"></text>
+              </g>
+            </g>
+
             <!-- Undoボタン -->
             <g id="button-undo" class="button active-hover" transform="translate(-185,55)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
@@ -598,32 +624,6 @@
                   stroke-width="4" />
                 <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22px"
                   fill="#0000f8" class="translatable-toggle" data-en="NEXT LEVEL" data-ja="次のレベルへ"></text>
-              </g>
-            </g>
-
-            <!-- メニューボタン -->
-            <g id="controller-buttons-menu" class="button active-hover" transform="translate(185,-56)">
-              <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
-                fill="#888888" class="translatable-toggle" data-en="MENU" data-ja="メニュー"></text>
-              <rect x="-35" y="-35" rx="12" ry="12" width="70" height="70" fill="lightgray" stroke="#888888"
-                stroke-width="4" />
-              <rect x="-22" y="-23" rx="5" ry="5" width="44" height="10" fill="#888888" />
-              <rect x="-22" y="-5" rx="5" ry="5" width="44" height="10" fill="#888888" />
-              <rect x="-22" y="13" rx="5" ry="5" width="44" height="10" fill="#888888" />
-            </g>
-
-            <g id="controller-menu" class="hide">
-              <g id="controller-buttons-title" class="button active-hover" transform="translate(0,-40)">
-                <rect x="-120" y="-25" rx="10" ry="10" width="240" height="50" fill="lightgray" stroke="#888888"
-                  stroke-width="4" />
-                <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22px"
-                  fill="#888888" class="translatable-toggle" data-en="RETURN TO TITLE" data-ja="タイトル画面に戻る"></text>
-              </g>
-              <g id="controller-buttons-retry" class="button active-hover" transform="translate(0,40)">
-                <rect x="-120" y="-25" rx="10" ry="10" width="240" height="50" fill="lightgray" stroke="#888888"
-                  stroke-width="4" />
-                <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22px"
-                  fill="#888888" class="translatable-toggle" data-en="RETRY" data-ja="リトライ"></text>
               </g>
             </g>
 
