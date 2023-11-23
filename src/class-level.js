@@ -457,11 +457,16 @@
       }
     }
 
-    createSvgG(
+    createSvgG({
       blockSize,
       symmetryAnimationFlag = false,
-      showCharsFlag = false
-    ) {
+      showCharsFlag = false,
+      drawBackground = true,
+      x0 = 0,
+      y0 = 0,
+      width = this.#width,
+      height = this.#height,
+    }) {
       const g = app.svg.createG();
 
       const symmetryType = symmetryAnimationFlag
@@ -469,12 +474,12 @@
         : null;
 
       // 背景
-      {
+      if (drawBackground) {
         const rect = app.svg.createRect(blockSize, {
           x: 0,
           y: 0,
-          width: this.#width,
-          height: this.#height,
+          width,
+          height,
         });
         rect.setAttribute('fill', 'white');
         g.appendChild(rect);
@@ -488,8 +493,8 @@
       g.appendChild(gElemsTarget);
 
       const stateHasEyes = {}; // 一番左上のみに目を付けます。
-      for (let y = 0; y < this.#height; ++y) {
-        for (let x = 0; x < this.#width; ++x) {
+      for (let y = y0; y < y0 + height; ++y) {
+        for (let x = x0; x < x0 + width; ++x) {
           const state = this.getState(x, y);
           if (state === app.states.none) continue;
 
@@ -503,6 +508,8 @@
             ? gElemsTarget
             : gElemsNotTarget;
           this.#addOneBlock(
+            x - x0,
+            y - y0,
             x,
             y,
             blockSize,
@@ -517,8 +524,6 @@
 
       if (symmetryType !== null) {
         const center = this.getCenter(app.states.isTarget);
-        const width = this.getWidth();
-        const height = this.getHeight();
         const gg = app.svg.createG();
         g.appendChild(gg);
         switch (symmetryType) {
@@ -1040,8 +1045,17 @@
       return true;
     }
 
-    createOneBlock(x, y, blockSize, symmetryType, showCharsFlag, eyeFlag) {
-      const state = this.getState(x, y);
+    #createOneBlock(
+      x,
+      y,
+      stateX,
+      stateY,
+      blockSize,
+      symmetryType,
+      showCharsFlag,
+      eyeFlag
+    ) {
+      const state = this.getState(stateX, stateY);
       const color = app.colors[state];
 
       const gElem = app.svg.createG();
@@ -1051,8 +1065,8 @@
         for (let dir = 0; dir < 8; ++dir) {
           const dx = dxs[dir];
           const dy = dys[dir];
-          if (this.#isInArea(x + dx, y + dy)) {
-            flags[dir] = this.getState(x + dx, y + dy) === state;
+          if (this.#isInArea(stateX + dx, stateY + dy)) {
+            flags[dir] = this.getState(stateX + dx, stateY + dy) === state;
           } else {
             flags[dir] = true;
           }
@@ -1805,6 +1819,8 @@
     #addOneBlock(
       x,
       y,
+      stateX,
+      stateY,
       blockSize,
       symmetryType,
       showCharsFlag,
@@ -1815,9 +1831,11 @@
       const state = this.getState(x, y);
       const color = app.colors[state];
 
-      const elem = this.createOneBlock(
+      const elem = this.#createOneBlock(
         x,
         y,
+        stateX,
+        stateY,
         blockSize,
         symmetryType,
         showCharsFlag,

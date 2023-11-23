@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.23f';
+  const VERSION_TEXT = 'v' + '2023.11.24';
 
   const app = window.app;
   Object.freeze(app);
@@ -1097,26 +1097,27 @@
         );
         const blockSize = 40;
         const state = app.states.charToState[char];
-        const block = levelForEditChar.createOneBlock(
-          1,
-          1,
+        const drawBackground = char === '0';
+        const g = levelForEditChar.createSvgG({
           blockSize,
-          null,
-          true,
-          app.states.isUser(state)
-        );
-        block.setAttribute(
-          'transform',
-          `translate(${-blockSize},${-blockSize})`
-        );
-        elem.appendChild(block);
+          showCharsFlag: true,
+          drawBackground,
+          x0: 1,
+          y0: 1,
+          width: 1,
+          height: 1,
+        });
+        elem.appendChild(g);
 
         const func = () => {
           elems.edit.drawing.innerHTML = '';
-          elems.edit.drawing.appendChild(block.cloneNode(true));
+          elems.edit.drawing.appendChild(g.cloneNode(true));
           drawingState = state;
         };
         editboxFunctions[char] = func;
+        if (char === '0') {
+          editboxFunctions[' '] = func;
+        }
         elem.addEventListener('click', func);
       }
     }
@@ -1308,11 +1309,11 @@
   }
 
   function drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag) {
-    const levelSvgG = level.createSvgG(
+    const levelSvgG = level.createSvgG({
       blockSize,
       symmetryAnimationFlag,
-      showCharsFlag
-    );
+      showCharsFlag,
+    });
     levelSvgG.setAttribute('transform', `translate(${frameSize},${frameSize})`);
     levelSvgG.style.setProperty('pointer-events', 'none'); // スマホ等での操作時にtouchstartからtouchendまで連続して図形描画するため。
 

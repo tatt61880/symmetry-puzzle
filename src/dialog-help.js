@@ -34,23 +34,15 @@
           {}
         );
         const blockSize = 30;
-        const state = app.states.charToState[char];
 
-        for (let i = 0; i < w; i++) {
-          const block = levelForEditChar.createOneBlock(
-            i + 1,
-            1,
-            blockSize,
-            null,
-            false,
-            app.states.isUser(state)
-          );
-          block.setAttribute(
-            'transform',
-            `translate(${-blockSize},${-blockSize})`
-          );
-          elem.appendChild(block);
-        }
+        const g = levelForEditChar.createSvgG({
+          blockSize,
+          x0: 1,
+          y0: 1,
+          width: w,
+          height: 1,
+        });
+        elem.appendChild(g);
         elem.setAttribute('width', blockSize * w);
         elem.setAttribute('height', blockSize);
       };
