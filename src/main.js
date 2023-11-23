@@ -1096,12 +1096,10 @@
           {}
         );
         const blockSize = 40;
-        const state = app.states.charToState[char];
-        const drawBackground = char === '0';
         const g = levelForEditChar.createSvgG({
           blockSize,
           showCharsFlag: true,
-          drawBackground,
+          drawBackground: char === '0',
           x0: 1,
           y0: 1,
           width: 1,
@@ -1112,6 +1110,7 @@
         const func = () => {
           elems.edit.drawing.innerHTML = '';
           elems.edit.drawing.appendChild(g.cloneNode(true));
+          const state = app.states.charToState[char];
           drawingState = state;
         };
         editboxFunctions[char] = func;
