@@ -81,7 +81,7 @@
     #isSymmetry;
     #getSymmetryType;
 
-    constructor(obj_, checkMode, { mirrorFlag = false, rotateNum = 0 }) {
+    constructor({ levelObj, checkMode, mirrorFlag = false, rotateNum = 0 }) {
       this.#checkMode = null;
       this.#levelObj = null;
       this.#width = null;
@@ -99,7 +99,7 @@
       this.#getSymmetryType = null;
 
       this.#setCheckMode(checkMode);
-      let obj = obj_;
+      let obj = levelObj;
       if (mirrorFlag) obj = this.#mirrorLevel(obj);
       if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
       this.#levelObj = obj;

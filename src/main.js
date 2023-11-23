@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.24';
+  const VERSION_TEXT = 'v' + '2023.11.24b';
 
   const app = window.app;
   Object.freeze(app);
@@ -457,8 +457,12 @@
     app.common.hideElem(elems.edit.redo);
   }
 
-  function initLevel(obj, initParam) {
-    level = new app.Level(obj, app.common.checkMode, initParam);
+  function initLevel(levelObj, initParam) {
+    level = new app.Level({
+      levelObj,
+      checkMode: app.common.checkMode,
+      ...initParam,
+    });
     addUndo(null);
     updateSvg();
   }
@@ -1090,17 +1094,16 @@
       if (elem === null) continue;
 
       {
-        const levelForEditChar = new app.Level(
-          { w: 1, h: 1, s: char },
-          app.Level.CHECK_MODE.POINT,
-          {}
-        );
+        const levelForEditChar = new app.Level({
+          levelObj: { w: 3, h: 3, s: `-0${char}` },
+          checkMode: app.Level.CHECK_MODE.POINT,
+        });
         const g = levelForEditChar.createSvgG({
           blockSize: 40,
           showCharsFlag: true,
           drawBackground: char === '0',
-          x0: 1,
-          y0: 1,
+          x0: 2,
+          y0: 2,
           width: 1,
           height: 1,
         });
@@ -1130,7 +1133,8 @@
       const w = level.getW();
       const h = level.getH();
       const s = level.getS();
-      level = new app.Level({ w, h, s }, app.common.checkMode, {});
+      const levelObj = { w, h, s };
+      level = new app.Level({ levelObj, checkMode: app.common.checkMode });
       completeCheck();
       updateLinkUrl();
       drawMainSvg();
@@ -1986,7 +1990,10 @@
       const levelObj = { w, h, s };
       // TODO activeElem を盤面に反映させてから計算する。Promiseを使うといけそう。
       // app.common.activeElem(elems.auto.buttonStart);
-      const levelTemp = new app.Level(levelObj, app.common.checkMode, {});
+      const levelTemp = new app.Level({
+        levelObj,
+        checkMode: app.common.checkMode,
+      });
       const maxStep = 1000; // 探索ステップ数上限値は大きな値にしておきます。時間制限もあるので、この制限にかかることはほぼないはずです。
       const timeLimit = 10;
       const result = app.solveLevel(null, levelTemp, { maxStep, timeLimit });

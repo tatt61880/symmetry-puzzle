@@ -258,7 +258,10 @@
     }
 
     function appendLevel(levelObj, id) {
-      const level = new app.Level(levelObj, app.common.checkMode, {});
+      const level = new app.Level({
+        levelObj,
+        checkMode: app.common.checkMode,
+      });
       const bestStep = level.getBestStep();
       const highestScore = app.savedata.getHighestScore(
         levelObj,

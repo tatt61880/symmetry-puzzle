@@ -28,11 +28,10 @@
   function show() {
     {
       const addBlock = (elem, char, w) => {
-        const level = new app.Level(
-          { w, h: 1, s: char.repeat(w) },
-          app.Level.CHECK_MODE.POINT,
-          {}
-        );
+        const level = new app.Level({
+          levelObj: { w, h: 1, s: char.repeat(w) },
+          checkMode: app.Level.CHECK_MODE.POINT,
+        });
 
         const blockSize = 30;
         const g = level.createSvgG({

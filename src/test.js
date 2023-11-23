@@ -61,7 +61,7 @@
         s: 's001-00211',
       };
       const checkMode = app.Level.CHECK_MODE.POINT;
-      const level = new app.Level(levelObj, checkMode, {});
+      const level = new app.Level({ levelObj, checkMode });
       const result = app.solveLevel('Test-1', level, {
         maxStep: 1000,
         timeLimit: 10,
@@ -80,7 +80,7 @@
         s: 's0001-00211',
       };
       const checkMode = app.Level.CHECK_MODE.LINE;
-      const level = new app.Level(levelObj, checkMode, {});
+      const level = new app.Level({ levelObj, checkMode });
       const result = app.solveLevel('Test-2', level, {
         maxStep: 1000,
         timeLimit: 10,
@@ -134,7 +134,7 @@
     let checkMode = null;
     if (options.point) checkMode = app.Level.CHECK_MODE.POINT;
     if (options.line) checkMode = app.Level.CHECK_MODE.LINE;
-    const level = new app.Level(levelObj, checkMode, {});
+    const level = new app.Level({ levelObj, checkMode });
 
     if (!level.isNormalized()) {
       app.console.error(`Error: ${levelInfo()} isNormalized check failed.`);
