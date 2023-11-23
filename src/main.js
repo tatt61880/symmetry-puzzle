@@ -1095,9 +1095,8 @@
           app.Level.CHECK_MODE.POINT,
           {}
         );
-        const blockSize = 40;
         const g = levelForEditChar.createSvgG({
-          blockSize,
+          blockSize: 40,
           showCharsFlag: true,
           drawBackground: char === '0',
           x0: 1,

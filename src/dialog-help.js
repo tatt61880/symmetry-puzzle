@@ -28,14 +28,14 @@
   function show() {
     {
       const addBlock = (elem, char, w) => {
-        const levelForEditChar = new app.Level(
+        const level = new app.Level(
           { w, h: 1, s: char.repeat(w) },
           app.Level.CHECK_MODE.POINT,
           {}
         );
-        const blockSize = 30;
 
-        const g = levelForEditChar.createSvgG({
+        const blockSize = 30;
+        const g = level.createSvgG({
           blockSize,
           x0: 1,
           y0: 1,
