@@ -25,7 +25,7 @@
     colors[i] = {
       fill: '#ffbb88',
       stroke: '#ff7700',
-      text: '#773333',
+      text: '#884400',
       error: '#f80000',
     };
   }
