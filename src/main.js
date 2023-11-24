@@ -597,13 +597,17 @@
     clearTimeout(nextLevelTimerId);
     const id = Number(id_);
     app.common.levelId = id;
+
     let levelObj;
     if (app.common.levelsList[app.common.levelId] !== undefined) {
       levelObj = app.common.levelsList[app.common.levelId];
     } else if (app.common.levelsListEx[app.common.levelId] !== undefined) {
       levelObj = app.common.levelsListEx[app.common.levelId];
     }
-    if (levelObj === undefined) levelObj = createObjById(app.common.levelId);
+
+    if (levelObj === undefined) {
+      levelObj = createObjById(app.common.levelId);
+    }
 
     consoleLog(
       `[LEVEL ${id}]${
