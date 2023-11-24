@@ -55,6 +55,12 @@ footer {
   background-color: #c0cbff;
 }
 
+@media (width <= 800px) {
+  .shortcut-key {
+    display: none;
+  }
+}
+
 image.check-mode,
 img.check-mode {
   width: 40px;
