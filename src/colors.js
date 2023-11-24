@@ -47,7 +47,7 @@
   }
 
   colors.line = '#888888';
-  colors.symmetryAxis = '#ff8800';
+  colors.symmetryAxis = '#ff7700';
 
   colors.frame = '#fff8dd';
   colors.frameBorder = '#ffdd33';
@@ -57,7 +57,7 @@
   colors.newRecords = '#ffdd33';
 
   colors.stepWin = '#ff5555';
-  colors.stepDraw = '#ff8800';
+  colors.stepDraw = '#ff7700';
   colors.stepLose = '#666666';
   colors.stepUnknown = '#a0a0a0';
 
