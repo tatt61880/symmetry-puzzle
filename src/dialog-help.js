@@ -28,6 +28,8 @@
   function show() {
     {
       const setBlock = (elem, char, w) => {
+        elem.textContent = '';
+
         const level = new app.Level({
           levelObj: { w, h: 1, s: char.repeat(w) },
         });
