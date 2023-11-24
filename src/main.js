@@ -603,15 +603,15 @@
     } else if (app.common.levelsListEx[app.common.levelId] !== undefined) {
       levelObj = app.common.levelsListEx[app.common.levelId];
     }
+    if (levelObj === undefined) levelObj = createObjById(app.common.levelId);
+
     consoleLog(
       `[LEVEL ${id}]${
         levelObj?.subject !== undefined ? ` ${levelObj.subject}` : ''
       }`
     );
 
-    loadLevelObj(
-      levelObj !== undefined ? levelObj : createObjById(app.common.levelId)
-    );
+    loadLevelObj(levelObj);
     if (isLocalhost()) {
       level.printSolveJsStr();
     }
