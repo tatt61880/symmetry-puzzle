@@ -583,7 +583,7 @@
             <rect x="-250" y="-125" width="500" height="250" fill="#eee" stroke="none" />
 
             <!-- メニューボタン -->
-            <g id="controller-buttons-menu" class="button active-hover" transform="translate(-185,-56)">
+            <g id="controller-buttons-menu" class="button active-hover" transform="translate(-185,-50)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
                 fill="#888888" class="translatable-toggle" data-en="MENU" data-ja="メニュー"></text>
               <rect x="-35" y="-35" rx="12" ry="12" width="70" height="70" fill="lightgray" stroke="#888888"
@@ -594,7 +594,7 @@
             </g>
 
             <!-- Undoボタン -->
-            <g id="button-undo" class="button active-hover" transform="translate(-185,55)">
+            <g id="button-undo" class="button active-hover" transform="translate(-185,60)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
                 fill="#888888" class="translatable-toggle" data-en="STEP BACKWARD" data-ja="1ステップ戻す"></text>
               <g transform="scale(1.2,1.2)">
@@ -602,8 +602,20 @@
                 <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#888888" stroke-width="4" />
                 <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#888888" stroke="none" stroke-width="4" />
               </g>
-              <text class="shortcut-key" x="0" y="50" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
-                font-size="16px" fill="#888888">Z</text>
+              <text class="shortcut-key" x="0" y="4" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
+                font-size="14px" fill="#888888">Z</text>
+            </g>
+            <!-- Redoボタン -->
+            <g id="button-redo" class="button active-hover" transform="translate(185,60)">
+              <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
+                fill="#888888" class="translatable-toggle" data-en="STEP FORWARD" data-ja="1ステップ進める"></text>
+              <g transform="scale(-1.2,1.2)">
+                <circle cx="0" cy="0" r="28" fill="lightgray" stroke="#888888" stroke-width="4" />
+                <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#888888" stroke-width="4" />
+                <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#888888" stroke="none" stroke-width="4" />
+              </g>
+              <text class="shortcut-key" x="0" y="4" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
+                font-size="14px" fill="#888888">Y</text>
             </g>
 
             <!-- 操作ボタン -->
@@ -637,19 +649,6 @@
                 <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22px"
                   fill="#0000f8" class="translatable-toggle" data-en="NEXT LEVEL" data-ja="次のレベルへ"></text>
               </g>
-            </g>
-
-            <!-- Redoボタン -->
-            <g id="button-redo" class="button active-hover" transform="translate(185,55)">
-              <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
-                fill="#888888" class="translatable-toggle" data-en="STEP FORWARD" data-ja="1ステップ進める"></text>
-              <g transform="scale(-1.2,1.2)">
-                <circle cx="0" cy="0" r="28" fill="lightgray" stroke="#888888" stroke-width="4" />
-                <path d="M -14 0 A 14 14 0 1 0 -5 -12" fill="none" stroke="#888888" stroke-width="4" />
-                <path d="M -1 -20 L -12 -9 L 3 -6 Z" fill="#888888" stroke="none" stroke-width="4" />
-              </g>
-              <text class="shortcut-key" x="0" y="50" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
-                font-size="16px" fill="#888888">Y</text>
             </g>
 
             <g id="controller-menu" class="hide">
