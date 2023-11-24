@@ -47,10 +47,10 @@
         elem.appendChild(g);
       };
 
-      for (const elem of document.getElementsByClassName('blue-block')) {
+      for (const elem of document.getElementsByClassName('user-block')) {
         setBlock(elem, 's', 1);
       }
-      for (const elem of document.getElementsByClassName('orange-block')) {
+      for (const elem of document.getElementsByClassName('target-block')) {
         setBlock(elem, '1', 2);
       }
     }
