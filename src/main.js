@@ -457,7 +457,7 @@
     app.common.hideElem(elems.edit.redo);
   }
 
-  function initLevel(levelObj, initParam) {
+  function initLevel({ levelObj, initParam }) {
     level = new app.Level({
       levelObj,
       checkMode: app.common.checkMode,
@@ -640,7 +640,7 @@
     }
 
     resetUndo();
-    initLevel(levelObj, initParam);
+    initLevel({ levelObj, initParam });
 
     input.update(app.Input.DIRS.NEUTRAL);
     moveIntervalCount = MOVE_INTERVAL_COUNT;
@@ -2004,7 +2004,7 @@
       } else {
         resetUndo();
         const newLevelObj = { ...levelObj, ...{ r: result.replayStr } };
-        initLevel(newLevelObj, {});
+        initLevel({ levelObj: newLevelObj });
       }
     }
 
