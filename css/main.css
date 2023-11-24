@@ -55,9 +55,13 @@ footer {
   background-color: #c0cbff;
 }
 
-@media (width <= 800px) {
+@media (width <= 501px) {
   .shortcut-key {
     display: none;
+  }
+
+  #level-widget {
+    height: 85px;
   }
 }
 
