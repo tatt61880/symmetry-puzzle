@@ -15,43 +15,43 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.11.23">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.11.23">
 
-  <link rel="stylesheet" href="./css/main.css?2023.11.24d">
-  <link rel="stylesheet" href="./css/title.css?2023.11.24d">
-  <link rel="stylesheet" href="./css/game.css?2023.11.24d">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.11.24d">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.11.24d">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.11.24d">
-  <link rel="stylesheet" href="./css/animation.css?2023.11.24d">
+  <link rel="stylesheet" href="./css/main.css?2023.11.24e">
+  <link rel="stylesheet" href="./css/title.css?2023.11.24e">
+  <link rel="stylesheet" href="./css/game.css?2023.11.24e">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.11.24e">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.11.24e">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.11.24e">
+  <link rel="stylesheet" href="./css/animation.css?2023.11.24e">
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-  <script src="./src/states.js?2023.11.24d"></script>
-  <script src="./src/colors.js?2023.11.24d"></script>
-  <script src="./src/svg.js?2023.11.24d"></script>
-  <script src="./src/common.js?2023.11.24d"></script>
+  <script src="./src/states.js?2023.11.24e"></script>
+  <script src="./src/colors.js?2023.11.24e"></script>
+  <script src="./src/svg.js?2023.11.24e"></script>
+  <script src="./src/common.js?2023.11.24e"></script>
 
-  <script src="./src/class-stack.js?2023.11.24d"></script>
-  <script src="./src/class-level.js?2023.11.24d"></script>
+  <script src="./src/class-stack.js?2023.11.24e"></script>
+  <script src="./src/class-level.js?2023.11.24e"></script>
 
-  <script src="./src/class-savedata.js?2023.11.24d"></script>
-  <script src="./src/class-undo-info.js?2023.11.24d"></script>
-  <script src="./src/class-elems.js?2023.11.24d"></script>
-  <script src="./src/class-input.js?2023.11.24d"></script>
+  <script src="./src/class-savedata.js?2023.11.24e"></script>
+  <script src="./src/class-undo-info.js?2023.11.24e"></script>
+  <script src="./src/class-elems.js?2023.11.24e"></script>
+  <script src="./src/class-input.js?2023.11.24e"></script>
 
-  <script src="./src/levels-line.js?2023.11.24d"></script>
-  <script src="./src/levels-line-ex.js?2023.11.24d"></script>
-  <script src="./src/levels-point.js?2023.11.24d"></script>
-  <script src="./src/levels-point-ex.js?2023.11.24d"></script>
+  <script src="./src/levels-line.js?2023.11.24e"></script>
+  <script src="./src/levels-line-ex.js?2023.11.24e"></script>
+  <script src="./src/levels-point.js?2023.11.24e"></script>
+  <script src="./src/levels-point-ex.js?2023.11.24e"></script>
 
-  <script src="./src/elems.js?2023.11.24d"></script>
+  <script src="./src/elems.js?2023.11.24e"></script>
 
-  <script src="./src/solve.js?2023.11.24d"></script>
+  <script src="./src/solve.js?2023.11.24e"></script>
 
-  <script src="./src/dialog-help.js?2023.11.24d"></script>
-  <script src="./src/dialog-levels.js?2023.11.24d"></script>
-  <script src="./src/dialog-records.js?2023.11.24d"></script>
+  <script src="./src/dialog-help.js?2023.11.24e"></script>
+  <script src="./src/dialog-levels.js?2023.11.24e"></script>
+  <script src="./src/dialog-records.js?2023.11.24e"></script>
 
-  <script src="./src/analyze-url.js?2023.11.24d"></script>
-  <script src="./src/main.js?2023.11.24d"></script>
+  <script src="./src/analyze-url.js?2023.11.24e"></script>
+  <script src="./src/main.js?2023.11.24e"></script>
 </head>
 
 <body>
@@ -593,21 +593,6 @@
               <rect x="-22" y="13" rx="5" ry="5" width="44" height="10" fill="#888888" />
             </g>
 
-            <g id="controller-menu" class="hide">
-              <g id="controller-buttons-title" class="button active-hover" transform="translate(0,-40)">
-                <rect x="-120" y="-25" rx="10" ry="10" width="240" height="50" fill="lightgray" stroke="#888888"
-                  stroke-width="4" />
-                <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22px"
-                  fill="#888888" class="translatable-toggle" data-en="RETURN TO TITLE" data-ja="タイトル画面に戻る"></text>
-              </g>
-              <g id="controller-buttons-retry" class="button active-hover" transform="translate(0,40)">
-                <rect x="-120" y="-25" rx="10" ry="10" width="240" height="50" fill="lightgray" stroke="#888888"
-                  stroke-width="4" />
-                <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22px"
-                  fill="#888888" class="translatable-toggle" data-en="RETRY" data-ja="リトライ"></text>
-              </g>
-            </g>
-
             <!-- Undoボタン -->
             <g id="button-undo" class="button active-hover" transform="translate(-185,55)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
@@ -665,6 +650,24 @@
               </g>
               <text x="0" y="50" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
                 fill="#888888">Y</text>
+            </g>
+
+            <g id="controller-menu" class="hide">
+              <g>
+                <rect x="-125" y="-120" width="250" height="240" fill="#eee" stroke="none" />
+              </g>
+              <g id="controller-buttons-title" class="button active-hover" transform="translate(0,-40)">
+                <rect x="-120" y="-25" rx="10" ry="10" width="240" height="50" fill="lightgray" stroke="#888888"
+                  stroke-width="4" />
+                <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22px"
+                  fill="#888888" class="translatable-toggle" data-en="RETURN TO TITLE" data-ja="タイトル画面に戻る"></text>
+              </g>
+              <g id="controller-buttons-retry" class="button active-hover" transform="translate(0,40)">
+                <rect x="-120" y="-25" rx="10" ry="10" width="240" height="50" fill="lightgray" stroke="#888888"
+                  stroke-width="4" />
+                <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22px"
+                  fill="#888888" class="translatable-toggle" data-en="RETRY" data-ja="リトライ"></text>
+              </g>
             </g>
           </g>
         </svg>

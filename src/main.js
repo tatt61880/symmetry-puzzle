@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.24d';
+  const VERSION_TEXT = 'v' + '2023.11.24e';
 
   const app = window.app;
   Object.freeze(app);
@@ -1065,12 +1065,10 @@
     }
 
     function onButtonMenu() {
-      if (app.common.isShownElem(elems.controller.buttons.root)) {
-        app.common.hideElem(elems.controller.buttons.root);
-        app.common.showElem(elems.controller.menu);
-      } else {
-        app.common.showElem(elems.controller.buttons.root);
+      if (app.common.isShownElem(elems.controller.menu)) {
         app.common.hideElem(elems.controller.menu);
+      } else {
+        app.common.showElem(elems.controller.menu);
       }
     }
   }
