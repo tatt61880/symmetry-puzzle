@@ -85,7 +85,7 @@
 
     .user-block,
     .target-block {
-      margin: 7px;
+      margin: 0 7px;
     }
 
     .help-mode {
@@ -162,7 +162,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 30px;
   }
 
   .tatt61880-icon {
