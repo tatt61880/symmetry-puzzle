@@ -27,10 +27,9 @@
 
   function show() {
     {
-      const addBlock = (elem, char, w) => {
+      const setBlock = (elem, char, w) => {
         const level = new app.Level({
           levelObj: { w, h: 1, s: char.repeat(w) },
-          checkMode: app.Level.CHECK_MODE.POINT,
         });
 
         const blockSize = 30;
@@ -41,16 +40,16 @@
           width: w,
           height: 1,
         });
-        elem.appendChild(g);
         elem.setAttribute('width', blockSize * w);
         elem.setAttribute('height', blockSize);
+        elem.appendChild(g);
       };
 
       for (const elem of document.getElementsByClassName('blue-block')) {
-        addBlock(elem, 's', 1);
+        setBlock(elem, 's', 1);
       }
       for (const elem of document.getElementsByClassName('orange-block')) {
-        addBlock(elem, '1', 2);
+        setBlock(elem, '1', 2);
       }
     }
 

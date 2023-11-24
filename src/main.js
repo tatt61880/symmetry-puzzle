@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.24b';
+  const VERSION_TEXT = 'v' + '2023.11.24c';
 
   const app = window.app;
   Object.freeze(app);
@@ -1096,7 +1096,6 @@
       {
         const levelForEditChar = new app.Level({
           levelObj: { w: 3, h: 3, s: `-0${char}` },
-          checkMode: app.Level.CHECK_MODE.POINT,
         });
         const g = levelForEditChar.createSvgG({
           blockSize: 40,

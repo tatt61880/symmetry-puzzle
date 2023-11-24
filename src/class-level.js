@@ -81,7 +81,12 @@
     #isSymmetry;
     #getSymmetryType;
 
-    constructor({ levelObj, checkMode, mirrorFlag = false, rotateNum = 0 }) {
+    constructor({
+      levelObj,
+      checkMode = Level.CHECK_MODE.LINE,
+      mirrorFlag = false,
+      rotateNum = 0,
+    }) {
       this.#checkMode = null;
       this.#levelObj = null;
       this.#width = null;
