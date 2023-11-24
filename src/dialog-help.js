@@ -37,6 +37,7 @@
         const blockSize = 30;
         const g = level.createSvgG({
           blockSize,
+          drawBackground: false,
           x0: 1,
           y0: 1,
           width: w,
