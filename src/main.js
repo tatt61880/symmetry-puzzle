@@ -457,12 +457,9 @@
     app.common.hideElem(elems.edit.redo);
   }
 
-  function initLevel({ levelObj, initParam }) {
-    level = new app.Level({
-      levelObj,
-      checkMode: app.common.checkMode,
-      ...initParam,
-    });
+  function initLevel(paramObj) {
+    paramObj.checkMode = app.common.checkMode;
+    level = new app.Level(paramObj);
     addUndo(null);
     updateSvg();
   }
@@ -633,14 +630,11 @@
   }
 
   function loadLevelObj(levelObj, param = {}) {
-    const initParam = {};
-    if (!param.reset) {
-      initParam.mirrorFlag = settings.mirrorFlag;
-      initParam.rotateNum = settings.rotateNum;
-    }
-
     resetUndo();
-    initLevel({ levelObj, initParam });
+
+    const mirrorFlag = !param.reset ? settings.mirrorFlag : false;
+    const rotateNum = !param.reset ? settings.rotateNum : 0;
+    initLevel({ levelObj, mirrorFlag, rotateNum });
 
     input.update(app.Input.DIRS.NEUTRAL);
     moveIntervalCount = MOVE_INTERVAL_COUNT;
