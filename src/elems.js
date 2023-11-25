@@ -13,8 +13,9 @@
     top: 'top',
     appTitle: 'app-title',
     iconApp: 'icon-app',
-    iconPoint: 'icon-point',
     iconLine: 'icon-line',
+    iconPoint: 'icon-point',
+    iconSpecial: 'icon-special',
     version: 'version',
 
     contents: 'contents',

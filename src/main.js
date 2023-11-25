@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.25d';
+  const VERSION_TEXT = 'v' + '2023.11.25e';
 
   const app = window.app;
   Object.freeze(app);
@@ -788,6 +788,7 @@
     addAnimationClass(elems.iconApp, 'animation-icon-app');
     addAnimationClass(elems.iconLine, 'animation-icon-line');
     addAnimationClass(elems.iconPoint, 'animation-icon-point');
+    addAnimationClass(elems.iconSpecial, 'animation-icon-special');
   }
 
   function removeAnimationClass(elem, className) {
