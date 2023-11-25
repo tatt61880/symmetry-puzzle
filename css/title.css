@@ -29,7 +29,7 @@
     justify-content: center;
     width: 135px;
     height: 135px;
-    margin: 10px;
+    margin: 15px 5px;
     font-size: 1.3rem;
     cursor: pointer;
     user-select: none;
@@ -40,12 +40,16 @@
       opacity: 0.8;
     }
 
+    &#button-play-line {
+      border-radius: 10% 10% 33% 33% / 10% 10% 50% 50%;
+    }
+
     &#button-play-point {
       border-radius: 10% 33% / 10% 66%;
     }
 
-    &#button-play-line {
-      border-radius: 10% 10% 33% 33% / 10% 10% 50% 50%;
+    &#button-play-special {
+      border-radius: 25%;
     }
 
     &#button-records {

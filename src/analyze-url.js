@@ -15,6 +15,7 @@
       },
       settings: {
         line: false,
+        special: false,
         autoMode: false,
         debugFlag: false,
         mirrorFlag: false,
@@ -44,6 +45,9 @@
           break;
         case 'line':
           res.settings.line = true;
+          break;
+        case 'special':
+          res.settings.special = true;
           break;
         case 'auto':
           res.settings.autoMode = true;

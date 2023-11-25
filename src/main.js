@@ -764,6 +764,8 @@
           return 'point';
         case app.Level.CHECK_MODE.LINE:
           return 'line';
+        case app.Level.CHECK_MODE.SPECIAL:
+          return 'special';
         default:
           return 'none';
       }
@@ -868,6 +870,8 @@
 
     if (settings.line) {
       updateCheckMode(app.Level.CHECK_MODE.LINE);
+    } else if (settings.special) {
+      updateCheckMode(app.Level.CHECK_MODE.SPECIAL);
     } else {
       updateCheckMode(app.Level.CHECK_MODE.POINT);
     }
@@ -893,6 +897,10 @@
       case app.Level.CHECK_MODE.LINE:
         app.common.levelsList = app.levelsLine;
         app.common.levelsListEx = app.levelsLineEx;
+        break;
+      case app.Level.CHECK_MODE.SPECIAL:
+        app.common.levelsList = app.levelsSpecial;
+        app.common.levelsListEx = app.levelsSpecialEx;
         break;
       default:
         app.common.levelsList = null;
@@ -949,6 +957,10 @@
       case app.Level.CHECK_MODE.LINE:
         app.common.levelsList = app.levelsLine;
         app.common.levelsListEx = app.levelsLineEx;
+        break;
+      case app.Level.CHECK_MODE.SPECIAL:
+        app.common.levelsList = app.levelsSpecial;
+        app.common.levelsListEx = app.levelsSpecialEx;
         break;
       default:
         app.common.levelsList = null;
@@ -1189,6 +1201,11 @@
 
     elems.title.buttonPlayPoint.addEventListener('click', () => {
       updateCheckMode(app.Level.CHECK_MODE.POINT);
+      onloadId(1);
+    });
+
+    elems.title.buttonPlaySpecial.addEventListener('click', () => {
+      updateCheckMode(app.Level.CHECK_MODE.SPECIAL);
       onloadId(1);
     });
   }
@@ -1934,6 +1951,7 @@
     const levelObj = level.getLevelObj();
     let url = `${base}?w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
     if (level.isLineMode()) url += '&line';
+    if (level.isSpecialMode()) url += '&special';
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';
     if (settings.mirrorFlag) url += '&mirror';
