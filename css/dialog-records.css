@@ -49,10 +49,12 @@
     }
 
     .total-col {
+      display: none;
       border-left: double;
     }
 
     .total-row {
+      display: none;
       border-top: double;
     }
   }
