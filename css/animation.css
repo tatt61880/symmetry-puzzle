@@ -302,7 +302,7 @@
   0%,
   95%,
   100% {
-    transform: scaleX(1) scaleY(1);
+    transform: scaleX(1) scaleY(1) rotate(0deg);
   }
 
   25%,
@@ -328,7 +328,7 @@
   0%,
   95%,
   100% {
-    transform: scaleX(1) scaleY(1);
+    transform: scaleX(1) scaleY(1) rotate(0deg);
   }
 
   25%,
