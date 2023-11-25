@@ -265,7 +265,7 @@
       const bestStep = level.getBestStep();
       const highestScore = app.savedata.getHighestScore(
         levelObj,
-        level.isLineMode()
+        level.getCheckMode()
       );
 
       if (highestScore !== null) {
