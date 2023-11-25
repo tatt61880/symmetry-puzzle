@@ -98,7 +98,10 @@
       }
       for (let i = 0; i < levelObjs.length; ++i) {
         const levelObj = levelObjs[i];
-        const playerScore = app.savedata.getHighestScore(levelObj, true);
+        const playerScore = app.savedata.getHighestScore(
+          levelObj,
+          app.Level.CHECK_MODE.LINE
+        );
         const appScore = levelObj.step;
         if (playerScore === null) {
           ++numLineNotSolved;
@@ -130,7 +133,10 @@
       }
       for (let i = 0; i < levelObjs.length; ++i) {
         const levelObj = levelObjs[i];
-        const playerScore = app.savedata.getHighestScore(levelObj, false);
+        const playerScore = app.savedata.getHighestScore(
+          levelObj,
+          app.Level.CHECK_MODE.POINT
+        );
         const appScore = levelObj.step;
         if (playerScore === null) {
           ++numPointNotSolved;

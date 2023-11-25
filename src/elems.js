@@ -47,8 +47,9 @@
 
     title: {
       inner1: 'title-inner1',
-      buttonPlayPoint: 'button-play-point',
       buttonPlayLine: 'button-play-line',
+      buttonPlayPoint: 'button-play-point',
+      buttonPlaySpecial: 'button-play-special',
       // buttonEdit: 'button-edit',
     },
 

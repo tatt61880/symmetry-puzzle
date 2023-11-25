@@ -51,6 +51,7 @@
     static CHECK_MODE = {
       LINE: Symbol('line'),
       POINT: Symbol('point'),
+      SPECIAL: Symbol('special'),
     };
 
     static SYMMETRY_TYPE = {
@@ -63,6 +64,9 @@
       PLUS3: Symbol('plus3'), // 4mm (｜―＼／)
       POINT1: Symbol('point1'), // 2
       POINT2: Symbol('point2'), // 4
+      SPECIAL1: Symbol('special1'), // 2mm (｜―)
+      SPECIAL2: Symbol('special2'), // 2mm (＼／)
+      SPECIAL3: Symbol('special3'), // 4mm (｜―＼／)
     };
 
     #checkMode;
@@ -77,8 +81,6 @@
     #xMin;
     #yMax;
     #xMax;
-    #isCompleted;
-    #isSymmetry;
     #getSymmetryType;
 
     constructor({
@@ -99,8 +101,6 @@
       this.#xMin = 1;
       this.#yMax = null;
       this.#xMax = null;
-      this.#isCompleted = null;
-      this.#isSymmetry = null;
       this.#getSymmetryType = null;
 
       this.#setCheckMode(checkMode);
@@ -178,9 +178,20 @@
       console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
       this.printSolveJsStr();
 
-      const urlStr =
-        `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}` +
-        (this.isLineMode() ? '&line' : '');
+      const checkModeStr = (() => {
+        switch (this.getCheckMode()) {
+          case Level.CHECK_MODE.LINE:
+            return '&line';
+          case Level.CHECK_MODE.SPECIAL:
+            return '&special';
+          default:
+            return '';
+        }
+      })();
+
+      const urlStr = `${
+        location.href.split('?')[0]
+      }?w=${w}&h=${h}&s=${s}${checkModeStr}`;
       return urlStr;
     }
 
@@ -373,15 +384,26 @@
     }
 
     isSymmetry(isX) {
-      return this.#isSymmetry(isX);
+      return this.#getSymmetryType(isX) !== null;
     }
 
     isCompleted() {
-      return this.#isCompleted();
+      if (!this.#exist(app.states.isTarget)) return false;
+      if (!this.isSymmetry(app.states.isTarget)) return false;
+      if (!this.#isConnected(app.states.isTarget)) return false;
+      return true;
+    }
+
+    getCheckMode() {
+      return this.#checkMode;
     }
 
     isLineMode() {
       return this.#checkMode === Level.CHECK_MODE.LINE;
+    }
+
+    isSpecialMode() {
+      return this.#checkMode === Level.CHECK_MODE.SPECIAL;
     }
 
     resetMoveFlags() {
@@ -596,6 +618,53 @@
             gg.appendChild(createAxisPoint2(center));
             gg.classList.add('animation-symmetry-axis');
             break;
+
+          case Level.SYMMETRY_TYPE.SPECIAL1: {
+            // 2mm (｜―)
+            const point = createAxisPoint1(center);
+            const line1 = createAxisLine1(center, height);
+            const line2 = createAxisLine2(center, width);
+
+            point.classList.add('animation-symmetry-axis', 'axis-3-1');
+            line1.classList.add('animation-symmetry-axis', 'axis-3-2');
+            line2.classList.add('animation-symmetry-axis', 'axis-3-3');
+            gg.appendChild(point);
+            gg.appendChild(line1);
+            gg.appendChild(line2);
+            break;
+          }
+          case Level.SYMMETRY_TYPE.SPECIAL2: {
+            // 2mm (＼／)
+            const point = createAxisPoint1(center);
+            const line3 = createAxisLine3(center, height);
+            const line4 = createAxisLine4(center, height);
+            point.classList.add('animation-symmetry-axis', 'axis-3-1');
+            line3.classList.add('animation-symmetry-axis', 'axis-3-2');
+            line4.classList.add('animation-symmetry-axis', 'axis-3-3');
+            gg.appendChild(point);
+            gg.appendChild(line3);
+            gg.appendChild(line4);
+            break;
+          }
+          case Level.SYMMETRY_TYPE.SPECIAL3: {
+            // 4mm (｜―＼／)
+            const point = createAxisPoint2(center);
+            const line1 = createAxisLine1(center, height);
+            const line2 = createAxisLine2(center, width);
+            const line3 = createAxisLine3(center, height);
+            const line4 = createAxisLine4(center, height);
+            point.classList.add('animation-symmetry-axis', 'axis-3-1');
+            line1.classList.add('animation-symmetry-axis', 'axis-3-2');
+            line2.classList.add('animation-symmetry-axis', 'axis-3-2');
+            line3.classList.add('animation-symmetry-axis', 'axis-3-3');
+            line4.classList.add('animation-symmetry-axis', 'axis-3-3');
+            gg.appendChild(point);
+            gg.appendChild(line1);
+            gg.appendChild(line2);
+            gg.appendChild(line3);
+            gg.appendChild(line4);
+            break;
+          }
         }
       }
 
@@ -897,20 +966,20 @@
       return null;
     }
 
-    #getSymmetryTypePoint(isX) {
-      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
+    #isPoint1(isX, minX, maxX, minY, maxY) {
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
           if (!isX(this.#states[y][x])) continue;
           if (!isX(this.#states[minY + maxY - y][minX + maxX - x])) {
-            return null;
+            return false;
           }
         }
       }
+      return true;
+    }
 
-      if (maxX - minX !== maxY - minY) {
-        return Level.SYMMETRY_TYPE.POINT1;
-      }
+    #isPoint2(isX, minX, maxX, minY, maxY) {
+      if (maxX - minX !== maxY - minY) return false;
 
       for (let y = minY; y <= maxY; ++y) {
         for (let x = minX; x <= maxX; ++x) {
@@ -918,11 +987,51 @@
           const xx = x - minX;
           const yy = y - minY;
           if (!isX(this.#states[maxY - xx][minX + yy])) {
-            return Level.SYMMETRY_TYPE.POINT1;
+            return false;
           }
         }
       }
-      return Level.SYMMETRY_TYPE.POINT2;
+      return true;
+    }
+
+    #getSymmetryTypePoint(isX) {
+      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
+
+      const isPoint1 = this.#isPoint1(isX, minX, maxX, minY, maxY);
+
+      if (!isPoint1) return null;
+
+      const isPoint2 = this.#isPoint2(isX, minX, maxX, minY, maxY);
+
+      if (isPoint2) {
+        return Level.SYMMETRY_TYPE.POINT2;
+      } else {
+        return Level.SYMMETRY_TYPE.POINT1;
+      }
+    }
+
+    #getSymmetryTypeSpecial(isX) {
+      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
+
+      const isPoint1 = this.#isPoint1(isX, minX, maxX, minY, maxY);
+      if (!isPoint1) return null;
+
+      const isPoint2 = this.#isPoint2(isX, minX, maxX, minY, maxY);
+      const isLine1 = this.#isLine1(isX, minX, maxX, minY, maxY);
+      const isLine3 = this.#isLine3(isX, minX, maxX, minY, maxY);
+      if (isPoint2) {
+        if (isLine1) {
+          return Level.SYMMETRY_TYPE.SPECIAL3;
+        }
+      } else {
+        if (isLine1) {
+          return Level.SYMMETRY_TYPE.SPECIAL1;
+        }
+        if (isLine3) {
+          return Level.SYMMETRY_TYPE.SPECIAL2;
+        }
+      }
+      return null;
     }
 
     #initStates() {
@@ -963,14 +1072,13 @@
     #setCheckMode(mode) {
       switch (mode) {
         case Level.CHECK_MODE.LINE:
-          this.#isCompleted = this.#isCompletedLine;
-          this.#isSymmetry = this.#isSymmetryLine;
           this.#getSymmetryType = this.#getSymmetryTypeLine;
           break;
         case Level.CHECK_MODE.POINT:
-          this.#isCompleted = this.#isCompletedPoint;
-          this.#isSymmetry = this.#isSymmetryPoint;
           this.#getSymmetryType = this.#getSymmetryTypePoint;
+          break;
+        case Level.CHECK_MODE.SPECIAL:
+          this.#getSymmetryType = this.#getSymmetryTypeSpecial;
           break;
         default:
           throw new Error('Unexpected check mode.');
@@ -1019,30 +1127,6 @@
           if (isX(statesTemp[y][x])) return false;
         }
       }
-      return true;
-    }
-
-    // 線対称か否か。
-    #isSymmetryLine(isX) {
-      return this.#getSymmetryTypeLine(isX) !== null;
-    }
-
-    // 点対称か否か。
-    #isSymmetryPoint(isX) {
-      return this.#getSymmetryTypePoint(isX) !== null;
-    }
-
-    #isCompletedLine() {
-      if (!this.#exist(app.states.isTarget)) return false;
-      if (!this.#isSymmetryLine(app.states.isTarget)) return false;
-      if (!this.#isConnected(app.states.isTarget)) return false;
-      return true;
-    }
-
-    #isCompletedPoint() {
-      if (!this.#exist(app.states.isTarget)) return false;
-      if (!this.#isSymmetryPoint(app.states.isTarget)) return false;
-      if (!this.#isConnected(app.states.isTarget)) return false;
       return true;
     }
 
@@ -1924,6 +2008,9 @@
     [Level.SYMMETRY_TYPE.PLUS3]: 'animation-axis-plus3',
     [Level.SYMMETRY_TYPE.POINT1]: 'animation-axis-point1',
     [Level.SYMMETRY_TYPE.POINT2]: 'animation-axis-point2',
+    [Level.SYMMETRY_TYPE.SPECIAL1]: 'animation-axis-special1',
+    [Level.SYMMETRY_TYPE.SPECIAL2]: 'animation-axis-special2',
+    [Level.SYMMETRY_TYPE.SPECIAL3]: 'animation-axis-special3',
   };
 
   if (isBrowser) {
