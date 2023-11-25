@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.25';
+  const VERSION_TEXT = 'v' + '2023.11.25b';
 
   const app = window.app;
   Object.freeze(app);
@@ -449,34 +449,28 @@
       const resizeFlag =
         level.getW() !== levelObj.w || level.getH() !== levelObj.h;
       level.applyObj(levelObj, resizeFlag);
-      updateSvg();
-
-      if (undoInfo.isRedoable()) {
-        app.common.showElem(elems.controller.redo);
-        app.common.showElem(elems.edit.redo);
-      }
-      app.common.hideElem(elems.controller.undo);
-      app.common.hideElem(elems.edit.undo);
+      draw();
     }, RESET_DELAY);
   }
 
   function resetUndo() {
     undoInfo = new app.UndoInfo();
-    app.common.hideElem(elems.controller.undo);
-    app.common.hideElem(elems.edit.undo);
-    app.common.hideElem(elems.controller.redo);
-    app.common.hideElem(elems.edit.redo);
   }
 
   function initLevel(paramObj) {
     paramObj.checkMode = app.common.checkMode;
     level = new app.Level(paramObj);
     addUndo(null);
-    updateSvg();
+    draw();
   }
 
   function onWindowResize() {
+    draw();
+  }
+
+  function draw() {
     updateSvg();
+    updateUndoRedoButton();
   }
 
   function updateSvg() {
@@ -517,6 +511,25 @@
     drawMainSvg();
   }
 
+  function updateUndoRedoButton() {
+    if (undoInfo === undefined) return;
+
+    if (undoInfo.isUndoable()) {
+      app.common.showElem(elems.controller.undo);
+      app.common.showElem(elems.edit.undo);
+    } else {
+      app.common.hideElem(elems.controller.undo);
+      app.common.hideElem(elems.edit.undo);
+    }
+    if (undoInfo.isRedoable()) {
+      app.common.showElem(elems.controller.redo);
+      app.common.showElem(elems.edit.redo);
+    } else {
+      app.common.hideElem(elems.controller.redo);
+      app.common.hideElem(elems.edit.redo);
+    }
+  }
+
   function execUndo() {
     window.getSelection().removeAllRanges();
 
@@ -524,16 +537,10 @@
       const levelObj = undoInfo.undo();
       updateController();
 
-      app.common.showElem(elems.controller.redo);
-      app.common.showElem(elems.edit.redo);
-      if (!undoInfo.isUndoable()) {
-        app.common.hideElem(elems.controller.undo);
-        app.common.hideElem(elems.edit.undo);
-      }
       const resizeFlag =
         level.getW() !== levelObj.w || level.getH() !== levelObj.h;
       level.applyObj(levelObj, resizeFlag);
-      updateSvg();
+      draw();
     }
   }
 
@@ -544,13 +551,7 @@
       const data = undoInfo.redo();
       const resizeFlag = level.getW() !== data.w || level.getH() !== data.h;
       level.applyObj(data, resizeFlag);
-      updateSvg();
-      app.common.showElem(elems.controller.undo);
-      app.common.showElem(elems.edit.undo);
-      if (!undoInfo.isRedoable()) {
-        app.common.hideElem(elems.controller.redo);
-        app.common.hideElem(elems.edit.redo);
-      }
+      draw();
     }
   }
 
@@ -1157,7 +1158,7 @@
       addUndo(null);
       updateLinkUrl();
       drawMainSvg();
-      updateSvg();
+      draw();
     });
     elems.edit.normalize.addEventListener('click', () => {
       if (!level.isNormalized()) {
@@ -1903,7 +1904,7 @@
 
     level.resize(dx, dy, flag);
     addUndo(null);
-    updateSvg();
+    draw();
   }
 
   function addUndo(dir) {
@@ -1915,12 +1916,7 @@
       r: level.getR(),
     });
 
-    app.common.hideElem(elems.controller.redo);
-    app.common.hideElem(elems.edit.redo);
-    if (undoInfo.isUndoable()) {
-      app.common.showElem(elems.controller.undo);
-      app.common.showElem(elems.edit.undo);
-    }
+    updateUndoRedoButton();
   }
 
   function replaceUrlTitle() {
@@ -1971,7 +1967,7 @@
     }
     updateAutoStartPauseButtons();
     updateController();
-    updateSvg();
+    draw();
     replaceUrl();
   }
 
