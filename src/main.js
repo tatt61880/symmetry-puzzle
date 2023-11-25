@@ -445,7 +445,16 @@
     const RESET_DELAY = 50;
     setTimeout(() => {
       app.common.inactiveElem(elems.level.retry);
-      loadLevelObj(level.getLevelObj(), { reset: true });
+      const levelObj = undoInfo.undoMax();
+      const resizeFlag =
+        level.getW() !== levelObj.w || level.getH() !== levelObj.h;
+      level.applyObj(levelObj, resizeFlag);
+      updateSvg();
+
+      app.common.showElem(elems.controller.redo);
+      app.common.showElem(elems.edit.redo);
+      app.common.hideElem(elems.controller.undo);
+      app.common.hideElem(elems.edit.undo);
     }, RESET_DELAY);
   }
 
@@ -510,7 +519,7 @@
     window.getSelection().removeAllRanges();
 
     if (undoInfo.isUndoable()) {
-      const data = undoInfo.undo();
+      const levelObj = undoInfo.undo();
       updateController();
 
       app.common.showElem(elems.controller.redo);
@@ -519,8 +528,9 @@
         app.common.hideElem(elems.controller.undo);
         app.common.hideElem(elems.edit.undo);
       }
-      const resizeFlag = level.getW() !== data.w || level.getH() !== data.h;
-      level.applyObj(data, resizeFlag);
+      const resizeFlag =
+        level.getW() !== levelObj.w || level.getH() !== levelObj.h;
+      level.applyObj(levelObj, resizeFlag);
       updateSvg();
     }
   }
@@ -1900,6 +1910,7 @@
       w: level.getW(),
       h: level.getH(),
       s: level.getS(),
+      r: level.getR(),
     });
 
     app.common.hideElem(elems.controller.redo);

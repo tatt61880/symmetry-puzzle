@@ -155,6 +155,10 @@
       );
     }
 
+    getR() {
+      return this.#levelObj?.r;
+    }
+
     printSolveJsStr() {
       const w = this.getW();
       const h = this.getH();

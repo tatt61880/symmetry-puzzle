@@ -25,6 +25,11 @@
       return this.#undoIdx < this.#undoMaxIdx;
     }
 
+    undoMax() {
+      this.#undoIdx = 0;
+      return this.undoArray[this.#undoIdx];
+    }
+
     undo() {
       if (this.isUndoable()) {
         return this.undoArray[--this.#undoIdx];
