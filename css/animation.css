@@ -250,7 +250,7 @@
 
   30%,
   70% {
-    transform: rotate(180deg);
+    transform: rotate(179.9deg);
   }
 
   100% {
@@ -302,12 +302,12 @@
   0%,
   95%,
   100% {
-    transform: scaleX(1) scaleY(1) rotate(0deg);
+    transform: scaleX(1) scaleY(1);
   }
 
   25%,
   35% {
-    transform: rotate(180deg);
+    transform: rotate(179.9deg);
   }
 
   60%,
@@ -328,12 +328,12 @@
   0%,
   95%,
   100% {
-    transform: scaleX(1) scaleY(1) rotate(0deg);
+    transform: scaleX(1) scaleY(1);
   }
 
   25%,
   35% {
-    transform: rotate(180deg);
+    transform: rotate(179.9deg);
   }
 
   60%,
