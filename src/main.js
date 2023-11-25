@@ -1146,10 +1146,16 @@
     editboxFunctions[app.states.stateToChar[app.states.none]]();
 
     elems.edit.switchMode.addEventListener('click', () => {
-      if (level.isLineMode()) {
-        updateCheckMode(app.Level.CHECK_MODE.POINT);
-      } else {
-        updateCheckMode(app.Level.CHECK_MODE.LINE);
+      switch (level.getCheckMode()) {
+        case app.Level.CHECK_MODE.LINE:
+          updateCheckMode(app.Level.CHECK_MODE.POINT);
+          break;
+        case app.Level.CHECK_MODE.POINT:
+          updateCheckMode(app.Level.CHECK_MODE.SPECIAL);
+          break;
+        case app.Level.CHECK_MODE.SPECIAL:
+          updateCheckMode(app.Level.CHECK_MODE.LINE);
+          break;
       }
       const w = level.getW();
       const h = level.getH();
