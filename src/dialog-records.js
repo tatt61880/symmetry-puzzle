@@ -67,6 +67,15 @@
     {
       const th = document.createElement('th');
       tr.appendChild(th);
+      const img = document.createElement('img');
+      img.src = './images/logo-special.png';
+      img.setAttribute('width', imgSize);
+      img.setAttribute('height', imgSize);
+      th.appendChild(img);
+    }
+    {
+      const th = document.createElement('th');
+      tr.appendChild(th);
       th.innerText = 'Total';
       th.classList.add('total-col');
     }
@@ -148,9 +157,47 @@
       }
     }
 
-    const numTotalNotSolved = numLineNotSolved + numPointNotSolved;
-    const numTotalSolvedNormal = numLineSolvedNormal + numPointSolvedNormal;
-    const numTotalSolvedBest = numLineSolvedBest + numPointSolvedBest;
+    let numSpecialNotSolved = 0;
+    let numSpecialSolvedNormal = 0;
+    let numSpecialSolvedBest = 0;
+
+    {
+      const levelsList = app.levelsSpecial;
+      const levelsListEx = app.levelsSpecialEx;
+      const levelObjs = [];
+      for (let i = 1; i < levelsList.length; ++i) {
+        const levelObj = levelsList[i];
+        levelObjs.push(levelObj);
+      }
+
+      for (const id of Object.keys(levelsListEx)) {
+        if (String(id) === 'NaN') continue;
+        const levelObj = levelsListEx[id];
+        levelObjs.push(levelObj);
+      }
+      for (let i = 0; i < levelObjs.length; ++i) {
+        const levelObj = levelObjs[i];
+        const playerScore = app.savedata.getHighestScore(
+          levelObj,
+          app.Level.CHECK_MODE.SPECIAL
+        );
+        const appScore = levelObj.step;
+        if (playerScore === null) {
+          ++numSpecialNotSolved;
+        } else if (playerScore > appScore) {
+          ++numSpecialSolvedNormal;
+        } else {
+          ++numSpecialSolvedBest;
+        }
+      }
+    }
+
+    const numTotalNotSolved =
+      numLineNotSolved + numPointNotSolved + numSpecialNotSolved;
+    const numTotalSolvedNormal =
+      numLineSolvedNormal + numPointSolvedNormal + numSpecialSolvedNormal;
+    const numTotalSolvedBest =
+      numLineSolvedBest + numPointSolvedBest + numSpecialSolvedBest;
 
     const numLineTotal =
       numLineSolvedBest + numLineSolvedNormal + numLineNotSolved;
@@ -158,7 +205,10 @@
     const numPointTotal =
       numPointSolvedBest + numPointSolvedNormal + numPointNotSolved;
 
-    const numTotalTotal = numLineTotal + numPointTotal;
+    const numSpecialTotal =
+      numSpecialSolvedBest + numSpecialSolvedNormal + numSpecialNotSolved;
+
+    const numTotalTotal = numLineTotal + numPointTotal + numSpecialTotal;
 
     {
       const tr = document.createElement('tr');
@@ -183,6 +233,11 @@
       {
         const td = document.createElement('td');
         td.innerText = numPointSolvedBest;
+        tr.appendChild(td);
+      }
+      {
+        const td = document.createElement('td');
+        td.innerText = numSpecialSolvedBest;
         tr.appendChild(td);
       }
       {
@@ -219,6 +274,11 @@
       }
       {
         const td = document.createElement('td');
+        td.innerText = numSpecialSolvedNormal;
+        tr.appendChild(td);
+      }
+      {
+        const td = document.createElement('td');
         td.innerText = numTotalSolvedNormal;
         td.classList.add('total-col');
         tr.appendChild(td);
@@ -251,6 +311,11 @@
       }
       {
         const td = document.createElement('td');
+        td.innerText = numSpecialNotSolved;
+        tr.appendChild(td);
+      }
+      {
+        const td = document.createElement('td');
         td.innerText = numTotalNotSolved;
         td.classList.add('total-col');
         tr.appendChild(td);
@@ -276,6 +341,12 @@
       {
         const td = document.createElement('td');
         td.innerText = numPointTotal;
+        td.classList.add('total-row');
+        tr.appendChild(td);
+      }
+      {
+        const td = document.createElement('td');
+        td.innerText = numSpecialTotal;
         td.classList.add('total-row');
         tr.appendChild(td);
       }
