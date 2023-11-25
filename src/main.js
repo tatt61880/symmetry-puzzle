@@ -728,7 +728,7 @@
 
   function updateLinkUrl() {
     if (!editMode) return;
-    const url = level.getUrlStr(level.isLineMode());
+    const url = level.getUrlStr();
     elems.url.a.innerHTML = `<a href="${url}">現在の盤面を0手目として完成！</a>`;
   }
 
