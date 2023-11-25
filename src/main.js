@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.25b';
+  const VERSION_TEXT = 'v' + '2023.11.25c';
 
   const app = window.app;
   Object.freeze(app);
@@ -638,8 +638,8 @@
 
     if (id_ === 1) {
       // レベル1をロード時、レベル1を未クリアのときはヘルプ画面を表示する。
-      const isLineMode = level.isLineMode();
-      const playerScore = app.savedata.getHighestScore(levelObj, isLineMode);
+      const checkMode = level.getCheckMode();
+      const playerScore = app.savedata.getHighestScore(levelObj, checkMode);
       if (playerScore === null) {
         app.dialog.help.show();
       }
@@ -1595,9 +1595,9 @@
           if (bestStep !== undefined) {
             highestScorePrev = app.savedata.getHighestScore(
               levelObj,
-              level.isLineMode()
+              level.getCheckMode()
             );
-            app.savedata.saveSteps(levelObj, level.isLineMode(), replayStr);
+            app.savedata.saveSteps(levelObj, app.common.checkMode, replayStr);
           }
 
           // ログ出力
@@ -1686,7 +1686,7 @@
         const levelObj = level.getLevelObj();
         const highestScore = app.savedata.getHighestScore(
           levelObj,
-          level.isLineMode()
+          level.getCheckMode()
         );
 
         {

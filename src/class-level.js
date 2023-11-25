@@ -178,9 +178,20 @@
       console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
       this.printSolveJsStr();
 
-      const urlStr =
-        `${location.href.split('?')[0]}?w=${w}&h=${h}&s=${s}` +
-        (this.isLineMode() ? '&line' : '');
+      const checkModeStr = (() => {
+        switch (this.getCheckMode()) {
+          case Level.CHECK_MODE.LINE:
+            return '&line';
+          case Level.CHECK_MODE.SPECIAL:
+            return '&special';
+          default:
+            return '';
+        }
+      })();
+
+      const urlStr = `${
+        location.href.split('?')[0]
+      }?w=${w}&h=${h}&s=${s}${checkModeStr}`;
       return urlStr;
     }
 
@@ -381,6 +392,10 @@
       if (!this.isSymmetry(app.states.isTarget)) return false;
       if (!this.#isConnected(app.states.isTarget)) return false;
       return true;
+    }
+
+    getCheckMode() {
+      return this.#checkMode;
     }
 
     isLineMode() {
@@ -603,6 +618,53 @@
             gg.appendChild(createAxisPoint2(center));
             gg.classList.add('animation-symmetry-axis');
             break;
+
+          case Level.SYMMETRY_TYPE.SPECIAL1: {
+            // 2mm (｜―)
+            const point = createAxisPoint1(center);
+            const line1 = createAxisLine1(center, height);
+            const line2 = createAxisLine2(center, width);
+
+            point.classList.add('animation-symmetry-axis', 'axis-3-1');
+            line1.classList.add('animation-symmetry-axis', 'axis-3-2');
+            line2.classList.add('animation-symmetry-axis', 'axis-3-3');
+            gg.appendChild(point);
+            gg.appendChild(line1);
+            gg.appendChild(line2);
+            break;
+          }
+          case Level.SYMMETRY_TYPE.SPECIAL2: {
+            // 2mm (＼／)
+            const point = createAxisPoint1(center);
+            const line3 = createAxisLine3(center, height);
+            const line4 = createAxisLine4(center, height);
+            point.classList.add('animation-symmetry-axis', 'axis-3-1');
+            line3.classList.add('animation-symmetry-axis', 'axis-3-2');
+            line4.classList.add('animation-symmetry-axis', 'axis-3-3');
+            gg.appendChild(point);
+            gg.appendChild(line3);
+            gg.appendChild(line4);
+            break;
+          }
+          case Level.SYMMETRY_TYPE.SPECIAL3: {
+            // 4mm (｜―＼／)
+            const point = createAxisPoint2(center);
+            const line1 = createAxisLine1(center, height);
+            const line2 = createAxisLine2(center, width);
+            const line3 = createAxisLine3(center, height);
+            const line4 = createAxisLine4(center, height);
+            point.classList.add('animation-symmetry-axis', 'axis-3-1');
+            line1.classList.add('animation-symmetry-axis', 'axis-3-2');
+            line2.classList.add('animation-symmetry-axis', 'axis-3-2');
+            line3.classList.add('animation-symmetry-axis', 'axis-3-3');
+            line4.classList.add('animation-symmetry-axis', 'axis-3-3');
+            gg.appendChild(point);
+            gg.appendChild(line1);
+            gg.appendChild(line2);
+            gg.appendChild(line3);
+            gg.appendChild(line4);
+            break;
+          }
         }
       }
 
