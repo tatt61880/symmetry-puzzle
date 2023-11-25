@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.24h';
+  const VERSION_TEXT = 'v' + '2023.11.25';
 
   const app = window.app;
   Object.freeze(app);
@@ -451,8 +451,10 @@
       level.applyObj(levelObj, resizeFlag);
       updateSvg();
 
-      app.common.showElem(elems.controller.redo);
-      app.common.showElem(elems.edit.redo);
+      if (undoInfo.isRedoable()) {
+        app.common.showElem(elems.controller.redo);
+        app.common.showElem(elems.edit.redo);
+      }
       app.common.hideElem(elems.controller.undo);
       app.common.hideElem(elems.edit.undo);
     }, RESET_DELAY);
