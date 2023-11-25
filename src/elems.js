@@ -24,12 +24,15 @@
       button: 'button-help',
       dialog: 'dialog-help',
       dialogDiv: 'dialog-help-div',
+
       close: 'dialog-help-close',
       langJa: 'setting-lang-ja',
       langEn: 'setting-lang-en',
+
       tabSymmetry: 'help-tab-symmetry',
       tabLine: 'help-tab-line',
       tabPoint: 'help-tab-point',
+      tabSpecial: 'help-tab-special',
     },
 
     records: {

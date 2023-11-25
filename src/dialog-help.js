@@ -56,12 +56,18 @@
       }
     }
 
-    if (app.common.checkMode === app.Level.CHECK_MODE.POINT) {
-      elems.help.tabPoint.checked = true;
-    } else if (app.common.checkMode === app.Level.CHECK_MODE.LINE) {
-      elems.help.tabLine.checked = true;
-    } else {
-      elems.help.tabSymmetry.checked = true;
+    switch (app.common.checkMode) {
+      case app.Level.CHECK_MODE.LINE:
+        elems.help.tabLine.checked = true;
+        break;
+      case app.Level.CHECK_MODE.POINT:
+        elems.help.tabPoint.checked = true;
+        break;
+      case app.Level.CHECK_MODE.SPECIAL:
+        elems.help.tabSpecial.checked = true;
+        break;
+      default:
+        elems.help.tabSymmetry.checked = true;
     }
 
     elems.help.dialog.showModal();
