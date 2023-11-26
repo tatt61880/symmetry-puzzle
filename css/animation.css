@@ -248,9 +248,12 @@
     transform: rotate(0deg);
   }
 
-  30%,
-  70% {
+  30% {
     transform: rotate(179.9deg);
+  }
+
+  70% {
+    transform: rotate(180.1deg);
   }
 
   100% {
@@ -312,7 +315,7 @@
 
   60%,
   70% {
-    transform: rotate(180deg) rotate3d(0, 1, 0, 180deg);
+    transform: rotate(180.1deg) rotate3d(0, 1, 0, 180deg);
   }
 }
 
@@ -338,7 +341,7 @@
 
   60%,
   70% {
-    transform: rotate(180deg) rotate3d(1, 1, 0, 180deg);
+    transform: rotate(180.1deg) rotate3d(1, 1, 0, 180deg);
   }
 }
 
