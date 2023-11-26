@@ -604,15 +604,20 @@
             gg.appendChild(line4);
             break;
           }
-          case Level.SYMMETRY_TYPE.POINT1: // 2
-            gg.appendChild(createAxisPoint1(center));
-            gg.classList.add('animation-symmetry-axis');
+          case Level.SYMMETRY_TYPE.POINT1: {
+            // 2
+            const point = createAxisPoint1(center);
+            point.classList.add('animation-symmetry-axis');
+            gg.appendChild(point);
             break;
-          case Level.SYMMETRY_TYPE.POINT2: // 4
-            gg.appendChild(createAxisPoint2(center));
-            gg.classList.add('animation-symmetry-axis');
+          }
+          case Level.SYMMETRY_TYPE.POINT2: {
+            // 4
+            const point = createAxisPoint2(center);
+            point.classList.add('animation-symmetry-axis');
+            gg.appendChild(point);
             break;
-
+          }
           case Level.SYMMETRY_TYPE.SPECIAL1: {
             // 2mm (｜―)
             const point = createAxisPoint1(center);
