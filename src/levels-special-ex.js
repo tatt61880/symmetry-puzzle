@@ -4,11 +4,11 @@
 
   const levelsSpecialEx = {
     NaN: {
-      w: 6,
+      w: 5,
       h: 4,
-      s: '-011s2-001',
-      r: '012212333100032',
-      step: 15,
+      s: '-0011-02s1',
+      r: '21103',
+      step: 5,
       subject: 'NaN',
     },
   };
