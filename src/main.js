@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.26f';
+  const VERSION_TEXT = 'v' + '2023.11.26g';
 
   const app = window.app;
   Object.freeze(app);
@@ -215,6 +215,9 @@
         case 'z':
           elems.help.tabPoint.checked = true;
           break;
+        case 'o':
+          elems.help.tabSpecial.checked = true;
+          break;
       }
       return;
     }
@@ -289,6 +292,10 @@
           break;
         case 'z':
           updateCheckMode(app.Level.CHECK_MODE.POINT);
+          onloadId(1);
+          break;
+        case 'o':
+          updateCheckMode(app.Level.CHECK_MODE.SPECIAL);
           onloadId(1);
           break;
       }

@@ -159,8 +159,8 @@
       return this.#levelObj?.r;
     }
 
-    getCheckModeStr(checkMode = this.getCheckMode()) {
-      switch (checkMode) {
+    getCheckModeStr() {
+      switch (this.getCheckMode()) {
         case Level.CHECK_MODE.LINE:
           return 'line';
         case Level.CHECK_MODE.POINT:

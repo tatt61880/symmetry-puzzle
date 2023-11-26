@@ -3,7 +3,9 @@
   const isBrowser = typeof window !== 'undefined';
   if (!isBrowser) return;
 
-  if (window.app?.savedata) return;
+  const app = window.app;
+  if (app?.savedata) return;
+  console.assert(app?.Level !== undefined);
 
   const LOCAL_STORAGE_KEY = 'tatt61880-symmetry-puzzle';
 
@@ -56,12 +58,18 @@
     }
 
     #getLevelKey(levelObj, checkMode) {
-      if (checkMode === window.app.Level.CHECK_MODE.LINE) {
-        return `w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}&line`;
-      } else if (checkMode === window.app.Level.CHECK_MODE.SPECIAL) {
-        return `w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}&special`;
-      } else {
-        return `w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
+      const checkModeStr = getCheckModeStr(checkMode);
+      return `mode=${checkModeStr}&w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
+
+      function getCheckModeStr(checkMode) {
+        switch (checkMode) {
+          case app.Level.CHECK_MODE.LINE:
+            return 'line';
+          case app.Level.CHECK_MODE.POINT:
+            return 'point';
+          case app.Level.CHECK_MODE.SPECIAL:
+            return 'special';
+        }
       }
     }
   }
