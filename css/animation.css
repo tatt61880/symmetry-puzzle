@@ -396,6 +396,130 @@
   }
 }
 
+.animation-symmetry-axis-point2 {
+  transform-origin: var(--animation-origin);
+  animation: animation-symmetry-axis-point2 linear both;
+  animation-duration: var(--animation-duration-symmetry);
+}
+
+@keyframes animation-symmetry-axis-point2 {
+  0% {
+    opacity: 0;
+    transform: rotate(0deg);
+  }
+
+  30% {
+    opacity: 1;
+    transform: rotate(179.9deg);
+  }
+
+  70% {
+    opacity: 0.8;
+    transform: rotate(180.1deg);
+  }
+
+  100% {
+    opacity: 0.4;
+    transform: rotate(360deg);
+  }
+}
+
+.animation-symmetry-axis-point4 {
+  transform-origin: var(--animation-origin);
+  animation: animation-symmetry-axis-point4 linear both;
+  animation-duration: calc(var(--animation-duration-symmetry) * 2);
+}
+
+@keyframes animation-symmetry-axis-point4 {
+  0% {
+    opacity: 0;
+    transform: rotate(0deg);
+  }
+
+  10%,
+  25% {
+    opacity: 1;
+    transform: rotate(90deg);
+  }
+
+  35%,
+  50% {
+    opacity: 1;
+    transform: rotate(180deg);
+  }
+
+  60%,
+  75% {
+    opacity: 0.8;
+    transform: rotate(270deg);
+  }
+
+  85%,
+  100% {
+    opacity: 0.4;
+    transform: rotate(360deg);
+  }
+}
+
+.animation-symmetry-axis-sp2 {
+  transform-origin: var(--animation-origin);
+  animation: animation-symmetry-axis-sp2 linear both;
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-3)
+  );
+}
+
+@keyframes animation-symmetry-axis-sp2 {
+  0% {
+    opacity: 0;
+    transform: rotate(0deg);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 0.8;
+    transform: rotate(179.9deg);
+  }
+
+  100% {
+    opacity: 0.4;
+    transform: rotate(180deg);
+  }
+}
+
+.animation-symmetry-axis-sp4 {
+  transform-origin: var(--animation-origin);
+  animation: animation-symmetry-axis-sp4 linear both;
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-3)
+  );
+}
+
+@keyframes animation-symmetry-axis-sp4 {
+  0% {
+    opacity: 0;
+    transform: rotate(0deg);
+  }
+
+  20% {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+
+  75% {
+    opacity: 0.8;
+    transform: rotate(90deg);
+  }
+
+  100% {
+    opacity: 0.4;
+    transform: rotate(90deg);
+  }
+}
+
 .axis-2-1 {
   animation-duration: calc(
     var(--animation-duration-symmetry) * var(--animation-axis-2)
