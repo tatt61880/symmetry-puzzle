@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.26h';
+  const VERSION_TEXT = 'v' + '2023.11.26i';
 
   const app = window.app;
   Object.freeze(app);
@@ -892,13 +892,13 @@
 
   function getId(queryObj) {
     switch (app.common.checkMode) {
-      case app.Level.CHECK_MODE.POINT:
-        app.common.levelsList = app.levelsPoint;
-        app.common.levelsListEx = app.levelsPointEx;
-        break;
       case app.Level.CHECK_MODE.LINE:
         app.common.levelsList = app.levelsLine;
         app.common.levelsListEx = app.levelsLineEx;
+        break;
+      case app.Level.CHECK_MODE.POINT:
+        app.common.levelsList = app.levelsPoint;
+        app.common.levelsListEx = app.levelsPointEx;
         break;
       case app.Level.CHECK_MODE.SPECIAL:
         app.common.levelsList = app.levelsSpecial;
@@ -952,13 +952,13 @@
     }
 
     switch (app.common.checkMode) {
-      case app.Level.CHECK_MODE.POINT:
-        app.common.levelsList = app.levelsPoint;
-        app.common.levelsListEx = app.levelsPointEx;
-        break;
       case app.Level.CHECK_MODE.LINE:
         app.common.levelsList = app.levelsLine;
         app.common.levelsListEx = app.levelsLineEx;
+        break;
+      case app.Level.CHECK_MODE.POINT:
+        app.common.levelsList = app.levelsPoint;
+        app.common.levelsListEx = app.levelsPointEx;
         break;
       case app.Level.CHECK_MODE.SPECIAL:
         app.common.levelsList = app.levelsSpecial;

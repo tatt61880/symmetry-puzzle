@@ -172,15 +172,15 @@
       const levelObj = {
         w: 5,
         h: 3,
-        s: 's001-00211',
+        s: 's0001-00211',
       };
-      const checkMode = app.Level.CHECK_MODE.POINT;
+      const checkMode = app.Level.CHECK_MODE.LINE;
       const level = new app.Level({ levelObj, checkMode });
-      const result = app.solveLevel('Test-1', level, {
+      const result = app.solveLevel('Test-2', level, {
         maxStep: 1000,
         timeLimit: 10,
       });
-      if (result.replayStr !== '12210') {
+      if (result.replayStr !== '1123211') {
         app.console.error(
           `Error: Unexpected solve function's result. result.replayStr = ${result.replayStr}`
         );
@@ -191,15 +191,15 @@
       const levelObj = {
         w: 5,
         h: 3,
-        s: 's0001-00211',
+        s: 's001-00211',
       };
-      const checkMode = app.Level.CHECK_MODE.LINE;
+      const checkMode = app.Level.CHECK_MODE.POINT;
       const level = new app.Level({ levelObj, checkMode });
-      const result = app.solveLevel('Test-2', level, {
+      const result = app.solveLevel('Test-1', level, {
         maxStep: 1000,
         timeLimit: 10,
       });
-      if (result.replayStr !== '1123211') {
+      if (result.replayStr !== '12210') {
         app.console.error(
           `Error: Unexpected solve function's result. result.replayStr = ${result.replayStr}`
         );

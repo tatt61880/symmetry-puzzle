@@ -621,6 +621,7 @@
             gg.appendChild(line4);
             break;
           }
+
           case Level.SYMMETRY_TYPE.POINT1: {
             // 2
             const point = createAxisPoint2({ center });
@@ -635,6 +636,7 @@
             gg.appendChild(point);
             break;
           }
+
           case Level.SYMMETRY_TYPE.SPECIAL1: {
             // 2mm (｜―)
             const point = createAxisPoint2({ center });

@@ -18,13 +18,14 @@
   } else {
     app.console = require('./console.js');
     app.states = require('./states.js');
+    app.Level = require('./class-level.js');
+
     app.levelsLine = require('./levels-line.js');
     app.levelsLineEx = require('./levels-line-ex.js');
     app.levelsPoint = require('./levels-point.js');
     app.levelsPointEx = require('./levels-point-ex.js');
     app.levelsSpecial = require('./levels-special.js');
     app.levelsSpecialEx = require('./levels-special-ex.js');
-    app.Level = require('./class-level.js');
 
     const program = require('commander');
     program
@@ -69,13 +70,13 @@
     let levelsList;
     let levelsExList;
     switch (checkMode) {
-      case app.Level.CHECK_MODE.POINT:
-        levelsList = app.levelsPoint;
-        levelsExList = app.levelsPointEx;
-        break;
       case app.Level.CHECK_MODE.LINE:
         levelsList = app.levelsLine;
         levelsExList = app.levelsLineEx;
+        break;
+      case app.Level.CHECK_MODE.POINT:
+        levelsList = app.levelsPoint;
+        levelsExList = app.levelsPointEx;
         break;
       case app.Level.CHECK_MODE.SPECIAL:
         levelsList = app.levelsSpecial;
