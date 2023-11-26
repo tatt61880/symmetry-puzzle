@@ -400,14 +400,6 @@
       return this.#checkMode;
     }
 
-    isLineMode() {
-      return this.#checkMode === Level.CHECK_MODE.LINE;
-    }
-
-    isSpecialMode() {
-      return this.#checkMode === Level.CHECK_MODE.SPECIAL;
-    }
-
     resetMoveFlags() {
       for (let y = 0; y < this.#height; ++y) {
         this.#moveFlags[y] = [];
