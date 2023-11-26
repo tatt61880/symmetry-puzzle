@@ -48,11 +48,11 @@
 
   if (!isBrowser) {
     switch (options.mode) {
-      case 'point':
-        checkMode = app.Level.CHECK_MODE.POINT;
-        break;
       case 'line':
         checkMode = app.Level.CHECK_MODE.LINE;
+        break;
+      case 'point':
+        checkMode = app.Level.CHECK_MODE.POINT;
         break;
       case 'special':
         checkMode = app.Level.CHECK_MODE.SPECIAL;

@@ -5,6 +5,9 @@
 
   if (window.app?.analyzeUrl) return;
 
+  const app = window.app;
+  console.assert(app?.Level !== undefined);
+
   function analyzeUrl() {
     const res = {
       id: null,
@@ -43,11 +46,18 @@
         case 's':
           res.levelObj.s = paramVal;
           break;
-        case 'line':
-          res.settings.line = true;
-          break;
-        case 'special':
-          res.settings.special = true;
+        case 'mode':
+          switch (paramVal) {
+            case 'line':
+              res.settings.mode = app.Level.CHECK_MODE.LINE;
+              break;
+            case 'point':
+              res.settings.mode = app.Level.CHECK_MODE.POINT;
+              break;
+            case 'special':
+              res.settings.mode = app.Level.CHECK_MODE.SPECIAL;
+              break;
+          }
           break;
         case 'auto':
           res.settings.autoMode = true;

@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.26c';
+  const VERSION_TEXT = 'v' + '2023.11.26d';
 
   const app = window.app;
   Object.freeze(app);
@@ -760,10 +760,10 @@
     app.common.checkMode = mode;
     const className = (() => {
       switch (mode) {
-        case app.Level.CHECK_MODE.POINT:
-          return 'point';
         case app.Level.CHECK_MODE.LINE:
           return 'line';
+        case app.Level.CHECK_MODE.POINT:
+          return 'point';
         case app.Level.CHECK_MODE.SPECIAL:
           return 'special';
         default:
@@ -869,13 +869,7 @@
       return;
     }
 
-    if (settings.line) {
-      updateCheckMode(app.Level.CHECK_MODE.LINE);
-    } else if (settings.special) {
-      updateCheckMode(app.Level.CHECK_MODE.SPECIAL);
-    } else {
-      updateCheckMode(app.Level.CHECK_MODE.POINT);
-    }
+    updateCheckMode(settings.mode);
 
     if (id !== null) {
       onloadId(id);
@@ -1956,9 +1950,20 @@
     }
     const base = location.href.split('?')[0];
     const levelObj = level.getLevelObj();
-    let url = `${base}?w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
-    if (level.isLineMode()) url += '&line';
-    if (level.isSpecialMode()) url += '&special';
+    const checkMode = level.getCheckMode();
+    let checkModeStr = null;
+    switch (checkMode) {
+      case app.Level.CHECK_MODE.LINE:
+        checkModeStr = 'line';
+        break;
+      case app.Level.CHECK_MODE.POINT:
+        checkModeStr = 'point';
+        break;
+      case app.Level.CHECK_MODE.SPECIAL:
+        checkModeStr = 'special';
+        break;
+    }
+    let url = `${base}?mode=${checkModeStr}&w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';
     if (settings.mirrorFlag) url += '&mirror';

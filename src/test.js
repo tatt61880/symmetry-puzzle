@@ -20,21 +20,18 @@
   let checkMode = null;
   switch (options.mode) {
     case 'line':
-      // 線対称
       checkMode = app.Level.CHECK_MODE.LINE;
       app.levels = require('./levels-line.js');
       app.levelsEx = require('./levels-line-ex.js');
       checkLevels();
       break;
     case 'point':
-      // 点対称
       checkMode = app.Level.CHECK_MODE.POINT;
       app.levels = require('./levels-point.js');
       app.levelsEx = require('./levels-point-ex.js');
       checkLevels();
       break;
     case 'special':
-      // 特殊な対称
       checkMode = app.Level.CHECK_MODE.SPECIAL;
       app.levels = require('./levels-special.js');
       app.levelsEx = require('./levels-special-ex.js');
