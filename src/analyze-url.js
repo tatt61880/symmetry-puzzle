@@ -14,11 +14,9 @@
       levelObj: {
         w: 6,
         h: 6,
-        s: '',
+        s: null,
       },
       settings: {
-        line: false,
-        special: false,
         autoMode: false,
         debugFlag: false,
         mirrorFlag: false,

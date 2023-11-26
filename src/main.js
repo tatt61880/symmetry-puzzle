@@ -870,8 +870,7 @@
     setInterval(intervalFunc, INPUT_INTERVAL_MSEC);
 
     const id = queryParams.id;
-
-    if (id === null && queryParams.levelObj.s === '') {
+    if (id === null && queryParams.levelObj.s === null) {
       gotoTitlePage();
       return;
     }
