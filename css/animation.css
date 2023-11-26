@@ -7,9 +7,9 @@
   --animation-duration-symmetry: none;
   --animation-origin: 0 0;
   --animation-axis-1: 1;
-  --animation-axis-2: 1.5;
-  --animation-axis-3: 1;
-  --animation-axis-4: 1;
+  --animation-axis-2: 3;
+  --animation-axis-3: 3;
+  --animation-axis-4: 4;
   --animation-illegal-move: translate(0, 0);
 }
 
@@ -151,7 +151,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-plus1 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2) * 2
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
   );
 }
 
@@ -179,7 +179,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-plus2 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2) * 2
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
   );
 }
 
@@ -207,7 +207,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-plus3 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4) * 4
+    var(--animation-duration-symmetry) * var(--animation-axis-4)
   );
 }
 
@@ -297,7 +297,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-special1 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3) * 3
+    var(--animation-duration-symmetry) * var(--animation-axis-3)
   );
 }
 
@@ -306,17 +306,16 @@
     transform: rotate(0deg);
   }
 
-  25%,
-  35% {
+  20%,
+  40% {
     transform: rotate(179.9deg);
   }
 
   60%,
-  70% {
+  80% {
     transform: rotate(180.1deg) rotate3d(0, 1, 0, 180deg);
   }
 
-  95%,
   100% {
     transform: scaleX(1) scaleY(1);
   }
@@ -326,7 +325,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-special2 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3) * 3
+    var(--animation-duration-symmetry) * var(--animation-axis-3)
   );
 }
 
@@ -335,17 +334,16 @@
     transform: rotate(0deg);
   }
 
-  25%,
-  35% {
+  20%,
+  40% {
     transform: rotate(179.9deg);
   }
 
   60%,
-  70% {
+  80% {
     transform: rotate(180.1deg) rotate3d(1, 1, 0, 180deg);
   }
 
-  95%,
   100% {
     transform: scaleX(1) scaleY(1);
   }
@@ -355,24 +353,23 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-special3 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3) * 3
+    var(--animation-duration-symmetry) * var(--animation-axis-3)
   );
 }
 
 @keyframes animation-axis-special3 {
   0%,
-  95%,
   100% {
     transform: scaleX(1) scaleY(1);
   }
 
-  25%,
-  35% {
+  20%,
+  40% {
     transform: rotate(90deg);
   }
 
   60%,
-  70% {
+  80% {
     transform: rotate(90deg) rotate3d(1, 0, 0, 180deg);
   }
 }
@@ -471,37 +468,32 @@
   transform-origin: var(--animation-origin);
   animation: animation-symmetry-axis-sp1 linear both;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3) * 3
+    var(--animation-duration-symmetry) * var(--animation-axis-3)
   );
 }
 
 @keyframes animation-symmetry-axis-sp1 {
   0% {
-    opacity: 0;
+    opacity: 1;
     transform: scaleX(1) scaleY(1);
   }
 
-  5% {
-    opacity: 1;
-  }
-
-  25% {
+  20% {
     opacity: 0.8;
     transform: rotate(179.9deg);
   }
 
-  35% {
+  40% {
     opacity: 0.4;
     transform: rotate(179.9deg);
   }
 
   60%,
-  70% {
+  80% {
     opacity: 0.4;
     transform: rotate(180.1deg) rotate3d(0, 1, 0, 180deg);
   }
 
-  95%,
   100% {
     opacity: 0.4;
     transform: scaleX(1) scaleY(1);
@@ -512,32 +504,28 @@
   transform-origin: var(--animation-origin);
   animation: animation-symmetry-axis-sp2 linear both;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3) * 3
+    var(--animation-duration-symmetry) * var(--animation-axis-3)
   );
 }
 
 @keyframes animation-symmetry-axis-sp2 {
   0% {
-    opacity: 0;
+    opacity: 1;
     transform: scaleX(1) scaleY(1);
   }
 
-  5% {
-    opacity: 1;
-  }
-
-  25% {
+  20% {
     opacity: 0.8;
     transform: rotate(179.9deg);
   }
 
-  35% {
+  40% {
     opacity: 0.4;
     transform: rotate(179.9deg);
   }
 
   60%,
-  70% {
+  80% {
     opacity: 0.4;
     transform: rotate(180.1deg) rotate3d(1, 1, 0, 180deg);
   }
@@ -552,7 +540,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-symmetry-axis-sp3 linear both;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3) * 3
+    var(--animation-duration-symmetry) * var(--animation-axis-3)
   );
 }
 
@@ -562,27 +550,22 @@
     transform: rotate(0deg);
   }
 
-  5% {
-    opacity: 1;
-  }
-
-  25% {
+  20% {
     opacity: 0.8;
     transform: rotate(90deg);
   }
 
-  35% {
+  40% {
     opacity: 0.4;
     transform: rotate(90deg);
   }
 
   60%,
-  70% {
+  80% {
     opacity: 0.4;
     transform: rotate(90deg) rotate3d(1, 0, 0, 180deg);
   }
 
-  95%,
   100% {
     opacity: 0.4;
     transform: scaleX(1) scaleY(1);
@@ -591,76 +574,69 @@
 
 .axis-2-1 {
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
+    var(--animation-duration-symmetry) * var(--animation-axis-2) * 0.5
   );
   animation-delay: 0;
 }
 
 .axis-2-2 {
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
+    var(--animation-duration-symmetry) * var(--animation-axis-2) * 0.5
   );
   animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
+    var(--animation-duration-symmetry) * var(--animation-axis-2) * 0.5
   );
-}
-
-.axis-3-1 {
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3)
-  );
-  animation-delay: 0;
 }
 
 .axis-3-2 {
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3)
+    var(--animation-duration-symmetry) * var(--animation-axis-3) * 0.2
   );
   animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3)
+    var(--animation-duration-symmetry) * var(--animation-axis-3) * 0.4
   );
 }
 
 .axis-3-3 {
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3)
+    var(--animation-duration-symmetry) * var(--animation-axis-3) * 0.2
   );
   animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3) * 2
+    var(--animation-duration-symmetry) * var(--animation-axis-3) * 0.8
   );
 }
 
 .axis-4-1 {
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4)
+    var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25
   );
   animation-delay: 0;
 }
 
 .axis-4-2 {
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4)
+    var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25
   );
   animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4)
+    var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25
   );
 }
 
 .axis-4-3 {
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4)
+    var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25
   );
   animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4) * 2
+    var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.5
   );
 }
 
 .axis-4-4 {
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4)
+    var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25
   );
   animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4) * 3
+    var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.75
   );
 }
 
