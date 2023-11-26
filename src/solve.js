@@ -4,6 +4,8 @@
 
   let app = {};
   let options;
+  let checkMode = null;
+
   if (isBrowser) {
     app = window.app;
     app.console = console;
@@ -16,21 +18,23 @@
   } else {
     app.console = require('./console.js');
     app.states = require('./states.js');
-    app.levelsPoint = require('./levels-point.js');
-    app.levelsPointEx = require('./levels-point-ex.js');
     app.levelsLine = require('./levels-line.js');
     app.levelsLineEx = require('./levels-line-ex.js');
+    app.levelsPoint = require('./levels-point.js');
+    app.levelsPointEx = require('./levels-point-ex.js');
+    app.levelsSpecial = require('./levels-special.js');
+    app.levelsSpecialEx = require('./levels-special-ex.js');
     app.Level = require('./class-level.js');
 
     const program = require('commander');
     program
-      .version('2.2.0')
+      .version('3.0.0')
+      .option('--mode <check-mode>', 'symmetry mode')
       .option('-i, --id <id>', 'id of level')
       .option('-a, --all', 'list up all solutions')
       .option('-w, --w <w>', 'levelObj.w', Number)
       .option('-h, --h <h>', 'levelObj.h', Number)
       .option('-s, --s <s>', 'levelObj.s')
-      .option('-l, --line', 'line symmetry mode')
       .option('-p, --prefixStep <prefix-step>', 'prefixStep step')
       .option('-c, --console', 'console.info step')
       .option('-d, --draw', 'draw target shape')
@@ -42,13 +46,45 @@
     options = program.opts();
   }
 
+  if (!isBrowser) {
+    switch (options.mode) {
+      case 'point':
+        checkMode = app.Level.CHECK_MODE.POINT;
+        break;
+      case 'line':
+        checkMode = app.Level.CHECK_MODE.LINE;
+        break;
+      case 'special':
+        checkMode = app.Level.CHECK_MODE.SPECIAL;
+        break;
+    }
+  }
+
   const levelId = options.id;
   if (isBrowser) {
     1;
   } else if (levelId !== undefined) {
     const levels = {};
-    const levelsList = options.line ? app.levelsLine : app.levelsPoint;
-    const levelsExList = options.line ? app.levelsLineEx : app.levelsPointEx;
+
+    let levelsList;
+    let levelsExList;
+    switch (checkMode) {
+      case app.Level.CHECK_MODE.POINT:
+        levelsList = app.levelsPoint;
+        levelsExList = app.levelsPointEx;
+        break;
+      case app.Level.CHECK_MODE.LINE:
+        levelsList = app.levelsLine;
+        levelsExList = app.levelsLineEx;
+        break;
+      case app.Level.CHECK_MODE.SPECIAL:
+        levelsList = app.levelsSpecial;
+        levelsExList = app.levelsSpecialEx;
+        break;
+      default:
+        app.console.error('mode error');
+        return;
+    }
 
     for (const levelId in levelsList) {
       const levelObj = levelsList[levelId];
@@ -63,11 +99,11 @@
       for (const levelId in levels) {
         if (levelId === '0') continue;
         const levelObj = levels[levelId];
-        solveLevelObj(levelId, levelObj, options.line);
+        solveLevelObj(levelId, levelObj);
       }
     } else {
       const levelObj = levels[levelId];
-      solveLevelObj(levelId, levelObj, options.line);
+      solveLevelObj(levelId, levelObj);
     }
   } else if (options.w !== undefined) {
     if (options.w === undefined) {
@@ -99,20 +135,19 @@
       return;
     }
     const levelObj = { w, h, s };
-    solveLevelObj(null, levelObj, options.line);
+    solveLevelObj(null, levelObj);
   }
 
-  function solveLevelObj(levelId, levelObj, isLine) {
+  function solveLevelObj(levelId, levelObj) {
     if (levelObj === undefined) {
       app.console.error(`Error: [LEVEL ${levelId}] levelObj === undefined`);
       process.exitCode = 1;
       return;
     }
-    let checkMode = null;
-    if (isLine) {
-      checkMode = app.Level.CHECK_MODE.LINE;
-    } else {
-      checkMode = app.Level.CHECK_MODE.POINT;
+    if (checkMode === null) {
+      app.console.error('check mode error');
+      process.exitCode = 1;
+      return;
     }
     const level = new app.Level({ levelObj, checkMode });
 

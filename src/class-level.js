@@ -164,9 +164,17 @@
       const h = this.getH();
       const s = this.getS();
 
-      const solveJsStr =
-        `node src/solve.js -w ${w} -h ${h} -s ${s} --all --console --draw` +
-        (this.isLineMode() ? ' --line' : '');
+      const checkModeStr = (() => {
+        switch (this.getCheckMode()) {
+          case Level.CHECK_MODE.LINE:
+            return 'line';
+          case Level.CHECK_MODE.POINT:
+            return 'point';
+          case Level.CHECK_MODE.SPECIAL:
+            return 'special';
+        }
+      })();
+      const solveJsStr = `node src/solve.js --mode ${checkModeStr} -w ${w} -h ${h} -s ${s} --all --console --draw`;
       console.log(solveJsStr);
     }
 
