@@ -55,6 +55,7 @@
     };
 
     static SYMMETRY_TYPE = {
+      // 線対称の分類
       LINE1: Symbol('line1'), // m (｜)
       LINE2: Symbol('line2'), // m (―)
       LINE3: Symbol('line3'), // m (＼)
@@ -62,8 +63,12 @@
       PLUS1: Symbol('plus1'), // 2mm (｜―)
       PLUS2: Symbol('plus2'), // 2mm (＼／)
       PLUS3: Symbol('plus3'), // 4mm (｜―＼／)
+
+      // 点対称の分類
       POINT1: Symbol('point1'), // 2
       POINT2: Symbol('point2'), // 4
+
+      // 線対称かつ点対称の分類
       SPECIAL1: Symbol('special1'), // 2mm (｜―)
       SPECIAL2: Symbol('special2'), // 2mm (＼／)
       SPECIAL3: Symbol('special3'), // 4mm (｜―＼／)
