@@ -642,7 +642,7 @@
             const point = createAxisPoint2({ center });
             const line1 = createAxisLine1({ center, height });
             const line2 = createAxisLine2({ center, width });
-            point.classList.add('animation-symmetry-axis-sp2', 'axis-3-1');
+            point.classList.add('animation-symmetry-axis-sp1');
             line1.classList.add('animation-symmetry-axis', 'axis-3-2');
             line2.classList.add('animation-symmetry-axis', 'axis-3-3');
             gg.appendChild(point);
@@ -655,7 +655,7 @@
             const point = createAxisPoint2({ center });
             const line3 = createAxisLine3({ center, height });
             const line4 = createAxisLine4({ center, height });
-            point.classList.add('animation-symmetry-axis-sp2', 'axis-3-1');
+            point.classList.add('animation-symmetry-axis-sp2');
             line3.classList.add('animation-symmetry-axis', 'axis-3-2');
             line4.classList.add('animation-symmetry-axis', 'axis-3-3');
             gg.appendChild(point);
@@ -670,7 +670,7 @@
             const line2 = createAxisLine2({ center, width });
             const line3 = createAxisLine3({ center, height });
             const line4 = createAxisLine4({ center, height });
-            point.classList.add('animation-symmetry-axis-sp4', 'axis-3-1');
+            point.classList.add('animation-symmetry-axis-sp3');
             line1.classList.add('animation-symmetry-axis', 'axis-3-2');
             line2.classList.add('animation-symmetry-axis', 'axis-3-2');
             line3.classList.add('animation-symmetry-axis', 'axis-3-3');

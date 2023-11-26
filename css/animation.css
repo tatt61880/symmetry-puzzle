@@ -302,10 +302,8 @@
 }
 
 @keyframes animation-axis-special1 {
-  0%,
-  95%,
-  100% {
-    transform: scaleX(1) scaleY(1);
+  0% {
+    transform: rotate(0deg);
   }
 
   25%,
@@ -316,6 +314,11 @@
   60%,
   70% {
     transform: rotate(180.1deg) rotate3d(0, 1, 0, 180deg);
+  }
+
+  95%,
+  100% {
+    transform: scaleX(1) scaleY(1);
   }
 }
 
@@ -328,10 +331,8 @@
 }
 
 @keyframes animation-axis-special2 {
-  0%,
-  95%,
-  100% {
-    transform: scaleX(1) scaleY(1);
+  0% {
+    transform: rotate(0deg);
   }
 
   25%,
@@ -342,6 +343,11 @@
   60%,
   70% {
     transform: rotate(180.1deg) rotate3d(1, 1, 0, 180deg);
+  }
+
+  95%,
+  100% {
+    transform: scaleX(1) scaleY(1);
   }
 }
 
@@ -461,62 +467,125 @@
   }
 }
 
+.animation-symmetry-axis-sp1 {
+  transform-origin: var(--animation-origin);
+  animation: animation-symmetry-axis-sp1 linear both;
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-3) * 3
+  );
+}
+
+@keyframes animation-symmetry-axis-sp1 {
+  0% {
+    opacity: 0;
+    transform: scaleX(1) scaleY(1);
+  }
+
+  5% {
+    opacity: 1;
+  }
+
+  25% {
+    opacity: 0.8;
+    transform: rotate(179.9deg);
+  }
+
+  35% {
+    opacity: 0.4;
+    transform: rotate(179.9deg);
+  }
+
+  60%,
+  70% {
+    opacity: 0.4;
+    transform: rotate(180.1deg) rotate3d(0, 1, 0, 180deg);
+  }
+
+  95%,
+  100% {
+    opacity: 0.4;
+    transform: scaleX(1) scaleY(1);
+  }
+}
+
 .animation-symmetry-axis-sp2 {
   transform-origin: var(--animation-origin);
   animation: animation-symmetry-axis-sp2 linear both;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3)
+    var(--animation-duration-symmetry) * var(--animation-axis-3) * 3
   );
 }
 
 @keyframes animation-symmetry-axis-sp2 {
   0% {
     opacity: 0;
-    transform: rotate(0deg);
+    transform: scaleX(1) scaleY(1);
   }
 
-  20% {
+  5% {
     opacity: 1;
   }
 
-  75% {
+  25% {
     opacity: 0.8;
     transform: rotate(179.9deg);
   }
 
+  35% {
+    opacity: 0.4;
+    transform: rotate(179.9deg);
+  }
+
+  60%,
+  70% {
+    opacity: 0.4;
+    transform: rotate(180.1deg) rotate3d(1, 1, 0, 180deg);
+  }
+
   100% {
     opacity: 0.4;
-    transform: rotate(180deg);
+    transform: scaleX(1) scaleY(1);
   }
 }
 
-.animation-symmetry-axis-sp4 {
+.animation-symmetry-axis-sp3 {
   transform-origin: var(--animation-origin);
-  animation: animation-symmetry-axis-sp4 linear both;
+  animation: animation-symmetry-axis-sp3 linear both;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3)
+    var(--animation-duration-symmetry) * var(--animation-axis-3) * 3
   );
 }
 
-@keyframes animation-symmetry-axis-sp4 {
+@keyframes animation-symmetry-axis-sp3 {
   0% {
     opacity: 0;
     transform: rotate(0deg);
   }
 
-  20% {
+  5% {
     opacity: 1;
-    transform: rotate(0deg);
   }
 
-  75% {
+  25% {
     opacity: 0.8;
     transform: rotate(90deg);
   }
 
-  100% {
+  35% {
     opacity: 0.4;
     transform: rotate(90deg);
+  }
+
+  60%,
+  70% {
+    opacity: 0.4;
+    transform: rotate(90deg) rotate3d(1, 0, 0, 180deg);
+  }
+
+  95%,
+  100% {
+    opacity: 0.4;
+    transform: scaleX(1) scaleY(1);
   }
 }
 
