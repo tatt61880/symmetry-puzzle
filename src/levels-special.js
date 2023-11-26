@@ -4,7 +4,14 @@
 
   const levelsSpecial = [];
   levelsSpecial.push(
-    {},
+    {
+      w: 4,
+      h: 3,
+      s: 's01-0111-02',
+      r: '221',
+      step: 3,
+      subject: 'temp',
+    },
     {
       w: 5,
       h: 3,

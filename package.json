@@ -18,8 +18,9 @@
     "htmlhint": "htmlhint ./*.html",
     "stylelint": "stylelint ./css/*.css --fix",
     "test": "node ./src/test.js",
-    "test-point": "node ./src/test.js --point",
-    "test-line": "node ./src/test.js --line",
+    "test-line": "node ./src/test.js --mode line",
+    "test-point": "node ./src/test.js --mode point",
+    "test-special": "node ./src/test.js --mode special",
     "solve": "node ./src/solve.js"
   },
   "devDependencies": {

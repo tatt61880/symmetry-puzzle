@@ -4,10 +4,7 @@
   console.assert(!isBrowser);
 
   const program = require('commander');
-  program
-    .version('2.1.0')
-    .option('-p, --point', 'point symmetry mode')
-    .option('-l, --line', 'line symmetry mode');
+  program.version('3.0.0').option('--mode <check-mode>', 'check mode');
 
   program.parse();
   const options = program.opts();
@@ -20,79 +17,36 @@
 
   process.exitCode = 0;
 
-  if (options.point) {
-    // 点対称
-    app.levels = require('./levels-point.js');
-    app.levelsEx = require('./levels-point-ex.js');
-    checkLevels();
-  } else if (options.line) {
-    // 線対称
-    app.levels = require('./levels-line.js');
-    app.levelsEx = require('./levels-line-ex.js');
-    checkLevels();
-  } else {
-    testsOther();
-    testsSolve();
+  let checkMode = null;
+  switch (options.mode) {
+    case 'line':
+      // 線対称
+      checkMode = app.Level.CHECK_MODE.LINE;
+      app.levels = require('./levels-line.js');
+      app.levelsEx = require('./levels-line-ex.js');
+      checkLevels();
+      break;
+    case 'point':
+      // 点対称
+      checkMode = app.Level.CHECK_MODE.POINT;
+      app.levels = require('./levels-point.js');
+      app.levelsEx = require('./levels-point-ex.js');
+      checkLevels();
+      break;
+    case 'special':
+      // 特殊な対称
+      checkMode = app.Level.CHECK_MODE.SPECIAL;
+      app.levels = require('./levels-special.js');
+      app.levelsEx = require('./levels-special-ex.js');
+      checkLevels();
+      break;
+    default:
+      testsOther();
+      testsSolve();
   }
 
   return;
-
-  function testsOther() {
-    if (
-      app.states.wall !== -1 ||
-      app.states.none !== 0 ||
-      app.states.targetMin !== 1 ||
-      app.states.targetMax < app.states.targetMin ||
-      app.states.otherMin <= app.states.targetMax ||
-      app.states.otherMax < app.states.otherMin ||
-      app.states.userMin <= app.states.otherMax ||
-      app.states.userMax < app.states.userMin
-    ) {
-      app.console.error('Error: Invalid states setting.');
-      process.exitCode = 1;
-    }
-  }
-
-  function testsSolve() {
-    {
-      const levelObj = {
-        w: 5,
-        h: 3,
-        s: 's001-00211',
-      };
-      const checkMode = app.Level.CHECK_MODE.POINT;
-      const level = new app.Level({ levelObj, checkMode });
-      const result = app.solveLevel('Test-1', level, {
-        maxStep: 1000,
-        timeLimit: 10,
-      });
-      if (result.replayStr !== '12210') {
-        app.console.error(
-          `Error: Unexpected solve function's result. result.replayStr = ${result.replayStr}`
-        );
-        process.exitCode = 1;
-      }
-    }
-    {
-      const levelObj = {
-        w: 5,
-        h: 3,
-        s: 's0001-00211',
-      };
-      const checkMode = app.Level.CHECK_MODE.LINE;
-      const level = new app.Level({ levelObj, checkMode });
-      const result = app.solveLevel('Test-2', level, {
-        maxStep: 1000,
-        timeLimit: 10,
-      });
-      if (result.replayStr !== '1123211') {
-        app.console.error(
-          `Error: Unexpected solve function's result. result.replayStr = ${result.replayStr}`
-        );
-        process.exitCode = 1;
-      }
-    }
-  }
+  // -------------------------------------------------------------------------
 
   function checkLevels() {
     const levelSet = new Set();
@@ -131,9 +85,6 @@
   }
 
   function testLevel(levelId, levelObj) {
-    let checkMode = null;
-    if (options.point) checkMode = app.Level.CHECK_MODE.POINT;
-    if (options.line) checkMode = app.Level.CHECK_MODE.LINE;
     const level = new app.Level({ levelObj, checkMode });
 
     if (!level.isNormalized()) {
@@ -200,6 +151,63 @@
 
     function levelInfo() {
       return `[LEVEL ${levelId}] [subject: ${levelObj.subject}]`;
+    }
+  }
+
+  function testsOther() {
+    if (
+      app.states.wall !== -1 ||
+      app.states.none !== 0 ||
+      app.states.targetMin !== 1 ||
+      app.states.targetMax < app.states.targetMin ||
+      app.states.otherMin <= app.states.targetMax ||
+      app.states.otherMax < app.states.otherMin ||
+      app.states.userMin <= app.states.otherMax ||
+      app.states.userMax < app.states.userMin
+    ) {
+      app.console.error('Error: Invalid states setting.');
+      process.exitCode = 1;
+    }
+  }
+
+  function testsSolve() {
+    {
+      const levelObj = {
+        w: 5,
+        h: 3,
+        s: 's001-00211',
+      };
+      const checkMode = app.Level.CHECK_MODE.POINT;
+      const level = new app.Level({ levelObj, checkMode });
+      const result = app.solveLevel('Test-1', level, {
+        maxStep: 1000,
+        timeLimit: 10,
+      });
+      if (result.replayStr !== '12210') {
+        app.console.error(
+          `Error: Unexpected solve function's result. result.replayStr = ${result.replayStr}`
+        );
+        process.exitCode = 1;
+      }
+    }
+    {
+      const levelObj = {
+        w: 5,
+        h: 3,
+        s: 's0001-00211',
+      };
+      const checkMode = app.Level.CHECK_MODE.LINE;
+      const level = new app.Level({ levelObj, checkMode });
+      const result = app.solveLevel('Test-2', level, {
+        maxStep: 1000,
+        timeLimit: 10,
+      });
+      if (result.replayStr !== '1123211') {
+        app.console.error(
+          `Error: Unexpected solve function's result. result.replayStr = ${result.replayStr}`
+        );
+        process.exitCode = 1;
+      }
     }
   }
 })();
