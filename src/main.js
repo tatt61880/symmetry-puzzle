@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.26e';
+  const VERSION_TEXT = 'v' + '2023.11.26f';
 
   const app = window.app;
   Object.freeze(app);
@@ -1950,19 +1950,7 @@
     }
     const base = location.href.split('?')[0];
     const levelObj = level.getLevelObj();
-    const checkMode = level.getCheckMode();
-    let checkModeStr = null;
-    switch (checkMode) {
-      case app.Level.CHECK_MODE.LINE:
-        checkModeStr = 'line';
-        break;
-      case app.Level.CHECK_MODE.POINT:
-        checkModeStr = 'point';
-        break;
-      case app.Level.CHECK_MODE.SPECIAL:
-        checkModeStr = 'special';
-        break;
-    }
+    const checkModeStr = level.getCheckModeStr();
     let url = `${base}?mode=${checkModeStr}&w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';

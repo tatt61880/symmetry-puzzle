@@ -8,7 +8,7 @@
   --animation-origin: 0 0;
   --animation-axis-1: 1;
   --animation-axis-2: 1.5;
-  --animation-axis-3: 1.5;
+  --animation-axis-3: 1.25;
   --animation-axis-4: 1;
   --animation-illegal-move: translate(0, 0);
 }

@@ -159,8 +159,8 @@
       return this.#levelObj?.r;
     }
 
-    #checkModeStr() {
-      switch (this.getCheckMode()) {
+    getCheckModeStr(checkMode = this.getCheckMode()) {
+      switch (checkMode) {
         case Level.CHECK_MODE.LINE:
           return 'line';
         case Level.CHECK_MODE.POINT:
@@ -175,7 +175,7 @@
       const h = this.getH();
       const s = this.getS();
 
-      const checkModeStr = this.#checkModeStr();
+      const checkModeStr = this.getCheckModeStr();
       const solveJsStr = `node src/solve.js --mode ${checkModeStr} -w ${w} -h ${h} -s ${s} --all --console --draw`;
       console.log(solveJsStr);
     }
@@ -188,7 +188,7 @@
       console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
       this.printSolveJsStr();
 
-      const checkModeStr = this.#checkModeStr();
+      const checkModeStr = this.getCheckModeStr();
 
       const urlStr = `${
         location.href.split('?')[0]
