@@ -552,26 +552,38 @@
         const gg = app.svg.createG();
         g.appendChild(gg);
         switch (symmetryType) {
-          case Level.SYMMETRY_TYPE.LINE1: // m (｜)
-            gg.appendChild(createAxisLine1(center, height));
-            gg.classList.add('animation-symmetry-axis');
+          case Level.SYMMETRY_TYPE.LINE1: {
+            // m (｜)
+            const line = createAxisLine1({ center, height });
+            line.classList.add('animation-symmetry-axis');
+            gg.appendChild(line);
             break;
-          case Level.SYMMETRY_TYPE.LINE2: // m (―)
-            gg.appendChild(createAxisLine2(center, width));
-            gg.classList.add('animation-symmetry-axis');
+          }
+          case Level.SYMMETRY_TYPE.LINE2: {
+            // m (―)
+            const line = createAxisLine2({ center, width });
+            line.classList.add('animation-symmetry-axis');
+            gg.appendChild(line);
             break;
-          case Level.SYMMETRY_TYPE.LINE3: // m (＼)
-            gg.appendChild(createAxisLine3(center, height));
-            gg.classList.add('animation-symmetry-axis');
+          }
+          case Level.SYMMETRY_TYPE.LINE3: {
+            // m (＼)
+            const line = createAxisLine3({ center, height });
+            line.classList.add('animation-symmetry-axis');
+            gg.appendChild(line);
             break;
-          case Level.SYMMETRY_TYPE.LINE4: // m (／)
-            gg.appendChild(createAxisLine4(center, height));
-            gg.classList.add('animation-symmetry-axis');
+          }
+          case Level.SYMMETRY_TYPE.LINE4: {
+            // m (／)
+            const line = createAxisLine4({ center, height });
+            line.classList.add('animation-symmetry-axis');
+            gg.appendChild(line);
             break;
+          }
           case Level.SYMMETRY_TYPE.PLUS1: {
             // 2mm (｜―)
-            const line1 = createAxisLine1(center, height);
-            const line2 = createAxisLine2(center, width);
+            const line1 = createAxisLine1({ center, height });
+            const line2 = createAxisLine2({ center, width });
             line1.classList.add('animation-symmetry-axis', 'axis-2-1');
             line2.classList.add('animation-symmetry-axis', 'axis-2-2');
             gg.appendChild(line1);
@@ -580,8 +592,8 @@
           }
           case Level.SYMMETRY_TYPE.PLUS2: {
             // 2mm (＼／)
-            const line3 = createAxisLine3(center, height);
-            const line4 = createAxisLine4(center, height);
+            const line3 = createAxisLine3({ center, height });
+            const line4 = createAxisLine4({ center, height });
             line3.classList.add('animation-symmetry-axis', 'axis-2-1');
             line4.classList.add('animation-symmetry-axis', 'axis-2-2');
             gg.appendChild(line3);
@@ -590,10 +602,10 @@
           }
           case Level.SYMMETRY_TYPE.PLUS3: {
             // 4mm (｜―＼／)
-            const line1 = createAxisLine1(center, height);
-            const line2 = createAxisLine2(center, width);
-            const line3 = createAxisLine3(center, height);
-            const line4 = createAxisLine4(center, height);
+            const line1 = createAxisLine1({ center, height });
+            const line2 = createAxisLine2({ center, width });
+            const line3 = createAxisLine3({ center, height });
+            const line4 = createAxisLine4({ center, height });
             line1.classList.add('animation-symmetry-axis', 'axis-4-1');
             line2.classList.add('animation-symmetry-axis', 'axis-4-2');
             line3.classList.add('animation-symmetry-axis', 'axis-4-3');
@@ -606,24 +618,23 @@
           }
           case Level.SYMMETRY_TYPE.POINT1: {
             // 2
-            const point = createAxisPoint1(center);
+            const point = createAxisPoint2({ center });
             point.classList.add('animation-symmetry-axis');
             gg.appendChild(point);
             break;
           }
           case Level.SYMMETRY_TYPE.POINT2: {
             // 4
-            const point = createAxisPoint2(center);
+            const point = createAxisPoint4({ center });
             point.classList.add('animation-symmetry-axis');
             gg.appendChild(point);
             break;
           }
           case Level.SYMMETRY_TYPE.SPECIAL1: {
             // 2mm (｜―)
-            const point = createAxisPoint1(center);
-            const line1 = createAxisLine1(center, height);
-            const line2 = createAxisLine2(center, width);
-
+            const point = createAxisPoint2({ center });
+            const line1 = createAxisLine1({ center, height });
+            const line2 = createAxisLine2({ center, width });
             point.classList.add('animation-symmetry-axis', 'axis-3-1');
             line1.classList.add('animation-symmetry-axis', 'axis-3-2');
             line2.classList.add('animation-symmetry-axis', 'axis-3-3');
@@ -634,9 +645,9 @@
           }
           case Level.SYMMETRY_TYPE.SPECIAL2: {
             // 2mm (＼／)
-            const point = createAxisPoint1(center);
-            const line3 = createAxisLine3(center, height);
-            const line4 = createAxisLine4(center, height);
+            const point = createAxisPoint2({ center });
+            const line3 = createAxisLine3({ center, height });
+            const line4 = createAxisLine4({ center, height });
             point.classList.add('animation-symmetry-axis', 'axis-3-1');
             line3.classList.add('animation-symmetry-axis', 'axis-3-2');
             line4.classList.add('animation-symmetry-axis', 'axis-3-3');
@@ -647,11 +658,11 @@
           }
           case Level.SYMMETRY_TYPE.SPECIAL3: {
             // 4mm (｜―＼／)
-            const point = createAxisPoint2(center);
-            const line1 = createAxisLine1(center, height);
-            const line2 = createAxisLine2(center, width);
-            const line3 = createAxisLine3(center, height);
-            const line4 = createAxisLine4(center, height);
+            const point = createAxisPoint4({ center });
+            const line1 = createAxisLine1({ center, height });
+            const line2 = createAxisLine2({ center, width });
+            const line3 = createAxisLine3({ center, height });
+            const line4 = createAxisLine4({ center, height });
             point.classList.add('animation-symmetry-axis', 'axis-3-1');
             line1.classList.add('animation-symmetry-axis', 'axis-3-2');
             line2.classList.add('animation-symmetry-axis', 'axis-3-2');
@@ -669,7 +680,7 @@
 
       return g;
 
-      function createAxisPoint1(center) {
+      function createAxisPoint2({ center }) {
         return app.svg.createEllipse(blockSize, {
           cx: center.x,
           cy: center.y,
@@ -679,7 +690,7 @@
         });
       }
 
-      function createAxisPoint2(center) {
+      function createAxisPoint4({ center }) {
         const x = center.x;
         const y = center.y;
         const size = 3 / 8;
@@ -694,7 +705,7 @@
         });
       }
 
-      function createAxisLine1(center, height) {
+      function createAxisLine1({ center, height }) {
         return app.svg.createLine(blockSize, {
           x1: center.x,
           y1: 0,
@@ -705,7 +716,7 @@
         });
       }
 
-      function createAxisLine2(center, width) {
+      function createAxisLine2({ center, width }) {
         return app.svg.createLine(blockSize, {
           x1: 0,
           y1: center.y,
@@ -716,7 +727,7 @@
         });
       }
 
-      function createAxisLine3(center, height) {
+      function createAxisLine3({ center, height }) {
         return app.svg.createLine(blockSize, {
           x1: center.x - center.y - 1,
           y1: 0 - 1,
@@ -727,7 +738,7 @@
         });
       }
 
-      function createAxisLine4(center, height) {
+      function createAxisLine4({ center, height }) {
         return app.svg.createLine(blockSize, {
           x1: center.x + center.y + 1,
           y1: 0 - 1,
