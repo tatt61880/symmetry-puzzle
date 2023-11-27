@@ -516,11 +516,14 @@
       }
 
       const gShadows = app.svg.createG();
-      const gElemsNotTarget = app.svg.createG();
+      const gElemsOther = app.svg.createG();
       const gElemsTarget = app.svg.createG();
       g.appendChild(gShadows);
-      g.appendChild(gElemsNotTarget);
+      g.appendChild(gElemsOther);
       g.appendChild(gElemsTarget);
+      gShadows.classList.add('group-shadow');
+      gElemsOther.classList.add('group-elems-other');
+      gElemsTarget.classList.add('group-elems-target');
 
       const stateHasEyes = {}; // 一番左上のみに目を付けます。
       for (let y = y0; y < y0 + height; ++y) {
@@ -536,7 +539,7 @@
           })();
           const gElems = app.states.isTarget(state)
             ? gElemsTarget
-            : gElemsNotTarget;
+            : gElemsOther;
           this.#addOneBlock(
             x - x0,
             y - y0,
@@ -555,6 +558,7 @@
       if (symmetryType !== null) {
         const center = this.getCenter(app.states.isTarget);
         const gg = app.svg.createG();
+        gg.classList.add('group-symmetry-axis');
         g.appendChild(gg);
         switch (symmetryType) {
           case Level.SYMMETRY_TYPE.LINE1: {
@@ -1169,6 +1173,7 @@
       const color = app.colors[state];
 
       const gElem = app.svg.createG();
+      gElem.classList.add('group-elem');
 
       {
         const flags = [];
