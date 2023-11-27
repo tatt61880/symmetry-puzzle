@@ -1463,7 +1463,7 @@
     }
 
     {
-      const eps = 1; // 隙間を埋めます。
+      const eps = 0.5; // 隙間を埋めます。
       const rx = blockSize * 0.5;
       const ry = blockSize;
       const fill = app.colors.frame;
