@@ -1348,6 +1348,7 @@
       symmetryAnimationFlag,
       showCharsFlag,
     });
+    levelSvgG.classList.add('group-level');
     levelSvgG.setAttribute('transform', `translate(${frameSize},${frameSize})`);
     levelSvgG.style.setProperty('pointer-events', 'none'); // スマホ等での操作時にtouchstartからtouchendまで連続して図形描画するため。
 
@@ -1359,6 +1360,7 @@
     const size = blockSize * dotRatio;
     const strokeDasharray = `${size} ${4 * size}`;
     const g = app.svg.createG();
+    g.classList.add('group-dot-lines');
     mainSvgG.appendChild(g);
     // 横線
     for (let y = 1; y < level.getHeight(); ++y) {
@@ -1389,6 +1391,7 @@
 
   function drawFrame(mainSvgG) {
     const g = app.svg.createG();
+    g.classList.add('group-frame');
     mainSvgG.appendChild(g);
 
     {
