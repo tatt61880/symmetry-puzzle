@@ -12,8 +12,11 @@
     return svg;
   };
 
-  svg.createG = () => {
+  svg.createG = (className = null) => {
     const g = document.createElementNS(SVG_NS, 'g');
+    if (className !== null) {
+      g.classList.add(className);
+    }
     return g;
   };
 

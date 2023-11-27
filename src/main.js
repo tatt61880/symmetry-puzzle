@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.27';
+  const VERSION_TEXT = 'v' + '2023.11.27b';
 
   const app = window.app;
   Object.freeze(app);
@@ -1348,7 +1348,7 @@
       symmetryAnimationFlag,
       showCharsFlag,
     });
-    levelSvgG.classList.add('group-level');
+    levelSvgG.classList.add('group-level-main');
     levelSvgG.setAttribute('transform', `translate(${frameSize},${frameSize})`);
     levelSvgG.style.setProperty('pointer-events', 'none'); // スマホ等での操作時にtouchstartからtouchendまで連続して図形描画するため。
 
@@ -1359,8 +1359,7 @@
     const dotRatio = 1 / 40;
     const size = blockSize * dotRatio;
     const strokeDasharray = `${size} ${4 * size}`;
-    const g = app.svg.createG();
-    g.classList.add('group-dot-lines');
+    const g = app.svg.createG('group-dot-lines');
     mainSvgG.appendChild(g);
     // 横線
     for (let y = 1; y < level.getHeight(); ++y) {
@@ -1390,8 +1389,7 @@
   }
 
   function drawFrame(mainSvgG) {
-    const g = app.svg.createG();
-    g.classList.add('group-frame');
+    const g = app.svg.createG('group-frame');
     mainSvgG.appendChild(g);
 
     {
