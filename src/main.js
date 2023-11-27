@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.27c';
+  const VERSION_TEXT = 'v' + '2023.11.28';
 
   const app = window.app;
   Object.freeze(app);
@@ -1460,6 +1460,79 @@
       g.appendChild(rectRb);
       g.appendChild(rectDb);
       g.appendChild(rectLb);
+    }
+
+    {
+      const eps = 1; // 隙間を埋めます。
+      const rx = blockSize * 0.5;
+      const ry = blockSize;
+      const fill = app.colors.frame;
+
+      switch (app.common.checkMode) {
+        case app.Level.CHECK_MODE.LINE: {
+          {
+            const sx = frameSize - eps;
+            const sy = frameSize + level.getHeight() * blockSize + eps;
+            const x = sx + blockSize * 0.5;
+            const y = sy;
+            const dx = -blockSize * 0.5;
+            const dy = -blockSize;
+            const d = `M ${sx} ${sy} L ${x} ${y} a ${rx} ${ry} 0 0 1 ${dx} ${dy} z`;
+            const path = app.svg.createPath({
+              d,
+              fill,
+            });
+            g.appendChild(path);
+          }
+          {
+            const sx = frameSize + level.getWidth() * blockSize + eps;
+            const sy = frameSize + level.getHeight() * blockSize + eps;
+            const x = sx;
+            const y = sy - blockSize;
+            const dx = -blockSize * 0.5;
+            const dy = blockSize;
+            const d = `M ${sx} ${sy} L ${x} ${y} a ${rx} ${ry} 0 0 1 ${dx} ${dy} z`;
+            const path = app.svg.createPath({
+              d,
+              fill,
+            });
+            g.appendChild(path);
+          }
+          break;
+        }
+
+        case app.Level.CHECK_MODE.POINT: {
+          {
+            const sx = frameSize + level.getWidth() * blockSize + eps;
+            const sy = frameSize - eps;
+            const x = sx;
+            const y = sy + blockSize;
+            const dx = -blockSize * 0.5;
+            const dy = -blockSize;
+            const d = `M ${sx} ${sy} L ${x} ${y} a ${rx} ${ry} 0 0 0 ${dx} ${dy} z`;
+            const path = app.svg.createPath({
+              d,
+              fill,
+            });
+            g.appendChild(path);
+          }
+          {
+            const sx = frameSize - eps;
+            const sy = frameSize + level.getHeight() * blockSize + eps;
+            const x = sx + blockSize * 0.5;
+            const y = sy;
+            const dx = -blockSize * 0.5;
+            const dy = -blockSize;
+            const d = `M ${sx} ${sy} L ${x} ${y} a ${rx} ${ry} 0 0 1 ${dx} ${dy} z`;
+            const path = app.svg.createPath({
+              d,
+              fill,
+            });
+            g.appendChild(path);
+          }
+          break;
+        }
+      }
     }
 
     if (editMode) {

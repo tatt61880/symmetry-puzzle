@@ -20,6 +20,13 @@
     return g;
   };
 
+  svg.createPath = ({ d, fill }) => {
+    const path = document.createElementNS(SVG_NS, 'path');
+    path.setAttribute('d', d);
+    if (fill) path.setAttribute('fill', fill);
+    return path;
+  };
+
   svg.createLine = (blockSize, { x1, y1, x2, y2, stroke, strokeWidth }) => {
     const line = document.createElementNS(SVG_NS, 'line');
     line.setAttribute('x1', blockSize * x1);
