@@ -15,45 +15,45 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.11.25">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.11.25">
 
-  <link rel="stylesheet" href="./css/main.css?2023.11.27b">
-  <link rel="stylesheet" href="./css/title.css?2023.11.27b">
-  <link rel="stylesheet" href="./css/game.css?2023.11.27b">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.11.27b">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.11.27b">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.11.27b">
-  <link rel="stylesheet" href="./css/animation.css?2023.11.27b">
+  <link rel="stylesheet" href="./css/main.css?2023.11.27c">
+  <link rel="stylesheet" href="./css/title.css?2023.11.27c">
+  <link rel="stylesheet" href="./css/game.css?2023.11.27c">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.11.27c">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.11.27c">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.11.27c">
+  <link rel="stylesheet" href="./css/animation.css?2023.11.27c">
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-  <script src="./src/states.js?2023.11.27b"></script>
-  <script src="./src/colors.js?2023.11.27b"></script>
-  <script src="./src/svg.js?2023.11.27b"></script>
-  <script src="./src/common.js?2023.11.27b"></script>
+  <script src="./src/states.js?2023.11.27c"></script>
+  <script src="./src/colors.js?2023.11.27c"></script>
+  <script src="./src/svg.js?2023.11.27c"></script>
+  <script src="./src/common.js?2023.11.27c"></script>
 
-  <script src="./src/class-stack.js?2023.11.27b"></script>
-  <script src="./src/class-level.js?2023.11.27b"></script>
+  <script src="./src/class-stack.js?2023.11.27c"></script>
+  <script src="./src/class-level.js?2023.11.27c"></script>
 
-  <script src="./src/class-savedata.js?2023.11.27b"></script>
-  <script src="./src/class-undo-info.js?2023.11.27b"></script>
-  <script src="./src/class-elems.js?2023.11.27b"></script>
-  <script src="./src/class-input.js?2023.11.27b"></script>
+  <script src="./src/class-savedata.js?2023.11.27c"></script>
+  <script src="./src/class-undo-info.js?2023.11.27c"></script>
+  <script src="./src/class-elems.js?2023.11.27c"></script>
+  <script src="./src/class-input.js?2023.11.27c"></script>
 
-  <script src="./src/levels-line.js?2023.11.27b"></script>
-  <script src="./src/levels-line-ex.js?2023.11.27b"></script>
-  <script src="./src/levels-point.js?2023.11.27b"></script>
-  <script src="./src/levels-point-ex.js?2023.11.27b"></script>
-  <script src="./src/levels-special.js?2023.11.27b"></script>
-  <script src="./src/levels-special-ex.js?2023.11.27b"></script>
+  <script src="./src/levels-line.js?2023.11.27c"></script>
+  <script src="./src/levels-line-ex.js?2023.11.27c"></script>
+  <script src="./src/levels-point.js?2023.11.27c"></script>
+  <script src="./src/levels-point-ex.js?2023.11.27c"></script>
+  <script src="./src/levels-special.js?2023.11.27c"></script>
+  <script src="./src/levels-special-ex.js?2023.11.27c"></script>
 
-  <script src="./src/elems.js?2023.11.27b"></script>
+  <script src="./src/elems.js?2023.11.27c"></script>
 
-  <script src="./src/solve.js?2023.11.27b"></script>
+  <script src="./src/solve.js?2023.11.27c"></script>
 
-  <script src="./src/dialog-help.js?2023.11.27b"></script>
-  <script src="./src/dialog-levels.js?2023.11.27b"></script>
-  <script src="./src/dialog-records.js?2023.11.27b"></script>
+  <script src="./src/dialog-help.js?2023.11.27c"></script>
+  <script src="./src/dialog-levels.js?2023.11.27c"></script>
+  <script src="./src/dialog-records.js?2023.11.27c"></script>
 
-  <script src="./src/analyze-url.js?2023.11.27b"></script>
-  <script src="./src/main.js?2023.11.27b"></script>
+  <script src="./src/analyze-url.js?2023.11.27c"></script>
+  <script src="./src/main.js?2023.11.27c"></script>
 </head>
 
 <body>
@@ -72,8 +72,8 @@
           data-ja="線対称パズル"></span>
         <span class="title translatable-toggle check-mode point hide-mode" data-en="Point Symmetry Puzzle"
           data-ja="点対称パズル"></span>
-        <span class="title translatable-toggle check-mode special hide-mode" data-en="Special Symmetry Puzzle"
-          data-ja="特殊な対称パズル"></span>
+        <span class="title translatable-toggle check-mode special hide-mode" data-en="Line &amp; Point Symmetry Puzzle"
+          data-ja="線＆点 対称パズル"></span>
 
         <span id="version">vXXXX.XX.XX</span>
       </div>
@@ -154,7 +154,8 @@
                         <image width="40" height="40" href="./images/logo-special.png?2023.11.25" />
                       </g>
                     </svg>
-                    <span class="translatable-toggle" data-en="Special Symmetry Puzzle" data-ja="特殊な対称パズル"></span>
+                    <span class="translatable-toggle" data-en="Line &amp; Point Symmetry Puzzle"
+                      data-ja="線＆点 対称パズル"></span>
                     <svg width="40" height="40">
                       <g transform="scale(1,-1)" style="transform-origin: center;">
                         <image width="40" height="40" href="./images/logo-special.png?2023.11.25" />
@@ -230,7 +231,7 @@
                   Examples of <span class="bold">line symmetrical shape</span>.
                 </div>
                 <div class="translatable ja" lang="ja">
-                  <span class="bold">1つの線対称図形</span>の3つの例
+                  <span class="bold">線対称図形</span>の3つの例
                 </div>
               </div>
 
@@ -308,7 +309,8 @@
               <img class="logo-image" src="./images/logo-special.png?2023.11.25" alt="special symmetry logo">
             </label>
             <div class="tab-content">
-              <span class="help-mode translatable-toggle" data-en="Special Symmetry Puzzle" data-ja="特殊な対称パズル"></span>
+              <span class="help-mode translatable-toggle" data-en="Line &amp; Point Symmetry Puzzle"
+                data-ja="線＆点 対称パズル"></span>
 
               <div class="translatable en" lang="en">
                 <p>
