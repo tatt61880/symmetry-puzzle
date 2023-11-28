@@ -1573,7 +1573,7 @@
       }
     } else {
       const fontSize = `${frameSize * 0.7}px`;
-      const fontSize2 = `${blockSize * 0.7}px`;
+      const fontSize2 = `${blockSize * 0.65}px`;
       const bestStep = level.getBestStep();
 
       let highestScorePrev = null;
