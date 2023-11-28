@@ -18,8 +18,6 @@
     app.Stack = require('./class-stack.js');
   }
 
-  let clipPathId = 0;
-
   const dirs = {
     u: 0,
     r: 1,
@@ -499,64 +497,7 @@
       width = this.#width,
       height = this.#height,
     }) {
-      const gRes = app.svg.createG();
       const g = app.svg.createG();
-      gRes.appendChild(g);
-
-      if (
-        x0 === 0 &&
-        y0 === 0 &&
-        width === this.#width &&
-        height === this.#height
-      ) {
-        let dxs = {};
-        let dys = {};
-        switch (this.getCheckMode()) {
-          case app.Level.CHECK_MODE.LINE:
-            dxs = { ul: 0.2, ur: 0.2, dr: 0.5, dl: 0.5 };
-            dys = { ul: 0.2, ur: 0.2, dr: 1.0, dl: 1.0 };
-            break;
-          case app.Level.CHECK_MODE.POINT:
-            dxs = { ul: 0.2, ur: 0.5, dr: 0.2, dl: 0.5 };
-            dys = { ul: 0.2, ur: 1.0, dr: 0.2, dl: 1.0 };
-            break;
-          case app.Level.CHECK_MODE.SPECIAL:
-            dxs = { ul: 0.5, ur: 0.5, dr: 0.5, dl: 0.5 };
-            dys = { ul: 0.5, ur: 0.5, dr: 0.5, dl: 0.5 };
-            break;
-        }
-        const fill = app.colors.frame;
-        const x1 = 0;
-        const y1 = dys.ul * blockSize;
-        const x2 = (width - dxs.ur) * blockSize;
-        const y2 = 0;
-        const x3 = width * blockSize;
-        const y3 = (height - dys.dr) * blockSize;
-        const x4 = dxs.dl * blockSize;
-        const y4 = height * blockSize;
-        const rx1 = dxs.ul * blockSize;
-        const ry1 = dys.ul * blockSize;
-        const rx2 = dxs.ur * blockSize;
-        const ry2 = dys.ur * blockSize;
-        const rx3 = dxs.dr * blockSize;
-        const ry3 = dys.dr * blockSize;
-        const rx4 = dxs.dl * blockSize;
-        const ry4 = dys.dl * blockSize;
-        const d1 = `M ${x1} ${y1} a ${rx1} ${ry1} 0 0 1 ${rx1} ${-ry1}`;
-        const d2 = `L ${x2} ${y2} a ${rx2} ${ry2} 0 0 1 ${rx2} ${ry2}`;
-        const d3 = `L ${x3} ${y3} a ${rx3} ${ry3} 0 0 1 ${-rx3} ${ry3}`;
-        const d4 = `L ${x4} ${y4} a ${rx4} ${ry4} 0 0 1 ${-rx4} ${-ry4}z`;
-        const path = app.svg.createPath({
-          d: d1 + d2 + d3 + d4,
-          fill,
-        });
-
-        const id = `clippath-${clipPathId++}`;
-        const clipPath = app.svg.createClipPath({ id });
-        clipPath.appendChild(path);
-        gRes.appendChild(clipPath);
-        g.setAttribute('clip-path', `url(#${id})`);
-      }
 
       const symmetryType = symmetryAnimationFlag
         ? this.getSymmetryType(app.states.isTarget)
@@ -744,7 +685,7 @@
         }
       }
 
-      return gRes;
+      return g;
 
       function createAxisPoint2({ center }) {
         return app.svg.createEllipse(blockSize, {

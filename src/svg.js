@@ -20,12 +20,6 @@
     return g;
   };
 
-  svg.createClipPath = ({ id }) => {
-    const clipPath = document.createElementNS(SVG_NS, 'clipPath');
-    clipPath.setAttribute('id', id);
-    return clipPath;
-  };
-
   svg.createPath = ({ d, fill }) => {
     const path = document.createElementNS(SVG_NS, 'path');
     path.setAttribute('d', d);
