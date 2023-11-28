@@ -15,56 +15,67 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.11.25">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.11.25">
 
-  <link rel="stylesheet" href="./css/main.css?2023.11.28e">
-  <link rel="stylesheet" href="./css/title.css?2023.11.28e">
-  <link rel="stylesheet" href="./css/game.css?2023.11.28e">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.11.28e">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.11.28e">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.11.28e">
-  <link rel="stylesheet" href="./css/animation.css?2023.11.28e">
+  <link rel="stylesheet" href="./css/main.css?2023.11.28f">
+  <link rel="stylesheet" href="./css/title.css?2023.11.28f">
+  <link rel="stylesheet" href="./css/game.css?2023.11.28f">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.11.28f">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.11.28f">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.11.28f">
+  <link rel="stylesheet" href="./css/animation.css?2023.11.28f">
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-  <script src="./src/states.js?2023.11.28e"></script>
-  <script src="./src/colors.js?2023.11.28e"></script>
-  <script src="./src/svg.js?2023.11.28e"></script>
-  <script src="./src/common.js?2023.11.28e"></script>
+  <script src="./src/states.js?2023.11.28f"></script>
+  <script src="./src/colors.js?2023.11.28f"></script>
+  <script src="./src/svg.js?2023.11.28f"></script>
+  <script src="./src/common.js?2023.11.28f"></script>
 
-  <script src="./src/class-stack.js?2023.11.28e"></script>
-  <script src="./src/class-level.js?2023.11.28e"></script>
+  <script src="./src/class-stack.js?2023.11.28f"></script>
+  <script src="./src/class-level.js?2023.11.28f"></script>
 
-  <script src="./src/class-savedata.js?2023.11.28e"></script>
-  <script src="./src/class-undo-info.js?2023.11.28e"></script>
-  <script src="./src/class-elems.js?2023.11.28e"></script>
-  <script src="./src/class-input.js?2023.11.28e"></script>
+  <script src="./src/class-savedata.js?2023.11.28f"></script>
+  <script src="./src/class-undo-info.js?2023.11.28f"></script>
+  <script src="./src/class-elems.js?2023.11.28f"></script>
+  <script src="./src/class-input.js?2023.11.28f"></script>
 
-  <script src="./src/levels-line.js?2023.11.28e"></script>
-  <script src="./src/levels-line-ex.js?2023.11.28e"></script>
-  <script src="./src/levels-point.js?2023.11.28e"></script>
-  <script src="./src/levels-point-ex.js?2023.11.28e"></script>
-  <script src="./src/levels-special.js?2023.11.28e"></script>
-  <script src="./src/levels-special-ex.js?2023.11.28e"></script>
+  <script src="./src/levels-line.js?2023.11.28f"></script>
+  <script src="./src/levels-line-ex.js?2023.11.28f"></script>
+  <script src="./src/levels-point.js?2023.11.28f"></script>
+  <script src="./src/levels-point-ex.js?2023.11.28f"></script>
+  <script src="./src/levels-special.js?2023.11.28f"></script>
+  <script src="./src/levels-special-ex.js?2023.11.28f"></script>
 
-  <script src="./src/elems.js?2023.11.28e"></script>
+  <script src="./src/elems.js?2023.11.28f"></script>
 
-  <script src="./src/solve.js?2023.11.28e"></script>
+  <script src="./src/solve.js?2023.11.28f"></script>
 
-  <script src="./src/dialog-help.js?2023.11.28e"></script>
-  <script src="./src/dialog-levels.js?2023.11.28e"></script>
-  <script src="./src/dialog-records.js?2023.11.28e"></script>
+  <script src="./src/dialog-help.js?2023.11.28f"></script>
+  <script src="./src/dialog-levels.js?2023.11.28f"></script>
+  <script src="./src/dialog-records.js?2023.11.28f"></script>
 
-  <script src="./src/analyze-url.js?2023.11.28e"></script>
-  <script src="./src/main.js?2023.11.28e"></script>
+  <script src="./src/analyze-url.js?2023.11.28f"></script>
+  <script src="./src/main.js?2023.11.28f"></script>
 </head>
 
 <body>
   <div id="contents" class="user-select-none">
     <header id="header">
       <div id="top" class="flex">
-        <img id="icon-app" alt="icon" src="./images/icon-app.png?2023.11.25" class="check-mode none">
-        <img id="icon-point" alt="icon" src="./images/icon-point.png?2023.11.25" class="check-mode point hide-mode">
-        <img id="icon-line" alt="icon" src="./images/icon-line.png?2023.11.25" class="check-mode line hide-mode">
-        <img id="icon-special" alt="icon" src="./images/icon-special.png?2023.11.25"
-          class="check-mode special hide-mode">
+        <svg width="40" height="40" id="icon-app" class="check-mode none">
+          <rect x="0" y="0" width="40" height="40" fill="#ffeedd" stroke="#ffbb77" stroke-width="4" />
+          <image href="./images/logo-app.png?2023.11.25" width="40" height="40" />
+        </svg>
+        <svg width="40" height="40" id="icon-line" class="check-mode line hide-mode">
+          <rect x="0" y="0" width="40" height="40" fill="#ffeedd" stroke="#ffbb77" stroke-width="4" />
+          <image href="./images/logo-line.png?2023.11.25" width="40" height="40" />
+        </svg>
+        <svg width="40" height="40" id="icon-point" class="check-mode point hide-mode">
+          <rect x="0" y="0" width="40" height="40" fill="#ffeedd" stroke="#ffbb77" stroke-width="4" />
+          <image href="./images/logo-point.png?2023.11.25" width="40" height="40" />
+        </svg>
+        <svg width="40" height="40" id="icon-special" class="check-mode special hide-mode">
+          <rect x="0" y="0" width="40" height="40" fill="#ffeedd" stroke="#ffbb77" stroke-width="4" />
+          <image href="./images/logo-special.png?2023.11.25" width="40" height="40" />
+        </svg>
 
         <span id="app-title" class="title translatable-toggle check-mode none" data-en="Symmetry Puzzle"
           data-ja="対称パズル"></span>
@@ -659,10 +670,10 @@
           <g id="edit_f" class="button active-hover" transform="translate(350,120)"></g>
 
           <g transform="translate(11,170)">
-            <image href="./images/icon-line.png?2023.11.25" width="40" height="40" class="check-mode line hide-mode" />
-            <image href="./images/icon-point.png?2023.11.25" width="40" height="40"
+            <image href="./images/logo-line.png?2023.11.25" width="40" height="40" class="check-mode line hide-mode" />
+            <image href="./images/logo-point.png?2023.11.25" width="40" height="40"
               class="check-mode point hide-mode" />
-            <image href="./images/icon-special.png?2023.11.25" width="40" height="40"
+            <image href="./images/logo-special.png?2023.11.25" width="40" height="40"
               class="check-mode special hide-mode" />
           </g>
 

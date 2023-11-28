@@ -497,12 +497,12 @@
       let dys = {};
       switch (app.common.checkMode) {
         case app.Level.CHECK_MODE.LINE:
-          dxs = { ul: 0.3, ur: 0.3, dr: 0.6, dl: 0.6 };
-          dys = { ul: 0.3, ur: 0.3, dr: 1.0, dl: 1.0 };
+          dxs = { ul: 0.5, ur: 0.5, dr: 1.0, dl: 1.0 };
+          dys = { ul: 0.5, ur: 0.5, dr: 1.0, dl: 1.0 };
           break;
         case app.Level.CHECK_MODE.POINT:
-          dxs = { ul: 0.3, ur: 0.6, dr: 0.3, dl: 0.6 };
-          dys = { ul: 0.3, ur: 1.0, dr: 0.3, dl: 1.0 };
+          dxs = { ul: 0.5, ur: 1.0, dr: 0.5, dl: 1.0 };
+          dys = { ul: 0.5, ur: 1.0, dr: 0.5, dl: 1.0 };
           break;
         case app.Level.CHECK_MODE.SPECIAL:
           dxs = { ul: 0.6, ur: 0.6, dr: 0.6, dl: 0.6 };
