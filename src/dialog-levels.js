@@ -284,24 +284,21 @@
       g.classList.add('level-select');
       elems.levels.dialogSvg.appendChild(g);
 
+      let backgroundColor;
       if (String(id) === String(app.common.levelId)) {
-        const rect = app.svg.createRect(1, {
-          x: 0,
-          y: 0,
-          width: LEVEL_SELECT_WIDTH,
-          height: LEVEL_SELECT_HEIGHT,
-          fill: app.colors.levelsDialogCurrentLevel,
-        });
-        rect.setAttribute('rx', '5');
-        rect.setAttribute('ry', '5');
-        g.appendChild(rect);
+        backgroundColor = app.colors.levelsDialogCurrentLevel;
       } else {
+        backgroundColor = '#ffffff';
+      }
+
+      {
+        // 背景
         const rect = app.svg.createRect(1, {
           x: 0,
           y: 0,
           width: LEVEL_SELECT_WIDTH,
           height: LEVEL_SELECT_HEIGHT,
-          fill: '#ffffff',
+          fill: backgroundColor,
           stroke: '#dddddd',
         });
         rect.setAttribute('rx', '5');
@@ -340,7 +337,10 @@
           (LEVEL_SELECT_WIDTH - 8) / level.getWidth(),
           (LEVEL_SELECT_HEIGHT - 25) / level.getHeight()
         );
-        const levelSvgG = level.createSvgG({ blockSize });
+        const levelSvgG = level.createSvgG({
+          blockSize,
+          edgeColor: backgroundColor,
+        });
         levelSvgG.setAttribute(
           'transform',
           `translate(${

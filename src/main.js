@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.28d';
+  const VERSION_TEXT = 'v' + '2023.11.28e';
 
   const app = window.app;
   Object.freeze(app);
@@ -1347,6 +1347,7 @@
       blockSize,
       symmetryAnimationFlag,
       showCharsFlag,
+      edgeColor: app.colors.frame,
     });
     levelSvgG.classList.add('group-level-main');
     levelSvgG.setAttribute('transform', `translate(${frameSize},${frameSize})`);
@@ -1460,97 +1461,6 @@
       g.appendChild(rectRb);
       g.appendChild(rectDb);
       g.appendChild(rectLb);
-    }
-
-    {
-      const eps = 0.5; // 隙間を埋めます。
-      const fill = app.colors.frame;
-
-      let dxs = {};
-      let dys = {};
-      switch (app.common.checkMode) {
-        case app.Level.CHECK_MODE.LINE:
-          dxs = { ul: 0.2, ur: 0.2, dr: 0.5, dl: 0.5 };
-          dys = { ul: 0.2, ur: 0.2, dr: 1.0, dl: 1.0 };
-          break;
-        case app.Level.CHECK_MODE.POINT:
-          dxs = { ul: 0.2, ur: 0.5, dr: 0.2, dl: 0.5 };
-          dys = { ul: 0.2, ur: 1.0, dr: 0.2, dl: 1.0 };
-          break;
-        case app.Level.CHECK_MODE.SPECIAL:
-          dxs = { ul: 0.5, ur: 0.5, dr: 0.5, dl: 0.5 };
-          dys = { ul: 0.5, ur: 0.5, dr: 0.5, dl: 0.5 };
-          break;
-      }
-
-      // 左上
-      {
-        const sx = frameSize - eps;
-        const sy = frameSize - eps;
-        const x = sx;
-        const y = sy + blockSize * dys.ul;
-        const dx = blockSize * dxs.ul;
-        const dy = -blockSize * dys.ul;
-        const rx = blockSize * dxs.ul;
-        const ry = blockSize * dys.ul;
-        const d = `M ${sx} ${sy} L ${x} ${y} a ${rx} ${ry} 0 0 1 ${dx} ${dy} z`;
-        const path = app.svg.createPath({
-          d,
-          fill,
-        });
-        g.appendChild(path);
-      }
-      // 右上
-      {
-        const sx = frameSize + level.getWidth() * blockSize + eps;
-        const sy = frameSize - eps;
-        const x = sx;
-        const y = sy + blockSize * dys.ur;
-        const dx = -blockSize * dxs.ur;
-        const dy = -blockSize * dys.ur;
-        const rx = blockSize * dxs.ur;
-        const ry = blockSize * dys.ur;
-        const d = `M ${sx} ${sy} L ${x} ${y} a ${rx} ${ry} 0 0 0 ${dx} ${dy} z`;
-        const path = app.svg.createPath({
-          d,
-          fill,
-        });
-        g.appendChild(path);
-      }
-      // 右下
-      {
-        const sx = frameSize + level.getWidth() * blockSize + eps;
-        const sy = frameSize + level.getHeight() * blockSize + eps;
-        const x = sx;
-        const y = sy - blockSize * dys.dr;
-        const dx = -blockSize * dxs.dr;
-        const dy = blockSize * dys.dr;
-        const rx = blockSize * dxs.dr;
-        const ry = blockSize * dys.dr;
-        const d = `M ${sx} ${sy} L ${x} ${y} a ${rx} ${ry} 0 0 1 ${dx} ${dy} z`;
-        const path = app.svg.createPath({
-          d,
-          fill,
-        });
-        g.appendChild(path);
-      }
-      // 左下
-      {
-        const sx = frameSize - eps;
-        const sy = frameSize + level.getHeight() * blockSize + eps;
-        const x = sx + blockSize * dxs.dl;
-        const y = sy;
-        const dx = -blockSize * dxs.dl;
-        const dy = -blockSize * dys.dl;
-        const rx = blockSize * dxs.dl;
-        const ry = blockSize * dys.dl;
-        const d = `M ${sx} ${sy} L ${x} ${y} a ${rx} ${ry} 0 0 1 ${dx} ${dy} z`;
-        const path = app.svg.createPath({
-          d,
-          fill,
-        });
-        g.appendChild(path);
-      }
     }
 
     if (editMode) {

@@ -41,15 +41,15 @@
     }
 
     &#button-play-line {
-      border-radius: 10% 10% 25% 25% / 10% 10% 50% 50%;
+      border-radius: 15% 15% 30% 30% / 15% 15% 50% 50%;
     }
 
     &#button-play-point {
-      border-radius: 10% 25% / 10% 50%;
+      border-radius: 15% 30% / 15% 50%;
     }
 
     &#button-play-special {
-      border-radius: 25%;
+      border-radius: 30%;
     }
 
     &#button-records {
