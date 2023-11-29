@@ -17,8 +17,8 @@
     text: '#888888',
   };
   colors[app.states.wall] = {
-    fill: '#222222',
-    stroke: '#666666',
+    fill: '#222244',
+    stroke: '#444466',
     text: '#bbbbbb',
   };
   for (let i = app.states.targetMin; i <= app.states.targetMax; ++i) {
