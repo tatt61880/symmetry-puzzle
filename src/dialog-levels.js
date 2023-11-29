@@ -235,8 +235,8 @@
       const rect = app.svg.createRect(1, {
         x: 1,
         y: 1,
-        width: LEVEL_SELECT_WIDTH - 2,
-        height: LEVEL_SELECT_HEIGHT - 2,
+        width: LEVEL_SELECT_WIDTH,
+        height: LEVEL_SELECT_HEIGHT,
         fill: 'none',
         stroke: app.colors.levelsDialogSelect,
       });
@@ -322,8 +322,8 @@
       }
       if (highestScore !== null) {
         const text = app.svg.createText(1, {
-          x: LEVEL_SELECT_WIDTH - 5,
-          y: 9,
+          x: LEVEL_SELECT_WIDTH - 3,
+          y: 10,
           text: highestScore,
           fill: app.common.getStepColor(highestScore, bestStep),
         });
