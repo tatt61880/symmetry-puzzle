@@ -380,6 +380,15 @@
                 );
               }
             }
+
+            // 最短ステップの登録情報が間違っているときに気付けるように。
+            if (level.getBestStep() !== undefined) {
+              if (solutionStepFirst < level.getBestStep()) {
+                console.error(
+                  `Error: Level-${levelId}. Best step should be ${solutionStepFirst} steps`
+                );
+              }
+            }
             for (const shapeStrInfo of shapeStrInfoArray) {
               app.console.info(`${shapeStrInfo.step} steps`);
               app.console.log(shapeStrInfo.str);
