@@ -617,11 +617,6 @@
       g.appendChild(gElemsOther);
       g.appendChild(gElemsTarget);
 
-      if (edgeColor !== null) {
-        const gEdge = this.#createEdge(blockSize, edgeColor);
-        g.appendChild(gEdge);
-      }
-
       const stateHasEyes = {}; // 一番左上のみに目を付けます。
       for (let y = y0; y < y0 + height; ++y) {
         for (let x = x0; x < x0 + width; ++x) {
@@ -783,6 +778,11 @@
             break;
           }
         }
+      }
+
+      if (edgeColor !== null) {
+        const gEdge = this.#createEdge(blockSize, edgeColor);
+        g.appendChild(gEdge);
       }
 
       return g;
