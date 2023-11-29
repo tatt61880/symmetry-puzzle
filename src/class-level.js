@@ -490,7 +490,7 @@
     #createEdge(blockSize, edgeColor) {
       const g = app.svg.createG();
 
-      const eps = 0.01; // 隙間を埋めます。
+      const eps = blockSize === 0 ? 1 : 0.5 / blockSize; // 隙間を埋めます。
       const fill = edgeColor;
 
       let dxs = {};
@@ -514,13 +514,13 @@
       {
         const sx = -eps * blockSize;
         const sy = -eps * blockSize;
-        const x = sx;
-        const y = sy + blockSize * dys.ul;
+        const x = 0;
+        const y = blockSize * dys.ul;
         const dx = blockSize * dxs.ul;
         const dy = -blockSize * dys.ul;
         const rx = blockSize * dxs.ul;
         const ry = blockSize * dys.ul;
-        const d = `M ${sx} ${sy} L ${x} ${y} a ${rx} ${ry} 0 0 1 ${dx} ${dy} z`;
+        const d = `M ${sx} ${sy} l ${x} ${y} a ${rx} ${ry} 0 0 1 ${dx} ${dy} z`;
         const path = app.svg.createPath({
           d,
           fill,
@@ -531,13 +531,13 @@
       {
         const sx = (this.getWidth() + eps) * blockSize;
         const sy = -eps * blockSize;
-        const x = sx;
-        const y = sy + blockSize * dys.ur;
+        const x = 0;
+        const y = blockSize * dys.ur;
         const dx = -blockSize * dxs.ur;
         const dy = -blockSize * dys.ur;
         const rx = blockSize * dxs.ur;
         const ry = blockSize * dys.ur;
-        const d = `M ${sx} ${sy} L ${x} ${y} a ${rx} ${ry} 0 0 0 ${dx} ${dy} z`;
+        const d = `M ${sx} ${sy} l ${x} ${y} a ${rx} ${ry} 0 0 0 ${dx} ${dy} z`;
         const path = app.svg.createPath({
           d,
           fill,
@@ -548,13 +548,13 @@
       {
         const sx = (this.getWidth() + eps) * blockSize;
         const sy = (this.getHeight() + eps) * blockSize;
-        const x = sx;
-        const y = sy - blockSize * dys.dr;
+        const x = 0;
+        const y = -blockSize * dys.dr;
         const dx = -blockSize * dxs.dr;
         const dy = blockSize * dys.dr;
         const rx = blockSize * dxs.dr;
         const ry = blockSize * dys.dr;
-        const d = `M ${sx} ${sy} L ${x} ${y} a ${rx} ${ry} 0 0 1 ${dx} ${dy} z`;
+        const d = `M ${sx} ${sy} l ${x} ${y} a ${rx} ${ry} 0 0 1 ${dx} ${dy} z`;
         const path = app.svg.createPath({
           d,
           fill,
@@ -565,13 +565,13 @@
       {
         const sx = -eps * blockSize;
         const sy = (this.getHeight() + eps) * blockSize;
-        const x = sx + blockSize * dxs.dl;
-        const y = sy;
+        const x = blockSize * dxs.dl;
+        const y = 0;
         const dx = -blockSize * dxs.dl;
         const dy = -blockSize * dys.dl;
         const rx = blockSize * dxs.dl;
         const ry = blockSize * dys.dl;
-        const d = `M ${sx} ${sy} L ${x} ${y} a ${rx} ${ry} 0 0 1 ${dx} ${dy} z`;
+        const d = `M ${sx} ${sy} l ${x} ${y} a ${rx} ${ry} 0 0 1 ${dx} ${dy} z`;
         const path = app.svg.createPath({
           d,
           fill,
