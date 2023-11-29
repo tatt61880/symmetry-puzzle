@@ -490,7 +490,7 @@
     #createEdge(blockSize, edgeColor) {
       const g = app.svg.createG();
 
-      const eps = 0.5; // 隙間を埋めます。
+      const eps = 0.01; // 隙間を埋めます。
       const fill = edgeColor;
 
       let dxs = {};
@@ -512,8 +512,8 @@
 
       // 左上
       {
-        const sx = -eps;
-        const sy = -eps;
+        const sx = -eps * blockSize;
+        const sy = -eps * blockSize;
         const x = sx;
         const y = sy + blockSize * dys.ul;
         const dx = blockSize * dxs.ul;
@@ -529,8 +529,8 @@
       }
       // 右上
       {
-        const sx = this.getWidth() * blockSize + eps;
-        const sy = -eps;
+        const sx = (this.getWidth() + eps) * blockSize;
+        const sy = -eps * blockSize;
         const x = sx;
         const y = sy + blockSize * dys.ur;
         const dx = -blockSize * dxs.ur;
@@ -546,8 +546,8 @@
       }
       // 右下
       {
-        const sx = this.getWidth() * blockSize + eps;
-        const sy = this.getHeight() * blockSize + eps;
+        const sx = (this.getWidth() + eps) * blockSize;
+        const sy = (this.getHeight() + eps) * blockSize;
         const x = sx;
         const y = sy - blockSize * dys.dr;
         const dx = -blockSize * dxs.dr;
@@ -563,8 +563,8 @@
       }
       // 左下
       {
-        const sx = -eps;
-        const sy = this.getHeight() * blockSize + eps;
+        const sx = -eps * blockSize;
+        const sy = (this.getHeight() + eps) * blockSize;
         const x = sx + blockSize * dxs.dl;
         const y = sy;
         const dx = -blockSize * dxs.dl;
