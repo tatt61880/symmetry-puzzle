@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.30';
+  const VERSION_TEXT = 'v' + '2023.11.29';
 
   const app = window.app;
   Object.freeze(app);
@@ -1393,6 +1393,11 @@
     const g = app.svg.createG('group-frame');
     mainSvgG.appendChild(g);
 
+    const wallStrShift =
+      app.colors[app.states.wall].fill === app.colors[app.states.wall].stroke
+        ? 0
+        : 0.05;
+
     {
       const frameColor = app.colors.frame;
       const rectU = app.svg.createRect(1, {
@@ -1581,7 +1586,8 @@
       // クリア時のメッセージ
       if (completeFlag) {
         const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
-        const height = (level.getHeight() - 0.5 + 0.05) * blockSize + frameSize;
+        const height =
+          (level.getHeight() - 0.5 + wallStrShift) * blockSize + frameSize;
         const text = app.svg.createText(blockSize, {
           x: width / blockSize,
           y: height / blockSize,
@@ -1658,7 +1664,7 @@
         if (symmetryFlag) {
           const text = app.svg.createText(blockSize, {
             x: 0,
-            y: 0.5 + 0.05,
+            y: 0.5 + wallStrShift,
             text: 'Not connected',
             fill: 'white',
           });
@@ -1732,7 +1738,7 @@
           highestScore < highestScorePrev
         ) {
           const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
-          const height = frameSize + (0.5 - 0.05) * blockSize;
+          const height = frameSize + (0.5 - wallStrShift) * blockSize;
           const text = app.svg.createText(blockSize, {
             x: width / blockSize,
             y: height / blockSize,
