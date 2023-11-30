@@ -841,10 +841,37 @@
     app.savedata.saveLang(lang);
   }
 
+  function initBlock() {
+    for (const elem of document.getElementsByClassName('user-block-right')) {
+      elem.textContent = '';
+
+      const level = new app.Level({
+        levelObj: { w: 2, h: 1, s: 's' },
+      });
+      level.updateMoveFlags(1, 0);
+      level.execMoveFlags();
+
+      const blockSize = 30;
+      const g = level.createSvgG({
+        blockSize,
+        drawBackground: false,
+        x0: 2,
+        y0: 1,
+        width: 1,
+        height: 1,
+      });
+
+      elem.setAttribute('width', blockSize);
+      elem.setAttribute('height', blockSize);
+      elem.appendChild(g);
+    }
+  }
+
   function onloadApp() {
     elems.version.textContent = VERSION_TEXT;
 
     initElems();
+    initBlock();
     updateEditMode(false);
 
     window.onresize = resizeWindow;

@@ -1258,14 +1258,14 @@
     #createOneBlock(
       x,
       y,
-      stateX,
-      stateY,
+      sX,
+      sY,
       blockSize,
       symmetryType,
       showCharsFlag,
       eyeFlag
     ) {
-      const state = this.getState(stateX, stateY);
+      const state = this.getState(sX, sY);
       const color = app.colors[state];
 
       const gElem = app.svg.createG('group-elem');
@@ -1275,8 +1275,8 @@
         for (let dir = 0; dir < 8; ++dir) {
           const dx = dxs[dir];
           const dy = dys[dir];
-          if (this.#isInArea(stateX + dx, stateY + dy)) {
-            flags[dir] = this.getState(stateX + dx, stateY + dy) === state;
+          if (this.#isInArea(sX + dx, sY + dy)) {
+            flags[dir] = this.getState(sX + dx, sY + dy) === state;
           } else {
             flags[dir] = true;
           }
@@ -1671,8 +1671,8 @@
           }
 
           if (eyeFlag) {
-            const dx = this.#moveFlags[y][x] ? this.#moveDx * 0.05 : 0;
-            const dy = this.#moveFlags[y][x] ? this.#moveDy * 0.05 : 0;
+            const dx = this.#moveFlags[sY][sX] ? this.#moveDx * 0.05 : 0;
+            const dy = this.#moveFlags[sY][sX] ? this.#moveDy * 0.05 : 0;
             const eyeLeft = createEye(state, x, y, dx, dy, 0.3, 0.45);
             const eyeRight = createEye(state, x, y, dx, dy, 0.7, 0.45);
             if (showCharsFlag) {
@@ -2029,8 +2029,8 @@
     #addOneBlock(
       x,
       y,
-      stateX,
-      stateY,
+      sX,
+      sY,
       blockSize,
       symmetryType,
       showCharsFlag,
@@ -2044,8 +2044,8 @@
       const elem = this.#createOneBlock(
         x,
         y,
-        stateX,
-        stateY,
+        sX,
+        sY,
         blockSize,
         symmetryType,
         showCharsFlag,
