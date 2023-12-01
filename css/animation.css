@@ -36,11 +36,11 @@
 
 @keyframes animation-shadow {
   0% {
-    opacity: 0.7;
+    opacity: 0.6;
   }
 
   30% {
-    opacity: 0.5;
+    opacity: 0.3;
   }
 
   100% {

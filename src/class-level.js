@@ -2080,7 +2080,7 @@
           elem.classList.add('animation-block');
 
           // 移動時のエフェクト（残像）
-          if (!this.#moveFlags[y - dy][x - dx]) {
+          {
             const gShadow = app.svg.createG();
             {
               const dd = 0.2;
