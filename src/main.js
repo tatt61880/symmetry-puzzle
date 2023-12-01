@@ -1361,7 +1361,6 @@
         editMode || settings.debugFlag || temporaryShowCharsFlag;
       drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag);
     }
-    level.resetMoveFlags();
 
     drawDotLines(mainSvgG);
     drawFrame(mainSvgG);

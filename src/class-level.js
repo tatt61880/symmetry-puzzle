@@ -271,7 +271,7 @@
           x++;
         }
       }
-      this.resetMoveFlags();
+      this.#resetMoveFlags();
     }
 
     // 正規化
@@ -405,7 +405,7 @@
       return this.#checkMode;
     }
 
-    resetMoveFlags() {
+    #resetMoveFlags() {
       for (let y = 0; y < this.#height; ++y) {
         this.#moveFlags[y] = [];
         for (let x = 0; x < this.#width; ++x) {
@@ -416,7 +416,7 @@
 
     #updateMoveFlags(dx, dy, userMax = app.states.userMax) {
       let moveFlag = false;
-      this.resetMoveFlags();
+      this.#resetMoveFlags();
 
       loop: for (let i = app.states.userMin; i <= userMax; ++i) {
         if (!this.#exist((x) => x === i)) continue;
@@ -793,6 +793,7 @@
         g.appendChild(gEdge);
       }
 
+      this.#resetMoveFlags();
       return g;
 
       function createAxisPoint2({ center }) {
