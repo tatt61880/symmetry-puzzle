@@ -113,23 +113,21 @@
 
     let index = 0;
     for (const dirChar of levelObj.r) {
-      index++;
-      const dir = Number(dirChar);
-      const dx = dxs[dir];
-      const dy = dys[dir];
-      const moveFlag = level.updateMoveFlags(dx, dy);
-
-      if (!moveFlag) {
-        app.console.error(`Error: ${levelInfo()} moveFlag failed.`);
-        return false;
-      }
-
       if (level.isCompleted()) {
         app.console.error(`Error: ${levelInfo()} Completed on the way.`);
         return false;
       }
 
-      level.execMoveFlags();
+      index++;
+      const dir = Number(dirChar);
+      const dx = dxs[dir];
+      const dy = dys[dir];
+
+      const moveFlag = level.move(dx, dy);
+      if (!moveFlag) {
+        app.console.error(`Error: ${levelInfo()} moveFlag failed.`);
+        return false;
+      }
 
       const stateStr = level.getS();
       if (stateStrMap[stateStr] !== undefined) {

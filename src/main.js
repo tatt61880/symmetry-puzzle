@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.11.30b';
+  const VERSION_TEXT = 'v' + '2023.12.01';
 
   const app = window.app;
   Object.freeze(app);
@@ -87,13 +87,12 @@
     const dx = dxs[dir];
     const dy = dys[dir];
 
-    const moveFlag = level.updateMoveFlags(dx, dy);
+    const moveFlag = level.move(dx, dy);
     if (moveFlag) {
       document.documentElement.style.setProperty(
         '--animation-transform',
         `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`
       );
-      level.execMoveFlags();
       addUndo(dir);
     }
     return moveFlag;
@@ -848,8 +847,7 @@
       const level = new app.Level({
         levelObj: { w: 2, h: 1, s: 's' },
       });
-      level.updateMoveFlags(1, 0);
-      level.execMoveFlags();
+      level.move(1, 0);
 
       const blockSize = 30;
       const g = level.createSvgG({

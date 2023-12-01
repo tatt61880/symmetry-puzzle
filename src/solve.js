@@ -248,13 +248,12 @@
         const dx = dxs[dir];
         const dy = dys[dir];
 
-        const moveFlag = level.updateMoveFlags(dx, dy, userMax);
+        const moveFlag = level.move(dx, dy, userMax);
         if (!moveFlag) {
           const errorMessage = 'Error: moveFlag failed on prefix-step.';
           return { replayStr: null, errorMessage };
         }
 
-        level.execMoveFlags();
         const stateStr = level.getS();
         if (stateStrMap.has(stateStr)) {
           app.console.warn('Warning: Same state exists.');
@@ -303,10 +302,8 @@
 
             const dx = dxs[dir];
             const dy = dys[dir];
-            const moveFlag = level.updateMoveFlags(dx, dy, userMax);
+            const moveFlag = level.move(dx, dy, userMax);
             if (!moveFlag) continue;
-
-            level.execMoveFlags();
 
             if (options.normalize) level.normalize();
             const stateStr = level.getS();

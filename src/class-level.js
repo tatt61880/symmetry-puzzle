@@ -414,7 +414,7 @@
       }
     }
 
-    updateMoveFlags(dx, dy, userMax = app.states.userMax) {
+    #updateMoveFlags(dx, dy, userMax = app.states.userMax) {
       let moveFlag = false;
       this.resetMoveFlags();
 
@@ -485,6 +485,14 @@
           }
         }
       }
+    }
+
+    move(dx, dy) {
+      const moveFlag = this.#updateMoveFlags(dx, dy);
+      if (moveFlag) {
+        this.execMoveFlags();
+      }
+      return moveFlag;
     }
 
     #createEdge(blockSize, edgeColor) {
