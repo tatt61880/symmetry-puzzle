@@ -29,7 +29,7 @@
       langJa: 'setting-lang-ja',
       langEn: 'setting-lang-en',
 
-      tabSymmetry: 'help-tab-symmetry',
+      tabApp: 'help-tab-app',
       tabLine: 'help-tab-line',
       tabPoint: 'help-tab-point',
       tabSpecial: 'help-tab-special',

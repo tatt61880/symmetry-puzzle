@@ -114,6 +114,22 @@
     }
   }
 
+  #help-tab-app + label {
+    border-radius: 10px;
+  }
+
+  #help-tab-line + label {
+    border-radius: 10px 10px 20px 20px;
+  }
+
+  #help-tab-point + label {
+    border-radius: 10px 20px;
+  }
+
+  #help-tab-special + label {
+    border-radius: 15px;
+  }
+
   .logo-image {
     width: 50px;
   }

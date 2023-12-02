@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.01';
+  const VERSION_TEXT = 'v' + '2023.12.02';
 
   const app = window.app;
   Object.freeze(app);
@@ -206,7 +206,7 @@
           app.dialog.help.close();
           break;
         case '+':
-          elems.help.tabSymmetry.checked = true;
+          elems.help.tabApp.checked = true;
           break;
         case 't':
           elems.help.tabLine.checked = true;

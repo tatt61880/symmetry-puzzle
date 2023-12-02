@@ -67,7 +67,7 @@
         elems.help.tabSpecial.checked = true;
         break;
       default:
-        elems.help.tabSymmetry.checked = true;
+        elems.help.tabApp.checked = true;
     }
 
     elems.help.dialog.showModal();
