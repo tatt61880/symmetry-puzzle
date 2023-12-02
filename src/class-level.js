@@ -1144,7 +1144,6 @@
 
       const isPoint2 = this.#isPoint2(isX, minX, maxX, minY, maxY);
       const isLine1 = this.#isLine1(isX, minX, maxX, minY, maxY);
-      const isLine3 = this.#isLine3(isX, minX, maxX, minY, maxY);
       if (isPoint2) {
         if (isLine1) {
           return Level.SYMMETRY_TYPE.SPECIAL3;
@@ -1153,6 +1152,7 @@
         if (isLine1) {
           return Level.SYMMETRY_TYPE.SPECIAL1;
         }
+        const isLine3 = this.#isLine3(isX, minX, maxX, minY, maxY);
         if (isLine3) {
           return Level.SYMMETRY_TYPE.SPECIAL2;
         }
