@@ -312,9 +312,11 @@
         // Ctrl + V: クリップボード内のオブジェクトデータを実行
         case 'v': {
           let clip = await navigator.clipboard.readText();
-          clip = clip.replace(/(\w+):/g, '"$1":');
-          clip = clip.replace(/[\d\D]*?({.*})[\d\D]*/, '$1');
           clip = clip.replaceAll("'", '"');
+          clip = clip.replace(/\s/g, ' ');
+          clip = clip.replace(/(\w+):/g, '"$1":');
+          clip = clip.replace(/,\s*}/g, '}');
+          clip = clip.replace(/.*?({.*}).*/, '$1');
           const levelObj = JSON.parse(clip);
           onloadObj(levelObj);
           updateAutoMode(true);
