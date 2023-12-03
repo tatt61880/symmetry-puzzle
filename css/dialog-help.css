@@ -41,13 +41,14 @@
       outline: none;
 
       &:hover {
-        background-color: #cccccc;
+        opacity: 0.8;
       }
 
       &.active {
         font-size: 1rem;
         color: #000055;
         background-color: #c0cbff;
+        opacity: 1;
       }
     }
   }
@@ -75,7 +76,7 @@
     background-color: #dddddd;
 
     &:hover {
-      background-color: #cccccc;
+      opacity: 0.8;
     }
   }
 
@@ -107,6 +108,7 @@
       font-size: 1.1em;
       color: #000055;
       background-color: #c0cbff;
+      opacity: 1;
 
       & + .tab-content {
         display: block;
