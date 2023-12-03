@@ -468,13 +468,13 @@
               for (let x = this.#xMin; x < this.#xMax; ++x) {
                 if (this.#states[y][x] !== state) continue;
                 const dstX = this.#axis.center.x - x - 1;
-                if (dstX < this.#xMin || this.#xMax <= dstX) continue;
+                if (dstX < this.#xMin || this.#xMax <= dstX) continue loop;
                 const dstY = this.#axis.center.y - y - 1;
-                if (dstY < this.#yMin || this.#yMax <= dstY) continue;
+                if (dstY < this.#yMin || this.#yMax <= dstY) continue loop;
                 const dstState = this.#states[dstY][dstX];
                 if (dstState === app.states.none) continue;
 
-                if (app.states.userMin <= dstState && dstState <= userMax) {
+                if (dstState < app.states.userMin || userMax < dstState) {
                   continue loop;
                 } else if (!moveState[dstState]) {
                   moveState[dstState] = true;
