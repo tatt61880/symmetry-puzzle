@@ -462,7 +462,7 @@
       return moveFlag;
     }
 
-    execMoveFlags() {
+    #execMoveFlags() {
       const dx = this.#moveDx;
       const dy = this.#moveDy;
 
@@ -490,7 +490,7 @@
     move(dx, dy) {
       const moveFlag = this.#updateMoveFlags(dx, dy);
       if (moveFlag) {
-        this.execMoveFlags();
+        this.#execMoveFlags();
       }
       return moveFlag;
     }
