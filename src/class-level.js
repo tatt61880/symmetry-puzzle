@@ -467,9 +467,8 @@
             for (let y = this.#yMin; y < this.#yMax; ++y) {
               for (let x = this.#xMin; x < this.#xMax; ++x) {
                 if (this.#states[y][x] !== state) continue;
-                const dstX = this.#axis.center.x - x - 1;
+                const { dstX, dstY } = this.#getDst(x, y);
                 if (dstX < this.#xMin || this.#xMax <= dstX) continue loop;
-                const dstY = this.#axis.center.y - y - 1;
                 if (dstY < this.#yMin || this.#yMax <= dstY) continue loop;
                 const dstState = this.#states[dstY][dstX];
                 if (dstState === app.states.none) continue;
@@ -557,8 +556,7 @@
           for (let x = this.#xMin; x < this.#xMax; ++x) {
             if (statesTemp[y][x] === app.states.none) continue;
             if (this.#moveFlags[y][x]) {
-              const dstX = this.#axis.center.x - x - 1;
-              const dstY = this.#axis.center.y - y - 1;
+              const { dstX, dstY } = this.#getDst(x, y);
               this.#states[dstY][dstX] = statesTemp[y][x];
             } else {
               this.#states[y][x] = statesTemp[y][x];
@@ -584,6 +582,26 @@
               }
             }
           }
+        }
+      }
+    }
+
+    #getDst(x, y) {
+      switch (this.#axis.type) {
+        case Level.SYMMETRY_TYPE.LINE1: {
+          const dstX = this.#axis.center.x - x - 1;
+          const dstY = y;
+          return { dstX, dstY };
+        }
+        case Level.SYMMETRY_TYPE.LINE2: {
+          const dstX = x;
+          const dstY = this.#axis.center.y - y - 1;
+          return { dstX, dstY };
+        }
+        case Level.SYMMETRY_TYPE.POINT1: {
+          const dstX = this.#axis.center.x - x - 1;
+          const dstY = this.#axis.center.y - y - 1;
+          return { dstX, dstY };
         }
       }
     }
