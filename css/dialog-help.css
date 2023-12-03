@@ -37,7 +37,7 @@
       cursor: pointer;
       user-select: none;
       background-color: #dddddd;
-      border: none;
+      border: 4px solid #cccccc;
       outline: none;
 
       &:hover {
@@ -48,6 +48,7 @@
         font-size: 1rem;
         color: #000055;
         background-color: #c0cbff;
+        border: 4px solid #bbbbee;
         opacity: 1;
       }
     }
@@ -60,11 +61,12 @@
   }
 
   .tab {
+    box-sizing: border-box;
     display: block;
     order: -1;
     float: left;
     width: calc(100% / 4 - 10px);
-    height: 50px;
+    height: 58px;
     margin: 5px;
     font-size: 1rem;
     font-weight: bold;
@@ -74,6 +76,7 @@
     cursor: pointer;
     user-select: none;
     background-color: #dddddd;
+    border: 4px solid #cccccc;
 
     &:hover {
       opacity: 0.8;
@@ -108,6 +111,7 @@
       font-size: 1.1em;
       color: #000055;
       background-color: #c0cbff;
+      border: 4px solid #bbbbee;
       opacity: 1;
 
       & + .tab-content {
