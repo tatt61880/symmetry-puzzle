@@ -268,6 +268,10 @@
       return res;
     }
 
+    hasAxis() {
+      return this.#axis !== null;
+    }
+
     applyObj(obj, resizeFlag) {
       if (resizeFlag) {
         this.#levelObj = obj;
@@ -449,41 +453,84 @@
       let moveFlag = false;
       this.#resetMoveFlags();
 
-      loop: for (let i = app.states.userMin; i <= userMax; ++i) {
-        if (!this.#exist((x) => x === i)) continue;
+      if (this.#axis && dx + dy === 0) {
+        loop: for (let i = app.states.userMin; i <= userMax; ++i) {
+          if (!this.#exist((x) => x === i)) continue;
 
-        const moveState = []; // 移動予定の状態番号
-        moveState[i] = true;
+          const moveState = []; // 移動予定の状態番号
+          moveState[i] = true;
 
-        const st = new app.Stack(); // 移動可能か検証必要な状態番号
-        st.push(i);
-        while (!st.empty()) {
-          const state = st.pop();
-          for (let y = this.#yMin; y < this.#yMax; ++y) {
-            for (let x = this.#xMin; x < this.#xMax; ++x) {
-              if (this.#states[y][x] !== state) continue;
-              const neighborState = this.#states[y + dy][x + dx];
-              if (neighborState === app.states.none) continue;
+          const st = new app.Stack(); // 移動可能か検証必要な状態番号
+          st.push(i);
+          while (!st.empty()) {
+            const state = st.pop();
+            for (let y = this.#yMin; y < this.#yMax; ++y) {
+              for (let x = this.#xMin; x < this.#xMax; ++x) {
+                if (this.#states[y][x] !== state) continue;
+                const dstX = this.#axis.center.x - x - 1;
+                if (dstX < this.#xMin || this.#xMax <= dstX) continue;
+                const dstY = this.#axis.center.y - y - 1;
+                if (dstY < this.#yMin || this.#yMax <= dstY) continue;
+                const dstState = this.#states[dstY][dstX];
+                if (dstState === app.states.none) continue;
 
-              if (neighborState === app.states.wall) {
-                continue loop;
-              } else if (!moveState[neighborState]) {
-                moveState[neighborState] = true;
-                st.push(neighborState);
+                if (app.states.userMin <= dstState && dstState <= userMax) {
+                  continue loop;
+                } else if (!moveState[dstState]) {
+                  moveState[dstState] = true;
+                  st.push(dstState);
+                }
               }
             }
           }
-        }
 
-        // 各座標に移動フラグを設定
-        for (let y = this.#yMin; y < this.#yMax; ++y) {
-          for (let x = this.#xMin; x < this.#xMax; ++x) {
-            if (moveState[this.#states[y][x]]) {
-              this.#moveFlags[y + dy][x + dx] = true;
+          // 各座標に移動フラグを設定
+          for (let y = this.#yMin; y < this.#yMax; ++y) {
+            for (let x = this.#xMin; x < this.#xMax; ++x) {
+              if (moveState[this.#states[y][x]]) {
+                this.#moveFlags[y][x] = true;
+              }
             }
           }
+          moveFlag = true;
         }
-        moveFlag = true;
+      } else {
+        loop: for (let i = app.states.userMin; i <= userMax; ++i) {
+          if (!this.#exist((x) => x === i)) continue;
+
+          const moveState = []; // 移動予定の状態番号
+          moveState[i] = true;
+
+          const st = new app.Stack(); // 移動可能か検証必要な状態番号
+          st.push(i);
+          while (!st.empty()) {
+            const state = st.pop();
+            for (let y = this.#yMin; y < this.#yMax; ++y) {
+              for (let x = this.#xMin; x < this.#xMax; ++x) {
+                if (this.#states[y][x] !== state) continue;
+                const dstState = this.#states[y + dy][x + dx];
+                if (dstState === app.states.none) continue;
+
+                if (dstState === app.states.wall) {
+                  continue loop;
+                } else if (!moveState[dstState]) {
+                  moveState[dstState] = true;
+                  st.push(dstState);
+                }
+              }
+            }
+          }
+
+          // 各座標に移動フラグを設定
+          for (let y = this.#yMin; y < this.#yMax; ++y) {
+            for (let x = this.#xMin; x < this.#xMax; ++x) {
+              if (moveState[this.#states[y][x]]) {
+                this.#moveFlags[y + dy][x + dx] = true;
+              }
+            }
+          }
+          moveFlag = true;
+        }
       }
 
       if (moveFlag) {
@@ -497,21 +544,44 @@
       const dx = this.#moveDx;
       const dy = this.#moveDy;
 
-      if (dx === -1 || dy === -1) {
+      if (this.#axis && dx + dy === 0) {
+        const statesTemp = [];
+        for (let y = this.#yMin; y < this.#yMax; ++y) {
+          statesTemp[y] = [];
+          for (let x = this.#xMin; x < this.#xMax; ++x) {
+            statesTemp[y][x] = this.#states[y][x];
+            this.#states[y][x] = app.states.none;
+          }
+        }
         for (let y = this.#yMin; y < this.#yMax; ++y) {
           for (let x = this.#xMin; x < this.#xMax; ++x) {
+            if (statesTemp[y][x] === app.states.none) continue;
             if (this.#moveFlags[y][x]) {
-              this.#states[y][x] = this.#states[y - dy][x - dx];
-              this.#states[y - dy][x - dx] = app.states.none;
+              const dstX = this.#axis.center.x - x - 1;
+              const dstY = this.#axis.center.y - y - 1;
+              this.#states[dstY][dstX] = statesTemp[y][x];
+            } else {
+              this.#states[y][x] = statesTemp[y][x];
             }
           }
         }
       } else {
-        for (let y = this.#yMax - 1; y >= this.#yMin; --y) {
-          for (let x = this.#xMax - 1; x >= this.#xMin; --x) {
-            if (this.#moveFlags[y][x]) {
-              this.#states[y][x] = this.#states[y - dy][x - dx];
-              this.#states[y - dy][x - dx] = app.states.none;
+        if (dx === -1 || dy === -1) {
+          for (let y = this.#yMin; y < this.#yMax; ++y) {
+            for (let x = this.#xMin; x < this.#xMax; ++x) {
+              if (this.#moveFlags[y][x]) {
+                this.#states[y][x] = this.#states[y - dy][x - dx];
+                this.#states[y - dy][x - dx] = app.states.none;
+              }
+            }
+          }
+        } else {
+          for (let y = this.#yMax - 1; y >= this.#yMin; --y) {
+            for (let x = this.#xMax - 1; x >= this.#xMin; --x) {
+              if (this.#moveFlags[y][x]) {
+                this.#states[y][x] = this.#states[y - dy][x - dx];
+                this.#states[y - dy][x - dx] = app.states.none;
+              }
             }
           }
         }

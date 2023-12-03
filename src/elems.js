@@ -129,10 +129,13 @@
       buttons: {
         root: 'controller-buttons-root',
         base: 'controller-buttons-base',
+
         up: 'controller-buttons-up',
         right: 'controller-buttons-right',
         down: 'controller-buttons-down',
         left: 'controller-buttons-left',
+        axis: 'controller-buttons-axis',
+
         menu: 'controller-buttons-menu',
         title: 'controller-buttons-title',
         retry: 'controller-buttons-retry',

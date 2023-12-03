@@ -16,6 +16,7 @@
       RIGHT: '1',
       DOWN: '2',
       LEFT: '3',
+      AXIS: '4',
     };
 
     constructor(buttons) {
@@ -59,6 +60,7 @@
       app.common.inactiveElem(this.#buttons.right);
       app.common.inactiveElem(this.#buttons.down);
       app.common.inactiveElem(this.#buttons.left);
+      app.common.inactiveElem(this.#buttons.axis);
       switch (String(dir)) {
         case Input.DIRS.UP:
           app.common.activeElem(this.#buttons.up);
@@ -71,6 +73,9 @@
           break;
         case Input.DIRS.LEFT:
           app.common.activeElem(this.#buttons.left);
+          break;
+        case Input.DIRS.AXIS:
+          app.common.activeElem(this.#buttons.axis);
           break;
       }
     }

@@ -82,8 +82,8 @@
   // ==========================================================================
 
   function tryMoving(dir) {
-    const dys = [-1, 0, 1, 0];
-    const dxs = [0, 1, 0, -1];
+    const dys = [-1, 0, 1, 0, 0];
+    const dxs = [0, 1, 0, -1, 0];
     const dx = dxs[dir];
     const dy = dys[dir];
 
@@ -1102,6 +1102,10 @@
         pointerdownEventName,
         moveButtonStart.bind(null, app.Input.DIRS.LEFT)
       );
+      elems.controller.buttons.axis.addEventListener(
+        pointerdownEventName,
+        moveButtonStart.bind(null, app.Input.DIRS.AXIS)
+      );
 
       elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
 
@@ -1315,8 +1319,8 @@
       completeCheck();
       updateLinkUrl();
     } else {
-      const dys = [-1, 0, 1, 0];
-      const dxs = [0, 1, 0, -1];
+      const dys = [-1, 0, 1, 0, 1];
+      const dxs = [0, 1, 0, -1, 1];
       const dy = dys[input.inputDir];
       const dx = dxs[input.inputDir];
 
@@ -1333,6 +1337,11 @@
   }
 
   function updateController() {
+    if (level.hasAxis()) {
+      app.common.showElem(elems.controller.buttons.axis);
+    } else {
+      app.common.hideElem(elems.controller.buttons.axis);
+    }
     app.common.showElem(elems.controller.buttons.root);
     app.common.hideElem(elems.controller.menu);
     if (completeFlag) {
