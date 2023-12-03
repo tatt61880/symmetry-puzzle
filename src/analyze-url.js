@@ -44,6 +44,9 @@
         case 's':
           res.levelObj.s = paramVal;
           break;
+        case 'axis':
+          res.levelObj.axis = paramVal;
+          break;
         case 'mode':
           switch (paramVal) {
             case 'line':

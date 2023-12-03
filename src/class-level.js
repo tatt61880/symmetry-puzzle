@@ -87,6 +87,7 @@
     #yMax;
     #xMax;
     #getSymmetryType;
+    #axis;
 
     constructor({
       levelObj,
@@ -107,9 +108,39 @@
       this.#yMax = null;
       this.#xMax = null;
       this.#getSymmetryType = null;
+      this.#axis = null;
 
       this.#setCheckMode(checkMode);
       let obj = levelObj;
+      if (obj.axis !== undefined) {
+        const res = obj.axis.match(/(\w\d)-x(\d+)-y(\d+)/);
+        let type;
+        switch (res[1]) {
+          case 'l1':
+            type = Level.SYMMETRY_TYPE.LINE1;
+            break;
+          case 'l2':
+            type = Level.SYMMETRY_TYPE.LINE2;
+            break;
+          case 'l3':
+            type = Level.SYMMETRY_TYPE.LINE3;
+            break;
+          case 'p1':
+            type = Level.SYMMETRY_TYPE.POINT1;
+            break;
+          case 'p2':
+            type = Level.SYMMETRY_TYPE.POINT2;
+            break;
+        }
+
+        this.#axis = {
+          type,
+          center: {
+            x: res[2],
+            y: res[3],
+          },
+        };
+      }
       if (mirrorFlag) obj = this.#mirrorLevel(obj);
       if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
       this.#levelObj = obj;
@@ -652,6 +683,54 @@
             gShadows,
             gElems
           );
+        }
+      }
+
+      if (this.#axis) {
+        const center = {
+          x: this.#axis.center.x / 2,
+          y: this.#axis.center.y / 2,
+        };
+        const gg = app.svg.createG();
+        g.appendChild(gg);
+        switch (this.#axis.type) {
+          case Level.SYMMETRY_TYPE.LINE1: {
+            // m (｜)
+            const line = createAxisLine1({ center, height });
+            gg.appendChild(line);
+            break;
+          }
+          case Level.SYMMETRY_TYPE.LINE2: {
+            // m (―)
+            const line = createAxisLine2({ center, width });
+            gg.appendChild(line);
+            break;
+          }
+          case Level.SYMMETRY_TYPE.LINE3: {
+            // m (＼)
+            const line = createAxisLine3({ center, height });
+            gg.appendChild(line);
+            break;
+          }
+          case Level.SYMMETRY_TYPE.LINE4: {
+            // m (／)
+            const line = createAxisLine4({ center, height });
+            gg.appendChild(line);
+            break;
+          }
+
+          case Level.SYMMETRY_TYPE.POINT1: {
+            // 2
+            const point = createAxisPoint2({ center });
+            gg.appendChild(point);
+            break;
+          }
+          case Level.SYMMETRY_TYPE.POINT2: {
+            // 4
+            const point = createAxisPoint4({ center });
+            gg.appendChild(point);
+            break;
+          }
         }
       }
 
