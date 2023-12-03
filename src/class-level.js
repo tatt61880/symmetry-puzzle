@@ -598,9 +598,27 @@
           const dstY = this.#axis.center.y - y - 1;
           return { dstX, dstY };
         }
+        case Level.SYMMETRY_TYPE.LINE3: {
+          console.error('TODO');
+          const dstX = null;
+          const dstY = null;
+          return { dstX, dstY };
+        }
+        case Level.SYMMETRY_TYPE.LINE4: {
+          console.error('TODO');
+          const dstX = null;
+          const dstY = null;
+          return { dstX, dstY };
+        }
         case Level.SYMMETRY_TYPE.POINT1: {
           const dstX = this.#axis.center.x - x - 1;
           const dstY = this.#axis.center.y - y - 1;
+          return { dstX, dstY };
+        }
+        case Level.SYMMETRY_TYPE.POINT2: {
+          console.error('TODO');
+          const dstX = null;
+          const dstY = null;
           return { dstX, dstY };
         }
       }
