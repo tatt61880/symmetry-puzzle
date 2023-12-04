@@ -1341,7 +1341,7 @@
   }
 
   function updateController() {
-    if (level.hasAxis()) {
+    if (level?.hasAxis()) {
       app.common.showElem(elems.controller.buttons.axis);
       app.common.hideElem(elems.controller.buttons.axisL1);
       app.common.hideElem(elems.controller.buttons.axisL2);
