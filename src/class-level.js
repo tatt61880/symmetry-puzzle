@@ -134,8 +134,8 @@
         this.#axis = {
           type,
           center: {
-            x: res[2],
-            y: res[3],
+            x: Number(res[2]),
+            y: Number(res[3]),
           },
         };
       }
@@ -618,9 +618,8 @@
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.POINT2: {
-          const dstX =
-            this.#axis.center.x / 2 + this.#axis.center.y / 2 - y - 1;
-          const dstY = this.#axis.center.y / 2 - this.#axis.center.x / 2 + x;
+          const dstX = (this.#axis.center.x + this.#axis.center.y) / 2 - y - 1;
+          const dstY = (this.#axis.center.y - this.#axis.center.x) / 2 + x;
           return { dstX, dstY };
         }
       }
