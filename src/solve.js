@@ -29,13 +29,14 @@
 
     const program = require('commander');
     program
-      .version('3.0.0')
+      .version('4.0.0')
       .option('--mode <check-mode>', 'symmetry mode')
       .option('-i, --id <id>', 'id of level')
-      .option('-a, --all', 'list up all solutions')
+      .option('--all', 'list up all solutions')
       .option('-w, --w <w>', 'levelObj.w', Number)
       .option('-h, --h <h>', 'levelObj.h', Number)
       .option('-s, --s <s>', 'levelObj.s')
+      .option('--axis <axis>', 'levelObj.axis')
       .option('-p, --prefixStep <prefix-step>', 'prefixStep step')
       .option('-c, --console', 'console.info step')
       .option('-d, --draw', 'draw target shape')
@@ -125,6 +126,7 @@
     const w = options.w;
     const h = options.h;
     const s = options.s;
+    const axis = options.axis;
     if (isNaN(w)) {
       app.console.error('Error: w is NaN');
       process.exitCode = 1;
@@ -135,7 +137,7 @@
       process.exitCode = 1;
       return;
     }
-    const levelObj = { w, h, s };
+    const levelObj = { w, h, s, axis };
     solveLevelObj(null, levelObj);
   }
 
@@ -223,8 +225,8 @@
     return result;
 
     function solve(levelId, level) {
-      const dxs = [0, 1, 0, -1];
-      const dys = [-1, 0, 1, 0];
+      const dxs = [0, 1, 0, -1, 0];
+      const dys = [-1, 0, 1, 0, 0];
 
       const userMax = level.getMaxValue(app.states.isUser);
 
@@ -280,6 +282,7 @@
       let solutionStepFirst;
       let solutionStepSecond;
       const shapeStrInfoArray = [];
+      const maxDir = level.hasAxis() ? 5 : 4;
       for (; step < maxStep; ) {
         const currentStateStrSet = nextStateStrSet;
         nextStateStrSet = new Set();
@@ -297,7 +300,7 @@
           }
 
           const currentReplyStr = stateStrMap.get(currentStateStr);
-          for (let dir = 0; dir < 4; ++dir) {
+          for (let dir = 0; dir < maxDir; ++dir) {
             level.applyStateStr(currentStateStr);
 
             const dx = dxs[dir];
