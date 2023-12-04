@@ -601,9 +601,9 @@
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.LINE3: {
-          console.error('TODO');
-          const dstX = null;
-          const dstY = null;
+          const d = x - y - (this.#axis.center.x - this.#axis.center.y);
+          const dstX = x - d;
+          const dstY = y + d;
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.LINE4: {
