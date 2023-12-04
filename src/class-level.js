@@ -114,27 +114,22 @@
       let obj = levelObj;
       if (obj.axis !== undefined) {
         const res = obj.axis.match(/(\w\d)-x(\d+)-y(\d+)/);
-        let type;
-        switch (res[1]) {
-          case 'l1':
-            type = Level.SYMMETRY_TYPE.LINE1;
-            break;
-          case 'l2':
-            type = Level.SYMMETRY_TYPE.LINE2;
-            break;
-          case 'l3':
-            type = Level.SYMMETRY_TYPE.LINE3;
-            break;
-          case 'l4':
-            type = Level.SYMMETRY_TYPE.LINE4;
-            break;
-          case 'p1':
-            type = Level.SYMMETRY_TYPE.POINT1;
-            break;
-          case 'p2':
-            type = Level.SYMMETRY_TYPE.POINT2;
-            break;
-        }
+        const type = (() => {
+          switch (res[1]) {
+            case 'l1':
+              return Level.SYMMETRY_TYPE.LINE1;
+            case 'l2':
+              return Level.SYMMETRY_TYPE.LINE2;
+            case 'l3':
+              return Level.SYMMETRY_TYPE.LINE3;
+            case 'l4':
+              return Level.SYMMETRY_TYPE.LINE4;
+            case 'p1':
+              return Level.SYMMETRY_TYPE.POINT1;
+            case 'p2':
+              return Level.SYMMETRY_TYPE.POINT2;
+          }
+        })();
 
         this.#axis = {
           type,
