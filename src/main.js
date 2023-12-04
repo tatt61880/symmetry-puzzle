@@ -340,8 +340,10 @@
           redoStart();
           break;
       }
-    } else if (e.key === 'Enter') {
-      if (app.common.isHiddenElem(elems.controller.nextLevel)) return;
+    } else if (
+      e.key === 'Enter' &&
+      !app.common.isHiddenElem(elems.controller.nextLevel)
+    ) {
       gotoNextLevel();
     } else if (e.key === ' ') {
       if (settings.autoMode) {
@@ -386,6 +388,8 @@
             case 'a':
             case 'h':
               return app.Input.DIRS.LEFT;
+            case 'Enter':
+              return app.Input.DIRS.AXIS;
           }
           return null;
         })();
