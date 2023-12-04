@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.03';
+  const VERSION_TEXT = 'v' + '2023.12.04';
 
   const app = window.app;
   Object.freeze(app);
@@ -1339,6 +1339,38 @@
   function updateController() {
     if (level.hasAxis()) {
       app.common.showElem(elems.controller.buttons.axis);
+      app.common.hideElem(elems.controller.buttons.axisL1);
+      app.common.hideElem(elems.controller.buttons.axisL2);
+      app.common.hideElem(elems.controller.buttons.axisL3);
+      app.common.hideElem(elems.controller.buttons.axisL4);
+      app.common.hideElem(elems.controller.buttons.axisP1);
+      app.common.hideElem(elems.controller.buttons.axisP2);
+      switch (level.getAxisType()) {
+        case app.Level.SYMMETRY_TYPE.LINE1: {
+          app.common.showElem(elems.controller.buttons.axisL1);
+          break;
+        }
+        case app.Level.SYMMETRY_TYPE.LINE2: {
+          app.common.showElem(elems.controller.buttons.axisL2);
+          break;
+        }
+        case app.Level.SYMMETRY_TYPE.LINE3: {
+          app.common.showElem(elems.controller.buttons.axisL3);
+          break;
+        }
+        case app.Level.SYMMETRY_TYPE.LINE4: {
+          app.common.showElem(elems.controller.buttons.axisL4);
+          break;
+        }
+        case app.Level.SYMMETRY_TYPE.POINT1: {
+          app.common.showElem(elems.controller.buttons.axisP1);
+          break;
+        }
+        case app.Level.SYMMETRY_TYPE.POINT2: {
+          app.common.showElem(elems.controller.buttons.axisP2);
+          break;
+        }
+      }
     } else {
       app.common.hideElem(elems.controller.buttons.axis);
     }

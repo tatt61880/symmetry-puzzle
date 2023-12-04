@@ -135,6 +135,12 @@
         down: 'controller-buttons-down',
         left: 'controller-buttons-left',
         axis: 'controller-buttons-axis',
+        axisL1: 'controller-buttons-axis-line1',
+        axisL2: 'controller-buttons-axis-line2',
+        axisL3: 'controller-buttons-axis-line3',
+        axisL4: 'controller-buttons-axis-line4',
+        axisP1: 'controller-buttons-axis-point1',
+        axisP2: 'controller-buttons-axis-point2',
 
         menu: 'controller-buttons-menu',
         title: 'controller-buttons-title',

@@ -125,6 +125,9 @@
           case 'l3':
             type = Level.SYMMETRY_TYPE.LINE3;
             break;
+          case 'l4':
+            type = Level.SYMMETRY_TYPE.LINE4;
+            break;
           case 'p1':
             type = Level.SYMMETRY_TYPE.POINT1;
             break;
@@ -266,6 +269,10 @@
         }
       }
       return res;
+    }
+
+    getAxisType() {
+      return this.#axis.type;
     }
 
     hasAxis() {
