@@ -618,9 +618,9 @@
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.POINT2: {
-          console.error('TODO');
-          const dstX = null;
-          const dstY = null;
+          const dstX =
+            this.#axis.center.x / 2 + this.#axis.center.y / 2 - y - 1;
+          const dstY = this.#axis.center.y / 2 - this.#axis.center.x / 2 + x;
           return { dstX, dstY };
         }
       }
