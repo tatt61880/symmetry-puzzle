@@ -997,6 +997,7 @@
       default:
         app.common.levelsList = null;
         app.common.levelsListEx = null;
+        console.assert(false);
     }
 
     app.common.hideElem(elems.category.title);
