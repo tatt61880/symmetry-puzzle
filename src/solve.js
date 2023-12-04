@@ -427,7 +427,8 @@
         levelObj.subject !== undefined
           ? `, subject: '${levelObj.subject}'`
           : '';
-      const res = `{ w: ${w}, h: ${h}, s: '${s}', r: '${r}', step: ${r.length}${subject} },`;
+      const axis = level.hasAxis() ? ` axis: '${level.getA()}',` : '';
+      const res = `{ w: ${w}, h: ${h}, s: '${s}',${axis} r: '${r}', step: ${r.length}${subject} },`;
       return res;
     }
   }
