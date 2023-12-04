@@ -135,6 +135,7 @@
         down: 'controller-buttons-down',
         left: 'controller-buttons-left',
         axis: 'controller-buttons-axis',
+
         axisL1: 'controller-buttons-axis-line1',
         axisL2: 'controller-buttons-axis-line2',
         axisL3: 'controller-buttons-axis-line3',
