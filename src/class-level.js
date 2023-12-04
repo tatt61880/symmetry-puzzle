@@ -601,7 +601,7 @@
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.LINE3: {
-          const d = x - y - (this.#axis.center.x - this.#axis.center.y);
+          const d = x - y - (this.#axis.center.x - this.#axis.center.y) / 2;
           const dstX = x - d;
           const dstY = y + d;
           return { dstX, dstY };
