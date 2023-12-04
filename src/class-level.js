@@ -133,10 +133,8 @@
 
         this.#axis = {
           type,
-          center: {
-            x: Number(res[2]),
-            y: Number(res[3]),
-          },
+          cx: Number(res[2]),
+          cy: Number(res[3]),
         };
       }
       if (mirrorFlag) obj = this.#mirrorLevel(obj);
@@ -189,6 +187,15 @@
       );
     }
 
+    getA() {
+      if (!this.hasAxis()) return undefined;
+
+      const res =
+        `${axisTypeStr[this.#axis.type]}` +
+        `-x${this.#axis.cx}-y${this.#axis.cy}`;
+      return res;
+    }
+
     getR() {
       return this.#levelObj?.r;
     }
@@ -210,7 +217,8 @@
       const s = this.getS();
 
       const checkModeStr = this.getCheckModeStr();
-      const solveJsStr = `node src/solve.js --mode ${checkModeStr} -w ${w} -h ${h} -s ${s} --all --console --draw`;
+      const axis = this.hasAxis() ? ` ${this.getA()}` : '';
+      const solveJsStr = `node src/solve.js --mode ${checkModeStr} -w ${w} -h ${h} -s ${s} --all --console --draw${axis}`;
       console.log(solveJsStr);
     }
 
@@ -591,35 +599,35 @@
     #getDst(x, y) {
       switch (this.#axis.type) {
         case Level.SYMMETRY_TYPE.LINE1: {
-          const dstX = this.#axis.center.x - x - 1;
+          const dstX = this.#axis.cx - x - 1;
           const dstY = y;
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.LINE2: {
           const dstX = x;
-          const dstY = this.#axis.center.y - y - 1;
+          const dstY = this.#axis.cy - y - 1;
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.LINE3: {
-          const d = x - y - (this.#axis.center.x - this.#axis.center.y) / 2;
+          const d = x - y - (this.#axis.cx - this.#axis.cy) / 2;
           const dstX = x - d;
           const dstY = y + d;
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.LINE4: {
-          const d = x + y + 1 - (this.#axis.center.x + this.#axis.center.y) / 2;
+          const d = x + y + 1 - (this.#axis.cx + this.#axis.cy) / 2;
           const dstX = x - d;
           const dstY = y - d;
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.POINT1: {
-          const dstX = this.#axis.center.x - x - 1;
-          const dstY = this.#axis.center.y - y - 1;
+          const dstX = this.#axis.cx - x - 1;
+          const dstY = this.#axis.cy - y - 1;
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.POINT2: {
-          const dstX = (this.#axis.center.x + this.#axis.center.y) / 2 - y - 1;
-          const dstY = (this.#axis.center.y - this.#axis.center.x) / 2 + x;
+          const dstX = (this.#axis.cx + this.#axis.cy) / 2 - y - 1;
+          const dstY = (this.#axis.cy - this.#axis.cx) / 2 + x;
           return { dstX, dstY };
         }
       }
@@ -795,8 +803,8 @@
 
       if (this.#axis) {
         const center = {
-          x: this.#axis.center.x / 2,
-          y: this.#axis.center.y / 2,
+          x: this.#axis.cx / 2,
+          y: this.#axis.cy / 2,
         };
         const gg = app.svg.createG();
         g.appendChild(gg);
@@ -2323,6 +2331,15 @@
     [Level.SYMMETRY_TYPE.SPECIAL1]: 'animation-axis-special1',
     [Level.SYMMETRY_TYPE.SPECIAL2]: 'animation-axis-special2',
     [Level.SYMMETRY_TYPE.SPECIAL3]: 'animation-axis-special3',
+  };
+
+  const axisTypeStr = {
+    [Level.SYMMETRY_TYPE.LINE1]: 'l1',
+    [Level.SYMMETRY_TYPE.LINE2]: 'l2',
+    [Level.SYMMETRY_TYPE.LINE3]: 'l3',
+    [Level.SYMMETRY_TYPE.LINE4]: 'l4',
+    [Level.SYMMETRY_TYPE.POINT1]: 'p1',
+    [Level.SYMMETRY_TYPE.POINT2]: 'p2',
   };
 
   if (isBrowser) {
