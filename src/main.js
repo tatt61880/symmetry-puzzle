@@ -10,7 +10,7 @@
 
   const INPUT_INTERVAL_MSEC = 28; // この値を変更するときは、iOSの省電力モード時のsetIntervalの動作を確認した上で変更してください。詳細: https://github.com/tatt61880/symmetry-puzzle/issues/38
 
-  const MOVE_INTERVAL_COUNT = 7;
+  const MOVE_INTERVAL_COUNT = 5;
   const MOVE_INTERVAL_MSEC = MOVE_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
 
   const UNDO_INTERVAL_COUNT = 5;
