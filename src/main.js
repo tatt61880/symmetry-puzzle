@@ -1693,7 +1693,9 @@
             const h = levelObj.h;
             const s = levelObj.s;
             const r = levelObj.r;
-            const levelParams = `w: ${w}, h: ${h}, s: '${s}', r: '${replayStr}', step: ${
+            const axis =
+              levelObj.axis !== undefined ? ` axis: '${levelObj.axis}',` : '';
+            const levelParams = `w: ${w}, h: ${h}, s: '${s}',${axis} r: '${replayStr}', step: ${
               replayStr.length
             }, subject: '${
               levelObj.subject === undefined ? '' : levelObj.subject
