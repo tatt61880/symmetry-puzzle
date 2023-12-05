@@ -181,7 +181,7 @@
       w: 7,
       h: 7,
       s: '010x-2xxxxx-2xsx0x-xxxx0x-0x0x0x-0x0xxxx-0x0x',
-      axis: 'l1-x9-y9',
+      axis: 'l1-x9-y0',
       r: '422422411400400003343',
       step: 21,
       subject: '',
