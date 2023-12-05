@@ -956,7 +956,8 @@
       if (
         levelObj.w === queryObj.w &&
         levelObj.h === queryObj.h &&
-        levelObj.s === queryObj.s
+        levelObj.s === queryObj.s &&
+        levelObj.axis === queryObj.axis
       ) {
         return id;
       }
