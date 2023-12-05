@@ -169,7 +169,7 @@
       w: 5,
       h: 3,
       s: 's0x-00112-001',
-      axis: 'p2-x7-y5',
+      axis: 'p2-x5-y3',
       r: '141203441',
       step: 9,
     },
@@ -177,10 +177,9 @@
       w: 7,
       h: 7,
       s: '0x0x0xx-0xxxxxx-0xsx0x-xxxx0x1-0x0x0x-0x0xxx-0x0x02',
-      axis: 'p2-x9-y9',
+      axis: 'p2-x7-y7',
       r: '444224442240044222',
       step: 18,
-      subject: '',
     },
 
     /*

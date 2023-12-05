@@ -133,8 +133,8 @@
 
         this.#axis = {
           type,
-          cx: Number(res[2] ?? 0),
-          cy: Number(res[3] ?? 0),
+          cx: Number(res[2] ?? 0) + 2,
+          cy: Number(res[3] ?? 0) + 2,
         };
       }
       if (mirrorFlag) obj = this.#mirrorLevel(obj);
@@ -205,8 +205,8 @@
       if (!this.hasAxis()) return undefined;
 
       const lp = axisTypeStr[this.#axis.type];
-      const x = this.#axis.cx === 0 ? '' : `-x${this.#axis.cx}`;
-      const y = this.#axis.cy === 0 ? '' : `-y${this.#axis.cy}`;
+      const x = this.#axis.cx === 2 ? '' : `-x${this.#axis.cx - 2}`;
+      const y = this.#axis.cy === 2 ? '' : `-y${this.#axis.cy - 2}`;
       const res = `${lp}${x}${y}`;
       return res;
     }
