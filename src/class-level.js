@@ -231,12 +231,9 @@
       const h = levelObj.h;
       const s = levelObj.s;
       const checkModeStr = Level.getCheckModeStr(checkMode);
-      const a = levelObj.axis !== undefined ? getA(levelObj.axis) : '';
+      console.log(levelObj.axis);
+      const a = levelObj.axis !== undefined ? `&axis=${levelObj.axis}` : '';
       return `mode=${checkModeStr}&w=${w}&h=${h}&s=${s}${a}`;
-
-      function getA(axis) {
-        `${axisTypeStr[axis.type]}-x${axis.cx}-y${axis.cy}`;
-      }
     }
 
     #getUrlQuery() {
