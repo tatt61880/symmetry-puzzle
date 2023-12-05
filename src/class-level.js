@@ -165,6 +165,20 @@
       return this.#height;
     }
 
+    getCurrentLevelObj() {
+      const w = this.getW();
+      const h = this.getH();
+      const s = this.getS();
+      const axis = this.getA();
+      const levelObj = {
+        w,
+        h,
+        s,
+        axis,
+      };
+      return levelObj;
+    }
+
     getLevelObj() {
       return this.#levelObj;
     }
@@ -236,16 +250,7 @@
     }
 
     #getUrlQuery() {
-      const w = this.getW();
-      const h = this.getH();
-      const s = this.getS();
-      const axis = this.getA();
-      const levelObj = {
-        w,
-        h,
-        s,
-        axis,
-      };
+      const levelObj = this.getCurrentLevelObj();
       const checkMode = this.getCheckMode();
       return Level.getUrlQuery(levelObj, checkMode);
     }

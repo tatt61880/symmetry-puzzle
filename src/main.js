@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.05';
+  const VERSION_TEXT = 'v' + '2023.12.05b';
 
   const app = window.app;
   Object.freeze(app);
@@ -2092,10 +2092,7 @@
 
   function onButtonStart() {
     if (level.getBestStep() === undefined) {
-      const w = level.getW();
-      const h = level.getH();
-      const s = level.getS();
-      const levelObj = { w, h, s };
+      const levelObj = level.getCurrentLevelObj();
       // TODO activeElem を盤面に反映させてから計算する。Promiseを使うといけそう。
       // app.common.activeElem(elems.auto.buttonStart);
       const levelTemp = new app.Level({
