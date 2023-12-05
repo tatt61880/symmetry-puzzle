@@ -200,8 +200,12 @@
       return this.#levelObj?.r;
     }
 
-    getCheckModeStr() {
-      switch (this.getCheckMode()) {
+    #getCheckModeStr() {
+      return Level.getCheckModeStr(this.getCheckMode());
+    }
+
+    static getCheckModeStr(checkMode) {
+      switch (checkMode) {
         case Level.CHECK_MODE.LINE:
           return 'line';
         case Level.CHECK_MODE.POINT:
@@ -216,10 +220,23 @@
       const h = this.getH();
       const s = this.getS();
 
-      const checkModeStr = this.getCheckModeStr();
+      const checkModeStr = this.#getCheckModeStr();
       const axis = this.hasAxis() ? ` --axis ${this.getA()}` : '';
       const solveJsStr = `node src/solve.js --mode ${checkModeStr} -w ${w} -h ${h} -s ${s} --all --console --draw${axis}`;
       console.log(solveJsStr);
+    }
+
+    static getUrlQuery(levelObj, checkMode) {
+      const w = levelObj.w;
+      const h = levelObj.h;
+      const s = levelObj.s;
+      const checkModeStr = Level.getCheckModeStr(checkMode);
+      const a = levelObj.axis !== undefined ? getA(levelObj.axis) : '';
+      return `mode=${checkModeStr}&w=${w}&h=${h}&s=${s}${a}`;
+
+      function getA(axis) {
+        `${axisTypeStr[axis.type]}-x${axis.cx}-y${axis.cy}`;
+      }
     }
 
     getUrlStr() {
@@ -230,7 +247,7 @@
       console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
       this.printSolveJsStr();
 
-      const checkModeStr = this.getCheckModeStr();
+      const checkModeStr = this.#getCheckModeStr();
       const a = this.hasAxis() ? `&axis=${this.getA()}` : '';
 
       const urlStr = `${

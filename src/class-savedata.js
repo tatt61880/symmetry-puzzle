@@ -58,19 +58,7 @@
     }
 
     #getLevelKey(levelObj, checkMode) {
-      const checkModeStr = getCheckModeStr(checkMode);
-      return `mode=${checkModeStr}&w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
-
-      function getCheckModeStr(checkMode) {
-        switch (checkMode) {
-          case app.Level.CHECK_MODE.LINE:
-            return 'line';
-          case app.Level.CHECK_MODE.POINT:
-            return 'point';
-          case app.Level.CHECK_MODE.SPECIAL:
-            return 'special';
-        }
-      }
+      return app.Level.getUrlQuery(levelObj, checkMode);
     }
   }
 

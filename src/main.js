@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.04';
+  const VERSION_TEXT = 'v' + '2023.12.05';
 
   const app = window.app;
   Object.freeze(app);
@@ -2036,7 +2036,7 @@
     }
     const base = location.href.split('?')[0];
     const levelObj = level.getLevelObj();
-    const checkModeStr = level.getCheckModeStr();
+    const checkModeStr = app.Level.getCheckModeStr(level.getCheckMode());
     let url = `${base}?mode=${checkModeStr}&w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';
