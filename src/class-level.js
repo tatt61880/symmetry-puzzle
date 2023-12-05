@@ -230,9 +230,8 @@
       const w = levelObj.w;
       const h = levelObj.h;
       const s = levelObj.s;
-      const checkModeStr = Level.getCheckModeStr(checkMode);
-      console.log(levelObj.axis);
       const a = levelObj.axis !== undefined ? `&axis=${levelObj.axis}` : '';
+      const checkModeStr = Level.getCheckModeStr(checkMode);
       return `mode=${checkModeStr}&w=${w}&h=${h}&s=${s}${a}`;
     }
 
