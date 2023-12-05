@@ -178,6 +178,8 @@
       app.common.showElem(elems.levels.prev);
     }
 
+    app.common.showElem(elems.levels.buttonSvg);
+
     // →
     if (
       page + 1 ===
