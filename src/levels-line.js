@@ -2,8 +2,7 @@
   'use strict';
   const isBrowser = typeof window !== 'undefined';
 
-  const levelsLine = [];
-  levelsLine.push(
+  const levels = [
     {
       w: 33,
       h: 33,
@@ -175,7 +174,7 @@
       s: '00s-110222-010002',
       r: '12322303011',
       step: 11,
-    }
+    },
     // -----------------------------------------------------------------------
 
     /*
@@ -913,7 +912,10 @@
       step: 54,
     }
     */
-  );
+  ];
+
+  const levelsLine = [];
+  levelsLine.push(...levels);
 
   Object.freeze(levelsLine);
   for (const level of levelsLine) {
