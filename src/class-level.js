@@ -113,7 +113,7 @@
       this.#setCheckMode(checkMode);
       let obj = levelObj;
       if (obj.axis !== undefined) {
-        const res = obj.axis.match(/(\w\d)-x(\d+)-y(\d+)/);
+        const res = obj.axis.match(/(\w\d)(?:-x(\d+))?(?:-y(\d+))?/);
         const type = (() => {
           switch (res[1]) {
             case 'l1':
@@ -133,8 +133,8 @@
 
         this.#axis = {
           type,
-          cx: Number(res[2]),
-          cy: Number(res[3]),
+          cx: Number(res[2] ?? 0),
+          cy: Number(res[3] ?? 0),
         };
       }
       if (mirrorFlag) obj = this.#mirrorLevel(obj);
@@ -204,9 +204,10 @@
     getA() {
       if (!this.hasAxis()) return undefined;
 
-      const res =
-        `${axisTypeStr[this.#axis.type]}` +
-        `-x${this.#axis.cx}-y${this.#axis.cy}`;
+      const lp = axisTypeStr[this.#axis.type];
+      const x = this.#axis.cx === 0 ? '' : `-x${this.#axis.cx}`;
+      const y = this.#axis.cy === 0 ? '' : `-y${this.#axis.cy}`;
+      const res = `${lp}${x}${y}`;
       return res;
     }
 
