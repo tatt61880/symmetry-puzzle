@@ -239,6 +239,12 @@
       }
     }
 
+    #getUrlQuery() {
+      const levelObj = this.getLevelObj();
+      const checkMode = this.getCheckMode();
+      return Level.getUrlQuery(levelObj, checkMode);
+    }
+
     getUrlStr() {
       const w = this.getW();
       const h = this.getH();
@@ -247,12 +253,8 @@
       console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
       this.printSolveJsStr();
 
-      const checkModeStr = this.#getCheckModeStr();
-      const a = this.hasAxis() ? `&axis=${this.getA()}` : '';
-
-      const urlStr = `${
-        location.href.split('?')[0]
-      }?mode=${checkModeStr}&w=${w}&h=${h}&s=${s}${a}`;
+      const urlQuery = this.#getUrlQuery();
+      const urlStr = `${location.href.split('?')[0]}?${urlQuery}`;
 
       return urlStr;
     }
