@@ -2,8 +2,7 @@
   'use strict';
   const isBrowser = typeof window !== 'undefined';
 
-  const levelsSpecial = [];
-  levelsSpecial.push(
+  const levels = [
     {
       w: 4,
       h: 3,
@@ -163,7 +162,7 @@
       s: '0s11-0021-00333',
       r: '2221111003311223333030012322111110033311122333330121002330111',
       step: 61,
-    }
+    },
     // -----------------------------------------------------------------------
 
     /*
@@ -175,7 +174,10 @@
       step: 20,
     },
     */
-  );
+  ];
+
+  const levelsSpecial = [];
+  levelsSpecial.push(...levels);
 
   Object.freeze(levelsSpecial);
   for (const level of levelsSpecial) {
