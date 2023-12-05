@@ -231,10 +231,11 @@
       this.printSolveJsStr();
 
       const checkModeStr = this.getCheckModeStr();
+      const a = this.hasAxis() ? `&axis=${this.getA()}` : '';
 
       const urlStr = `${
         location.href.split('?')[0]
-      }?mode=${checkModeStr}&w=${w}&h=${h}&s=${s}`;
+      }?mode=${checkModeStr}&w=${w}&h=${h}&s=${s}${a}`;
 
       return urlStr;
     }
