@@ -95,8 +95,8 @@
     }
 
     const stateStrMap = {};
-    const dys = [-1, 0, 1, 0];
-    const dxs = [0, 1, 0, -1];
+    const dys = [-1, 0, 1, 0, 0];
+    const dxs = [0, 1, 0, -1, 0];
     if (levelObj.r === undefined) {
       app.console.error(`Error: ${levelInfo()} r === undefined.`);
       return false;
