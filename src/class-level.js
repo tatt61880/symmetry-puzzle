@@ -236,7 +236,16 @@
     }
 
     #getUrlQuery() {
-      const levelObj = this.getLevelObj();
+      const w = this.getW();
+      const h = this.getH();
+      const s = this.getS();
+      const axis = this.getA();
+      const levelObj = {
+        w,
+        h,
+        s,
+        axis,
+      };
       const checkMode = this.getCheckMode();
       return Level.getUrlQuery(levelObj, checkMode);
     }
