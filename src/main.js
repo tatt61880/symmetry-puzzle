@@ -2036,8 +2036,8 @@
     }
     const base = location.href.split('?')[0];
     const levelObj = level.getLevelObj();
-    const checkModeStr = app.Level.getCheckModeStr(level.getCheckMode());
-    let url = `${base}?mode=${checkModeStr}&w=${levelObj.w}&h=${levelObj.h}&s=${levelObj.s}`;
+    const urlQuery = app.Level.getUrlQuery(levelObj, level.getCheckMode());
+    let url = `${base}?${urlQuery}`;
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';
     if (settings.mirrorFlag) url += '&mirror';
