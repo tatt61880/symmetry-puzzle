@@ -217,7 +217,7 @@
       const s = this.getS();
 
       const checkModeStr = this.getCheckModeStr();
-      const axis = this.hasAxis() ? ` ${this.getA()}` : '';
+      const axis = this.hasAxis() ? ` --axis ${this.getA()}` : '';
       const solveJsStr = `node src/solve.js --mode ${checkModeStr} -w ${w} -h ${h} -s ${s} --all --console --draw${axis}`;
       console.log(solveJsStr);
     }
