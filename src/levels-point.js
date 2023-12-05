@@ -2,8 +2,7 @@
   'use strict';
   const isBrowser = typeof window !== 'undefined';
 
-  const levelsPoint = [];
-  levelsPoint.push(
+  const levels = [
     {
       w: 33,
       h: 33,
@@ -164,8 +163,17 @@
       s: '-01s2-0122-0223',
       r: '303220011112222330211033',
       step: 24,
-    }
+    },
     // -----------------------------------------------------------------------
+
+    {
+      w: 7,
+      h: 7,
+      s: '010x-2xxxxxx-2xsx0x-xxxx0x-0x0x0x-0x0xxx-0x0x',
+      axis: 'p1-x9-y9',
+      r: '400422411400422223343',
+      step: 21,
+    },
 
     /*
     {
@@ -1080,7 +1088,10 @@
       step: 26,
     }
     */
-  );
+  ];
+
+  const levelsPoint = [];
+  levelsPoint.push(...levels);
 
   Object.freeze(levelsPoint);
   for (const level of levelsPoint) {
