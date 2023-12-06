@@ -2345,10 +2345,10 @@
           srcY <= this.#yMax &&
           this.#moveFlags[srcY][srcX]
         ) {
-          elem.classList.add('animation-block');
+          if (dx + dy !== 0) {
+            elem.classList.add('animation-block');
 
-          // 移動時のエフェクト（残像）
-          {
+            // 移動時のエフェクト（残像）
             const gShadow = app.svg.createG();
             {
               const dd = 0.2;
