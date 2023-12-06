@@ -831,10 +831,10 @@
 
       const gShadows = app.svg.createG('group-shadow');
       const gElemsOther = app.svg.createG('group-elems-other');
-      const gElemsTarget = app.svg.createG('group-elems-target');
+      const gElemsAnimation = app.svg.createG('group-elems-animation');
       g.appendChild(gShadows);
       g.appendChild(gElemsOther);
-      g.appendChild(gElemsTarget);
+      g.appendChild(gElemsAnimation);
 
       const stateHasEyes = {}; // 一番左上のみに目を付けます。
       for (let y = y0; y < y0 + height; ++y) {
@@ -848,9 +848,6 @@
             stateHasEyes[state] = true;
             return true;
           })();
-          const gElems = app.states.isTarget(state)
-            ? gElemsTarget
-            : gElemsOther;
           this.#addOneBlock(
             x - x0,
             y - y0,
@@ -861,7 +858,8 @@
             showCharsFlag,
             eyeFlag,
             gShadows,
-            gElems
+            gElemsOther,
+            gElemsAnimation
           );
         }
       }
@@ -2306,8 +2304,10 @@
       showCharsFlag,
       eyeFlag,
       gShadows,
-      gElems
+      gElemsOther,
+      gElemsAnimation
     ) {
+      let gElems = gElemsOther;
       const state = this.getState(x, y);
       const color = app.colors[state];
 
@@ -2345,6 +2345,7 @@
           srcY <= this.#yMax &&
           this.#moveFlags[srcY][srcX]
         ) {
+          gElems = gElemsAnimation;
           if (dx + dy === 0) {
             document.documentElement.style.setProperty(
               '--animation-origin',
