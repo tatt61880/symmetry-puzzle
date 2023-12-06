@@ -2346,7 +2346,6 @@
           this.#moveFlags[srcY][srcX]
         ) {
           if (dx + dy === 0) {
-            console.log(blockSize, this.#axis.cx, this.#axis.cy);
             document.documentElement.style.setProperty(
               '--animation-origin',
               `${(blockSize * this.#axis.cx) / 2}px ${
