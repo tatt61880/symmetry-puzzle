@@ -657,9 +657,14 @@
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.POINT2: {
-          const dstX = (this.#axis.cx + this.#axis.cy) / 2 - y - 1;
+          const dstX = (this.#axis.cy + this.#axis.cx) / 2 - y - 1;
           const dstY = (this.#axis.cy - this.#axis.cx) / 2 + x;
           return { dstX, dstY };
+          /* 逆回転の場合
+            const dstX = (this.#axis.cx - this.#axis.cy) / 2 + y;
+            const dstY = (this.#axis.cx + this.#axis.cy) / 2 - x - 1;
+            return { dstX, dstY };
+          */
         }
       }
     }
