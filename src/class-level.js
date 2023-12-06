@@ -2345,8 +2345,43 @@
           srcY <= this.#yMax &&
           this.#moveFlags[srcY][srcX]
         ) {
-          if (dx + dy !== 0) {
-            elem.classList.add('animation-block');
+          if (dx + dy === 0) {
+            console.log(blockSize, this.#axis.cx, this.#axis.cy);
+            document.documentElement.style.setProperty(
+              '--animation-origin',
+              `${(blockSize * this.#axis.cx) / 2}px ${
+                (blockSize * this.#axis.cy) / 2
+              }px`
+            );
+
+            switch (this.#axis.type) {
+              case Level.SYMMETRY_TYPE.LINE1: {
+                elem.classList.add('animation-move-line1');
+                break;
+              }
+              case Level.SYMMETRY_TYPE.LINE2: {
+                elem.classList.add('animation-move-line2');
+                break;
+              }
+              case Level.SYMMETRY_TYPE.LINE3: {
+                elem.classList.add('animation-move-line3');
+                break;
+              }
+              case Level.SYMMETRY_TYPE.LINE4: {
+                elem.classList.add('animation-move-line4');
+                break;
+              }
+              case Level.SYMMETRY_TYPE.POINT1: {
+                elem.classList.add('animation-move-point1');
+                break;
+              }
+              case Level.SYMMETRY_TYPE.POINT2: {
+                elem.classList.add('animation-move-point2');
+                break;
+              }
+            }
+          } else {
+            elem.classList.add('animation-move');
 
             // 移動時のエフェクト（残像）
             const gShadow = app.svg.createG();

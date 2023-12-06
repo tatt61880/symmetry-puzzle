@@ -13,19 +13,115 @@
   --animation-illegal-move: translate(0, 0);
 }
 
-/* blocks moving animation */
-.animation-block {
-  animation: animation-block cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+/* Blocks moving animation */
+.animation-move {
+  animation: animation-move cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   animation-duration: var(--animation-duration);
 }
 
-@keyframes animation-block {
+@keyframes animation-move {
   0% {
     transform: var(--animation-transform);
   }
 
   100% {
     transform: translate(0, 0);
+  }
+}
+
+.animation-move-line1 {
+  transform-origin: var(--animation-origin);
+  animation: animation-move-line1 linear forwards;
+  animation-duration: var(--animation-duration);
+}
+
+@keyframes animation-move-line1 {
+  0% {
+    transform: scaleX(-1);
+  }
+
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+.animation-move-line2 {
+  transform-origin: var(--animation-origin);
+  animation: animation-move-line2 linear forwards;
+  animation-duration: var(--animation-duration);
+}
+
+@keyframes animation-move-line2 {
+  0% {
+    transform: scaleY(-1);
+  }
+
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+.animation-move-line3 {
+  transform-origin: var(--animation-origin);
+  animation: animation-move-line3 linear forwards;
+  animation-duration: var(--animation-duration);
+}
+
+@keyframes animation-move-line3 {
+  0% {
+    transform: rotate3d(1, 1, 0, 180deg);
+  }
+
+  100% {
+    transform: rotate3d(1, 1, 0, 0deg);
+  }
+}
+
+.animation-move-line4 {
+  transform-origin: var(--animation-origin);
+  animation: animation-move-line4 linear forwards;
+  animation-duration: var(--animation-duration);
+}
+
+@keyframes animation-move-line4 {
+  0% {
+    transform: rotate3d(1, -1, 0, 180deg);
+  }
+
+  100% {
+    transform: rotate3d(1, -1, 0, 0deg);
+  }
+}
+
+.animation-move-point1 {
+  transform-origin: var(--animation-origin);
+  animation: animation-move-point1 linear forwards;
+  animation-duration: var(--animation-duration);
+}
+
+@keyframes animation-move-point1 {
+  0% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animation-move-point2 {
+  transform-origin: var(--animation-origin);
+  animation: animation-move-point2 linear forwards;
+  animation-duration: var(--animation-duration);
+}
+
+@keyframes animation-move-point2 {
+  0% {
+    transform: rotate(270deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }
 
@@ -66,7 +162,7 @@
   }
 }
 
-/* blocks completed animation */
+/* Blocks completed animation */
 .animation-axis-line1 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-line1 linear forwards;
