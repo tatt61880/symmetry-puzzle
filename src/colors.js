@@ -47,7 +47,7 @@
   }
 
   colors.line = '#888888';
-  colors.symmetryAxis = '#0000f8';
+  colors.symmetryAxis = '#5555f8';
 
   colors.frame = '#fff8dd';
   colors.frameBorder = '#ffdd33';
