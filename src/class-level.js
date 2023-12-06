@@ -1053,21 +1053,75 @@
       this.#resetMoveFlags();
       return g;
 
+      function createAxisLine1({ center, height }) {
+        const line = app.svg.createLine(blockSize, {
+          x1: center.x,
+          y1: 0,
+          x2: center.x,
+          y2: height,
+          stroke: app.colors.symmetryAxis,
+          strokeWidth: 0.1,
+        });
+        line.classList.add('symmetry-axis');
+        return line;
+      }
+
+      function createAxisLine2({ center, width }) {
+        const line = app.svg.createLine(blockSize, {
+          x1: 0,
+          y1: center.y,
+          x2: width,
+          y2: center.y,
+          stroke: app.colors.symmetryAxis,
+          strokeWidth: 0.1,
+        });
+        line.classList.add('symmetry-axis');
+        return line;
+      }
+
+      function createAxisLine3({ center, height }) {
+        const line = app.svg.createLine(blockSize, {
+          x1: center.x - center.y - 1,
+          y1: 0 - 1,
+          x2: center.x + height - center.y + 1,
+          y2: height + 1,
+          stroke: app.colors.symmetryAxis,
+          strokeWidth: 0.1,
+        });
+        line.classList.add('symmetry-axis');
+        return line;
+      }
+
+      function createAxisLine4({ center, height }) {
+        const line = app.svg.createLine(blockSize, {
+          x1: center.x + center.y + 1,
+          y1: 0 - 1,
+          x2: center.x - height + center.y - 1,
+          y2: height + 1,
+          stroke: app.colors.symmetryAxis,
+          strokeWidth: 0.1,
+        });
+        line.classList.add('symmetry-axis');
+        return line;
+      }
+
       function createAxisPoint2({ center }) {
-        return app.svg.createEllipse(blockSize, {
+        const ellipse = app.svg.createEllipse(blockSize, {
           cx: center.x,
           cy: center.y,
           rx: 1 / 8,
           ry: 3 / 8,
           fill: app.colors.symmetryAxis,
         });
+        ellipse.classList.add('symmetry-axis');
+        return ellipse;
       }
 
       function createAxisPoint4({ center }) {
         const x = center.x;
         const y = center.y;
         const size = 3 / 8;
-        return app.svg.createPolygon(blockSize, {
+        const polygon = app.svg.createPolygon(blockSize, {
           points: [
             [x, y - size],
             [x + size, y],
@@ -1076,50 +1130,8 @@
           ],
           fill: app.colors.symmetryAxis,
         });
-      }
-
-      function createAxisLine1({ center, height }) {
-        return app.svg.createLine(blockSize, {
-          x1: center.x,
-          y1: 0,
-          x2: center.x,
-          y2: height,
-          stroke: app.colors.symmetryAxis,
-          strokeWidth: 0.1,
-        });
-      }
-
-      function createAxisLine2({ center, width }) {
-        return app.svg.createLine(blockSize, {
-          x1: 0,
-          y1: center.y,
-          x2: width,
-          y2: center.y,
-          stroke: app.colors.symmetryAxis,
-          strokeWidth: 0.1,
-        });
-      }
-
-      function createAxisLine3({ center, height }) {
-        return app.svg.createLine(blockSize, {
-          x1: center.x - center.y - 1,
-          y1: 0 - 1,
-          x2: center.x + height - center.y + 1,
-          y2: height + 1,
-          stroke: app.colors.symmetryAxis,
-          strokeWidth: 0.1,
-        });
-      }
-
-      function createAxisLine4({ center, height }) {
-        return app.svg.createLine(blockSize, {
-          x1: center.x + center.y + 1,
-          y1: 0 - 1,
-          x2: center.x - height + center.y - 1,
-          y2: height + 1,
-          stroke: app.colors.symmetryAxis,
-          strokeWidth: 0.1,
-        });
+        polygon.classList.add('symmetry-axis');
+        return polygon;
       }
     }
 
