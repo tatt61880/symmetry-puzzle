@@ -491,6 +491,8 @@
     }
 
     #updateMoveFlags(dx, dy, userMax = app.states.userMax) {
+      if (this.#axis === null && dx + dy === 0) return false;
+
       let moveFlag = false;
       this.#resetMoveFlags();
 
@@ -627,7 +629,34 @@
       }
     }
 
-    #getDst(x, y) {
+    #getSrc(x, y, dx = 0, dy = 0) {
+      if (dx + dy !== 0) {
+        const srcX = x - dx;
+        const srcY = y - dy;
+        return { srcX, srcY };
+      }
+      if (dx === null) {
+        return { srcX: x, srcY: y };
+      }
+      switch (this.#axis.type) {
+        case Level.SYMMETRY_TYPE.POINT2: {
+          const srcX = (this.#axis.cx - this.#axis.cy) / 2 + y;
+          const srcY = (this.#axis.cx + this.#axis.cy) / 2 - x - 1;
+          return { srcX, srcY };
+        }
+        default: {
+          const { dstX: srcX, dstY: srcY } = this.#getDst(x, y, dx, dy);
+          return { srcX, srcY };
+        }
+      }
+    }
+
+    #getDst(x, y, dx = 0, dy = 0) {
+      if (dx + dy !== 0) {
+        const dstX = x + dx;
+        const dstY = y + dy;
+        return { dstX, dstY };
+      }
       switch (this.#axis.type) {
         case Level.SYMMETRY_TYPE.LINE1: {
           const dstX = this.#axis.cx - x - 1;
@@ -2308,8 +2337,7 @@
         // 移動モーション
         const dx = this.#moveDx;
         const dy = this.#moveDy;
-        const srcX = x - dx;
-        const srcY = y - dy;
+        const { srcX, srcY } = this.#getSrc(x, y, dx, dy);
         if (
           this.#xMin - 1 <= srcX &&
           srcX <= this.#xMax &&
