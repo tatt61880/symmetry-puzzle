@@ -565,7 +565,7 @@
           for (let y = this.#yMin; y < this.#yMax; ++y) {
             for (let x = this.#xMin; x < this.#xMax; ++x) {
               if (moveState[this.#states[y][x]]) {
-                this.#moveFlags[y + dy][x + dx] = true;
+                this.#moveFlags[y][x] = true;
               }
             }
           }
@@ -609,8 +609,8 @@
           for (let y = this.#yMin; y < this.#yMax; ++y) {
             for (let x = this.#xMin; x < this.#xMax; ++x) {
               if (this.#moveFlags[y][x]) {
-                this.#states[y][x] = this.#states[y - dy][x - dx];
-                this.#states[y - dy][x - dx] = app.states.none;
+                this.#states[y + dy][x + dx] = this.#states[y][x];
+                this.#states[y][x] = app.states.none;
               }
             }
           }
@@ -618,8 +618,8 @@
           for (let y = this.#yMax - 1; y >= this.#yMin; --y) {
             for (let x = this.#xMax - 1; x >= this.#xMin; --x) {
               if (this.#moveFlags[y][x]) {
-                this.#states[y][x] = this.#states[y - dy][x - dx];
-                this.#states[y - dy][x - dx] = app.states.none;
+                this.#states[y + dy][x + dx] = this.#states[y][x];
+                this.#states[y][x] = app.states.none;
               }
             }
           }
@@ -1910,8 +1910,10 @@
           }
 
           if (eyeFlag) {
-            const dx = this.#moveFlags[sY][sX] ? this.#moveDx * 0.05 : 0;
-            const dy = this.#moveFlags[sY][sX] ? this.#moveDy * 0.05 : 0;
+            const srcX = sX - this.#moveDx;
+            const srcY = sY - this.#moveDy;
+            const dx = this.#moveFlags[srcY][srcX] ? this.#moveDx * 0.05 : 0;
+            const dy = this.#moveFlags[srcY][srcX] ? this.#moveDy * 0.05 : 0;
             const eyeLeft = createEye(state, x, y, dx, dy, 0.3, 0.45);
             const eyeRight = createEye(state, x, y, dx, dy, 0.7, 0.45);
             if (showCharsFlag) {
@@ -2304,9 +2306,17 @@
         }
 
         // 移動モーション
-        if (this.#moveFlags[y][x]) {
-          const dx = this.#moveDx;
-          const dy = this.#moveDy;
+        const dx = this.#moveDx;
+        const dy = this.#moveDy;
+        const srcX = x - dx;
+        const srcY = y - dy;
+        if (
+          this.#xMin - 1 <= srcX &&
+          srcX <= this.#xMax &&
+          this.#yMin - 1 <= srcY &&
+          srcY <= this.#yMax &&
+          this.#moveFlags[srcY][srcX]
+        ) {
           elem.classList.add('animation-block');
 
           // 移動時のエフェクト（残像）
