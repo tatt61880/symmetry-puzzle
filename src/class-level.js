@@ -317,8 +317,6 @@
       if (!this.hasAxis()) return;
       this.#axis.cx += dx;
       this.#axis.cy += dy;
-      console.log(this.#axis.cx);
-      console.log(this.#width);
       if (this.#axis.cx < 2) this.#axis.cx = 2;
       if (this.#axis.cx > (this.#width - 1) * 2)
         this.#axis.cx = (this.#width - 1) * 2;
@@ -422,7 +420,7 @@
       }
     }
 
-    // 左右反転
+    // 鏡映 (左右反転)
     mirror() {
       const obj = {
         w: this.getW(),
@@ -433,7 +431,7 @@
       this.applyObj(newObj);
     }
 
-    // 90度回転
+    // 回転 (90° × rotateNum 回転)
     rotate(rotateNum) {
       const obj = {
         w: this.getW(),
