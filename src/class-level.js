@@ -313,7 +313,8 @@
       return this.#axis !== null;
     }
 
-    moveAxis(dx, dy) {
+    // 軸移動
+    #moveAxis(dx, dy) {
       if (!this.hasAxis()) return;
       this.#axis.cx += dx;
       this.#axis.cy += dy;
@@ -323,6 +324,12 @@
       if (this.#axis.cy < 2) this.#axis.cy = 2;
       if (this.#axis.cy > (this.#height - 1) * 2)
         this.#axis.cy = (this.#height - 1) * 2;
+    }
+
+    // 軸の鏡映移動
+    #mirrorAxis() {
+      if (!this.hasAxis()) return;
+      this.#axis.cx = this.#width * 2 - this.#axis.cx;
     }
 
     applyObj(obj, resizeFlag) {
@@ -398,6 +405,7 @@
       }
     }
 
+    // 盤面サイズ変更
     resize(dx, dy, flag) {
       const w = this.getW() + dx;
       const h = this.getH() + dy;
@@ -417,6 +425,10 @@
         const s = this.getS();
         const obj = { w, h, s };
         this.applyObj(obj, false);
+
+        this.#moveAxis(dx * 2, dy * 2);
+      } else {
+        this.#moveAxis(0, 0);
       }
     }
 
@@ -429,6 +441,7 @@
       };
       const newObj = this.#mirrorLevel(obj);
       this.applyObj(newObj);
+      this.#mirrorAxis();
     }
 
     // 回転 (90° × rotateNum 回転)

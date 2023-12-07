@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.07c';
+  const VERSION_TEXT = 'v' + '2023.12.07d';
 
   const app = window.app;
   Object.freeze(app);
@@ -2002,6 +2002,7 @@
     }
   }
 
+  // 盤面サイズ変更
   function resizeLevel(dx, dy, flag) {
     const w = level.getW() + dx;
     const h = level.getH() + dy;
@@ -2011,11 +2012,6 @@
     if (h > app.common.maxH) return;
 
     level.resize(dx, dy, flag);
-    if (flag && level.hasAxis()) {
-      level.moveAxis(dx * 2, dy * 2);
-    } else {
-      level.moveAxis(0, 0); // 枠外に出ないようにする処理が行われます。
-    }
     addUndo(null);
     draw();
   }
