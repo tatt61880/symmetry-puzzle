@@ -261,8 +261,9 @@
       const w = this.getW();
       const h = this.getH();
       const s = this.getS();
+      const axis = this.hasAxis() ? `, axis: '${this.getA()}'` : '';
 
-      console.log(`{ w: ${w}, h: ${h}, s: '${s}' },`); // コピペ用
+      console.log(`{ w: ${w}, h: ${h}, s: '${s}'${axis} },`); // コピペ用
       this.printSolveJsStr();
 
       const urlQuery = this.#getUrlQuery();
