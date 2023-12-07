@@ -1603,7 +1603,7 @@
       const cyM = frameSize / blockSize + level.getHeight() * 0.5;
 
       // 軸位置変更ボタンの追加
-      {
+      if (level.hasAxis()) {
         const buttons = [
           { cx: cxM, cy: cy1, points: pointsU, dx: +0, dy: -1 },
           { cx: cx4, cy: cyM, points: pointsR, dx: +1, dy: +0 },
@@ -1614,6 +1614,14 @@
         const fill = app.colors[app.states.userMin].fill;
         const stroke = app.colors[app.states.userMin].stroke;
         buttons.forEach((button) => {
+          switch (level.getAxisType()) {
+            case app.Level.SYMMETRY_TYPE.LINE1:
+              if (button.dy !== 0) return;
+              break;
+            case app.Level.SYMMETRY_TYPE.LINE2:
+              if (button.dx !== 0) return;
+              break;
+          }
           addEditButton(
             button,
             moveAxis.bind(null, button.dx, button.dy),
