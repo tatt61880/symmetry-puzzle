@@ -968,7 +968,7 @@
       const gElemsAnimation = app.svg.createG('group-elems-animation');
       g.appendChild(gShadows);
       g.appendChild(gElemsOther);
-      g.appendChild(gElemsAnimation);
+      g.appendChild(gElemsAnimation); // 最後に追加。アニメーション中の図形が静止中の図形に隠されないようにするためです。
 
       const stateHasEyes = {}; // 一番左上のみに目を付けます。
       for (let y = y0; y < y0 + height; ++y) {
