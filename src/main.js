@@ -82,8 +82,8 @@
   // ==========================================================================
 
   function tryMoving(dir) {
-    const dys = [-1, 0, 1, 0, 0];
     const dxs = [0, 1, 0, -1, 0];
+    const dys = [-1, 0, 1, 0, 0];
     const dx = dxs[dir];
     const dy = dys[dir];
 
@@ -409,16 +409,10 @@
     } else {
       switch (e.key) {
         case '1':
-          secretSequenceAdd('1');
-          break;
         case '2':
-          secretSequenceAdd('2');
-          break;
         case '3':
-          secretSequenceAdd('3');
-          break;
         case '4':
-          secretSequenceAdd('4');
+          secretSequenceAdd(e.key);
           break;
         default:
           secretSequenceReset();
@@ -1329,10 +1323,34 @@
       completeCheck();
       updateLinkUrl();
     } else {
-      const dys = [-1, 0, 1, 0, 1];
       const dxs = [0, 1, 0, -1, 1];
-      const dy = dys[input.inputDir];
-      const dx = dxs[input.inputDir];
+      const dys = [-1, 0, 1, 0, 1];
+      const { dx, dy } = (() => {
+        if (input.inputDir !== app.Input.DIRS.AXIS) {
+          return { dx: dxs[input.inputDir], dy: dys[input.inputDir] };
+        } else {
+          switch (level.getAxisType()) {
+            case app.Level.SYMMETRY_TYPE.LINE1: {
+              return { dx: 0, dy: 1 };
+            }
+            case app.Level.SYMMETRY_TYPE.LINE2: {
+              return { dx: 1, dy: 0 };
+            }
+            case app.Level.SYMMETRY_TYPE.LINE3: {
+              return { dx: 1, dy: -1 };
+            }
+            case app.Level.SYMMETRY_TYPE.LINE4: {
+              return { dx: 1, dy: 1 };
+            }
+            case app.Level.SYMMETRY_TYPE.POINT1: {
+              return { dx: 1, dy: 1 };
+            }
+            case app.Level.SYMMETRY_TYPE.POINT2: {
+              return { dx: 1, dy: 1 };
+            }
+          }
+        }
+      })();
 
       const pixel = 4;
       document.documentElement.style.setProperty(
