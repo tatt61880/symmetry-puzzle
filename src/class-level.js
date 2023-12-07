@@ -204,6 +204,7 @@
     getA() {
       if (!this.hasAxis()) return undefined;
 
+      this.#normalizeAxis();
       const lp = axisTypeStr[this.#axis.type];
       const x = this.#axis.cx === 2 ? '' : `-x${this.#axis.cx - 2}`;
       const y = this.#axis.cy === 2 ? '' : `-y${this.#axis.cy - 2}`;
@@ -330,6 +331,63 @@
     #mirrorAxis() {
       if (!this.hasAxis()) return;
       this.#axis.cx = this.#width * 2 - this.#axis.cx;
+    }
+
+    // 軸の回転移動
+    #rotateAxis() {
+      if (!this.hasAxis()) return;
+      const cx = this.#axis.cx;
+      const cy = this.#axis.cy;
+      this.#axis.cx = this.#height * 2 - cy;
+      this.#axis.cy = cx;
+      switch (this.#axis.type) {
+        case Level.SYMMETRY_TYPE.LINE1: {
+          this.#axis.type = Level.SYMMETRY_TYPE.LINE2;
+          break;
+        }
+        case Level.SYMMETRY_TYPE.LINE2: {
+          this.#axis.type = Level.SYMMETRY_TYPE.LINE1;
+          break;
+        }
+        case Level.SYMMETRY_TYPE.LINE3: {
+          this.#axis.type = Level.SYMMETRY_TYPE.LINE4;
+          break;
+        }
+        case Level.SYMMETRY_TYPE.LINE4: {
+          this.#axis.type = Level.SYMMETRY_TYPE.LINE3;
+          break;
+        }
+      }
+      this.#normalizeAxis();
+    }
+
+    #normalizeAxis() {
+      switch (this.#axis.type) {
+        case Level.SYMMETRY_TYPE.LINE1: {
+          this.#axis.cy = 2;
+          break;
+        }
+        case Level.SYMMETRY_TYPE.LINE2: {
+          this.#axis.cx = 2;
+          break;
+        }
+        case Level.SYMMETRY_TYPE.LINE3: {
+          const diff = this.#axis.cx - this.#axis.cy;
+          if (diff >= 0) {
+            this.#axis.cx = 2 + diff;
+            this.#axis.cy = 2;
+          } else {
+            this.#axis.cx = 2;
+            this.#axis.cy = 2 - diff;
+          }
+          break;
+        }
+        case Level.SYMMETRY_TYPE.LINE4: {
+          this.#axis.cx += this.#axis.cy - 2;
+          this.#axis.cy = 2;
+          break;
+        }
+      }
     }
 
     applyObj(obj, resizeFlag) {
@@ -1213,6 +1271,7 @@
     #rotateLevel(levelObj, rotateNum) {
       let newLevelObj = levelObj;
       for (let i = 0; i < rotateNum; ++i) {
+        this.#rotateAxis();
         const w = newLevelObj.h; // 90度回転後
         const h = newLevelObj.w; // 90度回転後
         const stateStr = newLevelObj.s;
