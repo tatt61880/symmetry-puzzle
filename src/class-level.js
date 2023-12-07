@@ -2383,10 +2383,6 @@
               }
             }
           }
-
-          if (app.states.isTarget(state) && symmetryType !== null) {
-            gElem.classList.add(animationClass[symmetryType]);
-          }
         }
       }
 
@@ -2468,6 +2464,11 @@
         showCharsFlag,
         eyeFlag
       );
+
+      if (app.states.isTarget(state) && symmetryType !== null) {
+        elem.classList.add(animationClass[symmetryType]);
+        gElems = gElemsAnimation;
+      }
 
       {
         const flags = [];
