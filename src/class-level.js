@@ -291,6 +291,32 @@
       return this.#axis !== null;
     }
 
+    axisCxDecAble() {
+      switch (this.getAxisType()) {
+        case app.Level.SYMMETRY_TYPE.LINE3:
+          return this.#axis.cy < 2 * (this.#height - 1);
+        default:
+          return this.#axis.cx > 2;
+      }
+    }
+
+    axisCxIncAble() {
+      switch (this.getAxisType()) {
+        case app.Level.SYMMETRY_TYPE.LINE4:
+          return this.#axis.cx < (this.#width + this.#height - 3) * 2;
+        default:
+          return this.#axis.cx < (this.#width - 1) * 2;
+      }
+    }
+
+    axisCyDecAble() {
+      return this.#axis.cy > 2;
+    }
+
+    axisCyIncAble() {
+      return this.#axis.cy < (this.#height - 1) * 2;
+    }
+
     // 軸移動
     moveAxis(dx, dy) {
       if (!this.hasAxis()) return;

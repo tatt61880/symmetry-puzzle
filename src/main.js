@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.07e';
+  const VERSION_TEXT = 'v' + '2023.12.07f';
 
   const app = window.app;
   Object.freeze(app);
@@ -1632,8 +1632,15 @@
         const fill = app.colors[app.states.userMin].fill;
         const stroke = app.colors[app.states.userMin].stroke;
         buttons.forEach((button) => {
+          if (button.dx === 1 && !level.axisCxIncAble()) return;
+          if (button.dx === -1 && !level.axisCxDecAble()) return;
+          if (button.dy === 1 && !level.axisCyIncAble()) return;
+          if (button.dy === -1 && !level.axisCyDecAble()) return;
+
           switch (level.getAxisType()) {
             case app.Level.SYMMETRY_TYPE.LINE1:
+            case app.Level.SYMMETRY_TYPE.LINE3:
+            case app.Level.SYMMETRY_TYPE.LINE4:
               if (button.dy !== 0) return;
               break;
             case app.Level.SYMMETRY_TYPE.LINE2:
