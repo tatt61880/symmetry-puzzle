@@ -331,6 +331,16 @@
     #mirrorAxis() {
       if (!this.hasAxis()) return;
       this.#axis.cx = this.#width * 2 - this.#axis.cx;
+      switch (this.#axis.type) {
+        case Level.SYMMETRY_TYPE.LINE3: {
+          this.#axis.type = Level.SYMMETRY_TYPE.LINE4;
+          break;
+        }
+        case Level.SYMMETRY_TYPE.LINE4: {
+          this.#axis.type = Level.SYMMETRY_TYPE.LINE3;
+          break;
+        }
+      }
     }
 
     // 軸の回転移動
