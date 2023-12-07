@@ -182,6 +182,22 @@
       step: 8,
     },
     {
+      w: 5,
+      h: 3,
+      s: '00sx-x011-022',
+      axis: 'l4-x8',
+      r: '34103',
+      step: 5,
+    },
+    {
+      w: 5,
+      h: 3,
+      s: '01s22-x1122',
+      axis: 'p1-x2-y3',
+      r: '20341',
+      step: 5,
+    },
+    {
       w: 7,
       h: 7,
       s: '0x0x0xx-0xxxxxx-0xsx0x-xxxx0x1-0x0x0x-0x0xxx-0x0x02',
