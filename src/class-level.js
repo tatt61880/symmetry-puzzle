@@ -297,8 +297,20 @@
       this.#axis.cx += dx;
       this.#axis.cy += dy;
 
-      const minX = 2;
-      const minY = 2;
+      const minX = (() => {
+        if (this.#axis.type === Level.SYMMETRY_TYPE.LINE3) {
+          return 4 - this.#height * 2 + this.#axis.cy;
+        } else {
+          return 2;
+        }
+      })();
+      const minY = (() => {
+        if (this.#axis.type === Level.SYMMETRY_TYPE.LINE3) {
+          return 4 - this.#width * 2 + this.#axis.cx;
+        } else {
+          return 2;
+        }
+      })();
       const maxX = (() => {
         if (this.#axis.type === Level.SYMMETRY_TYPE.LINE4) {
           return (this.#width + this.#height - 3) * 2;
