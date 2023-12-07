@@ -762,6 +762,9 @@
       }
       switch (this.#axis.type) {
         case Level.SYMMETRY_TYPE.POINT2: {
+          if ((this.#axis.cx + this.#axis.cy) % 2 !== 0) {
+            return { srcX: 0, srcY: 0 };
+          }
           const srcX = (this.#axis.cx - this.#axis.cy) / 2 + y;
           const srcY = (this.#axis.cx + this.#axis.cy) / 2 - x - 1;
           return { srcX, srcY };
@@ -808,6 +811,9 @@
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.POINT2: {
+          if ((this.#axis.cx + this.#axis.cy) % 2 !== 0) {
+            return { dstX: 0, dstY: 0 };
+          }
           const dstX = (this.#axis.cy + this.#axis.cx) / 2 - y - 1;
           const dstY = (this.#axis.cy - this.#axis.cx) / 2 + x;
           return { dstX, dstY };
