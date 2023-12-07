@@ -325,6 +325,7 @@
       if (this.#axis.cy < 2) this.#axis.cy = 2;
       if (this.#axis.cy > (this.#height - 1) * 2)
         this.#axis.cy = (this.#height - 1) * 2;
+      this.#normalizeAxis();
     }
 
     // 軸の鏡映移動
@@ -341,6 +342,7 @@
           break;
         }
       }
+      this.#normalizeAxis();
     }
 
     // 軸の回転移動
