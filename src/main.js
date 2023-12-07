@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.07b';
+  const VERSION_TEXT = 'v' + '2023.12.07c';
 
   const app = window.app;
   Object.freeze(app);
@@ -2011,6 +2011,11 @@
     if (h > app.common.maxH) return;
 
     level.resize(dx, dy, flag);
+    if (flag && level.hasAxis()) {
+      level.moveAxis(dx * 2, dy * 2);
+    } else {
+      level.moveAxis(0, 0); // 枠外に出ないようにする処理が行われます。
+    }
     addUndo(null);
     draw();
   }

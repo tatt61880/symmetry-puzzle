@@ -313,6 +313,20 @@
       return this.#axis !== null;
     }
 
+    moveAxis(dx, dy) {
+      if (!this.hasAxis()) return;
+      this.#axis.cx += dx;
+      this.#axis.cy += dy;
+      console.log(this.#axis.cx);
+      console.log(this.#width);
+      if (this.#axis.cx < 2) this.#axis.cx = 2;
+      if (this.#axis.cx > (this.#width - 1) * 2)
+        this.#axis.cx = (this.#width - 1) * 2;
+      if (this.#axis.cy < 2) this.#axis.cy = 2;
+      if (this.#axis.cy > (this.#height - 1) * 2)
+        this.#axis.cy = (this.#height - 1) * 2;
+    }
+
     applyObj(obj, resizeFlag) {
       if (resizeFlag) {
         this.#levelObj = obj;
