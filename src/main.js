@@ -552,6 +552,7 @@
       const resizeFlag =
         level.getW() !== levelObj.w || level.getH() !== levelObj.h;
       level.applyObj(levelObj, resizeFlag);
+      level.applyAxis(levelObj.axis);
       draw();
     }
   }
@@ -564,6 +565,7 @@
       const resizeFlag =
         level.getW() !== levelObj.w || level.getH() !== levelObj.h;
       level.applyObj(levelObj, resizeFlag);
+      level.applyAxis(levelObj.axis);
       draw();
     }
   }

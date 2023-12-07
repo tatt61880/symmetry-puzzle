@@ -112,31 +112,7 @@
 
       this.#setCheckMode(checkMode);
       let obj = levelObj;
-      if (obj.axis !== undefined) {
-        const res = obj.axis.match(/(\w\d)(?:-x(\d+))?(?:-y(\d+))?/);
-        const type = (() => {
-          switch (res[1]) {
-            case 'l1':
-              return Level.SYMMETRY_TYPE.LINE1;
-            case 'l2':
-              return Level.SYMMETRY_TYPE.LINE2;
-            case 'l3':
-              return Level.SYMMETRY_TYPE.LINE3;
-            case 'l4':
-              return Level.SYMMETRY_TYPE.LINE4;
-            case 'p1':
-              return Level.SYMMETRY_TYPE.POINT1;
-            case 'p2':
-              return Level.SYMMETRY_TYPE.POINT2;
-          }
-        })();
-
-        this.#axis = {
-          type,
-          cx: Number(res[2] ?? 0) + 2,
-          cy: Number(res[3] ?? 0) + 2,
-        };
-      }
+      this.applyAxis(obj.axis);
       if (mirrorFlag) obj = this.#mirrorLevel(obj);
       if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
       this.#levelObj = obj;
@@ -400,6 +376,35 @@
           this.#axis.cy = 2;
           break;
         }
+      }
+    }
+
+    applyAxis(axisStr) {
+      this.#axis = null;
+      if (axisStr !== undefined) {
+        const res = axisStr.match(/(\w\d)(?:-x(\d+))?(?:-y(\d+))?/);
+        const type = (() => {
+          switch (res[1]) {
+            case 'l1':
+              return Level.SYMMETRY_TYPE.LINE1;
+            case 'l2':
+              return Level.SYMMETRY_TYPE.LINE2;
+            case 'l3':
+              return Level.SYMMETRY_TYPE.LINE3;
+            case 'l4':
+              return Level.SYMMETRY_TYPE.LINE4;
+            case 'p1':
+              return Level.SYMMETRY_TYPE.POINT1;
+            case 'p2':
+              return Level.SYMMETRY_TYPE.POINT2;
+          }
+        })();
+
+        this.#axis = {
+          type,
+          cx: Number(res[2] ?? 0) + 2,
+          cy: Number(res[3] ?? 0) + 2,
+        };
       }
     }
 
