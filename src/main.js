@@ -560,9 +560,10 @@
     window.getSelection().removeAllRanges();
 
     if (undoInfo.isRedoable()) {
-      const data = undoInfo.redo();
-      const resizeFlag = level.getW() !== data.w || level.getH() !== data.h;
-      level.applyObj(data, resizeFlag);
+      const levelObj = undoInfo.redo();
+      const resizeFlag =
+        level.getW() !== levelObj.w || level.getH() !== levelObj.h;
+      level.applyObj(levelObj, resizeFlag);
       draw();
     }
   }
@@ -1549,7 +1550,7 @@
           x: 0,
           y: 0.5,
           text: 'Not normalized',
-          fill: '#aa33aa',
+          fill: app.colors.editStroke,
         });
         const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
         const height = frameBorderWidth;
@@ -1558,47 +1559,70 @@
         g.appendChild(text);
       }
 
+      const pointsR = [
+        [0, -1],
+        [1, 0],
+        [0, 1],
+        [-1, 1],
+        [-1, -1],
+      ];
+      const pointsL = [
+        [0, -1],
+        [1, -1],
+        [1, 1],
+        [0, 1],
+        [-1, 0],
+      ];
+      const pointsD = [
+        [1, -1],
+        [1, 0],
+        [0, 1],
+        [-1, 0],
+        [-1, -1],
+      ];
+      const pointsU = [
+        [0, -1],
+        [1, 0],
+        [1, 1],
+        [-1, 1],
+        [-1, 0],
+      ];
+
+      const cx1 = frameSize / blockSize + 0.5;
+      const cx2 = frameSize / blockSize + level.getWidth() * 0.3;
+      const cx3 = frameSize / blockSize + level.getWidth() * 0.7;
+      const cx4 = frameSize / blockSize + level.getWidth() - 0.5;
+      const cxM = frameSize / blockSize + level.getWidth() * 0.5;
+
+      const cy1 = frameSize / blockSize + 0.5;
+      const cy2 = frameSize / blockSize + level.getHeight() * 0.3;
+      const cy3 = frameSize / blockSize + level.getHeight() * 0.7;
+      const cy4 = frameSize / blockSize + level.getHeight() - 0.5;
+      const cyM = frameSize / blockSize + level.getHeight() * 0.5;
+
+      // 軸位置変更ボタンの追加
+      {
+        const buttons = [
+          { cx: cxM, cy: cy1, points: pointsU, dx: +0, dy: -1 },
+          { cx: cx4, cy: cyM, points: pointsR, dx: +1, dy: +0 },
+          { cx: cxM, cy: cy4, points: pointsD, dx: +0, dy: +1 },
+          { cx: cx1, cy: cyM, points: pointsL, dx: -1, dy: +0 },
+        ];
+
+        const fill = app.colors[app.states.userMin].fill;
+        const stroke = app.colors[app.states.userMin].stroke;
+        buttons.forEach((button) => {
+          addEditButton(
+            button,
+            moveAxis.bind(null, button.dx, button.dy),
+            fill,
+            stroke
+          );
+        });
+      }
+
       // サイズ変更ボタンの追加
       {
-        const cx1 = frameSize / blockSize + 0.5;
-        const cx2 = frameSize / blockSize + level.getWidth() * 0.3;
-        const cx3 = frameSize / blockSize + level.getWidth() * 0.7;
-        const cx4 = frameSize / blockSize + level.getWidth() - 0.5;
-
-        const cy1 = frameSize / blockSize + 0.5;
-        const cy2 = frameSize / blockSize + level.getHeight() * 0.3;
-        const cy3 = frameSize / blockSize + level.getHeight() * 0.7;
-        const cy4 = frameSize / blockSize + level.getHeight() - 0.5;
-
-        const pointsR = [
-          [0, -1],
-          [1, 0],
-          [0, 1],
-          [-1, 1],
-          [-1, -1],
-        ];
-        const pointsL = [
-          [0, -1],
-          [1, -1],
-          [1, 1],
-          [0, 1],
-          [-1, 0],
-        ];
-        const pointsD = [
-          [1, -1],
-          [1, 0],
-          [0, 1],
-          [-1, 0],
-          [-1, -1],
-        ];
-        const pointsU = [
-          [0, -1],
-          [1, 0],
-          [1, 1],
-          [-1, 1],
-          [-1, 0],
-        ];
-
         const buttons = [
           // 左右
           { cx: cx1, cy: cy2, points: pointsR, dx: -1, dy: 0, flag: true },
@@ -1613,41 +1637,15 @@
           { cx: cx3, cy: cy4, points: pointsD, dx: 0, dy: +1, flag: false },
         ];
 
+        const fill = app.colors.editFill;
+        const stroke = app.colors.editStroke;
         buttons.forEach((button) => {
-          if (button.dx === -1 && level.getW() <= 1) return;
-          if (button.dy === -1 && level.getH() <= 1) return;
-          if (button.dx === 1 && level.getW() >= app.common.maxEditW) return;
-          if (button.dy === 1 && level.getH() >= app.common.maxEditH) return;
-
-          const points = [];
-          for (const point of button.points) {
-            points.push([
-              button.cx + 0.45 * point[0],
-              button.cy + 0.45 * point[1],
-            ]);
-          }
-
-          const polygon = app.svg.createPolygon(blockSize, {
-            points,
-            fill: '#e5a0e5',
-            stroke: '#aa33aa',
-            strokeWidth: 0.1,
-          });
-          polygon.classList.add('button');
-          polygon.addEventListener('click', () => {
-            resizeLevel(button.dx, button.dy, button.flag);
-          });
-          g.appendChild(polygon);
-
-          const char = button.dx + button.dy > 0 ? '+' : '-';
-          const text = app.svg.createText(blockSize, {
-            x: button.cx,
-            y: button.cy,
-            text: char,
-            fill: '#aa33aa',
-          });
-          text.setAttribute('font-size', `${blockSize * 0.7}px`);
-          g.appendChild(text);
+          addEditButton(
+            button,
+            resizeLevel.bind(null, button.dx, button.dy, button.flag),
+            fill,
+            stroke
+          );
         });
       }
     } else {
@@ -1831,6 +1829,38 @@
           g.appendChild(gg);
         }
       }
+    }
+
+    function addEditButton(button, onClick, fill, stroke) {
+      if (button.dx === -1 && level.getW() <= 1) return;
+      if (button.dy === -1 && level.getH() <= 1) return;
+      if (button.dx === 1 && level.getW() >= app.common.maxEditW) return;
+      if (button.dy === 1 && level.getH() >= app.common.maxEditH) return;
+
+      const points = [];
+      for (const point of button.points) {
+        points.push([button.cx + 0.45 * point[0], button.cy + 0.45 * point[1]]);
+      }
+
+      const polygon = app.svg.createPolygon(blockSize, {
+        points,
+        fill,
+        stroke,
+        strokeWidth: 0.1,
+      });
+      polygon.classList.add('button');
+      polygon.addEventListener('click', onClick);
+      g.appendChild(polygon);
+
+      const char = button.dx + button.dy > 0 ? '+' : '-';
+      const text = app.svg.createText(blockSize, {
+        x: button.cx,
+        y: button.cy,
+        text: char,
+        fill: stroke,
+      });
+      text.setAttribute('font-size', `${blockSize * 0.7}px`);
+      g.appendChild(text);
     }
   }
 
@@ -2016,12 +2046,20 @@
     draw();
   }
 
+  // 軸位置変更
+  function moveAxis(dx, dy) {
+    level.moveAxis(dx, dy);
+    addUndo(null);
+    draw();
+  }
+
   function addUndo(dir) {
     undoInfo.pushData({
       dir,
       w: level.getW(),
       h: level.getH(),
       s: level.getS(),
+      axis: level.getA(),
       r: level.getR(),
     });
 

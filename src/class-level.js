@@ -315,7 +315,7 @@
     }
 
     // 軸移動
-    #moveAxis(dx, dy) {
+    moveAxis(dx, dy) {
       if (!this.hasAxis()) return;
       this.#axis.cx += dx;
       this.#axis.cy += dy;
@@ -496,9 +496,9 @@
         const obj = { w, h, s };
         this.applyObj(obj, false);
 
-        this.#moveAxis(dx * 2, dy * 2);
+        this.moveAxis(dx * 2, dy * 2);
       } else {
-        this.#moveAxis(0, 0);
+        this.moveAxis(0, 0);
       }
     }
 
