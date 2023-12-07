@@ -296,12 +296,21 @@
       if (!this.hasAxis()) return;
       this.#axis.cx += dx;
       this.#axis.cy += dy;
-      if (this.#axis.cx < 2) this.#axis.cx = 2;
-      if (this.#axis.cx > (this.#width - 1) * 2)
-        this.#axis.cx = (this.#width - 1) * 2;
-      if (this.#axis.cy < 2) this.#axis.cy = 2;
-      if (this.#axis.cy > (this.#height - 1) * 2)
-        this.#axis.cy = (this.#height - 1) * 2;
+
+      const minX = 2;
+      const minY = 2;
+      const maxX = (() => {
+        if (this.#axis.type === Level.SYMMETRY_TYPE.LINE4) {
+          return (this.#width + this.#height - 3) * 2;
+        } else {
+          return (this.#width - 1) * 2;
+        }
+      })();
+      const maxY = (this.#height - 1) * 2;
+      if (this.#axis.cx < minX) this.#axis.cx = minX;
+      if (this.#axis.cx > maxX) this.#axis.cx = maxX;
+      if (this.#axis.cy < minY) this.#axis.cy = minY;
+      if (this.#axis.cy > maxY) this.#axis.cy = maxY;
       this.#normalizeAxis();
     }
 
