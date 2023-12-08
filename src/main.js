@@ -316,7 +316,7 @@
           clip = clip.replace(/\s/g, ' ');
           clip = clip.replace(/(\w+):/g, '"$1":');
           clip = clip.replace(/,\s*}/g, '}');
-          clip = clip.replace(/.*?({.*}).*/, '$1');
+          clip = clip.replace(/.*?({.*?}).*/, '$1');
           const levelObj = JSON.parse(clip);
           onloadObj(levelObj);
           updateAutoMode(true);
