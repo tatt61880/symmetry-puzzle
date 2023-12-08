@@ -1241,13 +1241,15 @@
 
       function createAxisLine3({ center, height }) {
         const dd = 0.05;
+
         const x1a = center.x - center.y;
         const x1 = x1a < 0 ? 0 : x1a;
         const y1 = x1a < 0 ? -x1a : 0;
+
         const x2a = center.x + height - center.y;
-        const x2diff = x2a - width;
-        const x2 = x2diff > 0 ? x2a - x2diff : x2a;
-        const y2 = x2diff > 0 ? height - x2diff : height;
+        const x2 = x2a > width ? width : x2a;
+        const y2 = x2a > width ? width + height - x2a : height;
+
         const line = app.svg.createLine(blockSize, {
           x1: x1 - dd,
           y1: y1 - dd,
@@ -1261,11 +1263,17 @@
       }
 
       function createAxisLine4({ center, height }) {
+        const dd = 0.05;
+
+        const x1a = center.x + center.y;
+        const x1 = x1a > width ? width : x1a;
+        const y1 = x1a > width ? x1a - width : 0;
+
         const line = app.svg.createLine(blockSize, {
-          x1: center.x + center.y + 1,
-          y1: 0 - 1,
-          x2: center.x - height + center.y - 1,
-          y2: height + 1,
+          x1: x1 + dd,
+          y1: y1 - dd,
+          x2: center.x - height + center.y - dd,
+          y2: height + dd,
           stroke: app.colors.symmetryAxis,
           strokeWidth: 0.1,
         });
