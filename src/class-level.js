@@ -1269,11 +1269,15 @@
         const x1 = x1a > width ? width : x1a;
         const y1 = x1a > width ? x1a - width : 0;
 
+        const x2a = center.x - height + center.y;
+        const x2 = x2a < 0 ? 0 : x2a;
+        const y2 = x2a < 0 ? height + x2a : height;
+
         const line = app.svg.createLine(blockSize, {
           x1: x1 + dd,
           y1: y1 - dd,
-          x2: center.x - height + center.y - dd,
-          y2: height + dd,
+          x2: x2 - dd,
+          y2: y2 + dd,
           stroke: app.colors.symmetryAxis,
           strokeWidth: 0.1,
         });
