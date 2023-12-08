@@ -61,8 +61,10 @@
   colors.stepLose = '#666666';
   colors.stepUnknown = '#a0a0a0';
 
-  colors.editFill = '#e5a0e5';
-  colors.editStroke = '#aa33aa';
+  colors.editButton = {
+    fill: '#e5a0e5',
+    stroke: '#aa33aa',
+  };
 
   colors.levelsDialogCurrentLevel = '#cceeff';
   colors.levelsDialogSelect = 'red';

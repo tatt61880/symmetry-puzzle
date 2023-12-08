@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.07f';
+  const VERSION_TEXT = 'v' + '2023.12.08';
 
   const app = window.app;
   Object.freeze(app);
@@ -1629,8 +1629,6 @@
           { cx: cx1, cy: cyM, points: pointsL, dx: -1, dy: +0 },
         ];
 
-        const fill = app.colors[app.states.userMin].fill;
-        const stroke = app.colors[app.states.userMin].stroke;
         buttons.forEach((button) => {
           if (button.dx === 1 && !level.axisCxIncAble()) return;
           if (button.dx === -1 && !level.axisCxDecAble()) return;
@@ -1650,8 +1648,7 @@
           addEditButton(
             button,
             moveAxis.bind(null, button.dx, button.dy),
-            fill,
-            stroke
+            app.colors[app.states.userMin]
           );
         });
       }
@@ -1672,14 +1669,11 @@
           { cx: cx3, cy: cy4, points: pointsD, dx: 0, dy: +1, flag: false },
         ];
 
-        const fill = app.colors.editFill;
-        const stroke = app.colors.editStroke;
         buttons.forEach((button) => {
           addEditButton(
             button,
             resizeLevel.bind(null, button.dx, button.dy, button.flag),
-            fill,
-            stroke
+            app.colors.editButton
           );
         });
       }
@@ -1866,7 +1860,7 @@
       }
     }
 
-    function addEditButton(button, onClick, fill, stroke) {
+    function addEditButton(button, onClick, color) {
       if (button.dx === -1 && level.getW() <= 1) return;
       if (button.dy === -1 && level.getH() <= 1) return;
       if (button.dx === 1 && level.getW() >= app.common.maxEditW) return;
@@ -1879,8 +1873,8 @@
 
       const polygon = app.svg.createPolygon(blockSize, {
         points,
-        fill,
-        stroke,
+        fill: color.fill,
+        stroke: color.stroke,
         strokeWidth: 0.1,
       });
       polygon.classList.add('button');
@@ -1892,7 +1886,7 @@
         x: button.cx,
         y: button.cy,
         text: char,
-        fill: stroke,
+        fill: color.stroke,
       });
       text.setAttribute('font-size', `${blockSize * 0.7}px`);
       g.appendChild(text);
