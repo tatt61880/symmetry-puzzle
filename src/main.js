@@ -1331,10 +1331,10 @@
         } else {
           switch (level.getAxisType()) {
             case app.Level.SYMMETRY_TYPE.LINE1: {
-              return { dx: 0, dy: 1 };
+              return { dx: 1, dy: 0 };
             }
             case app.Level.SYMMETRY_TYPE.LINE2: {
-              return { dx: 1, dy: 0 };
+              return { dx: 0, dy: 1 };
             }
             case app.Level.SYMMETRY_TYPE.LINE3: {
               return { dx: 1, dy: -1 };
