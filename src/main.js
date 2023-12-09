@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.08';
+  const VERSION_TEXT = 'v' + '2023.12.09';
 
   const app = window.app;
   Object.freeze(app);
@@ -848,8 +848,10 @@
     for (const elem of document.getElementsByClassName('user-block-right')) {
       elem.textContent = '';
 
+      const checkMode = app.Level.CHECK_MODE.SPECIAL;
       const level = new app.Level({
         levelObj: { w: 2, h: 1, s: 's' },
+        checkMode,
       });
       level.move(1, 0);
 

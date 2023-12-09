@@ -27,11 +27,12 @@
 
   function show() {
     {
-      const setBlock = (elem, char, w) => {
+      const setBlock = (elem, char, w, checkMode) => {
         elem.textContent = '';
 
         const level = new app.Level({
           levelObj: { w, h: 1, s: char.repeat(w) },
+          checkMode,
         });
 
         const blockSize = 30;
@@ -48,8 +49,16 @@
         elem.appendChild(g);
       };
 
-      for (const elem of document.getElementsByClassName('user-block')) {
-        setBlock(elem, 's', 1);
+      for (const elem of document.getElementsByClassName('user-block-line')) {
+        setBlock(elem, 's', 1, app.Level.CHECK_MODE.LINE);
+      }
+      for (const elem of document.getElementsByClassName('user-block-point')) {
+        setBlock(elem, 's', 1, app.Level.CHECK_MODE.POINT);
+      }
+      for (const elem of document.getElementsByClassName(
+        'user-block-special'
+      )) {
+        setBlock(elem, 's', 1, app.Level.CHECK_MODE.SPECIAL);
       }
       for (const elem of document.getElementsByClassName('target-block')) {
         setBlock(elem, '1', 2);

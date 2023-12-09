@@ -86,7 +86,9 @@
     display: none;
     width: 100%;
 
-    .user-block,
+    .user-block-line,
+    .user-block-point,
+    .user-block-special,
     .target-block {
       margin: 0 7px;
     }
