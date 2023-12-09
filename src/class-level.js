@@ -823,18 +823,18 @@
           if ((this.#axis.cx + this.#axis.cy) % 2 !== 0) {
             return { dstX: 0, dstY: 0 };
           }
-          const d = x - y - (this.#axis.cx - this.#axis.cy) / 2;
-          const dstX = x - d;
-          const dstY = y + d;
+          const diff = x - y - (this.#axis.cx - this.#axis.cy) / 2;
+          const dstX = x - diff;
+          const dstY = y + diff;
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.LINE4: {
           if ((this.#axis.cx + this.#axis.cy) % 2 !== 0) {
             return { dstX: 0, dstY: 0 };
           }
-          const d = x + y + 1 - (this.#axis.cx + this.#axis.cy) / 2;
-          const dstX = x - d;
-          const dstY = y - d;
+          const diff = x + y + 1 - (this.#axis.cx + this.#axis.cy) / 2;
+          const dstX = x - diff;
+          const dstY = y - diff;
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.POINT1: {
