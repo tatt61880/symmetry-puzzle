@@ -1780,19 +1780,19 @@
           nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
         }
       } else {
-        if (symmetryFlag) {
-          const text = app.svg.createText(blockSize, {
-            x: 0,
-            y: 0.5 + wallStrShift,
-            text: 'Not connected',
-            fill: 'white',
-          });
-          const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
-          const height = (level.getHeight() - 1) * blockSize + frameSize;
-          text.setAttribute('font-size', fontSize2);
-          text.setAttribute('transform', `translate(${width},${height})`);
-          g.appendChild(text);
-        }
+        // if (symmetryFlag) {
+        //   const text = app.svg.createText(blockSize, {
+        //     x: 0,
+        //     y: 0.5 + wallStrShift,
+        //     text: 'Not connected',
+        //     fill: 'white',
+        //   });
+        //   const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
+        //   const height = (level.getHeight() - 1) * blockSize + frameSize;
+        //   text.setAttribute('font-size', fontSize2);
+        //   text.setAttribute('transform', `translate(${width},${height})`);
+        //   g.appendChild(text);
+        // }
       }
 
       // 今回の手数
