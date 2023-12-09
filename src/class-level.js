@@ -898,12 +898,11 @@
       {
         const sx = -eps;
         const sy = -eps;
-        const vdy = blockSize * radius.ul + eps;
-        const rx = blockSize * radius.ul;
-        const ry = blockSize * radius.ul;
-        const dx = blockSize * radius.ul;
-        const dy = -blockSize * radius.ul;
-        const d = `M ${sx},${sy} v ${vdy} h ${eps} a ${rx},${ry} 0 0 1 ${dx},${dy} v ${-eps} z`;
+        const r = blockSize * radius.ul;
+        const vdy = r + eps;
+        const dx = r;
+        const dy = -r;
+        const d = `M ${sx},${sy} v ${vdy} h ${eps} a ${r},${r} 0 0 1 ${dx},${dy} v ${-eps} z`;
         const path = app.svg.createPath({ d, fill });
         g.appendChild(path);
       }
@@ -912,12 +911,11 @@
       {
         const sx = this.getWidth() * blockSize + eps;
         const sy = -eps;
-        const hdx = -blockSize * radius.ur - eps;
-        const rx = blockSize * radius.ur;
-        const ry = blockSize * radius.ur;
-        const dx = blockSize * radius.ur;
-        const dy = blockSize * radius.ur;
-        const d = `M ${sx},${sy} h ${hdx} v ${eps} a ${rx},${ry} 0 0 1 ${dx},${dy} h ${eps} z`;
+        const r = blockSize * radius.ur;
+        const hdx = -r - eps;
+        const dx = r;
+        const dy = r;
+        const d = `M ${sx},${sy} h ${hdx} v ${eps} a ${r},${r} 0 0 1 ${dx},${dy} h ${eps} z`;
         const path = app.svg.createPath({ d, fill });
         g.appendChild(path);
       }
@@ -926,12 +924,11 @@
       {
         const sx = this.getWidth() * blockSize + eps;
         const sy = this.getHeight() * blockSize + eps;
-        const vdy = -blockSize * radius.dr - eps;
-        const rx = blockSize * radius.dr;
-        const ry = blockSize * radius.dr;
-        const dx = -blockSize * radius.dr;
-        const dy = blockSize * radius.dr;
-        const d = `M ${sx},${sy} v ${vdy} h ${-eps} a ${rx},${ry} 0 0 1 ${dx},${dy} v ${eps} z`;
+        const r = blockSize * radius.dr;
+        const vdy = -r - eps;
+        const dx = -r;
+        const dy = r;
+        const d = `M ${sx},${sy} v ${vdy} h ${-eps} a ${r},${r} 0 0 1 ${dx},${dy} v ${eps} z`;
         const path = app.svg.createPath({ d, fill });
         g.appendChild(path);
       }
@@ -940,12 +937,11 @@
       {
         const sx = -eps;
         const sy = this.getHeight() * blockSize + eps;
-        const hdx = blockSize * radius.dl + eps;
-        const rx = blockSize * radius.dl;
-        const ry = blockSize * radius.dl;
-        const dx = -blockSize * radius.dl;
-        const dy = -blockSize * radius.dl;
-        const d = `M ${sx},${sy} h ${hdx} v ${-eps} a ${rx},${ry} 0 0 1 ${dx},${dy} h ${-eps} z`;
+        const r = blockSize * radius.dl;
+        const hdx = r + eps;
+        const dx = -r;
+        const dy = -r;
+        const d = `M ${sx},${sy} h ${hdx} v ${-eps} a ${r},${r} 0 0 1 ${dx},${dy} h ${-eps} z`;
         const path = app.svg.createPath({ d, fill });
         g.appendChild(path);
       }
