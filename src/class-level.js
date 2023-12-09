@@ -2207,6 +2207,7 @@
               gElem.appendChild(line);
             }
           }
+
           // 右側の境界枠
           if (!flags[dirs.r]) {
             const line = app.svg.createRect(blockSize, {
@@ -2229,6 +2230,7 @@
               gElem.appendChild(line);
             }
           }
+
           // 下側の境界枠
           if (!flags[dirs.d]) {
             const line = app.svg.createRect(blockSize, {
@@ -2251,6 +2253,7 @@
               gElem.appendChild(line);
             }
           }
+
           // 左側の境界枠
           if (!flags[dirs.l]) {
             const line = app.svg.createRect(blockSize, {
