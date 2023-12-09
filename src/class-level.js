@@ -872,32 +872,37 @@
       const eps = 1; // 隙間を埋めます。
       const fill = edgeColor;
 
-      let dxs = {};
-      let dys = {};
-      switch (app.common.checkMode) {
-        case app.Level.CHECK_MODE.LINE:
-          dxs = { ul: 0.5, ur: 0.5, dr: 1.0, dl: 1.0 };
-          dys = { ul: 0.5, ur: 0.5, dr: 1.0, dl: 1.0 };
-          break;
-        case app.Level.CHECK_MODE.POINT:
-          dxs = { ul: 0.5, ur: 1.0, dr: 0.5, dl: 1.0 };
-          dys = { ul: 0.5, ur: 1.0, dr: 0.5, dl: 1.0 };
-          break;
-        case app.Level.CHECK_MODE.SPECIAL:
-          dxs = { ul: 0.75, ur: 0.75, dr: 0.75, dl: 0.75 };
-          dys = { ul: 0.75, ur: 0.75, dr: 0.75, dl: 0.75 };
-          break;
-      }
+      const radiuses = {
+        [Level.CHECK_MODE.LINE]: {
+          ul: 0.5,
+          ur: 0.5,
+          dr: 1.0,
+          dl: 1.0,
+        },
+        [Level.CHECK_MODE.POINT]: {
+          ul: 0.5,
+          ur: 1.0,
+          dr: 0.5,
+          dl: 1.0,
+        },
+        [Level.CHECK_MODE.SPECIAL]: {
+          ul: 0.75,
+          ur: 0.75,
+          dr: 0.75,
+          dl: 0.75,
+        },
+      };
+      const radius = radiuses[app.common.checkMode];
 
       // 左上
       {
         const sx = -eps;
         const sy = -eps;
-        const vdy = blockSize * dys.ul + eps;
-        const rx = blockSize * dxs.ul;
-        const ry = blockSize * dys.ul;
-        const dx = blockSize * dxs.ul;
-        const dy = -blockSize * dys.ul;
+        const vdy = blockSize * radius.ul + eps;
+        const rx = blockSize * radius.ul;
+        const ry = blockSize * radius.ul;
+        const dx = blockSize * radius.ul;
+        const dy = -blockSize * radius.ul;
         const d = `M ${sx},${sy} v ${vdy} h ${eps} a ${rx},${ry} 0 0 1 ${dx},${dy} v ${-eps} z`;
         const path = app.svg.createPath({ d, fill });
         g.appendChild(path);
@@ -907,11 +912,11 @@
       {
         const sx = this.getWidth() * blockSize + eps;
         const sy = -eps;
-        const hdx = -blockSize * dxs.ur - eps;
-        const rx = blockSize * dxs.ur;
-        const ry = blockSize * dys.ur;
-        const dx = blockSize * dxs.ur;
-        const dy = blockSize * dys.ur;
+        const hdx = -blockSize * radius.ur - eps;
+        const rx = blockSize * radius.ur;
+        const ry = blockSize * radius.ur;
+        const dx = blockSize * radius.ur;
+        const dy = blockSize * radius.ur;
         const d = `M ${sx},${sy} h ${hdx} v ${eps} a ${rx},${ry} 0 0 1 ${dx},${dy} h ${eps} z`;
         const path = app.svg.createPath({ d, fill });
         g.appendChild(path);
@@ -921,11 +926,11 @@
       {
         const sx = this.getWidth() * blockSize + eps;
         const sy = this.getHeight() * blockSize + eps;
-        const vdy = -blockSize * dys.dr - eps;
-        const rx = blockSize * dxs.dr;
-        const ry = blockSize * dys.dr;
-        const dx = -blockSize * dxs.dr;
-        const dy = blockSize * dys.dr;
+        const vdy = -blockSize * radius.dr - eps;
+        const rx = blockSize * radius.dr;
+        const ry = blockSize * radius.dr;
+        const dx = -blockSize * radius.dr;
+        const dy = blockSize * radius.dr;
         const d = `M ${sx},${sy} v ${vdy} h ${-eps} a ${rx},${ry} 0 0 1 ${dx},${dy} v ${eps} z`;
         const path = app.svg.createPath({ d, fill });
         g.appendChild(path);
@@ -935,11 +940,11 @@
       {
         const sx = -eps;
         const sy = this.getHeight() * blockSize + eps;
-        const hdx = blockSize * dxs.dl + eps;
-        const rx = blockSize * dxs.dl;
-        const ry = blockSize * dys.dl;
-        const dx = -blockSize * dxs.dl;
-        const dy = -blockSize * dys.dl;
+        const hdx = blockSize * radius.dl + eps;
+        const rx = blockSize * radius.dl;
+        const ry = blockSize * radius.dl;
+        const dx = -blockSize * radius.dl;
+        const dy = -blockSize * radius.dl;
         const d = `M ${sx},${sy} h ${hdx} v ${-eps} a ${rx},${ry} 0 0 1 ${dx},${dy} h ${-eps} z`;
         const path = app.svg.createPath({ d, fill });
         g.appendChild(path);
