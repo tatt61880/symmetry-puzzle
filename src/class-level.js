@@ -2173,7 +2173,7 @@
         } else {
           // 操作キャラ以外
 
-          // 塗りつぶし
+          // 中央
           {
             const rect = app.svg.createRect(blockSize, {
               x,
