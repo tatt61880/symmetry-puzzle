@@ -2171,7 +2171,7 @@
             const srcX = sX - this.#moveDx;
             const srcY = sY - this.#moveDy;
             const dx = this.#moveFlags[srcY][srcX] ? this.#moveDx * 0.06 : 0;
-            const dy = this.#moveFlags[srcY][srcX] ? this.#moveDy * 0.15 : 0;
+            const dy = this.#moveFlags[srcY][srcX] ? this.#moveDy * 0.2 : 0;
             const eyeLeft = createEye(state, x, y, dx, dy, 0.3, 0.5);
             const eyeRight = createEye(state, x, y, dx, dy, 0.7, 0.5);
             if (showCharsFlag) {
