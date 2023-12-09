@@ -884,8 +884,8 @@
           dys = { ul: 0.5, ur: 1.0, dr: 0.5, dl: 1.0 };
           break;
         case app.Level.CHECK_MODE.SPECIAL:
-          dxs = { ul: 0.6, ur: 0.6, dr: 0.6, dl: 0.6 };
-          dys = { ul: 0.6, ur: 0.6, dr: 0.6, dl: 0.6 };
+          dxs = { ul: 0.75, ur: 0.75, dr: 0.75, dl: 0.75 };
+          dys = { ul: 0.75, ur: 0.75, dr: 0.75, dl: 0.75 };
           break;
       }
 
