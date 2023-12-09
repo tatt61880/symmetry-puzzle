@@ -1059,13 +1059,13 @@
 
     elems.top.addEventListener('click', gotoTitlePage);
 
-    initElemsAuto();
-    initElemsEdit();
-    initElemsHelp();
-    initElemsTitle();
-    initElemsRecords();
-    initElemsLevelWidget();
-    initElemsLevelsDialog();
+    initElemsForAuto();
+    initElemsForEdit();
+    initElemsForHelp();
+    initElemsForTitle();
+    initElemsForRecords();
+    initElemsForLevelWidget();
+    initElemsForLevelsDialog();
 
     // キー入力用
     {
@@ -1138,7 +1138,7 @@
   }
 
   // Autoモード用
-  function initElemsAuto() {
+  function initElemsForAuto() {
     elems.auto.buttonStop.addEventListener('click', onButtonStop);
     elems.auto.buttonStart.addEventListener('click', onButtonStart);
     elems.auto.buttonPause.addEventListener('click', onButtonPause);
@@ -1177,7 +1177,6 @@
         };
 
         if (editboxFunctions[char] === undefined) {
-          console.log(1);
           editboxFunctions[char] = func;
           if (char === '0') {
             editboxFunctions[' '] = func;
@@ -1189,7 +1188,7 @@
   }
 
   // Editモード用
-  function initElemsEdit() {
+  function initElemsForEdit() {
     updateEditElems();
     editboxFunctions[app.states.stateToChar[app.states.none]]();
 
@@ -1242,7 +1241,7 @@
   }
 
   // ヘルプ画面用
-  function initElemsHelp() {
+  function initElemsForHelp() {
     elems.help.button.addEventListener('click', app.dialog.help.show);
     elems.help.dialog.addEventListener('click', app.dialog.help.close);
     elems.help.close.addEventListener('click', app.dialog.help.close);
@@ -1252,7 +1251,7 @@
   }
 
   // タイトル画面用
-  function initElemsTitle() {
+  function initElemsForTitle() {
     elems.title.buttonPlayLine.addEventListener('click', () => {
       updateCheckMode(app.Level.CHECK_MODE.LINE);
       onloadId(1);
@@ -1270,7 +1269,7 @@
   }
 
   // 記録画面用
-  function initElemsRecords() {
+  function initElemsForRecords() {
     const size = 50;
     const crown = app.common.createCrown(size, 0, 0, 1, 1);
     elems.records.buttonSvg.appendChild(crown);
@@ -1283,7 +1282,7 @@
   }
 
   // レベル操作用
-  function initElemsLevelWidget() {
+  function initElemsForLevelWidget() {
     elems.level.retry.addEventListener('click', retryLevel);
     elems.level.prev.addEventListener('click', gotoPrevLevel);
     elems.level.next.addEventListener('click', gotoNextLevel);
@@ -1303,7 +1302,7 @@
   }
 
   // レベル一覧ダイアログ
-  function initElemsLevelsDialog() {
+  function initElemsForLevelsDialog() {
     elems.levels.close.addEventListener('click', app.dialog.levels.close);
     elems.levels.prev.addEventListener('click', app.dialog.levels.prevPage);
     elems.levels.next.addEventListener('click', app.dialog.levels.nextPage);
