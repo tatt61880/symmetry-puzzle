@@ -1147,15 +1147,16 @@
     elems.auto.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
   }
 
-  // Editモード用
-  function initElemsEdit() {
+  function updateEditElems() {
     for (const char in app.states.charToState) {
       const elem = document.getElementById(`edit_${char}`);
       if (elem === null) continue;
+      elem.textContent = '';
 
       {
         const levelForEditChar = new app.Level({
           levelObj: { w: 3, h: 3, s: `-0${char}` },
+          checkMode: app.common.checkMode,
         });
         const g = levelForEditChar.createSvgG({
           blockSize: 40,
@@ -1174,13 +1175,22 @@
           const state = app.states.charToState[char];
           drawingState = state;
         };
-        editboxFunctions[char] = func;
-        if (char === '0') {
-          editboxFunctions[' '] = func;
+
+        if (editboxFunctions[char] === undefined) {
+          console.log(1);
+          editboxFunctions[char] = func;
+          if (char === '0') {
+            editboxFunctions[' '] = func;
+          }
+          elem.addEventListener('click', func);
         }
-        elem.addEventListener('click', func);
       }
     }
+  }
+
+  // Editモード用
+  function initElemsEdit() {
+    updateEditElems();
     editboxFunctions[app.states.stateToChar[app.states.none]]();
 
     elems.edit.switchMode.addEventListener('click', () => {
@@ -1200,16 +1210,19 @@
       const s = level.getS();
       const levelObj = { w, h, s };
       level = new app.Level({ levelObj, checkMode: app.common.checkMode });
+      updateEditElems();
       completeCheck();
       updateLinkUrl();
       drawMainSvg();
     });
+
     elems.edit.mirror.addEventListener('click', () => {
       level.mirror();
       addUndo(null);
       updateLinkUrl();
       drawMainSvg();
     });
+
     elems.edit.rotate.addEventListener('click', () => {
       level.rotate(1);
       addUndo(null);
@@ -1217,6 +1230,7 @@
       drawMainSvg();
       draw();
     });
+
     elems.edit.normalize.addEventListener('click', () => {
       if (!level.isNormalized()) {
         level.normalize();
