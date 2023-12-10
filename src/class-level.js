@@ -2535,7 +2535,7 @@
         if (dx + dy === 0) {
           const keyframes = [
             { transform: 'scale(1)', offset: 0 },
-            { transform: 'scale(1.2)', offset: 0.5 },
+            { transform: 'scale(1.1)', offset: 0.5 },
             { transform: 'scale(1)', offset: 1 },
           ];
           const options = {
