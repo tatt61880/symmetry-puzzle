@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.09';
+  const VERSION_TEXT = 'v' + '2023.12.10';
 
   const app = window.app;
   Object.freeze(app);
@@ -12,6 +12,7 @@
 
   const MOVE_INTERVAL_COUNT = 5;
   const MOVE_INTERVAL_MSEC = MOVE_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
+  app.common.MOVE_INTERVAL_MSEC = MOVE_INTERVAL_MSEC;
 
   const UNDO_INTERVAL_COUNT = 5;
   const UNDO_INTERVAL_MSEC = UNDO_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;

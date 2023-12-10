@@ -2190,8 +2190,8 @@
             const srcY = sY - this.#moveDy;
             const dx = this.#moveFlags[srcY][srcX] ? this.#moveDx * 0.06 : 0;
             const dy = this.#moveFlags[srcY][srcX] ? this.#moveDy * 0.2 : 0;
-            const eyeLeft = createEye(state, x, y, dx, dy, 0.3, 0.5);
-            const eyeRight = createEye(state, x, y, dx, dy, 0.7, 0.5);
+            const eyeLeft = createEye(x + 0.3, y + 0.5, dx, dy);
+            const eyeRight = createEye(x + 0.7, y + 0.5, dx, dy);
             if (showCharsFlag) {
               eyeLeft.setAttribute('opacity', 0.2);
               eyeRight.setAttribute('opacity', 0.2);
@@ -2522,23 +2522,33 @@
 
       return gElem;
 
-      function createEye(state, x, y, dx, dy, ddx, ddy) {
-        if (app.states.isUser(state)) {
-          return app.svg.createCircle(blockSize, {
-            cx: x + dx + ddx,
-            cy: y + dy + ddy,
-            r: 0.1,
-            fill: color.stroke,
-          });
-        } else {
-          return app.svg.createRect(blockSize, {
-            x: x + ddx - 0.09,
-            y: y + ddy,
-            width: 0.18,
-            height: 0.07,
-            fill: color.stroke,
-          });
+      function createEye(x, y, dx, dy) {
+        const cx = x + dx;
+        const cy = y + dy;
+        const eyeElem = app.svg.createCircle(blockSize, {
+          cx,
+          cy,
+          r: 0.1,
+          fill: color.stroke,
+        });
+
+        if (dx + dy === 0) {
+          const keyframes = [
+            { transform: 'scale(1)', offset: 0 },
+            { transform: 'scale(1.2)', offset: 0.5 },
+            { transform: 'scale(1)', offset: 1 },
+          ];
+          const options = {
+            duration: app.common.MOVE_INTERVAL_MSEC,
+          };
+
+          eyeElem.setAttribute(
+            'transform-origin',
+            `${cx * blockSize} ${cy * blockSize}`
+          );
+          eyeElem.animate(keyframes, options);
         }
+        return eyeElem;
       }
     }
 
