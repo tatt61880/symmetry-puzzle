@@ -2186,8 +2186,12 @@
           }
 
           if (eyeFlag) {
-            const srcX = sX - this.#moveDx;
-            const srcY = sY - this.#moveDy;
+            const { srcX, srcY } = this.#getSrc(
+              sX,
+              sY,
+              this.#moveDx,
+              this.#moveDy
+            );
             const dx = this.#moveFlags[srcY][srcX] ? this.#moveDx * 0.06 : 0;
             const dy = this.#moveFlags[srcY][srcX] ? this.#moveDy * 0.2 : 0;
             const eyeLeft = createEye(x + 0.3, y + 0.5, dx, dy);
