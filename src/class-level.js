@@ -1732,27 +1732,28 @@
 
         const eps = 0.01; // 隙間を埋めます。
         const eps2 = eps * 2;
+        const epsB = eps * blockSize;
 
         // 操作キャラ
         if (app.states.isUser(state)) {
           const radiuses = {
             [Level.CHECK_MODE.LINE]: {
-              ul: 0.16,
-              ur: 0.16,
-              dr: 0.32,
-              dl: 0.32,
+              ul: 0.2,
+              ur: 0.2,
+              dr: 0.4,
+              dl: 0.4,
             },
             [Level.CHECK_MODE.POINT]: {
-              ul: 0.16,
-              ur: 0.32,
-              dr: 0.16,
-              dl: 0.32,
+              ul: 0.2,
+              ur: 0.4,
+              dr: 0.2,
+              dl: 0.4,
             },
             [Level.CHECK_MODE.SPECIAL]: {
-              ul: 0.24,
-              ur: 0.24,
-              dr: 0.24,
-              dl: 0.24,
+              ul: 0.3,
+              ur: 0.3,
+              dr: 0.3,
+              dl: 0.3,
             },
           };
           const radius = radiuses[this.getCheckMode()];
@@ -1760,20 +1761,27 @@
 
           // 左上
           if (!flags[dirs.u] && !flags[dirs.l]) {
-            const circle = app.svg.createCircle(blockSize, {
-              cx: x + radius.ul,
-              cy: y + radius.ul,
-              r: radius.ul,
+            const createD = (r1, r0 = r1) => {
+              const r = r1 * blockSize;
+              const sx = x * blockSize + r + epsB;
+              const sy = y * blockSize + r + epsB;
+              const ar = r0 * blockSize;
+              const hdx = -(ar + epsB);
+              const dx = ar;
+              const dy = -ar;
+              const d = `M ${sx},${sy} h ${hdx} v ${-epsB} a ${ar},${ar} 0 0 1 ${dx},${dy} h ${epsB} z`;
+              return d;
+            };
+            const pathStroke = app.svg.createPath({
+              d: createD(radius.ul),
               fill: color.stroke,
             });
-            gElem.appendChild(circle);
-            const circle2 = app.svg.createCircle(blockSize, {
-              cx: x + radius.ul,
-              cy: y + radius.ul,
-              r: radius.ul - blockBorderWidth,
+            gElem.appendChild(pathStroke);
+            const pathFill = app.svg.createPath({
+              d: createD(radius.ul, radius.ul - blockBorderWidth),
               fill: color.fill,
             });
-            gElem.appendChild(circle2);
+            gElem.appendChild(pathFill);
           } else {
             {
               const rect = app.svg.createRect(blockSize, {
@@ -1818,20 +1826,27 @@
 
           // 右上
           if (!flags[dirs.u] && !flags[dirs.r]) {
-            const circle = app.svg.createCircle(blockSize, {
-              cx: x + 1 - radius.ur,
-              cy: y + radius.ur,
-              r: radius.ur,
+            const createD = (r1, r0 = r1) => {
+              const r = r1 * blockSize;
+              const sx = (x + 1) * blockSize - r - epsB;
+              const sy = y * blockSize + r + epsB;
+              const ar = r0 * blockSize;
+              const vdy = -(ar + epsB);
+              const dx = ar;
+              const dy = ar;
+              const d = `M ${sx},${sy} v ${vdy} h ${epsB} a ${ar},${ar} 0 0 1 ${dx},${dy} v ${epsB} z`;
+              return d;
+            };
+            const pathStroke = app.svg.createPath({
+              d: createD(radius.ur),
               fill: color.stroke,
             });
-            gElem.appendChild(circle);
-            const circle2 = app.svg.createCircle(blockSize, {
-              cx: x + 1 - radius.ur,
-              cy: y + radius.ur,
-              r: radius.ur - blockBorderWidth,
+            gElem.appendChild(pathStroke);
+            const pathFill = app.svg.createPath({
+              d: createD(radius.ur, radius.ur - blockBorderWidth),
               fill: color.fill,
             });
-            gElem.appendChild(circle2);
+            gElem.appendChild(pathFill);
           } else {
             {
               const rect = app.svg.createRect(blockSize, {
@@ -1876,20 +1891,27 @@
 
           // 右下
           if (!flags[dirs.d] && !flags[dirs.r]) {
-            const circle = app.svg.createCircle(blockSize, {
-              cx: x + 1 - radius.dr,
-              cy: y + 1 - radius.dr,
-              r: radius.dr,
+            const createD = (r1, r0 = r1) => {
+              const r = r1 * blockSize;
+              const sx = (x + 1) * blockSize - r - epsB;
+              const sy = (y + 1) * blockSize - r - epsB;
+              const ar = r0 * blockSize;
+              const hdx = ar + epsB;
+              const dx = -ar;
+              const dy = ar;
+              const d = `M ${sx},${sy} h ${hdx} v ${epsB} a ${ar},${ar} 0 0 1 ${dx},${dy} h ${-epsB} z`;
+              return d;
+            };
+            const pathStroke = app.svg.createPath({
+              d: createD(radius.dr),
               fill: color.stroke,
             });
-            gElem.appendChild(circle);
-            const circle2 = app.svg.createCircle(blockSize, {
-              cx: x + 1 - radius.dr,
-              cy: y + 1 - radius.dr,
-              r: radius.dr - blockBorderWidth,
+            gElem.appendChild(pathStroke);
+            const pathFill = app.svg.createPath({
+              d: createD(radius.dr, radius.dr - blockBorderWidth),
               fill: color.fill,
             });
-            gElem.appendChild(circle2);
+            gElem.appendChild(pathFill);
           } else {
             {
               const rect = app.svg.createRect(blockSize, {
@@ -1934,20 +1956,27 @@
 
           // 左下
           if (!flags[dirs.d] && !flags[dirs.l]) {
-            const circle = app.svg.createCircle(blockSize, {
-              cx: x + radius.dl,
-              cy: y + 1 - radius.dl,
-              r: radius.dl,
+            const createD = (r1, r0 = r1) => {
+              const r = r1 * blockSize;
+              const sx = x * blockSize + r + epsB;
+              const sy = (y + 1) * blockSize - r - epsB;
+              const ar = r0 * blockSize;
+              const vdy = ar + epsB;
+              const dx = -ar;
+              const dy = -ar;
+              const d = `M ${sx},${sy} v ${vdy} h ${-epsB} a ${ar},${ar} 0 0 1 ${dx},${dy} v ${-epsB} z`;
+              return d;
+            };
+            const pathStroke = app.svg.createPath({
+              d: createD(radius.dl),
               fill: color.stroke,
             });
-            gElem.appendChild(circle);
-            const circle2 = app.svg.createCircle(blockSize, {
-              cx: x + radius.dl,
-              cy: y + 1 - radius.dl,
-              r: radius.dl - blockBorderWidth,
+            gElem.appendChild(pathStroke);
+            const pathFill = app.svg.createPath({
+              d: createD(radius.dl, radius.dl - blockBorderWidth),
               fill: color.fill,
             });
-            gElem.appendChild(circle2);
+            gElem.appendChild(pathFill);
           } else {
             {
               const rect = app.svg.createRect(blockSize, {
