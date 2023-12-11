@@ -82,6 +82,7 @@
     #moveFlags;
     #moveDx;
     #moveDy;
+    #eyePrevInfo;
     #yMin;
     #xMin;
     #yMax;
@@ -103,6 +104,7 @@
       this.#moveFlags = [];
       this.#moveDx = null;
       this.#moveDy = null;
+      this.#eyePrevInfo = [];
       this.#yMin = 1;
       this.#xMin = 1;
       this.#yMax = null;
@@ -463,6 +465,7 @@
         this.#removeR();
       }
       this.applyStateStr(obj.s);
+      if (isBrowser) this.#eyePrevInfo = [];
     }
 
     applyState(x, y, state) {
@@ -2194,8 +2197,22 @@
             );
             const dx = this.#moveFlags[srcY][srcX] ? this.#moveDx * 0.06 : 0;
             const dy = this.#moveFlags[srcY][srcX] ? this.#moveDy * 0.2 : 0;
-            const eyeLeft = createEye(x + 0.3, y + 0.5, dx, dy);
-            const eyeRight = createEye(x + 0.7, y + 0.5, dx, dy);
+
+            const prevInfo =
+              this.#eyePrevInfo[srcY] === undefined ||
+              this.#eyePrevInfo[srcY][srcX] === undefined
+                ? { dx: 0, dy: 0 }
+                : this.#eyePrevInfo[srcY][srcX];
+            const pdx = prevInfo.dx;
+            const pdy = prevInfo.dy;
+
+            if (this.#eyePrevInfo[sY] === undefined) {
+              this.#eyePrevInfo[sY] = [];
+            }
+            this.#eyePrevInfo[sY][sX] = { dx, dy };
+
+            const eyeLeft = createEye(x + 0.3, y + 0.5, dx, dy, pdx, pdy);
+            const eyeRight = createEye(x + 0.7, y + 0.5, dx, dy, pdx, pdy);
             if (showCharsFlag) {
               eyeLeft.setAttribute('opacity', 0.2);
               eyeRight.setAttribute('opacity', 0.2);
@@ -2526,7 +2543,7 @@
 
       return gElem;
 
-      function createEye(x, y, dx, dy) {
+      function createEye(x, y, dx, dy, prevDx, prevDy) {
         const cx = x + dx;
         const cy = y + dy;
         const eyeElem = app.svg.createCircle(blockSize, {
@@ -2535,6 +2552,24 @@
           r: 0.1,
           fill: color.stroke,
         });
+
+        {
+          const ddx = -(dx - prevDx) * blockSize;
+          const ddy = -(dy - prevDy) * blockSize;
+          const keyframes = [
+            { transform: `translate(${ddx}px, ${ddy}px)`, offset: 0 },
+            { transform: 'translate(0px, 0px)', offset: 1 },
+          ];
+          const options = {
+            duration: app.common.MOVE_INTERVAL_MSEC,
+          };
+
+          eyeElem.setAttribute(
+            'transform-origin',
+            `${cx * blockSize} ${cy * blockSize}`
+          );
+          eyeElem.animate(keyframes, options);
+        }
 
         if (dx + dy === 0) {
           const keyframes = [
