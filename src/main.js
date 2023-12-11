@@ -448,7 +448,7 @@
     clearTimeout(nextLevelTimerId);
 
     app.common.activeElem(elems.level.retry);
-    elems.main.svg.textContent = '';
+    animateIcons();
 
     const RESET_DELAY = 50;
     setTimeout(() => {
