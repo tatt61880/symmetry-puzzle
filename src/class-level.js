@@ -2197,12 +2197,14 @@
             );
             const dx = this.#moveFlags[srcY][srcX] ? this.#moveDx * 0.06 : 0;
             const dy = this.#moveFlags[srcY][srcX] ? this.#moveDy * 0.2 : 0;
+            const px = this.#moveFlags[srcY][srcX] ? srcX : sX;
+            const py = this.#moveFlags[srcY][srcX] ? srcY : sY;
 
             const prevInfo =
-              this.#eyePrevInfo[srcY] === undefined ||
-              this.#eyePrevInfo[srcY][srcX] === undefined
+              this.#eyePrevInfo[py] === undefined ||
+              this.#eyePrevInfo[py][px] === undefined
                 ? { dx: 0, dy: 0 }
-                : this.#eyePrevInfo[srcY][srcX];
+                : this.#eyePrevInfo[py][px];
             const pdx = prevInfo.dx;
             const pdy = prevInfo.dy;
 
@@ -2554,11 +2556,17 @@
         });
 
         {
-          const ddx = -(dx - prevDx) * blockSize;
-          const ddy = -(dy - prevDy) * blockSize;
+          const mag = dx + dy === 0 ? 1.15 : 1;
+          const ddx0 = -(dx - prevDx) * blockSize;
+          const ddy0 = -(dy - prevDy) * blockSize;
+          const ddx1 = ddx0 * (1 - mag);
+          const ddy1 = ddy0 * (1 - mag);
+          const translate0 = `translate(${ddx0}px, ${ddy0}px)`;
+          const translate1 = `translate(${ddx1}px, ${ddy1}px)`;
           const keyframes = [
-            { transform: `translate(${ddx}px, ${ddy}px)`, offset: 0 },
-            { transform: 'translate(0px, 0px)', offset: 1 },
+            { transform: `scale(1) ${translate0}`, offset: 0 },
+            { transform: `scale(${mag}) ${translate1}`, offset: 0.5 },
+            { transform: 'scale(1) translate(0px, 0px)', offset: 1 },
           ];
           const options = {
             duration: app.common.MOVE_INTERVAL_MSEC,
@@ -2571,22 +2579,6 @@
           eyeElem.animate(keyframes, options);
         }
 
-        if (dx + dy === 0) {
-          const keyframes = [
-            { transform: 'scale(1)', offset: 0 },
-            { transform: 'scale(1.1)', offset: 0.5 },
-            { transform: 'scale(1)', offset: 1 },
-          ];
-          const options = {
-            duration: app.common.MOVE_INTERVAL_MSEC,
-          };
-
-          eyeElem.setAttribute(
-            'transform-origin',
-            `${cx * blockSize} ${cy * blockSize}`
-          );
-          eyeElem.animate(keyframes, options);
-        }
         return eyeElem;
       }
     }
