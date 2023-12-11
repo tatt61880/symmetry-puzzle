@@ -799,6 +799,8 @@
 }
 
 /* icon animation */
+#help-tab-app:checked + .tab > img,
+#help-tab-special:checked + .tab > img,
 .animation-icon-app,
 .animation-icon-special {
   transform-origin: center;
@@ -806,12 +808,14 @@
   animation-duration: calc(var(--animation-duration-symmetry) * 1.5);
 }
 
+#help-tab-line:checked + .tab > img,
 .animation-icon-line {
   transform-origin: center;
   animation: animation-axis-line1 linear forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
+#help-tab-point:checked + .tab > img,
 .animation-icon-point {
   transform-origin: center;
   animation: animation-axis-point1 linear forwards;
