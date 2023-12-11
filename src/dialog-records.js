@@ -53,6 +53,7 @@
       img.src = './images/logo-line.png';
       img.setAttribute('width', imgSize);
       img.setAttribute('height', imgSize);
+      img.classList.add('animation-icon-line');
       th.appendChild(img);
     }
     {
@@ -62,6 +63,7 @@
       img.src = './images/logo-point.png';
       img.setAttribute('width', imgSize);
       img.setAttribute('height', imgSize);
+      img.classList.add('animation-icon-point');
       th.appendChild(img);
     }
     {
@@ -71,6 +73,7 @@
       img.src = './images/logo-special.png';
       img.setAttribute('width', imgSize);
       img.setAttribute('height', imgSize);
+      img.classList.add('animation-icon-special');
       th.appendChild(img);
     }
     {
