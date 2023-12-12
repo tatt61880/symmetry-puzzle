@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.12';
+  const VERSION_TEXT = 'v' + '2023.12.13';
 
   const app = window.app;
   Object.freeze(app);
@@ -1742,7 +1742,7 @@
               levelObj,
               app.common.checkMode,
               shapeStr,
-              replayStr.length
+              replayStr
             );
           }
 
