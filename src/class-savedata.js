@@ -18,7 +18,7 @@
     #load() {
       this.data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
 
-      if (this.data === undefined) {
+      if (this.data === null) {
         this.data = {};
       }
       if (this.data.version === undefined) {
