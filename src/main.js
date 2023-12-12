@@ -391,7 +391,9 @@
             case 'h':
               return app.Input.DIRS.LEFT;
             case 'Enter':
-              return app.Input.DIRS.AXIS;
+              if (level.hasAxis()) {
+                return app.Input.DIRS.AXIS;
+              }
           }
           return null;
         })();

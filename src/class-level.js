@@ -295,7 +295,7 @@
     }
 
     getAxisType() {
-      return this.#axis.type;
+      return this.#axis?.type;
     }
 
     hasAxis() {
