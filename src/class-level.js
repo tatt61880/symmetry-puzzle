@@ -259,6 +259,15 @@
       return this.#getSymmetryType(isX);
     }
 
+    getTargetShapeForSavedata() {
+      const shapeStr = this.getShapeStr(app.states.isTarget)
+        .replace(/\s*$/, '')
+        .replace(/ +\n/g, '\n')
+        .replaceAll(' ', '0')
+        .replaceAll('\n', '-');
+      return shapeStr;
+    }
+
     getShapeStr(isX) {
       const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
       let str = '';

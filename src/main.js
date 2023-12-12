@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.11';
+  const VERSION_TEXT = 'v' + '2023.12.12';
 
   const app = window.app;
   Object.freeze(app);
@@ -1731,6 +1731,17 @@
               level.getCheckMode()
             );
             app.savedata.saveSteps(levelObj, app.common.checkMode, replayStr);
+          }
+
+          // シルエットデータ保存
+          {
+            const shapeStr = level.getTargetShapeForSavedata();
+            app.savedata.saveShape(
+              levelObj,
+              app.common.checkMode,
+              shapeStr,
+              replayStr.length
+            );
           }
 
           // ログ出力

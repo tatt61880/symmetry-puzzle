@@ -21,6 +21,9 @@
         this.data = {};
         this.data.steps = {};
       }
+      if (this.data?.shapes === undefined) {
+        this.data.shapes = {};
+      }
     }
 
     #save() {
@@ -49,6 +52,18 @@
         this.data.steps[key] = r;
         this.#save();
       }
+    }
+
+    saveShape(levelObj, checkMode, targetShape, steps) {
+      const key = this.#getLevelKey(levelObj, checkMode);
+      if (this.data.shapes[key] === undefined) {
+        this.data.shapes[key] = {};
+      }
+      const prevSteps = this.data.shapes[key][targetShape];
+      if (prevSteps === undefined || steps < prevSteps) {
+        this.data.shapes[key][targetShape] = steps;
+      }
+      this.#save();
     }
 
     getHighestScore(levelObj, checkMode) {
