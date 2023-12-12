@@ -17,12 +17,12 @@
 
     #load() {
       this.data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-      if (this.data?.steps === undefined) {
+      if (this.data?.version === undefined) {
         this.data = {};
+        this.data.version = 1;
         this.data.steps = {};
-      }
-      if (this.data?.shapes === undefined) {
         this.data.shapes = {};
+        this.#save();
       }
     }
 
