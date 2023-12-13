@@ -46,7 +46,7 @@
 
       &.active {
         color: #000055;
-        background-color: #ccd5ff;
+        background-color: #c0cbff;
         border: 4px solid #bbbbee;
         opacity: 1;
       }
@@ -100,7 +100,7 @@
       font-size: 1.5rem;
       font-weight: bold;
       color: #000055;
-      background-color: #ccd5ff;
+      background-color: #c0cbff;
     }
   }
 
