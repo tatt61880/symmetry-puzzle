@@ -50,7 +50,7 @@
       const th = document.createElement('th');
       tr.appendChild(th);
       const img = document.createElement('img');
-      img.src = './images/logo-line.png';
+      img.src = './images/logo-line.png?2023.11.28';
       img.setAttribute('width', imgSize);
       img.setAttribute('height', imgSize);
       img.classList.add('animation-icon-line');
@@ -60,7 +60,7 @@
       const th = document.createElement('th');
       tr.appendChild(th);
       const img = document.createElement('img');
-      img.src = './images/logo-point.png';
+      img.src = './images/logo-point.png?2023.11.28';
       img.setAttribute('width', imgSize);
       img.setAttribute('height', imgSize);
       img.classList.add('animation-icon-point');
@@ -70,7 +70,7 @@
       const th = document.createElement('th');
       tr.appendChild(th);
       const img = document.createElement('img');
-      img.src = './images/logo-special.png';
+      img.src = './images/logo-special.png?2023.11.28';
       img.setAttribute('width', imgSize);
       img.setAttribute('height', imgSize);
       img.classList.add('animation-icon-special');
