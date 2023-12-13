@@ -26,8 +26,7 @@ header {
   align-items: center;
   height: 42px;
   text-align: left;
-  background-color: #c0cbff;
-  border: 1px solid #c0cbff;
+  background-color: #ccd5ff;
 
   .title {
     margin: 10px;
@@ -52,7 +51,7 @@ footer {
   font-size: 1rem;
   font-weight: bold;
   color: #7777aa;
-  background-color: #c0cbff;
+  background-color: #ccd5ff;
 }
 
 @media (width <= 501px) {
