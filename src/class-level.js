@@ -18,6 +18,8 @@
     app.Stack = require('./class-stack.js');
   }
 
+  const axisOffset = 2;
+
   const dirs = {
     u: 0,
     r: 1,
@@ -186,8 +188,10 @@
 
       this.#normalizeAxis();
       const lp = axisTypeStr[this.#axis.type];
-      const x = this.#axis.cx === 2 ? '' : `-x${this.#axis.cx - 2}`;
-      const y = this.#axis.cy === 2 ? '' : `-y${this.#axis.cy - 2}`;
+      const x =
+        this.#axis.cx === axisOffset ? '' : `-x${this.#axis.cx - axisOffset}`;
+      const y =
+        this.#axis.cy === axisOffset ? '' : `-y${this.#axis.cy - axisOffset}`;
       const res = `${lp}${x}${y}`;
       return res;
     }
@@ -446,38 +450,37 @@
     #normalizeAxis() {
       switch (this.#axis.type) {
         case Level.SYMMETRY_TYPE.LINE1: {
-          this.#axis.cy = 2;
+          this.#axis.cy = axisOffset;
           break;
         }
         case Level.SYMMETRY_TYPE.LINE2: {
-          this.#axis.cx = 2;
+          this.#axis.cx = axisOffset;
           break;
         }
         case Level.SYMMETRY_TYPE.LINE3: {
           const diff = this.#axis.cx - this.#axis.cy;
           if (diff >= 0) {
-            this.#axis.cx = 2 + diff;
-            this.#axis.cy = 2;
+            this.#axis.cx = axisOffset + diff;
+            this.#axis.cy = axisOffset;
           } else {
-            this.#axis.cx = 2;
-            this.#axis.cy = 2 - diff;
+            this.#axis.cx = axisOffset;
+            this.#axis.cy = axisOffset - diff;
           }
           break;
         }
         case Level.SYMMETRY_TYPE.LINE4: {
-          this.#axis.cx += this.#axis.cy - 2;
-          this.#axis.cy = 2;
+          this.#axis.cx += this.#axis.cy - axisOffset;
+          this.#axis.cy = axisOffset;
           break;
         }
       }
     }
 
     applyAxis(axisStr) {
-      const offset = 2;
       this.#axis = {
         type: Level.SYMMETRY_TYPE.NONE,
-        cx: offset,
-        cy: offset,
+        cx: axisOffset,
+        cy: axisOffset,
       };
       if (axisStr !== undefined) {
         const res = axisStr.match(/(\w\d)(?:-x(\d+))?(?:-y(\d+))?/);
@@ -500,8 +503,8 @@
 
         this.#axis = {
           type,
-          cx: Number(res[2] ?? 0) + offset,
-          cy: Number(res[3] ?? 0) + offset,
+          cx: Number(res[2] ?? 0) + axisOffset,
+          cy: Number(res[3] ?? 0) + axisOffset,
         };
       }
     }
