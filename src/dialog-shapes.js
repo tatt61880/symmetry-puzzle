@@ -252,8 +252,6 @@
       }
       g.dataset.id = id;
       g.addEventListener('click', function () {
-        const id = Number(g.dataset.id);
-        app.common.loadLevelById(id);
         close();
       });
     }
