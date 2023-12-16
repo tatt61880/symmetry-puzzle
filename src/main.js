@@ -700,6 +700,10 @@
       }
     }
 
+    updateShapeButton();
+  }
+
+  function updateShapeButton() {
     if (app.savedata.getShapesObj(level.getLevelObj(), app.common.checkMode)) {
       app.common.showElem(elems.shapes.button);
     } else {
@@ -1861,6 +1865,7 @@
               shapeStr,
               replayStr
             );
+            updateShapeButton();
           }
 
           // ログ出力
