@@ -77,6 +77,9 @@
       if (highestScoreR === undefined || step < highestScoreR.length) {
         this.data.shapes[key][targetShape] = r;
         this.#save();
+        return true;
+      } else {
+        return false;
       }
     }
 

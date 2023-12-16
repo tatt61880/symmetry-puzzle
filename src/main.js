@@ -1859,13 +1859,15 @@
           // シルエットデータ保存
           {
             const shapeStr = level.getTargetShapeForSavedata();
-            app.savedata.saveShape(
+            const result = app.savedata.saveShape(
               levelObj,
               app.common.checkMode,
               shapeStr,
               replayStr
             );
-            updateShapeButton();
+            if (result) {
+              updateShapeButton();
+            }
           }
 
           // ログ出力
