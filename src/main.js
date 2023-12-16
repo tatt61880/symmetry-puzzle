@@ -699,12 +699,13 @@
         app.dialog.help.show();
       }
     }
-
-    updateShapeButton();
   }
 
   function updateShapeButton() {
-    if (app.savedata.getShapesObj(level.getLevelObj(), app.common.checkMode)) {
+    if (
+      level !== null &&
+      app.savedata.getShapesObj(level.getLevelObj(), app.common.checkMode)
+    ) {
       app.common.showElem(elems.shapes.button);
     } else {
       app.common.hideElem(elems.shapes.button);
@@ -724,6 +725,7 @@
     if (settings.autoMode) {
       updateAutoMode(true);
     }
+    updateShapeButton();
   }
 
   function showLevelPrev() {
