@@ -19,13 +19,15 @@
       }
     },
 
-    warn(message) {
+    warn(message_) {
+      const message = new String(message_);
       for (const line of message.split('\n')) {
         console.warn(colorizedText(line, 200, 200, 0));
       }
     },
 
-    error(message) {
+    error(message_) {
+      const message = new String(message_);
       for (const line of message.split('\n')) {
         console.error(colorizedText(line, 200, 0, 0));
       }

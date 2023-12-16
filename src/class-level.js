@@ -200,6 +200,10 @@
       return this.#levelObj?.r;
     }
 
+    getShapes() {
+      return this.#levelObj?.shapes;
+    }
+
     #getCheckModeStr() {
       return Level.getCheckModeStr(this.getCheckMode());
     }

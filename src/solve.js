@@ -394,7 +394,17 @@
               app.console.log(shapeStrInfo.str);
               app.console.log(shapeStrInfo.obj);
             }
-            const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Step limit: ${maxStep}] [Shape variation: ${shapeStrMap.size}]`;
+
+            const shapes = shapeStrMap.size;
+            const levelShapes = level.getShapes();
+
+            // エラーではないですが、目立つようにエラー扱いします。
+            const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Step limit: ${maxStep}] [Shape variation: ${shapes}]`;
+            if (shapes !== levelShapes) {
+              app.console.error(
+                `       ↓[level.getShapes(): ${levelShapes}] !== [Shape variation: ${shapes}]`
+              );
+            }
             return { replayStr: null, errorMessage };
           }
           const errorMessage = `No solution. [Step: ${step}] [Step limit: ${maxStep}]`;

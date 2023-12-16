@@ -9,6 +9,7 @@
       s: '-011-001s2',
       r: '01123',
       step: 5,
+      shapes: 3,
       subject: 'NaN',
     },
     /*
