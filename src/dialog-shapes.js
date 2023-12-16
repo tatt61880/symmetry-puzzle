@@ -246,14 +246,13 @@
       {
         const checkMode = app.common.checkMode;
         const { w, h } = getSizeOfShapeStr(shapeStr);
-        console.log({ w, h });
         const level = new app.Level({
           levelObj: { w, h, s: shapeStr },
           checkMode,
         });
         const blockSize = Math.min(
-          (SELECT_WIDTH - 8) / level.getW(),
-          (SELECT_HEIGHT - 25) / level.getH()
+          (SELECT_WIDTH - 8) / w,
+          (SELECT_HEIGHT - 25) / h
         );
         const levelSvgG = level.createSvgG({
           blockSize,
@@ -266,7 +265,7 @@
 
         levelSvgG.setAttribute(
           'transform',
-          `translate(${(SELECT_WIDTH - blockSize * level.getW()) / 2},20)`
+          `translate(${(SELECT_WIDTH - blockSize * w) / 2},20)`
         );
         g.appendChild(levelSvgG);
       }
