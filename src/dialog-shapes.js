@@ -111,8 +111,8 @@
 
   function selectEnter() {
     const selectCount = Number(elems.shapes.dialog.dataset.selectCount);
-    const id = JSON.parse(elems.shapes.dialog.dataset.selectIds)[selectCount];
-    app.common.loadLevelById(id);
+    const r = JSON.parse(elems.shapes.dialog.dataset.selectR)[selectCount];
+    selectShape(r);
     elems.shapes.dialog.close();
   }
 
@@ -163,7 +163,7 @@
     }
 
     let count = 0;
-    const selectIds = {};
+    const selectR = {};
     const levelShapes = levelObj.shapes;
     const iEnd = levelShapes !== undefined ? levelShapes : shapeStrs.length;
     for (let i = 0; i < iEnd; ++i) {
@@ -176,14 +176,14 @@
           const shapeStr = shapeStrs[i];
           const r = shapesObj[shapeStr];
           appendShape({ id, shapeStr, r });
-          selectIds[count] = id;
+          selectR[count] = r;
         } else {
           appendShape({ id });
         }
       }
       count++;
     }
-    elems.shapes.dialog.dataset.selectIds = JSON.stringify(selectIds);
+    elems.shapes.dialog.dataset.selectR = JSON.stringify(selectR);
 
     // 選択枠
     if (!app.common.isTouchDevice()) {
@@ -295,7 +295,7 @@
           g.dataset.r = r;
           g.classList.add('shape-select');
           g.addEventListener('click', function () {
-            console.log(g.dataset.r);
+            selectShape(g.dataset.r);
             close();
           });
         }
@@ -319,6 +319,10 @@
         g.setAttribute('transform', `translate(${x},${y})`);
       }
     }
+  }
+
+  function selectShape(r) {
+    console.log(r);
   }
 
   function getSizeOfShapeStr(shapeStr) {
