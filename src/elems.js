@@ -87,6 +87,17 @@
       next: 'button-levels-next',
     },
 
+    shapes: {
+      button: 'button-shapes',
+      dialog: 'dialog-shapes',
+      dialogDiv: 'dialog-shapes-div',
+      close: 'dialog-shapes-close',
+      dialogSvg: 'dialog-shapes-svg',
+      buttonSvg: 'button-shapes-svg',
+      prev: 'button-shapes-prev',
+      next: 'button-shapes-next',
+    },
+
     main: {
       div: 'main-div',
       svg: 'main-svg',

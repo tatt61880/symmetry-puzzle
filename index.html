@@ -15,46 +15,48 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2023.11.28">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2023.11.28">
 
-  <link rel="stylesheet" href="./css/main.css?2023.12.15">
-  <link rel="stylesheet" href="./css/title.css?2023.12.15">
-  <link rel="stylesheet" href="./css/game.css?2023.12.15">
-  <link rel="stylesheet" href="./css/dialog-help.css?2023.12.15">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2023.12.15">
-  <link rel="stylesheet" href="./css/dialog-records.css?2023.12.15">
-  <link rel="stylesheet" href="./css/animation.css?2023.12.15">
+  <link rel="stylesheet" href="./css/main.css?2023.12.16">
+  <link rel="stylesheet" href="./css/title.css?2023.12.16">
+  <link rel="stylesheet" href="./css/game.css?2023.12.16">
+  <link rel="stylesheet" href="./css/dialog-help.css?2023.12.16">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2023.12.16">
+  <link rel="stylesheet" href="./css/dialog-records.css?2023.12.16">
+  <link rel="stylesheet" href="./css/dialog-shapes.css?2023.12.16">
+  <link rel="stylesheet" href="./css/animation.css?2023.12.16">
 
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-  <script src="./src/states.js?2023.12.15"></script>
-  <script src="./src/colors.js?2023.12.15"></script>
-  <script src="./src/svg.js?2023.12.15"></script>
-  <script src="./src/common.js?2023.12.15"></script>
+  <script src="./src/states.js?2023.12.16"></script>
+  <script src="./src/colors.js?2023.12.16"></script>
+  <script src="./src/svg.js?2023.12.16"></script>
+  <script src="./src/common.js?2023.12.16"></script>
 
-  <script src="./src/class-stack.js?2023.12.15"></script>
-  <script src="./src/class-level.js?2023.12.15"></script>
+  <script src="./src/class-stack.js?2023.12.16"></script>
+  <script src="./src/class-level.js?2023.12.16"></script>
 
-  <script src="./src/class-savedata.js?2023.12.15"></script>
-  <script src="./src/class-undo-info.js?2023.12.15"></script>
-  <script src="./src/class-elems.js?2023.12.15"></script>
-  <script src="./src/class-input.js?2023.12.15"></script>
+  <script src="./src/class-savedata.js?2023.12.16"></script>
+  <script src="./src/class-undo-info.js?2023.12.16"></script>
+  <script src="./src/class-elems.js?2023.12.16"></script>
+  <script src="./src/class-input.js?2023.12.16"></script>
 
-  <script src="./src/levels-line.js?2023.12.15"></script>
-  <script src="./src/levels-line-ex.js?2023.12.15"></script>
-  <script src="./src/levels-point.js?2023.12.15"></script>
-  <script src="./src/levels-point-ex.js?2023.12.15"></script>
-  <script src="./src/levels-special.js?2023.12.15"></script>
-  <script src="./src/levels-special-ex.js?2023.12.15"></script>
+  <script src="./src/levels-line.js?2023.12.16"></script>
+  <script src="./src/levels-line-ex.js?2023.12.16"></script>
+  <script src="./src/levels-point.js?2023.12.16"></script>
+  <script src="./src/levels-point-ex.js?2023.12.16"></script>
+  <script src="./src/levels-special.js?2023.12.16"></script>
+  <script src="./src/levels-special-ex.js?2023.12.16"></script>
 
-  <script src="./src/elems.js?2023.12.15"></script>
+  <script src="./src/elems.js?2023.12.16"></script>
 
-  <script src="./src/solve.js?2023.12.15"></script>
+  <script src="./src/solve.js?2023.12.16"></script>
 
-  <script src="./src/dialog-help.js?2023.12.15"></script>
-  <script src="./src/dialog-levels.js?2023.12.15"></script>
-  <script src="./src/dialog-records.js?2023.12.15"></script>
+  <script src="./src/dialog-help.js?2023.12.16"></script>
+  <script src="./src/dialog-levels.js?2023.12.16"></script>
+  <script src="./src/dialog-records.js?2023.12.16"></script>
+  <script src="./src/dialog-shapes.js?2023.12.16"></script>
 
-  <script src="./src/analyze-url.js?2023.12.15"></script>
-  <script src="./src/main.js?2023.12.15"></script>
+  <script src="./src/analyze-url.js?2023.12.16"></script>
+  <script src="./src/main.js?2023.12.16"></script>
 </head>
 
 <body>
@@ -575,6 +577,40 @@
         </div>
       </dialog>
 
+      <dialog id="dialog-shapes">
+        <div id="dialog-shapes-div">
+          <div id="dialog-shapes-top">
+            <svg width="48" height="48">
+              <g id="dialog-shapes-close" class="button active-hover" transform="translate(24,24)">
+                <circle cx="0" cy="0" r="24" fill="#dddddd" stroke="none" />
+                <path d="M -10,-10 10,10" fill="none" stroke="#333333" stroke-width="4.5" stroke-linecap="round" />
+                <path d="M -10,10 10,-10" fill="none" stroke="#333333" stroke-width="4.5" stroke-linecap="round" />
+              </g>
+            </svg>
+          </div>
+
+          <svg id="dialog-shapes-svg">
+          </svg>
+
+          <svg width="450" height="80" id="button-shapes-svg">
+            <g id="button-shapes-prev" class="button active-hover" transform="translate(95,7)">
+              <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb"
+                stroke-width="4" />
+              <path d="M 50,14 24,28 50,42 z" fill="#87ceeb" />
+              <text class="shortcut-key" x="40" y="69" dominant-baseline="middle" text-anchor="middle"
+                font-weight="bold" font-size="14px" fill="#7799bb">Shift ←</text>
+            </g>
+            <g id="button-shapes-next" class="button active-hover" transform="translate(275,7)">
+              <rect x="0" y="0" rx="28" ry="28" width="80" height="56" fill="#eef0ff" stroke="#87ceeb"
+                stroke-width="4" />
+              <path d="M 30,14 55,28 30,42 z" fill="#87ceeb" />
+              <text class="shortcut-key" x="40" y="69" dominant-baseline="middle" text-anchor="middle"
+                font-weight="bold" font-size="14px" fill="#7799bb">Shift →</text>
+            </g>
+          </svg>
+        </div>
+      </dialog>
+
       <div id="main-div">
         <svg id="main-svg" width="480" height="230">
         </svg>
@@ -746,9 +782,18 @@
                 fill="#888888" class="translatable-toggle" data-en="MENU" data-ja="メニュー"></text>
               <rect x="-35" y="-35" rx="12" ry="12" width="70" height="70" fill="lightgray" stroke="#888888"
                 stroke-width="4" />
-              <rect x="-22" y="-23" rx="5" ry="5" width="44" height="10" fill="#888888" />
-              <rect x="-22" y="-5" rx="5" ry="5" width="44" height="10" fill="#888888" />
-              <rect x="-22" y="13" rx="5" ry="5" width="44" height="10" fill="#888888" />
+              <rect x="-23" y="-23" rx="5" ry="5" width="46" height="10" fill="#888888" />
+              <rect x="-23" y="-5" rx="5" ry="5" width="46" height="10" fill="#888888" />
+              <rect x="-23" y="13" rx="5" ry="5" width="46" height="10" fill="#888888" />
+            </g>
+
+            <!-- Shapes -->
+            <g id="button-shapes" class="button active-hover" transform="translate(185,-50)">
+              <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
+                fill="#888888" class="translatable-toggle" data-en="SHAPES" data-ja="形状"></text>
+              <rect x="-35" y="-35" rx="12" ry="12" width="70" height="70" fill="lightgray" stroke="#888888"
+                stroke-width="4" />
+              <rect x="-23" y="-23" rx="5" ry="5" width="46" height="46" fill="#888888" />
             </g>
 
             <!-- Undoボタン -->

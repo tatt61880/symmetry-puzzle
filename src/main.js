@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.15';
+  const VERSION_TEXT = 'v' + '2023.12.16';
 
   const app = window.app;
   Object.freeze(app);
@@ -259,6 +259,48 @@
           break;
         case '#':
           app.dialog.levels.close();
+          break;
+      }
+      return;
+    }
+
+    // 形状一覧ダイアログで有効
+    if (elems.shapes.dialog.open) {
+      if (e.ctrlKey) return;
+      switch (e.key) {
+        case 'ArrowUp':
+        case 'w':
+        case 'k':
+          app.dialog.shapes.selectUp();
+          break;
+        case 'ArrowRight':
+        case 'd':
+        case 'l':
+          if (e.shiftKey) {
+            app.dialog.shapes.nextPage();
+          } else {
+            app.dialog.shapes.selectRight();
+          }
+          break;
+        case 'ArrowDown':
+        case 's':
+        case 'j':
+          app.dialog.shapes.selectDown();
+          break;
+        case 'ArrowLeft':
+        case 'a':
+        case 'h':
+          if (e.shiftKey) {
+            app.dialog.shapes.prevPage();
+          } else {
+            app.dialog.shapes.selectLeft();
+          }
+          break;
+        case 'Enter':
+          app.dialog.shapes.selectEnter();
+          break;
+        case '#':
+          app.dialog.shapes.close();
           break;
       }
       return;
@@ -1075,6 +1117,7 @@
     initElemsForRecords();
     initElemsForLevelWidget();
     initElemsForLevelsDialog();
+    initElemsForShapesDialog();
 
     // キー入力用
     {
@@ -1364,6 +1407,18 @@
     elems.levels.close.addEventListener('click', app.dialog.levels.close);
     elems.levels.prev.addEventListener('click', app.dialog.levels.prevPage);
     elems.levels.next.addEventListener('click', app.dialog.levels.nextPage);
+  }
+
+  // レベル一覧ダイアログ
+  function initElemsForShapesDialog() {
+    elems.shapes.button.addEventListener('click', app.dialog.shapes.show);
+    elems.shapes.dialog.addEventListener('click', app.dialog.shapes.close);
+    elems.shapes.dialogDiv.addEventListener('click', (e) =>
+      e.stopPropagation()
+    );
+    elems.shapes.close.addEventListener('click', app.dialog.shapes.close);
+    elems.shapes.prev.addEventListener('click', app.dialog.shapes.prevPage);
+    elems.shapes.next.addEventListener('click', app.dialog.shapes.nextPage);
   }
 
   function intervalFunc() {
