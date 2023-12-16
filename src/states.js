@@ -4,6 +4,7 @@
 
   const states = {};
 
+  states.shape = -2;
   states.wall = -1; // 壁
   states.none = 0;
   states.targetMin = 1;
@@ -16,6 +17,7 @@
   const stateToChar = {};
   const charToState = {};
 
+  stateToChar[states.shape] = '#';
   stateToChar[states.wall] = 'x';
   stateToChar[states.none] = '0';
   for (let i = states.targetMin; i <= states.targetMax; ++i) {

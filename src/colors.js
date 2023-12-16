@@ -11,6 +11,12 @@
     app.states = require('./states.js');
   }
 
+  colors[app.states.shape] = {
+    fill: '#ffbb77',
+    stroke: '#ff7700',
+    text: '#884400',
+    error: '#f80000',
+  };
   colors[app.states.none] = {
     fill: '#ffffff',
     stroke: '#aaaaaa',

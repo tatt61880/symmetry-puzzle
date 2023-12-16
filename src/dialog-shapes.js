@@ -168,7 +168,7 @@
         page * SELECT_NUM_PER_PAGE <= count &&
         count < (page + 1) * SELECT_NUM_PER_PAGE
       ) {
-        const shapeStr = shapes[id];
+        const shapeStr = shapes[i];
         appendShape(shapeStr, id);
         selectIds[count] = id;
       }
@@ -244,6 +244,34 @@
       }
 
       {
+        const checkMode = app.common.checkMode;
+        const { w, h } = getSizeOfShapeStr(shapeStr);
+        console.log({ w, h });
+        const level = new app.Level({
+          levelObj: { w, h, s: shapeStr },
+          checkMode,
+        });
+        const blockSize = Math.min(
+          (SELECT_WIDTH - 8) / level.getW(),
+          (SELECT_HEIGHT - 25) / level.getH()
+        );
+        const levelSvgG = level.createSvgG({
+          blockSize,
+          drawBackground: false,
+          x0: 1,
+          y0: 1,
+          width: w,
+          height: h,
+        });
+
+        levelSvgG.setAttribute(
+          'transform',
+          `translate(${(SELECT_WIDTH - blockSize * level.getW()) / 2},20)`
+        );
+        g.appendChild(levelSvgG);
+      }
+
+      {
         const x = (count % SELECT_COLS) * SELECT_WIDTH + 1;
         const y =
           Math.floor((count % SELECT_NUM_PER_PAGE) / SELECT_COLS) *
@@ -255,6 +283,13 @@
         close();
       });
     }
+  }
+
+  function getSizeOfShapeStr(shapeStr) {
+    const shapeStrLines = shapeStr.split('-');
+    const w = Math.max(...shapeStrLines.map((x) => x.length));
+    const h = shapeStrLines.length;
+    return { w, h };
   }
 
   function close() {
