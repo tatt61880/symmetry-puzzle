@@ -1020,7 +1020,6 @@
 
   function onloadObj(levelObj) {
     const id = getId(levelObj);
-    console.log(id);
     if (id !== null) {
       onloadId(id);
       return;
