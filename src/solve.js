@@ -210,7 +210,8 @@
       } else {
         const r = result.replayStr;
         const completedLevelObj = getCompletedLevelObj(r);
-        app.console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObj}`);
+        const completedLevelObjStr = levelObjToStr(completedLevelObj);
+        app.console.log(`/* [LEVEL ${levelId}] */ ${completedLevelObjStr}`);
         if (result.replayStr.length < level.getLevelObj().step) {
           app.console.log('===== New record! =====');
         }
@@ -333,8 +334,9 @@
                     ? ''
                     : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
                 const completedLevelObj = getCompletedLevelObj(r);
+                const completedLevelObjStr = levelObjToStr(completedLevelObj);
                 app.console.log(
-                  `/* [LEVEL ${levelId}][map.size: ${stateStrMap.size}] */ ${completedLevelObj}${prefixStepInfo}`
+                  `/* [LEVEL ${levelId}][map.size: ${stateStrMap.size}] */ ${completedLevelObjStr}${prefixStepInfo}`
                 );
                 const shapeStr = level
                   .getShapeStr(app.states.isTarget)
@@ -389,13 +391,15 @@
                 );
               }
             }
-            for (const shapeStrInfo of shapeStrInfoArray) {
-              app.console.info(`${shapeStrInfo.step} steps`);
-              app.console.log(shapeStrInfo.str);
-              app.console.log(shapeStrInfo.obj);
-            }
 
             const shapes = shapeStrMap.size;
+            for (const shapeStrInfo of shapeStrInfoArray) {
+              shapeStrInfo.obj.shapes = shapes;
+              app.console.info(`${shapeStrInfo.step} steps`);
+              app.console.log(shapeStrInfo.str);
+              app.console.log(levelObjToStr(shapeStrInfo.obj));
+            }
+
             const levelShapes = level.getShapes();
             if (level.getR() !== undefined && shapes !== levelShapes) {
               app.console.error(
@@ -429,16 +433,23 @@
     }
 
     function getCompletedLevelObj(r) {
-      const levelObj = level.getLevelObj();
+      const levelObj = structuredClone(level.getLevelObj());
+      levelObj.r = r;
+      return levelObj;
+    }
+
+    function levelObjToStr(levelObj) {
       const w = levelObj.w;
       const h = levelObj.h;
       const s = levelObj.s;
+      const r = levelObj.r;
+      const axis = level.hasAxis() ? ` axis: '${level.getA()}',` : '';
       const subject =
         levelObj.subject !== undefined
           ? `, subject: '${levelObj.subject}'`
           : '';
-      const axis = level.hasAxis() ? ` axis: '${level.getA()}',` : '';
-      const res = `{ w: ${w}, h: ${h}, s: '${s}',${axis} r: '${r}', step: ${r.length}${subject} },`;
+      const shapes = levelObj.shapes ? `, shapes: ${levelObj.shapes}` : '';
+      const res = `{ w: ${w}, h: ${h}, s: '${s}',${axis} r: '${r}', step: ${r.length}${subject}${shapes} },`;
       return res;
     }
   }
