@@ -1018,7 +1018,13 @@
     loadLevelById(id);
   }
 
-  function onloadObj(obj) {
+  function onloadObj(levelObj) {
+    const id = getId(levelObj);
+    console.log(id);
+    if (id !== null) {
+      onloadId(id);
+      return;
+    }
     window.getSelection().removeAllRanges();
 
     app.common.hideElem(elems.category.title);
@@ -1031,7 +1037,7 @@
 
     app.common.levelId = null;
     updateLevelVisibility();
-    loadLevelObj(obj);
+    loadLevelObj(levelObj);
   }
 
   function initElems() {
