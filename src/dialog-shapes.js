@@ -225,12 +225,13 @@
 
       {
         // 背景
+        const fill = shapeStr !== null ? '#ffffff' : '#ffeeee';
         const rect = app.svg.createRect(1, {
           x: 0,
           y: 0,
           width: SELECT_WIDTH,
           height: SELECT_HEIGHT,
-          fill: '#ffffff',
+          fill,
           stroke: '#dddddd',
         });
         rect.setAttribute('rx', '5');
@@ -284,6 +285,16 @@
             close();
           });
         }
+      } else {
+        const titleColor = '#ff3333';
+        const text = app.svg.createText(1, {
+          x: SELECT_WIDTH / 2,
+          y: SELECT_HEIGHT / 2 + 4,
+          text: '?',
+          fill: titleColor,
+        });
+        text.setAttribute('font-size', '32px');
+        g.appendChild(text);
       }
 
       {
