@@ -107,6 +107,15 @@
       drawing: 'edit-drawing-shape',
       undo: 'button-undo-edit',
       redo: 'button-redo-edit',
+      buttons: {
+        axis: 'edit-buttons-axis',
+        axisL1: 'edit-buttons-axis-line1',
+        axisL2: 'edit-buttons-axis-line2',
+        axisL3: 'edit-buttons-axis-line3',
+        axisL4: 'edit-buttons-axis-line4',
+        axisP1: 'edit-buttons-axis-point1',
+        axisP2: 'edit-buttons-axis-point2',
+      },
 
       switchMode: 'edit-switch-mode',
       mirror: 'edit-mirror',

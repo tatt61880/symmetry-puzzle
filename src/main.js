@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.13c';
+  const VERSION_TEXT = 'v' + '2023.12.15';
 
   const app = window.app;
   Object.freeze(app);
@@ -765,6 +765,7 @@
     editMode = !editMode;
     app.common.levelId = null;
     updateLevelVisibility();
+    updateEditAxisButton();
     updateEditMode(editMode);
     drawMainSvg();
   }
@@ -1190,9 +1191,48 @@
     }
   }
 
+  function updateEditAxisButton() {
+    app.common.hideElem(elems.edit.buttons.axisL1);
+    app.common.hideElem(elems.edit.buttons.axisL2);
+    app.common.hideElem(elems.edit.buttons.axisL3);
+    app.common.hideElem(elems.edit.buttons.axisL4);
+    app.common.hideElem(elems.edit.buttons.axisP1);
+    app.common.hideElem(elems.edit.buttons.axisP2);
+
+    if (level?.hasAxis()) {
+      switch (level.getAxisType()) {
+        case app.Level.SYMMETRY_TYPE.LINE1: {
+          app.common.showElem(elems.edit.buttons.axisL1);
+          break;
+        }
+        case app.Level.SYMMETRY_TYPE.LINE2: {
+          app.common.showElem(elems.edit.buttons.axisL2);
+          break;
+        }
+        case app.Level.SYMMETRY_TYPE.LINE3: {
+          app.common.showElem(elems.edit.buttons.axisL3);
+          break;
+        }
+        case app.Level.SYMMETRY_TYPE.LINE4: {
+          app.common.showElem(elems.edit.buttons.axisL4);
+          break;
+        }
+        case app.Level.SYMMETRY_TYPE.POINT1: {
+          app.common.showElem(elems.edit.buttons.axisP1);
+          break;
+        }
+        case app.Level.SYMMETRY_TYPE.POINT2: {
+          app.common.showElem(elems.edit.buttons.axisP2);
+          break;
+        }
+      }
+    }
+  }
+
   // Editモード用
   function initElemsForEdit() {
     updateEditElems();
+    updateEditAxisButton();
     editboxFunctions[app.states.stateToChar[app.states.none]]();
 
     elems.edit.switchMode.addEventListener('click', () => {
@@ -1241,6 +1281,14 @@
         drawMainSvg();
       }
     });
+
+    elems.edit.buttons.axis.addEventListener('click', changeAxis);
+
+    function changeAxis() {
+      level.changeAxis();
+      updateEditAxisButton();
+      drawMainSvg();
+    }
   }
 
   // ヘルプ画面用

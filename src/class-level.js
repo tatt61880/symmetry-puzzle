@@ -55,6 +55,8 @@
     };
 
     static SYMMETRY_TYPE = {
+      NONE: Symbol('none'),
+
       // 線対称の分類
       LINE1: Symbol('line1'), // m (｜)
       LINE2: Symbol('line2'), // m (―)
@@ -299,7 +301,40 @@
     }
 
     hasAxis() {
-      return this.#axis !== null;
+      return this.#axis.type !== Level.SYMMETRY_TYPE.NONE;
+    }
+
+    changeAxis() {
+      switch (this.#axis.type) {
+        case Level.SYMMETRY_TYPE.NONE: {
+          this.#axis.type = Level.SYMMETRY_TYPE.LINE1;
+          break;
+        }
+        case Level.SYMMETRY_TYPE.LINE1: {
+          this.#axis.type = Level.SYMMETRY_TYPE.LINE2;
+          break;
+        }
+        case Level.SYMMETRY_TYPE.LINE2: {
+          this.#axis.type = Level.SYMMETRY_TYPE.LINE3;
+          break;
+        }
+        case Level.SYMMETRY_TYPE.LINE3: {
+          this.#axis.type = Level.SYMMETRY_TYPE.LINE4;
+          break;
+        }
+        case Level.SYMMETRY_TYPE.LINE4: {
+          this.#axis.type = Level.SYMMETRY_TYPE.POINT1;
+          break;
+        }
+        case Level.SYMMETRY_TYPE.POINT1: {
+          this.#axis.type = Level.SYMMETRY_TYPE.POINT2;
+          break;
+        }
+        case Level.SYMMETRY_TYPE.POINT2: {
+          this.#axis.type = Level.SYMMETRY_TYPE.NONE;
+          break;
+        }
+      }
     }
 
     axisCxDecAble() {
@@ -438,7 +473,11 @@
     }
 
     applyAxis(axisStr) {
-      this.#axis = null;
+      this.#axis = {
+        type: Level.SYMMETRY_TYPE.NONE,
+        cx: 0,
+        cy: 0,
+      };
       if (axisStr !== undefined) {
         const res = axisStr.match(/(\w\d)(?:-x(\d+))?(?:-y(\d+))?/);
         const type = (() => {
