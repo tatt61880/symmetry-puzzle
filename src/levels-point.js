@@ -199,6 +199,14 @@
       step: 5,
     },
     {
+      w: 5,
+      h: 3,
+      s: 'xs11-0233-0000x',
+      axis: 'p1-x5-y3',
+      r: '1211411',
+      step: 7,
+    },
+    {
       w: 7,
       h: 7,
       s: '010x-2xxxxxx-0xsx0x-xxxx0x-0x0x0x-0x0xxx-0x0x',
