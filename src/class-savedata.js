@@ -80,6 +80,11 @@
       }
     }
 
+    getShapesObj(levelObj, checkMode) {
+      const key = this.#getLevelKey(levelObj, checkMode);
+      return this.data.shapes[key];
+    }
+
     getHighestScore(levelObj, checkMode) {
       const key = this.#getLevelKey(levelObj, checkMode);
       const r = this.data.steps[key];

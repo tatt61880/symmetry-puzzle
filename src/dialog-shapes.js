@@ -6,6 +6,7 @@
   const app = window.app;
   console.assert(app?.elems !== undefined);
   console.assert(app?.common !== undefined);
+  console.assert(app?.savedata !== undefined);
 
   window.app = window.app || {};
   window.app.dialog = window.app.dialog || {};
@@ -121,23 +122,13 @@
 
     elems.shapes.dialogSvg.innerHTML = '';
 
-    let totalNum = 0;
-    for (let id = 1; id < app.common.levelsList.length; ++id) {
-      if (page === null && id === app.common.levelId) {
-        page = Math.floor(totalNum / SELECT_NUM_PER_PAGE);
-        elems.shapes.dialog.dataset.selectCount = totalNum;
-      }
-      totalNum++;
-    }
-    for (const id of Object.keys(app.common.levelsListEx).sort()) {
-      if (String(id) === 'NaN') continue;
-      if (page === null && Number(id) === app.common.levelId) {
-        page = Math.floor(totalNum / SELECT_NUM_PER_PAGE);
-        elems.shapes.dialog.dataset.selectCount = totalNum;
-      }
-      totalNum++;
-    }
+    const levelObj = app.common.levelsList[app.common.levelId];
+    const checkMode = app.common.checkMode;
+    const shapesObj = app.savedata.getShapesObj(levelObj, checkMode);
+    const shapes = Object.keys(shapesObj);
+    const totalNum = shapes.length;
     elems.shapes.dialog.dataset.maxCount = totalNum - 1;
+    elems.shapes.dialog.dataset.selectCount = 0;
 
     if (page === null) {
       page = 0;
@@ -171,25 +162,14 @@
 
     let count = 0;
     const selectIds = {};
-    for (let id = 1; id < app.common.levelsList.length; ++id) {
+    for (let i = 0; i < shapes.length; ++i) {
+      const id = i + 1;
       if (
         page * SELECT_NUM_PER_PAGE <= count &&
         count < (page + 1) * SELECT_NUM_PER_PAGE
       ) {
-        const levelObj = app.common.levelsList[id];
-        appendLevel(levelObj, id);
-        selectIds[count] = id;
-      }
-      count++;
-    }
-    for (const id of Object.keys(app.common.levelsListEx).sort()) {
-      if (String(id) === 'NaN') continue;
-      if (
-        page * SELECT_NUM_PER_PAGE <= count &&
-        count < (page + 1) * SELECT_NUM_PER_PAGE
-      ) {
-        const levelObj = app.common.levelsListEx[id];
-        appendLevel(levelObj, id);
+        const shapeStr = shapes[id];
+        appendShape(shapeStr, id);
         selectIds[count] = id;
       }
       count++;
@@ -232,27 +212,10 @@
       g.setAttribute('transform', `translate(${x},${y})`);
     }
 
-    function appendLevel(levelObj, id) {
-      const level = new app.Level({
-        levelObj,
-        checkMode: app.common.checkMode,
-      });
-      const bestStep = level.getBestStep();
-      const highestScore = app.savedata.getHighestScore(
-        levelObj,
-        level.getCheckMode()
-      );
-
+    function appendShape(shapeStr, id) {
       const g = app.svg.createG();
-      g.classList.add('level-select');
+      g.classList.add('shape-select');
       elems.shapes.dialogSvg.appendChild(g);
-
-      let backgroundColor;
-      if (String(id) === String(app.common.levelId)) {
-        backgroundColor = app.colors.levelsDialogCurrentLevel;
-      } else {
-        backgroundColor = '#ffffff';
-      }
 
       {
         // 背景
@@ -261,7 +224,7 @@
           y: 0,
           width: SELECT_WIDTH,
           height: SELECT_HEIGHT,
-          fill: backgroundColor,
+          fill: '#ffffff',
           stroke: '#dddddd',
         });
         rect.setAttribute('rx', '5');
@@ -269,10 +232,6 @@
         g.appendChild(rect);
       }
 
-      {
-        const crown = app.common.createCrown(20, 0, 0, highestScore, bestStep);
-        g.appendChild(crown);
-      }
       {
         const text = app.svg.createText(1, {
           x: SELECT_WIDTH / 2,
@@ -282,33 +241,6 @@
         });
         text.setAttribute('font-size', '16px');
         g.appendChild(text);
-      }
-      if (highestScore !== null) {
-        const text = app.svg.createText(1, {
-          x: SELECT_WIDTH - 3,
-          y: 10,
-          text: highestScore,
-          fill: app.common.getStepColor(highestScore, bestStep),
-        });
-        text.setAttribute('font-size', '11px');
-        text.setAttribute('text-anchor', 'end');
-        g.appendChild(text);
-      }
-
-      {
-        const blockSize = Math.min(
-          (SELECT_WIDTH - 8) / level.getWidth(),
-          (SELECT_HEIGHT - 25) / level.getHeight()
-        );
-        const levelSvgG = level.createSvgG({
-          blockSize,
-          edgeColor: backgroundColor,
-        });
-        levelSvgG.setAttribute(
-          'transform',
-          `translate(${(SELECT_WIDTH - blockSize * level.getWidth()) / 2},20)`
-        );
-        g.appendChild(levelSvgG);
       }
 
       {
