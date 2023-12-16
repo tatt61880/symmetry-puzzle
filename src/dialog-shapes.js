@@ -162,15 +162,22 @@
 
     let count = 0;
     const selectIds = {};
-    for (let i = 0; i < shapes.length; ++i) {
+    const levelShapes = levelObj.shapes;
+    const iEnd = levelShapes !== undefined ? levelShapes : shapes.length;
+    for (let i = 0; i < iEnd; ++i) {
       const id = i + 1;
       if (
         page * SELECT_NUM_PER_PAGE <= count &&
         count < (page + 1) * SELECT_NUM_PER_PAGE
       ) {
-        const shapeStr = shapes[i];
-        appendShape(shapeStr, id);
-        selectIds[count] = id;
+        if (i < shapes.length) {
+          const shapeStr = shapes[i];
+          const r = shapesObj[shapeStr];
+          appendShape({ id, shapeStr, r });
+          selectIds[count] = id;
+        } else {
+          appendShape({ id });
+        }
       }
       count++;
     }
@@ -212,9 +219,8 @@
       g.setAttribute('transform', `translate(${x},${y})`);
     }
 
-    function appendShape(shapeStr, id) {
+    function appendShape({ id, shapeStr = null, r }) {
       const g = app.svg.createG();
-      g.classList.add('shape-select');
       elems.shapes.dialogSvg.appendChild(g);
 
       {
@@ -243,7 +249,7 @@
         g.appendChild(text);
       }
 
-      {
+      if (shapeStr !== null) {
         const checkMode = app.common.checkMode;
         const { w, h } = getSizeOfShapeStr(shapeStr);
         const level = new app.Level({
@@ -268,6 +274,16 @@
           `translate(${(SELECT_WIDTH - blockSize * w) / 2},20)`
         );
         g.appendChild(levelSvgG);
+
+        // クリック時の処理
+        {
+          g.dataset.r = r;
+          g.classList.add('shape-select');
+          g.addEventListener('click', function () {
+            console.log(g.dataset.r);
+            close();
+          });
+        }
       }
 
       {
@@ -277,10 +293,6 @@
           SELECT_HEIGHT;
         g.setAttribute('transform', `translate(${x},${y})`);
       }
-      g.dataset.id = id;
-      g.addEventListener('click', function () {
-        close();
-      });
     }
   }
 
