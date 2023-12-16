@@ -473,10 +473,11 @@
     }
 
     applyAxis(axisStr) {
+      const offset = 2;
       this.#axis = {
         type: Level.SYMMETRY_TYPE.NONE,
-        cx: 0,
-        cy: 0,
+        cx: offset,
+        cy: offset,
       };
       if (axisStr !== undefined) {
         const res = axisStr.match(/(\w\d)(?:-x(\d+))?(?:-y(\d+))?/);
@@ -499,8 +500,8 @@
 
         this.#axis = {
           type,
-          cx: Number(res[2] ?? 0) + 2,
-          cy: Number(res[3] ?? 0) + 2,
+          cx: Number(res[2] ?? 0) + offset,
+          cy: Number(res[3] ?? 0) + offset,
         };
       }
     }
