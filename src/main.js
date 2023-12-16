@@ -699,6 +699,12 @@
         app.dialog.help.show();
       }
     }
+
+    if (app.savedata.getShapesObj(level.getLevelObj(), app.common.checkMode)) {
+      app.common.showElem(elems.shapes.button);
+    } else {
+      app.common.hideElem(elems.shapes.button);
+    }
   }
 
   function loadLevelObj(levelObj, param = {}) {
@@ -1531,6 +1537,7 @@
     } else {
       app.common.hideElem(elems.controller.buttons.axis);
     }
+
     app.common.showElem(elems.controller.buttons.root);
     app.common.hideElem(elems.controller.menu);
     if (completeFlag) {
