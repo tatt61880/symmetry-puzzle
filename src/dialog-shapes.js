@@ -125,8 +125,10 @@
     const levelObj = app.common.levelsList[app.common.levelId];
     const checkMode = app.common.checkMode;
     const shapesObj = app.savedata.getShapesObj(levelObj, checkMode);
-    const shapes = Object.keys(shapesObj);
-    const totalNum = shapes.length;
+    const shapeStrs = Object.keys(shapesObj).sort(
+      (a, b) => shapesObj[a].length - shapesObj[b].length
+    );
+    const totalNum = shapeStrs.length;
     elems.shapes.dialog.dataset.maxCount = totalNum - 1;
     elems.shapes.dialog.dataset.selectCount = 0;
 
@@ -163,15 +165,15 @@
     let count = 0;
     const selectIds = {};
     const levelShapes = levelObj.shapes;
-    const iEnd = levelShapes !== undefined ? levelShapes : shapes.length;
+    const iEnd = levelShapes !== undefined ? levelShapes : shapeStrs.length;
     for (let i = 0; i < iEnd; ++i) {
       const id = i + 1;
       if (
         page * SELECT_NUM_PER_PAGE <= count &&
         count < (page + 1) * SELECT_NUM_PER_PAGE
       ) {
-        if (i < shapes.length) {
-          const shapeStr = shapes[i];
+        if (i < shapeStrs.length) {
+          const shapeStr = shapeStrs[i];
           const r = shapesObj[shapeStr];
           appendShape({ id, shapeStr, r });
           selectIds[count] = id;
