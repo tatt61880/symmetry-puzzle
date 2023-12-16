@@ -210,6 +210,14 @@
       step: 5,
     },
     {
+      w: 5,
+      h: 3,
+      s: '111-0s2-00x',
+      axis: 'l1-x7',
+      r: '1433',
+      step: 4,
+    },
+    {
       w: 7,
       h: 7,
       s: '010x-2xxxxx-0xsx0x-xxxx0x-0x0x0x-0x0xxxx-0x0x',
