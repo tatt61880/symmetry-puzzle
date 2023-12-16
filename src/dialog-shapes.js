@@ -276,6 +276,18 @@
         );
         g.appendChild(levelSvgG);
 
+        {
+          const text = app.svg.createText(1, {
+            x: SELECT_WIDTH - 3,
+            y: 10,
+            text: r.length,
+            fill: 'black',
+          });
+          text.setAttribute('font-size', '11px');
+          text.setAttribute('text-anchor', 'end');
+          g.appendChild(text);
+        }
+
         // クリック時の処理
         {
           g.dataset.r = r;
