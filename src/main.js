@@ -1287,6 +1287,8 @@
     function changeAxis() {
       level.changeAxis();
       updateEditAxisButton();
+      addUndo(null);
+      updateLinkUrl();
       drawMainSvg();
     }
   }
