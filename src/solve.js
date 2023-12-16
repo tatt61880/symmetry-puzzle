@@ -397,14 +397,14 @@
 
             const shapes = shapeStrMap.size;
             const levelShapes = level.getShapes();
-
-            // エラーではないですが、目立つようにエラー扱いします。
-            const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Step limit: ${maxStep}] [Shape variation: ${shapes}]`;
-            if (shapes !== levelShapes) {
+            if (level.getR() !== undefined && shapes !== levelShapes) {
               app.console.error(
                 `       ↓[level.getShapes(): ${levelShapes}] !== [Shape variation: ${shapes}]`
               );
             }
+
+            // エラーではないですが、目立つようにエラー扱いします。
+            const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Step limit: ${maxStep}] [Shape variation: ${shapes}]`;
             return { replayStr: null, errorMessage };
           }
           const errorMessage = `No solution. [Step: ${step}] [Step limit: ${maxStep}]`;
