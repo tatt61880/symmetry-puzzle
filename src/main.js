@@ -1012,6 +1012,7 @@
         levelObj.w === queryObj.w &&
         levelObj.h === queryObj.h &&
         levelObj.s === queryObj.s &&
+        (queryObj.r === undefined || levelObj.r === queryObj.r) &&
         levelObj.axis === queryObj.axis
       ) {
         return id;
@@ -1024,6 +1025,7 @@
         levelObj.w === queryObj.w &&
         levelObj.h === queryObj.h &&
         levelObj.s === queryObj.s &&
+        (queryObj.r === undefined || levelObj.r === queryObj.r) &&
         levelObj.axis === queryObj.axis
       ) {
         return id;
