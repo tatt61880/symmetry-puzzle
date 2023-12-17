@@ -349,12 +349,9 @@
     transform: rotate(0deg);
   }
 
-  30% {
-    transform: rotate(179.9deg);
-  }
-
+  30%,
   70% {
-    transform: rotate(180.1deg);
+    transform: rotate(180deg);
   }
 
   100% {
@@ -516,12 +513,12 @@
 
   30% {
     opacity: 1;
-    transform: rotate(179.9deg);
+    transform: rotate(180deg);
   }
 
   70% {
     opacity: 0.8;
-    transform: rotate(180.1deg);
+    transform: rotate(180deg);
   }
 
   100% {
@@ -578,28 +575,29 @@
 @keyframes animation-symmetry-axis-sp1 {
   0% {
     opacity: 1;
-    transform: scaleX(1) scaleY(1);
+    transform: rotate(0deg) rotate3d(0, 1, 0, 0deg) rotate3d(1, 0, 0, 0deg);
   }
 
   20% {
     opacity: 0.8;
-    transform: rotate(179.9deg);
+    transform: rotate(180deg) rotate3d(0, 1, 0, 0deg) rotate3d(1, 0, 0, 0deg);
   }
 
   40% {
     opacity: 0.4;
-    transform: rotate(179.9deg);
+    transform: rotate(180deg) rotate3d(0, 1, 0, 0deg) rotate3d(1, 0, 0, 0deg);
   }
 
   60%,
   80% {
     opacity: 0.4;
-    transform: rotate(180.1deg) rotate3d(0, 1, 0, 180deg);
+    transform: rotate(180deg) rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 0deg);
   }
 
   100% {
     opacity: 0.4;
-    transform: scaleX(1) scaleY(1);
+    transform: rotate(180deg) rotate3d(0, 1, 0, 180deg)
+      rotate3d(1, 0, 0, 180deg);
   }
 }
 
@@ -614,28 +612,29 @@
 @keyframes animation-symmetry-axis-sp2 {
   0% {
     opacity: 1;
-    transform: scaleX(1) scaleY(1);
+    transform: rotate(0deg) rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   20% {
     opacity: 0.8;
-    transform: rotate(179.9deg);
+    transform: rotate(180deg) rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   40% {
     opacity: 0.4;
-    transform: rotate(179.9deg);
+    transform: rotate(180deg) rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   60%,
   80% {
     opacity: 0.4;
-    transform: rotate(180.1deg) rotate3d(1, 1, 0, 180deg);
+    transform: rotate(180deg) rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 0deg);
   }
 
   100% {
     opacity: 0.4;
-    transform: scaleX(1) scaleY(1);
+    transform: rotate(180deg) rotate3d(1, 1, 0, 180deg)
+      rotate3d(1, -1, 0, 180deg);
   }
 }
 
