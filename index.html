@@ -442,6 +442,7 @@
       </div>
     </div>
 
+    <!-- 記録ダイアログ -->
     <dialog id="dialog-records">
       <div id="dialog-records-div">
         <div id="records-top">
@@ -521,6 +522,7 @@
         </svg>
       </div>
 
+      <!-- レベルダイアログ -->
       <dialog id="dialog-levels">
         <div id="dialog-levels-div">
           <div id="dialog-levels-top">
@@ -577,6 +579,7 @@
         </div>
       </dialog>
 
+      <!-- 形状ダイアログ -->
       <dialog id="dialog-shapes">
         <div id="dialog-shapes-div">
           <div id="dialog-shapes-top">
@@ -787,13 +790,18 @@
               <rect x="-23" y="13" rx="5" ry="5" width="46" height="10" fill="#888888" />
             </g>
 
-            <!-- Shapes -->
+            <!-- 形状ダイアログボタン -->
             <g id="button-shapes" class="button active-hover" transform="translate(185,-50)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16px"
                 fill="#888888" class="translatable-toggle" data-en="SHAPES" data-ja="形状"></text>
               <rect x="-35" y="-35" rx="12" ry="12" width="70" height="70" fill="lightgray" stroke="#888888"
                 stroke-width="4" />
-              <rect x="-23" y="-23" rx="5" ry="5" width="46" height="46" fill="#888888" />
+
+              <text id="button-shapes-numerator" x="0" y="-14" dominant-baseline="middle" text-anchor="middle"
+                font-weight="bold" font-size="30px" fill="#888888">1</text>
+              <rect x="-23" y="-2" rx="2" ry="2" width="46" height="4" fill="#888888" />
+              <text id="button-shapes-denumerator" x="0" y="20" dominant-baseline="middle" text-anchor="middle"
+                font-weight="bold" font-size="30px" fill="#888888">1</text>
             </g>
 
             <!-- Undoボタン -->

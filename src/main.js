@@ -702,14 +702,22 @@
   }
 
   function updateShapeButton() {
-    if (
-      level !== null &&
-      app.savedata.getShapesObj(level.getLevelObj(), app.common.checkMode)
-    ) {
-      app.common.showElem(elems.shapes.button);
-    } else {
-      app.common.hideElem(elems.shapes.button);
+    if (level !== null) {
+      const shapesObj = app.savedata.getShapesObj(
+        level.getLevelObj(),
+        app.common.checkMode
+      );
+      if (shapesObj) {
+        app.common.showElem(elems.shapes.button);
+        const numerator = Object.keys(shapesObj).length;
+        const denumerator = level.getShapes() ?? '?';
+        elems.shapes.buttonNumerator.textContent = numerator;
+        elems.shapes.buttonDenumerator.textContent = denumerator;
+        return;
+      }
     }
+
+    app.common.hideElem(elems.shapes.button);
   }
 
   function loadLevelObj(levelObj, param = {}) {

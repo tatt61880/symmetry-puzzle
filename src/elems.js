@@ -89,6 +89,8 @@
 
     shapes: {
       button: 'button-shapes',
+      buttonNumerator: 'button-shapes-numerator',
+      buttonDenumerator: 'button-shapes-denumerator',
       dialog: 'dialog-shapes',
       dialogDiv: 'dialog-shapes-div',
       close: 'dialog-shapes-close',
