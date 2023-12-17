@@ -860,15 +860,21 @@
                 <g id="controller-buttons-axis" class="button" transform="translate(0,0)">
                   <rect x="-35" y="-35" rx="12" ry="12" width="70" height="70" fill="#aaccff" stroke="#0000f8"
                     stroke-width="4" />
-                  <rect id="controller-buttons-axis-line1" x="-2" y="-25" width="4" height="50" fill="#0000f8" />
-                  <rect id="controller-buttons-axis-line2" x="-25" y="-2" width="50" height="4" fill="#0000f8" />
-                  <rect id="controller-buttons-axis-line3" x="-2" y="-25" width="4" height="50" fill="#0000f8"
-                    transform="rotate(-45 0 0)" />
-                  <rect id="controller-buttons-axis-line4" x="-2" y="-25" width="4" height="50" fill="#0000f8"
-                    transform="rotate(45 0 0)" />
-                  <ellipse id="controller-buttons-axis-point1" x="0" y="0" rx="6" ry="18" fill="#0000f8" />
-                  <rect id="controller-buttons-axis-point2" x="-10" y="-10" width="20" height="20" fill="#0000f8"
-                    transform="rotate(45 0 0)" />
+                  <rect id="controller-buttons-axis-line1" class="hide" x="-2" y="-25" width="4" height="50"
+                    fill="#0000f8" />
+                  <rect id="controller-buttons-axis-line2" class="hide" x="-25" y="-2" width="50" height="4"
+                    fill="#0000f8" />
+                  <rect id="controller-buttons-axis-line3" class="hide" x="-2" y="-25" width="4" height="50"
+                    fill="#0000f8" transform="rotate(-45 0 0)" />
+                  <rect id="controller-buttons-axis-line4" class="hide" x="-2" y="-25" width="4" height="50"
+                    fill="#0000f8" transform="rotate(45 0 0)" />
+                  <ellipse id="controller-buttons-axis-point1" class="hide" x="0" y="0" rx="6" ry="18" fill="#0000f8" />
+                  <rect id="controller-buttons-axis-point2" class="hide" x="-10" y="-10" width="20" height="20"
+                    fill="#0000f8" transform="rotate(45 0 0)" />
+
+                  <!-- エラー時などに全部の軸が表示されてしまう可能性を減らす目的 -->
+                  <rect class="hide" x="-35" y="-35" rx="12" ry="12" width="70" height="70" fill="#aaccff"
+                    stroke="#0000f8" stroke-width="4" />
                 </g>
               </g>
 
