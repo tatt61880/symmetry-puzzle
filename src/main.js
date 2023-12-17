@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.16b';
+  const VERSION_TEXT = 'v' + '2023.12.17';
 
   const app = window.app;
   Object.freeze(app);
@@ -62,6 +62,7 @@
   const frameBorderWidth = 3;
 
   let level = null;
+  window.retryAndExecReplayStr = retryAndExecReplayStr;
 
   const SHADOW_MSEC = MOVE_INTERVAL_MSEC * 2;
   const ROTATION_MSEC = MOVE_INTERVAL_MSEC * 3;
@@ -2367,15 +2368,22 @@
 
   function onButtonEnd() {
     const levelObj = level.getLevelObj();
-    const stepIndex = undoInfo.getIndex();
-    let step = 0;
+    const r = levelObj.r;
+    retryAndExecReplayStr(r);
+  }
 
-    for (const dirChar of levelObj.r) {
-      if (step++ < stepIndex) continue;
+  function execReplayStr(r) {
+    for (const dirChar of r) {
       const dir = Number(dirChar);
       tryMoving(dir);
     }
     completeCheck();
+  }
+
+  function retryAndExecReplayStr(r) {
+    const levelObj = level.getLevelObj();
+    loadLevelObj(levelObj);
+    execReplayStr(r);
   }
 
   function intervalFuncAuto() {

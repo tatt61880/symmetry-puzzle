@@ -324,7 +324,7 @@
   }
 
   function selectShape(r) {
-    console.log(r);
+    window.retryAndExecReplayStr(r);
   }
 
   function getSizeOfShapeStr(shapeStr) {
