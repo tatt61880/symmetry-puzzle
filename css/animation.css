@@ -308,28 +308,33 @@
 }
 
 @keyframes animation-axis-plus3 {
-  0%,
-  90%,
-  100% {
-    transform: scaleX(1) scaleY(1);
+  0% {
+    transform: rotate3d(0, 1, 0, 0deg) rotate3d(1, 0, 0, 0deg)
+      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   15%,
   25% {
     transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 0deg)
-      rotate3d(1, 1, 0, 0deg);
+      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   40%,
   50% {
     transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
-      rotate3d(1, 1, 0, 0deg);
+      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   65%,
   75% {
     transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
-      rotate3d(1, 1, 0, 180deg);
+      rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 0deg);
+  }
+
+  90%,
+  100% {
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
+      rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 180deg);
   }
 }
 
