@@ -261,7 +261,8 @@
         });
         const blockSize = Math.min(
           (SELECT_WIDTH - 8) / w,
-          (SELECT_HEIGHT - 25) / h
+          (SELECT_HEIGHT - 25) / h,
+          (SELECT_HEIGHT - 25) / 4
         );
         const levelSvgG = level.createSvgG({
           blockSize,
