@@ -27,7 +27,7 @@
 
   const shapeSelectId = 'shapes-select';
 
-  const SELECT_NUM_PER_PAGE = 20;
+  const SELECT_NUM_PER_PAGE = 10;
   const SELECT_HEIGHT = 90;
   const SELECT_WIDTH = 90;
   const SELECT_COLS = 5;
@@ -137,6 +137,11 @@
     }
     elems.shapes.dialog.dataset.page = page;
 
+    let count = 0;
+    const selectR = {};
+    const levelShapes = levelObj.shapes;
+    const iEnd = levelShapes !== undefined ? levelShapes : shapeStrs.length;
+
     let prevHide = false;
 
     // ←
@@ -152,7 +157,7 @@
     // →
     if (
       page + 1 ===
-      Math.floor((totalNum + SELECT_NUM_PER_PAGE - 1) / SELECT_NUM_PER_PAGE)
+      Math.floor((iEnd + SELECT_NUM_PER_PAGE - 1) / SELECT_NUM_PER_PAGE)
     ) {
       app.common.hideElem(elems.shapes.next);
       if (prevHide) {
@@ -162,10 +167,6 @@
       app.common.showElem(elems.shapes.next);
     }
 
-    let count = 0;
-    const selectR = {};
-    const levelShapes = levelObj.shapes;
-    const iEnd = levelShapes !== undefined ? levelShapes : shapeStrs.length;
     for (let i = 0; i < iEnd; ++i) {
       const id = i + 1;
       if (
