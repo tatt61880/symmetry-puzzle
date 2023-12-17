@@ -273,10 +273,11 @@
           height: h,
         });
 
-        levelSvgG.setAttribute(
-          'transform',
-          `translate(${(SELECT_WIDTH - blockSize * w) / 2},20)`
-        );
+        {
+          const dx = (SELECT_WIDTH - blockSize * w) / 2;
+          const dy = 20 + (SELECT_HEIGHT - 20 - blockSize * h) / 2;
+          levelSvgG.setAttribute('transform', `translate(${dx},${dy})`);
+        }
         g.appendChild(levelSvgG);
 
         {
