@@ -1082,14 +1082,20 @@
         const gg = app.svg.createG();
         g.appendChild(gg);
 
-        if (showCharsFlag) {
-          const circle = app.svg.createCircle(blockSize, {
-            cx: center.x,
-            cy: center.y,
-            r: 0.1,
-            fill: app.colors.symmetryAxisCenter,
-          });
-          gg.appendChild(circle);
+        switch (this.#axis.type) {
+          case Level.SYMMETRY_TYPE.LINE1:
+          case Level.SYMMETRY_TYPE.LINE2:
+          case Level.SYMMETRY_TYPE.LINE3:
+          case Level.SYMMETRY_TYPE.LINE4:
+            if (showCharsFlag) {
+              const circle = app.svg.createCircle(blockSize, {
+                cx: center.x,
+                cy: center.y,
+                r: 0.1,
+                fill: app.colors.symmetryAxisCenter,
+              });
+              gg.appendChild(circle);
+            }
         }
 
         switch (this.#axis.type) {
