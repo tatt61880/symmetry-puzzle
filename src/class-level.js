@@ -1072,7 +1072,7 @@
         }
       }
 
-      if (this.#axis) {
+      if (this.#axis.type !== Level.SYMMETRY_TYPE.NONE) {
         const center = {
           x: this.#axis.cx / 2,
           y: this.#axis.cy / 2,
