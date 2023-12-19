@@ -678,11 +678,7 @@
       levelObj = createObjById(app.common.levelId);
     }
 
-    consoleLog(
-      `[LEVEL ${id}]${
-        levelObj?.subject !== undefined ? ` ${levelObj.subject}` : ''
-      }`
-    );
+    consoleLog(`[LEVEL ${id}]${levelObj?.subject ?? ''}`);
 
     loadLevelObj(levelObj);
     if (isLocalhost()) {
