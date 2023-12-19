@@ -26,8 +26,8 @@
 
   const levelSelectId = 'level-select';
 
-  const LEVEL_SELECT_NUM_PER_PAGE = 20;
-  const LEVEL_SELECT_HEIGHT = 90;
+  const LEVEL_SELECT_NUM_PER_PAGE = 10;
+  const LEVEL_SELECT_HEIGHT = 125;
   const LEVEL_SELECT_WIDTH = 90;
   const LEVEL_SELECT_COLS = 5;
 
@@ -309,10 +309,6 @@
       }
 
       {
-        const crown = app.common.createCrown(20, 0, 0, highestScore, bestStep);
-        g.appendChild(crown);
-      }
-      {
         const text = app.svg.createText(1, {
           x: LEVEL_SELECT_WIDTH / 2,
           y: 12,
@@ -322,14 +318,38 @@
         text.setAttribute('font-size', '16px');
         g.appendChild(text);
       }
+
+      {
+        const crown = app.common.createCrown(20, 0, 1, highestScore, bestStep);
+        g.appendChild(crown);
+      }
       if (highestScore !== null) {
         const text = app.svg.createText(1, {
-          x: LEVEL_SELECT_WIDTH - 3,
-          y: 10,
+          x: 22,
+          y: 32,
           text: highestScore,
           fill: app.common.getStepColor(highestScore, bestStep),
         });
-        text.setAttribute('font-size', '11px');
+        text.setAttribute('font-size', '15px');
+        text.setAttribute('text-anchor', 'start');
+        g.appendChild(text);
+      }
+
+      {
+        const levelObj = level.getLevelObj();
+        const checkMode = app.common.checkMode;
+        const shapesObj = app.savedata.getShapesObj(levelObj, checkMode);
+        const shapeNum =
+          shapesObj !== undefined ? Object.keys(shapesObj).length : '0';
+        const shapes = level.getShapes() ?? '?';
+
+        const text = app.svg.createText(1, {
+          x: LEVEL_SELECT_WIDTH - 5,
+          y: 32,
+          text: `${shapeNum}/${shapes}`,
+          fill: '#888888',
+        });
+        text.setAttribute('font-size', '15px');
         text.setAttribute('text-anchor', 'end');
         g.appendChild(text);
       }
@@ -347,7 +367,7 @@
           'transform',
           `translate(${
             (LEVEL_SELECT_WIDTH - blockSize * level.getWidth()) / 2
-          },20)`
+          },40)`
         );
         g.appendChild(levelSvgG);
       }
