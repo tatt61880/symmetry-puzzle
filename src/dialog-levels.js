@@ -357,8 +357,8 @@
 
       {
         const blockSize = Math.min(
-          (LEVEL_SELECT_WIDTH - 8) / level.getWidth(),
-          (LEVEL_SELECT_HEIGHT - 25) / level.getHeight()
+          (LEVEL_SELECT_WIDTH - 4) / level.getWidth(),
+          (LEVEL_SELECT_HEIGHT - 42) / level.getHeight()
         );
         const levelSvgG = level.createSvgG({
           blockSize,
