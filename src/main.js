@@ -1893,9 +1893,7 @@
               levelObj.axis !== undefined ? ` axis: '${levelObj.axis}',` : '';
             const levelParams = `w: ${w}, h: ${h}, s: '${s}',${axis} r: '${replayStr}', step: ${
               replayStr.length
-            }, subject: '${
-              levelObj.subject === undefined ? '' : levelObj.subject
-            }'`;
+            }, subject: '${levelObj.subject ?? ''}'`;
 
             const levelObjStr = `{ ${levelParams} },`;
             // if (app.common.levelId === null) {
