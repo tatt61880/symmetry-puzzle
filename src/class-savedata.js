@@ -91,7 +91,7 @@
     getHighestScore(levelObj, checkMode) {
       const key = this.#getLevelKey(levelObj, checkMode);
       const r = this.data.steps[key];
-      return r === undefined ? null : r.length;
+      return r?.length ?? null;
     }
 
     #getLevelKey(levelObj, checkMode) {
