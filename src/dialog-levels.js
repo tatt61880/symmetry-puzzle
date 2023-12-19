@@ -333,25 +333,26 @@
         text.setAttribute('font-size', '15px');
         text.setAttribute('text-anchor', 'start');
         g.appendChild(text);
-      }
 
-      {
-        const levelObj = level.getLevelObj();
-        const checkMode = app.common.checkMode;
-        const shapesObj = app.savedata.getShapesObj(levelObj, checkMode);
-        const shapeNum =
-          shapesObj !== undefined ? Object.keys(shapesObj).length : '0';
-        const shapes = level.getShapes() ?? '?';
+        // 形状数
+        {
+          const levelObj = level.getLevelObj();
+          const checkMode = app.common.checkMode;
+          const shapesObj = app.savedata.getShapesObj(levelObj, checkMode);
+          const shapeNum =
+            shapesObj !== undefined ? Object.keys(shapesObj).length : '0';
+          const shapes = level.getShapes() ?? '?';
 
-        const text = app.svg.createText(1, {
-          x: LEVEL_SELECT_WIDTH - 5,
-          y: 32,
-          text: `${shapeNum}/${shapes}`,
-          fill: '#888888',
-        });
-        text.setAttribute('font-size', '15px');
-        text.setAttribute('text-anchor', 'end');
-        g.appendChild(text);
+          const text = app.svg.createText(1, {
+            x: LEVEL_SELECT_WIDTH - 5,
+            y: 32,
+            text: `${shapeNum}/${shapes}`,
+            fill: '#888888',
+          });
+          text.setAttribute('font-size', '15px');
+          text.setAttribute('text-anchor', 'end');
+          g.appendChild(text);
+        }
       }
 
       {
