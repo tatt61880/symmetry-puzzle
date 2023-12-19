@@ -140,7 +140,7 @@
     let count = 0;
     const selectR = {};
     const levelShapes = levelObj.shapes;
-    const iEnd = levelShapes !== undefined ? levelShapes : shapeStrs.length;
+    const iEnd = levelShapes ?? shapeStrs.length;
 
     let prevHide = false;
 
