@@ -698,12 +698,14 @@
     }
 
     #updateMoveFlags(dx, dy, userMax = app.states.userMax) {
-      if (this.#axis === null && dx + dy === 0) return false;
+      if (this.#axis.type === Level.SYMMETRY_TYPE.NONE && dx + dy === 0) {
+        return false;
+      }
 
       let moveFlag = false;
       this.#resetMoveFlags();
 
-      if (this.#axis && dx + dy === 0) {
+      if (this.#axis.type !== Level.SYMMETRY_TYPE.NONE && dx + dy === 0) {
         loop: for (let i = app.states.userMin; i <= userMax; ++i) {
           if (!this.#exist((x) => x === i)) continue;
 
