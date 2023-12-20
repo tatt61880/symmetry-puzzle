@@ -326,7 +326,7 @@
       if (highestScore !== null) {
         const text = app.svg.createText(1, {
           x: 22,
-          y: 32,
+          y: 33,
           text: highestScore,
           fill: app.common.getStepColor(highestScore, bestStep),
         });
@@ -345,7 +345,7 @@
 
           const text = app.svg.createText(1, {
             x: LEVEL_SELECT_WIDTH - 5,
-            y: 32,
+            y: 33,
             text: `${shapeNum}/${shapes}`,
             fill: '#888888',
           });
