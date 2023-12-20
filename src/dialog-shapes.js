@@ -168,7 +168,6 @@
     }
 
     for (let i = 0; i < iEnd; ++i) {
-      const id = i + 1;
       if (
         page * SELECT_NUM_PER_PAGE <= count &&
         count < (page + 1) * SELECT_NUM_PER_PAGE
@@ -176,10 +175,10 @@
         if (i < shapeStrs.length) {
           const shapeStr = shapeStrs[i];
           const r = shapesObj[shapeStr];
-          appendShape({ id, shapeStr, r });
+          appendShape({ shapeStr, r });
           selectR[count] = r;
         } else {
-          appendShape({ id });
+          appendShape();
         }
       }
       count++;
@@ -222,7 +221,7 @@
       g.setAttribute('transform', `translate(${x},${y})`);
     }
 
-    function appendShape({ id, shapeStr = null, r }) {
+    function appendShape({ shapeStr = null, r } = {}) {
       const g = app.svg.createG();
       elems.shapes.dialogSvg.appendChild(g);
 
