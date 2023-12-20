@@ -6,9 +6,9 @@
   left: 0;
   box-sizing: border-box;
   width: 480px;
-  max-height: 540px;
+  max-height: 380px;
   padding: 0;
-  margin: 220px auto;
+  margin: 255px auto;
   border: none;
 
   .toggle-label svg {
@@ -79,7 +79,7 @@
   #dialog-shapes-svg {
     box-sizing: border-box;
     width: 452px;
-    height: 185px;
+    height: 130px;
     margin: 0;
 
     .shape-select {

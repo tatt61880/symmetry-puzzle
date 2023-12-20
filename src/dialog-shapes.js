@@ -27,8 +27,8 @@
 
   const shapeSelectId = 'shapes-select';
 
-  const SELECT_NUM_PER_PAGE = 10;
-  const SELECT_HEIGHT = 90;
+  const SELECT_NUM_PER_PAGE = 5;
+  const SELECT_HEIGHT = 125;
   const SELECT_WIDTH = 90;
   const SELECT_COLS = 5;
 
@@ -242,17 +242,6 @@
         g.appendChild(rect);
       }
 
-      {
-        const text = app.svg.createText(1, {
-          x: SELECT_WIDTH / 2,
-          y: 12,
-          text: id,
-          fill: 'black',
-        });
-        text.setAttribute('font-size', '16px');
-        g.appendChild(text);
-      }
-
       if (shapeStr !== null) {
         const checkMode = app.common.checkMode;
         const { w, h } = getSizeOfShapeStr(shapeStr);
@@ -260,10 +249,11 @@
           levelObj: { w, h, s: shapeStr },
           checkMode,
         });
+        const yMargin = 20;
         const blockSize = Math.min(
           (SELECT_WIDTH - 8) / w,
-          (SELECT_HEIGHT - 25) / h,
-          (SELECT_HEIGHT - 25) / 4
+          (SELECT_HEIGHT - yMargin - 4) / h,
+          (SELECT_HEIGHT - yMargin - 4) / 4
         );
         const levelSvgG = level.createSvgG({
           blockSize,
@@ -276,20 +266,19 @@
 
         {
           const dx = (SELECT_WIDTH - blockSize * w) / 2;
-          const dy = 20 + (SELECT_HEIGHT - 20 - blockSize * h) / 2;
+          const dy = yMargin + (SELECT_HEIGHT - yMargin - blockSize * h) / 2;
           levelSvgG.setAttribute('transform', `translate(${dx},${dy})`);
         }
         g.appendChild(levelSvgG);
 
         {
           const text = app.svg.createText(1, {
-            x: SELECT_WIDTH - 3,
-            y: 10,
-            text: r.length,
+            x: SELECT_WIDTH / 2,
+            y: 12,
+            text: `${r.length} steps`,
             fill: 'black',
           });
-          text.setAttribute('font-size', '11px');
-          text.setAttribute('text-anchor', 'end');
+          text.setAttribute('font-size', '14px');
           g.appendChild(text);
         }
 
