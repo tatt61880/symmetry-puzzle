@@ -141,6 +141,7 @@
     const selectR = {};
     const levelShapes = levelObj.shapes;
     const iEnd = levelShapes ?? shapeStrs.length;
+    elems.shapes.dialogSvg.style.width = `${Math.min(iEnd, 5) * 90 + 2}px`;
 
     let prevHide = false;
 
