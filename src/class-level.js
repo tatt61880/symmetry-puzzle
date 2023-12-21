@@ -186,12 +186,10 @@
     getA() {
       if (!this.hasAxis()) return undefined;
 
-      this.#normalizeAxis();
+      const { cx, cy } = this.#getNormalizedAxisCenter();
       const lp = axisTypeStr[this.#axis.type];
-      const x =
-        this.#axis.cx === axisOffset ? '' : `-x${this.#axis.cx - axisOffset}`;
-      const y =
-        this.#axis.cy === axisOffset ? '' : `-y${this.#axis.cy - axisOffset}`;
+      const x = cx === axisOffset ? '' : `-x${cx - axisOffset}`;
+      const y = cy === axisOffset ? '' : `-y${cy - axisOffset}`;
       const res = `${lp}${x}${y}`;
       return res;
     }
@@ -346,21 +344,11 @@
     }
 
     axisCxDecAble() {
-      switch (this.getAxisType()) {
-        case app.Level.SYMMETRY_TYPE.LINE3:
-          return this.#axis.cy < 2 * (this.#height - 1);
-        default:
-          return this.#axis.cx > 2;
-      }
+      return this.#axis.cx > 2;
     }
 
     axisCxIncAble() {
-      switch (this.getAxisType()) {
-        case app.Level.SYMMETRY_TYPE.LINE4:
-          return this.#axis.cx < (this.#width + this.#height - 3) * 2;
-        default:
-          return this.#axis.cx < (this.#width - 1) * 2;
-      }
+      return this.#axis.cx < (this.#width - 1) * 2;
     }
 
     axisCyDecAble() {
@@ -377,33 +365,14 @@
       this.#axis.cx += dx;
       this.#axis.cy += dy;
 
-      const minX = (() => {
-        if (this.#axis.type === Level.SYMMETRY_TYPE.LINE3) {
-          return 4 - this.#height * 2 + this.#axis.cy;
-        } else {
-          return 2;
-        }
-      })();
-      const minY = (() => {
-        if (this.#axis.type === Level.SYMMETRY_TYPE.LINE3) {
-          return 4 - this.#width * 2 + this.#axis.cx;
-        } else {
-          return 2;
-        }
-      })();
-      const maxX = (() => {
-        if (this.#axis.type === Level.SYMMETRY_TYPE.LINE4) {
-          return (this.#width + this.#height - 3) * 2;
-        } else {
-          return (this.#width - 1) * 2;
-        }
-      })();
+      const minX = 2;
+      const minY = 2;
+      const maxX = (this.#width - 1) * 2;
       const maxY = (this.#height - 1) * 2;
       if (this.#axis.cx < minX) this.#axis.cx = minX;
       if (this.#axis.cx > maxX) this.#axis.cx = maxX;
       if (this.#axis.cy < minY) this.#axis.cy = minY;
       if (this.#axis.cy > maxY) this.#axis.cy = maxY;
-      this.#normalizeAxis();
     }
 
     // 軸の鏡映移動
@@ -420,7 +389,6 @@
           break;
         }
       }
-      this.#normalizeAxis();
     }
 
     // 軸の回転移動
@@ -448,35 +416,32 @@
           break;
         }
       }
-      this.#normalizeAxis();
     }
 
-    #normalizeAxis() {
+    #getNormalizedAxisCenter() {
       switch (this.#axis.type) {
         case Level.SYMMETRY_TYPE.LINE1: {
-          this.#axis.cy = axisOffset;
-          break;
+          return { cx: this.#axis.cx, cy: axisOffset };
         }
         case Level.SYMMETRY_TYPE.LINE2: {
-          this.#axis.cx = axisOffset;
-          break;
+          return { cx: axisOffset, cy: this.#axis.cy };
         }
         case Level.SYMMETRY_TYPE.LINE3: {
           const diff = this.#axis.cx - this.#axis.cy;
           if (diff >= 0) {
-            this.#axis.cx = axisOffset + diff;
-            this.#axis.cy = axisOffset;
+            return { cx: axisOffset + diff, cy: axisOffset };
           } else {
-            this.#axis.cx = axisOffset;
-            this.#axis.cy = axisOffset - diff;
+            return { cx: axisOffset, cy: axisOffset - diff };
           }
-          break;
         }
         case Level.SYMMETRY_TYPE.LINE4: {
-          this.#axis.cx += this.#axis.cy - axisOffset;
-          this.#axis.cy = axisOffset;
-          break;
+          return {
+            cx: this.#axis.cx + this.#axis.cy - axisOffset,
+            cy: axisOffset,
+          };
         }
+        default:
+          return { cx: this.#axis.cx, cy: this.#axis.cy };
       }
     }
 
