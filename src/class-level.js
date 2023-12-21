@@ -435,10 +435,14 @@
           }
         }
         case Level.SYMMETRY_TYPE.LINE4: {
-          return {
-            cx: this.#axis.cx + this.#axis.cy - axisOffset,
-            cy: axisOffset,
-          };
+          const cx = this.#axis.cx + this.#axis.cy - axisOffset;
+          const cy = axisOffset;
+          if (cx <= this.#width * 2 - axisOffset) {
+            return { cx, cy };
+          } else {
+            const diff = this.#axis.cx + this.#axis.cy - this.#width * 2;
+            return { cx: this.#width * 2 - axisOffset, cy: cy + diff };
+          }
         }
         default:
           return { cx: this.#axis.cx, cy: this.#axis.cy };
