@@ -365,10 +365,10 @@
       this.#axis.cx += dx;
       this.#axis.cy += dy;
 
-      const minX = 2;
-      const minY = 2;
-      const maxX = (this.#width - 1) * 2;
-      const maxY = (this.#height - 1) * 2;
+      const minX = axisOffset;
+      const minY = axisOffset;
+      const maxX = this.#width * 2 - axisOffset;
+      const maxY = this.#height * 2 - axisOffset;
       if (this.#axis.cx < minX) this.#axis.cx = minX;
       if (this.#axis.cx > maxX) this.#axis.cx = maxX;
       if (this.#axis.cy < minY) this.#axis.cy = minY;
@@ -576,11 +576,8 @@
         const s = this.getS();
         const obj = { w, h, s };
         this.applyObj(obj, false);
-
-        this.moveAxis(dx * 2, dy * 2);
-      } else {
-        this.moveAxis(0, 0);
       }
+      console.log(this.#axis);
     }
 
     // 鏡映 (左右反転)
