@@ -565,6 +565,8 @@
       if (w > app.common.maxW) return;
       if (h > app.common.maxH) return;
 
+      const acx = this.#axis.cx;
+      const acy = this.#axis.cy;
       if (flag) {
         this.rotate(2);
       }
@@ -576,6 +578,8 @@
         const s = this.getS();
         const obj = { w, h, s };
         this.applyObj(obj, false);
+        this.#axis.cx = Math.max(axisOffset, acx + 2 * dx);
+        this.#axis.cy = Math.max(axisOffset, acy + 2 * dy);
       }
       console.log(this.#axis);
     }
