@@ -668,14 +668,14 @@
     }
 
     #updateMoveFlags(dx, dy, userMax = app.states.userMax) {
-      if (this.#axis.type === Level.SYMMETRY_TYPE.NONE && dx + dy === 0) {
+      if (!this.hasAxis() && dx + dy === 0) {
         return false;
       }
 
       let moveFlag = false;
       this.#resetMoveFlags();
 
-      if (this.#axis.type !== Level.SYMMETRY_TYPE.NONE && dx + dy === 0) {
+      if (this.hasAxis() && dx + dy === 0) {
         loop: for (let i = app.states.userMin; i <= userMax; ++i) {
           if (!this.#exist((x) => x === i)) continue;
 
@@ -814,7 +814,7 @@
         const srcY = y - dy;
         return { srcX, srcY };
       }
-      if (dx === null) {
+      if (dx === null || !this.hasAxis()) {
         return { srcX: x, srcY: y };
       }
       switch (this.#axis.type) {
@@ -1044,7 +1044,7 @@
         }
       }
 
-      if (this.#axis.type !== Level.SYMMETRY_TYPE.NONE) {
+      if (this.hasAxis()) {
         const center = {
           x: this.#axis.cx / 2,
           y: this.#axis.cy / 2,
