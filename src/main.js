@@ -1428,7 +1428,7 @@
     elems.levels.next.addEventListener('click', app.dialog.levels.nextPage);
   }
 
-  // レベル一覧ダイアログ
+  // 形状一覧ダイアログ
   function initElemsForShapesDialog() {
     elems.shapes.button.addEventListener('click', app.dialog.shapes.show);
     elems.shapes.dialog.addEventListener('click', app.dialog.shapes.close);
