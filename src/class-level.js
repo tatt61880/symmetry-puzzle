@@ -581,7 +581,6 @@
         this.#axis.cx = Math.max(axisOffset, acx + 2 * dx);
         this.#axis.cy = Math.max(axisOffset, acy + 2 * dy);
       }
-      console.log(this.#axis);
     }
 
     // 鏡映 (左右反転)
@@ -1281,12 +1280,17 @@
         const x2 = x2a > width ? width : x2a;
         const y2 = x2a > width ? width + height - x2a : height;
 
+        const stroke =
+          (center.x + center.y) % 2 === 0
+            ? app.colors.symmetryAxis
+            : app.colors.symmetryAxisInvalid;
+
         const line = app.svg.createLine(blockSize, {
           x1: x1 - dd,
           y1: y1 - dd,
           x2: x2 + dd,
           y2: y2 + dd,
-          stroke: app.colors.symmetryAxis,
+          stroke,
           strokeWidth: 0.1,
         });
         line.classList.add('symmetry-axis');
@@ -1304,12 +1308,17 @@
         const x2 = x2a < 0 ? 0 : x2a;
         const y2 = x2a < 0 ? height + x2a : height;
 
+        const stroke =
+          (center.x + center.y) % 2 === 0
+            ? app.colors.symmetryAxis
+            : app.colors.symmetryAxisInvalid;
+
         const line = app.svg.createLine(blockSize, {
           x1: x1 + dd,
           y1: y1 - dd,
           x2: x2 - dd,
           y2: y2 + dd,
-          stroke: app.colors.symmetryAxis,
+          stroke,
           strokeWidth: 0.1,
         });
         line.classList.add('symmetry-axis');
@@ -1332,6 +1341,10 @@
         const x = center.x;
         const y = center.y;
         const size = 3 / 8;
+        const fill =
+          (x + y) % 2 === 0
+            ? app.colors.symmetryAxis
+            : app.colors.symmetryAxisInvalid;
         const polygon = app.svg.createPolygon(blockSize, {
           points: [
             [x, y - size],
@@ -1339,7 +1352,7 @@
             [x, y + size],
             [x - size, y],
           ],
-          fill: app.colors.symmetryAxis,
+          fill,
         });
         polygon.classList.add('symmetry-axis');
         return polygon;

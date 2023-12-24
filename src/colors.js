@@ -54,6 +54,7 @@
 
   colors.line = '#888888';
   colors.symmetryAxis = '#7777f8';
+  colors.symmetryAxisInvalid = '#f85555';
   colors.symmetryAxisCenter = '#5555f8';
 
   colors.frame = '#fff8dd';
