@@ -1281,7 +1281,7 @@
         const y2 = x2a > width ? width + height - x2a : height;
 
         const stroke =
-          (center.x + center.y) % 2 === 0
+          (center.x + center.y) % 1 === 0
             ? app.colors.symmetryAxis
             : app.colors.symmetryAxisInvalid;
 
@@ -1309,7 +1309,7 @@
         const y2 = x2a < 0 ? height + x2a : height;
 
         const stroke =
-          (center.x + center.y) % 2 === 0
+          (center.x + center.y) % 1 === 0
             ? app.colors.symmetryAxis
             : app.colors.symmetryAxisInvalid;
 
@@ -1342,7 +1342,7 @@
         const y = center.y;
         const size = 3 / 8;
         const fill =
-          (x + y) % 2 === 0
+          (x + y) % 1 === 0
             ? app.colors.symmetryAxis
             : app.colors.symmetryAxisInvalid;
         const polygon = app.svg.createPolygon(blockSize, {
