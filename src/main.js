@@ -1968,27 +1968,15 @@
           );
           g.appendChild(crown);
           if (completeFlag) {
-            let animateFlag = false;
             if (highestScorePrev === null) {
               console.log('初回クリア');
-              animateFlag = true;
+              crown.classList.add('animation-new-record');
             } else if (
               highestScore === bestStep &&
               highestScorePrev !== bestStep
             ) {
               console.log('初回金冠');
-              animateFlag = true;
-            }
-            if (animateFlag) {
-              const keyframes = [
-                { transform: 'scale(2)', offset: 0 },
-                { transform: 'scale(2)', offset: 0.5 },
-                { transform: 'scale(1)', offset: 1 },
-              ];
-              const options = {
-                duration: app.common.MOVE_INTERVAL_MSEC * 3,
-              };
-              crown.animate(keyframes, options);
+              crown.classList.add('animation-new-record');
             }
           }
         }
