@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2023.12.24';
+  const VERSION_TEXT = 'v' + '2023.12.29';
 
   const app = window.app;
   Object.freeze(app);
@@ -1970,13 +1970,13 @@
           if (completeFlag) {
             if (highestScorePrev === null) {
               console.log('初回クリア');
-              crown.classList.add('animation-new-record');
+              crown.classList.add('animation-new-record2');
             } else if (
               highestScore === bestStep &&
               highestScorePrev !== bestStep
             ) {
               console.log('初回金冠');
-              crown.classList.add('animation-new-record');
+              crown.classList.add('animation-new-record2');
             }
           }
         }

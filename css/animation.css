@@ -804,6 +804,29 @@
   }
 }
 
+.animation-new-record2 {
+  animation: animation-new-record2 linear both;
+  animation-duration: calc(var(--animation-duration-symmetry) * 4);
+}
+
+@keyframes animation-new-record2 {
+  10%,
+  40%,
+  70% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+
+  0%,
+  25%,
+  55%,
+  85%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* icon animation */
 #help-tab-app:checked + .tab > img,
 #help-tab-special:checked + .tab > img,
