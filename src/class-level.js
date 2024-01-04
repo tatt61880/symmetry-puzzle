@@ -2754,7 +2754,8 @@
       );
 
       if (app.states.isTarget(state) && symmetryType !== null) {
-        elem.classList.add(animationClass[symmetryType]);
+        const animationClass = animationClasses[symmetryType];
+        elem.classList.add(animationClass);
         gElems = gElemsAnimation;
       }
 
@@ -2863,7 +2864,7 @@
     }
   }
 
-  const animationClass = {
+  const animationClasses = {
     [Level.SYMMETRY_TYPE.LINE1]: 'animation-axis-line1',
     [Level.SYMMETRY_TYPE.LINE2]: 'animation-axis-line2',
     [Level.SYMMETRY_TYPE.LINE3]: 'animation-axis-line3',
