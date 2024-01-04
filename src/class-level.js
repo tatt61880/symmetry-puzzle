@@ -1415,7 +1415,12 @@
       if (r !== undefined) {
         let newR = '';
         for (const c of r) {
-          newR += (4 - Number(c)) % 4;
+          const dirIndex = Number(c);
+          if (dirIndex === 4) {
+            newR += '4';
+          } else {
+            newR += (4 - dirIndex) % 4;
+          }
         }
         r = newR;
       }
