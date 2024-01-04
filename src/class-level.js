@@ -93,6 +93,7 @@
     #xMax;
     #getSymmetryType;
     #axis;
+    #mirrorFlag;
 
     constructor({
       levelObj,
@@ -115,11 +116,15 @@
       this.#xMax = null;
       this.#getSymmetryType = null;
       this.#axis = null;
+      this.#mirrorFlag = false;
 
       this.#setCheckMode(checkMode);
       let obj = levelObj;
       this.applyAxis(obj.axis);
-      if (mirrorFlag) obj = this.#mirrorLevel(obj);
+      if (mirrorFlag) {
+        obj = this.#mirrorLevel(obj);
+        this.#mirrorFlag = true;
+      }
       if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
       this.#levelObj = obj;
       if (this.#levelObj.w > app.common.maxW)
@@ -818,12 +823,21 @@
       }
       switch (this.#axis.type) {
         case Level.SYMMETRY_TYPE.POINT2: {
-          if ((this.#axis.cx + this.#axis.cy) % 2 !== 0) {
-            return { srcX: 0, srcY: 0 };
+          if (!this.#mirrorFlag) {
+            if ((this.#axis.cx + this.#axis.cy) % 2 !== 0) {
+              return { srcX: 0, srcY: 0 };
+            }
+            const srcX = (this.#axis.cx - this.#axis.cy) / 2 + y;
+            const srcY = (this.#axis.cx + this.#axis.cy) / 2 - x - 1;
+            return { srcX, srcY };
+          } else {
+            if ((this.#axis.cx + this.#axis.cy) % 2 !== 0) {
+              return { srcX: 0, srcY: 0 };
+            }
+            const srcX = (this.#axis.cy + this.#axis.cx) / 2 - y - 1;
+            const srcY = (this.#axis.cy - this.#axis.cx) / 2 + x;
+            return { srcX, srcY };
           }
-          const srcX = (this.#axis.cx - this.#axis.cy) / 2 + y;
-          const srcY = (this.#axis.cx + this.#axis.cy) / 2 - x - 1;
-          return { srcX, srcY };
         }
         default: {
           const { dstX: srcX, dstY: srcY } = this.#getDst(x, y, dx, dy);
@@ -873,17 +887,19 @@
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.POINT2: {
-          if ((this.#axis.cx + this.#axis.cy) % 2 !== 0) {
-            return { dstX: 0, dstY: 0 };
-          }
-          const dstX = (this.#axis.cy + this.#axis.cx) / 2 - y - 1;
-          const dstY = (this.#axis.cy - this.#axis.cx) / 2 + x;
-          return { dstX, dstY };
-          /* 逆回転の場合
+          if (!this.#mirrorFlag) {
+            if ((this.#axis.cx + this.#axis.cy) % 2 !== 0) {
+              return { dstX: 0, dstY: 0 };
+            }
+            const dstX = (this.#axis.cy + this.#axis.cx) / 2 - y - 1;
+            const dstY = (this.#axis.cy - this.#axis.cx) / 2 + x;
+            return { dstX, dstY };
+          } else {
+            // 逆回転の場合
             const dstX = (this.#axis.cx - this.#axis.cy) / 2 + y;
             const dstY = (this.#axis.cx + this.#axis.cy) / 2 - x - 1;
             return { dstX, dstY };
-          */
+          }
         }
       }
     }
