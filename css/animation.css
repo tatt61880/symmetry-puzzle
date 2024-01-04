@@ -125,6 +125,22 @@
   }
 }
 
+.animation-move-point2-reversed {
+  transform-origin: var(--animation-origin);
+  animation: animation-move-point2-reversed linear forwards;
+  animation-duration: var(--animation-duration);
+}
+
+@keyframes animation-move-point2-reversed {
+  0% {
+    transform: rotate(90deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
 .animation-shadow {
   animation: animation-shadow linear forwards;
   animation-duration: var(--animation-duration-shadow);

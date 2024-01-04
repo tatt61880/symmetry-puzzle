@@ -2791,32 +2791,12 @@
               }px`
             );
 
-            switch (this.#axis.type) {
-              case Level.SYMMETRY_TYPE.LINE1: {
-                elem.classList.add('animation-move-line1');
-                break;
-              }
-              case Level.SYMMETRY_TYPE.LINE2: {
-                elem.classList.add('animation-move-line2');
-                break;
-              }
-              case Level.SYMMETRY_TYPE.LINE3: {
-                elem.classList.add('animation-move-line3');
-                break;
-              }
-              case Level.SYMMETRY_TYPE.LINE4: {
-                elem.classList.add('animation-move-line4');
-                break;
-              }
-              case Level.SYMMETRY_TYPE.POINT1: {
-                elem.classList.add('animation-move-point1');
-                break;
-              }
-              case Level.SYMMETRY_TYPE.POINT2: {
-                elem.classList.add('animation-move-point2');
-                break;
-              }
-            }
+            const animationClass = animationMovingClasses[this.#axis.type];
+            const additionalInfo =
+              this.#axis.type === Level.SYMMETRY_TYPE.POINT2 && this.#mirrorFlag
+                ? '-reversed'
+                : '';
+            elem.classList.add(animationClass + additionalInfo);
           } else {
             elem.classList.add('animation-move');
 
@@ -2863,6 +2843,15 @@
       gElems.appendChild(elem);
     }
   }
+
+  const animationMovingClasses = {
+    [Level.SYMMETRY_TYPE.LINE1]: 'animation-move-line1',
+    [Level.SYMMETRY_TYPE.LINE2]: 'animation-move-line2',
+    [Level.SYMMETRY_TYPE.LINE3]: 'animation-move-line3',
+    [Level.SYMMETRY_TYPE.LINE4]: 'animation-move-line4',
+    [Level.SYMMETRY_TYPE.POINT1]: 'animation-move-point1',
+    [Level.SYMMETRY_TYPE.POINT2]: 'animation-move-point2',
+  };
 
   const animationClasses = {
     [Level.SYMMETRY_TYPE.LINE1]: 'animation-axis-line1',
