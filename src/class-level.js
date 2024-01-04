@@ -1462,7 +1462,12 @@
         if (r !== undefined) {
           let newR = '';
           for (const c of r) {
-            newR += (Number(c) + 1) % 4;
+            const dirIndex = Number(c);
+            if (dirIndex === 4) {
+              newR += '4';
+            } else {
+              newR += (dirIndex + 1) % 4;
+            }
           }
           r = newR;
         }
