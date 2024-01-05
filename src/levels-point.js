@@ -240,6 +240,15 @@
 
     // Level 26 -
     {
+      w: 6,
+      h: 5,
+      s: 's-110022-01002-110022',
+      axis: 'p1-x6-y5',
+      r: '12011112411',
+      step: 11,
+      shapes: 5,
+    },
+    {
       w: 7,
       h: 7,
       s: '010x-2xxxxxx-0xsx0x-xxxx0x-0x0x0x-0x0xxx-0x0x',
