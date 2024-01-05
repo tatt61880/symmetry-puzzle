@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2024.01.03';
+  const VERSION_TEXT = 'v' + '2024.01.04';
 
   const app = window.app;
   Object.freeze(app);
@@ -62,7 +62,7 @@
   const frameSize = 32;
   const frameBorderWidth = 3;
 
-  let level = null;
+  common.level = null;
   window.retryAndExecReplayStr = retryAndExecReplayStr;
 
   const SHADOW_MSEC = MOVE_INTERVAL_MSEC * 2;
@@ -90,7 +90,7 @@
     const dx = dxs[dir];
     const dy = dys[dir];
 
-    const moveFlag = level.move(dx, dy);
+    const moveFlag = common.level.move(dx, dy);
     if (moveFlag) {
       document.documentElement.style.setProperty(
         '--animation-transform',
@@ -103,8 +103,8 @@
 
   function completeCheck() {
     const symmetryFlagPrev = symmetryFlag;
-    completeFlag = level.isCompleted(); // 連結した対称図形であるとき
-    symmetryFlag = level.isSymmetry(app.states.isTarget); // 連結しているか否かに関わらず対称図形であるとき
+    completeFlag = common.level.isCompleted(); // 連結した対称図形であるとき
+    symmetryFlag = common.level.isSymmetry(app.states.isTarget); // 連結しているか否かに関わらず対称図形であるとき
     const redrawFlag = completeFlag || symmetryFlag !== symmetryFlagPrev;
     if (redrawFlag) {
       const delay = settings.autoMode
@@ -114,7 +114,7 @@
     }
 
     if (completeFlag) {
-      const center = level.getCenter(app.states.isTarget);
+      const center = common.level.getCenter(app.states.isTarget);
       document.documentElement.style.setProperty(
         '--animation-origin',
         `${blockSize * center.x}px ${blockSize * center.y}px`
@@ -435,7 +435,7 @@
             case 'h':
               return app.Input.DIRS.LEFT;
             case 'Enter':
-              if (level.hasAxis()) {
+              if (common.level.hasAxis()) {
                 return app.Input.DIRS.AXIS;
               }
           }
@@ -501,8 +501,9 @@
       common.inactiveElem(elems.level.retry);
       const levelObj = undoInfo.undoMax();
       const resizeFlag =
-        level.getW() !== levelObj.w || level.getH() !== levelObj.h;
-      level.applyObj(levelObj, resizeFlag);
+        common.level.getW() !== levelObj.w ||
+        common.level.getH() !== levelObj.h;
+      common.level.applyObj(levelObj, resizeFlag);
       draw();
     }, RESET_DELAY);
   }
@@ -513,7 +514,7 @@
 
   function initLevel(paramObj) {
     paramObj.checkMode = common.checkMode;
-    level = new app.Level(paramObj);
+    common.level = new app.Level(paramObj);
     addUndo(null);
     draw();
   }
@@ -547,8 +548,8 @@
     const svgMaxWidth = 490;
     const svgMaxHeight = divMainHeight;
     blockSize = Math.min(
-      (svgMaxWidth - 2 * frameSize) / level.getWidth(),
-      (svgMaxHeight - 2 * frameSize) / level.getHeight()
+      (svgMaxWidth - 2 * frameSize) / common.level.getWidth(),
+      (svgMaxHeight - 2 * frameSize) / common.level.getHeight()
     );
     blockSize = Math.max(blockSize, 0);
     completeCheck();
@@ -556,11 +557,11 @@
 
     elems.main.svg.setAttribute(
       'width',
-      blockSize * level.getWidth() + 2 * frameSize
+      blockSize * common.level.getWidth() + 2 * frameSize
     );
     elems.main.svg.setAttribute(
       'height',
-      blockSize * level.getHeight() + 2 * frameSize
+      blockSize * common.level.getHeight() + 2 * frameSize
     );
     drawMainSvg();
   }
@@ -592,9 +593,10 @@
       updateController();
 
       const resizeFlag =
-        level.getW() !== levelObj.w || level.getH() !== levelObj.h;
-      level.applyObj(levelObj, resizeFlag);
-      level.applyAxis(levelObj.axis);
+        common.level.getW() !== levelObj.w ||
+        common.level.getH() !== levelObj.h;
+      common.level.applyObj(levelObj, resizeFlag);
+      common.level.applyAxis(levelObj.axis);
       draw();
     }
   }
@@ -605,9 +607,10 @@
     if (undoInfo.isRedoable()) {
       const levelObj = undoInfo.redo();
       const resizeFlag =
-        level.getW() !== levelObj.w || level.getH() !== levelObj.h;
-      level.applyObj(levelObj, resizeFlag);
-      level.applyAxis(levelObj.axis);
+        common.level.getW() !== levelObj.w ||
+        common.level.getH() !== levelObj.h;
+      common.level.applyObj(levelObj, resizeFlag);
+      common.level.applyAxis(levelObj.axis);
       draw();
     }
   }
@@ -683,7 +686,7 @@
 
     loadLevelObj(levelObj);
     if (isLocalhost()) {
-      level.printSolveJsStr();
+      common.level.printSolveJsStr();
     }
     updateLevelVisibility();
     elems.level.id.textContent = common.levelId;
@@ -691,7 +694,7 @@
 
     if (id_ === 1) {
       // レベル1をロード時、レベル1を未クリアのときはヘルプ画面を表示する。
-      const checkMode = level.getCheckMode();
+      const checkMode = common.level.getCheckMode();
       const playerScore = app.savedata.getHighestScore(levelObj, checkMode);
       if (playerScore === null) {
         app.dialog.help.show();
@@ -700,15 +703,15 @@
   }
 
   function updateShapeButton() {
-    if (level !== null) {
+    if (common.level !== null) {
       const shapesObj = app.savedata.getShapesObj(
-        level.getLevelObj(),
+        common.level.getLevelObj(),
         common.checkMode
       );
       if (shapesObj) {
         common.showElem(elems.shapes.button);
         const numerator = Object.keys(shapesObj).length;
-        const denumerator = level.getShapes() ?? '?';
+        const denumerator = common.level.getShapes() ?? '?';
         elems.shapes.buttonNumerator.textContent = numerator;
         elems.shapes.buttonDenumerator.textContent = denumerator;
         return;
@@ -797,7 +800,7 @@
 
   function updateLinkUrl() {
     if (!editMode) return;
-    const url = level.getUrlStr();
+    const url = common.level.getUrlStr();
     elems.url.a.innerHTML = `<a href="${url}">現在の盤面を0手目として完成！</a>`;
   }
 
@@ -1263,8 +1266,8 @@
     common.hideElem(elems.edit.buttons.axisP1);
     common.hideElem(elems.edit.buttons.axisP2);
 
-    if (level?.hasAxis()) {
-      switch (level.getAxisType()) {
+    if (common.level?.hasAxis()) {
+      switch (common.level.getAxisType()) {
         case app.Level.SYMMETRY_TYPE.LINE1: {
           common.showElem(elems.edit.buttons.axisL1);
           break;
@@ -1300,7 +1303,7 @@
     editboxFunctions[app.states.stateToChar[app.states.none]]();
 
     elems.edit.switchMode.addEventListener('click', () => {
-      switch (level.getCheckMode()) {
+      switch (common.level.getCheckMode()) {
         case app.Level.CHECK_MODE.LINE:
           updateCheckMode(app.Level.CHECK_MODE.POINT);
           break;
@@ -1311,11 +1314,11 @@
           updateCheckMode(app.Level.CHECK_MODE.LINE);
           break;
       }
-      const w = level.getW();
-      const h = level.getH();
-      const s = level.getS();
+      const w = common.level.getW();
+      const h = common.level.getH();
+      const s = common.level.getS();
       const levelObj = { w, h, s };
-      level = new app.Level({ levelObj, checkMode: common.checkMode });
+      common.level = new app.Level({ levelObj, checkMode: common.checkMode });
       updateEditElems();
       completeCheck();
       updateLinkUrl();
@@ -1323,14 +1326,14 @@
     });
 
     elems.edit.mirror.addEventListener('click', () => {
-      level.mirror();
+      common.level.mirror();
       addUndo(null);
       updateLinkUrl();
       drawMainSvg();
     });
 
     elems.edit.rotate.addEventListener('click', () => {
-      level.rotate(1);
+      common.level.rotate(1);
       addUndo(null);
       updateLinkUrl();
       drawMainSvg();
@@ -1338,8 +1341,8 @@
     });
 
     elems.edit.normalize.addEventListener('click', () => {
-      if (!level.isNormalized()) {
-        level.normalize();
+      if (!common.level.isNormalized()) {
+        common.level.normalize();
         addUndo(null);
         updateLinkUrl();
         drawMainSvg();
@@ -1349,7 +1352,7 @@
     elems.edit.buttons.axis.addEventListener('click', changeAxis);
 
     function changeAxis() {
-      level.changeAxis();
+      common.level.changeAxis();
       updateEditAxisButton();
       addUndo(null);
       updateLinkUrl();
@@ -1438,7 +1441,7 @@
   }
 
   function intervalFunc() {
-    if (level === null) return;
+    if (common.level === null) return;
     if (settings.autoMode) return;
 
     if (moveIntervalCount >= MOVE_INTERVAL_COUNT) {
@@ -1474,7 +1477,7 @@
         if (input.inputDir !== app.Input.DIRS.AXIS) {
           return { dx: dxs[input.inputDir], dy: dys[input.inputDir] };
         } else {
-          switch (level.getAxisType()) {
+          switch (common.level.getAxisType()) {
             case app.Level.SYMMETRY_TYPE.LINE1: {
               return { dx: 1, dy: 0 };
             }
@@ -1510,7 +1513,7 @@
   }
 
   function updateController() {
-    if (level?.hasAxis()) {
+    if (common.level?.hasAxis()) {
       common.showElem(elems.controller.buttons.axis);
       common.hideElem(elems.controller.buttons.axisL1);
       common.hideElem(elems.controller.buttons.axisL2);
@@ -1518,7 +1521,7 @@
       common.hideElem(elems.controller.buttons.axisL4);
       common.hideElem(elems.controller.buttons.axisP1);
       common.hideElem(elems.controller.buttons.axisP2);
-      switch (level.getAxisType()) {
+      switch (common.level.getAxisType()) {
         case app.Level.SYMMETRY_TYPE.LINE1: {
           common.showElem(elems.controller.buttons.axisL1);
           break;
@@ -1584,7 +1587,7 @@
   }
 
   function drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag) {
-    const levelSvgG = level.createSvgG({
+    const levelSvgG = common.level.createSvgG({
       blockSize,
       symmetryAnimationFlag,
       showCharsFlag,
@@ -1604,11 +1607,11 @@
     const g = app.svg.createG('group-dot-lines');
     mainSvgG.appendChild(g);
     // 横線
-    for (let y = 1; y < level.getHeight(); ++y) {
+    for (let y = 1; y < common.level.getHeight(); ++y) {
       const line = app.svg.createLine(blockSize, {
         x1: -0.5 * dotRatio,
         y1: y,
-        x2: level.getWidth(),
+        x2: common.level.getWidth(),
         y2: y,
         stroke: app.colors.line,
       });
@@ -1616,12 +1619,12 @@
       g.appendChild(line);
     }
     // 縦線
-    for (let x = 1; x < level.getWidth(); ++x) {
+    for (let x = 1; x < common.level.getWidth(); ++x) {
       const line = app.svg.createLine(blockSize, {
         x1: x,
         y1: -0.5 * dotRatio,
         x2: x,
-        y2: level.getHeight(),
+        y2: common.level.getHeight(),
         stroke: app.colors.line,
       });
       line.setAttribute('stroke-dasharray', strokeDasharray);
@@ -1644,21 +1647,21 @@
       const rectU = app.svg.createRect(1, {
         x: 0,
         y: 0,
-        width: level.getWidth() * blockSize + 2 * frameSize,
+        width: common.level.getWidth() * blockSize + 2 * frameSize,
         height: frameSize,
         fill: frameColor,
       });
       const rectR = app.svg.createRect(1, {
-        x: level.getWidth() * blockSize + frameSize,
+        x: common.level.getWidth() * blockSize + frameSize,
         y: 0,
         width: frameSize,
-        height: level.getHeight() * blockSize + 2 * frameSize,
+        height: common.level.getHeight() * blockSize + 2 * frameSize,
         fill: frameColor,
       });
       const rectD = app.svg.createRect(1, {
         x: 0,
-        y: level.getHeight() * blockSize + frameSize,
-        width: level.getWidth() * blockSize + 2 * frameSize,
+        y: common.level.getHeight() * blockSize + frameSize,
+        width: common.level.getWidth() * blockSize + 2 * frameSize,
         height: frameSize,
         fill: frameColor,
       });
@@ -1666,7 +1669,7 @@
         x: 0,
         y: 0,
         width: frameSize,
-        height: level.getHeight() * blockSize + 2 * frameSize,
+        height: common.level.getHeight() * blockSize + 2 * frameSize,
         fill: frameColor,
       });
       g.appendChild(rectU);
@@ -1678,21 +1681,27 @@
       const rectUb = app.svg.createRect(1, {
         x: 0,
         y: 0,
-        width: level.getWidth() * blockSize + 2 * frameSize,
+        width: common.level.getWidth() * blockSize + 2 * frameSize,
         height: frameBorderWidth,
         fill: borderColor,
       });
       const rectRb = app.svg.createRect(1, {
-        x: level.getWidth() * blockSize + 2 * frameSize - frameBorderWidth,
+        x:
+          common.level.getWidth() * blockSize +
+          2 * frameSize -
+          frameBorderWidth,
         y: 0,
         width: frameBorderWidth,
-        height: level.getHeight() * blockSize + 2 * frameSize,
+        height: common.level.getHeight() * blockSize + 2 * frameSize,
         fill: borderColor,
       });
       const rectDb = app.svg.createRect(1, {
         x: 0,
-        y: level.getHeight() * blockSize + 2 * frameSize - frameBorderWidth,
-        width: level.getWidth() * blockSize + 2 * frameSize,
+        y:
+          common.level.getHeight() * blockSize +
+          2 * frameSize -
+          frameBorderWidth,
+        width: common.level.getWidth() * blockSize + 2 * frameSize,
         height: frameBorderWidth,
         fill: borderColor,
       });
@@ -1700,7 +1709,7 @@
         x: 0,
         y: 0,
         width: frameBorderWidth,
-        height: level.getHeight() * blockSize + 2 * frameSize,
+        height: common.level.getHeight() * blockSize + 2 * frameSize,
         fill: borderColor,
       });
       g.appendChild(rectUb);
@@ -1710,7 +1719,7 @@
     }
 
     if (editMode) {
-      if (!level.isNormalized()) {
+      if (!common.level.isNormalized()) {
         const fontSize = `${frameSize * 0.7}px`;
         const text = app.svg.createText(frameSize, {
           x: 0,
@@ -1718,7 +1727,7 @@
           text: 'Not normalized',
           fill: app.colors.editStroke,
         });
-        const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
+        const width = (common.level.getWidth() * blockSize + 2 * frameSize) / 2;
         const height = frameBorderWidth;
         text.setAttribute('font-size', fontSize);
         text.setAttribute('transform', `translate(${width},${height})`);
@@ -1755,19 +1764,19 @@
       ];
 
       const cx1 = frameSize / blockSize + 0.5;
-      const cx2 = frameSize / blockSize + level.getWidth() * 0.3;
-      const cx3 = frameSize / blockSize + level.getWidth() * 0.7;
-      const cx4 = frameSize / blockSize + level.getWidth() - 0.5;
-      const cxM = frameSize / blockSize + level.getWidth() * 0.5;
+      const cx2 = frameSize / blockSize + common.level.getWidth() * 0.3;
+      const cx3 = frameSize / blockSize + common.level.getWidth() * 0.7;
+      const cx4 = frameSize / blockSize + common.level.getWidth() - 0.5;
+      const cxM = frameSize / blockSize + common.level.getWidth() * 0.5;
 
       const cy1 = frameSize / blockSize + 0.5;
-      const cy2 = frameSize / blockSize + level.getHeight() * 0.3;
-      const cy3 = frameSize / blockSize + level.getHeight() * 0.7;
-      const cy4 = frameSize / blockSize + level.getHeight() - 0.5;
-      const cyM = frameSize / blockSize + level.getHeight() * 0.5;
+      const cy2 = frameSize / blockSize + common.level.getHeight() * 0.3;
+      const cy3 = frameSize / blockSize + common.level.getHeight() * 0.7;
+      const cy4 = frameSize / blockSize + common.level.getHeight() - 0.5;
+      const cyM = frameSize / blockSize + common.level.getHeight() * 0.5;
 
       // 軸位置変更ボタンの追加
-      if (level.hasAxis()) {
+      if (common.level.hasAxis()) {
         const buttons = [
           { cx: cxM, cy: cy1, points: pointsU, dx: +0, dy: -1 },
           { cx: cx4, cy: cyM, points: pointsR, dx: +1, dy: +0 },
@@ -1776,10 +1785,10 @@
         ];
 
         buttons.forEach((button) => {
-          if (button.dx === 1 && !level.axisCxIncAble()) return;
-          if (button.dx === -1 && !level.axisCxDecAble()) return;
-          if (button.dy === 1 && !level.axisCyIncAble()) return;
-          if (button.dy === -1 && !level.axisCyDecAble()) return;
+          if (button.dx === 1 && !common.level.axisCxIncAble()) return;
+          if (button.dx === -1 && !common.level.axisCxDecAble()) return;
+          if (button.dy === 1 && !common.level.axisCyIncAble()) return;
+          if (button.dy === -1 && !common.level.axisCyDecAble()) return;
 
           addEditButton(
             button,
@@ -1816,15 +1825,16 @@
     } else {
       const fontSize = `${frameSize * 0.7}px`;
       const fontSize2 = `${blockSize * 0.65}px`;
-      const bestStep = level.getBestStep();
+      const bestStep = common.level.getBestStep();
 
       let highestScorePrev = null;
 
       // クリア時のメッセージ
       if (completeFlag) {
-        const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
+        const width = (common.level.getWidth() * blockSize + 2 * frameSize) / 2;
         const height =
-          (level.getHeight() - 0.5 + wallStrShift) * blockSize + frameSize;
+          (common.level.getHeight() - 0.5 + wallStrShift) * blockSize +
+          frameSize;
         const text = app.svg.createText(blockSize, {
           x: width / blockSize,
           y: height / blockSize,
@@ -1840,21 +1850,21 @@
         gg.appendChild(text);
         g.appendChild(gg);
         {
-          const levelObj = level.getLevelObj();
+          const levelObj = common.level.getLevelObj();
           const replayStr = undoInfo.getReplayStr();
 
           // 記録保存
           if (bestStep !== undefined) {
             highestScorePrev = app.savedata.getHighestScore(
               levelObj,
-              level.getCheckMode()
+              common.level.getCheckMode()
             );
             app.savedata.saveSteps(levelObj, common.checkMode, replayStr);
           }
 
           // シルエットデータ保存
           {
-            const shapeStr = level.getTargetShapeForSavedata();
+            const shapeStr = common.level.getTargetShapeForSavedata();
             const result = app.savedata.saveShape(
               levelObj,
               common.checkMode,
@@ -1940,19 +1950,21 @@
           fill: color,
         });
         text.setAttribute('font-size', fontSize);
-        const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
+        const width = (common.level.getWidth() * blockSize + 2 * frameSize) / 2;
         const height =
-          level.getHeight() * blockSize + frameSize - frameBorderWidth / 2;
+          common.level.getHeight() * blockSize +
+          frameSize -
+          frameBorderWidth / 2;
         text.setAttribute('transform', `translate(${width},${height})`);
         g.appendChild(text);
       }
 
       // 自己最高記録
       if (common.levelId !== null) {
-        const levelObj = level.getLevelObj();
+        const levelObj = common.level.getLevelObj();
         const highestScore = app.savedata.getHighestScore(
           levelObj,
-          level.getCheckMode()
+          common.level.getCheckMode()
         );
 
         {
@@ -1987,7 +1999,8 @@
             text: `Your best: ${highestScore} steps`,
             fill: color,
           });
-          const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
+          const width =
+            (common.level.getWidth() * blockSize + 2 * frameSize) / 2;
           const height = frameBorderWidth / 2;
           text.setAttribute('font-size', fontSize);
           text.setAttribute('transform', `translate(${width},${height})`);
@@ -2000,7 +2013,8 @@
           highestScorePrev !== null &&
           highestScore < highestScorePrev
         ) {
-          const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
+          const width =
+            (common.level.getWidth() * blockSize + 2 * frameSize) / 2;
           const height = frameSize + (0.5 - wallStrShift) * blockSize;
           const text = app.svg.createText(blockSize, {
             x: width / blockSize,
@@ -2021,10 +2035,10 @@
     }
 
     function addEditButton(button, onClick, color) {
-      if (button.dx === -1 && level.getW() <= 1) return;
-      if (button.dy === -1 && level.getH() <= 1) return;
-      if (button.dx === 1 && level.getW() >= common.maxEditW) return;
-      if (button.dy === 1 && level.getH() >= common.maxEditH) return;
+      if (button.dx === -1 && common.level.getW() <= 1) return;
+      if (button.dy === -1 && common.level.getH() <= 1) return;
+      if (button.dx === 1 && common.level.getW() >= common.maxEditW) return;
+      if (button.dy === 1 && common.level.getH() >= common.maxEditH) return;
 
       const points = [];
       for (const point of button.points) {
@@ -2157,8 +2171,8 @@
 
     if (!editMode) {
       if (isPointerDown) {
-        const xMax = level.getWidth() + 1;
-        const yMax = level.getHeight() + 1;
+        const xMax = common.level.getWidth() + 1;
+        const yMax = common.level.getHeight() + 1;
         if (x < 1 && y < 1) {
           secretSequenceAdd('1');
         } else if (x > xMax - 3 && y < 1) {
@@ -2174,7 +2188,7 @@
       return;
     }
 
-    if (!level.isInsideInnerArea(x, y)) {
+    if (!common.level.isInsideInnerArea(x, y)) {
       return;
     }
 
@@ -2185,19 +2199,19 @@
 
     e.preventDefault();
 
-    if (touchStart && level.getState(x, y) === drawingState) {
+    if (touchStart && common.level.getState(x, y) === drawingState) {
       isRemoving = true;
     }
     touchStart = false;
 
-    if (!isRemoving && level.getState(x, y) !== drawingState) {
-      level.applyState(x, y, drawingState);
+    if (!isRemoving && common.level.getState(x, y) !== drawingState) {
+      common.level.applyState(x, y, drawingState);
       addUndo(null);
       completeCheck();
       updateLinkUrl();
       drawMainSvg();
-    } else if (isRemoving && level.getState(x, y) !== app.states.none) {
-      level.applyState(x, y, app.states.none);
+    } else if (isRemoving && common.level.getState(x, y) !== app.states.none) {
+      common.level.applyState(x, y, app.states.none);
       addUndo(null);
       completeCheck();
       updateLinkUrl();
@@ -2223,21 +2237,21 @@
 
   // 盤面サイズ変更
   function resizeLevel(dx, dy, flag) {
-    const w = level.getW() + dx;
-    const h = level.getH() + dy;
+    const w = common.level.getW() + dx;
+    const h = common.level.getH() + dy;
     if (w < 1) return;
     if (h < 1) return;
     if (w > common.maxW) return;
     if (h > common.maxH) return;
 
-    level.resize(dx, dy, flag);
+    common.level.resize(dx, dy, flag);
     addUndo(null);
     draw();
   }
 
   // 軸位置変更
   function moveAxis(dx, dy) {
-    level.moveAxis(dx, dy);
+    common.level.moveAxis(dx, dy);
     addUndo(null);
     draw();
   }
@@ -2245,11 +2259,11 @@
   function addUndo(dir) {
     undoInfo.pushData({
       dir,
-      w: level.getW(),
-      h: level.getH(),
-      s: level.getS(),
-      axis: level.getA(),
-      r: level.getR(),
+      w: common.level.getW(),
+      h: common.level.getH(),
+      s: common.level.getS(),
+      axis: common.level.getA(),
+      r: common.level.getR(),
     });
 
     updateUndoRedoButton();
@@ -2267,8 +2281,11 @@
       return;
     }
     const base = location.href.split('?')[0];
-    const levelObj = level.getLevelObj();
-    const urlQuery = app.Level.getUrlQuery(levelObj, level.getCheckMode());
+    const levelObj = common.level.getLevelObj();
+    const urlQuery = app.Level.getUrlQuery(
+      levelObj,
+      common.level.getCheckMode()
+    );
     let url = `${base}?${urlQuery}`;
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';
@@ -2323,8 +2340,8 @@
   }
 
   function onButtonStart() {
-    if (level.getBestStep() === undefined) {
-      const levelObj = level.getCurrentLevelObj();
+    if (common.level.getBestStep() === undefined) {
+      const levelObj = common.level.getCurrentLevelObj();
       // TODO activeElem を盤面に反映させてから計算する。Promiseを使うといけそう。
       // common.activeElem(elems.auto.buttonStart);
       const levelTemp = new app.Level({
@@ -2362,7 +2379,7 @@
   }
 
   function onButtonEnd() {
-    const levelObj = level.getLevelObj();
+    const levelObj = common.level.getLevelObj();
     const r = levelObj.r;
     retryAndExecReplayStr(r);
   }
@@ -2376,13 +2393,13 @@
   }
 
   function retryAndExecReplayStr(r) {
-    const levelObj = level.getLevelObj();
+    const levelObj = common.level.getLevelObj();
     loadLevelObj(levelObj);
     execReplayStr(r);
   }
 
   function intervalFuncAuto() {
-    const r = level.getLevelObj()?.r;
+    const r = common.level.getLevelObj()?.r;
     if (!editMode && settings.autoMode && r !== undefined) {
       const stepIndex = undoInfo.getIndex();
       if (!settingsAuto.paused) {

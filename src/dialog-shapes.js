@@ -24,6 +24,7 @@
   };
 
   const elems = app.elems;
+  const common = app.common;
 
   const shapeSelectId = 'shapes-select';
 
@@ -43,7 +44,7 @@
   }
 
   function prevPage() {
-    if (app.common.isShownElem(elems.shapes.prev)) {
+    if (common.isShownElem(elems.shapes.prev)) {
       elems.shapes.dialog.dataset.selectCount =
         Number(elems.shapes.dialog.dataset.selectCount) - SELECT_NUM_PER_PAGE;
       const page = Number(elems.shapes.dialog.dataset.page) - 1;
@@ -52,7 +53,7 @@
   }
 
   function nextPage() {
-    if (app.common.isShownElem(elems.shapes.next)) {
+    if (common.isShownElem(elems.shapes.next)) {
       elems.shapes.dialog.dataset.selectCount =
         Number(elems.shapes.dialog.dataset.selectCount) + SELECT_NUM_PER_PAGE;
       const page = Number(elems.shapes.dialog.dataset.page) + 1;
@@ -61,7 +62,7 @@
   }
 
   function selectUpdate(selectCount) {
-    if (app.common.isTouchDevice()) {
+    if (common.isTouchDevice()) {
       return;
     }
     const currentPage = Number(elems.shapes.dialog.dataset.page);
@@ -122,8 +123,8 @@
 
     elems.shapes.dialogSvg.innerHTML = '';
 
-    const levelObj = app.common.levelsList[app.common.levelId];
-    const checkMode = app.common.checkMode;
+    const levelObj = common.level.getLevelObj();
+    const checkMode = common.checkMode;
     const shapesObj = app.savedata.getShapesObj(levelObj, checkMode);
     const shapeStrs = Object.keys(shapesObj).sort(
       (a, b) => shapesObj[a].length - shapesObj[b].length
@@ -147,25 +148,25 @@
 
     // ←
     if (page === 0) {
-      app.common.hideElem(elems.shapes.prev);
+      common.hideElem(elems.shapes.prev);
       prevHide = true;
     } else {
-      app.common.showElem(elems.shapes.prev);
+      common.showElem(elems.shapes.prev);
     }
 
-    app.common.showElem(elems.shapes.buttonSvg);
+    common.showElem(elems.shapes.buttonSvg);
 
     // →
     if (
       page + 1 ===
       Math.floor((iEnd + SELECT_NUM_PER_PAGE - 1) / SELECT_NUM_PER_PAGE)
     ) {
-      app.common.hideElem(elems.shapes.next);
+      common.hideElem(elems.shapes.next);
       if (prevHide) {
-        app.common.hideElem(elems.shapes.buttonSvg);
+        common.hideElem(elems.shapes.buttonSvg);
       }
     } else {
-      app.common.showElem(elems.shapes.next);
+      common.showElem(elems.shapes.next);
     }
 
     for (let i = 0; i < iEnd; ++i) {
@@ -187,7 +188,7 @@
     elems.shapes.dialog.dataset.selectR = JSON.stringify(selectR);
 
     // 選択枠
-    if (!app.common.isTouchDevice()) {
+    if (!common.isTouchDevice()) {
       if (
         Number(elems.shapes.dialog.dataset.selectCount) >
         Number(elems.shapes.dialog.dataset.maxCount)
@@ -243,7 +244,7 @@
       }
 
       if (shapeStr !== null) {
-        const checkMode = app.common.checkMode;
+        const checkMode = common.checkMode;
         const { w, h } = getSizeOfShapeStr(shapeStr);
         const level = new app.Level({
           levelObj: { w, h, s: shapeStr },
