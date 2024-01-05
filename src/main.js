@@ -6,13 +6,14 @@
   Object.freeze(app);
 
   const elems = app.elems;
-  app.common.loadLevelById = loadLevelById;
+  const common = app.common;
+  common.loadLevelById = loadLevelById;
 
   const INPUT_INTERVAL_MSEC = 28; // この値を変更するときは、iOSの省電力モード時のsetIntervalの動作を確認した上で変更してください。詳細: https://github.com/tatt61880/symmetry-puzzle/issues/38
 
   const MOVE_INTERVAL_COUNT = 5;
   const MOVE_INTERVAL_MSEC = MOVE_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
-  app.common.MOVE_INTERVAL_MSEC = MOVE_INTERVAL_MSEC;
+  common.MOVE_INTERVAL_MSEC = MOVE_INTERVAL_MSEC;
 
   const UNDO_INTERVAL_COUNT = 5;
   const UNDO_INTERVAL_MSEC = UNDO_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
@@ -131,8 +132,8 @@
     if (undoFlag) return;
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
-    app.common.activeElem(elems.controller.undo);
-    app.common.activeElem(elems.edit.undo);
+    common.activeElem(elems.controller.undo);
+    common.activeElem(elems.edit.undo);
 
     input.update(app.Input.DIRS.NEUTRAL);
     execUndo();
@@ -143,8 +144,8 @@
     clearInterval(undoIntervalId);
     if (!undoFlag) return;
     undoFlag = false;
-    app.common.inactiveElem(elems.controller.undo);
-    app.common.inactiveElem(elems.edit.undo);
+    common.inactiveElem(elems.controller.undo);
+    common.inactiveElem(elems.edit.undo);
   }
 
   function undodown(e) {
@@ -155,8 +156,8 @@
   function redoStart() {
     if (redoFlag) return;
     redoFlag = true;
-    app.common.activeElem(elems.controller.redo);
-    app.common.activeElem(elems.edit.redo);
+    common.activeElem(elems.controller.redo);
+    common.activeElem(elems.edit.redo);
     execRedo();
     redoIntervalId = setInterval(execRedo, UNDO_INTERVAL_MSEC);
   }
@@ -165,8 +166,8 @@
     clearInterval(redoIntervalId);
     if (!redoFlag) return;
     redoFlag = false;
-    app.common.inactiveElem(elems.controller.redo);
-    app.common.inactiveElem(elems.edit.redo);
+    common.inactiveElem(elems.controller.redo);
+    common.inactiveElem(elems.edit.redo);
   }
 
   function redodown(e) {
@@ -325,7 +326,7 @@
     }
 
     // タイトル画面で有効
-    if (app.common.isShownElem(elems.category.title)) {
+    if (common.isShownElem(elems.category.title)) {
       if (e.shiftKey) return;
       if (e.ctrlKey) return;
       switch (e.key) {
@@ -387,7 +388,7 @@
       }
     } else if (
       e.key === 'Enter' &&
-      !app.common.isHiddenElem(elems.controller.nextLevel)
+      !common.isHiddenElem(elems.controller.nextLevel)
     ) {
       gotoNextLevel();
     } else if (e.key === ' ') {
@@ -469,7 +470,7 @@
   }
 
   function keyup(e) {
-    if (app.common.isShownElem(elems.category.title)) return;
+    if (common.isShownElem(elems.category.title)) return;
     delete inputKeys[e.key];
     if (temporaryShowCharsFlag && e.key === ' ') {
       temporaryShowCharsFlag = false;
@@ -492,12 +493,12 @@
 
     clearTimeout(nextLevelTimerId);
 
-    app.common.activeElem(elems.level.retry);
+    common.activeElem(elems.level.retry);
     animateIcons();
 
     const RESET_DELAY = 50;
     setTimeout(() => {
-      app.common.inactiveElem(elems.level.retry);
+      common.inactiveElem(elems.level.retry);
       const levelObj = undoInfo.undoMax();
       const resizeFlag =
         level.getW() !== levelObj.w || level.getH() !== levelObj.h;
@@ -511,7 +512,7 @@
   }
 
   function initLevel(paramObj) {
-    paramObj.checkMode = app.common.checkMode;
+    paramObj.checkMode = common.checkMode;
     level = new app.Level(paramObj);
     addUndo(null);
     draw();
@@ -527,7 +528,7 @@
   }
 
   function updateSvg() {
-    if (app.common.isHiddenElem(elems.category.game)) return;
+    if (common.isHiddenElem(elems.category.game)) return;
 
     const divMainHeight =
       window.innerHeight -
@@ -568,18 +569,18 @@
     if (undoInfo === undefined) return;
 
     if (undoInfo.isUndoable()) {
-      app.common.showElem(elems.controller.undo);
-      app.common.showElem(elems.edit.undo);
+      common.showElem(elems.controller.undo);
+      common.showElem(elems.edit.undo);
     } else {
-      app.common.hideElem(elems.controller.undo);
-      app.common.hideElem(elems.edit.undo);
+      common.hideElem(elems.controller.undo);
+      common.hideElem(elems.edit.undo);
     }
     if (undoInfo.isRedoable()) {
-      app.common.showElem(elems.controller.redo);
-      app.common.showElem(elems.edit.redo);
+      common.showElem(elems.controller.redo);
+      common.showElem(elems.edit.redo);
     } else {
-      app.common.hideElem(elems.controller.redo);
-      app.common.hideElem(elems.edit.redo);
+      common.hideElem(elems.controller.redo);
+      common.hideElem(elems.edit.redo);
     }
   }
 
@@ -627,7 +628,7 @@
       4: '000111001111111001111111001111111',
     };
 
-    app.common.levelId = id;
+    common.levelId = id;
     let isMinus = false;
     if (id < 0) {
       id = -id;
@@ -665,17 +666,17 @@
 
     clearTimeout(nextLevelTimerId);
     const id = Number(id_);
-    app.common.levelId = id;
+    common.levelId = id;
 
     let levelObj;
-    if (app.common.levelsList[app.common.levelId] !== undefined) {
-      levelObj = app.common.levelsList[app.common.levelId];
-    } else if (app.common.levelsListEx[app.common.levelId] !== undefined) {
-      levelObj = app.common.levelsListEx[app.common.levelId];
+    if (common.levelsList[common.levelId] !== undefined) {
+      levelObj = common.levelsList[common.levelId];
+    } else if (common.levelsListEx[common.levelId] !== undefined) {
+      levelObj = common.levelsListEx[common.levelId];
     }
 
     if (levelObj === undefined) {
-      levelObj = createObjById(app.common.levelId);
+      levelObj = createObjById(common.levelId);
     }
 
     consoleLog(`[LEVEL ${id}]${levelObj?.subject ?? ''}`);
@@ -685,7 +686,7 @@
       level.printSolveJsStr();
     }
     updateLevelVisibility();
-    elems.level.id.textContent = app.common.levelId;
+    elems.level.id.textContent = common.levelId;
     replaceUrl();
 
     if (id_ === 1) {
@@ -702,10 +703,10 @@
     if (level !== null) {
       const shapesObj = app.savedata.getShapesObj(
         level.getLevelObj(),
-        app.common.checkMode
+        common.checkMode
       );
       if (shapesObj) {
-        app.common.showElem(elems.shapes.button);
+        common.showElem(elems.shapes.button);
         const numerator = Object.keys(shapesObj).length;
         const denumerator = level.getShapes() ?? '?';
         elems.shapes.buttonNumerator.textContent = numerator;
@@ -714,7 +715,7 @@
       }
     }
 
-    app.common.hideElem(elems.shapes.button);
+    common.hideElem(elems.shapes.button);
   }
 
   function loadLevelObj(levelObj, param = {}) {
@@ -734,61 +735,57 @@
   }
 
   function showLevelPrev() {
-    if (app.common.levelId === null) return false;
-    if (app.common.levelId === 0) return false;
-    if (app.common.levelId === 1) return false;
-    if (app.common.levelsList[app.common.levelId] !== undefined)
-      return app.common.levelsList[app.common.levelId - 1] !== undefined;
-    if (isNaN(app.common.levelId)) return false;
-    if (app.common.levelsListEx[app.common.levelId] !== undefined)
-      return app.common.levelsListEx[app.common.levelId - 1] !== undefined;
+    if (common.levelId === null) return false;
+    if (common.levelId === 0) return false;
+    if (common.levelId === 1) return false;
+    if (common.levelsList[common.levelId] !== undefined)
+      return common.levelsList[common.levelId - 1] !== undefined;
+    if (isNaN(common.levelId)) return false;
+    if (common.levelsListEx[common.levelId] !== undefined)
+      return common.levelsListEx[common.levelId - 1] !== undefined;
     return (
-      app.common.levelsList[app.common.levelId - 1] === undefined &&
-      app.common.levelsListEx[app.common.levelId - 1] === undefined
+      common.levelsList[common.levelId - 1] === undefined &&
+      common.levelsListEx[common.levelId - 1] === undefined
     );
   }
 
   function showLevelNext() {
-    if (app.common.levelId === null) return false;
-    if (app.common.levelId === -1) return false;
-    if (app.common.levelId === 0) return false;
-    if (app.common.levelsList[app.common.levelId] !== undefined)
-      return app.common.levelsList[app.common.levelId + 1] !== undefined;
-    if (isNaN(app.common.levelId)) return false;
-    if (app.common.levelsListEx[app.common.levelId] !== undefined)
-      return app.common.levelsListEx[app.common.levelId + 1] !== undefined;
+    if (common.levelId === null) return false;
+    if (common.levelId === -1) return false;
+    if (common.levelId === 0) return false;
+    if (common.levelsList[common.levelId] !== undefined)
+      return common.levelsList[common.levelId + 1] !== undefined;
+    if (isNaN(common.levelId)) return false;
+    if (common.levelsListEx[common.levelId] !== undefined)
+      return common.levelsListEx[common.levelId + 1] !== undefined;
     return (
-      app.common.levelsList[app.common.levelId + 1] === undefined &&
-      app.common.levelsListEx[app.common.levelId + 1] === undefined
+      common.levelsList[common.levelId + 1] === undefined &&
+      common.levelsListEx[common.levelId + 1] === undefined
     );
   }
 
   function updateLevelVisibility() {
-    (showLevelPrev() ? app.common.showElem : app.common.hideElem)(
-      elems.level.prev
-    );
-    (showLevelNext() ? app.common.showElem : app.common.hideElem)(
-      elems.level.next
-    );
-    (app.common.levelId !== null ? app.common.showElem : app.common.hideElem)(
+    (showLevelPrev() ? common.showElem : common.hideElem)(elems.level.prev);
+    (showLevelNext() ? common.showElem : common.hideElem)(elems.level.next);
+    (common.levelId !== null ? common.showElem : common.hideElem)(
       elems.level.id
     );
-    (app.common.levelId !== null ? app.common.showElem : app.common.hideElem)(
+    (common.levelId !== null ? common.showElem : common.hideElem)(
       elems.levels.button
     );
-    (app.common.levelId === null ? app.common.showElem : app.common.hideElem)(
+    (common.levelId === null ? common.showElem : common.hideElem)(
       elems.level.edit
     );
   }
 
   function gotoPrevLevel() {
     if (!showLevelPrev()) return;
-    loadLevelById(app.common.levelId - 1);
+    loadLevelById(common.levelId - 1);
   }
 
   function gotoNextLevel() {
     if (!showLevelNext()) return;
-    loadLevelById(app.common.levelId + 1);
+    loadLevelById(common.levelId + 1);
   }
 
   function gotoNextLevelButton() {
@@ -807,22 +804,22 @@
   function updateEditMode(isOn) {
     editMode = isOn;
     if (editMode) {
-      app.common.showElem(elems.url.div);
-      app.common.showElem(elems.edit.widget);
-      app.common.hideElem(elems.controller.widget);
-      app.common.hideElem(elems.level.retry);
+      common.showElem(elems.url.div);
+      common.showElem(elems.edit.widget);
+      common.hideElem(elems.controller.widget);
+      common.hideElem(elems.level.retry);
       updateLinkUrl();
     } else {
-      app.common.hideElem(elems.url.div);
-      app.common.hideElem(elems.edit.widget);
-      app.common.showElem(elems.controller.widget);
-      app.common.showElem(elems.level.retry);
+      common.hideElem(elems.url.div);
+      common.hideElem(elems.edit.widget);
+      common.showElem(elems.controller.widget);
+      common.showElem(elems.level.retry);
     }
   }
 
   function toggleEditLevel() {
     editMode = !editMode;
-    app.common.levelId = null;
+    common.levelId = null;
     updateLevelVisibility();
     updateEditAxisButton();
     updateEditMode(editMode);
@@ -830,7 +827,7 @@
   }
 
   function updateCheckMode(mode) {
-    app.common.checkMode = mode;
+    common.checkMode = mode;
     const className = (() => {
       switch (mode) {
         case app.Level.CHECK_MODE.LINE:
@@ -984,26 +981,26 @@
   }
 
   function getId(queryObj) {
-    switch (app.common.checkMode) {
+    switch (common.checkMode) {
       case app.Level.CHECK_MODE.LINE:
-        app.common.levelsList = app.levelsLine;
-        app.common.levelsListEx = app.levelsLineEx;
+        common.levelsList = app.levelsLine;
+        common.levelsListEx = app.levelsLineEx;
         break;
       case app.Level.CHECK_MODE.POINT:
-        app.common.levelsList = app.levelsPoint;
-        app.common.levelsListEx = app.levelsPointEx;
+        common.levelsList = app.levelsPoint;
+        common.levelsListEx = app.levelsPointEx;
         break;
       case app.Level.CHECK_MODE.SPECIAL:
-        app.common.levelsList = app.levelsSpecial;
-        app.common.levelsListEx = app.levelsSpecialEx;
+        common.levelsList = app.levelsSpecial;
+        common.levelsListEx = app.levelsSpecialEx;
         break;
       default:
-        app.common.levelsList = null;
-        app.common.levelsListEx = null;
+        common.levelsList = null;
+        common.levelsListEx = null;
     }
 
-    for (let id = 0; id < app.common.levelsList.length; ++id) {
-      const levelObj = app.common.levelsList[id];
+    for (let id = 0; id < common.levelsList.length; ++id) {
+      const levelObj = common.levelsList[id];
       if (
         levelObj.w === queryObj.w &&
         levelObj.h === queryObj.h &&
@@ -1014,9 +1011,9 @@
         return id;
       }
     }
-    for (const id of Object.keys(app.common.levelsListEx).sort()) {
+    for (const id of Object.keys(common.levelsListEx).sort()) {
       if (String(id) === 'NaN') continue;
-      const levelObj = app.common.levelsListEx[id];
+      const levelObj = common.levelsListEx[id];
       if (
         levelObj.w === queryObj.w &&
         levelObj.h === queryObj.h &&
@@ -1035,8 +1032,8 @@
     window.getSelection().removeAllRanges();
 
     updateCheckMode(null);
-    app.common.showElem(elems.category.title);
-    app.common.hideElem(elems.category.game);
+    common.showElem(elems.category.title);
+    common.hideElem(elems.category.game);
     updateAutoMode(false);
     replaceUrlTitle();
   }
@@ -1048,31 +1045,31 @@
       toggleEditLevel();
     }
 
-    switch (app.common.checkMode) {
+    switch (common.checkMode) {
       case app.Level.CHECK_MODE.LINE:
-        app.common.levelsList = app.levelsLine;
-        app.common.levelsListEx = app.levelsLineEx;
+        common.levelsList = app.levelsLine;
+        common.levelsListEx = app.levelsLineEx;
         break;
       case app.Level.CHECK_MODE.POINT:
-        app.common.levelsList = app.levelsPoint;
-        app.common.levelsListEx = app.levelsPointEx;
+        common.levelsList = app.levelsPoint;
+        common.levelsListEx = app.levelsPointEx;
         break;
       case app.Level.CHECK_MODE.SPECIAL:
-        app.common.levelsList = app.levelsSpecial;
-        app.common.levelsListEx = app.levelsSpecialEx;
+        common.levelsList = app.levelsSpecial;
+        common.levelsListEx = app.levelsSpecialEx;
         break;
       default:
-        app.common.levelsList = null;
-        app.common.levelsListEx = null;
+        common.levelsList = null;
+        common.levelsListEx = null;
         console.assert(false);
     }
 
-    app.common.hideElem(elems.category.title);
-    app.common.showElem(elems.category.game);
-    app.common.showElem(elems.main.div);
-    app.common.showElem(elems.level.widget);
-    app.common.showElem(elems.svgDiv);
-    app.common.showElem(elems.controller.widget);
+    common.hideElem(elems.category.title);
+    common.showElem(elems.category.game);
+    common.showElem(elems.main.div);
+    common.showElem(elems.level.widget);
+    common.showElem(elems.svgDiv);
+    common.showElem(elems.controller.widget);
 
     let id = id_;
     if (id === null) id = 1;
@@ -1087,15 +1084,15 @@
     }
     window.getSelection().removeAllRanges();
 
-    app.common.hideElem(elems.category.title);
-    app.common.showElem(elems.category.game);
-    app.common.showElem(elems.main.svg);
-    app.common.showElem(elems.level.widget);
-    app.common.showElem(elems.svgDiv);
-    app.common.hideElem(elems.auto.buttons);
-    app.common.showElem(elems.controller.widget);
+    common.hideElem(elems.category.title);
+    common.showElem(elems.category.game);
+    common.showElem(elems.main.svg);
+    common.showElem(elems.level.widget);
+    common.showElem(elems.svgDiv);
+    common.hideElem(elems.auto.buttons);
+    common.showElem(elems.controller.widget);
 
-    app.common.levelId = null;
+    common.levelId = null;
     updateLevelVisibility();
     loadLevelObj(levelObj);
   }
@@ -1121,7 +1118,7 @@
 
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       elems.contents.addEventListener(pointermoveEventName, (e) => {
-        if (app.common.isShownElem(elems.console.widget)) return;
+        if (common.isShownElem(elems.console.widget)) return;
         // スワイプ操作を無効化する。
         e.preventDefault();
       });
@@ -1146,7 +1143,7 @@
 
     // タッチ入力用
     {
-      const touchDevice = app.common.isTouchDevice();
+      const touchDevice = common.isTouchDevice();
       const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
@@ -1200,10 +1197,10 @@
     }
 
     function onButtonMenu() {
-      if (app.common.isShownElem(elems.controller.menu)) {
-        app.common.hideElem(elems.controller.menu);
+      if (common.isShownElem(elems.controller.menu)) {
+        common.hideElem(elems.controller.menu);
       } else {
-        app.common.showElem(elems.controller.menu);
+        common.showElem(elems.controller.menu);
       }
     }
   }
@@ -1227,7 +1224,7 @@
       {
         const levelForEditChar = new app.Level({
           levelObj: { w: 3, h: 3, s: `-0${char}` },
-          checkMode: app.common.checkMode,
+          checkMode: common.checkMode,
         });
         const g = levelForEditChar.createSvgG({
           blockSize: 40,
@@ -1259,37 +1256,37 @@
   }
 
   function updateEditAxisButton() {
-    app.common.hideElem(elems.edit.buttons.axisL1);
-    app.common.hideElem(elems.edit.buttons.axisL2);
-    app.common.hideElem(elems.edit.buttons.axisL3);
-    app.common.hideElem(elems.edit.buttons.axisL4);
-    app.common.hideElem(elems.edit.buttons.axisP1);
-    app.common.hideElem(elems.edit.buttons.axisP2);
+    common.hideElem(elems.edit.buttons.axisL1);
+    common.hideElem(elems.edit.buttons.axisL2);
+    common.hideElem(elems.edit.buttons.axisL3);
+    common.hideElem(elems.edit.buttons.axisL4);
+    common.hideElem(elems.edit.buttons.axisP1);
+    common.hideElem(elems.edit.buttons.axisP2);
 
     if (level?.hasAxis()) {
       switch (level.getAxisType()) {
         case app.Level.SYMMETRY_TYPE.LINE1: {
-          app.common.showElem(elems.edit.buttons.axisL1);
+          common.showElem(elems.edit.buttons.axisL1);
           break;
         }
         case app.Level.SYMMETRY_TYPE.LINE2: {
-          app.common.showElem(elems.edit.buttons.axisL2);
+          common.showElem(elems.edit.buttons.axisL2);
           break;
         }
         case app.Level.SYMMETRY_TYPE.LINE3: {
-          app.common.showElem(elems.edit.buttons.axisL3);
+          common.showElem(elems.edit.buttons.axisL3);
           break;
         }
         case app.Level.SYMMETRY_TYPE.LINE4: {
-          app.common.showElem(elems.edit.buttons.axisL4);
+          common.showElem(elems.edit.buttons.axisL4);
           break;
         }
         case app.Level.SYMMETRY_TYPE.POINT1: {
-          app.common.showElem(elems.edit.buttons.axisP1);
+          common.showElem(elems.edit.buttons.axisP1);
           break;
         }
         case app.Level.SYMMETRY_TYPE.POINT2: {
-          app.common.showElem(elems.edit.buttons.axisP2);
+          common.showElem(elems.edit.buttons.axisP2);
           break;
         }
       }
@@ -1318,7 +1315,7 @@
       const h = level.getH();
       const s = level.getS();
       const levelObj = { w, h, s };
-      level = new app.Level({ levelObj, checkMode: app.common.checkMode });
+      level = new app.Level({ levelObj, checkMode: common.checkMode });
       updateEditElems();
       completeCheck();
       updateLinkUrl();
@@ -1391,7 +1388,7 @@
   // 記録画面用
   function initElemsForRecords() {
     const size = 50;
-    const crown = app.common.createCrown(size, 0, 0, 1, 1);
+    const crown = common.createCrown(size, 0, 0, 1, 1);
     elems.records.buttonSvg.appendChild(crown);
     elems.records.button.addEventListener('click', app.dialog.records.show);
     elems.records.dialog.addEventListener('click', app.dialog.records.close);
@@ -1514,53 +1511,53 @@
 
   function updateController() {
     if (level?.hasAxis()) {
-      app.common.showElem(elems.controller.buttons.axis);
-      app.common.hideElem(elems.controller.buttons.axisL1);
-      app.common.hideElem(elems.controller.buttons.axisL2);
-      app.common.hideElem(elems.controller.buttons.axisL3);
-      app.common.hideElem(elems.controller.buttons.axisL4);
-      app.common.hideElem(elems.controller.buttons.axisP1);
-      app.common.hideElem(elems.controller.buttons.axisP2);
+      common.showElem(elems.controller.buttons.axis);
+      common.hideElem(elems.controller.buttons.axisL1);
+      common.hideElem(elems.controller.buttons.axisL2);
+      common.hideElem(elems.controller.buttons.axisL3);
+      common.hideElem(elems.controller.buttons.axisL4);
+      common.hideElem(elems.controller.buttons.axisP1);
+      common.hideElem(elems.controller.buttons.axisP2);
       switch (level.getAxisType()) {
         case app.Level.SYMMETRY_TYPE.LINE1: {
-          app.common.showElem(elems.controller.buttons.axisL1);
+          common.showElem(elems.controller.buttons.axisL1);
           break;
         }
         case app.Level.SYMMETRY_TYPE.LINE2: {
-          app.common.showElem(elems.controller.buttons.axisL2);
+          common.showElem(elems.controller.buttons.axisL2);
           break;
         }
         case app.Level.SYMMETRY_TYPE.LINE3: {
-          app.common.showElem(elems.controller.buttons.axisL3);
+          common.showElem(elems.controller.buttons.axisL3);
           break;
         }
         case app.Level.SYMMETRY_TYPE.LINE4: {
-          app.common.showElem(elems.controller.buttons.axisL4);
+          common.showElem(elems.controller.buttons.axisL4);
           break;
         }
         case app.Level.SYMMETRY_TYPE.POINT1: {
-          app.common.showElem(elems.controller.buttons.axisP1);
+          common.showElem(elems.controller.buttons.axisP1);
           break;
         }
         case app.Level.SYMMETRY_TYPE.POINT2: {
-          app.common.showElem(elems.controller.buttons.axisP2);
+          common.showElem(elems.controller.buttons.axisP2);
           break;
         }
       }
     } else {
-      app.common.hideElem(elems.controller.buttons.axis);
+      common.hideElem(elems.controller.buttons.axis);
     }
 
-    app.common.showElem(elems.controller.buttons.root);
-    app.common.hideElem(elems.controller.menu);
+    common.showElem(elems.controller.buttons.root);
+    common.hideElem(elems.controller.menu);
     if (completeFlag) {
-      app.common.hideElem(elems.controller.buttons.base);
-      if (app.common.isShownElem(elems.level.next)) {
-        app.common.showElem(elems.controller.nextLevel);
+      common.hideElem(elems.controller.buttons.base);
+      if (common.isShownElem(elems.level.next)) {
+        common.showElem(elems.controller.nextLevel);
       }
     } else {
-      app.common.showElem(elems.controller.buttons.base);
-      app.common.hideElem(elems.controller.nextLevel);
+      common.showElem(elems.controller.buttons.base);
+      common.hideElem(elems.controller.nextLevel);
     }
   }
 
@@ -1852,7 +1849,7 @@
               levelObj,
               level.getCheckMode()
             );
-            app.savedata.saveSteps(levelObj, app.common.checkMode, replayStr);
+            app.savedata.saveSteps(levelObj, common.checkMode, replayStr);
           }
 
           // シルエットデータ保存
@@ -1860,7 +1857,7 @@
             const shapeStr = level.getTargetShapeForSavedata();
             const result = app.savedata.saveShape(
               levelObj,
-              app.common.checkMode,
+              common.checkMode,
               shapeStr,
               replayStr
             );
@@ -1882,7 +1879,7 @@
             }, subject: '${levelObj.subject ?? ''}'`;
 
             const levelObjStr = `{ ${levelParams} },`;
-            // if (app.common.levelId === null) {
+            // if (common.levelId === null) {
             //   copyTextToClipboard(levelObjStr);
             // }
             consoleLog(levelObjStr);
@@ -1934,7 +1931,7 @@
       {
         const currentStep = undoInfo.getIndex();
         const color = completeFlag
-          ? app.common.getStepColor(currentStep, bestStep)
+          ? common.getStepColor(currentStep, bestStep)
           : 'black';
         const text = app.svg.createText(frameSize, {
           x: 0,
@@ -1951,7 +1948,7 @@
       }
 
       // 自己最高記録
-      if (app.common.levelId !== null) {
+      if (common.levelId !== null) {
         const levelObj = level.getLevelObj();
         const highestScore = app.savedata.getHighestScore(
           levelObj,
@@ -1959,7 +1956,7 @@
         );
 
         {
-          const crown = app.common.createCrown(
+          const crown = common.createCrown(
             frameSize,
             frameBorderWidth / frameSize,
             frameBorderWidth / frameSize / 2,
@@ -1982,7 +1979,7 @@
         }
 
         if (highestScore !== null) {
-          const color = app.common.getStepColor(highestScore, bestStep);
+          const color = common.getStepColor(highestScore, bestStep);
 
           const text = app.svg.createText(frameSize, {
             x: 0,
@@ -2026,8 +2023,8 @@
     function addEditButton(button, onClick, color) {
       if (button.dx === -1 && level.getW() <= 1) return;
       if (button.dy === -1 && level.getH() <= 1) return;
-      if (button.dx === 1 && level.getW() >= app.common.maxEditW) return;
-      if (button.dy === 1 && level.getH() >= app.common.maxEditH) return;
+      if (button.dx === 1 && level.getW() >= common.maxEditW) return;
+      if (button.dy === 1 && level.getH() >= common.maxEditH) return;
 
       const points = [];
       for (const point of button.points) {
@@ -2065,7 +2062,7 @@
     } else if (secretSequence === '1414') {
       updateAutoMode(true);
     } else if (secretSequence === '4343') {
-      app.common.showElem(elems.console.widget);
+      common.showElem(elems.console.widget);
       {
         const input = elems.main.svg;
         const output = elems.console.image;
@@ -2117,7 +2114,7 @@
         });
       }
     } else if (secretSequence === '3434') {
-      app.common.hideElem(elems.console.widget);
+      common.hideElem(elems.console.widget);
     } else {
       resetFlag = false;
     }
@@ -2230,8 +2227,8 @@
     const h = level.getH() + dy;
     if (w < 1) return;
     if (h < 1) return;
-    if (w > app.common.maxW) return;
-    if (h > app.common.maxH) return;
+    if (w > common.maxW) return;
+    if (h > common.maxH) return;
 
     level.resize(dx, dy, flag);
     addUndo(null);
@@ -2265,7 +2262,7 @@
   }
 
   function replaceUrl() {
-    if (app.common.isShownElem(elems.category.title)) {
+    if (common.isShownElem(elems.category.title)) {
       replaceUrlTitle();
       return;
     }
@@ -2282,9 +2279,9 @@
 
   function updateButtonSpeedDisplay() {
     (settingsAuto.interval === settingsAuto.INTERVAL_MAX
-      ? app.common.hideElem
-      : app.common.showElem)(elems.auto.buttonSpeedDown);
-    (settingsAuto.interval === 1 ? app.common.hideElem : app.common.showElem)(
+      ? common.hideElem
+      : common.showElem)(elems.auto.buttonSpeedDown);
+    (settingsAuto.interval === 1 ? common.hideElem : common.showElem)(
       elems.auto.buttonSpeedUp
     );
   }
@@ -2293,14 +2290,14 @@
     if (isOn) {
       settings.autoMode = true;
       input.disable();
-      app.common.showElem(elems.auto.buttons);
+      common.showElem(elems.auto.buttons);
       updateEditMode(false);
     } else {
       clearTimeout(nextLevelTimerId);
       settings.autoMode = false;
       settingsAuto.paused = true;
       input.enable();
-      app.common.hideElem(elems.auto.buttons);
+      common.hideElem(elems.auto.buttons);
 
       input.update(app.Input.DIRS.NEUTRAL);
     }
@@ -2312,11 +2309,11 @@
 
   function updateAutoStartPauseButtons() {
     if (settingsAuto.paused) {
-      app.common.showElem(elems.auto.buttonStart);
-      app.common.hideElem(elems.auto.buttonPause);
+      common.showElem(elems.auto.buttonStart);
+      common.hideElem(elems.auto.buttonPause);
     } else {
-      app.common.hideElem(elems.auto.buttonStart);
-      app.common.showElem(elems.auto.buttonPause);
+      common.hideElem(elems.auto.buttonStart);
+      common.showElem(elems.auto.buttonPause);
     }
   }
 
@@ -2329,15 +2326,15 @@
     if (level.getBestStep() === undefined) {
       const levelObj = level.getCurrentLevelObj();
       // TODO activeElem を盤面に反映させてから計算する。Promiseを使うといけそう。
-      // app.common.activeElem(elems.auto.buttonStart);
+      // common.activeElem(elems.auto.buttonStart);
       const levelTemp = new app.Level({
         levelObj,
-        checkMode: app.common.checkMode,
+        checkMode: common.checkMode,
       });
       const maxStep = 1000; // 探索ステップ数上限値は大きな値にしておきます。時間制限もあるので、この制限にかかることはほぼないはずです。
       const timeLimit = 10;
       const result = app.solveLevel(null, levelTemp, { maxStep, timeLimit });
-      // app.common.inactiveElem(elems.auto.buttonStart);
+      // common.inactiveElem(elems.auto.buttonStart);
       if (result.replayStr === null) {
         window.alert(result.errorMessage);
         return;
