@@ -526,6 +526,7 @@
   function draw() {
     updateSvg();
     updateUndoRedoButton();
+    updateEditAxisButton();
   }
 
   function updateSvg() {
