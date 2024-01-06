@@ -247,6 +247,15 @@
       shapes: 2,
     },
     {
+      w: 6,
+      h: 5,
+      s: '-s12-333-303-333',
+      axis: 'l3-x2',
+      r: '1101222401034011',
+      step: 16,
+      shapes: 2,
+    },
+    {
       w: 7,
       h: 7,
       s: '0x0x0xx-0xxxxxx-0xsx0x-xxxx0x1-0x0x0x-0x0xxx-0x0x02',
