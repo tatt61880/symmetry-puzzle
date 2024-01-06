@@ -1328,6 +1328,7 @@
       addUndo(null);
       updateLinkUrl();
       drawMainSvg();
+      draw();
     });
 
     elems.edit.rotate.addEventListener('click', () => {
