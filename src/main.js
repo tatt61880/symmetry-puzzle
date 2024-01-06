@@ -1314,10 +1314,7 @@
           updateCheckMode(app.Level.CHECK_MODE.LINE);
           break;
       }
-      const w = common.level.getW();
-      const h = common.level.getH();
-      const s = common.level.getS();
-      const levelObj = { w, h, s };
+      const levelObj = common.level.getCurrentLevelObj();
       common.level = new app.Level({ levelObj, checkMode: common.checkMode });
       updateEditElems();
       completeCheck();
