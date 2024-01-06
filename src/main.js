@@ -1320,14 +1320,13 @@
       updateEditElems();
       completeCheck();
       updateLinkUrl();
-      drawMainSvg();
+      draw();
     });
 
     elems.edit.mirror.addEventListener('click', () => {
       common.level.mirror();
       addUndo(null);
       updateLinkUrl();
-      drawMainSvg();
       draw();
     });
 
@@ -1335,7 +1334,6 @@
       common.level.rotate(1);
       addUndo(null);
       updateLinkUrl();
-      drawMainSvg();
       draw();
     });
 
