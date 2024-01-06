@@ -1114,7 +1114,7 @@
             cx: center.x,
             cy: center.y,
             r: 0.1,
-            fill: app.colors.symmetryAxisCenter,
+            fill: app.colors.levelSymmetryAxisCenter,
           });
           gg.appendChild(circle);
         }
