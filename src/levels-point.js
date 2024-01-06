@@ -258,6 +258,15 @@
       shapes: 3,
     },
     {
+      w: 6,
+      h: 5,
+      s: '-s10022-00002-330022',
+      axis: 'p1-x6-y5',
+      r: '240333',
+      step: 6,
+      shapes: 5,
+    },
+    {
       w: 7,
       h: 7,
       s: '010x-2xxxxxx-0xsx0x-xxxx0x-0x0x0x-0x0xxx-0x0x',
