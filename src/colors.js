@@ -53,7 +53,8 @@
   }
 
   colors.line = '#888888';
-  colors.symmetryAxis = '#7777f8';
+  colors.levelSymmetryAxis = '#7777f8';
+  colors.symmetryAxis = '#ff7700';
   colors.symmetryAxisInvalid = '#f85555';
   colors.symmetryAxisCenter = '#5555f8';
 

@@ -1067,41 +1067,43 @@
         const gg = app.svg.createG();
         g.appendChild(gg);
 
+        const fill = app.colors.levelSymmetryAxis;
+        const stroke = app.colors.levelSymmetryAxis;
         switch (this.#axis.type) {
           case Level.SYMMETRY_TYPE.LINE1: {
             // m (｜)
-            const line = createAxisLine1({ center, height });
+            const line = createAxisLine1({ center, height, stroke });
             gg.appendChild(line);
             break;
           }
           case Level.SYMMETRY_TYPE.LINE2: {
             // m (―)
-            const line = createAxisLine2({ center, width });
+            const line = createAxisLine2({ center, width, stroke });
             gg.appendChild(line);
             break;
           }
           case Level.SYMMETRY_TYPE.LINE3: {
             // m (＼)
-            const line = createAxisLine3({ center, height });
+            const line = createAxisLine3({ center, height, stroke });
             gg.appendChild(line);
             break;
           }
           case Level.SYMMETRY_TYPE.LINE4: {
             // m (／)
-            const line = createAxisLine4({ center, height });
+            const line = createAxisLine4({ center, height, stroke });
             gg.appendChild(line);
             break;
           }
 
           case Level.SYMMETRY_TYPE.POINT1: {
             // 2
-            const point = createAxisPoint2({ center });
+            const point = createAxisPoint2({ center, fill });
             gg.appendChild(point);
             break;
           }
           case Level.SYMMETRY_TYPE.POINT2: {
             // 4
-            const point = createAxisPoint4({ center });
+            const point = createAxisPoint4({ center, fill });
             gg.appendChild(point);
             break;
           }
@@ -1259,33 +1261,45 @@
       this.#resetMoveFlags();
       return g;
 
-      function createAxisLine1({ center, height }) {
+      function createAxisLine1({
+        center,
+        height,
+        stroke = app.colors.symmetryAxis,
+      }) {
         const line = app.svg.createLine(blockSize, {
           x1: center.x,
           y1: 0,
           x2: center.x,
           y2: height,
-          stroke: app.colors.symmetryAxis,
+          stroke,
           strokeWidth: 0.1,
         });
         line.classList.add('symmetry-axis');
         return line;
       }
 
-      function createAxisLine2({ center, width }) {
+      function createAxisLine2({
+        center,
+        width,
+        stroke = app.colors.symmetryAxis,
+      }) {
         const line = app.svg.createLine(blockSize, {
           x1: 0,
           y1: center.y,
           x2: width,
           y2: center.y,
-          stroke: app.colors.symmetryAxis,
+          stroke,
           strokeWidth: 0.1,
         });
         line.classList.add('symmetry-axis');
         return line;
       }
 
-      function createAxisLine3({ center, height }) {
+      function createAxisLine3({
+        center,
+        height,
+        stroke = app.colors.symmetryAxis,
+      }) {
         const dd = 0.05;
 
         const x1a = center.x - center.y;
@@ -1296,9 +1310,9 @@
         const x2 = x2a > width ? width : x2a;
         const y2 = x2a > width ? width + height - x2a : height;
 
-        const stroke =
+        const stroke2 =
           (center.x + center.y) % 1 === 0
-            ? app.colors.symmetryAxis
+            ? stroke
             : app.colors.symmetryAxisInvalid;
 
         const line = app.svg.createLine(blockSize, {
@@ -1306,14 +1320,18 @@
           y1: y1 - dd,
           x2: x2 + dd,
           y2: y2 + dd,
-          stroke,
+          stroke: stroke2,
           strokeWidth: 0.1,
         });
         line.classList.add('symmetry-axis');
         return line;
       }
 
-      function createAxisLine4({ center, height }) {
+      function createAxisLine4({
+        center,
+        height,
+        stroke = app.colors.symmetryAxis,
+      }) {
         const dd = 0.05;
 
         const x1a = center.x + center.y;
@@ -1324,9 +1342,9 @@
         const x2 = x2a < 0 ? 0 : x2a;
         const y2 = x2a < 0 ? height + x2a : height;
 
-        const stroke =
+        const stroke2 =
           (center.x + center.y) % 1 === 0
-            ? app.colors.symmetryAxis
+            ? stroke
             : app.colors.symmetryAxisInvalid;
 
         const line = app.svg.createLine(blockSize, {
@@ -1334,33 +1352,30 @@
           y1: y1 - dd,
           x2: x2 - dd,
           y2: y2 + dd,
-          stroke,
+          stroke: stroke2,
           strokeWidth: 0.1,
         });
         line.classList.add('symmetry-axis');
         return line;
       }
 
-      function createAxisPoint2({ center }) {
+      function createAxisPoint2({ center, fill = app.colors.symmetryAxis }) {
         const ellipse = app.svg.createEllipse(blockSize, {
           cx: center.x,
           cy: center.y,
           rx: 1 / 8,
           ry: 3 / 8,
-          fill: app.colors.symmetryAxis,
+          fill,
         });
         ellipse.classList.add('symmetry-axis');
         return ellipse;
       }
 
-      function createAxisPoint4({ center }) {
+      function createAxisPoint4({ center, fill = app.colors.symmetryAxis }) {
         const x = center.x;
         const y = center.y;
         const size = 3 / 8;
-        const fill =
-          (x + y) % 1 === 0
-            ? app.colors.symmetryAxis
-            : app.colors.symmetryAxisInvalid;
+        const fill2 = (x + y) % 1 === 0 ? fill : app.colors.symmetryAxisInvalid;
         const polygon = app.svg.createPolygon(blockSize, {
           points: [
             [x, y - size],
@@ -1368,7 +1383,7 @@
             [x, y + size],
             [x - size, y],
           ],
-          fill,
+          fill: fill2,
         });
         polygon.classList.add('symmetry-axis');
         return polygon;
