@@ -2256,10 +2256,7 @@
   function addUndo(dir) {
     undoInfo.pushData({
       dir,
-      w: common.level.getW(),
-      h: common.level.getH(),
-      s: common.level.getS(),
-      axis: common.level.getA(),
+      ...common.level.getCurrentLevelObj(),
       r: common.level.getR(),
     });
 
