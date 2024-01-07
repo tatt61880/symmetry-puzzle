@@ -1319,21 +1319,18 @@
       common.level = new app.Level({ levelObj, checkMode: common.checkMode });
       updateEditElems();
       completeCheck();
-      updateLinkUrl();
       draw();
     });
 
     elems.edit.mirror.addEventListener('click', () => {
       common.level.mirror();
       addUndo(null);
-      updateLinkUrl();
       draw();
     });
 
     elems.edit.rotate.addEventListener('click', () => {
       common.level.rotate(1);
       addUndo(null);
-      updateLinkUrl();
       draw();
     });
 
@@ -1341,8 +1338,7 @@
       if (!common.level.isNormalized()) {
         common.level.normalize();
         addUndo(null);
-        updateLinkUrl();
-        drawMainSvg();
+        draw();
       }
     });
 
@@ -1352,8 +1348,7 @@
       common.level.changeAxis();
       updateEditAxisButton();
       addUndo(null);
-      updateLinkUrl();
-      drawMainSvg();
+      draw();
     }
   }
 
