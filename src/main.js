@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2024.01.05';
+  const VERSION_TEXT = 'v' + '2024.01.06';
 
   const app = window.app;
   Object.freeze(app);
@@ -524,14 +524,17 @@
   }
 
   function draw() {
+    if (common.isHiddenElem(elems.category.game)) return;
+
     updateSvg();
     updateUndoRedoButton();
     updateEditAxisButton();
+    updateLinkUrl();
+    completeCheck();
+    drawMainSvg();
   }
 
   function updateSvg() {
-    if (common.isHiddenElem(elems.category.game)) return;
-
     const divMainHeight =
       window.innerHeight -
       10 -
@@ -553,8 +556,6 @@
       (svgMaxHeight - 2 * frameSize) / common.level.getHeight()
     );
     blockSize = Math.max(blockSize, 0);
-    completeCheck();
-    updateLinkUrl();
 
     elems.main.svg.setAttribute(
       'width',
@@ -564,7 +565,6 @@
       'height',
       blockSize * common.level.getHeight() + 2 * frameSize
     );
-    drawMainSvg();
   }
 
   function updateUndoRedoButton() {
