@@ -146,16 +146,12 @@
     elems.levels.dialogSvg.innerHTML = '';
 
     let totalNum = 0;
-    for (let id = 1; id < app.common.levelsList.length; ++id) {
-      if (page === null && id === app.common.levelId) {
-        page = Math.floor(totalNum / LEVEL_SELECT_NUM_PER_PAGE);
-        elems.levels.dialog.dataset.selectCount = totalNum;
-      }
-      totalNum++;
-    }
-    for (const id of Object.keys(app.common.levelsListEx).sort()) {
-      if (String(id) === 'NaN') continue;
-      if (page === null && Number(id) === app.common.levelId) {
+
+    const levels = app.common.levels.getAllLevels();
+    for (const { id } of levels) {
+      if (id === 0) continue;
+      if (id === 'NaN') continue;
+      if (page === null && String(id) === String(app.common.levelId)) {
         page = Math.floor(totalNum / LEVEL_SELECT_NUM_PER_PAGE);
         elems.levels.dialog.dataset.selectCount = totalNum;
       }
@@ -197,24 +193,14 @@
 
     let count = 0;
     const selectIds = {};
-    for (let id = 1; id < app.common.levelsList.length; ++id) {
+
+    for (const { id, levelObj } of levels) {
+      if (id === 0) continue;
+      if (id === 'NaN') continue;
       if (
         page * LEVEL_SELECT_NUM_PER_PAGE <= count &&
         count < (page + 1) * LEVEL_SELECT_NUM_PER_PAGE
       ) {
-        const levelObj = app.common.levelsList[id];
-        appendLevel(levelObj, id);
-        selectIds[count] = id;
-      }
-      count++;
-    }
-    for (const id of Object.keys(app.common.levelsListEx).sort()) {
-      if (String(id) === 'NaN') continue;
-      if (
-        page * LEVEL_SELECT_NUM_PER_PAGE <= count &&
-        count < (page + 1) * LEVEL_SELECT_NUM_PER_PAGE
-      ) {
-        const levelObj = app.common.levelsListEx[id];
         appendLevel(levelObj, id);
         selectIds[count] = id;
       }

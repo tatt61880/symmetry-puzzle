@@ -48,6 +48,20 @@
       }
       return null;
     }
+
+    getAllLevels() {
+      const res = [];
+      for (let id = 0; id < this.#levelsList.length; ++id) {
+        const levelObj = this.#levelsList[id];
+        res.push({ id, levelObj });
+      }
+      for (const id of Object.keys(this.#levelsListEx).sort()) {
+        console.log(id);
+        const levelObj = this.#levelsListEx[id];
+        res.push({ id, levelObj });
+      }
+      return res;
+    }
   }
 
   if (isBrowser) {
