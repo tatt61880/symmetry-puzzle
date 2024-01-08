@@ -1969,15 +1969,16 @@
           );
           g.appendChild(crown);
           if (completeFlag) {
+            const animationNewRecordCrownClass = 'animation-new-record-crown';
             if (highestScorePrev === null) {
               console.log('初回クリア');
-              crown.classList.add('animation-new-record2');
+              crown.classList.add(animationNewRecordCrownClass);
             } else if (
               highestScore === bestStep &&
               highestScorePrev !== bestStep
             ) {
               console.log('初回金冠');
-              crown.classList.add('animation-new-record2');
+              crown.classList.add(animationNewRecordCrownClass);
             }
           }
         }

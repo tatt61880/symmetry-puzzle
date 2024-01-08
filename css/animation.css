@@ -820,12 +820,12 @@
   }
 }
 
-.animation-new-record2 {
-  animation: animation-new-record2 linear both;
+.animation-new-record-crown {
+  animation: animation-new-record-crown linear both;
   animation-duration: calc(var(--animation-duration-symmetry) * 4);
 }
 
-@keyframes animation-new-record2 {
+@keyframes animation-new-record-crown {
   10%,
   40%,
   70% {
