@@ -97,19 +97,13 @@
     {
       const levelsList = app.levelsLine;
       const levelsListEx = app.levelsLineEx;
-      const levelObjs = [];
-      for (let i = 1; i < levelsList.length; ++i) {
-        const levelObj = levelsList[i];
-        levelObjs.push(levelObj);
-      }
 
-      for (const id of Object.keys(levelsListEx)) {
-        if (String(id) === 'NaN') continue;
-        const levelObj = levelsListEx[id];
-        levelObjs.push(levelObj);
-      }
-      for (let i = 0; i < levelObjs.length; ++i) {
-        const levelObj = levelObjs[i];
+      const levels = new app.Levels({ levelsList, levelsListEx });
+      const allLevels = levels.getAllLevels();
+      for (const { levelId, levelObj } of allLevels) {
+        if (levelId === 0) continue;
+        if (levelId === 'NaN') continue;
+
         const playerScore = app.savedata.getHighestScore(
           levelObj,
           app.Level.CHECK_MODE.LINE
@@ -132,19 +126,13 @@
     {
       const levelsList = app.levelsPoint;
       const levelsListEx = app.levelsPointEx;
-      const levelObjs = [];
-      for (let i = 1; i < levelsList.length; ++i) {
-        const levelObj = levelsList[i];
-        levelObjs.push(levelObj);
-      }
 
-      for (const id of Object.keys(levelsListEx)) {
-        if (String(id) === 'NaN') continue;
-        const levelObj = levelsListEx[id];
-        levelObjs.push(levelObj);
-      }
-      for (let i = 0; i < levelObjs.length; ++i) {
-        const levelObj = levelObjs[i];
+      const levels = new app.Levels({ levelsList, levelsListEx });
+      const allLevels = levels.getAllLevels();
+      for (const { levelId, levelObj } of allLevels) {
+        if (levelId === 0) continue;
+        if (levelId === 'NaN') continue;
+
         const playerScore = app.savedata.getHighestScore(
           levelObj,
           app.Level.CHECK_MODE.POINT
@@ -167,19 +155,13 @@
     {
       const levelsList = app.levelsSpecial;
       const levelsListEx = app.levelsSpecialEx;
-      const levelObjs = [];
-      for (let i = 1; i < levelsList.length; ++i) {
-        const levelObj = levelsList[i];
-        levelObjs.push(levelObj);
-      }
 
-      for (const id of Object.keys(levelsListEx)) {
-        if (String(id) === 'NaN') continue;
-        const levelObj = levelsListEx[id];
-        levelObjs.push(levelObj);
-      }
-      for (let i = 0; i < levelObjs.length; ++i) {
-        const levelObj = levelObjs[i];
+      const levels = new app.Levels({ levelsList, levelsListEx });
+      const allLevels = levels.getAllLevels();
+      for (const { levelId, levelObj } of allLevels) {
+        if (levelId === 0) continue;
+        if (levelId === 'NaN') continue;
+
         const playerScore = app.savedata.getHighestScore(
           levelObj,
           app.Level.CHECK_MODE.SPECIAL
