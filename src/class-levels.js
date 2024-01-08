@@ -51,13 +51,13 @@
 
     getAllLevels() {
       const res = [];
-      for (let id = 0; id < this.#levelsList.length; ++id) {
-        const levelObj = this.#levelsList[id];
-        res.push({ id, levelObj });
+      for (let levelId = 0; levelId < this.#levelsList.length; ++levelId) {
+        const levelObj = this.#levelsList[levelId];
+        res.push({ levelId, levelObj });
       }
-      for (const id of Object.keys(this.#levelsListEx).sort()) {
-        const levelObj = this.#levelsListEx[id];
-        res.push({ id, levelObj });
+      for (const levelId of Object.keys(this.#levelsListEx).sort()) {
+        const levelObj = this.#levelsListEx[levelId];
+        res.push({ levelId, levelObj });
       }
       return res;
     }

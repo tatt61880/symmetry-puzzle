@@ -148,10 +148,10 @@
     let totalNum = 0;
 
     const levels = app.common.levels.getAllLevels();
-    for (const { id } of levels) {
-      if (id === 0) continue;
-      if (id === 'NaN') continue;
-      if (page === null && String(id) === String(app.common.levelId)) {
+    for (const { levelId } of levels) {
+      if (levelId === 0) continue;
+      if (levelId === 'NaN') continue;
+      if (page === null && String(levelId) === String(app.common.levelId)) {
         page = Math.floor(totalNum / LEVEL_SELECT_NUM_PER_PAGE);
         elems.levels.dialog.dataset.selectCount = totalNum;
       }
@@ -194,15 +194,15 @@
     let count = 0;
     const selectIds = {};
 
-    for (const { id, levelObj } of levels) {
-      if (id === 0) continue;
-      if (id === 'NaN') continue;
+    for (const { levelId, levelObj } of levels) {
+      if (levelId === 0) continue;
+      if (levelId === 'NaN') continue;
       if (
         page * LEVEL_SELECT_NUM_PER_PAGE <= count &&
         count < (page + 1) * LEVEL_SELECT_NUM_PER_PAGE
       ) {
-        appendLevel(levelObj, id);
-        selectIds[count] = id;
+        appendLevel(levelObj, levelId);
+        selectIds[count] = levelId;
       }
       count++;
     }

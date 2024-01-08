@@ -19,6 +19,7 @@
     app.console = require('./console.js');
     app.states = require('./states.js');
     app.Level = require('./class-level.js');
+    app.Levels = require('./class-levels.js');
 
     app.levelsLine = require('./levels-line.js');
     app.levelsLineEx = require('./levels-line-ex.js');
@@ -66,45 +67,36 @@
   if (isBrowser) {
     1;
   } else if (levelId !== undefined) {
-    const levels = {};
-
     let levelsList;
-    let levelsExList;
+    let levelsListEx;
     switch (checkMode) {
       case app.Level.CHECK_MODE.LINE:
         levelsList = app.levelsLine;
-        levelsExList = app.levelsLineEx;
+        levelsListEx = app.levelsLineEx;
         break;
       case app.Level.CHECK_MODE.POINT:
         levelsList = app.levelsPoint;
-        levelsExList = app.levelsPointEx;
+        levelsListEx = app.levelsPointEx;
         break;
       case app.Level.CHECK_MODE.SPECIAL:
         levelsList = app.levelsSpecial;
-        levelsExList = app.levelsSpecialEx;
+        levelsListEx = app.levelsSpecialEx;
         break;
       default:
         app.console.error('mode error');
         return;
     }
 
-    for (const levelId in levelsList) {
-      const levelObj = levelsList[levelId];
-      levels[levelId] = levelObj;
-    }
-    for (const levelId in levelsExList) {
-      const levelObj = levelsExList[levelId];
-      levels[levelId] = levelObj;
-    }
+    const levels = new app.Levels({ levelsList, levelsListEx });
 
     if (levelId === 'all') {
-      for (const levelId in levels) {
-        if (levelId === '0') continue;
-        const levelObj = levels[levelId];
+      const allLevels = levels.getAllLevels();
+      for (const { levelId, levelObj } of allLevels) {
+        if (levelId === 0) continue;
         solveLevelObj(levelId, levelObj);
       }
     } else {
-      const levelObj = levels[levelId];
+      const levelObj = levels.getLevelObj(levelId);
       solveLevelObj(levelId, levelObj);
     }
   } else if (options.w !== undefined) {
