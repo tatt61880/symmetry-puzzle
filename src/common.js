@@ -15,8 +15,6 @@
   let checkMode;
   let levelId;
 
-  let levelsList;
-  let levelsListEx;
   let loadLevelById;
 
   const maxW = 50;
@@ -35,8 +33,6 @@
     levels,
     levelId,
     checkMode,
-    levelsList,
-    levelsListEx,
     loadLevelById,
 
     isTouchDevice,

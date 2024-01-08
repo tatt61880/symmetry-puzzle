@@ -56,7 +56,6 @@
         res.push({ id, levelObj });
       }
       for (const id of Object.keys(this.#levelsListEx).sort()) {
-        console.log(id);
         const levelObj = this.#levelsListEx[id];
         res.push({ id, levelObj });
       }
