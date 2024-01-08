@@ -97,7 +97,6 @@
     {
       const levelsList = app.levelsLine;
       const levelsListEx = app.levelsLineEx;
-
       const levels = new app.Levels({ levelsList, levelsListEx });
       const allLevels = levels.getAllLevels();
       for (const { levelId, levelObj } of allLevels) {
@@ -126,7 +125,6 @@
     {
       const levelsList = app.levelsPoint;
       const levelsListEx = app.levelsPointEx;
-
       const levels = new app.Levels({ levelsList, levelsListEx });
       const allLevels = levels.getAllLevels();
       for (const { levelId, levelObj } of allLevels) {
@@ -155,7 +153,6 @@
     {
       const levelsList = app.levelsSpecial;
       const levelsListEx = app.levelsSpecialEx;
-
       const levels = new app.Levels({ levelsList, levelsListEx });
       const allLevels = levels.getAllLevels();
       for (const { levelId, levelObj } of allLevels) {
