@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2024.01.06';
+  const VERSION_TEXT = 'v' + '2024.01.08';
 
   const app = window.app;
   Object.freeze(app);
@@ -672,14 +672,9 @@
     const id = Number(id_);
     common.levelId = id;
 
-    let levelObj;
-    if (common.levelsList[common.levelId] !== undefined) {
-      levelObj = common.levelsList[common.levelId];
-    } else if (common.levelsListEx[common.levelId] !== undefined) {
-      levelObj = common.levelsListEx[common.levelId];
-    }
+    let levelObj = common.levels.getLevelObj(common.levelId);
 
-    if (levelObj === undefined) {
+    if (levelObj === null) {
       levelObj = createObjById(common.levelId);
     }
 
@@ -742,9 +737,9 @@
     if (common.levelId === null) return false;
     if (common.levelId === 0) return false;
     if (common.levelId === 1) return false;
+    if (isNaN(common.levelId)) return false;
     if (common.levelsList[common.levelId] !== undefined)
       return common.levelsList[common.levelId - 1] !== undefined;
-    if (isNaN(common.levelId)) return false;
     if (common.levelsListEx[common.levelId] !== undefined)
       return common.levelsListEx[common.levelId - 1] !== undefined;
     return (
@@ -757,9 +752,9 @@
     if (common.levelId === null) return false;
     if (common.levelId === -1) return false;
     if (common.levelId === 0) return false;
+    if (isNaN(common.levelId)) return false;
     if (common.levelsList[common.levelId] !== undefined)
       return common.levelsList[common.levelId + 1] !== undefined;
-    if (isNaN(common.levelId)) return false;
     if (common.levelsListEx[common.levelId] !== undefined)
       return common.levelsListEx[common.levelId + 1] !== undefined;
     return (
@@ -1001,34 +996,12 @@
       default:
         common.levelsList = null;
         common.levelsListEx = null;
+        return null;
     }
-
-    for (let id = 0; id < common.levelsList.length; ++id) {
-      const levelObj = common.levelsList[id];
-      if (
-        levelObj.w === queryObj.w &&
-        levelObj.h === queryObj.h &&
-        levelObj.s === queryObj.s &&
-        (queryObj.r === undefined || levelObj.r === queryObj.r) &&
-        levelObj.axis === queryObj.axis
-      ) {
-        return id;
-      }
-    }
-    for (const id of Object.keys(common.levelsListEx).sort()) {
-      if (String(id) === 'NaN') continue;
-      const levelObj = common.levelsListEx[id];
-      if (
-        levelObj.w === queryObj.w &&
-        levelObj.h === queryObj.h &&
-        levelObj.s === queryObj.s &&
-        (queryObj.r === undefined || levelObj.r === queryObj.r) &&
-        levelObj.axis === queryObj.axis
-      ) {
-        return id;
-      }
-    }
-    return null;
+    const levelsList = common.levelsList;
+    const levelsListEx = common.levelsListEx;
+    common.levels = new app.Levels({ levelsList, levelsListEx });
+    return common.levels.levelObjToId(queryObj);
   }
 
   function gotoTitlePage() {
@@ -1067,6 +1040,9 @@
         common.levelsListEx = null;
         console.assert(false);
     }
+    const levelsList = common.levelsList;
+    const levelsListEx = common.levelsListEx;
+    common.levels = new app.Levels({ levelsList, levelsListEx });
 
     common.hideElem(elems.category.title);
     common.showElem(elems.category.game);

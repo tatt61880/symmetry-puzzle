@@ -24,6 +24,7 @@
   const maxEditW = 10;
   const maxEditH = 10;
   let level;
+  let levels;
 
   const common = {
     maxW,
@@ -31,6 +32,7 @@
     maxEditW,
     maxEditH,
     level,
+    levels,
     levelId,
     checkMode,
     levelsList,
