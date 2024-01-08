@@ -734,33 +734,11 @@
   }
 
   function showLevelPrev() {
-    if (common.levelId === null) return false;
-    if (common.levelId === 0) return false;
-    if (common.levelId === 1) return false;
-    if (isNaN(common.levelId)) return false;
-    if (common.levelsList[common.levelId] !== undefined)
-      return common.levelsList[common.levelId - 1] !== undefined;
-    if (common.levelsListEx[common.levelId] !== undefined)
-      return common.levelsListEx[common.levelId - 1] !== undefined;
-    return (
-      common.levelsList[common.levelId - 1] === undefined &&
-      common.levelsListEx[common.levelId - 1] === undefined
-    );
+    return common.levels.prevable(common.levelId);
   }
 
   function showLevelNext() {
-    if (common.levelId === null) return false;
-    if (common.levelId === -1) return false;
-    if (common.levelId === 0) return false;
-    if (isNaN(common.levelId)) return false;
-    if (common.levelsList[common.levelId] !== undefined)
-      return common.levelsList[common.levelId + 1] !== undefined;
-    if (common.levelsListEx[common.levelId] !== undefined)
-      return common.levelsListEx[common.levelId + 1] !== undefined;
-    return (
-      common.levelsList[common.levelId + 1] === undefined &&
-      common.levelsListEx[common.levelId + 1] === undefined
-    );
+    return common.levels.nextable(common.levelId);
   }
 
   function updateLevelVisibility() {
@@ -980,26 +958,24 @@
   }
 
   function getId(queryObj) {
+    let levelsList;
+    let levelsListEx;
     switch (common.checkMode) {
       case app.Level.CHECK_MODE.LINE:
-        common.levelsList = app.levelsLine;
-        common.levelsListEx = app.levelsLineEx;
+        levelsList = app.levelsLine;
+        levelsListEx = app.levelsLineEx;
         break;
       case app.Level.CHECK_MODE.POINT:
-        common.levelsList = app.levelsPoint;
-        common.levelsListEx = app.levelsPointEx;
+        levelsList = app.levelsPoint;
+        levelsListEx = app.levelsPointEx;
         break;
       case app.Level.CHECK_MODE.SPECIAL:
-        common.levelsList = app.levelsSpecial;
-        common.levelsListEx = app.levelsSpecialEx;
+        levelsList = app.levelsSpecial;
+        levelsListEx = app.levelsSpecialEx;
         break;
       default:
-        common.levelsList = null;
-        common.levelsListEx = null;
         return null;
     }
-    const levelsList = common.levelsList;
-    const levelsListEx = common.levelsListEx;
     common.levels = new app.Levels({ levelsList, levelsListEx });
     return common.levels.levelObjToId(queryObj);
   }
@@ -1022,27 +998,27 @@
       toggleEditLevel();
     }
 
-    switch (common.checkMode) {
-      case app.Level.CHECK_MODE.LINE:
-        common.levelsList = app.levelsLine;
-        common.levelsListEx = app.levelsLineEx;
-        break;
-      case app.Level.CHECK_MODE.POINT:
-        common.levelsList = app.levelsPoint;
-        common.levelsListEx = app.levelsPointEx;
-        break;
-      case app.Level.CHECK_MODE.SPECIAL:
-        common.levelsList = app.levelsSpecial;
-        common.levelsListEx = app.levelsSpecialEx;
-        break;
-      default:
-        common.levelsList = null;
-        common.levelsListEx = null;
-        console.assert(false);
+    {
+      let levelsList;
+      let levelsListEx;
+      switch (common.checkMode) {
+        case app.Level.CHECK_MODE.LINE:
+          levelsList = app.levelsLine;
+          levelsListEx = app.levelsLineEx;
+          break;
+        case app.Level.CHECK_MODE.POINT:
+          levelsList = app.levelsPoint;
+          levelsListEx = app.levelsPointEx;
+          break;
+        case app.Level.CHECK_MODE.SPECIAL:
+          levelsList = app.levelsSpecial;
+          levelsListEx = app.levelsSpecialEx;
+          break;
+        default:
+          console.assert(false);
+      }
+      common.levels = new app.Levels({ levelsList, levelsListEx });
     }
-    const levelsList = common.levelsList;
-    const levelsListEx = common.levelsListEx;
-    common.levels = new app.Levels({ levelsList, levelsListEx });
 
     common.hideElem(elems.category.title);
     common.showElem(elems.category.game);

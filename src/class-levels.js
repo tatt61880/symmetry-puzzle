@@ -61,6 +61,36 @@
       }
       return res;
     }
+
+    prevable(levelId) {
+      if (levelId === null) return false;
+      if (levelId === 0) return false;
+      if (levelId === 1) return false;
+      if (isNaN(levelId)) return false;
+      if (this.#levelsList[levelId] !== undefined)
+        return this.#levelsList[levelId - 1] !== undefined;
+      if (this.#levelsListEx[levelId] !== undefined)
+        return this.#levelsListEx[levelId - 1] !== undefined;
+      return (
+        this.#levelsList[levelId - 1] === undefined &&
+        this.#levelsListEx[levelId - 1] === undefined
+      );
+    }
+
+    nextable(levelId) {
+      if (levelId === null) return false;
+      if (levelId === -1) return false;
+      if (levelId === 0) return false;
+      if (isNaN(levelId)) return false;
+      if (this.#levelsList[levelId] !== undefined)
+        return this.#levelsList[levelId + 1] !== undefined;
+      if (this.#levelsListEx[levelId] !== undefined)
+        return this.#levelsListEx[levelId + 1] !== undefined;
+      return (
+        this.#levelsList[levelId + 1] === undefined &&
+        this.#levelsListEx[levelId + 1] === undefined
+      );
+    }
   }
 
   if (isBrowser) {
