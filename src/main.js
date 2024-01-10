@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2024.01.09';
+  const VERSION_TEXT = 'v' + '2024.01.10';
 
   const app = window.app;
   Object.freeze(app);
@@ -908,16 +908,7 @@
     }
   }
 
-  function onloadApp() {
-    elems.version.textContent = VERSION_TEXT;
-
-    initElems();
-    initBlock();
-    updateEditMode(false);
-
-    window.onresize = resizeWindow;
-    resizeWindow();
-
+  function initLang() {
     let lang = app.savedata.loadLang();
     if (lang === undefined) {
       switch (window.navigator.language) {
@@ -931,6 +922,17 @@
       app.dialog.help.show();
     }
     applyLang(lang);
+  }
+
+  function onloadApp() {
+    elems.version.textContent = VERSION_TEXT;
+
+    initElems();
+    initBlock();
+    updateEditMode(false);
+
+    window.onresize = resizeWindow;
+    resizeWindow();
 
     const queryParams = app.analyzeUrl();
     settings = queryParams.settings;
@@ -940,10 +942,12 @@
     const id = queryParams.id;
     if (id === null && queryParams.levelObj.s === null) {
       gotoTitlePage();
+      initLang();
       return;
     }
 
     updateCheckMode(settings.mode);
+    initLang();
 
     if (id !== null) {
       onloadId(id);
