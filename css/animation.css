@@ -474,19 +474,22 @@
 }
 
 @keyframes animation-axis-special3 {
-  0%,
-  100% {
-    transform: scaleX(1) scaleY(1);
+  0% {
+    transform: rotate(0deg) rotate3d(1, 0, 0, 0deg) rotate3d(1, 1, 0, 0deg);
   }
 
   20%,
   40% {
-    transform: rotate(90deg);
+    transform: rotate(90deg) rotate3d(1, 0, 0, 0deg) rotate3d(1, 1, 0, 0deg);
   }
 
   60%,
   80% {
-    transform: rotate(90deg) rotate3d(1, 0, 0, 180deg);
+    transform: rotate(90deg) rotate3d(1, 0, 0, 180deg) rotate3d(1, 1, 0, 0deg);
+  }
+
+  100% {
+    transform: rotate(90deg) rotate3d(1, 0, 0, 180deg) rotate3d(1, 1, 0, 180deg);
   }
 }
 
