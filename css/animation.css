@@ -829,17 +829,13 @@
 }
 
 @keyframes animation-new-record-crown {
-  10%,
-  40%,
-  70% {
+  20%,
+  80% {
     opacity: 1;
-    transform: scale(1.2);
+    transform: scale(1.3);
   }
 
   0%,
-  25%,
-  55%,
-  85%,
   100% {
     opacity: 1;
     transform: scale(1);
