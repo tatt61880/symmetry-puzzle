@@ -192,6 +192,12 @@
 
     const numTotalTotal = numLineTotal + numPointTotal + numSpecialTotal;
 
+    const setBackgroundBar = (td, ratio) => {
+      const percent = ratio * 100;
+      const style = `background: linear-gradient(to top, rgb(250, 250, 150) ${percent}%, transparent ${percent}%);`;
+      td.setAttribute('style', style);
+    };
+
     {
       const tr = document.createElement('tr');
       tbody.appendChild(tr);
@@ -210,16 +216,19 @@
       {
         const td = document.createElement('td');
         td.innerText = numLineSolvedBest;
+        setBackgroundBar(td, numLineSolvedBest / numLineTotal);
         tr.appendChild(td);
       }
       {
         const td = document.createElement('td');
         td.innerText = numPointSolvedBest;
+        setBackgroundBar(td, numPointSolvedBest / numPointTotal);
         tr.appendChild(td);
       }
       {
         const td = document.createElement('td');
         td.innerText = numSpecialSolvedBest;
+        setBackgroundBar(td, numSpecialSolvedBest / numSpecialTotal);
         tr.appendChild(td);
       }
       {
@@ -247,16 +256,19 @@
       {
         const td = document.createElement('td');
         td.innerText = numLineSolvedNormal;
+        setBackgroundBar(td, numLineSolvedNormal / numLineTotal);
         tr.appendChild(td);
       }
       {
         const td = document.createElement('td');
         td.innerText = numPointSolvedNormal;
+        setBackgroundBar(td, numPointSolvedNormal / numPointTotal);
         tr.appendChild(td);
       }
       {
         const td = document.createElement('td');
         td.innerText = numSpecialSolvedNormal;
+        setBackgroundBar(td, numSpecialSolvedNormal / numSpecialTotal);
         tr.appendChild(td);
       }
       {
@@ -284,16 +296,19 @@
       {
         const td = document.createElement('td');
         td.innerText = numLineNotSolved;
+        setBackgroundBar(td, numLineNotSolved / numLineTotal);
         tr.appendChild(td);
       }
       {
         const td = document.createElement('td');
         td.innerText = numPointNotSolved;
+        setBackgroundBar(td, numPointNotSolved / numPointTotal);
         tr.appendChild(td);
       }
       {
         const td = document.createElement('td');
         td.innerText = numSpecialNotSolved;
+        setBackgroundBar(td, numSpecialNotSolved / numSpecialTotal);
         tr.appendChild(td);
       }
       {
