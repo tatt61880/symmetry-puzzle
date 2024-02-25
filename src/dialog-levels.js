@@ -337,6 +337,12 @@
           });
           text.setAttribute('font-size', '15px');
           text.setAttribute('text-anchor', 'end');
+
+          const fill =
+            shapeNum === shapes
+              ? app.colors.shapeNumPerfect
+              : app.colors.shapeNumNormal;
+          text.setAttribute('fill', fill);
           g.appendChild(text);
         }
       }

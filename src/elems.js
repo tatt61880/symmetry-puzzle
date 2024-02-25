@@ -90,6 +90,7 @@
     shapes: {
       button: 'button-shapes',
       buttonNumerator: 'button-shapes-numerator',
+      buttonLine: 'button-shapes-line',
       buttonDenumerator: 'button-shapes-denumerator',
       dialog: 'dialog-shapes',
       dialogDiv: 'dialog-shapes-div',

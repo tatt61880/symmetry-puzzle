@@ -70,6 +70,9 @@
   colors.stepLose = '#666666';
   colors.stepUnknown = '#a0a0a0';
 
+  colors.shapeNumPerfect = '#ff7700';
+  colors.shapeNumNormal = '#888888';
+
   colors.editButton = {
     fill: '#e5a0e5',
     stroke: '#aa33aa',

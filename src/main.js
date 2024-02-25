@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2024.02.25';
+  const VERSION_TEXT = 'v' + '2024.02.25b';
 
   const app = window.app;
   Object.freeze(app);
@@ -710,6 +710,13 @@
         const denumerator = common.level.getShapes() ?? '?';
         elems.shapes.buttonNumerator.textContent = numerator;
         elems.shapes.buttonDenumerator.textContent = denumerator;
+        const fill =
+          numerator === denumerator
+            ? app.colors.shapeNumPerfect
+            : app.colors.shapeNumNormal;
+        elems.shapes.buttonNumerator.setAttribute('fill', fill);
+        elems.shapes.buttonLine.setAttribute('fill', fill);
+        elems.shapes.buttonDenumerator.setAttribute('fill', fill);
         return;
       }
     }
