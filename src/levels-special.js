@@ -391,7 +391,7 @@
       step: 61,
       shapes: 1,
     },
-    */
+    /**/
   ];
 
   const levelsSpecial = [];
