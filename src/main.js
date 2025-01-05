@@ -577,6 +577,7 @@
       common.hideElem(elems.controller.undo);
       common.hideElem(elems.edit.undo);
     }
+
     if (undoInfo.isRedoable()) {
       common.showElem(elems.controller.redo);
       common.showElem(elems.edit.redo);
