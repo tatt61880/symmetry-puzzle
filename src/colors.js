@@ -4,6 +4,7 @@
 
   let app = {};
   const colors = {};
+
   if (isBrowser) {
     app = window.app;
     console.assert(app?.states !== undefined);
@@ -17,16 +18,19 @@
     text: '#884400',
     error: '#f80000',
   };
+
   colors[app.states.none] = {
     fill: '#ffffff',
     stroke: '#aaaaaa',
     text: '#888888',
   };
+
   colors[app.states.wall] = {
     fill: '#222244',
     stroke: '#222244',
     text: '#bbbbbb',
   };
+
   for (let i = app.states.targetMin; i <= app.states.targetMax; ++i) {
     colors[i] = {
       fill: '#ffbb77',
@@ -35,6 +39,7 @@
       error: '#f80000',
     };
   }
+
   for (let i = app.states.otherMin; i <= app.states.otherMax; ++i) {
     colors[i] = {
       fill: '#e5e5e5',
@@ -43,6 +48,7 @@
       error: '#f80000',
     };
   }
+
   for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
     colors[i] = {
       fill: '#aaccff',

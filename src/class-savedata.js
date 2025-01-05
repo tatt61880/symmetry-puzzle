@@ -73,6 +73,7 @@
       if (this.data.shapes[key] === undefined) {
         this.data.shapes[key] = {};
       }
+
       const highestScoreR = this.data.shapes[key][targetShape];
       if (highestScoreR === undefined || step < highestScoreR.length) {
         this.data.shapes[key][targetShape] = r;
