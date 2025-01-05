@@ -61,7 +61,7 @@
         setBlock(elem, 's', 1, app.Level.CHECK_MODE.SPECIAL);
       }
       for (const elem of document.getElementsByClassName('target-block')) {
-        setBlock(elem, '1', 2);
+        setBlock(elem, '1', 1);
       }
     }
 
