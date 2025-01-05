@@ -640,13 +640,16 @@
       id = -id;
       isMinus = true;
     }
+
     while (id) {
       digits.unshift(id % 10);
       id = Math.floor(id / 10);
     }
+
     if (isMinus) {
       digits.unshift(-1);
     }
+
     let s = 's-';
     let x = 1;
     for (let row = 0; row < 5; ++row) {
@@ -662,6 +665,7 @@
       }
       s += '-';
     }
+
     const w = digits.length * 4 + 1;
     const h = 7;
     return { w, h, s };
@@ -686,6 +690,7 @@
     if (isLocalhost()) {
       common.level.printSolveJsStr();
     }
+
     updateLevelVisibility();
     elems.level.id.textContent = common.levelId;
     replaceUrl();
@@ -706,6 +711,7 @@
         common.level.getLevelObj(),
         common.checkMode
       );
+
       if (shapesObj) {
         common.showElem(elems.shapes.button);
         const numerator = Object.keys(shapesObj).length;
@@ -830,6 +836,7 @@
     for (const elem of document.getElementsByClassName('check-mode')) {
       elem.classList.add('hide-mode');
     }
+
     for (const elem of document.getElementsByClassName(
       `check-mode ${className}`
     )) {
