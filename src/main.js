@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.01.05';
+  const VERSION_TEXT = 'v' + '2025.01.09';
 
   const app = window.app;
   Object.freeze(app);
@@ -2124,7 +2124,8 @@
     }
   }
 
-  function pointerUp() {
+  function pointerUp(e) {
+    e.preventDefault();
     isDrawing = false;
     isRemoving = false;
   }
