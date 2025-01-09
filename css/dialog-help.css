@@ -114,6 +114,11 @@
     }
   }
 
+  .help-mode-creator {
+    font-weight: bold;
+    color: #000055;
+  }
+
   & input {
     &[name='help-tab'] {
       display: none;
