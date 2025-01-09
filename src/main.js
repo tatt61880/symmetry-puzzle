@@ -1088,7 +1088,6 @@
       const touchDevice = document.ontouchstart !== undefined;
       const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
-      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
 
       elems.contents.addEventListener(pointerdownEventName, (e) => {
         // ダブルタップしたときの画面の拡大縮小をしないようにする。
@@ -1098,10 +1097,6 @@
       elems.contents.addEventListener(pointermoveEventName, (e) => {
         if (common.isShownElem(elems.console.widget)) return;
         // スワイプ操作を無効化する。
-        e.preventDefault();
-      });
-
-      elems.contents.addEventListener(pointerupEventName, (e) => {
         e.preventDefault();
       });
     }
