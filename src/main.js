@@ -1085,7 +1085,7 @@
     });
 
     {
-      const touchDevice = document.ontouchstart !== undefined;
+      const touchDevice = common.isTouchDevice();
 
       elems.contents.addEventListener('mousedown', (e) => {
         // ダブルタップしたときの画面の拡大縮小をしないようにする。
