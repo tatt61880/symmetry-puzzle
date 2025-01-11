@@ -397,11 +397,11 @@
     }
 
     // 軸の回転移動
-    #rotateAxis() {
+    #rotateAxis(height) {
       if (!this.hasAxis()) return;
       const cx = this.#axis.cx;
       const cy = this.#axis.cy;
-      this.#axis.cx = this.#height * 2 - cy;
+      this.#axis.cx = height * 2 - cy;
       this.#axis.cy = cx;
       switch (this.#axis.type) {
         case Level.SYMMETRY_TYPE.LINE1: {
@@ -1448,7 +1448,7 @@
     #rotateLevel(levelObj, rotateNum) {
       let newLevelObj = levelObj;
       for (let i = 0; i < rotateNum; ++i) {
-        this.#rotateAxis();
+        this.#rotateAxis(newLevelObj.h + 2);
         const w = newLevelObj.h; // 90度回転後
         const h = newLevelObj.w; // 90度回転後
         const stateStr = newLevelObj.s;
