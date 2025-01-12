@@ -2320,10 +2320,12 @@
               this.#moveDx,
               this.#moveDy
             );
-            const dx = this.#moveFlags[srcY][srcX] ? this.#moveDx * 0.06 : 0;
-            const dy = this.#moveFlags[srcY][srcX] ? this.#moveDy * 0.2 : 0;
-            const px = this.#moveFlags[srcY][srcX] ? srcX : sX;
-            const py = this.#moveFlags[srcY][srcX] ? srcY : sY;
+            const moveFlag =
+              this.#moveFlags[srcY] && this.#moveFlags[srcY][srcX];
+            const dx = moveFlag ? this.#moveDx * 0.06 : 0;
+            const dy = moveFlag ? this.#moveDy * 0.2 : 0;
+            const px = moveFlag ? srcX : sX;
+            const py = moveFlag ? srcY : sY;
 
             const prevInfo =
               this.#eyePrevInfo[py] === undefined ||
