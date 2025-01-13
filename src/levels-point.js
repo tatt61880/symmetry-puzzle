@@ -431,10 +431,10 @@
     {
       w: 9,
       h: 9,
-      s: '111xxx222-1s1x0x2t2-111xxx222-000000aaa-000000aua-000000aaa-xxx333-x0x3v3-xxx333',
-      r: '222333000113',
-      step: 12,
-      shapes: 6,
+      s: '011xxx222-1s1x0x2t2-111xxx222-000aaabbb-000auabvb-000aaabbb-xxx333-x0x3w3-xxx33',
+      r: '33322222211100011122230330',
+      step: 26,
+      shapes: 4,
     },
     {
       w: 9,
