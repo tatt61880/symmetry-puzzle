@@ -119,6 +119,11 @@
     color: #000055;
   }
 
+  .help-mode-tester {
+    font-weight: bold;
+    color: #555555;
+  }
+
   & input {
     &[name='help-tab'] {
       display: none;
