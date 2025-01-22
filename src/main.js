@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.01.21';
+  const VERSION_TEXT = 'v' + '2025.01.21cd';
 
   const app = window.app;
   Object.freeze(app);
@@ -1087,7 +1087,13 @@
     {
       const touchDevice = common.isTouchDevice();
 
+      elems.contents.ontouchstart = function () {
+        consoleAdd('test', 'log');
+        return false;
+      };
+
       elems.contents.addEventListener('mousedown', (e) => {
+        consoleAdd('mousedown', 'log');
         // ダブルタップしたときの画面の拡大縮小をしないようにする。
         e.preventDefault();
       });
