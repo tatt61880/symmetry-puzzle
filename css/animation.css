@@ -13,6 +13,30 @@
   --animation-illegal-move: translate(0, 0);
 }
 
+/* Blocks jumping animation */
+.animation-jump {
+  animation: animation-jump linear forwards;
+  animation-duration: calc(var(--animation-duration) * 4);
+}
+
+@keyframes animation-jump {
+  0%,
+  20%,
+  50%,
+  60%,
+  90%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  33%,
+  37%,
+  73%,
+  77% {
+    transform: var(--animation-jump);
+  }
+}
+
 /* Blocks moving animation */
 .animation-move {
   animation: animation-move cubic-bezier(0.22, 0.61, 0.36, 1) forwards;

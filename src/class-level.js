@@ -1026,10 +1026,12 @@
 
       const gShadows = app.svg.createG('group-shadow');
       const gElemsOther = app.svg.createG('group-elems-other');
-      const gElemsAnimation = app.svg.createG('group-elems-animation');
+      const gElemsAnimation1 = app.svg.createG('group-elems-animation1');
+      const gElemsAnimation2 = app.svg.createG('group-elems-animation2');
       g.appendChild(gShadows);
       g.appendChild(gElemsOther);
-      g.appendChild(gElemsAnimation); // 最後に追加。アニメーション中の図形が静止中の図形に隠されないようにするためです。
+      g.appendChild(gElemsAnimation1); // 最後に追加。アニメーション中の図形が静止中の図形に隠されないようにするためです。
+      g.appendChild(gElemsAnimation2); // 最後に追加。アニメーション中の図形が静止中の図形に隠されないようにするためです。
 
       const stateHasEyes = {}; // 一番左上のみに目を付けます。
       for (let y = y0; y < y0 + height; ++y) {
@@ -1054,7 +1056,8 @@
             eyeFlag,
             gShadows,
             gElemsOther,
-            gElemsAnimation
+            gElemsAnimation1,
+            gElemsAnimation2
           );
         }
       }
@@ -2753,7 +2756,8 @@
       eyeFlag,
       gShadows,
       gElemsOther,
-      gElemsAnimation
+      gElemsAnimation1,
+      gElemsAnimation2
     ) {
       let gElems = gElemsOther;
       const state = this.getState(x, y);
@@ -2770,10 +2774,16 @@
         eyeFlag
       );
 
-      if (app.states.isTarget(state) && symmetryType !== null) {
-        const animationClass = animationClasses[symmetryType];
-        elem.classList.add(animationClass);
-        gElems = gElemsAnimation;
+      if (symmetryType !== null) {
+        if (app.states.isUser(state)) {
+          elem.classList.add('animation-jump');
+          gElems = gElemsAnimation1;
+        }
+        if (app.states.isTarget(state)) {
+          const animationClass = animationClasses[symmetryType];
+          elem.classList.add(animationClass);
+          gElems = gElemsAnimation2;
+        }
       }
 
       {
@@ -2799,7 +2809,7 @@
           srcY <= this.#yMax &&
           this.#moveFlags[srcY][srcX]
         ) {
-          gElems = gElemsAnimation;
+          gElems = gElemsAnimation2;
           if (dx + dy === 0) {
             document.documentElement.style.setProperty(
               '--animation-origin',

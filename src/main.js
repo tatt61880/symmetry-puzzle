@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.01.23';
+  const VERSION_TEXT = 'v' + '2025.01.26';
 
   const app = window.app;
   Object.freeze(app);
@@ -118,6 +118,10 @@
       document.documentElement.style.setProperty(
         '--animation-origin',
         `${blockSize * center.x}px ${blockSize * center.y}px`
+      );
+      document.documentElement.style.setProperty(
+        '--animation-jump',
+        `translate(0, ${-0.2 * blockSize}px)`
       );
     }
   }
