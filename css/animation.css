@@ -15,24 +15,21 @@
 
 /* Blocks jumping animation */
 .animation-jump {
-  animation: animation-jump linear forwards;
-  animation-duration: calc(var(--animation-duration) * 4);
+  animation: animation-jump cubic-bezier(0, 0.5, 1, 0.5) forwards;
+  animation-duration: calc(var(--animation-duration) * 2);
+  animation-iteration-count: 2;
 }
 
 @keyframes animation-jump {
   0%,
-  20%,
-  50%,
-  60%,
+  10%,
   90%,
   100% {
     transform: translate(0, 0);
   }
 
-  33%,
-  37%,
-  73%,
-  77% {
+  40%,
+  60% {
     transform: var(--animation-jump);
   }
 }
