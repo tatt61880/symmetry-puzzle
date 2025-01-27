@@ -119,10 +119,6 @@
         '--animation-origin',
         `${blockSize * center.x}px ${blockSize * center.y}px`
       );
-      document.documentElement.style.setProperty(
-        '--animation-jump',
-        `translate(0, ${-0.2 * blockSize}px)`
-      );
     }
   }
 
@@ -568,6 +564,11 @@
     elems.main.svg.setAttribute(
       'height',
       blockSize * common.level.getHeight() + 2 * frameSize
+    );
+
+    document.documentElement.style.setProperty(
+      '--animation-jump',
+      `translate(0, ${-0.3 * blockSize}px)`
     );
   }
 
