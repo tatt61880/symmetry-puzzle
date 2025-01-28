@@ -726,17 +726,17 @@
 
 .axis-2-1 {
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2) * 0.5
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
   );
   animation-delay: 0;
 }
 
 .axis-2-2 {
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2) * 0.5
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
   );
   animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2) * 0.5
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
   );
 }
 
