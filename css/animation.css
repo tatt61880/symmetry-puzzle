@@ -7,7 +7,7 @@
   --animation-duration-symmetry: none;
   --animation-origin: 0 0;
   --animation-axis-1: 1;
-  --animation-axis-2: 3;
+  --animation-axis-2: 2;
   --animation-axis-3: 3;
   --animation-axis-4: 4;
   --animation-illegal-move: translate(0, 0);
@@ -16,7 +16,9 @@
 /* Blocks jumping animation */
 .animation-jump {
   animation: animation-jump cubic-bezier(0, 0.5, 1, 0.5) forwards;
-  animation-duration: calc(var(--animation-duration) * 2);
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-1)
+  );
   animation-iteration-count: 2;
 }
 
@@ -204,7 +206,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-line1 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-1)
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
   );
 }
 
@@ -224,7 +226,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-line2 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-1)
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
   );
 }
 
@@ -244,7 +246,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-line3 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-1)
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
   );
 }
 
@@ -264,7 +266,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-line4 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-1)
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
   );
 }
 
@@ -284,7 +286,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-plus1 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
+    var(--animation-duration-symmetry) * var(--animation-axis-4)
   );
 }
 
@@ -312,7 +314,7 @@
   transform-origin: var(--animation-origin);
   animation: animation-axis-plus2 linear forwards;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
+    var(--animation-duration-symmetry) * var(--animation-axis-4)
   );
 }
 
@@ -378,7 +380,9 @@
 .animation-axis-point1 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-point1 linear forwards;
-  animation-duration: var(--animation-duration-symmetry);
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
+  );
 }
 
 @keyframes animation-axis-point1 {
@@ -399,7 +403,9 @@
 .animation-axis-point2 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-point2 linear forwards;
-  animation-duration: calc(var(--animation-duration-symmetry) * 2);
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-4)
+  );
 }
 
 @keyframes animation-axis-point2 {
@@ -517,7 +523,7 @@
 .animation-symmetry-axis {
   animation: animation-symmetry-axis linear both;
   animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-1)
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
   );
 }
 
@@ -542,7 +548,9 @@
 .animation-symmetry-axis-point2 {
   transform-origin: var(--animation-origin);
   animation: animation-symmetry-axis-point2 linear both;
-  animation-duration: var(--animation-duration-symmetry);
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-2)
+  );
 }
 
 @keyframes animation-symmetry-axis-point2 {
@@ -570,7 +578,9 @@
 .animation-symmetry-axis-point4 {
   transform-origin: var(--animation-origin);
   animation: animation-symmetry-axis-point4 linear both;
-  animation-duration: calc(var(--animation-duration-symmetry) * 2);
+  animation-duration: calc(
+    var(--animation-duration-symmetry) * var(--animation-axis-4)
+  );
 }
 
 @keyframes animation-symmetry-axis-point4 {
