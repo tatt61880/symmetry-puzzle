@@ -1127,6 +1127,10 @@
         const center = this.getCenter(app.states.isTarget);
         const gg = app.svg.createG('group-symmetry-axis');
         g.appendChild(gg);
+        document.documentElement.style.setProperty(
+          '--animation-jump-count',
+          jumpCounts[symmetryType]
+        );
         switch (symmetryType) {
           case Level.SYMMETRY_TYPE.LINE1: {
             // m (｜)
@@ -2893,6 +2897,21 @@
     [Level.SYMMETRY_TYPE.SPECIAL1]: 'animation-axis-special1',
     [Level.SYMMETRY_TYPE.SPECIAL2]: 'animation-axis-special2',
     [Level.SYMMETRY_TYPE.SPECIAL3]: 'animation-axis-special3',
+  };
+
+  const jumpCounts = {
+    [Level.SYMMETRY_TYPE.LINE1]: 2,
+    [Level.SYMMETRY_TYPE.LINE2]: 2,
+    [Level.SYMMETRY_TYPE.LINE3]: 2,
+    [Level.SYMMETRY_TYPE.LINE4]: 2,
+    [Level.SYMMETRY_TYPE.PLUS1]: 4,
+    [Level.SYMMETRY_TYPE.PLUS2]: 4,
+    [Level.SYMMETRY_TYPE.PLUS3]: 4,
+    [Level.SYMMETRY_TYPE.POINT1]: 2,
+    [Level.SYMMETRY_TYPE.POINT2]: 4,
+    [Level.SYMMETRY_TYPE.SPECIAL1]: 3,
+    [Level.SYMMETRY_TYPE.SPECIAL2]: 3,
+    [Level.SYMMETRY_TYPE.SPECIAL3]: 3,
   };
 
   const axisTypeStr = {

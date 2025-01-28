@@ -19,7 +19,7 @@
   animation-duration: calc(
     var(--animation-duration-symmetry) * var(--animation-axis-1)
   );
-  animation-iteration-count: 2;
+  animation-iteration-count: var(--animation-jump-count);
 }
 
 @keyframes animation-jump {
