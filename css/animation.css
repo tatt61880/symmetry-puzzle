@@ -860,16 +860,16 @@
 }
 
 @keyframes animation-new-record-crown {
-  20%,
-  80% {
-    opacity: 1;
-    transform: scale(1.3);
-  }
-
   0%,
   100% {
     opacity: 1;
     transform: scale(1);
+  }
+
+  20%,
+  80% {
+    opacity: 1;
+    transform: scale(1.3);
   }
 }
 
@@ -898,7 +898,8 @@
 }
 
 @keyframes animation-axis-4mm {
-  0% {
+  0%,
+  100% {
     transform: rotate(0deg) rotate3d(1, 0, 0, 0deg) rotate3d(1, 1, 0, 0deg);
   }
 
@@ -913,7 +914,7 @@
   }
 
   95%,
-  100% {
+  99.9% {
     transform: rotate(90deg) rotate3d(1, 0, 0, 180deg) rotate3d(1, 1, 0, 180deg);
   }
 }
