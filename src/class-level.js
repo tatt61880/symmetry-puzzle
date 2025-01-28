@@ -1239,6 +1239,7 @@
             break;
           }
           case Level.SYMMETRY_TYPE.SPECIAL3: {
+            console.log(1);
             // 4mm (｜―＼／)
             const point = createAxisPoint4({ center });
             const line1 = createAxisLine1({ center, height });
@@ -1246,10 +1247,10 @@
             const line3 = createAxisLine3({ center, height });
             const line4 = createAxisLine4({ center, height });
             point.classList.add('animation-symmetry-axis-sp3');
-            line1.classList.add('animation-symmetry-axis', 'axis-3-2');
-            line2.classList.add('animation-symmetry-axis', 'axis-3-2');
-            line3.classList.add('animation-symmetry-axis', 'axis-3-3');
-            line4.classList.add('animation-symmetry-axis', 'axis-3-3');
+            line1.classList.add('animation-symmetry-axis', 'axis-8-5');
+            line2.classList.add('animation-symmetry-axis', 'axis-8-6');
+            line3.classList.add('animation-symmetry-axis', 'axis-8-7');
+            line4.classList.add('animation-symmetry-axis', 'axis-8-8');
             gg.appendChild(point);
             gg.appendChild(line1);
             gg.appendChild(line2);
@@ -2911,7 +2912,7 @@
     [Level.SYMMETRY_TYPE.POINT2]: 4,
     [Level.SYMMETRY_TYPE.SPECIAL1]: 3,
     [Level.SYMMETRY_TYPE.SPECIAL2]: 3,
-    [Level.SYMMETRY_TYPE.SPECIAL3]: 3,
+    [Level.SYMMETRY_TYPE.SPECIAL3]: 8,
   };
 
   const axisTypeStr = {
