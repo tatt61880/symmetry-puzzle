@@ -526,24 +526,33 @@
     transform: rotate(360deg);
   }
 
+  50.01% {
+    transform: rotate3d(0, 1, 0, 0deg) rotate3d(1, 0, 0, 0deg)
+      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
+  }
+
   57.5%,
   62.5% {
-    transform: rotate(360deg) scaleX(-1);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 0deg)
+      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   70%,
   75% {
-    transform: rotate(360deg) scaleX(-1) scaleY(-1);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
+      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   82.5%,
   87.5% {
-    transform: rotate(360deg) scaleX(-1) scaleY(-1) rotate3d(1, 1, 0, 180deg);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
+      rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 0deg);
   }
 
   95%,
   100% {
-    transform: scaleX(1) scaleY(1);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
+      rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 180deg);
   }
 }
 
@@ -753,28 +762,38 @@
     transform: rotate(360deg);
   }
 
+  50.01% {
+    opacity: 0.4;
+    transform: rotate3d(0, 1, 0, 0deg) rotate3d(1, 0, 0, 0deg)
+      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
+  }
+
   57.5%,
   62.5% {
     opacity: 0.4;
-    transform: rotate(360deg) scaleX(-1);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 0deg)
+      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   70%,
   75% {
     opacity: 0.4;
-    transform: rotate(360deg) scaleX(-1) scaleY(-1);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
+      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   82.5%,
   87.5% {
     opacity: 0.4;
-    transform: rotate(360deg) scaleX(-1) scaleY(-1) rotate3d(1, 1, 0, 180deg);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
+      rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 0deg);
   }
 
   95%,
   100% {
     opacity: 0.4;
-    transform: scaleX(1) scaleY(1);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
+      rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 180deg);
   }
 }
 
@@ -1004,7 +1023,7 @@
   }
 
   95%,
-  99.9% {
+  99.99% {
     transform: rotate(90deg) rotate3d(1, 0, 0, 180deg) rotate3d(1, 1, 0, 180deg);
   }
 }
