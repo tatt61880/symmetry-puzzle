@@ -2357,7 +2357,6 @@
       tryMoving(dir);
     }
     draw();
-    completeCheck();
   }
 
   function retryAndExecReplayStr(r) {
