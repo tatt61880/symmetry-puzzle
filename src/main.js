@@ -2356,6 +2356,7 @@
       const dir = Number(dirChar);
       tryMoving(dir);
     }
+    draw();
     completeCheck();
   }
 
