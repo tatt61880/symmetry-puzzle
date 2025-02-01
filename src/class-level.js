@@ -1045,6 +1045,13 @@
             stateHasEyes[state] = true;
             return true;
           })();
+          const isSoloUser = (() => {
+            if (!app.states.isUser(state)) return false;
+            if (!eyeFlag) return false;
+            if (app.states.isUser(this.getState(x + 1, y))) return false;
+            if (app.states.isUser(this.getState(x, y + 1))) return false;
+            return true;
+          })();
           this.#addOneBlock(
             x - x0,
             y - y0,
@@ -1054,6 +1061,7 @@
             symmetryType,
             showCharsFlag,
             eyeFlag,
+            isSoloUser,
             gShadows,
             gElemsOther,
             gElemsAnimation1,
@@ -2759,6 +2767,7 @@
       symmetryType,
       showCharsFlag,
       eyeFlag,
+      isSoloUser,
       gShadows,
       gElemsOther,
       gElemsAnimation1,
@@ -2779,11 +2788,23 @@
         eyeFlag
       );
 
-      gElems.appendChild(elem);
+      let child = elem;
 
       if (symmetryType !== null) {
         if (app.states.isUser(state)) {
-          elem.classList.add('animation-jump');
+          if (isSoloUser) {
+            const g = app.svg.createG();
+            g.appendChild(elem);
+            child = g;
+            const animationClass = animationClasses[symmetryType];
+            elem.classList.add(animationClass);
+            elem.style.transformOrigin = `${blockSize * (x + 0.5)}px ${
+              blockSize * (y + 0.5)
+            }px`;
+            g.classList.add('animation-jump');
+          } else {
+            elem.classList.add('animation-jump');
+          }
           gElems = gElemsAnimation1;
         } else if (app.states.isTarget(state)) {
           const animationClass = animationClasses[symmetryType];
@@ -2791,6 +2812,8 @@
           gElems = gElemsAnimation2;
         }
       }
+
+      gElems.appendChild(child);
 
       {
         const flags = [];
