@@ -40,7 +40,8 @@
       opacity: 0.8;
     }
 
-    &#button-play-line {
+    &#button-play-line,
+    &#button-num-line {
       border-radius: 20% 20% 40% 40%;
     }
 

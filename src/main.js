@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.02.01';
+  const VERSION_TEXT = 'v' + '2025.02.02';
 
   const app = window.app;
   Object.freeze(app);
@@ -348,7 +348,9 @@
 
     if (e.key === '#') {
       if (e.ctrlKey) return;
-      app.dialog.levels.show();
+      if (common.isShownElem(elems.levels.button)) {
+        app.dialog.levels.show();
+      }
       return;
     }
 
@@ -700,14 +702,14 @@
     elems.level.id.textContent = common.levelId;
     replaceUrl();
 
-    if (id_ === 1) {
-      // レベル1をロード時、レベル1を未クリアのときはヘルプ画面を表示する。
-      const checkMode = common.level.getCheckMode();
-      const playerScore = app.savedata.getHighestScore(levelObj, checkMode);
-      if (playerScore === null) {
-        app.dialog.help.show();
-      }
-    }
+    // if (id_ === 1) {
+    //   // レベル1をロード時、レベル1を未クリアのときはヘルプ画面を表示する。
+    //   const checkMode = common.level.getCheckMode();
+    //   const playerScore = app.savedata.getHighestScore(levelObj, checkMode);
+    //   if (playerScore === null) {
+    //     app.dialog.help.show();
+    //   }
+    // }
   }
 
   function updateShapeButton() {
@@ -764,15 +766,19 @@
   function updateLevelVisibility() {
     (showLevelPrev() ? common.showElem : common.hideElem)(elems.level.prev);
     (showLevelNext() ? common.showElem : common.hideElem)(elems.level.next);
-    (common.levelId !== null ? common.showElem : common.hideElem)(
-      elems.level.id
-    );
-    (common.levelId !== null ? common.showElem : common.hideElem)(
-      elems.levels.button
-    );
-    (common.levelId === null ? common.showElem : common.hideElem)(
-      elems.level.edit
-    );
+    if (common.levelId !== null) {
+      common.showElem(elems.level.id);
+      common.showElem(elems.levels.button);
+      common.hideElem(elems.level.edit);
+    } else {
+      common.hideElem(elems.level.id);
+      common.hideElem(elems.levels.button);
+      common.showElem(elems.level.edit);
+    }
+    if (common.levels.getAllLevels().length === 0) {
+      common.hideElem(elems.levels.button);
+      common.hideElem(elems.level.edit);
+    }
   }
 
   function gotoPrevLevel() {
@@ -961,7 +967,8 @@
     setInterval(intervalFunc, INPUT_INTERVAL_MSEC);
 
     const id = queryParams.id;
-    if (id === null && queryParams.levelObj.s === null) {
+    const num = queryParams.num;
+    if (id === null && num === null && queryParams.levelObj.s === null) {
       gotoTitlePage();
       initLang();
       return;
@@ -972,6 +979,8 @@
 
     if (id !== null) {
       onloadId(id);
+    } else if (num !== null) {
+      onloadId(num, false);
     } else {
       const id = getId(queryParams.levelObj);
       if (id === null) {
@@ -1016,7 +1025,7 @@
     replaceUrlTitle();
   }
 
-  function onloadId(id_) {
+  function onloadId(id_, idFlag = true) {
     window.getSelection().removeAllRanges();
 
     if (editMode) {
@@ -1024,23 +1033,25 @@
     }
 
     {
-      let levelsList;
-      let levelsListEx;
-      switch (common.checkMode) {
-        case app.Level.CHECK_MODE.LINE:
-          levelsList = app.levelsLine;
-          levelsListEx = app.levelsLineEx;
-          break;
-        case app.Level.CHECK_MODE.POINT:
-          levelsList = app.levelsPoint;
-          levelsListEx = app.levelsPointEx;
-          break;
-        case app.Level.CHECK_MODE.SPECIAL:
-          levelsList = app.levelsSpecial;
-          levelsListEx = app.levelsSpecialEx;
-          break;
-        default:
-          console.assert(false);
+      let levelsList = {};
+      let levelsListEx = {};
+      if (idFlag) {
+        switch (common.checkMode) {
+          case app.Level.CHECK_MODE.LINE:
+            levelsList = app.levelsLine;
+            levelsListEx = app.levelsLineEx;
+            break;
+          case app.Level.CHECK_MODE.POINT:
+            levelsList = app.levelsPoint;
+            levelsListEx = app.levelsPointEx;
+            break;
+          case app.Level.CHECK_MODE.SPECIAL:
+            levelsList = app.levelsSpecial;
+            levelsListEx = app.levelsSpecialEx;
+            break;
+          default:
+            console.assert(false);
+        }
       }
       common.levels = new app.Levels({ levelsList, levelsListEx });
     }
@@ -1354,6 +1365,11 @@
     elems.title.buttonPlaySpecial.addEventListener('click', () => {
       updateCheckMode(app.Level.CHECK_MODE.SPECIAL);
       onloadId(1);
+    });
+
+    elems.title.buttonNumLine.addEventListener('click', () => {
+      updateCheckMode(app.Level.CHECK_MODE.LINE);
+      onloadId(1, false);
     });
   }
 

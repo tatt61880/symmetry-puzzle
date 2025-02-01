@@ -11,6 +11,7 @@
   function analyzeUrl() {
     const res = {
       id: null,
+      num: null,
       levelObj: {
         w: 6,
         h: 6,
@@ -32,6 +33,9 @@
       const paramName = paramArray[0];
       const paramVal = paramArray[1];
       switch (paramName) {
+        case 'num':
+          res.num = Number(paramVal);
+          break;
         case 'id':
           res.id = Number(paramVal);
           break;
