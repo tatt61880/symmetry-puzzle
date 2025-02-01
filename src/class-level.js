@@ -2779,12 +2779,13 @@
         eyeFlag
       );
 
+      gElems.appendChild(elem);
+
       if (symmetryType !== null) {
         if (app.states.isUser(state)) {
           elem.classList.add('animation-jump');
           gElems = gElemsAnimation1;
-        }
-        if (app.states.isTarget(state)) {
+        } else if (app.states.isTarget(state)) {
           const animationClass = animationClasses[symmetryType];
           elem.classList.add(animationClass);
           gElems = gElemsAnimation2;
@@ -2871,8 +2872,6 @@
           }
         }
       }
-
-      gElems.appendChild(elem);
     }
   }
 
