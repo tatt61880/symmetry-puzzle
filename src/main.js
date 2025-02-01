@@ -599,8 +599,6 @@
 
     if (undoInfo.isUndoable()) {
       const levelObj = undoInfo.undo();
-      updateController();
-
       const resizeFlag =
         common.level.getW() !== levelObj.w ||
         common.level.getH() !== levelObj.h;
