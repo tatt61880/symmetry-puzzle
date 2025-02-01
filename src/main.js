@@ -570,7 +570,7 @@
 
     document.documentElement.style.setProperty(
       '--animation-jump',
-      `translate(0, ${-0.3 * blockSize}px)`
+      `translate(0, ${-0.5 * blockSize}px)`
     );
   }
 
