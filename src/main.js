@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.02.02';
+  const VERSION_TEXT = 'v' + '2025.02.02b';
 
   const app = window.app;
   Object.freeze(app);
@@ -640,6 +640,7 @@
     };
 
     common.levelId = id;
+    common.levelNum = id;
     let isMinus = false;
     if (id < 0) {
       id = -id;
@@ -682,6 +683,7 @@
     clearTimeout(nextLevelTimerId);
     const id = Number(id_);
     common.levelId = id;
+    common.levelNum = null;
 
     let levelObj = common.levels.getLevelObj(common.levelId);
 
@@ -821,6 +823,7 @@
   function toggleEditLevel() {
     editMode = !editMode;
     common.levelId = null;
+    common.levelNum = null;
     updateLevelVisibility();
     updateEditAxisButton();
     updateEditMode(editMode);
@@ -1083,6 +1086,7 @@
     common.showElem(elems.controller.widget);
 
     common.levelId = null;
+    common.levelNum = null;
     updateLevelVisibility();
     loadLevelObj(levelObj);
   }
@@ -2262,11 +2266,14 @@
       return;
     }
     const base = location.href.split('?')[0];
-    const levelObj = common.level.getLevelObj();
-    const urlQuery = app.Level.getUrlQuery(
-      levelObj,
-      common.level.getCheckMode()
-    );
+    let urlQuery;
+    if (common.levelNum === null) {
+      const levelObj = common.level.getLevelObj();
+      urlQuery = app.Level.getUrlQuery(levelObj, common.level.getCheckMode());
+    } else {
+      const mode = app.Level.getCheckModeStr(common.level.getCheckMode());
+      urlQuery = `mode=${mode}&num=${common.levelNum}`;
+    }
     let url = `${base}?${urlQuery}`;
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';
