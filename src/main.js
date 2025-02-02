@@ -498,8 +498,7 @@
     common.activeElem(elems.level.retry);
     animateIcons();
 
-    const RESET_DELAY = 50;
-    setTimeout(() => {
+    {
       common.inactiveElem(elems.level.retry);
       const levelObj = undoInfo.undoMax();
       const resizeFlag =
@@ -507,7 +506,7 @@
         common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
       draw();
-    }, RESET_DELAY);
+    }
   }
 
   function resetUndo() {
@@ -2329,6 +2328,7 @@
 
   function onButtonStart() {
     if (common.level.getBestStep() === undefined) {
+      retryLevel();
       const levelObj = common.level.getCurrentLevelObj();
       // TODO activeElem を盤面に反映させてから計算する。Promiseを使うといけそう。
       // common.activeElem(elems.auto.buttonStart);
