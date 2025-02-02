@@ -96,7 +96,7 @@
     }
 
     #getLevelKey(levelObj, checkMode) {
-      if (app.common.levelNum === null) {
+      if (app.common.levelNum === null || app.common.level === null) {
         return app.Level.getUrlQuery(levelObj, checkMode);
       } else {
         const mode = app.Level.getCheckModeStr(app.common.level.getCheckMode());
