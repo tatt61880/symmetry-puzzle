@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.02.02b';
+  const VERSION_TEXT = 'v' + '2025.02.03';
 
   const app = window.app;
   Object.freeze(app);
@@ -1353,24 +1353,29 @@
 
   // タイトル画面用
   function initElemsForTitle() {
+    // 線対称モード
     elems.title.buttonPlayLine.addEventListener('click', () => {
       updateCheckMode(app.Level.CHECK_MODE.LINE);
       onloadId(1);
     });
 
+    // 点対称モード
     elems.title.buttonPlayPoint.addEventListener('click', () => {
       updateCheckMode(app.Level.CHECK_MODE.POINT);
       onloadId(1);
     });
 
+    // 線点対称モード
     elems.title.buttonPlaySpecial.addEventListener('click', () => {
       updateCheckMode(app.Level.CHECK_MODE.SPECIAL);
       onloadId(1);
     });
 
+    // 線対称-連番モード
     elems.title.buttonNumLine.addEventListener('click', () => {
       updateCheckMode(app.Level.CHECK_MODE.LINE);
-      onloadId(1, false);
+      const minNum = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.LINE);
+      onloadId(minNum, false);
     });
   }
 

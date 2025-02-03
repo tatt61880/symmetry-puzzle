@@ -95,6 +95,15 @@
       return r?.length ?? null;
     }
 
+    getUnsolvedMinNum(checkMode) {
+      let num = 1;
+      const mode = app.Level.getCheckModeStr(checkMode);
+      while (this.data.shapes[`mode=${mode}&num=${num}`] !== undefined) {
+        num++;
+      }
+      return num;
+    }
+
     #getLevelKey(levelObj, checkMode) {
       if (app.common.levelNum === null || app.common.level === null) {
         return app.Level.getUrlQuery(levelObj, checkMode);
