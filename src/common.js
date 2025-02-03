@@ -81,8 +81,10 @@
   }
 
   function getStepColor(step, bestStep) {
-    if (bestStep === undefined || step === null) {
+    if (step === null) {
       return app.colors.stepUnknown;
+    } else if (bestStep === undefined) {
+      return app.colors.stepNum;
     } else if (step > bestStep) {
       return app.colors.stepLose;
     } else if (step === bestStep) {
