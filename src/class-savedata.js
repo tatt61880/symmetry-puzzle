@@ -9,6 +9,8 @@
 
   const LOCAL_STORAGE_KEY = 'tatt61880-symmetry-puzzle';
 
+  const maxStep = 9999;
+
   class Savedata {
     constructor() {
       this.data = null;
@@ -47,7 +49,6 @@
 
     saveSteps(levelObj, checkMode, r_) {
       let r = r_;
-      const maxStep = 9999;
       const step = r.length;
       if (step > maxStep) {
         r = r.substring(0, maxStep);
@@ -63,7 +64,6 @@
 
     saveShape(levelObj, checkMode, targetShape, r_) {
       let r = r_;
-      const maxStep = 9999;
       const step = r.length;
       if (step > maxStep) {
         r = r.substring(0, maxStep);
@@ -92,7 +92,21 @@
     getHighestScore(levelObj, checkMode) {
       const key = this.#getLevelKey(levelObj, checkMode);
       const r = this.data.steps[key];
-      return r?.length ?? null;
+      if (r) {
+        return r.length;
+      }
+
+      // 連番モード用
+      const shapeInfos = this.data.shapes[key];
+      if (shapeInfos) {
+        let score = maxStep + 1;
+        for (const shapeStr in shapeInfos) {
+          score = Math.min(score, shapeInfos[shapeStr].length);
+        }
+        return score;
+      }
+
+      return null;
     }
 
     getUnsolvedMinNum(checkMode) {
