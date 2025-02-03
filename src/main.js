@@ -1932,9 +1932,14 @@
       // 今回の手数
       {
         const currentStep = undoInfo.getIndex();
-        const color = completeFlag
+        let color = completeFlag
           ? common.getStepColor(currentStep, bestStep)
-          : 'black';
+          : app.colors.stepNormal;
+        if (highestScorePrev) {
+          if (currentStep > highestScorePrev) {
+            color = app.colors.stepNormal;
+          }
+        }
         const text = app.svg.createText(frameSize, {
           x: 0,
           y: 0.5,
