@@ -497,16 +497,17 @@
 
     common.activeElem(elems.level.retry);
     animateIcons();
+    common.inactiveElem(elems.level.retry);
 
     {
-      common.inactiveElem(elems.level.retry);
       const levelObj = undoInfo.undoMax();
       const resizeFlag =
         common.level.getW() !== levelObj.w ||
         common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
-      draw();
     }
+
+    draw();
   }
 
   function resetUndo() {
