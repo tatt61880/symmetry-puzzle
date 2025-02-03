@@ -1846,11 +1846,11 @@
           const replayStr = undoInfo.getReplayStr();
 
           // 記録保存
+          highestScorePrev = app.savedata.getHighestScore(
+            levelObj,
+            common.level.getCheckMode()
+          );
           if (bestStep !== undefined) {
-            highestScorePrev = app.savedata.getHighestScore(
-              levelObj,
-              common.level.getCheckMode()
-            );
             app.savedata.saveSteps(levelObj, common.checkMode, replayStr);
           }
 
