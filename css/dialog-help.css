@@ -161,10 +161,14 @@
     width: 50px;
   }
 
-  .border {
+  .border-valid {
     padding: 5px;
-    margin: 10px 30px;
-    border: 1px solid #dddddd;
+    border: 5px solid #bbffbb;
+  }
+
+  .border-invalid {
+    padding: 5px;
+    border: 5px solid #ffcccc;
   }
 
   .bold {
@@ -172,7 +176,7 @@
   }
 
   .example-div {
-    width: calc(100% - 20px);
+    width: calc(100% - 30px);
     margin: 10px auto;
   }
 
