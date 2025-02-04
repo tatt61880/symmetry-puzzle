@@ -75,7 +75,7 @@
   colors.stepDraw = '#ff7700';
   colors.stepLose = '#666666';
   colors.stepUnknown = '#a0a0a0';
-  colors.stepNum = '#308030'; // 連番モード用
+  colors.stepNum = '#303080'; // 連番モード用
   colors.stepNormal = '#000000';
 
   colors.shapeNumPerfect = '#ff7700';
