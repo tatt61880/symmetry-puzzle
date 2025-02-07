@@ -775,7 +775,7 @@
       common.hideElem(elems.levels.button);
       common.showElem(elems.level.edit);
     }
-    if (common.levels.getAllLevels().length === 0) {
+    if (isNumMode()) {
       common.hideElem(elems.levels.button);
       common.hideElem(elems.level.edit);
     }
@@ -2486,5 +2486,9 @@
       const width = (WINDOW_HEIGHT * window.innerWidth) / window.innerHeight;
       elems.viewport.setAttribute('content', `width=${width}`);
     }
+  }
+
+  function isNumMode() {
+    return common.levels.getAllLevels().length === 0;
   }
 })();
