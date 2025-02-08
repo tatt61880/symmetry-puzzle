@@ -2813,8 +2813,6 @@
         }
       }
 
-      gElems.appendChild(child);
-
       {
         const flags = [];
         for (let dir = 0; dir < 8; ++dir) {
@@ -2855,6 +2853,12 @@
             elem.classList.add(animationClass + additionalInfo);
           } else {
             elem.classList.add('animation-move');
+            if (app.states.isUser(state)) {
+              const g = app.svg.createG();
+              g.appendChild(elem);
+              child = g;
+              g.classList.add('animation-move-sub');
+            }
 
             // 移動時のエフェクト（残像）
             const gShadow = app.svg.createG();
@@ -2895,6 +2899,8 @@
           }
         }
       }
+
+      gElems.appendChild(child);
     }
   }
 

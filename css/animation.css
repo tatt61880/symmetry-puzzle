@@ -1,7 +1,8 @@
 @charset "UTF-8";
 
 :root {
-  --animation-transform: none;
+  --animation-move-transform: none;
+  --animation-move-sub-transform: none;
   --animation-duration: none;
   --animation-duration-shadow: none;
   --animation-duration-symmetry: none;
@@ -25,14 +26,13 @@
 
 @keyframes animation-jump {
   0%,
-  10%,
-  90%,
+  20%,
+  80%,
   100% {
     transform: translate(0, 0);
   }
 
-  40%,
-  60% {
+  50% {
     transform: var(--animation-jump);
   }
 }
@@ -45,11 +45,29 @@
 
 @keyframes animation-move {
   0% {
-    transform: var(--animation-transform);
+    transform: var(--animation-move-transform);
   }
 
   100% {
     transform: translate(0, 0);
+  }
+}
+
+.animation-move-sub {
+  animation: animation-move-sub cubic-bezier(0, 0.5, 1, 0.5) forwards;
+  animation-duration: var(--animation-duration);
+}
+
+@keyframes animation-move-sub {
+  0%,
+  20%,
+  80%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: var(--animation-move-sub-transform);
   }
 }
 

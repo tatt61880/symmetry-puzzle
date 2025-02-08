@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.02.04';
+  const VERSION_TEXT = 'v' + '2025.02.07';
 
   const app = window.app;
   Object.freeze(app);
@@ -93,8 +93,12 @@
     const moveFlag = common.level.move(dx, dy);
     if (moveFlag) {
       document.documentElement.style.setProperty(
-        '--animation-transform',
+        '--animation-move-transform',
         `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`
+      );
+      document.documentElement.style.setProperty(
+        '--animation-move-sub-transform',
+        `translate(0, ${-0.1 * blockSize}px)`
       );
       addUndo(dir);
     }
