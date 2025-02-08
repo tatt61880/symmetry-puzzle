@@ -2730,8 +2730,9 @@
           fill: color.stroke,
         });
 
+        // 目を一瞬大きくするアニメーション
         {
-          const mag = dx + dy === 0 ? 1.15 : 1;
+          const mag = dx + dy === 0 ? 1.2 : 1;
           const ddx0 = -(dx - prevDx) * blockSize;
           const ddy0 = -(dy - prevDy) * blockSize;
           const ddx1 = ddx0 * (1 - mag);
