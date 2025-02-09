@@ -1023,6 +1023,7 @@
     completeFlag = false;
     window.getSelection().removeAllRanges();
 
+    app.common.levelNum = null;
     updateCheckMode(null);
     common.showElem(elems.category.title);
     common.hideElem(elems.category.game);
