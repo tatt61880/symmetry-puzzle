@@ -98,7 +98,7 @@
       );
       document.documentElement.style.setProperty(
         '--animation-move-sub-transform',
-        `translate(0, ${-0.1 * blockSize}px)`
+        `translate(0, ${-0.125 * blockSize}px)`
       );
       addUndo(dir);
     }
