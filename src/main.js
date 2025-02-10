@@ -939,6 +939,55 @@
       elem.setAttribute('height', blockSize);
       elem.appendChild(g);
     }
+
+    /*
+    for (const elem of document.getElementsByClassName('user-block-title')) {
+      const checkMode = app.Level.CHECK_MODE.SPECIAL;
+      const widthNum = 8;
+      const level = new app.Level({
+        levelObj: { w: widthNum, h: 1, s: 's' },
+        checkMode,
+      });
+      const blockSize = 50;
+      let x = 0;
+      let dx = 1;
+      const dy = 0;
+
+      setInterval(() => {
+        x += dx;
+        if (x === widthNum) {
+          dx = -1;
+        } else if (x === 1) {
+          dx = 1;
+        }
+        elem.textContent = '';
+        {
+          document.documentElement.style.setProperty(
+            '--animation-move-transform',
+            `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`
+          );
+          document.documentElement.style.setProperty(
+            '--animation-move-sub-transform',
+            `translate(0, ${-0.125 * blockSize}px)`
+          );
+        }
+        level.move(dx, 0);
+        const g = level.createSvgG({
+          blockSize,
+          drawBackground: false,
+          symmetryAnimationFlag: false,
+          x0: 1,
+          y0: 1,
+          width: widthNum,
+          height: 1,
+        });
+
+        elem.setAttribute('width', blockSize * widthNum);
+        elem.setAttribute('height', blockSize);
+        elem.appendChild(g);
+      }, MOVE_INTERVAL_MSEC * 3);
+    }
+    */
   }
 
   function initLang() {

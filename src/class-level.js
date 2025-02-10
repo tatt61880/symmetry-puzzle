@@ -2775,7 +2775,7 @@
       gElemsAnimation2
     ) {
       let gElems = gElemsOther;
-      const state = this.getState(x, y);
+      const state = this.getState(sX, sY);
       const color = app.colors[state];
 
       const elem = this.#createOneBlock(
@@ -2819,8 +2819,8 @@
         for (let dir = 0; dir < 8; ++dir) {
           const dx = dxs[dir];
           const dy = dys[dir];
-          if (this.#isInArea(x + dx, y + dy)) {
-            flags[dir] = this.getState(x + dx, y + dy) === state;
+          if (this.#isInArea(sX + dx, sY + dy)) {
+            flags[dir] = this.getState(sX + dx, sY + dy) === state;
           } else {
             flags[dir] = true;
           }
@@ -2829,7 +2829,7 @@
         // 移動モーション
         const dx = this.#moveDx;
         const dy = this.#moveDy;
-        const { srcX, srcY } = this.#getSrc(x, y, dx, dy);
+        const { srcX, srcY } = this.#getSrc(sX, sY, dx, dy);
         if (
           this.#xMin - 1 <= srcX &&
           srcX <= this.#xMax &&
