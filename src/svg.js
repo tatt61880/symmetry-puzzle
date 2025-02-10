@@ -125,7 +125,7 @@
       svg.createCircle(blockSize, {
         cx: x + 0.1,
         cy: y + 0.3,
-        r: 0.05,
+        r: 0.07,
         fill,
         stroke,
       })
@@ -134,7 +134,7 @@
       svg.createCircle(blockSize, {
         cx: x + 0.5,
         cy: y + 0.15,
-        r: 0.05,
+        r: 0.07,
         fill,
         stroke,
       })
@@ -143,7 +143,7 @@
       svg.createCircle(blockSize, {
         cx: x + 0.9,
         cy: y + 0.3,
-        r: 0.05,
+        r: 0.07,
         fill,
         stroke,
       })
