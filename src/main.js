@@ -1927,8 +1927,9 @@
         //     text: 'Not connected',
         //     fill: 'white',
         //   });
-        //   const width = (level.getWidth() * blockSize + 2 * frameSize) / 2;
-        //   const height = (level.getHeight() - 1) * blockSize + frameSize;
+        //   const width =
+        //     (common.level.getWidth() * blockSize + 2 * frameSize) / 2;
+        //   const height = (common.level.getHeight() - 1) * blockSize + frameSize;
         //   text.setAttribute('font-size', fontSize2);
         //   text.setAttribute('transform', `translate(${width},${height})`);
         //   g.appendChild(text);
