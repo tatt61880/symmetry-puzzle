@@ -940,7 +940,6 @@
       elem.appendChild(g);
     }
 
-    /*
     for (const elem of document.getElementsByClassName('user-block-title')) {
       const checkMode = app.Level.CHECK_MODE.SPECIAL;
       const widthNum = 8;
@@ -949,17 +948,22 @@
         checkMode,
       });
       const blockSize = 50;
-      let x = 0;
+
+      let x = 1;
       let dx = 1;
       const dy = 0;
 
       setInterval(() => {
-        x += dx;
+        if (!common.isShownElem(elems.category.title)) {
+          return;
+        }
         if (x === widthNum) {
           dx = -1;
         } else if (x === 1) {
           dx = 1;
         }
+        x += dx;
+        level.move(dx, 0);
         elem.textContent = '';
         {
           document.documentElement.style.setProperty(
@@ -971,7 +975,6 @@
             `translate(0, ${-0.125 * blockSize}px)`
           );
         }
-        level.move(dx, 0);
         const g = level.createSvgG({
           blockSize,
           drawBackground: false,
@@ -983,11 +986,11 @@
         });
 
         elem.setAttribute('width', blockSize * widthNum);
-        elem.setAttribute('height', blockSize);
+        elem.setAttribute('height', blockSize * 1.25);
         elem.appendChild(g);
+        g.setAttribute('transform', `translate(${0},${blockSize * 0.25})`);
       }, MOVE_INTERVAL_MSEC * 3);
     }
-    */
   }
 
   function initLang() {
