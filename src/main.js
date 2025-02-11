@@ -958,7 +958,7 @@
             return app.Level.CHECK_MODE.SPECIAL;
         }
       })();
-      const widthNum = 20;
+      const widthNum = 19;
       let x = 1;
 
       const level = new app.Level({
@@ -1009,7 +1009,7 @@
         elem.appendChild(g);
         g.setAttribute(
           'transform',
-          `translate(${-5 * blockSize},${blockSize * 0.3})`
+          `translate(${-4.5 * blockSize},${blockSize * 0.3})`
         );
       }, MOVE_INTERVAL_MSEC * (2.5 + 0.1 * getRand(1, 5) + 0.03 * i));
     }
