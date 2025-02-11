@@ -54,7 +54,7 @@
       buttonPlayLine: 'button-play-line',
       buttonPlayPoint: 'button-play-point',
       buttonPlaySpecial: 'button-play-special',
-      buttonNumLine: 'button-num-line',
+      buttonPlayNumLine: 'button-num-line',
       // buttonEdit: 'button-edit',
     },
 

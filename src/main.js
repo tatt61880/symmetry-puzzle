@@ -332,20 +332,22 @@
 
     // タイトル画面で有効
     if (common.isShownElem(elems.category.title)) {
-      if (e.shiftKey) return;
       if (e.ctrlKey) return;
       switch (e.key) {
         case 't':
-          updateCheckMode(app.Level.CHECK_MODE.LINE);
-          onloadId(1);
+          if (e.shiftKey) return;
+          gotoLineMode();
           break;
         case 'z':
-          updateCheckMode(app.Level.CHECK_MODE.POINT);
-          onloadId(1);
+          if (e.shiftKey) return;
+          gotoPointMode();
           break;
         case 'o':
-          updateCheckMode(app.Level.CHECK_MODE.SPECIAL);
-          onloadId(1);
+          if (e.shiftKey) return;
+          gotoSpecialMode();
+          break;
+        case '#':
+          gotoNumLineMode();
           break;
       }
       return;
@@ -1433,29 +1435,37 @@
   // タイトル画面用
   function initElemsForTitle() {
     // 線対称モード
-    elems.title.buttonPlayLine.addEventListener('click', () => {
-      updateCheckMode(app.Level.CHECK_MODE.LINE);
-      onloadId(1);
-    });
+    elems.title.buttonPlayLine.addEventListener('click', gotoLineMode);
 
     // 点対称モード
-    elems.title.buttonPlayPoint.addEventListener('click', () => {
-      updateCheckMode(app.Level.CHECK_MODE.POINT);
-      onloadId(1);
-    });
+    elems.title.buttonPlayPoint.addEventListener('click', gotoPointMode);
 
     // 線点対称モード
-    elems.title.buttonPlaySpecial.addEventListener('click', () => {
-      updateCheckMode(app.Level.CHECK_MODE.SPECIAL);
-      onloadId(1);
-    });
+    elems.title.buttonPlaySpecial.addEventListener('click', gotoSpecialMode);
 
     // 線対称-連番モード
-    elems.title.buttonNumLine.addEventListener('click', () => {
-      updateCheckMode(app.Level.CHECK_MODE.LINE);
-      const minNum = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.LINE);
-      onloadId(minNum, false);
-    });
+    elems.title.buttonPlayNumLine.addEventListener('click', gotoNumLineMode);
+  }
+
+  function gotoLineMode() {
+    updateCheckMode(app.Level.CHECK_MODE.LINE);
+    onloadId(1);
+  }
+
+  function gotoPointMode() {
+    updateCheckMode(app.Level.CHECK_MODE.POINT);
+    onloadId(1);
+  }
+
+  function gotoSpecialMode() {
+    updateCheckMode(app.Level.CHECK_MODE.SPECIAL);
+    onloadId(1);
+  }
+
+  function gotoNumLineMode() {
+    updateCheckMode(app.Level.CHECK_MODE.LINE);
+    const minNum = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.LINE);
+    onloadId(minNum, false);
   }
 
   // 記録画面用
