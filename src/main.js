@@ -940,7 +940,9 @@
       elem.appendChild(g);
     }
 
+    let i = 0;
     for (const elem of document.getElementsByClassName('user-block-title')) {
+      i++;
       const getRand = (min, max) =>
         Math.floor(Math.random() * (max - min + 1) + min);
 
@@ -970,13 +972,15 @@
         if (!common.isShownElem(elems.category.title)) {
           return;
         }
-        if (x === widthNum) {
-          dx = -1;
-        } else if (x === 1) {
-          dx = 1;
+        if (getRand(1, 15) !== 1) {
+          if (x === widthNum) {
+            dx = -1;
+          } else if (x === 1) {
+            dx = 1;
+          }
+          x += dx;
+          level.move(dx, 0);
         }
-        x += dx;
-        level.move(dx, 0);
         elem.textContent = '';
         {
           elem.style.setProperty(
@@ -1002,7 +1006,7 @@
         elem.setAttribute('height', blockSize * 1.4);
         elem.appendChild(g);
         g.setAttribute('transform', `translate(${0},${blockSize * 0.3})`);
-      }, MOVE_INTERVAL_MSEC * 3);
+      }, MOVE_INTERVAL_MSEC * (2.5 + 0.1 * getRand(1, 5) + 0.01 * i));
     }
   }
 
