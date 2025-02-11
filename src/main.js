@@ -941,15 +941,28 @@
     }
 
     for (const elem of document.getElementsByClassName('user-block-title')) {
-      const checkMode = app.Level.CHECK_MODE.SPECIAL;
+      const getRand = (min, max) =>
+        Math.floor(Math.random() * (max - min + 1) + min);
+
+      const checkMode = (() => {
+        switch (getRand(1, 3)) {
+          case 1:
+            return app.Level.CHECK_MODE.LINE;
+          case 2:
+            return app.Level.CHECK_MODE.POINT;
+          case 3:
+            return app.Level.CHECK_MODE.SPECIAL;
+        }
+      })();
       const widthNum = 8;
+      let x = getRand(1, widthNum);
+
       const level = new app.Level({
-        levelObj: { w: widthNum, h: 1, s: 's' },
+        levelObj: { w: widthNum, h: 1, s: '0'.repeat(x - 1) + 's' },
         checkMode,
       });
       const blockSize = 50;
 
-      let x = 1;
       let dx = 1;
       const dy = 0;
 
@@ -966,11 +979,11 @@
         level.move(dx, 0);
         elem.textContent = '';
         {
-          document.documentElement.style.setProperty(
+          elem.style.setProperty(
             '--animation-move-transform',
             `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`
           );
-          document.documentElement.style.setProperty(
+          elem.style.setProperty(
             '--animation-move-sub-transform',
             `translate(0, ${-0.125 * blockSize}px)`
           );
