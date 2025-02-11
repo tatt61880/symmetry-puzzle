@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.02.10';
+  const VERSION_TEXT = 'v' + '2025.02.11';
 
   const app = window.app;
   Object.freeze(app);
@@ -956,8 +956,8 @@
             return app.Level.CHECK_MODE.SPECIAL;
         }
       })();
-      const widthNum = 8;
-      let x = getRand(1, widthNum);
+      const widthNum = 20;
+      let x = 1;
 
       const level = new app.Level({
         levelObj: { w: widthNum, h: 1, s: '0'.repeat(x - 1) + 's' },
@@ -1005,7 +1005,10 @@
         elem.setAttribute('width', blockSize * widthNum);
         elem.setAttribute('height', blockSize * 1.4);
         elem.appendChild(g);
-        g.setAttribute('transform', `translate(${0},${blockSize * 0.3})`);
+        g.setAttribute(
+          'transform',
+          `translate(${-5 * blockSize},${blockSize * 0.3})`
+        );
       }, MOVE_INTERVAL_MSEC * (2.5 + 0.1 * getRand(1, 5) + 0.03 * i));
     }
   }
