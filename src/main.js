@@ -1006,7 +1006,7 @@
         elem.setAttribute('height', blockSize * 1.4);
         elem.appendChild(g);
         g.setAttribute('transform', `translate(${0},${blockSize * 0.3})`);
-      }, MOVE_INTERVAL_MSEC * (2.5 + 0.1 * getRand(1, 5) + 0.01 * i));
+      }, MOVE_INTERVAL_MSEC * (2.5 + 0.1 * getRand(1, 5) + 0.03 * i));
     }
   }
 
