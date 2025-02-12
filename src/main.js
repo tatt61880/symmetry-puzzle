@@ -942,77 +942,78 @@
       elem.appendChild(g);
     }
 
-    let i = 0;
     for (const elem of document.getElementsByClassName('user-block-title')) {
-      i++;
-      const getRand = (min, max) =>
-        Math.floor(Math.random() * (max - min + 1) + min);
-
-      const checkMode = (() => {
-        switch (getRand(1, 3)) {
-          case 1:
-            return app.Level.CHECK_MODE.LINE;
-          case 2:
-            return app.Level.CHECK_MODE.POINT;
-          case 3:
-            return app.Level.CHECK_MODE.SPECIAL;
-        }
-      })();
-      const widthNum = 19;
-      let x = 1;
-
-      const level = new app.Level({
-        levelObj: { w: widthNum, h: 1, s: '0'.repeat(x - 1) + 's' },
-        checkMode,
-      });
-      const blockSize = 50;
-
-      let dx = 1;
-      const dy = 0;
-
-      setInterval(() => {
-        if (!common.isShownElem(elems.category.title)) {
-          return;
-        }
-        if (getRand(1, 15) !== 1) {
-          if (x === widthNum) {
-            dx = -1;
-          } else if (x === 1) {
-            dx = 1;
-          }
-          x += dx;
-          level.move(dx, 0);
-        }
-        elem.textContent = '';
-        {
-          elem.style.setProperty(
-            '--animation-move-transform',
-            `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`
-          );
-          elem.style.setProperty(
-            '--animation-move-sub-transform',
-            `translate(0, ${-0.125 * blockSize}px)`
-          );
-        }
-        const g = level.createSvgG({
-          blockSize,
-          drawBackground: false,
-          symmetryAnimationFlag: false,
-          x0: 1,
-          y0: 1,
-          width: widthNum,
-          height: 1,
-        });
-
-        elem.setAttribute('width', blockSize * widthNum);
-        elem.setAttribute('height', blockSize * 1.4);
-        elem.appendChild(g);
-        g.setAttribute(
-          'transform',
-          `translate(${-4.5 * blockSize},${blockSize * 0.3})`
-        );
-      }, MOVE_INTERVAL_MSEC * (2.5 + 0.1 * getRand(1, 5) + 0.03 * i));
+      initTitleCharacter(elem);
     }
+  }
+
+  function initTitleCharacter(elem) {
+    const getRand = (min, max) =>
+      Math.floor(Math.random() * (max - min + 1) + min);
+
+    const interval = MOVE_INTERVAL_MSEC * (1.5 + 0.4 * getRand(1, 5));
+    const checkMode = (() => {
+      switch (getRand(1, 3)) {
+        case 1:
+          return app.Level.CHECK_MODE.LINE;
+        case 2:
+          return app.Level.CHECK_MODE.POINT;
+        case 3:
+          return app.Level.CHECK_MODE.SPECIAL;
+      }
+    })();
+
+    const widthNum = 19;
+
+    const level = new app.Level({
+      levelObj: { w: widthNum, h: 1, s: 's' },
+      checkMode,
+    });
+    const blockSize = 50;
+
+    const dx = 1;
+    const dy = 0;
+
+    const intervalId = setInterval(() => {
+      if (!common.isShownElem(elems.category.title)) {
+        return;
+      }
+      if (getRand(1, 15) !== 1) {
+        const moveFlag = level.move(dx, 0);
+        if (!moveFlag) {
+          clearInterval(intervalId);
+          initTitleCharacter(elem);
+        }
+      }
+      elem.textContent = '';
+      {
+        elem.style.setProperty(
+          '--animation-move-transform',
+          `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`
+        );
+        elem.style.setProperty(
+          '--animation-move-sub-transform',
+          `translate(0, ${-0.125 * blockSize}px)`
+        );
+      }
+      const g = level.createSvgG({
+        blockSize,
+        drawBackground: false,
+        symmetryAnimationFlag: false,
+        x0: 1,
+        y0: 1,
+        width: widthNum,
+        height: 1,
+      });
+
+      elem.setAttribute('width', blockSize * widthNum);
+      elem.setAttribute('height', blockSize * 1.4);
+      elem.appendChild(g);
+      g.setAttribute(
+        'transform',
+        `translate(${-4.5 * blockSize},${blockSize * 0.3})`
+      );
+    }, interval);
   }
 
   function initLang() {
