@@ -943,11 +943,11 @@
     }
 
     for (const elem of document.getElementsByClassName('user-block-title')) {
-      initTitleCharacter(elem);
+      initTitleCharacter(elem, true);
     }
   }
 
-  function initTitleCharacter(elem) {
+  function initTitleCharacter(elem, firstFlag = false) {
     const getRand = (min, max) =>
       Math.floor(Math.random() * (max - min + 1) + min);
 
@@ -969,7 +969,7 @@
       levelObj: {
         w: widthNum,
         h: 1,
-        s: 's' + '1'.repeat(getRand(0, 16) ** 2 / 100),
+        s: 's' + (firstFlag ? '' : '1'.repeat(getRand(0, 16) ** 2 / 100)),
       },
       checkMode,
     });
