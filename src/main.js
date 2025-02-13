@@ -59,8 +59,9 @@
   const editboxFunctions = {};
 
   let blockSize = 0;
-  const frameSizeW = 32;
-  const frameSizeH = 32;
+  const defaultFrameSize = 32;
+  let frameSizeW = defaultFrameSize;
+  const frameSizeH = defaultFrameSize;
   const frameBorderWidth = 3;
 
   common.level = null;
@@ -559,6 +560,9 @@
       ].reduce((sum, elem) => sum + elem.getBoundingClientRect().height, 0);
     elems.main.div.style.setProperty('height', `${divMainHeight}px`);
 
+    // フレームの横幅をデフォルト値に戻してブロックサイズを計算します。
+    frameSizeW = defaultFrameSize;
+
     const svgMaxWidth = 490;
     const svgMaxHeight = divMainHeight;
     blockSize = Math.min(
@@ -566,6 +570,13 @@
       (svgMaxHeight - 2 * frameSizeH) / common.level.getHeight()
     );
     blockSize = Math.max(blockSize, 0);
+
+    // 横幅が狭すぎると、文字を表示するスペースが足りません。
+    // 文字を表示できる程度にフレームの横幅を広くします。
+    const svgMinWidth = svgMaxWidth * 0.65;
+    if (blockSize * common.level.getWidth() + 2 * frameSizeW < svgMinWidth) {
+      frameSizeW = (svgMinWidth - blockSize * common.level.getWidth()) / 2;
+    }
 
     elems.main.svg.setAttribute(
       'width',
