@@ -966,7 +966,11 @@
     const widthNum = 19;
 
     const level = new app.Level({
-      levelObj: { w: widthNum, h: 1, s: 's' },
+      levelObj: {
+        w: widthNum,
+        h: 1,
+        s: 's' + '1'.repeat(getRand(0, 16) ** 2 / 100),
+      },
       checkMode,
     });
     const blockSize = 50;
