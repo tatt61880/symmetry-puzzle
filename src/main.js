@@ -59,7 +59,8 @@
   const editboxFunctions = {};
 
   let blockSize = 0;
-  const frameSize = 32;
+  const frameSizeW = 32;
+  const frameSizeH = 32;
   const frameBorderWidth = 3;
 
   common.level = null;
@@ -561,18 +562,18 @@
     const svgMaxWidth = 490;
     const svgMaxHeight = divMainHeight;
     blockSize = Math.min(
-      (svgMaxWidth - 2 * frameSize) / common.level.getWidth(),
-      (svgMaxHeight - 2 * frameSize) / common.level.getHeight()
+      (svgMaxWidth - 2 * frameSizeW) / common.level.getWidth(),
+      (svgMaxHeight - 2 * frameSizeH) / common.level.getHeight()
     );
     blockSize = Math.max(blockSize, 0);
 
     elems.main.svg.setAttribute(
       'width',
-      blockSize * common.level.getWidth() + 2 * frameSize
+      blockSize * common.level.getWidth() + 2 * frameSizeW
     );
     elems.main.svg.setAttribute(
       'height',
-      blockSize * common.level.getHeight() + 2 * frameSize
+      blockSize * common.level.getHeight() + 2 * frameSizeH
     );
 
     document.documentElement.style.setProperty(
@@ -1679,7 +1680,10 @@
       edgeColor: app.colors.frame,
     });
     levelSvgG.classList.add('group-level-main');
-    levelSvgG.setAttribute('transform', `translate(${frameSize},${frameSize})`);
+    levelSvgG.setAttribute(
+      'transform',
+      `translate(${frameSizeW},${frameSizeH})`
+    );
     levelSvgG.style.setProperty('pointer-events', 'none'); // スマホ等での操作時にtouchstartからtouchendまで連続して図形描画するため。
 
     mainSvgG.appendChild(levelSvgG);
@@ -1715,7 +1719,7 @@
       line.setAttribute('stroke-dasharray', strokeDasharray);
       g.appendChild(line);
     }
-    g.setAttribute('transform', `translate(${frameSize},${frameSize})`);
+    g.setAttribute('transform', `translate(${frameSizeW},${frameSizeH})`);
   }
 
   function drawFrame(mainSvgG) {
@@ -1732,29 +1736,29 @@
       const rectU = app.svg.createRect(1, {
         x: 0,
         y: 0,
-        width: common.level.getWidth() * blockSize + 2 * frameSize,
-        height: frameSize,
+        width: common.level.getWidth() * blockSize + 2 * frameSizeW,
+        height: frameSizeH,
         fill: frameColor,
       });
       const rectR = app.svg.createRect(1, {
-        x: common.level.getWidth() * blockSize + frameSize,
+        x: common.level.getWidth() * blockSize + frameSizeW,
         y: 0,
-        width: frameSize,
-        height: common.level.getHeight() * blockSize + 2 * frameSize,
+        width: frameSizeW,
+        height: common.level.getHeight() * blockSize + 2 * frameSizeH,
         fill: frameColor,
       });
       const rectD = app.svg.createRect(1, {
         x: 0,
-        y: common.level.getHeight() * blockSize + frameSize,
-        width: common.level.getWidth() * blockSize + 2 * frameSize,
-        height: frameSize,
+        y: common.level.getHeight() * blockSize + frameSizeH,
+        width: common.level.getWidth() * blockSize + 2 * frameSizeW,
+        height: frameSizeH,
         fill: frameColor,
       });
       const rectL = app.svg.createRect(1, {
         x: 0,
         y: 0,
-        width: frameSize,
-        height: common.level.getHeight() * blockSize + 2 * frameSize,
+        width: frameSizeW,
+        height: common.level.getHeight() * blockSize + 2 * frameSizeH,
         fill: frameColor,
       });
       g.appendChild(rectU);
@@ -1766,27 +1770,27 @@
       const rectUb = app.svg.createRect(1, {
         x: 0,
         y: 0,
-        width: common.level.getWidth() * blockSize + 2 * frameSize,
+        width: common.level.getWidth() * blockSize + 2 * frameSizeW,
         height: frameBorderWidth,
         fill: borderColor,
       });
       const rectRb = app.svg.createRect(1, {
         x:
           common.level.getWidth() * blockSize +
-          2 * frameSize -
+          2 * frameSizeW -
           frameBorderWidth,
         y: 0,
         width: frameBorderWidth,
-        height: common.level.getHeight() * blockSize + 2 * frameSize,
+        height: common.level.getHeight() * blockSize + 2 * frameSizeH,
         fill: borderColor,
       });
       const rectDb = app.svg.createRect(1, {
         x: 0,
         y:
           common.level.getHeight() * blockSize +
-          2 * frameSize -
+          2 * frameSizeH -
           frameBorderWidth,
-        width: common.level.getWidth() * blockSize + 2 * frameSize,
+        width: common.level.getWidth() * blockSize + 2 * frameSizeW,
         height: frameBorderWidth,
         fill: borderColor,
       });
@@ -1794,7 +1798,7 @@
         x: 0,
         y: 0,
         width: frameBorderWidth,
-        height: common.level.getHeight() * blockSize + 2 * frameSize,
+        height: common.level.getHeight() * blockSize + 2 * frameSizeH,
         fill: borderColor,
       });
       g.appendChild(rectUb);
@@ -1805,14 +1809,15 @@
 
     if (editMode) {
       if (!common.level.isNormalized()) {
-        const fontSize = `${frameSize * 0.7}px`;
-        const text = app.svg.createText(frameSize, {
+        const fontSize = `${frameSizeH * 0.7}px`;
+        const text = app.svg.createText(frameSizeH, {
           x: 0,
           y: 0.5,
           text: 'Not normalized',
           fill: app.colors.editStroke,
         });
-        const width = (common.level.getWidth() * blockSize + 2 * frameSize) / 2;
+        const width =
+          (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
         const height = frameBorderWidth;
         text.setAttribute('font-size', fontSize);
         text.setAttribute('transform', `translate(${width},${height})`);
@@ -1848,17 +1853,17 @@
         [-1, 0],
       ];
 
-      const cx1 = frameSize / blockSize + 0.5;
-      const cx2 = frameSize / blockSize + common.level.getWidth() * 0.3;
-      const cx3 = frameSize / blockSize + common.level.getWidth() * 0.7;
-      const cx4 = frameSize / blockSize + common.level.getWidth() - 0.5;
-      const cxM = frameSize / blockSize + common.level.getWidth() * 0.5;
+      const cx1 = frameSizeW / blockSize + 0.5;
+      const cx2 = frameSizeW / blockSize + common.level.getWidth() * 0.3;
+      const cx3 = frameSizeW / blockSize + common.level.getWidth() * 0.7;
+      const cx4 = frameSizeW / blockSize + common.level.getWidth() - 0.5;
+      const cxM = frameSizeW / blockSize + common.level.getWidth() * 0.5;
 
-      const cy1 = frameSize / blockSize + 0.5;
-      const cy2 = frameSize / blockSize + common.level.getHeight() * 0.3;
-      const cy3 = frameSize / blockSize + common.level.getHeight() * 0.7;
-      const cy4 = frameSize / blockSize + common.level.getHeight() - 0.5;
-      const cyM = frameSize / blockSize + common.level.getHeight() * 0.5;
+      const cy1 = frameSizeH / blockSize + 0.5;
+      const cy2 = frameSizeH / blockSize + common.level.getHeight() * 0.3;
+      const cy3 = frameSizeH / blockSize + common.level.getHeight() * 0.7;
+      const cy4 = frameSizeH / blockSize + common.level.getHeight() - 0.5;
+      const cyM = frameSizeH / blockSize + common.level.getHeight() * 0.5;
 
       // 軸位置変更ボタンの追加
       if (common.level.hasAxis()) {
@@ -1908,7 +1913,7 @@
         });
       }
     } else {
-      const fontSize = `${frameSize * 0.7}px`;
+      const fontSize = `${frameSizeH * 0.7}px`;
       const fontSize2 = `${blockSize * 0.65}px`;
       const bestStep = common.level.getBestStep();
 
@@ -1916,10 +1921,11 @@
 
       // クリア時のメッセージ
       if (completeFlag) {
-        const width = (common.level.getWidth() * blockSize + 2 * frameSize) / 2;
+        const width =
+          (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
         const height =
           (common.level.getHeight() - 0.5 + wallStrShift) * blockSize +
-          frameSize;
+          frameSizeH;
         const text = app.svg.createText(blockSize, {
           x: width / blockSize,
           y: height / blockSize,
@@ -2015,8 +2021,8 @@
         //     fill: 'white',
         //   });
         //   const width =
-        //     (common.level.getWidth() * blockSize + 2 * frameSize) / 2;
-        //   const height = (common.level.getHeight() - 1) * blockSize + frameSize;
+        //     (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
+        //   const height = (common.level.getHeight() - 1) * blockSize + frameSizeH;
         //   text.setAttribute('font-size', fontSize2);
         //   text.setAttribute('transform', `translate(${width},${height})`);
         //   g.appendChild(text);
@@ -2034,17 +2040,18 @@
             color = app.colors.stepNormal;
           }
         }
-        const text = app.svg.createText(frameSize, {
+        const text = app.svg.createText(frameSizeH, {
           x: 0,
           y: 0.5,
           text: `${currentStep} steps`,
           fill: color,
         });
         text.setAttribute('font-size', fontSize);
-        const width = (common.level.getWidth() * blockSize + 2 * frameSize) / 2;
+        const width =
+          (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
         const height =
           common.level.getHeight() * blockSize +
-          frameSize -
+          frameSizeH -
           frameBorderWidth / 2;
         text.setAttribute('transform', `translate(${width},${height})`);
         g.appendChild(text);
@@ -2060,9 +2067,9 @@
 
         {
           const crown = common.createCrown(
-            frameSize,
-            frameBorderWidth / frameSize,
-            frameBorderWidth / frameSize / 2,
+            frameSizeH,
+            frameBorderWidth / frameSizeH,
+            frameBorderWidth / frameSizeH / 2,
             highestScore,
             bestStep
           );
@@ -2085,14 +2092,14 @@
         if (highestScore !== null) {
           const color = common.getStepColor(highestScore, bestStep);
 
-          const text = app.svg.createText(frameSize, {
+          const text = app.svg.createText(frameSizeH, {
             x: 0,
             y: 0.5,
             text: `Your best: ${highestScore} steps`,
             fill: color,
           });
           const width =
-            (common.level.getWidth() * blockSize + 2 * frameSize) / 2;
+            (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
           const height = frameBorderWidth / 2;
           text.setAttribute('font-size', fontSize);
           text.setAttribute('transform', `translate(${width},${height})`);
@@ -2106,8 +2113,8 @@
           highestScore < highestScorePrev
         ) {
           const width =
-            (common.level.getWidth() * blockSize + 2 * frameSize) / 2;
-          const height = frameSize + (0.5 - wallStrShift) * blockSize;
+            (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
+          const height = frameSizeH + (0.5 - wallStrShift) * blockSize;
           const text = app.svg.createText(blockSize, {
             x: width / blockSize,
             y: height / blockSize,
@@ -2182,20 +2189,20 @@
           const height = input.getAttribute('height');
           const canvas = document.createElement('canvas');
 
-          canvas.setAttribute('width', width - 2 * frameSize);
-          canvas.setAttribute('height', height - 2 * frameSize);
+          canvas.setAttribute('width', width - 2 * frameSizeW);
+          canvas.setAttribute('height', height - 2 * frameSizeH);
 
           const context = canvas.getContext('2d');
           context.drawImage(
             image,
-            frameSize,
-            frameSize,
-            width - 2 * frameSize,
-            height - 2 * frameSize,
+            frameSizeW,
+            frameSizeH,
+            width - 2 * frameSizeW,
+            height - 2 * frameSizeH,
             0,
             0,
-            width - 2 * frameSize,
-            height - 2 * frameSize
+            width - 2 * frameSizeW,
+            height - 2 * frameSizeH
           );
           const dataUrl = canvas.toDataURL('image/png');
           output.src = dataUrl;
@@ -2321,8 +2328,8 @@
     // カーソル位置の座標を得る
     function getCurXY(e) {
       const cursorPos = getCursorPos(elems.main.svg, e);
-      const x = Math.floor((cursorPos.x - frameSize) / blockSize);
-      const y = Math.floor((cursorPos.y - frameSize) / blockSize);
+      const x = Math.floor((cursorPos.x - frameSizeW) / blockSize);
+      const y = Math.floor((cursorPos.y - frameSizeH) / blockSize);
       return { x, y };
     }
   }
