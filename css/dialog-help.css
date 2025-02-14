@@ -191,6 +191,10 @@
     height: 81px;
   }
 
+  p {
+    margin: 10px;
+  }
+
   & hr {
     margin: 0;
   }
