@@ -196,6 +196,7 @@
       const percent = ratio * 100;
       const style = `background: linear-gradient(to right, rgb(250, 250, 150) ${percent}%, transparent ${percent}%);`;
       td.setAttribute('style', style);
+      td.setAttribute('width', '80px');
     };
 
     {
