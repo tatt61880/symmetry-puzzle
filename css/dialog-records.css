@@ -36,7 +36,7 @@
     & td {
       height: 40px;
       padding: 5px 15px;
-      border: 1px solid #888888;
+      border: 1px solid #000055;
 
       & * {
         vertical-align: middle;
