@@ -30,13 +30,14 @@
       margin: 5px auto;
       font-size: 18px;
       border-collapse: collapse;
+      border: 2px solid #000055;
     }
 
     & th,
     & td {
       height: 40px;
       padding: 5px 15px;
-      border: 1px solid #000055;
+      border: 1px solid #5555aa;
 
       & * {
         vertical-align: middle;
