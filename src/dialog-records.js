@@ -194,7 +194,7 @@
 
     const setBackgroundBar = (td, ratio) => {
       const percent = ratio * 100;
-      const style = `background: linear-gradient(to top, rgb(250, 250, 150) ${percent}%, transparent ${percent}%);`;
+      const style = `background: linear-gradient(to right, rgb(250, 250, 150) ${percent}%, transparent ${percent}%);`;
       td.setAttribute('style', style);
     };
 
