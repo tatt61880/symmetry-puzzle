@@ -21,6 +21,7 @@
     elems.records.tableDiv.innerHTML = '';
     const span = document.createElement('span');
     span.textContent = `${elems.appTitle.textContent} ${elems.version.textContent}`;
+    span.classList.add('record-dialog-title');
     elems.records.tableDiv.appendChild(span);
     elems.records.tableDiv.appendChild(table);
     elems.records.dialog.showModal();
