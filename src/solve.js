@@ -395,15 +395,15 @@
             const levelShapes = level.getShapes();
             if (level.getR() !== undefined && shapes !== levelShapes) {
               app.console.error(
-                `       ↓[level.getShapes(): ${levelShapes}] !== [Shape variation: ${shapes}]`
+                `       ↓[level.getShapes(): ${levelShapes}] !== [Shapes: ${shapes}]`
               );
             }
 
             // エラーではないですが、目立つようにエラー扱いします。
-            const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Step limit: ${maxStep}] [Shape variation: ${shapes}]`;
+            const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Shapes: ${shapes}] [map.size: ${stateStrMap.size}]`;
             return { replayStr: null, errorMessage };
           }
-          const errorMessage = `No solution. [Step: ${step}] [Step limit: ${maxStep}]`;
+          const errorMessage = `No solution. [Step: ${step}]`;
           return { replayStr: null, errorMessage };
         }
         step++;
