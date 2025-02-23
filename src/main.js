@@ -794,7 +794,6 @@
       common.hideElem(elems.levels.button);
       common.showElem(elems.level.edit);
     }
-    if (isNumMode()) {
     if (common.isNumMode) {
       common.hideElem(elems.levels.button);
       common.hideElem(elems.level.edit);
