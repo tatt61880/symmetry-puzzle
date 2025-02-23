@@ -29,7 +29,7 @@
       margin-left: 10px;
     }
 
-    .toggle-div {
+    #toggle-div {
       display: flex;
       align-items: center;
       margin-right: 10px;

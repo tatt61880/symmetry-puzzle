@@ -795,6 +795,7 @@
       common.showElem(elems.level.edit);
     }
     if (isNumMode()) {
+    if (common.isNumMode) {
       common.hideElem(elems.levels.button);
       common.hideElem(elems.level.edit);
     }
@@ -1151,6 +1152,7 @@
             console.assert(false);
         }
       }
+      common.isNumMode = !idFlag;
       common.levels = new app.Levels({ levelsList, levelsListEx });
     }
 
@@ -2598,9 +2600,5 @@
       const width = (WINDOW_HEIGHT * window.innerWidth) / window.innerHeight;
       elems.viewport.setAttribute('content', `width=${width}`);
     }
-  }
-
-  function isNumMode() {
-    return common.levels.getAllLevels().length === 0;
   }
 })();
