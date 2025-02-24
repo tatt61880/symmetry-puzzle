@@ -1133,25 +1133,26 @@
     {
       let levelsList = {};
       let levelsListEx = {};
-      if (idFlag) {
-        switch (common.checkMode) {
-          case app.Level.CHECK_MODE.LINE:
-            levelsList = app.levelsLine;
-            levelsListEx = app.levelsLineEx;
-            break;
-          case app.Level.CHECK_MODE.POINT:
-            levelsList = app.levelsPoint;
-            levelsListEx = app.levelsPointEx;
-            break;
-          case app.Level.CHECK_MODE.SPECIAL:
-            levelsList = app.levelsSpecial;
-            levelsListEx = app.levelsSpecialEx;
-            break;
-          default:
-            console.assert(false);
-        }
+      switch (common.checkMode) {
+        case app.Level.CHECK_MODE.LINE:
+          levelsList = app.levelsLine;
+          levelsListEx = app.levelsLineEx;
+          break;
+        case app.Level.CHECK_MODE.POINT:
+          levelsList = app.levelsPoint;
+          levelsListEx = app.levelsPointEx;
+          break;
+        case app.Level.CHECK_MODE.SPECIAL:
+          levelsList = app.levelsSpecial;
+          levelsListEx = app.levelsSpecialEx;
+          break;
+        default:
+          console.assert(false);
       }
       common.isNumMode = !idFlag;
+      if (common.isNumMode) {
+        levelsList = [levelsList[0]];
+      }
       common.levels = new app.Levels({ levelsList, levelsListEx });
     }
 
