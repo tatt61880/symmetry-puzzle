@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.02.11';
+  const VERSION_TEXT = 'v' + '2025.02.26';
 
   const app = window.app;
   Object.freeze(app);
@@ -1511,13 +1511,11 @@
     elems.levels.dialogDiv.addEventListener('click', (e) =>
       e.stopPropagation()
     );
-    [
-      elems.levels.checkbox.shortest,
-      elems.levels.checkbox.cleared,
-      elems.levels.checkbox.notCleared,
-    ].forEach((elem) => {
-      elem.addEventListener('click', app.dialog.levels.update);
-    });
+    [elems.levels.checkbox.shortest, elems.levels.checkbox.cleared].forEach(
+      (elem) => {
+        elem.addEventListener('click', app.dialog.levels.update);
+      }
+    );
   }
 
   // レベル一覧ダイアログ

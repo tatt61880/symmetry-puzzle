@@ -132,15 +132,9 @@
         app.common.createCrown(40, 0.1, 0.1, 1, 0)
       );
     }
-    if (!elems.levels.crown.notCleared.hasChildNodes()) {
-      elems.levels.crown.notCleared.appendChild(
-        app.common.createCrown(40, 0.1, 0.1, null, 0)
-      );
-    }
 
     const hideShortestLevelsFlag = !elems.levels.checkbox.shortest.checked;
     const hideClearedLevelsFlag = !elems.levels.checkbox.cleared.checked;
-    const hideNotClearedLevelsFlag = !elems.levels.checkbox.notCleared.checked;
 
     elems.levels.dialogSvg.innerHTML = '';
 
@@ -260,10 +254,6 @@
           if (hideShortestLevelsFlag) return;
         } else {
           if (hideClearedLevelsFlag) return;
-        }
-      } else {
-        if (hideNotClearedLevelsFlag) {
-          return;
         }
       }
 

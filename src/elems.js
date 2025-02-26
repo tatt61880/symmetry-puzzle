@@ -75,12 +75,10 @@
       crown: {
         shortest: 'crown-shortest-levels',
         cleared: 'crown-cleared-levels',
-        notCleared: 'crown-not-cleared-levels',
       },
       checkbox: {
         shortest: 'show-shortest-levels',
         cleared: 'show-cleared-levels',
-        notCleared: 'show-not-cleared-levels',
       },
       dialogSvg: 'dialog-levels-svg',
       buttonSvg: 'button-levels-svg',
