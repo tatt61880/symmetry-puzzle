@@ -138,7 +138,6 @@
       );
     }
 
-    // const hideCompletedLevelsFlag = elems.levels.hideClearedLevels.checked;
     const hideShortestLevelsFlag = !elems.levels.checkbox.shortest.checked;
     const hideClearedLevelsFlag = !elems.levels.checkbox.cleared.checked;
     const hideNotClearedLevelsFlag = !elems.levels.checkbox.notCleared.checked;
