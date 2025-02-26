@@ -133,8 +133,8 @@
       );
     }
 
-    const hideShortestLevelsFlag = !elems.levels.checkbox.shortest.checked;
-    const hideClearedLevelsFlag = !elems.levels.checkbox.cleared.checked;
+    const hideShortestLevelsDetailFlag = elems.levels.checkbox.shortest.checked;
+    const hideClearedLevelsDetailFlag = elems.levels.checkbox.cleared.checked;
 
     elems.levels.dialogSvg.innerHTML = '';
 
@@ -249,11 +249,12 @@
         level.getCheckMode()
       );
 
+      let hideDetailFlag = false;
       if (highestScore !== null) {
         if (highestScore <= bestStep) {
-          if (hideShortestLevelsFlag) return;
+          if (hideShortestLevelsDetailFlag) hideDetailFlag = true;
         } else {
-          if (hideClearedLevelsFlag) return;
+          if (hideClearedLevelsDetailFlag) hideDetailFlag = true;
         }
       }
 
@@ -283,6 +284,7 @@
         g.appendChild(rect);
       }
 
+      // レベルID
       {
         const text = app.svg.createText(1, {
           x: LEVEL_SELECT_WIDTH / 2,
@@ -294,20 +296,34 @@
         g.appendChild(text);
       }
 
-      {
+      // 王冠
+      if (hideDetailFlag) {
+        const crown = app.common.createCrown(
+          LEVEL_SELECT_WIDTH / 2,
+          0.5,
+          1,
+          highestScore,
+          bestStep
+        );
+        g.appendChild(crown);
+      } else {
         const crown = app.common.createCrown(20, 0, 1, highestScore, bestStep);
         g.appendChild(crown);
       }
-      if (highestScore !== null) {
-        const text = app.svg.createText(1, {
-          x: 22,
-          y: 33,
-          text: highestScore,
-          fill: app.common.getStepColor(highestScore, bestStep),
-        });
-        text.setAttribute('font-size', '15px');
-        text.setAttribute('text-anchor', 'start');
-        g.appendChild(text);
+
+      if (!hideDetailFlag && highestScore !== null) {
+        // クリア時のステップ数
+        {
+          const text = app.svg.createText(1, {
+            x: 22,
+            y: 33,
+            text: highestScore,
+            fill: app.common.getStepColor(highestScore, bestStep),
+          });
+          text.setAttribute('font-size', '15px');
+          text.setAttribute('text-anchor', 'start');
+          g.appendChild(text);
+        }
 
         // 形状数
         {
@@ -336,7 +352,8 @@
         }
       }
 
-      {
+      // 盤面表示
+      if (!hideDetailFlag) {
         const blockSize = Math.min(
           (LEVEL_SELECT_WIDTH - 4) / level.getWidth(),
           (LEVEL_SELECT_HEIGHT - 42) / level.getHeight()
