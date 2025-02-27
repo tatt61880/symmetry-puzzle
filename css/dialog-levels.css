@@ -58,6 +58,10 @@
         background: #eeeeee;
         border: 3px solid #999999;
         border-radius: 20%;
+
+        svg {
+          transform: scale(0.5);
+        }
       }
 
       .toggle-input {
@@ -68,9 +72,8 @@
         height: 100%;
         opacity: 0;
 
-        &:checked + .toggle-label {
-          background-color: #aaffaa;
-          border: 3px solid #558855;
+        &:checked + .toggle-label > svg {
+          transform: scale(1);
         }
       }
     }

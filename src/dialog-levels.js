@@ -133,8 +133,8 @@
       );
     }
 
-    const hideShortestLevelsDetailFlag = elems.levels.checkbox.shortest.checked;
-    const hideClearedLevelsDetailFlag = elems.levels.checkbox.cleared.checked;
+    const largeCrownForShorestFlag = elems.levels.checkbox.shortest.checked;
+    const largeCrownForClearedFlag = elems.levels.checkbox.cleared.checked;
 
     elems.levels.dialogSvg.innerHTML = '';
 
@@ -252,9 +252,9 @@
       let hideDetailFlag = false;
       if (highestScore !== null) {
         if (highestScore <= bestStep) {
-          if (hideShortestLevelsDetailFlag) hideDetailFlag = true;
+          if (largeCrownForShorestFlag) hideDetailFlag = true;
         } else {
-          if (hideClearedLevelsDetailFlag) hideDetailFlag = true;
+          if (largeCrownForClearedFlag) hideDetailFlag = true;
         }
       }
 
