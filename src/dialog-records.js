@@ -287,6 +287,43 @@
       }
     }
 
+    // 連番モード
+    {
+      const tr = document.createElement('tr');
+      tbody.appendChild(tr);
+      {
+        const th = document.createElement('th');
+        const img = document.createElement('img');
+        img.src = './images/logo-123.png?2024.01.09';
+        const imgSize = '50';
+        img.setAttribute('width', imgSize);
+        img.setAttribute('height', imgSize);
+        tr.appendChild(th);
+        th.appendChild(img);
+      }
+      {
+        const td = document.createElement('td');
+        const num =
+          app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.LINE) - 1;
+        td.innerText = num;
+        tr.appendChild(td);
+      }
+      {
+        const td = document.createElement('td');
+        const num =
+          app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.POINT) - 1;
+        td.innerText = num;
+        tr.appendChild(td);
+      }
+      {
+        const td = document.createElement('td');
+        const num =
+          app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.SPECIAL) - 1;
+        td.innerText = num;
+        tr.appendChild(td);
+      }
+    }
+
     return tbody;
   }
 
