@@ -45,14 +45,18 @@
       border-radius: 20% 20% 40% 40%;
     }
 
-    &#button-normal-point {
+    &#button-normal-point,
+    &#button-num-point {
       border-radius: 20% 40%;
     }
 
-    &#button-normal-special {
+    &#button-normal-special,
+    &#button-num-special {
       border-radius: 30%;
     }
 
+    &#button-toggle-to-normal,
+    &#button-toggle-to-num,
     &#button-records {
       background-color: #ddeeff;
       border-color: #a8d4ff;

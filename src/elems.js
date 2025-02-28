@@ -51,10 +51,18 @@
 
     title: {
       inner1: 'title-inner1',
+      buttonNormalsTr: 'button-normals-tr',
       buttonNormalLine: 'button-normal-line',
       buttonNormalPoint: 'button-normal-point',
       buttonNormalSpecial: 'button-normal-special',
+      buttonNumsTr: 'button-nums-tr',
       buttonNumLine: 'button-num-line',
+      buttonNumPoint: 'button-num-point',
+      buttonNumSpecial: 'button-num-special',
+      buttonToggleToNormalDiv: 'button-toggle-to-normal-div',
+      buttonToggleToNumDiv: 'button-toggle-to-num-div',
+      buttonToggleToNormal: 'button-toggle-to-normal',
+      buttonToggleToNum: 'button-toggle-to-num',
       // buttonEdit: 'button-edit',
     },
 

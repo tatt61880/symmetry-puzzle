@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.02.26';
+  const VERSION_TEXT = 'v' + '2025.02.28';
 
   const app = window.app;
   Object.freeze(app);
@@ -323,7 +323,6 @@
           return;
         }
         break;
-      case '+':
       case 'Home':
         if (!e.ctrlKey) {
           gotoTitlePage();
@@ -348,9 +347,12 @@
           if (e.shiftKey) return;
           gotoSpecialMode();
           break;
+        case '+':
         case '#':
-          gotoNumLineMode();
+          toggleNormalNumMode();
           break;
+        case '!':
+          app.dialog.records.show();
       }
       return;
     }
@@ -1453,17 +1455,32 @@
 
   // タイトル画面用
   function initElemsForTitle() {
-    // 線対称モード
+    // 線対称-通常モード
     elems.title.buttonNormalLine.addEventListener('click', gotoLineMode);
 
-    // 点対称モード
+    // 点対称-通常モード
     elems.title.buttonNormalPoint.addEventListener('click', gotoPointMode);
 
-    // 線点対称モード
+    // 線点対称-通常モード
     elems.title.buttonNormalSpecial.addEventListener('click', gotoSpecialMode);
 
     // 線対称-連番モード
     elems.title.buttonNumLine.addEventListener('click', gotoNumLineMode);
+
+    // 点対称-連番モード
+    elems.title.buttonNumPoint.addEventListener('click', gotoNumPointMode);
+
+    // 線点対称-連番モード
+    elems.title.buttonNumSpecial.addEventListener('click', gotoNumSpecialMode);
+
+    elems.title.buttonToggleToNormal.addEventListener(
+      'click',
+      toggleNormalNumMode
+    );
+    elems.title.buttonToggleToNum.addEventListener(
+      'click',
+      toggleNormalNumMode
+    );
   }
 
   function gotoLineMode() {
@@ -1485,6 +1502,32 @@
     updateCheckMode(app.Level.CHECK_MODE.LINE);
     const minNum = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.LINE);
     onloadId(minNum, false);
+  }
+
+  function gotoNumPointMode() {
+    updateCheckMode(app.Level.CHECK_MODE.POINT);
+    const minNum = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.POINT);
+    onloadId(minNum, false);
+  }
+
+  function gotoNumSpecialMode() {
+    updateCheckMode(app.Level.CHECK_MODE.SPECIAL);
+    const minNum = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.SPECIAL);
+    onloadId(minNum, false);
+  }
+
+  function toggleNormalNumMode() {
+    if (common.isShownElem(elems.title.buttonNormalsTr)) {
+      common.hideElem(elems.title.buttonNormalsTr);
+      common.showElem(elems.title.buttonNumsTr);
+      common.showElem(elems.title.buttonToggleToNormalDiv);
+      common.hideElem(elems.title.buttonToggleToNumDiv);
+    } else {
+      common.showElem(elems.title.buttonNormalsTr);
+      common.hideElem(elems.title.buttonNumsTr);
+      common.hideElem(elems.title.buttonToggleToNormalDiv);
+      common.showElem(elems.title.buttonToggleToNumDiv);
+    }
   }
 
   // 記録画面用
