@@ -73,13 +73,13 @@
 
   colors.stepWin = '#ff5555';
   colors.stepDraw = '#ff7700';
-  colors.stepLose = '#666666';
+  colors.stepLose = '#777777';
   colors.stepUnknown = '#a0a0a0';
   colors.stepNum = '#303080'; // 連番モード用
   colors.stepNormal = '#000000';
 
   colors.shapeNumPerfect = '#ff7700';
-  colors.shapeNumNormal = '#888888';
+  colors.shapeNumNormal = '#777777';
 
   colors.editButton = {
     fill: '#e5a0e5',
