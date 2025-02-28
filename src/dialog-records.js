@@ -77,12 +77,6 @@
       img.classList.add('animation-icon-special');
       th.appendChild(img);
     }
-    {
-      const th = document.createElement('th');
-      tr.appendChild(th);
-      th.innerText = 'Total';
-      th.classList.add('total-col');
-    }
 
     return thead;
   }
@@ -175,13 +169,6 @@
       }
     }
 
-    const numTotalNotSolved =
-      numLineNotSolved + numPointNotSolved + numSpecialNotSolved;
-    const numTotalSolvedNormal =
-      numLineSolvedNormal + numPointSolvedNormal + numSpecialSolvedNormal;
-    const numTotalSolvedBest =
-      numLineSolvedBest + numPointSolvedBest + numSpecialSolvedBest;
-
     const numLineTotal =
       numLineSolvedBest + numLineSolvedNormal + numLineNotSolved;
 
@@ -190,8 +177,6 @@
 
     const numSpecialTotal =
       numSpecialSolvedBest + numSpecialSolvedNormal + numSpecialNotSolved;
-
-    const numTotalTotal = numLineTotal + numPointTotal + numSpecialTotal;
 
     const setBackgroundBar = (td, ratio) => {
       const percent = ratio * 100;
@@ -232,12 +217,6 @@
         setBackgroundBar(td, numSpecialSolvedBest / numSpecialTotal);
         tr.appendChild(td);
       }
-      {
-        const td = document.createElement('td');
-        td.innerText = numTotalSolvedBest;
-        td.classList.add('total-col');
-        tr.appendChild(td);
-      }
     }
 
     // クリア済み
@@ -272,12 +251,6 @@
         setBackgroundBar(td, numSpecialSolvedNormal / numSpecialTotal);
         tr.appendChild(td);
       }
-      {
-        const td = document.createElement('td');
-        td.innerText = numTotalSolvedNormal;
-        td.classList.add('total-col');
-        tr.appendChild(td);
-      }
     }
 
     // 未クリア
@@ -310,49 +283,6 @@
         const td = document.createElement('td');
         td.innerText = numSpecialNotSolved;
         setBackgroundBar(td, numSpecialNotSolved / numSpecialTotal);
-        tr.appendChild(td);
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numTotalNotSolved;
-        td.classList.add('total-col');
-        tr.appendChild(td);
-      }
-    }
-
-    // 合計
-    {
-      const tr = document.createElement('tr');
-      tbody.appendChild(tr);
-      {
-        const th = document.createElement('th');
-        th.innerText = 'Total';
-        th.classList.add('total-row');
-        tr.appendChild(th);
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numLineTotal;
-        td.classList.add('total-row');
-        tr.appendChild(td);
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numPointTotal;
-        td.classList.add('total-row');
-        tr.appendChild(td);
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numSpecialTotal;
-        td.classList.add('total-row');
-        tr.appendChild(td);
-      }
-      {
-        const td = document.createElement('td');
-        td.innerText = numTotalTotal;
-        td.classList.add('total-row');
-        td.classList.add('total-col');
         tr.appendChild(td);
       }
     }

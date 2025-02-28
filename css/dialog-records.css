@@ -47,16 +47,6 @@
       color: #001a33;
       background-color: #ddeeff;
     }
-
-    .total-col {
-      display: none;
-      border-left: double;
-    }
-
-    .total-row {
-      display: none;
-      border-top: double;
-    }
   }
 
   &::backdrop {
