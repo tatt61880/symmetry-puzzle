@@ -51,10 +51,10 @@
 
     title: {
       inner1: 'title-inner1',
-      buttonPlayLine: 'button-play-line',
-      buttonPlayPoint: 'button-play-point',
-      buttonPlaySpecial: 'button-play-special',
-      buttonPlayNumLine: 'button-num-line',
+      buttonNormalLine: 'button-normal-line',
+      buttonNormalPoint: 'button-normal-point',
+      buttonNormalSpecial: 'button-normal-special',
+      buttonNumLine: 'button-num-line',
       // buttonEdit: 'button-edit',
     },
 

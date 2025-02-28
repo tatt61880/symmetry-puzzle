@@ -1454,16 +1454,16 @@
   // タイトル画面用
   function initElemsForTitle() {
     // 線対称モード
-    elems.title.buttonPlayLine.addEventListener('click', gotoLineMode);
+    elems.title.buttonNormalLine.addEventListener('click', gotoLineMode);
 
     // 点対称モード
-    elems.title.buttonPlayPoint.addEventListener('click', gotoPointMode);
+    elems.title.buttonNormalPoint.addEventListener('click', gotoPointMode);
 
     // 線点対称モード
-    elems.title.buttonPlaySpecial.addEventListener('click', gotoSpecialMode);
+    elems.title.buttonNormalSpecial.addEventListener('click', gotoSpecialMode);
 
     // 線対称-連番モード
-    elems.title.buttonPlayNumLine.addEventListener('click', gotoNumLineMode);
+    elems.title.buttonNumLine.addEventListener('click', gotoNumLineMode);
   }
 
   function gotoLineMode() {

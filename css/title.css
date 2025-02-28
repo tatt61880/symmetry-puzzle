@@ -40,16 +40,16 @@
       opacity: 0.8;
     }
 
-    &#button-play-line,
+    &#button-normal-line,
     &#button-num-line {
       border-radius: 20% 20% 40% 40%;
     }
 
-    &#button-play-point {
+    &#button-normal-point {
       border-radius: 20% 40%;
     }
 
-    &#button-play-special {
+    &#button-normal-special {
       border-radius: 30%;
     }
 
