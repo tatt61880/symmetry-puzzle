@@ -295,7 +295,7 @@
         const th = document.createElement('th');
         const img = document.createElement('img');
         img.src = './images/logo-123.png?2024.01.09';
-        const imgSize = '50';
+        const imgSize = '35';
         img.setAttribute('width', imgSize);
         img.setAttribute('height', imgSize);
         tr.appendChild(th);
