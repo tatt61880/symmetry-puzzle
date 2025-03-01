@@ -161,13 +161,15 @@
     width: 50px;
   }
 
-  .border-valid {
+  .example-valid {
     padding: 5px;
+    background: #ddffdd;
     border: 5px solid #55ee55;
   }
 
-  .border-invalid {
+  .example-invalid {
     padding: 5px;
+    background: #ffdddd;
     border: 5px solid #ee5555;
   }
 
@@ -180,14 +182,29 @@
     margin: 7px auto;
   }
 
-  .example-image {
-    width: 329px;
+  .example-image-valid-1 {
+    width: 69px;
     height: 81px;
+    margin: 2px 10px;
   }
 
-  .example-image-2 {
-    width: 209px;
+  .example-image-valid-2 {
+    width: 89px;
     height: 81px;
+    margin: 2px 10px;
+  }
+
+  .example-image-valid-3 {
+    width: 109px;
+    height: 81px;
+    margin: 2px 10px;
+  }
+
+  .example-image-invalid-1,
+  .example-image-invalid-2 {
+    width: 89px;
+    height: 81px;
+    margin: 2px 10px;
   }
 
   p {
