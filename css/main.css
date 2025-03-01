@@ -7,8 +7,7 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Kosugi Maru', 'Helvetica Neue', Arial,
-    'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+  font-family: 'Kosugi Maru', 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
   background-color: #ccffff;
 }
 
@@ -33,6 +32,10 @@ header {
     font-size: 1.3rem;
     font-weight: bold;
     color: #000055;
+  }
+
+  .title-sub {
+    font-size: 1.1rem;
   }
 
   #version {
