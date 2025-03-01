@@ -102,12 +102,10 @@
     const symmetryFlagPrev = symmetryFlag;
     completeFlag = common.level.isCompleted(); // 連結した対称図形であるとき
     symmetryFlag = common.level.isSymmetry(app.states.isTarget); // 連結しているか否かに関わらず対称図形であるとき
-    if (undoInfo.getIndex() !== 0) {
-      const redrawFlag = completeFlag || (symmetryFlag && symmetryFlag !== symmetryFlagPrev);
-      if (redrawFlag) {
-        const delay = settings.autoMode ? settingsAuto.interval * INPUT_INTERVAL_MSEC : MOVE_INTERVAL_MSEC;
-        setTimeout(drawMainSvg, delay, true);
-      }
+    const redrawFlag = completeFlag || (symmetryFlag && symmetryFlag !== symmetryFlagPrev);
+    if (redrawFlag) {
+      const delay = settings.autoMode ? settingsAuto.interval * INPUT_INTERVAL_MSEC : MOVE_INTERVAL_MSEC;
+      setTimeout(drawMainSvg, delay, true);
     }
 
     if (completeFlag) {
