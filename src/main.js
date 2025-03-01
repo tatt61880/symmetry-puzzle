@@ -1624,7 +1624,7 @@
     }
   }
 
-  function updateController() {
+  function updateController(completeCheckFlag = false) {
     if (common.level?.hasAxis()) {
       common.showElem(elems.controller.buttons.axis);
       common.hideElem(elems.controller.buttons.axisL1);
@@ -1665,7 +1665,7 @@
 
     common.showElem(elems.controller.buttons.root);
     common.hideElem(elems.controller.menu);
-    if (completeFlag) {
+    if (completeCheckFlag) {
       common.hideElem(elems.controller.buttons.base);
       if (common.isShownElem(elems.level.next)) {
         common.showElem(elems.controller.nextLevel);
@@ -1678,7 +1678,7 @@
 
   // 描画
   function drawMainSvg(completeCheckFlag = false) {
-    updateController();
+    updateController(completeCheckFlag);
 
     const mainSvgG = app.svg.createG();
 
