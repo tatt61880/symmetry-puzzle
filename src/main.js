@@ -105,7 +105,7 @@
     const redrawFlag = completeFlag || (symmetryFlag && symmetryFlag !== symmetryFlagPrev);
     if (redrawFlag) {
       const delay = settings.autoMode ? settingsAuto.interval * INPUT_INTERVAL_MSEC : MOVE_INTERVAL_MSEC;
-      setTimeout(drawMainSvg, delay, true);
+      setTimeout(drawMainSvg, delay, completeFlag);
     }
 
     if (completeFlag) {
