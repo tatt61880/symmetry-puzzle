@@ -98,10 +98,7 @@
         if (levelId === 0) continue;
         if (levelId === 'NaN') continue;
 
-        const playerScore = app.savedata.getHighestScore(
-          levelObj,
-          app.Level.CHECK_MODE.LINE
-        );
+        const playerScore = app.savedata.getHighestScore(levelObj, app.Level.CHECK_MODE.LINE);
         const appScore = levelObj.step;
         if (playerScore === null) {
           ++numLineNotSolved;
@@ -126,10 +123,7 @@
         if (levelId === 0) continue;
         if (levelId === 'NaN') continue;
 
-        const playerScore = app.savedata.getHighestScore(
-          levelObj,
-          app.Level.CHECK_MODE.POINT
-        );
+        const playerScore = app.savedata.getHighestScore(levelObj, app.Level.CHECK_MODE.POINT);
         const appScore = levelObj.step;
         if (playerScore === null) {
           ++numPointNotSolved;
@@ -154,10 +148,7 @@
         if (levelId === 0) continue;
         if (levelId === 'NaN') continue;
 
-        const playerScore = app.savedata.getHighestScore(
-          levelObj,
-          app.Level.CHECK_MODE.SPECIAL
-        );
+        const playerScore = app.savedata.getHighestScore(levelObj, app.Level.CHECK_MODE.SPECIAL);
         const appScore = levelObj.step;
         if (playerScore === null) {
           ++numSpecialNotSolved;
@@ -169,14 +160,11 @@
       }
     }
 
-    const numLineTotal =
-      numLineSolvedBest + numLineSolvedNormal + numLineNotSolved;
+    const numLineTotal = numLineSolvedBest + numLineSolvedNormal + numLineNotSolved;
 
-    const numPointTotal =
-      numPointSolvedBest + numPointSolvedNormal + numPointNotSolved;
+    const numPointTotal = numPointSolvedBest + numPointSolvedNormal + numPointNotSolved;
 
-    const numSpecialTotal =
-      numSpecialSolvedBest + numSpecialSolvedNormal + numSpecialNotSolved;
+    const numSpecialTotal = numSpecialSolvedBest + numSpecialSolvedNormal + numSpecialNotSolved;
 
     const setBackgroundBar = (td, ratio) => {
       const percent = ratio * 100;
@@ -306,22 +294,19 @@
       }
       {
         const td = document.createElement('td');
-        const num =
-          app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.LINE) - 1;
+        const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.LINE) - 1;
         td.innerText = num;
         tr.appendChild(td);
       }
       {
         const td = document.createElement('td');
-        const num =
-          app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.POINT) - 1;
+        const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.POINT) - 1;
         td.innerText = num;
         tr.appendChild(td);
       }
       {
         const td = document.createElement('td');
-        const num =
-          app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.SPECIAL) - 1;
+        const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.SPECIAL) - 1;
         td.innerText = num;
         tr.appendChild(td);
       }

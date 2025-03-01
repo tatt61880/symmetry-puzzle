@@ -95,12 +95,7 @@
     #axis;
     #mirrorFlag;
 
-    constructor({
-      levelObj,
-      checkMode = Level.CHECK_MODE.LINE,
-      mirrorFlag = false,
-      rotateNum = 0,
-    }) {
+    constructor({ levelObj, checkMode = Level.CHECK_MODE.LINE, mirrorFlag = false, rotateNum = 0 }) {
       this.#checkMode = null;
       this.#levelObj = null;
       this.#width = null;
@@ -127,10 +122,8 @@
       }
       if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
       this.#levelObj = obj;
-      if (this.#levelObj.w > app.common.maxW)
-        this.#levelObj.w = app.common.maxW;
-      if (this.#levelObj.h > app.common.maxH)
-        this.#levelObj.h = app.common.maxH;
+      if (this.#levelObj.w > app.common.maxW) this.#levelObj.w = app.common.maxW;
+      if (this.#levelObj.h > app.common.maxH) this.#levelObj.h = app.common.maxH;
       Object.freeze(this.#levelObj);
       this.#initStates();
       this.applyStateStr(obj.s);
@@ -179,13 +172,7 @@
     }
 
     getS() {
-      return this.#getStateStrSub(
-        this.#states,
-        this.#xMin,
-        this.#xMax,
-        this.#yMin,
-        this.#yMax
-      );
+      return this.#getStateStrSub(this.#states, this.#xMin, this.#xMax, this.#yMin, this.#yMax);
     }
 
     getA() {
@@ -535,20 +522,11 @@
         for (let x = this.#xMin; x < this.#xMax; ++x) {
           const state = this.#states[y][x];
           if (map[state] === undefined) {
-            if (
-              app.states.targetMin <= state &&
-              state <= app.states.targetMax
-            ) {
+            if (app.states.targetMin <= state && state <= app.states.targetMax) {
               map[state] = nextTarget++;
-            } else if (
-              app.states.otherMin <= state &&
-              state <= app.states.otherMax
-            ) {
+            } else if (app.states.otherMin <= state && state <= app.states.otherMax) {
               map[state] = nextOther++;
-            } else if (
-              app.states.userMin <= state &&
-              state <= app.states.userMax
-            ) {
+            } else if (app.states.userMin <= state && state <= app.states.userMax) {
               map[state] = nextUser++;
             } else if (state === app.states.wall || state === app.states.none) {
               map[state] = this.#states[y][x];
@@ -1008,9 +986,7 @@
     }) {
       const g = app.svg.createG();
 
-      const symmetryType = symmetryAnimationFlag
-        ? this.getSymmetryType(app.states.isTarget)
-        : null;
+      const symmetryType = symmetryAnimationFlag ? this.getSymmetryType(app.states.isTarget) : null;
 
       // 背景
       if (drawBackground) {
@@ -1135,10 +1111,7 @@
         const center = this.getCenter(app.states.isTarget);
         const gg = app.svg.createG('group-symmetry-axis');
         g.appendChild(gg);
-        document.documentElement.style.setProperty(
-          '--animation-jump-count',
-          jumpCounts[symmetryType]
-        );
+        document.documentElement.style.setProperty('--animation-jump-count', jumpCounts[symmetryType]);
         switch (symmetryType) {
           case Level.SYMMETRY_TYPE.LINE1: {
             // m (｜)
@@ -1277,11 +1250,7 @@
       this.#resetMoveFlags();
       return g;
 
-      function createAxisLine1({
-        center,
-        height,
-        stroke = app.colors.symmetryAxis,
-      }) {
+      function createAxisLine1({ center, height, stroke = app.colors.symmetryAxis }) {
         const line = app.svg.createLine(blockSize, {
           x1: center.x,
           y1: 0,
@@ -1294,11 +1263,7 @@
         return line;
       }
 
-      function createAxisLine2({
-        center,
-        width,
-        stroke = app.colors.symmetryAxis,
-      }) {
+      function createAxisLine2({ center, width, stroke = app.colors.symmetryAxis }) {
         const line = app.svg.createLine(blockSize, {
           x1: 0,
           y1: center.y,
@@ -1311,11 +1276,7 @@
         return line;
       }
 
-      function createAxisLine3({
-        center,
-        height,
-        stroke = app.colors.symmetryAxis,
-      }) {
+      function createAxisLine3({ center, height, stroke = app.colors.symmetryAxis }) {
         const dd = 0.05;
 
         const x1a = center.x - center.y;
@@ -1326,10 +1287,7 @@
         const x2 = x2a > width ? width : x2a;
         const y2 = x2a > width ? width + height - x2a : height;
 
-        const stroke2 =
-          (center.x + center.y) % 1 === 0
-            ? stroke
-            : app.colors.symmetryAxisInvalid;
+        const stroke2 = (center.x + center.y) % 1 === 0 ? stroke : app.colors.symmetryAxisInvalid;
 
         const line = app.svg.createLine(blockSize, {
           x1: x1 - dd,
@@ -1343,11 +1301,7 @@
         return line;
       }
 
-      function createAxisLine4({
-        center,
-        height,
-        stroke = app.colors.symmetryAxis,
-      }) {
+      function createAxisLine4({ center, height, stroke = app.colors.symmetryAxis }) {
         const dd = 0.05;
 
         const x1a = center.x + center.y;
@@ -1358,10 +1312,7 @@
         const x2 = x2a < 0 ? 0 : x2a;
         const y2 = x2a < 0 ? height + x2a : height;
 
-        const stroke2 =
-          (center.x + center.y) % 1 === 0
-            ? stroke
-            : app.colors.symmetryAxisInvalid;
+        const stroke2 = (center.x + center.y) % 1 === 0 ? stroke : app.colors.symmetryAxisInvalid;
 
         const line = app.svg.createLine(blockSize, {
           x1: x1 + dd,
@@ -1815,16 +1766,7 @@
       return true;
     }
 
-    #createOneBlock(
-      x,
-      y,
-      sX,
-      sY,
-      blockSize,
-      symmetryType,
-      showCharsFlag,
-      eyeFlag
-    ) {
+    #createOneBlock(x, y, sX, sY, blockSize, symmetryType, showCharsFlag, eyeFlag) {
       const state = this.getState(sX, sY);
       const color = app.colors[state];
 
@@ -2330,22 +2272,15 @@
           }
 
           if (eyeFlag) {
-            const { srcX, srcY } = this.#getSrc(
-              sX,
-              sY,
-              this.#moveDx,
-              this.#moveDy
-            );
-            const moveFlag =
-              this.#moveFlags[srcY] && this.#moveFlags[srcY][srcX];
+            const { srcX, srcY } = this.#getSrc(sX, sY, this.#moveDx, this.#moveDy);
+            const moveFlag = this.#moveFlags[srcY] && this.#moveFlags[srcY][srcX];
             const dx = moveFlag ? this.#moveDx * 0.06 : 0;
             const dy = moveFlag ? this.#moveDy * 0.2 : 0;
             const px = moveFlag ? srcX : sX;
             const py = moveFlag ? srcY : sY;
 
             const prevInfo =
-              this.#eyePrevInfo[py] === undefined ||
-              this.#eyePrevInfo[py][px] === undefined
+              this.#eyePrevInfo[py] === undefined || this.#eyePrevInfo[py][px] === undefined
                 ? { dx: 0, dy: 0 }
                 : this.#eyePrevInfo[py][px];
             const pdx = prevInfo.dx;
@@ -2696,11 +2631,7 @@
           text: app.states.stateToChar[state],
         });
         gElem.appendChild(text);
-        if (
-          state === app.states.none ||
-          state === app.states.wall ||
-          this.#isConnected((s) => s === state)
-        ) {
+        if (state === app.states.none || state === app.states.wall || this.#isConnected((s) => s === state)) {
           text.setAttribute('fill', app.colors[state].text);
         } else {
           text.setAttribute('fill', app.colors[state].error);
@@ -2748,10 +2679,7 @@
             duration: app.common.MOVE_INTERVAL_MSEC,
           };
 
-          eyeElem.setAttribute(
-            'transform-origin',
-            `${cx * blockSize} ${cy * blockSize}`
-          );
+          eyeElem.setAttribute('transform-origin', `${cx * blockSize} ${cy * blockSize}`);
           eyeElem.animate(keyframes, options);
         }
 
@@ -2778,16 +2706,7 @@
       const state = this.getState(sX, sY);
       const color = app.colors[state];
 
-      const elem = this.#createOneBlock(
-        x,
-        y,
-        sX,
-        sY,
-        blockSize,
-        symmetryType,
-        showCharsFlag,
-        eyeFlag
-      );
+      const elem = this.#createOneBlock(x, y, sX, sY, blockSize, symmetryType, showCharsFlag, eyeFlag);
 
       let child = elem;
 
@@ -2799,9 +2718,7 @@
             child = g;
             const animationClass = animationClasses[symmetryType];
             elem.classList.add(animationClass);
-            elem.style.transformOrigin = `${blockSize * (x + 0.5)}px ${
-              blockSize * (y + 0.5)
-            }px`;
+            elem.style.transformOrigin = `${blockSize * (x + 0.5)}px ${blockSize * (y + 0.5)}px`;
             g.classList.add('animation-jump');
           } else {
             elem.classList.add('animation-jump');
@@ -2841,16 +2758,12 @@
           if (dx + dy === 0) {
             document.documentElement.style.setProperty(
               '--animation-origin',
-              `${(blockSize * this.#axis.cx) / 2}px ${
-                (blockSize * this.#axis.cy) / 2
-              }px`
+              `${(blockSize * this.#axis.cx) / 2}px ${(blockSize * this.#axis.cy) / 2}px`
             );
 
             const animationClass = animationMovingClasses[this.#axis.type];
             const additionalInfo =
-              this.#axis.type === Level.SYMMETRY_TYPE.POINT2 && this.#mirrorFlag
-                ? '-reversed'
-                : '';
+              this.#axis.type === Level.SYMMETRY_TYPE.POINT2 && this.#mirrorFlag ? '-reversed' : '';
             elem.classList.add(animationClass + additionalInfo);
           } else {
             elem.classList.add('animation-move');

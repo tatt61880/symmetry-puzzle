@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.01';
+  const VERSION_TEXT = 'v' + '2025.03.01b';
 
   const app = window.app;
   Object.freeze(app);
@@ -69,18 +69,9 @@
 
   const SHADOW_MSEC = MOVE_INTERVAL_MSEC * 2;
   const ROTATION_MSEC = MOVE_INTERVAL_MSEC * 3;
-  document.documentElement.style.setProperty(
-    '--animation-duration',
-    `${MOVE_INTERVAL_MSEC}ms`
-  );
-  document.documentElement.style.setProperty(
-    '--animation-duration-shadow',
-    `${SHADOW_MSEC}ms`
-  );
-  document.documentElement.style.setProperty(
-    '--animation-duration-symmetry',
-    `${ROTATION_MSEC}ms`
-  );
+  document.documentElement.style.setProperty('--animation-duration', `${MOVE_INTERVAL_MSEC}ms`);
+  document.documentElement.style.setProperty('--animation-duration-shadow', `${SHADOW_MSEC}ms`);
+  document.documentElement.style.setProperty('--animation-duration-symmetry', `${ROTATION_MSEC}ms`);
 
   document.addEventListener('DOMContentLoaded', onloadApp);
   return;
@@ -111,12 +102,9 @@
     const symmetryFlagPrev = symmetryFlag;
     completeFlag = common.level.isCompleted(); // 連結した対称図形であるとき
     symmetryFlag = common.level.isSymmetry(app.states.isTarget); // 連結しているか否かに関わらず対称図形であるとき
-    const redrawFlag =
-      completeFlag || (symmetryFlag && symmetryFlag !== symmetryFlagPrev);
+    const redrawFlag = completeFlag || (symmetryFlag && symmetryFlag !== symmetryFlagPrev);
     if (redrawFlag) {
-      const delay = settings.autoMode
-        ? settingsAuto.interval * INPUT_INTERVAL_MSEC
-        : MOVE_INTERVAL_MSEC;
+      const delay = settings.autoMode ? settingsAuto.interval * INPUT_INTERVAL_MSEC : MOVE_INTERVAL_MSEC;
       setTimeout(drawMainSvg, delay, true);
     }
 
@@ -411,10 +399,7 @@
           redoStart();
           break;
       }
-    } else if (
-      e.key === 'Enter' &&
-      common.isShownElem(elems.controller.nextLevel)
-    ) {
+    } else if (e.key === 'Enter' && common.isShownElem(elems.controller.nextLevel)) {
       gotoNextLevel();
     } else if (e.key === ' ') {
       if (settings.autoMode) {
@@ -524,9 +509,7 @@
 
     {
       const levelObj = undoInfo.undoMax();
-      const resizeFlag =
-        common.level.getW() !== levelObj.w ||
-        common.level.getH() !== levelObj.h;
+      const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
     }
 
@@ -592,19 +575,10 @@
       frameSizeW = (svgMinWidth - blockSize * common.level.getWidth()) / 2;
     }
 
-    elems.main.svg.setAttribute(
-      'width',
-      blockSize * common.level.getWidth() + 2 * frameSizeW
-    );
-    elems.main.svg.setAttribute(
-      'height',
-      blockSize * common.level.getHeight() + 2 * frameSizeH
-    );
+    elems.main.svg.setAttribute('width', blockSize * common.level.getWidth() + 2 * frameSizeW);
+    elems.main.svg.setAttribute('height', blockSize * common.level.getHeight() + 2 * frameSizeH);
 
-    document.documentElement.style.setProperty(
-      '--animation-jump',
-      `translate(0, ${-0.5 * blockSize}px)`
-    );
+    document.documentElement.style.setProperty('--animation-jump', `translate(0, ${-0.5 * blockSize}px)`);
   }
 
   function updateUndoRedoButton() {
@@ -632,9 +606,7 @@
 
     if (undoInfo.isUndoable()) {
       const levelObj = undoInfo.undo();
-      const resizeFlag =
-        common.level.getW() !== levelObj.w ||
-        common.level.getH() !== levelObj.h;
+      const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
       common.level.applyAxis(levelObj.axis);
       draw();
@@ -646,9 +618,7 @@
 
     if (undoInfo.isRedoable()) {
       const levelObj = undoInfo.redo();
-      const resizeFlag =
-        common.level.getW() !== levelObj.w ||
-        common.level.getH() !== levelObj.h;
+      const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
       common.level.applyAxis(levelObj.axis);
       draw();
@@ -747,10 +717,7 @@
 
   function updateShapeButton() {
     if (common.level !== null) {
-      const shapesObj = app.savedata.getShapesObj(
-        common.level.getLevelObj(),
-        common.checkMode
-      );
+      const shapesObj = app.savedata.getShapesObj(common.level.getLevelObj(), common.checkMode);
 
       if (shapesObj) {
         common.showElem(elems.shapes.button);
@@ -758,10 +725,7 @@
         const denumerator = common.level.getShapes() ?? '?';
         elems.shapes.buttonNumerator.textContent = numerator;
         elems.shapes.buttonDenumerator.textContent = denumerator;
-        const fill =
-          numerator === denumerator
-            ? app.colors.shapeNumPerfect
-            : app.colors.shapeNumNormal;
+        const fill = numerator === denumerator ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
         elems.shapes.buttonNumerator.setAttribute('fill', fill);
         elems.shapes.buttonLine.setAttribute('fill', fill);
         elems.shapes.buttonDenumerator.setAttribute('fill', fill);
@@ -882,9 +846,7 @@
       elem.classList.add('hide-mode');
     }
 
-    for (const elem of document.getElementsByClassName(
-      `check-mode ${className}`
-    )) {
+    for (const elem of document.getElementsByClassName(`check-mode ${className}`)) {
       elem.classList.remove('hide-mode');
     }
     animateIcons();
@@ -923,9 +885,7 @@
       elem.classList.add('hide-lang');
     }
 
-    for (const elem of document.getElementsByClassName(
-      `translatable ${lang}`
-    )) {
+    for (const elem of document.getElementsByClassName(`translatable ${lang}`)) {
       elem.classList.remove('hide-lang');
     }
 
@@ -975,8 +935,7 @@
   }
 
   function initTitleCharacter(elem, firstFlag = false) {
-    const getRand = (min, max) =>
-      Math.floor(Math.random() * (max - min + 1) + min);
+    const getRand = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
     const interval = MOVE_INTERVAL_MSEC * (1.5 + 0.4 * getRand(1, 5));
     const checkMode = (() => {
@@ -1018,14 +977,8 @@
       }
       elem.textContent = '';
       {
-        elem.style.setProperty(
-          '--animation-move-transform',
-          `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`
-        );
-        elem.style.setProperty(
-          '--animation-move-sub-transform',
-          `translate(0, ${-0.125 * blockSize}px)`
-        );
+        elem.style.setProperty('--animation-move-transform', `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`);
+        elem.style.setProperty('--animation-move-sub-transform', `translate(0, ${-0.125 * blockSize}px)`);
       }
       const g = level.createSvgG({
         blockSize,
@@ -1040,10 +993,7 @@
       elem.setAttribute('width', blockSize * widthNum);
       elem.setAttribute('height', blockSize * 1.4);
       elem.appendChild(g);
-      g.setAttribute(
-        'transform',
-        `translate(${-4.5 * blockSize},${blockSize * 0.3})`
-      );
+      g.setAttribute('transform', `translate(${-4.5 * blockSize},${blockSize * 0.3})`);
     }, interval);
   }
 
@@ -1286,10 +1236,7 @@
       elems.controller.redo.addEventListener(pointerdownEventName, redodown);
       elems.edit.redo.addEventListener(pointerdownEventName, redodown);
 
-      elems.controller.buttons.up.addEventListener(
-        pointerdownEventName,
-        moveButtonStart.bind(null, app.Input.DIRS.UP)
-      );
+      elems.controller.buttons.up.addEventListener(pointerdownEventName, moveButtonStart.bind(null, app.Input.DIRS.UP));
       elems.controller.buttons.right.addEventListener(
         pointerdownEventName,
         moveButtonStart.bind(null, app.Input.DIRS.RIGHT)
@@ -1309,10 +1256,7 @@
 
       elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
 
-      elems.controller.buttons.menu.addEventListener(
-        pointerdownEventName,
-        onButtonMenu
-      );
+      elems.controller.buttons.menu.addEventListener(pointerdownEventName, onButtonMenu);
       elems.controller.buttons.title.addEventListener('click', gotoTitlePage);
       elems.controller.buttons.retry.addEventListener('click', retryLevel);
 
@@ -1489,16 +1433,10 @@
     elems.title.buttonNormalLine.addEventListener('click', gotoNormalLineMode);
 
     // 点対称-通常モード
-    elems.title.buttonNormalPoint.addEventListener(
-      'click',
-      gotoNormalPointMode
-    );
+    elems.title.buttonNormalPoint.addEventListener('click', gotoNormalPointMode);
 
     // 線点対称-通常モード
-    elems.title.buttonNormalSpecial.addEventListener(
-      'click',
-      gotoNormalSpecialMode
-    );
+    elems.title.buttonNormalSpecial.addEventListener('click', gotoNormalSpecialMode);
 
     // 線対称-連番モード
     elems.title.buttonNumLine.addEventListener('click', gotoNumLineMode);
@@ -1509,14 +1447,8 @@
     // 線点対称-連番モード
     elems.title.buttonNumSpecial.addEventListener('click', gotoNumSpecialMode);
 
-    elems.title.buttonToggleToNormal.addEventListener(
-      'click',
-      toggleNormalNumMode
-    );
-    elems.title.buttonToggleToNum.addEventListener(
-      'click',
-      toggleNormalNumMode
-    );
+    elems.title.buttonToggleToNormal.addEventListener('click', toggleNormalNumMode);
+    elems.title.buttonToggleToNum.addEventListener('click', toggleNormalNumMode);
   }
 
   function gotoNormalLineMode() {
@@ -1573,9 +1505,7 @@
       elem.classList.add('hide');
     }
 
-    for (const elem of document.getElementsByClassName(
-      `title-page ${showClassName}`
-    )) {
+    for (const elem of document.getElementsByClassName(`title-page ${showClassName}`)) {
       elem.classList.remove('hide');
     }
   }
@@ -1588,9 +1518,7 @@
     elems.records.button.addEventListener('click', app.dialog.records.show);
     elems.records.dialog.addEventListener('click', app.dialog.records.close);
     elems.records.close.addEventListener('click', app.dialog.records.close);
-    elems.records.dialogDiv.addEventListener('click', (e) =>
-      e.stopPropagation()
-    );
+    elems.records.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
   }
 
   // レベル操作用
@@ -1601,14 +1529,10 @@
     elems.level.edit.addEventListener('click', toggleEditLevel);
     elems.levels.button.addEventListener('click', app.dialog.levels.show);
     elems.levels.dialog.addEventListener('click', app.dialog.levels.close);
-    elems.levels.dialogDiv.addEventListener('click', (e) =>
-      e.stopPropagation()
-    );
-    [elems.levels.checkbox.shortest, elems.levels.checkbox.cleared].forEach(
-      (elem) => {
-        elem.addEventListener('click', app.dialog.levels.update);
-      }
-    );
+    elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
+    [elems.levels.checkbox.shortest, elems.levels.checkbox.cleared].forEach((elem) => {
+      elem.addEventListener('click', app.dialog.levels.update);
+    });
   }
 
   // レベル一覧ダイアログ
@@ -1622,9 +1546,7 @@
   function initElemsForShapesDialog() {
     elems.shapes.button.addEventListener('click', app.dialog.shapes.show);
     elems.shapes.dialog.addEventListener('click', app.dialog.shapes.close);
-    elems.shapes.dialogDiv.addEventListener('click', (e) =>
-      e.stopPropagation()
-    );
+    elems.shapes.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
     elems.shapes.close.addEventListener('click', app.dialog.shapes.close);
     elems.shapes.prev.addEventListener('click', app.dialog.shapes.prevPage);
     elems.shapes.next.addEventListener('click', app.dialog.shapes.nextPage);
@@ -1767,8 +1689,7 @@
 
     {
       const symmetryAnimationFlag = completeCheckFlag && completeFlag;
-      const showCharsFlag =
-        editMode || settings.debugFlag || temporaryShowCharsFlag;
+      const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
       drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag);
     }
 
@@ -1784,10 +1705,7 @@
       edgeColor: app.colors.frame,
     });
     levelSvgG.classList.add('group-level-main');
-    levelSvgG.setAttribute(
-      'transform',
-      `translate(${frameSizeW},${frameSizeH})`
-    );
+    levelSvgG.setAttribute('transform', `translate(${frameSizeW},${frameSizeH})`);
     levelSvgG.style.setProperty('pointer-events', 'none'); // スマホ等での操作時にtouchstartからtouchendまで連続して図形描画するため。
 
     mainSvgG.appendChild(levelSvgG);
@@ -1830,10 +1748,7 @@
     const g = app.svg.createG('group-frame');
     mainSvgG.appendChild(g);
 
-    const wallStrShift =
-      app.colors[app.states.wall].fill === app.colors[app.states.wall].stroke
-        ? 0
-        : 0.05;
+    const wallStrShift = app.colors[app.states.wall].fill === app.colors[app.states.wall].stroke ? 0 : 0.05;
 
     {
       const frameColor = app.colors.frame;
@@ -1879,10 +1794,7 @@
         fill: borderColor,
       });
       const rectRb = app.svg.createRect(1, {
-        x:
-          common.level.getWidth() * blockSize +
-          2 * frameSizeW -
-          frameBorderWidth,
+        x: common.level.getWidth() * blockSize + 2 * frameSizeW - frameBorderWidth,
         y: 0,
         width: frameBorderWidth,
         height: common.level.getHeight() * blockSize + 2 * frameSizeH,
@@ -1890,10 +1802,7 @@
       });
       const rectDb = app.svg.createRect(1, {
         x: 0,
-        y:
-          common.level.getHeight() * blockSize +
-          2 * frameSizeH -
-          frameBorderWidth,
+        y: common.level.getHeight() * blockSize + 2 * frameSizeH - frameBorderWidth,
         width: common.level.getWidth() * blockSize + 2 * frameSizeW,
         height: frameBorderWidth,
         fill: borderColor,
@@ -1920,8 +1829,7 @@
           text: 'Not normalized',
           fill: app.colors.editStroke,
         });
-        const width =
-          (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
+        const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
         const height = frameBorderWidth;
         text.setAttribute('font-size', fontSize);
         text.setAttribute('transform', `translate(${width},${height})`);
@@ -1984,11 +1892,7 @@
           if (button.dy === 1 && !common.level.axisCyIncAble()) return;
           if (button.dy === -1 && !common.level.axisCyDecAble()) return;
 
-          addEditButton(
-            button,
-            moveAxis.bind(null, button.dx, button.dy),
-            app.colors[app.states.userMin]
-          );
+          addEditButton(button, moveAxis.bind(null, button.dx, button.dy), app.colors[app.states.userMin]);
         });
       }
 
@@ -2009,11 +1913,7 @@
         ];
 
         buttons.forEach((button) => {
-          addEditButton(
-            button,
-            resizeLevel.bind(null, button.dx, button.dy, button.flag),
-            app.colors.editButton
-          );
+          addEditButton(button, resizeLevel.bind(null, button.dx, button.dy, button.flag), app.colors.editButton);
         });
       }
     } else {
@@ -2025,11 +1925,8 @@
 
       // クリア時のメッセージ
       if (completeFlag) {
-        const width =
-          (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
-        const height =
-          (common.level.getHeight() - 0.5 + wallStrShift) * blockSize +
-          frameSizeH;
+        const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
+        const height = (common.level.getHeight() - 0.5 + wallStrShift) * blockSize + frameSizeH;
         const text = app.svg.createText(blockSize, {
           x: width / blockSize,
           y: height / blockSize,
@@ -2049,10 +1946,7 @@
           const replayStr = undoInfo.getReplayStr();
 
           // 記録保存
-          highestScorePrev = app.savedata.getHighestScore(
-            levelObj,
-            common.level.getCheckMode()
-          );
+          highestScorePrev = app.savedata.getHighestScore(levelObj, common.level.getCheckMode());
           if (bestStep !== undefined) {
             app.savedata.saveSteps(levelObj, common.checkMode, replayStr);
           }
@@ -2060,12 +1954,7 @@
           // シルエットデータ保存
           {
             const shapeStr = common.level.getTargetShapeForSavedata();
-            const result = app.savedata.saveShape(
-              levelObj,
-              common.checkMode,
-              shapeStr,
-              replayStr
-            );
+            const result = app.savedata.saveShape(levelObj, common.checkMode, shapeStr, replayStr);
             if (result) {
               updateShapeButton();
             }
@@ -2077,8 +1966,7 @@
             const h = levelObj.h;
             const s = levelObj.s;
             const r = levelObj.r;
-            const axis =
-              levelObj.axis !== undefined ? ` axis: '${levelObj.axis}',` : '';
+            const axis = levelObj.axis !== undefined ? ` axis: '${levelObj.axis}',` : '';
             const levelParams = `w: ${w}, h: ${h}, s: '${s}',${axis} r: '${replayStr}', step: ${
               replayStr.length
             }, subject: '${levelObj.subject ?? ''}'`;
@@ -2102,11 +1990,7 @@
               if (replayStr === r) {
                 consoleLog('参照用公式記録と完全に同じ手順です。');
               } else {
-                consoleLog(
-                  `参照用公式記録は ${bestStep} 手です。\n(差: ${
-                    completedStep - bestStep
-                  } 手)`
-                );
+                consoleLog(`参照用公式記録は ${bestStep} 手です。\n(差: ${completedStep - bestStep} 手)`);
               }
             }
           }
@@ -2136,9 +2020,7 @@
       // 今回の手数
       {
         const currentStep = undoInfo.getIndex();
-        let color = completeFlag
-          ? common.getStepColor(currentStep, bestStep)
-          : app.colors.stepNormal;
+        let color = completeFlag ? common.getStepColor(currentStep, bestStep) : app.colors.stepNormal;
         if (highestScorePrev) {
           if (currentStep > highestScorePrev) {
             color = app.colors.stepNormal;
@@ -2151,12 +2033,8 @@
           fill: color,
         });
         text.setAttribute('font-size', fontSize);
-        const width =
-          (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
-        const height =
-          common.level.getHeight() * blockSize +
-          frameSizeH -
-          frameBorderWidth / 2;
+        const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
+        const height = common.level.getHeight() * blockSize + frameSizeH - frameBorderWidth / 2;
         text.setAttribute('transform', `translate(${width},${height})`);
         g.appendChild(text);
       }
@@ -2164,10 +2042,7 @@
       // 自己最高記録
       if (common.levelId !== null) {
         const levelObj = common.level.getLevelObj();
-        const highestScore = app.savedata.getHighestScore(
-          levelObj,
-          common.level.getCheckMode()
-        );
+        const highestScore = app.savedata.getHighestScore(levelObj, common.level.getCheckMode());
 
         {
           const crown = common.createCrown(
@@ -2183,10 +2058,7 @@
             if (highestScorePrev === null) {
               console.log('初回クリア');
               crown.classList.add(animationNewRecordCrownClass);
-            } else if (
-              highestScore === bestStep &&
-              highestScorePrev !== bestStep
-            ) {
+            } else if (highestScore === bestStep && highestScorePrev !== bestStep) {
               console.log('初回金冠');
               crown.classList.add(animationNewRecordCrownClass);
             }
@@ -2202,8 +2074,7 @@
             text: `Your best: ${highestScore} steps`,
             fill: color,
           });
-          const width =
-            (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
+          const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
           const height = frameBorderWidth / 2;
           text.setAttribute('font-size', fontSize);
           text.setAttribute('transform', `translate(${width},${height})`);
@@ -2211,13 +2082,8 @@
         }
 
         // 記録更新？
-        if (
-          highestScore !== null &&
-          highestScorePrev !== null &&
-          highestScore < highestScorePrev
-        ) {
-          const width =
-            (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
+        if (highestScore !== null && highestScorePrev !== null && highestScore < highestScorePrev) {
+          const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
           const height = frameSizeH + (0.5 - wallStrShift) * blockSize;
           const text = app.svg.createText(blockSize, {
             x: width / blockSize,
@@ -2498,12 +2364,10 @@
   }
 
   function updateButtonSpeedDisplay() {
-    (settingsAuto.interval === settingsAuto.INTERVAL_MAX
-      ? common.hideElem
-      : common.showElem)(elems.auto.buttonSpeedDown);
-    (settingsAuto.interval === 1 ? common.hideElem : common.showElem)(
-      elems.auto.buttonSpeedUp
+    (settingsAuto.interval === settingsAuto.INTERVAL_MAX ? common.hideElem : common.showElem)(
+      elems.auto.buttonSpeedDown
     );
+    (settingsAuto.interval === 1 ? common.hideElem : common.showElem)(elems.auto.buttonSpeedUp);
   }
 
   function updateAutoMode(isOn) {
@@ -2615,10 +2479,7 @@
     }
 
     clearTimeout(autoIntervalId);
-    autoIntervalId = setTimeout(
-      intervalFuncAuto,
-      settingsAuto.interval * INPUT_INTERVAL_MSEC
-    );
+    autoIntervalId = setTimeout(intervalFuncAuto, settingsAuto.interval * INPUT_INTERVAL_MSEC);
   }
 
   function onButtonSpeedDown() {
@@ -2682,10 +2543,7 @@
   function resizeWindow() {
     const WINDOW_WIDTH = 500;
     const WINDOW_HEIGHT = 688;
-    if (
-      window.innerHeight * WINDOW_WIDTH >=
-      window.innerWidth * WINDOW_HEIGHT
-    ) {
+    if (window.innerHeight * WINDOW_WIDTH >= window.innerWidth * WINDOW_HEIGHT) {
       elems.viewport.setAttribute('content', 'width=500');
     } else {
       const width = (WINDOW_HEIGHT * window.innerWidth) / window.innerHeight;

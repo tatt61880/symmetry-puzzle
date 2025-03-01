@@ -44,8 +44,7 @@
   function prevPage() {
     if (app.common.isShownElem(elems.levels.prev)) {
       elems.levels.dialog.dataset.selectCount =
-        Number(elems.levels.dialog.dataset.selectCount) -
-        LEVEL_SELECT_NUM_PER_PAGE;
+        Number(elems.levels.dialog.dataset.selectCount) - LEVEL_SELECT_NUM_PER_PAGE;
       const page = Number(elems.levels.dialog.dataset.page) - 1;
       updateLevelsDialog(page);
     }
@@ -54,8 +53,7 @@
   function nextPage() {
     if (app.common.isShownElem(elems.levels.next)) {
       elems.levels.dialog.dataset.selectCount =
-        Number(elems.levels.dialog.dataset.selectCount) +
-        LEVEL_SELECT_NUM_PER_PAGE;
+        Number(elems.levels.dialog.dataset.selectCount) + LEVEL_SELECT_NUM_PER_PAGE;
       const page = Number(elems.levels.dialog.dataset.page) + 1;
       updateLevelsDialog(page);
     }
@@ -74,16 +72,12 @@
     elems.levels.dialog.dataset.selectCount = selectCount;
     const g = document.getElementById(levelSelectId);
     const x = (selectCount % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH;
-    const y =
-      Math.floor(
-        (selectCount % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS
-      ) * LEVEL_SELECT_HEIGHT;
+    const y = Math.floor((selectCount % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT;
     g.setAttribute('transform', `translate(${x},${y})`);
   }
 
   function selectUp() {
-    const selectCount =
-      Number(elems.levels.dialog.dataset.selectCount) - LEVEL_SELECT_COLS;
+    const selectCount = Number(elems.levels.dialog.dataset.selectCount) - LEVEL_SELECT_COLS;
     if (selectCount >= 0) {
       levelSelectUpdate(selectCount);
     }
@@ -97,8 +91,7 @@
   }
 
   function selectDown() {
-    const selectCount =
-      Number(elems.levels.dialog.dataset.selectCount) + LEVEL_SELECT_COLS;
+    const selectCount = Number(elems.levels.dialog.dataset.selectCount) + LEVEL_SELECT_COLS;
     if (selectCount <= Number(elems.levels.dialog.dataset.maxCount)) {
       levelSelectUpdate(selectCount);
     }
@@ -123,14 +116,10 @@
     window.getSelection().removeAllRanges();
 
     if (!elems.levels.crown.shortest.hasChildNodes()) {
-      elems.levels.crown.shortest.appendChild(
-        app.common.createCrown(40, 0.1, 0.1, 1, 1)
-      );
+      elems.levels.crown.shortest.appendChild(app.common.createCrown(40, 0.1, 0.1, 1, 1));
     }
     if (!elems.levels.crown.cleared.hasChildNodes()) {
-      elems.levels.crown.cleared.appendChild(
-        app.common.createCrown(40, 0.1, 0.1, 1, 0)
-      );
+      elems.levels.crown.cleared.appendChild(app.common.createCrown(40, 0.1, 0.1, 1, 0));
     }
 
     const largeCrownForShorestFlag = elems.levels.checkbox.shortest.checked;
@@ -170,12 +159,7 @@
     app.common.showElem(elems.levels.buttonSvg);
 
     // →
-    if (
-      page + 1 ===
-      Math.floor(
-        (totalNum + LEVEL_SELECT_NUM_PER_PAGE - 1) / LEVEL_SELECT_NUM_PER_PAGE
-      )
-    ) {
+    if (page + 1 === Math.floor((totalNum + LEVEL_SELECT_NUM_PER_PAGE - 1) / LEVEL_SELECT_NUM_PER_PAGE)) {
       app.common.hideElem(elems.levels.next);
       if (prevHide) {
         app.common.hideElem(elems.levels.buttonSvg);
@@ -190,10 +174,7 @@
     for (const { levelId, levelObj } of levels) {
       if (levelId === 0) continue;
       if (levelId === 'NaN') continue;
-      if (
-        page * LEVEL_SELECT_NUM_PER_PAGE <= count &&
-        count < (page + 1) * LEVEL_SELECT_NUM_PER_PAGE
-      ) {
+      if (page * LEVEL_SELECT_NUM_PER_PAGE <= count && count < (page + 1) * LEVEL_SELECT_NUM_PER_PAGE) {
         appendLevel(levelObj, levelId);
         selectIds[count] = levelId;
       }
@@ -203,13 +184,8 @@
 
     // 選択枠
     if (!app.common.isTouchDevice()) {
-      if (
-        Number(elems.levels.dialog.dataset.selectCount) >
-        Number(elems.levels.dialog.dataset.maxCount)
-      ) {
-        elems.levels.dialog.dataset.selectCount = Number(
-          elems.levels.dialog.dataset.maxCount
-        );
+      if (Number(elems.levels.dialog.dataset.selectCount) > Number(elems.levels.dialog.dataset.maxCount)) {
+        elems.levels.dialog.dataset.selectCount = Number(elems.levels.dialog.dataset.maxCount);
       }
 
       const selectCount = Number(elems.levels.dialog.dataset.selectCount);
@@ -230,10 +206,7 @@
       elems.levels.dialogSvg.appendChild(g);
 
       const x = (selectCount % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH;
-      const y =
-        Math.floor(
-          (selectCount % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS
-        ) * LEVEL_SELECT_HEIGHT;
+      const y = Math.floor((selectCount % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT;
       g.setAttribute('id', levelSelectId);
       g.setAttribute('transform', `translate(${x},${y})`);
     }
@@ -244,10 +217,7 @@
         checkMode: app.common.checkMode,
       });
       const bestStep = level.getBestStep();
-      const highestScore = app.savedata.getHighestScore(
-        levelObj,
-        level.getCheckMode()
-      );
+      const highestScore = app.savedata.getHighestScore(levelObj, level.getCheckMode());
 
       let hideDetailFlag = false;
       if (highestScore !== null) {
@@ -298,13 +268,7 @@
 
       // 王冠
       if (hideDetailFlag) {
-        const crown = app.common.createCrown(
-          LEVEL_SELECT_WIDTH / 2,
-          0.5,
-          1,
-          highestScore,
-          bestStep
-        );
+        const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 2, 0.5, 1, highestScore, bestStep);
         g.appendChild(crown);
       } else {
         const crown = app.common.createCrown(20, 0, 1, highestScore, bestStep);
@@ -330,8 +294,7 @@
           const levelObj = level.getLevelObj();
           const checkMode = app.common.checkMode;
           const shapesObj = app.savedata.getShapesObj(levelObj, checkMode);
-          const shapeNum =
-            shapesObj !== undefined ? Object.keys(shapesObj).length : '0';
+          const shapeNum = shapesObj !== undefined ? Object.keys(shapesObj).length : '0';
           const shapes = level.getShapes() ?? '?';
 
           const text = app.svg.createText(1, {
@@ -343,10 +306,7 @@
           text.setAttribute('font-size', '15px');
           text.setAttribute('text-anchor', 'end');
 
-          const fill =
-            shapeNum === shapes
-              ? app.colors.shapeNumPerfect
-              : app.colors.shapeNumNormal;
+          const fill = shapeNum === shapes ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
           text.setAttribute('fill', fill);
           g.appendChild(text);
         }
@@ -362,20 +322,13 @@
           blockSize,
           edgeColor: backgroundColor,
         });
-        levelSvgG.setAttribute(
-          'transform',
-          `translate(${
-            (LEVEL_SELECT_WIDTH - blockSize * level.getWidth()) / 2
-          },40)`
-        );
+        levelSvgG.setAttribute('transform', `translate(${(LEVEL_SELECT_WIDTH - blockSize * level.getWidth()) / 2},40)`);
         g.appendChild(levelSvgG);
       }
 
       {
         const x = (count % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH + 1;
-        const y =
-          Math.floor((count % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) *
-          LEVEL_SELECT_HEIGHT;
+        const y = Math.floor((count % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT;
         g.setAttribute('transform', `translate(${x},${y})`);
       }
       g.dataset.id = id;

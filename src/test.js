@@ -71,10 +71,7 @@
       }
     }
 
-    if (
-      levelSet.size !==
-      app.levels.length + Object.keys(app.levelsEx).length
-    ) {
+    if (levelSet.size !== app.levels.length + Object.keys(app.levelsEx).length) {
       app.console.error('Error: There are same levels.');
       process.exitCode = 1;
       return;
@@ -104,9 +101,7 @@
 
     if (levelObj.r.length !== levelObj.step) {
       app.console.error(
-        `Error: ${levelInfo()} Step check failed. step: ${
-          levelObj.step
-        } (r.length = ${levelObj.r.length})`
+        `Error: ${levelInfo()} Step check failed. step: ${levelObj.step} (r.length = ${levelObj.r.length})`
       );
       return false;
     }
@@ -131,9 +126,7 @@
 
       const stateStr = level.getS();
       if (stateStrMap[stateStr] !== undefined) {
-        app.console.warn(
-          `Warning: ${levelInfo()} Same state exists. [index: ${index}]`
-        );
+        app.console.warn(`Warning: ${levelInfo()} Same state exists. [index: ${index}]`);
       }
       stateStrMap[stateStr] = true;
     }
@@ -179,9 +172,7 @@
         timeLimit: 10,
       });
       if (result.replayStr !== '1123211') {
-        app.console.error(
-          `Error: Unexpected solve function's result. result.replayStr = ${result.replayStr}`
-        );
+        app.console.error(`Error: Unexpected solve function's result. result.replayStr = ${result.replayStr}`);
         process.exitCode = 1;
       }
     }
@@ -198,9 +189,7 @@
         timeLimit: 10,
       });
       if (result.replayStr !== '12210') {
-        app.console.error(
-          `Error: Unexpected solve function's result. result.replayStr = ${result.replayStr}`
-        );
+        app.console.error(`Error: Unexpected solve function's result. result.replayStr = ${result.replayStr}`);
         process.exitCode = 1;
       }
     }

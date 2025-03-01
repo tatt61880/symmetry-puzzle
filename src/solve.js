@@ -155,9 +155,7 @@
     })();
 
     if (isNaN(maxStep)) {
-      app.console.error(
-        `Error: [LEVEL ${levelId}] maxStep is NaN. maxStep === ${maxStep}`
-      );
+      app.console.error(`Error: [LEVEL ${levelId}] maxStep is NaN. maxStep === ${maxStep}`);
       process.exitCode = 1;
       return;
     }
@@ -168,11 +166,7 @@
     solveLevel(levelId, level, { maxStep, timeLimit, prefixStep });
   }
 
-  function solveLevel(
-    levelId,
-    level,
-    { maxStep = 1000, timeLimit, prefixStep = '' }
-  ) {
+  function solveLevel(levelId, level, { maxStep = 1000, timeLimit, prefixStep = '' }) {
     if (prefixStep !== '') {
       for (const c of prefixStep) {
         if (c === '0') continue;
@@ -186,10 +180,7 @@
     }
     const startTime = performance.now();
     let prevTime = startTime;
-    const prefixStepInfo =
-      prefixStep === ''
-        ? ''
-        : `[prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
+    const prefixStepInfo = prefixStep === '' ? '' : `[prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
     if (!isBrowser) {
       if (prefixStepInfo !== '') app.console.warn(`${prefixStepInfo}`);
     }
@@ -283,9 +274,7 @@
           if (timeLimit !== undefined && ++stateCount % 1000 === 0) {
             const time = performance.now();
             if (time - startTime > timeLimit * 1000) {
-              const errorMessage = `Time limit over. [Time: ${msToSecStr(
-                time - startTime
-              )}] [Time limit: ${msToSecStr(
+              const errorMessage = `Time limit over. [Time: ${msToSecStr(time - startTime)}] [Time limit: ${msToSecStr(
                 Number(timeLimit) * 1000
               )}] [map.size: ${stateStrMap.size}] [step: ${step}]`;
               return { replayStr: null, errorMessage };
@@ -322,17 +311,13 @@
                 }
                 const r = replayStr;
                 const prefixStepInfo =
-                  prefixStep === ''
-                    ? ''
-                    : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
+                  prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
                 const completedLevelObj = getCompletedLevelObj(r);
                 const completedLevelObjStr = levelObjToStr(completedLevelObj);
                 app.console.log(
                   `/* [LEVEL ${levelId}][map.size: ${stateStrMap.size}] */ ${completedLevelObjStr}${prefixStepInfo}`
                 );
-                const shapeStr = level
-                  .getShapeStr(app.states.isTarget)
-                  .replace(/\n$/, '');
+                const shapeStr = level.getShapeStr(app.states.isTarget).replace(/\n$/, '');
                 if (!shapeStrMap.has(shapeStr)) {
                   shapeStrInfoArray.push({
                     str: shapeStr,
@@ -368,9 +353,7 @@
               app.console.log(` First solution: ${solutionStepFirst} steps`);
               if (solutionNum > 1) {
                 app.console.log(
-                  `Second solution: ${solutionStepSecond} steps (+${
-                    solutionStepSecond - solutionStepFirst
-                  })`
+                  `Second solution: ${solutionStepSecond} steps (+${solutionStepSecond - solutionStepFirst})`
                 );
               }
             }
@@ -378,9 +361,7 @@
             // 最短ステップの登録情報が間違っているときに気付けるように。
             if (level.getBestStep() !== undefined) {
               if (solutionStepFirst < level.getBestStep()) {
-                console.error(
-                  `Error: Level-${levelId}. Best step should be ${solutionStepFirst} steps`
-                );
+                console.error(`Error: Level-${levelId}. Best step should be ${solutionStepFirst} steps`);
               }
             }
 
@@ -394,9 +375,7 @@
 
             const levelShapes = level.getShapes();
             if (level.getR() !== undefined && shapes !== levelShapes) {
-              app.console.error(
-                `       ↓[level.getShapes(): ${levelShapes}] !== [Shapes: ${shapes}]`
-              );
+              app.console.error(`       ↓[level.getShapes(): ${levelShapes}] !== [Shapes: ${shapes}]`);
             }
 
             // エラーではないですが、目立つようにエラー扱いします。
@@ -410,11 +389,9 @@
         if (options.console) {
           const time = performance.now();
           app.console.info(
-            `// ${step} steps completed. [Time: ${msToSecStr(
-              time - startTime
-            )}] (+${msToSecStr(time - prevTime)}) [map.size: ${
-              stateStrMap.size
-            }]`
+            `// ${step} steps completed. [Time: ${msToSecStr(time - startTime)}] (+${msToSecStr(
+              time - prevTime
+            )}) [map.size: ${stateStrMap.size}]`
           );
           prevTime = time;
         }
@@ -436,10 +413,7 @@
       const s = levelObj.s;
       const r = levelObj.r;
       const axis = level.hasAxis() ? ` axis: '${level.getA()}',` : '';
-      const subject =
-        levelObj.subject !== undefined
-          ? `, subject: '${levelObj.subject}'`
-          : '';
+      const subject = levelObj.subject !== undefined ? `, subject: '${levelObj.subject}'` : '';
       const shapes = levelObj.shapes ? `, shapes: ${levelObj.shapes}` : '';
       const res = `{ w: ${w}, h: ${h}, s: '${s}',${axis} r: '${r}', step: ${r.length}${subject}${shapes} },`;
       return res;

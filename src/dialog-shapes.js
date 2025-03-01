@@ -45,8 +45,7 @@
 
   function prevPage() {
     if (common.isShownElem(elems.shapes.prev)) {
-      elems.shapes.dialog.dataset.selectCount =
-        Number(elems.shapes.dialog.dataset.selectCount) - SELECT_NUM_PER_PAGE;
+      elems.shapes.dialog.dataset.selectCount = Number(elems.shapes.dialog.dataset.selectCount) - SELECT_NUM_PER_PAGE;
       const page = Number(elems.shapes.dialog.dataset.page) - 1;
       updateDialog(page);
     }
@@ -54,8 +53,7 @@
 
   function nextPage() {
     if (common.isShownElem(elems.shapes.next)) {
-      elems.shapes.dialog.dataset.selectCount =
-        Number(elems.shapes.dialog.dataset.selectCount) + SELECT_NUM_PER_PAGE;
+      elems.shapes.dialog.dataset.selectCount = Number(elems.shapes.dialog.dataset.selectCount) + SELECT_NUM_PER_PAGE;
       const page = Number(elems.shapes.dialog.dataset.page) + 1;
       updateDialog(page);
     }
@@ -74,15 +72,12 @@
     elems.shapes.dialog.dataset.selectCount = selectCount;
     const g = document.getElementById(shapeSelectId);
     const x = (selectCount % SELECT_COLS) * SELECT_WIDTH;
-    const y =
-      Math.floor((selectCount % SELECT_NUM_PER_PAGE) / SELECT_COLS) *
-      SELECT_HEIGHT;
+    const y = Math.floor((selectCount % SELECT_NUM_PER_PAGE) / SELECT_COLS) * SELECT_HEIGHT;
     g.setAttribute('transform', `translate(${x},${y})`);
   }
 
   function selectUp() {
-    const selectCount =
-      Number(elems.shapes.dialog.dataset.selectCount) - SELECT_COLS;
+    const selectCount = Number(elems.shapes.dialog.dataset.selectCount) - SELECT_COLS;
     if (selectCount >= 0) {
       selectUpdate(selectCount);
     }
@@ -96,8 +91,7 @@
   }
 
   function selectDown() {
-    const selectCount =
-      Number(elems.shapes.dialog.dataset.selectCount) + SELECT_COLS;
+    const selectCount = Number(elems.shapes.dialog.dataset.selectCount) + SELECT_COLS;
     if (selectCount <= Number(elems.shapes.dialog.dataset.maxCount)) {
       selectUpdate(selectCount);
     }
@@ -126,9 +120,7 @@
     const levelObj = common.level.getLevelObj();
     const checkMode = common.checkMode;
     const shapesObj = app.savedata.getShapesObj(levelObj, checkMode);
-    const shapeStrs = Object.keys(shapesObj).sort(
-      (a, b) => shapesObj[a].length - shapesObj[b].length
-    );
+    const shapeStrs = Object.keys(shapesObj).sort((a, b) => shapesObj[a].length - shapesObj[b].length);
     const totalNum = shapeStrs.length;
     elems.shapes.dialog.dataset.maxCount = totalNum - 1;
     elems.shapes.dialog.dataset.selectCount = 0;
@@ -157,10 +149,7 @@
     common.showElem(elems.shapes.buttonSvg);
 
     // →
-    if (
-      page + 1 ===
-      Math.floor((iEnd + SELECT_NUM_PER_PAGE - 1) / SELECT_NUM_PER_PAGE)
-    ) {
+    if (page + 1 === Math.floor((iEnd + SELECT_NUM_PER_PAGE - 1) / SELECT_NUM_PER_PAGE)) {
       common.hideElem(elems.shapes.next);
       if (prevHide) {
         common.hideElem(elems.shapes.buttonSvg);
@@ -170,10 +159,7 @@
     }
 
     for (let i = 0; i < iEnd; ++i) {
-      if (
-        page * SELECT_NUM_PER_PAGE <= count &&
-        count < (page + 1) * SELECT_NUM_PER_PAGE
-      ) {
+      if (page * SELECT_NUM_PER_PAGE <= count && count < (page + 1) * SELECT_NUM_PER_PAGE) {
         if (i < shapeStrs.length) {
           const shapeStr = shapeStrs[i];
           const r = shapesObj[shapeStr];
@@ -189,13 +175,8 @@
 
     // 選択枠
     if (!common.isTouchDevice()) {
-      if (
-        Number(elems.shapes.dialog.dataset.selectCount) >
-        Number(elems.shapes.dialog.dataset.maxCount)
-      ) {
-        elems.shapes.dialog.dataset.selectCount = Number(
-          elems.shapes.dialog.dataset.maxCount
-        );
+      if (Number(elems.shapes.dialog.dataset.selectCount) > Number(elems.shapes.dialog.dataset.maxCount)) {
+        elems.shapes.dialog.dataset.selectCount = Number(elems.shapes.dialog.dataset.maxCount);
       }
 
       const selectCount = Number(elems.shapes.dialog.dataset.selectCount);
@@ -216,9 +197,7 @@
       elems.shapes.dialogSvg.appendChild(g);
 
       const x = (selectCount % SELECT_COLS) * SELECT_WIDTH;
-      const y =
-        Math.floor((selectCount % SELECT_NUM_PER_PAGE) / SELECT_COLS) *
-        SELECT_HEIGHT;
+      const y = Math.floor((selectCount % SELECT_NUM_PER_PAGE) / SELECT_COLS) * SELECT_HEIGHT;
       g.setAttribute('id', shapeSelectId);
       g.setAttribute('transform', `translate(${x},${y})`);
     }
@@ -306,9 +285,7 @@
 
       {
         const x = (count % SELECT_COLS) * SELECT_WIDTH + 1;
-        const y =
-          Math.floor((count % SELECT_NUM_PER_PAGE) / SELECT_COLS) *
-          SELECT_HEIGHT;
+        const y = Math.floor((count % SELECT_NUM_PER_PAGE) / SELECT_COLS) * SELECT_HEIGHT;
         g.setAttribute('transform', `translate(${x},${y})`);
       }
     }

@@ -55,9 +55,7 @@
       for (const elem of document.getElementsByClassName('user-block-point')) {
         setBlock(elem, 's', 1, app.Level.CHECK_MODE.POINT);
       }
-      for (const elem of document.getElementsByClassName(
-        'user-block-special'
-      )) {
+      for (const elem of document.getElementsByClassName('user-block-special')) {
         setBlock(elem, 's', 1, app.Level.CHECK_MODE.SPECIAL);
       }
       for (const elem of document.getElementsByClassName('target-block')) {

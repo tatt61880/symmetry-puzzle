@@ -46,15 +46,11 @@
     circle.setAttribute('r', blockSize * r);
     if (fill) circle.setAttribute('fill', fill);
     if (stroke) circle.setAttribute('stroke', stroke);
-    if (strokeWidth)
-      circle.setAttribute('stroke-width', blockSize * strokeWidth);
+    if (strokeWidth) circle.setAttribute('stroke-width', blockSize * strokeWidth);
     return circle;
   };
 
-  svg.createEllipse = (
-    blockSize,
-    { cx, cy, rx, ry, fill, stroke, strokeWidth }
-  ) => {
+  svg.createEllipse = (blockSize, { cx, cy, rx, ry, fill, stroke, strokeWidth }) => {
     const ellipse = document.createElementNS(SVG_NS, 'ellipse');
     ellipse.setAttribute('cx', blockSize * cx);
     ellipse.setAttribute('cy', blockSize * cy);
@@ -62,15 +58,11 @@
     ellipse.setAttribute('ry', blockSize * ry);
     if (fill) ellipse.setAttribute('fill', fill);
     if (stroke) ellipse.setAttribute('stroke', stroke);
-    if (strokeWidth)
-      ellipse.setAttribute('stroke-width', blockSize * strokeWidth);
+    if (strokeWidth) ellipse.setAttribute('stroke-width', blockSize * strokeWidth);
     return ellipse;
   };
 
-  svg.createRect = (
-    blockSize,
-    { x, y, width, height, fill, stroke, strokeWidth }
-  ) => {
+  svg.createRect = (blockSize, { x, y, width, height, fill, stroke, strokeWidth }) => {
     const rect = document.createElementNS(SVG_NS, 'rect');
     rect.setAttribute('x', blockSize * x);
     rect.setAttribute('y', blockSize * y);
@@ -92,8 +84,7 @@
     polygon.setAttribute('points', pointsStr);
     if (fill) polygon.setAttribute('fill', fill);
     if (stroke) polygon.setAttribute('stroke', stroke);
-    if (strokeWidth)
-      polygon.setAttribute('stroke-width', blockSize * strokeWidth);
+    if (strokeWidth) polygon.setAttribute('stroke-width', blockSize * strokeWidth);
     return polygon;
   };
 
