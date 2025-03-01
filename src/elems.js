@@ -13,6 +13,7 @@
     top: 'top',
     appTitle: 'app-title',
     iconApp: 'icon-app',
+    icon123: 'icon-123',
     iconLine: 'icon-line',
     iconPoint: 'icon-point',
     iconSpecial: 'icon-special',

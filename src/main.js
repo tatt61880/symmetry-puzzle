@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.02.28';
+  const VERSION_TEXT = 'v' + '2025.03.01';
 
   const app = window.app;
   Object.freeze(app);
@@ -862,7 +862,7 @@
         case app.Level.CHECK_MODE.SPECIAL:
           return 'special';
         default:
-          return 'none';
+          return 'title-page';
       }
     })();
 
@@ -882,6 +882,7 @@
     if (elems.help.dialog.open) return; // ダイアログ表示中にアニメーションするとSafariで画面がちらつく問題があるため。
 
     addAnimationClass(elems.iconApp, 'animation-icon-app');
+    addAnimationClass(elems.icon123, 'animation-icon-app'); // 連番モードも通常モードと同じアニメーションにします。
     addAnimationClass(elems.iconLine, 'animation-icon-line');
     addAnimationClass(elems.iconPoint, 'animation-icon-point');
     addAnimationClass(elems.iconSpecial, 'animation-icon-special');
@@ -1534,16 +1535,28 @@
   }
 
   function toggleNormalNumMode() {
+    let hideClassName = 'num-mode';
     if (common.isShownElem(elems.title.buttonToggleToNumDiv)) {
       common.hideElem(elems.title.buttonNormalsTr);
       common.showElem(elems.title.buttonNumsTr);
       common.showElem(elems.title.buttonToggleToNormalDiv);
       common.hideElem(elems.title.buttonToggleToNumDiv);
     } else if (common.isShownElem(elems.title.buttonToggleToNormalDiv)) {
+      hideClassName = 'normal-mode';
       common.showElem(elems.title.buttonNormalsTr);
       common.hideElem(elems.title.buttonNumsTr);
       common.hideElem(elems.title.buttonToggleToNormalDiv);
       common.showElem(elems.title.buttonToggleToNumDiv);
+    }
+
+    for (const elem of document.getElementsByClassName('title-page')) {
+      elem.classList.add('hide');
+    }
+
+    for (const elem of document.getElementsByClassName(
+      `title-page ${hideClassName}`
+    )) {
+      elem.classList.remove('hide');
     }
   }
 
