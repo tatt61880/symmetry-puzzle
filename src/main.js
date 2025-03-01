@@ -1694,7 +1694,7 @@
     }
 
     drawDotLines(mainSvgG);
-    drawFrame(mainSvgG);
+    drawFrame(mainSvgG, completeCheckFlag);
   }
 
   function drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag) {
@@ -1744,7 +1744,7 @@
     g.setAttribute('transform', `translate(${frameSizeW},${frameSizeH})`);
   }
 
-  function drawFrame(mainSvgG) {
+  function drawFrame(mainSvgG, completeCheckFlag = false) {
     const g = app.svg.createG('group-frame');
     mainSvgG.appendChild(g);
 
@@ -1924,7 +1924,7 @@
       let highestScorePrev = null;
 
       // クリア時のメッセージ
-      if (completeFlag) {
+      if (completeCheckFlag && completeFlag) {
         const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
         const height = (common.level.getHeight() - 0.5 + wallStrShift) * blockSize + frameSizeH;
         const text = app.svg.createText(blockSize, {
@@ -2020,7 +2020,8 @@
       // 今回の手数
       {
         const currentStep = undoInfo.getIndex();
-        let color = completeFlag ? common.getStepColor(currentStep, bestStep) : app.colors.stepNormal;
+        let color =
+          completeCheckFlag && completeFlag ? common.getStepColor(currentStep, bestStep) : app.colors.stepNormal;
         if (highestScorePrev) {
           if (currentStep > highestScorePrev) {
             color = app.colors.stepNormal;
@@ -2053,7 +2054,7 @@
             bestStep
           );
           g.appendChild(crown);
-          if (completeFlag) {
+          if (completeCheckFlag && completeFlag) {
             const animationNewRecordCrownClass = 'animation-new-record-crown';
             if (highestScorePrev === null) {
               console.log('初回クリア');
