@@ -1678,7 +1678,7 @@
 
   // 描画
   function drawMainSvg(isCompleted = false) {
-    updateController(isCompleted);
+    updateController();
 
     const mainSvgG = app.svg.createG();
 
