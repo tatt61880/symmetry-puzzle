@@ -51,7 +51,7 @@
     },
 
     title: {
-      inner1: 'title-inner1',
+      inner: 'title-inner',
       buttonNormalsTr: 'button-normals-tr',
       buttonNormalLine: 'button-normal-line',
       buttonNormalPoint: 'button-normal-point',

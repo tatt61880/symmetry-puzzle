@@ -3,13 +3,13 @@
 #title {
   box-sizing: border-box;
 
-  #title-inner1 {
+  #title-inner {
     display: table;
     width: 100%;
     height: calc(100svh - 68px);
   }
 
-  #title-inner2 {
+  #title-inner-sub {
     display: table-cell;
     vertical-align: middle;
   }
