@@ -30,14 +30,14 @@
       margin: 5px auto;
       font-size: 18px;
       border-collapse: collapse;
-      border: 3px solid #5555aa;
+      border: 5px solid #a8d4ff;
     }
 
     & th,
     & td {
       height: 40px;
       padding: 5px 15px;
-      border: 1px solid #5555aa;
+      border: 3px solid #a8d4ff;
 
       & * {
         vertical-align: middle;
@@ -50,15 +50,15 @@
     }
 
     .border-top-bold {
-      border-top-width: 3px;
+      border-top-width: 5px;
     }
 
     .border-right-bold {
-      border-right-width: 3px;
+      border-right-width: 5px;
     }
 
     .border-bottom-bold {
-      border-bottom-width: 3px;
+      border-bottom-width: 5px;
     }
   }
 
