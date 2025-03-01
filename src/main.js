@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.01f';
+  const VERSION_TEXT = 'v' + '2025.03.02';
 
   const app = window.app;
   Object.freeze(app);
@@ -1624,7 +1624,7 @@
     }
   }
 
-  function updateController(completeCheckFlag = false) {
+  function updateController() {
     if (common.level?.hasAxis()) {
       common.showElem(elems.controller.buttons.axis);
       common.hideElem(elems.controller.buttons.axisL1);
@@ -1665,7 +1665,7 @@
 
     common.showElem(elems.controller.buttons.root);
     common.hideElem(elems.controller.menu);
-    if (completeCheckFlag) {
+    if (common.level.isCompleted()) {
       common.hideElem(elems.controller.buttons.base);
       if (common.isShownElem(elems.level.next)) {
         common.showElem(elems.controller.nextLevel);
@@ -1677,8 +1677,8 @@
   }
 
   // 描画
-  function drawMainSvg(completeCheckFlag = false) {
-    updateController(completeCheckFlag);
+  function drawMainSvg(isCompleted = false) {
+    updateController(isCompleted);
 
     const mainSvgG = app.svg.createG();
 
@@ -1688,13 +1688,13 @@
     elems.main.svg.appendChild(mainSvgG);
 
     {
-      const symmetryAnimationFlag = completeCheckFlag && completeFlag;
+      const symmetryAnimationFlag = isCompleted;
       const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
       drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag);
     }
 
     drawDotLines(mainSvgG);
-    drawFrame(mainSvgG, completeCheckFlag);
+    drawFrame(mainSvgG, isCompleted);
   }
 
   function drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag) {
@@ -1744,7 +1744,7 @@
     g.setAttribute('transform', `translate(${frameSizeW},${frameSizeH})`);
   }
 
-  function drawFrame(mainSvgG, completeCheckFlag = false) {
+  function drawFrame(mainSvgG, isCompleted = false) {
     const g = app.svg.createG('group-frame');
     mainSvgG.appendChild(g);
 
@@ -1924,7 +1924,7 @@
       let highestScorePrev = null;
 
       // クリア時のメッセージ
-      if (completeCheckFlag && completeFlag) {
+      if (isCompleted) {
         const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
         const height = (common.level.getHeight() - 0.5 + wallStrShift) * blockSize + frameSizeH;
         const text = app.svg.createText(blockSize, {
@@ -2020,8 +2020,7 @@
       // 今回の手数
       {
         const currentStep = undoInfo.getIndex();
-        let color =
-          completeCheckFlag && completeFlag ? common.getStepColor(currentStep, bestStep) : app.colors.stepNormal;
+        let color = isCompleted ? common.getStepColor(currentStep, bestStep) : app.colors.stepNormal;
         if (highestScorePrev) {
           if (currentStep > highestScorePrev) {
             color = app.colors.stepNormal;
@@ -2054,7 +2053,7 @@
             bestStep
           );
           g.appendChild(crown);
-          if (completeCheckFlag && completeFlag) {
+          if (isCompleted) {
             const animationNewRecordCrownClass = 'animation-new-record-crown';
             if (highestScorePrev === null) {
               console.log('初回クリア');
