@@ -1665,7 +1665,7 @@
 
     common.showElem(elems.controller.buttons.root);
     common.hideElem(elems.controller.menu);
-    if (common.level.isCompleted()) {
+    if (completeFlag) {
       common.hideElem(elems.controller.buttons.base);
       if (common.isShownElem(elems.level.next)) {
         common.showElem(elems.controller.nextLevel);
