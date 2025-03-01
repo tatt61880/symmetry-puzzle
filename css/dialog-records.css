@@ -73,9 +73,16 @@
   }
 
   .record-dialog-title {
-    font-size: 1.1rem;
+    margin: 10px;
+    font-size: 1.3rem;
     font-weight: bold;
     color: #000055;
+  }
+
+  .record-dialog-version {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #7777aa;
   }
 }
 
