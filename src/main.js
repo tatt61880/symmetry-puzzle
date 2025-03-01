@@ -1669,6 +1669,8 @@
       common.hideElem(elems.controller.buttons.base);
       if (common.isShownElem(elems.level.next)) {
         common.showElem(elems.controller.nextLevel);
+      } else {
+        common.hideElem(elems.controller.nextLevel);
       }
     } else {
       common.showElem(elems.controller.buttons.base);
