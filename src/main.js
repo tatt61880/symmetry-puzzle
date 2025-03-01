@@ -2433,7 +2433,7 @@
 
     settingsAuto.paused = false;
     updateAutoStartPauseButtons();
-    if (completeFlag) {
+    if (common.level.isCompleted()) {
       gotoNextLevel();
     }
 
