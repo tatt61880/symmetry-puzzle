@@ -1522,7 +1522,7 @@
       common.showElem(elems.title.buttonNumsTr);
       common.showElem(elems.title.buttonToggleToNormalDiv);
       common.hideElem(elems.title.buttonToggleToNumDiv);
-    } else {
+    } else if (common.isShownElem(elems.title.buttonNumsTr)) {
       common.showElem(elems.title.buttonNormalsTr);
       common.hideElem(elems.title.buttonNumsTr);
       common.hideElem(elems.title.buttonToggleToNormalDiv);
