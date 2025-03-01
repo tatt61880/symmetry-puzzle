@@ -1123,6 +1123,23 @@
     common.hideElem(elems.category.game);
     updateAutoMode(false);
     replaceUrlTitle();
+
+    // ある程度クリアするまで連番モードを隠します。
+    if (common.isShownElem(elems.title.buttonNormalsTr)) {
+      common.showElem(elems.title.buttonToggleToNumDiv);
+      for (const [levelsList, mode] of [
+        [app.levelsLine, app.Level.CHECK_MODE.LINE],
+        [app.levelsPoint, app.Level.CHECK_MODE.POINT],
+        [app.levelsSpecial, app.Level.CHECK_MODE.SPECIAL],
+      ]) {
+        const levels = new app.Levels({ levelsList, levelsListEx: undefined });
+        const levelObj = levels.getLevelObj(1);
+        const highestScore = app.savedata.getHighestScore(levelObj, mode);
+        if (highestScore === null) {
+          common.hideElem(elems.title.buttonToggleToNumDiv);
+        }
+      }
+    }
   }
 
   function onloadId(id_, idFlag = true) {
@@ -1517,12 +1534,12 @@
   }
 
   function toggleNormalNumMode() {
-    if (common.isShownElem(elems.title.buttonNormalsTr)) {
+    if (common.isShownElem(elems.title.buttonToggleToNumDiv)) {
       common.hideElem(elems.title.buttonNormalsTr);
       common.showElem(elems.title.buttonNumsTr);
       common.showElem(elems.title.buttonToggleToNormalDiv);
       common.hideElem(elems.title.buttonToggleToNumDiv);
-    } else if (common.isShownElem(elems.title.buttonNumsTr)) {
+    } else if (common.isShownElem(elems.title.buttonToggleToNormalDiv)) {
       common.showElem(elems.title.buttonNormalsTr);
       common.hideElem(elems.title.buttonNumsTr);
       common.hideElem(elems.title.buttonToggleToNormalDiv);
