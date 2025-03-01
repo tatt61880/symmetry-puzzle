@@ -401,7 +401,7 @@
       }
     } else if (
       e.key === 'Enter' &&
-      !common.isHiddenElem(elems.controller.nextLevel)
+      common.isShownElem(elems.controller.nextLevel)
     ) {
       gotoNextLevel();
     } else if (e.key === ' ') {
