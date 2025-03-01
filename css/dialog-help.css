@@ -164,13 +164,13 @@
 
   .example-valid {
     padding: 5px;
-    background: #ddffdd;
+    background: #eeffee;
     border: 5px solid #55ee55;
   }
 
   .example-invalid {
     padding: 5px;
-    background: #ffdddd;
+    background: #ffeeee;
     border: 5px solid #ee5555;
   }
 
