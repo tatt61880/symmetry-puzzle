@@ -337,15 +337,27 @@
       switch (e.key) {
         case 't':
           if (e.shiftKey) return;
-          gotoLineMode();
+          if (common.isNumMode) {
+            gotoNumLineMode();
+          } else {
+            gotoLineMode();
+          }
           break;
         case 'z':
           if (e.shiftKey) return;
-          gotoPointMode();
+          if (common.isNumMode) {
+            gotoNumPointMode();
+          } else {
+            gotoPointMode();
+          }
           break;
         case 'o':
           if (e.shiftKey) return;
-          gotoSpecialMode();
+          if (common.isNumMode) {
+            gotoNumSpecialMode();
+          } else {
+            gotoSpecialMode();
+          }
           break;
         case '+':
         case '#':
@@ -1535,14 +1547,16 @@
   }
 
   function toggleNormalNumMode() {
-    let hideClassName = 'num-mode';
+    let showClassName = 'num-mode';
     if (common.isShownElem(elems.title.buttonToggleToNumDiv)) {
+      common.isNumMode = true;
       common.hideElem(elems.title.buttonNormalsTr);
       common.showElem(elems.title.buttonNumsTr);
       common.showElem(elems.title.buttonToggleToNormalDiv);
       common.hideElem(elems.title.buttonToggleToNumDiv);
     } else if (common.isShownElem(elems.title.buttonToggleToNormalDiv)) {
-      hideClassName = 'normal-mode';
+      common.isNumMode = false;
+      showClassName = 'normal-mode';
       common.showElem(elems.title.buttonNormalsTr);
       common.hideElem(elems.title.buttonNumsTr);
       common.hideElem(elems.title.buttonToggleToNormalDiv);
@@ -1554,7 +1568,7 @@
     }
 
     for (const elem of document.getElementsByClassName(
-      `title-page ${hideClassName}`
+      `title-page ${showClassName}`
     )) {
       elem.classList.remove('hide');
     }
