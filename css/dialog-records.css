@@ -30,6 +30,7 @@
       margin: 5px auto;
       font-size: 18px;
       border-collapse: collapse;
+      border: 3px solid #5555aa;
     }
 
     & th,
@@ -46,6 +47,18 @@
     & th {
       color: #001a33;
       background-color: #ddeeff;
+    }
+
+    .border-top-bold {
+      border-top-width: 3px;
+    }
+
+    .border-right-bold {
+      border-right-width: 3px;
+    }
+
+    .border-bottom-bold {
+      border-bottom-width: 3px;
     }
   }
 

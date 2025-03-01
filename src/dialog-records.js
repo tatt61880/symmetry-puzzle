@@ -45,36 +45,41 @@
     const imgSize = '50';
     {
       const th = document.createElement('th');
+      th.classList.add('border-right-bold');
+      th.classList.add('border-bottom-bold');
       tr.appendChild(th);
     }
     {
       const th = document.createElement('th');
-      tr.appendChild(th);
       const img = document.createElement('img');
       img.src = './images/logo-line.png?2024.01.09';
       img.setAttribute('width', imgSize);
       img.setAttribute('height', imgSize);
       img.classList.add('animation-icon-line');
+      th.classList.add('border-bottom-bold');
+      tr.appendChild(th);
       th.appendChild(img);
     }
     {
       const th = document.createElement('th');
-      tr.appendChild(th);
       const img = document.createElement('img');
       img.src = './images/logo-point.png?2024.01.09';
       img.setAttribute('width', imgSize);
       img.setAttribute('height', imgSize);
       img.classList.add('animation-icon-point');
+      th.classList.add('border-bottom-bold');
+      tr.appendChild(th);
       th.appendChild(img);
     }
     {
       const th = document.createElement('th');
-      tr.appendChild(th);
       const img = document.createElement('img');
       img.src = './images/logo-special.png?2024.01.09';
       img.setAttribute('width', imgSize);
       img.setAttribute('height', imgSize);
       img.classList.add('animation-icon-special');
+      th.classList.add('border-bottom-bold');
+      tr.appendChild(th);
       th.appendChild(img);
     }
 
@@ -183,6 +188,7 @@
         svg.setAttribute('width', crownSize);
         svg.setAttribute('height', crownSize);
         const crown = app.common.createCrown(crownSize, 0, 0, 1, 1);
+        th.classList.add('border-right-bold');
         tr.appendChild(th);
         th.appendChild(svg);
         svg.appendChild(crown);
@@ -217,6 +223,7 @@
         svg.setAttribute('width', crownSize);
         svg.setAttribute('height', crownSize);
         const crown = app.common.createCrown(crownSize, 0, 0, 1, 0);
+        th.classList.add('border-right-bold');
         tr.appendChild(th);
         th.appendChild(svg);
         svg.appendChild(crown);
@@ -251,6 +258,7 @@
         svg.setAttribute('width', crownSize);
         svg.setAttribute('height', crownSize);
         const crown = app.common.createCrown(crownSize, 0, 0, null, 1);
+        th.classList.add('border-right-bold');
         tr.appendChild(th);
         th.appendChild(svg);
         svg.appendChild(crown);
@@ -289,6 +297,8 @@
         const imgSize = '35';
         img.setAttribute('width', imgSize);
         img.setAttribute('height', imgSize);
+        th.classList.add('border-top-bold');
+        th.classList.add('border-right-bold');
         tr.appendChild(th);
         th.appendChild(img);
       }
@@ -296,18 +306,21 @@
         const td = document.createElement('td');
         const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.LINE) - 1;
         td.innerText = num;
+        td.classList.add('border-top-bold');
         tr.appendChild(td);
       }
       {
         const td = document.createElement('td');
         const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.POINT) - 1;
         td.innerText = num;
+        td.classList.add('border-top-bold');
         tr.appendChild(td);
       }
       {
         const td = document.createElement('td');
         const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.SPECIAL) - 1;
         td.innerText = num;
+        td.classList.add('border-top-bold');
         tr.appendChild(td);
       }
     }
