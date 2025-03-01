@@ -340,7 +340,7 @@
           if (common.isNumMode) {
             gotoNumLineMode();
           } else {
-            gotoLineMode();
+            gotoNormalLineMode();
           }
           break;
         case 'z':
@@ -348,7 +348,7 @@
           if (common.isNumMode) {
             gotoNumPointMode();
           } else {
-            gotoPointMode();
+            gotoNormalPointMode();
           }
           break;
         case 'o':
@@ -356,7 +356,7 @@
           if (common.isNumMode) {
             gotoNumSpecialMode();
           } else {
-            gotoSpecialMode();
+            gotoNormalSpecialMode();
           }
           break;
         case '+':
@@ -1486,13 +1486,19 @@
   // タイトル画面用
   function initElemsForTitle() {
     // 線対称-通常モード
-    elems.title.buttonNormalLine.addEventListener('click', gotoLineMode);
+    elems.title.buttonNormalLine.addEventListener('click', gotoNormalLineMode);
 
     // 点対称-通常モード
-    elems.title.buttonNormalPoint.addEventListener('click', gotoPointMode);
+    elems.title.buttonNormalPoint.addEventListener(
+      'click',
+      gotoNormalPointMode
+    );
 
     // 線点対称-通常モード
-    elems.title.buttonNormalSpecial.addEventListener('click', gotoSpecialMode);
+    elems.title.buttonNormalSpecial.addEventListener(
+      'click',
+      gotoNormalSpecialMode
+    );
 
     // 線対称-連番モード
     elems.title.buttonNumLine.addEventListener('click', gotoNumLineMode);
@@ -1513,17 +1519,17 @@
     );
   }
 
-  function gotoLineMode() {
+  function gotoNormalLineMode() {
     updateCheckMode(app.Level.CHECK_MODE.LINE);
     onloadId(1);
   }
 
-  function gotoPointMode() {
+  function gotoNormalPointMode() {
     updateCheckMode(app.Level.CHECK_MODE.POINT);
     onloadId(1);
   }
 
-  function gotoSpecialMode() {
+  function gotoNormalSpecialMode() {
     updateCheckMode(app.Level.CHECK_MODE.SPECIAL);
     onloadId(1);
   }
