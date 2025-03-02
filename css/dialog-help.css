@@ -165,7 +165,7 @@
   .example-valid {
     padding: 5px;
     background: #eeffee;
-    border: 5px solid #55ee55;
+    border: 5px solid #55aa55;
   }
 
   .example-invalid {
@@ -187,21 +187,21 @@
     width: 69px;
     height: 81px;
     margin: 2px 10px;
-    border: 2px solid #55ee55;
+    border: 2px solid #55aa55;
   }
 
   .image-example-valid-2 {
     width: 89px;
     height: 81px;
     margin: 2px 10px;
-    border: 2px solid #55ee55;
+    border: 2px solid #55aa55;
   }
 
   .image-example-valid-3 {
     width: 109px;
     height: 81px;
     margin: 2px 10px;
-    border: 2px solid #55ee55;
+    border: 2px solid #55aa55;
   }
 
   .image-example-invalid-1,
