@@ -81,7 +81,8 @@
     }
   }
 
-  .tab-content {
+  .tab-app-content,
+  .tab-mode-content {
     display: none;
     width: 100%;
 
@@ -93,7 +94,6 @@
     }
 
     .help-mode-title {
-      display: block;
       padding: 7px 0;
       margin: 5px;
       font-size: 1.5rem;
@@ -126,6 +126,12 @@
     color: #555555;
   }
 
+  .tab-mode-content-line,
+  .tab-mode-content-point,
+  .tab-mode-content-special {
+    display: none;
+  }
+
   & input {
     &[name='help-tab'] {
       display: none;
@@ -135,10 +141,17 @@
       background-color: #ffeedd;
       border: 4px solid #ffbb77;
       opacity: 1;
+    }
 
-      & + .tab-content {
-        display: block;
-      }
+    &:checked + .tab-app + .tab-app-content,
+    &:checked + .tab-mode ~ .tab-mode-content {
+      display: block;
+    }
+
+    &.input-tab-mode-line:checked ~ * .tab-mode-content-line,
+    &.input-tab-mode-point:checked ~ * .tab-mode-content-point,
+    &.input-tab-mode-special:checked ~ * .tab-mode-content-special {
+      display: block;
     }
   }
 
