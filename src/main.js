@@ -62,7 +62,7 @@
   const defaultFrameSize = 32;
   let frameSizeW = defaultFrameSize;
   const frameSizeH = defaultFrameSize;
-  const frameBorderWidth = 3;
+  const frameBorderWidth = 5;
 
   common.level = null;
   window.retryAndExecReplayStr = retryAndExecReplayStr;
@@ -2050,7 +2050,7 @@
           const crown = common.createCrown(
             frameSizeH,
             frameBorderWidth / frameSizeH,
-            frameBorderWidth / frameSizeH / 2,
+            frameBorderWidth / frameSizeH,
             highestScore,
             bestStep
           );
