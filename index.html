@@ -314,12 +314,14 @@
                     src="./images/example-valid-3-special.png?2025.03.01">
                 </div>
 
-                <div class="translatable en" lang="en">
-                  ✅ <span class="bold">Valid shapes</span>
-                </div>
-                <div class="translatable ja" lang="ja">
-                  ✅ <span class="bold">有効な図形</span>
-                </div>
+                <span class="flex">
+                  <svg width="20" height="20" class="help-example-caption-svg">
+                    <g class="button active-hover">
+                      <path d="M 2,10 8,18 18,2" fill="none" stroke="#55aa55" stroke-width="4" stroke-linecap="round" />
+                    </g>
+                  </svg>
+                  <span class="bold translatable-toggle" data-en="Valid shapes" data-ja="有効な図形"></span>
+                </span>
               </div>
 
               <div class="example-invalid example-div">
@@ -342,12 +344,16 @@
                     src="./images/example-invalid-2-special.png?2025.03.01">
                 </div>
 
-                <div class="translatable en" lang="en">
-                  ❌ <span class="bold">Disconnected shapes are invalid.</span>
-                </div>
-                <div class="translatable ja" lang="ja">
-                  ❌ <span class="bold">連続していない図形は無効。</span>
-                </div>
+                <span class="flex">
+                  <svg width="20" height="20" class="help-example-caption-svg">
+                    <g class="button active-hover" transform="translate(10,10)">
+                      <path d="M -8,-8 8,8" fill="none" stroke="#ee5555" stroke-width="4" stroke-linecap="round" />
+                      <path d="M -8,8 8,-8" fill="none" stroke="#ee5555" stroke-width="4" stroke-linecap="round" />
+                    </g>
+                  </svg>
+                  <span class="bold translatable-toggle" data-en="Disconnected shapes are invalid."
+                    data-ja="連続していない図形は無効。"></span>
+                </span>
               </div>
             </div>
           </div>

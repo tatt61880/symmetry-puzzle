@@ -126,6 +126,10 @@
     color: #555555;
   }
 
+  .help-example-caption-svg {
+    margin-right: 7px;
+  }
+
   .tab-mode-content-line,
   .tab-mode-content-point,
   .tab-mode-content-special {
