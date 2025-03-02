@@ -11,6 +11,7 @@ body {
   letter-spacing: 0;
   background-color: #ccffff;
   word-spacing: 0;
+  text-rendering: geometricprecision;
 }
 
 #contents {
