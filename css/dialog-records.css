@@ -23,6 +23,16 @@
     & * {
       margin: 5px;
     }
+
+    .spacer {
+      flex-grow: 1;
+    }
+
+    .caption {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #000055;
+    }
   }
 
   #records-table-div {
