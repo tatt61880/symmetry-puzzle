@@ -54,6 +54,7 @@
 
   let completeFlag = false;
   let symmetryFlag = false;
+  let preventFlag = false;
 
   let drawingState = app.states.none;
   const editboxFunctions = {};
@@ -105,6 +106,7 @@
     const redrawFlag = completeFlag || (symmetryFlag && symmetryFlag !== symmetryFlagPrev);
     if (redrawFlag) {
       const delay = settings.autoMode ? settingsAuto.interval * INPUT_INTERVAL_MSEC : MOVE_INTERVAL_MSEC;
+      preventFlag = false;
       setTimeout(drawMainSvg, delay, completeFlag);
     }
 
@@ -681,6 +683,7 @@
   }
 
   function loadLevelById(id_) {
+    preventFlag = true;
     window.getSelection().removeAllRanges();
 
     clearTimeout(nextLevelTimerId);
@@ -1685,7 +1688,11 @@
   }
 
   // 描画
-  function drawMainSvg(isCompleted = false) {
+  function drawMainSvg(isCompleted_ = false) {
+    let isCompleted;
+    if (!preventFlag) {
+      isCompleted = isCompleted_;
+    }
     updateController();
 
     const mainSvgG = app.svg.createG();
