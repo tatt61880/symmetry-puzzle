@@ -85,6 +85,12 @@
         shortest: 'crown-shortest-levels',
         cleared: 'crown-cleared-levels',
       },
+      toggleDiv: 'toggle-div',
+      textDisplay: 'text-display',
+      buttons: {
+        shortest: 'show-shortest-levels-button',
+        cleared: 'show-cleared-levels-button',
+      },
       checkbox: {
         shortest: 'show-shortest-levels',
         cleared: 'show-cleared-levels',

@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.03b';
+  const VERSION_TEXT = 'v' + '2025.03.03c';
 
   const app = window.app;
   Object.freeze(app);
@@ -772,9 +772,15 @@
       common.hideElem(elems.levels.button);
       common.showElem(elems.level.edit);
     }
+
     if (common.isNumMode) {
-      common.hideElem(elems.levels.button);
-      common.hideElem(elems.level.edit);
+      common.hideElem(elems.levels.textDisplay);
+      common.hideElem(elems.levels.buttons.shortest);
+      common.hideElem(elems.levels.buttons.cleared);
+    } else {
+      common.showElem(elems.levels.textDisplay);
+      common.showElem(elems.levels.buttons.shortest);
+      common.showElem(elems.levels.buttons.cleared);
     }
   }
 

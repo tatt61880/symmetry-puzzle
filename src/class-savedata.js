@@ -123,8 +123,18 @@
         return app.Level.getUrlQuery(levelObj, checkMode);
       } else {
         const mode = app.Level.getCheckModeStr(app.common.level.getCheckMode());
-        return `mode=${mode}&num=${app.common.levelNum}`;
+        return this.#getNumKey(app.common.levelNum, mode);
       }
+    }
+
+    #getNumKey(num, checkMode) {
+      return `mode=${checkMode}&num=${num}`;
+    }
+
+    getNumShapesNum(num, checkMode) {
+      const key = this.#getNumKey(num, checkMode);
+      const shapeInfos = this.data.shapes[key];
+      return shapeInfos ? Object.keys(shapeInfos).length : 0;
     }
   }
 

@@ -129,15 +129,23 @@
 
     let totalNum = 0;
 
-    const levels = app.common.levels.getAllLevels();
-    for (const { levelId } of levels) {
-      if (levelId === 0) continue;
-      if (levelId === 'NaN') continue;
-      if (page === null && String(levelId) === String(app.common.levelId)) {
-        page = Math.floor(totalNum / LEVEL_SELECT_NUM_PER_PAGE);
-        elems.levels.dialog.dataset.selectCount = totalNum;
+    if (app.common.isNumMode) {
+      if (page === null) {
+        const num = app.common.levelId;
+        page = Math.floor((num - 1) / LEVEL_SELECT_NUM_PER_PAGE);
+        elems.levels.dialog.dataset.selectCount = num;
       }
-      totalNum++;
+    } else {
+      const levels = app.common.levels.getAllLevels();
+      for (const { levelId } of levels) {
+        if (levelId === 0) continue;
+        if (levelId === 'NaN') continue;
+        if (page === null && String(levelId) === String(app.common.levelId)) {
+          page = Math.floor(totalNum / LEVEL_SELECT_NUM_PER_PAGE);
+          elems.levels.dialog.dataset.selectCount = totalNum;
+        }
+        totalNum++;
+      }
     }
     elems.levels.dialog.dataset.maxCount = totalNum - 1;
 
@@ -171,14 +179,22 @@
     let count = 0;
     const selectIds = {};
 
-    for (const { levelId, levelObj } of levels) {
-      if (levelId === 0) continue;
-      if (levelId === 'NaN') continue;
-      if (page * LEVEL_SELECT_NUM_PER_PAGE <= count && count < (page + 1) * LEVEL_SELECT_NUM_PER_PAGE) {
-        appendLevel(levelObj, levelId);
-        selectIds[count] = levelId;
+    if (app.common.isNumMode) {
+      for (let num = page * LEVEL_SELECT_NUM_PER_PAGE + 1; num <= (page + 1) * LEVEL_SELECT_NUM_PER_PAGE; num++) {
+        appendLevelNum(num);
+        selectIds[count] = num;
       }
-      count++;
+    } else {
+      const levels = app.common.levels.getAllLevels();
+      for (const { levelId, levelObj } of levels) {
+        if (levelId === 0) continue;
+        if (levelId === 'NaN') continue;
+        if (page * LEVEL_SELECT_NUM_PER_PAGE <= count && count < (page + 1) * LEVEL_SELECT_NUM_PER_PAGE) {
+          appendLevel(levelObj, levelId);
+          selectIds[count] = levelId;
+        }
+        count++;
+      }
     }
     elems.levels.dialog.dataset.selectIds = JSON.stringify(selectIds);
 
@@ -209,6 +225,73 @@
       const y = Math.floor((selectCount % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT;
       g.setAttribute('id', levelSelectId);
       g.setAttribute('transform', `translate(${x},${y})`);
+    }
+
+    function appendLevelNum(num) {
+      const g = app.svg.createG();
+      g.classList.add('level-select');
+      elems.levels.dialogSvg.appendChild(g);
+
+      let backgroundColor;
+      if (num === app.common.levelId) {
+        backgroundColor = app.colors.levelsDialogCurrentLevel;
+      } else {
+        backgroundColor = '#ffffff';
+      }
+
+      {
+        // 背景
+        const rect = app.svg.createRect(1, {
+          x: 0,
+          y: 0,
+          width: LEVEL_SELECT_WIDTH,
+          height: LEVEL_SELECT_HEIGHT,
+          fill: backgroundColor,
+          stroke: '#dddddd',
+        });
+        rect.setAttribute('rx', '5');
+        rect.setAttribute('ry', '5');
+        g.appendChild(rect);
+      }
+
+      // レベルID
+      {
+        const text = app.svg.createText(1, {
+          x: LEVEL_SELECT_WIDTH / 2,
+          y: 12,
+          text: num,
+          fill: 'black',
+        });
+        text.setAttribute('font-size', '16px');
+        g.appendChild(text);
+      }
+
+      {
+        const x = ((num - 1) % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH + 1;
+        const y = Math.floor(((num - 1) % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT;
+        g.setAttribute('transform', `translate(${x},${y})`);
+      }
+      g.dataset.id = num;
+      g.addEventListener('click', function () {
+        const id = Number(g.dataset.id);
+        app.common.loadLevelById(id);
+        close();
+      });
+
+      // 王冠
+      {
+        const mode = app.Level.getCheckModeStr(app.common.level.getCheckMode());
+        const shapesNum = app.savedata.getNumShapesNum(num, mode);
+        if (shapesNum === 0) {
+          // 未クリア
+          const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 2, 0.5, 1, null, null);
+          g.appendChild(crown);
+        } else {
+          // クリア済み
+          const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 2, 0.5, 1, 1, null);
+          g.appendChild(crown);
+        }
+      }
     }
 
     function appendLevel(levelObj, id) {
