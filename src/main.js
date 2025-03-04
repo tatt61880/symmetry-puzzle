@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.03c';
+  const VERSION_TEXT = 'v' + '2025.03.04';
 
   const app = window.app;
   Object.freeze(app);
@@ -858,6 +858,7 @@
     for (const elem of document.getElementsByClassName(`check-mode ${className}`)) {
       elem.classList.remove('hide-mode');
     }
+
     animateIcons();
   }
 
@@ -865,7 +866,6 @@
     if (elems.help.dialog.open) return; // ダイアログ表示中にアニメーションするとSafariで画面がちらつく問題があるため。
 
     addAnimationClass(elems.iconApp, 'animation-icon-app');
-    addAnimationClass(elems.icon123, 'animation-icon-app'); // 連番モードも通常モードと同じアニメーションにします。
     addAnimationClass(elems.iconLine, 'animation-icon-line');
     addAnimationClass(elems.iconPoint, 'animation-icon-point');
     addAnimationClass(elems.iconSpecial, 'animation-icon-special');
@@ -1494,28 +1494,32 @@
   }
 
   function toggleNormalNumMode() {
-    let showClassName = 'num-mode';
     if (common.isShownElem(elems.title.buttonToggleToNumDiv)) {
       common.isNumMode = true;
       common.hideElem(elems.title.buttonNormalsTr);
       common.showElem(elems.title.buttonNumsTr);
       common.showElem(elems.title.buttonToggleToNormalDiv);
       common.hideElem(elems.title.buttonToggleToNumDiv);
+
+      for (const elem of document.getElementsByClassName('normal-mode')) {
+        elem.classList.add('hide');
+      }
+      for (const elem of document.getElementsByClassName('num-mode')) {
+        elem.classList.remove('hide');
+      }
     } else if (common.isShownElem(elems.title.buttonToggleToNormalDiv)) {
       common.isNumMode = false;
-      showClassName = 'normal-mode';
       common.showElem(elems.title.buttonNormalsTr);
       common.hideElem(elems.title.buttonNumsTr);
       common.hideElem(elems.title.buttonToggleToNormalDiv);
       common.showElem(elems.title.buttonToggleToNumDiv);
-    }
 
-    for (const elem of document.getElementsByClassName('title-page')) {
-      elem.classList.add('hide');
-    }
-
-    for (const elem of document.getElementsByClassName(`title-page ${showClassName}`)) {
-      elem.classList.remove('hide');
+      for (const elem of document.getElementsByClassName('normal-mode')) {
+        elem.classList.remove('hide');
+      }
+      for (const elem of document.getElementsByClassName('num-mode')) {
+        elem.classList.add('hide');
+      }
     }
   }
 
