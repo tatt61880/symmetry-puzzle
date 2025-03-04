@@ -41,17 +41,15 @@ header {
   background-color: #c0cbff;
 
   .title {
-    margin: 10px;
+    margin-left: 10px;
     font-size: 1.3rem;
     font-weight: bold;
     color: #000055;
   }
 
-  .title-sub {
-    font-size: 1.1rem;
-  }
-
+  .title-sub,
   #version {
+    margin: 0 10px;
     font-size: 0.9rem;
     font-weight: bold;
     color: #7777aa;
