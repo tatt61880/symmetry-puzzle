@@ -33,6 +33,8 @@
       tabLine: 'help-tab-line',
       tabPoint: 'help-tab-point',
       tabSpecial: 'help-tab-special',
+
+      version: 'dialog-help-version',
     },
 
     records: {
