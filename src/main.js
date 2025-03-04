@@ -35,8 +35,10 @@
     INTERVAL_MIN: 1,
     INTERVAL_MAX: MOVE_INTERVAL_COUNT * 3,
   };
-  let nextLevelTimerId = null;
   const AUTO_NEXT_LEVEL_DELAY = 1000;
+  let nextLevelTimerId = null;
+
+  let redrawTimerId = null;
 
   let editMode = false;
   let temporaryShowCharsFlag = false;
@@ -54,7 +56,6 @@
 
   let completeFlag = false;
   let symmetryFlag = false;
-  let preventFlag = false;
 
   let drawingState = app.states.none;
   const editboxFunctions = {};
@@ -106,8 +107,7 @@
     const redrawFlag = completeFlag || (symmetryFlag && symmetryFlag !== symmetryFlagPrev);
     if (redrawFlag) {
       const delay = settings.autoMode ? settingsAuto.interval * INPUT_INTERVAL_MSEC : MOVE_INTERVAL_MSEC;
-      preventFlag = false;
-      setTimeout(drawMainSvg, delay, completeFlag);
+      redrawTimerId = setTimeout(drawMainSvg, delay, completeFlag);
     }
 
     if (completeFlag) {
@@ -128,6 +128,7 @@
   function undoStart() {
     if (undoFlag) return;
     undoFlag = true;
+    clearTimeout(redrawTimerId);
     clearTimeout(nextLevelTimerId);
     common.activeElem(elems.controller.undo);
     common.activeElem(elems.edit.undo);
@@ -503,6 +504,7 @@
   function retryLevel() {
     window.getSelection().removeAllRanges();
 
+    clearTimeout(redrawTimerId);
     clearTimeout(nextLevelTimerId);
 
     common.activeElem(elems.level.retry);
@@ -683,9 +685,9 @@
   }
 
   function loadLevelById(id_) {
-    preventFlag = true;
     window.getSelection().removeAllRanges();
 
+    clearTimeout(redrawTimerId);
     clearTimeout(nextLevelTimerId);
     const id = Number(id_);
     common.levelId = id;
@@ -1692,11 +1694,7 @@
   }
 
   // 描画
-  function drawMainSvg(isCompleted_ = false) {
-    let isCompleted;
-    if (!preventFlag) {
-      isCompleted = isCompleted_;
-    }
+  function drawMainSvg(isCompleted = false) {
     updateController();
 
     const mainSvgG = app.svg.createG();
