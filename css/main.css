@@ -48,8 +48,8 @@ header {
   }
 
   .title-sub,
-  #version {
-    margin: 0 10px;
+  #title-version {
+    margin-left: 10px;
     font-size: 0.9rem;
     font-weight: bold;
     color: #7777aa;

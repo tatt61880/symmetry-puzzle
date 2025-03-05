@@ -18,9 +18,7 @@
 /* Blocks jumping animation */
 .animation-jump {
   animation: animation-jump cubic-bezier(0, 0.5, 1, 0.5) forwards;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-1)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-1));
   animation-iteration-count: var(--animation-jump-count);
 }
 
@@ -224,9 +222,7 @@
 .animation-axis-line1 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-line1 linear forwards;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-2));
 }
 
 @keyframes animation-axis-line1 {
@@ -244,9 +240,7 @@
 .animation-axis-line2 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-line2 linear forwards;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-2));
 }
 
 @keyframes animation-axis-line2 {
@@ -264,9 +258,7 @@
 .animation-axis-line3 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-line3 linear forwards;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-2));
 }
 
 @keyframes animation-axis-line3 {
@@ -284,9 +276,7 @@
 .animation-axis-line4 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-line4 linear forwards;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-2));
 }
 
 @keyframes animation-axis-line4 {
@@ -304,9 +294,7 @@
 .animation-axis-plus1 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-plus1 linear forwards;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-4));
 }
 
 @keyframes animation-axis-plus1 {
@@ -332,9 +320,7 @@
 .animation-axis-plus2 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-plus2 linear forwards;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-4));
 }
 
 @keyframes animation-axis-plus2 {
@@ -360,48 +346,39 @@
 .animation-axis-plus3 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-plus3 linear forwards;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-4));
 }
 
 @keyframes animation-axis-plus3 {
   0% {
-    transform: rotate3d(0, 1, 0, 0deg) rotate3d(1, 0, 0, 0deg)
-      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
+    transform: rotate3d(0, 1, 0, 0deg) rotate3d(1, 0, 0, 0deg) rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   15%,
   25% {
-    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 0deg)
-      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 0deg) rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   40%,
   50% {
-    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
-      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg) rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   65%,
   75% {
-    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
-      rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 0deg);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg) rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 0deg);
   }
 
   90%,
   100% {
-    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
-      rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 180deg);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg) rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 180deg);
   }
 }
 
 .animation-axis-point1 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-point1 linear forwards;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-2));
 }
 
 @keyframes animation-axis-point1 {
@@ -422,9 +399,7 @@
 .animation-axis-point2 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-point2 linear forwards;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-4));
 }
 
 @keyframes animation-axis-point2 {
@@ -456,9 +431,7 @@
 .animation-axis-special1 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-special1 linear forwards;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-3));
 }
 
 @keyframes animation-axis-special1 {
@@ -477,17 +450,14 @@
   }
 
   100% {
-    transform: rotate(180deg) rotate3d(0, 1, 0, 180deg)
-      rotate3d(1, 0, 0, 180deg);
+    transform: rotate(180deg) rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg);
   }
 }
 
 .animation-axis-special2 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-special2 linear forwards;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-3));
 }
 
 @keyframes animation-axis-special2 {
@@ -506,17 +476,14 @@
   }
 
   100% {
-    transform: rotate(180deg) rotate3d(1, 1, 0, 180deg)
-      rotate3d(1, -1, 0, 180deg);
+    transform: rotate(180deg) rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 180deg);
   }
 }
 
 .animation-axis-special3 {
   transform-origin: var(--animation-origin);
   animation: animation-axis-special3 linear forwards;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-8)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-8));
 }
 
 @keyframes animation-axis-special3 {
@@ -545,40 +512,33 @@
   }
 
   50.01% {
-    transform: rotate3d(0, 1, 0, 0deg) rotate3d(1, 0, 0, 0deg)
-      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
+    transform: rotate3d(0, 1, 0, 0deg) rotate3d(1, 0, 0, 0deg) rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   57.5%,
   62.5% {
-    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 0deg)
-      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 0deg) rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   70%,
   75% {
-    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
-      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg) rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   82.5%,
   87.5% {
-    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
-      rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 0deg);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg) rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 0deg);
   }
 
   95%,
   100% {
-    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
-      rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 180deg);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg) rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 180deg);
   }
 }
 
 .animation-symmetry-axis {
   animation: animation-symmetry-axis linear both;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-2));
 }
 
 @keyframes animation-symmetry-axis {
@@ -602,9 +562,7 @@
 .animation-symmetry-axis-point2 {
   transform-origin: var(--animation-origin);
   animation: animation-symmetry-axis-point2 linear both;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-2));
 }
 
 @keyframes animation-symmetry-axis-point2 {
@@ -632,9 +590,7 @@
 .animation-symmetry-axis-point4 {
   transform-origin: var(--animation-origin);
   animation: animation-symmetry-axis-point4 linear both;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-4));
 }
 
 @keyframes animation-symmetry-axis-point4 {
@@ -675,9 +631,7 @@
 .animation-symmetry-axis-sp1 {
   transform-origin: var(--animation-origin);
   animation: animation-symmetry-axis-sp1 linear both;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-3));
 }
 
 @keyframes animation-symmetry-axis-sp1 {
@@ -704,17 +658,14 @@
 
   100% {
     opacity: 0.4;
-    transform: rotate(180deg) rotate3d(0, 1, 0, 180deg)
-      rotate3d(1, 0, 0, 180deg);
+    transform: rotate(180deg) rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg);
   }
 }
 
 .animation-symmetry-axis-sp2 {
   transform-origin: var(--animation-origin);
   animation: animation-symmetry-axis-sp2 linear both;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-3));
 }
 
 @keyframes animation-symmetry-axis-sp2 {
@@ -741,17 +692,14 @@
 
   100% {
     opacity: 0.4;
-    transform: rotate(180deg) rotate3d(1, 1, 0, 180deg)
-      rotate3d(1, -1, 0, 180deg);
+    transform: rotate(180deg) rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 180deg);
   }
 }
 
 .animation-symmetry-axis-sp3 {
   transform-origin: var(--animation-origin);
   animation: animation-symmetry-axis-sp3 linear both;
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-8)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-8));
 }
 
 @keyframes animation-symmetry-axis-sp3 {
@@ -790,141 +738,92 @@
 
   50.01% {
     opacity: 0.4;
-    transform: rotate3d(0, 1, 0, 0deg) rotate3d(1, 0, 0, 0deg)
-      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
+    transform: rotate3d(0, 1, 0, 0deg) rotate3d(1, 0, 0, 0deg) rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   57.5%,
   62.5% {
     opacity: 0.4;
-    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 0deg)
-      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 0deg) rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   70%,
   75% {
     opacity: 0.4;
-    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
-      rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg) rotate3d(1, 1, 0, 0deg) rotate3d(1, -1, 0, 0deg);
   }
 
   82.5%,
   87.5% {
     opacity: 0.4;
-    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
-      rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 0deg);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg) rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 0deg);
   }
 
   95%,
   100% {
     opacity: 0.4;
-    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg)
-      rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 180deg);
+    transform: rotate3d(0, 1, 0, 180deg) rotate3d(1, 0, 0, 180deg) rotate3d(1, 1, 0, 180deg) rotate3d(1, -1, 0, 180deg);
   }
 }
 
 .axis-2-1 {
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-2));
   animation-delay: 0;
 }
 
 .axis-2-2 {
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
-  );
-  animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-2)
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-2));
+  animation-delay: calc(var(--animation-duration-symmetry) * var(--animation-axis-2));
 }
 
 .axis-3-2 {
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3) * 0.2
-  );
-  animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3) * 0.4
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-3) * 0.2);
+  animation-delay: calc(var(--animation-duration-symmetry) * var(--animation-axis-3) * 0.4);
 }
 
 .axis-3-3 {
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3) * 0.2
-  );
-  animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-3) * 0.8
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-3) * 0.2);
+  animation-delay: calc(var(--animation-duration-symmetry) * var(--animation-axis-3) * 0.8);
 }
 
 .axis-4-1 {
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25);
   animation-delay: 0;
 }
 
 .axis-4-2 {
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25
-  );
-  animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25);
+  animation-delay: calc(var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25);
 }
 
 .axis-4-3 {
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25
-  );
-  animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.5
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25);
+  animation-delay: calc(var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.5);
 }
 
 .axis-4-4 {
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25
-  );
-  animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.75
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25);
+  animation-delay: calc(var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.75);
 }
 
 .axis-8-5 {
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.125
-  );
-  animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.5
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.125);
+  animation-delay: calc(var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.5);
 }
 
 .axis-8-6 {
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.125
-  );
-  animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.625
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.125);
+  animation-delay: calc(var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.625);
 }
 
 .axis-8-7 {
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.125
-  );
-  animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.75
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.125);
+  animation-delay: calc(var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.75);
 }
 
 .axis-8-8 {
-  animation-duration: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.125
-  );
-  animation-delay: calc(
-    var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.875
-  );
+  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.125);
+  animation-delay: calc(var(--animation-duration-symmetry) * var(--animation-axis-8) * 0.875);
 }
 
 /* 次のレベルへ */
@@ -1012,6 +911,7 @@
 #help-tab-app:checked + .tab > img,
 #help-tab-special:checked + .tab > img,
 .animation-icon-app,
+.animation-icon-123,
 .animation-icon-special {
   transform-origin: center;
   animation: animation-axis-4mm linear forwards;

@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.05c';
+  const VERSION_TEXT = 'v' + '2025.03.05d';
 
   const app = window.app;
   Object.freeze(app);
@@ -868,6 +868,7 @@
     if (elems.help.dialog.open) return; // ダイアログ表示中にアニメーションするとSafariで画面がちらつく問題があるため。
 
     addAnimationClass(elems.iconApp, 'animation-icon-app');
+    addAnimationClass(elems.icon123, 'animation-icon-123');
     addAnimationClass(elems.iconLine, 'animation-icon-line');
     addAnimationClass(elems.iconPoint, 'animation-icon-point');
     addAnimationClass(elems.iconSpecial, 'animation-icon-special');
