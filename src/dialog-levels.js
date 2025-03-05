@@ -292,26 +292,25 @@
 
       // 王冠
       if (hideDetailFlag) {
-        // クリア済み
+        // 大きい王冠
         const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 2, 0.5, 1, highestScore, undefined);
         g.appendChild(crown);
       } else {
-        const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 3, 1, 1, highestScore, undefined);
+        // 小さい王冠
+        const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 3, 1, 1.1, highestScore, undefined);
         g.appendChild(crown);
       }
 
+      // クリア時のステップ数
       if (!hideDetailFlag) {
-        // クリア時のステップ数
-        {
-          const text = app.svg.createText(1, {
-            x: LEVEL_SELECT_WIDTH / 2,
-            y: (LEVEL_SELECT_HEIGHT * 2) / 3,
-            text: highestScore ?? '-',
-            fill: app.common.getStepColor(highestScore, undefined),
-          });
-          text.setAttribute('font-size', '24px');
-          g.appendChild(text);
-        }
+        const text = app.svg.createText(1, {
+          x: LEVEL_SELECT_WIDTH / 2,
+          y: (LEVEL_SELECT_HEIGHT * 2) / 3 - 3,
+          text: highestScore ?? '-',
+          fill: app.common.getStepColor(highestScore, undefined),
+        });
+        text.setAttribute('font-size', '24px');
+        g.appendChild(text);
       }
     }
 
@@ -372,9 +371,11 @@
 
       // 王冠
       if (hideDetailFlag) {
+        // 大きい王冠
         const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 2, 0.5, 1, highestScore, bestStep);
         g.appendChild(crown);
       } else {
+        // 小さい王冠
         const crown = app.common.createCrown(20, 0, 1, highestScore, bestStep);
         g.appendChild(crown);
       }
