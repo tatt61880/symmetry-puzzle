@@ -281,14 +281,14 @@
       // 王冠
       {
         const mode = app.Level.getCheckModeStr(app.common.level.getCheckMode());
-        const shapesNum = app.savedata.getNumShapesNum(num, mode);
-        if (shapesNum === 0) {
+        const highestScore = app.savedata.getHighestScoreForNumMode(num, mode);
+        if (highestScore === null) {
           // 未クリア
-          const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 2, 0.5, 1, null, null);
+          const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 2, 0.5, 1, null, undefined);
           g.appendChild(crown);
         } else {
           // クリア済み
-          const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 2, 0.5, 1, 1, null);
+          const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 2, 0.5, 1, highestScore, undefined);
           g.appendChild(crown);
         }
       }

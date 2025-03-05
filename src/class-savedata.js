@@ -96,17 +96,12 @@
         return r.length;
       }
 
-      // 連番モード用
-      const shapeInfos = this.data.shapes[key];
-      if (shapeInfos) {
-        let score = maxStep + 1;
-        for (const shapeStr in shapeInfos) {
-          score = Math.min(score, shapeInfos[shapeStr].length);
-        }
-        return score;
-      }
+      return this.#getMinStepsinShapes(key);
+    }
 
-      return null;
+    getHighestScoreForNumMode(num, checkMode) {
+      const key = this.#getNumModeKey(num, checkMode);
+      return this.#getMinStepsinShapes(key);
     }
 
     getUnsolvedMinNum(checkMode) {
@@ -123,18 +118,25 @@
         return app.Level.getUrlQuery(levelObj, checkMode);
       } else {
         const mode = app.Level.getCheckModeStr(app.common.level.getCheckMode());
-        return this.#getNumKey(app.common.levelNum, mode);
+        return this.#getNumModeKey(app.common.levelNum, mode);
       }
     }
 
-    #getNumKey(num, checkMode) {
+    #getNumModeKey(num, checkMode) {
       return `mode=${checkMode}&num=${num}`;
     }
 
-    getNumShapesNum(num, checkMode) {
-      const key = this.#getNumKey(num, checkMode);
+    #getMinStepsinShapes(key) {
       const shapeInfos = this.data.shapes[key];
-      return shapeInfos ? Object.keys(shapeInfos).length : 0;
+      if (shapeInfos) {
+        let score = maxStep + 1;
+        for (const shapeStr in shapeInfos) {
+          score = Math.min(score, shapeInfos[shapeStr].length);
+        }
+        return score;
+      }
+
+      return null;
     }
   }
 
