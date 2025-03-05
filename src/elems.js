@@ -88,7 +88,6 @@
         numMode: 'crown-num-mode-levels',
       },
       toggleDiv: 'toggle-div',
-      textDisplay: 'text-display',
       buttons: {
         shortest: 'show-shortest-levels-button',
         cleared: 'show-cleared-levels-button',
