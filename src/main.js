@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.05b';
+  const VERSION_TEXT = 'v' + '2025.03.05c';
 
   const app = window.app;
   Object.freeze(app);
@@ -782,10 +782,12 @@
       common.hideElem(elems.levels.textDisplay);
       common.hideElem(elems.levels.buttons.shortest);
       common.hideElem(elems.levels.buttons.cleared);
+      common.showElem(elems.levels.buttons.numMode);
     } else {
       common.showElem(elems.levels.textDisplay);
       common.showElem(elems.levels.buttons.shortest);
       common.showElem(elems.levels.buttons.cleared);
+      common.hideElem(elems.levels.buttons.numMode);
     }
   }
 
@@ -1546,7 +1548,7 @@
     elems.levels.button.addEventListener('click', app.dialog.levels.show);
     elems.levels.dialog.addEventListener('click', app.dialog.levels.close);
     elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
-    [elems.levels.checkbox.shortest, elems.levels.checkbox.cleared].forEach((elem) => {
+    [elems.levels.checkbox.shortest, elems.levels.checkbox.cleared, elems.levels.checkbox.numMode].forEach((elem) => {
       elem.addEventListener('click', app.dialog.levels.update);
     });
   }

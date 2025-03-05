@@ -80,14 +80,14 @@
     elem.classList.remove('active-elem');
   }
 
-  function getStepColor(step, bestStep) {
-    if (step === null) {
+  function getStepColor(yourStep, bestStep) {
+    if (yourStep === null) {
       return app.colors.stepUnknown;
     } else if (bestStep === undefined) {
       return app.colors.stepNum;
-    } else if (step > bestStep) {
+    } else if (yourStep > bestStep) {
       return app.colors.stepLose;
-    } else if (step === bestStep) {
+    } else if (yourStep === bestStep) {
       return app.colors.stepDraw;
     } else {
       return app.colors.stepWin;

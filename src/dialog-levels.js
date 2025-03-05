@@ -121,9 +121,13 @@
     if (!elems.levels.crown.cleared.hasChildNodes()) {
       elems.levels.crown.cleared.appendChild(app.common.createCrown(40, 0.1, 0.1, 1, 0));
     }
+    if (!elems.levels.crown.numMode.hasChildNodes()) {
+      elems.levels.crown.numMode.appendChild(app.common.createCrown(40, 0.1, 0.1, 1, undefined));
+    }
 
-    const largeCrownForShorestFlag = elems.levels.checkbox.shortest.checked;
+    const largeCrownForShortestFlag = elems.levels.checkbox.shortest.checked;
     const largeCrownForClearedFlag = elems.levels.checkbox.cleared.checked;
+    const largeCrownForNumModeFlag = elems.levels.checkbox.numMode.checked;
 
     elems.levels.dialogSvg.innerHTML = '';
 
@@ -181,7 +185,7 @@
 
     if (app.common.isNumMode) {
       for (let num = page * LEVEL_SELECT_NUM_PER_PAGE + 1; num <= (page + 1) * LEVEL_SELECT_NUM_PER_PAGE; num++) {
-        appendLevelNum(num);
+        appendLevelForNumMode(num);
         selectIds[count] = num;
       }
     } else {
@@ -227,7 +231,7 @@
       g.setAttribute('transform', `translate(${x},${y})`);
     }
 
-    function appendLevelNum(num) {
+    function appendLevelForNumMode(num) {
       const g = app.svg.createG();
       g.classList.add('level-select');
       elems.levels.dialogSvg.appendChild(g);
@@ -278,18 +282,35 @@
         close();
       });
 
+      const mode = app.Level.getCheckModeStr(app.common.level.getCheckMode());
+      const highestScore = app.savedata.getHighestScoreForNumMode(num, mode);
+
+      let hideDetailFlag = false;
+      if (largeCrownForNumModeFlag) {
+        hideDetailFlag = true;
+      }
+
       // 王冠
-      {
-        const mode = app.Level.getCheckModeStr(app.common.level.getCheckMode());
-        const highestScore = app.savedata.getHighestScoreForNumMode(num, mode);
-        if (highestScore === null) {
-          // 未クリア
-          const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 2, 0.5, 1, null, undefined);
-          g.appendChild(crown);
-        } else {
-          // クリア済み
-          const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 2, 0.5, 1, highestScore, undefined);
-          g.appendChild(crown);
+      if (hideDetailFlag) {
+        // クリア済み
+        const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 2, 0.5, 1, highestScore, undefined);
+        g.appendChild(crown);
+      } else {
+        const crown = app.common.createCrown(LEVEL_SELECT_WIDTH / 3, 1, 1, highestScore, undefined);
+        g.appendChild(crown);
+      }
+
+      if (!hideDetailFlag) {
+        // クリア時のステップ数
+        {
+          const text = app.svg.createText(1, {
+            x: LEVEL_SELECT_WIDTH / 2,
+            y: (LEVEL_SELECT_HEIGHT * 2) / 3,
+            text: highestScore ?? '-',
+            fill: app.common.getStepColor(highestScore, undefined),
+          });
+          text.setAttribute('font-size', '24px');
+          g.appendChild(text);
         }
       }
     }
@@ -305,7 +326,7 @@
       let hideDetailFlag = false;
       if (highestScore !== null) {
         if (highestScore <= bestStep) {
-          if (largeCrownForShorestFlag) hideDetailFlag = true;
+          if (largeCrownForShortestFlag) hideDetailFlag = true;
         } else {
           if (largeCrownForClearedFlag) hideDetailFlag = true;
         }
