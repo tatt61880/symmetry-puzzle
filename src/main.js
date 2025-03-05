@@ -779,12 +779,10 @@
     }
 
     if (common.isNumMode) {
-      common.hideElem(elems.levels.textDisplay);
       common.hideElem(elems.levels.buttons.shortest);
       common.hideElem(elems.levels.buttons.cleared);
       common.showElem(elems.levels.buttons.numMode);
     } else {
-      common.showElem(elems.levels.textDisplay);
       common.showElem(elems.levels.buttons.shortest);
       common.showElem(elems.levels.buttons.cleared);
       common.hideElem(elems.levels.buttons.numMode);
