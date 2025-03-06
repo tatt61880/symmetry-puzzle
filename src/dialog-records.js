@@ -308,6 +308,7 @@
         const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.LINE) - 1;
         td.innerText = num;
         td.classList.add('border-top-bold');
+        td.classList.add('record-num-mode');
         tr.appendChild(td);
       }
       {
@@ -315,6 +316,7 @@
         const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.POINT) - 1;
         td.innerText = num;
         td.classList.add('border-top-bold');
+        td.classList.add('record-num-mode');
         tr.appendChild(td);
       }
       {
@@ -322,6 +324,7 @@
         const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.SPECIAL) - 1;
         td.innerText = num;
         td.classList.add('border-top-bold');
+        td.classList.add('record-num-mode');
         tr.appendChild(td);
       }
     }

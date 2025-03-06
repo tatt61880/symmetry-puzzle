@@ -47,10 +47,16 @@
     & td {
       height: 40px;
       padding: 5px 15px;
+      font-size: 1.5rem;
+      font-weight: bold;
       border: 3px solid #a8d4ff;
 
       & * {
         vertical-align: middle;
+      }
+
+      &.record-num-mode {
+        color: #303080;
       }
     }
 
