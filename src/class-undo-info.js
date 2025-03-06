@@ -25,7 +25,7 @@
       return this.#undoIdx < this.#undoMaxIdx;
     }
 
-    undoMax() {
+    undoAll() {
       this.#undoIdx = 0;
       return this.undoArray[this.#undoIdx];
     }

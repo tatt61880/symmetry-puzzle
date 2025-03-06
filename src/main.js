@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.05d';
+  const VERSION_TEXT = 'v' + '2025.03.06';
 
   const app = window.app;
   Object.freeze(app);
@@ -107,6 +107,7 @@
     const redrawFlag = completeFlag || (symmetryFlag && symmetryFlag !== symmetryFlagPrev);
     if (redrawFlag) {
       const delay = settings.autoMode ? settingsAuto.interval * INPUT_INTERVAL_MSEC : MOVE_INTERVAL_MSEC;
+      clearTimeout(redrawTimerId);
       redrawTimerId = setTimeout(drawMainSvg, delay, completeFlag);
     }
 
@@ -128,8 +129,8 @@
   function undoStart() {
     if (undoFlag) return;
     undoFlag = true;
-    clearTimeout(redrawTimerId);
     clearTimeout(nextLevelTimerId);
+    clearTimeout(redrawTimerId);
     common.activeElem(elems.controller.undo);
     common.activeElem(elems.edit.undo);
 
@@ -504,15 +505,15 @@
   function retryLevel() {
     window.getSelection().removeAllRanges();
 
-    clearTimeout(redrawTimerId);
     clearTimeout(nextLevelTimerId);
+    clearTimeout(redrawTimerId);
 
     common.activeElem(elems.level.retry);
     animateIcons();
     common.inactiveElem(elems.level.retry);
 
     {
-      const levelObj = undoInfo.undoMax();
+      const levelObj = undoInfo.undoAll();
       const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
     }
@@ -687,8 +688,8 @@
   function loadLevelById(id_) {
     window.getSelection().removeAllRanges();
 
-    clearTimeout(redrawTimerId);
     clearTimeout(nextLevelTimerId);
+    clearTimeout(redrawTimerId);
     const id = Number(id_);
     common.levelId = id;
     common.levelNum = null;
@@ -2397,6 +2398,7 @@
       updateEditMode(false);
     } else {
       clearTimeout(nextLevelTimerId);
+      clearTimeout(redrawTimerId);
       settings.autoMode = false;
       settingsAuto.paused = true;
       input.enable();
@@ -2423,6 +2425,7 @@
   function onButtonStop() {
     updateAutoMode(false);
     clearTimeout(nextLevelTimerId);
+    clearTimeout(redrawTimerId);
   }
 
   function onButtonStart() {
@@ -2462,6 +2465,7 @@
     settingsAuto.paused = true;
     updateAutoStartPauseButtons();
     clearTimeout(nextLevelTimerId);
+    clearTimeout(redrawTimerId);
     clearTimeout(autoIntervalId);
   }
 
