@@ -137,6 +137,14 @@
     margin-right: 7px;
   }
 
+  .help-example-caption-valid-text {
+    color: #336633;
+  }
+
+  .help-example-caption-invalid-text {
+    color: #883333;
+  }
+
   .tab-mode-content-line,
   .tab-mode-content-point,
   .tab-mode-content-special {
@@ -250,6 +258,7 @@
   .warn {
     padding: 5px;
     margin: 5px;
+    color: #442200;
     background: #ffddbb;
   }
 
