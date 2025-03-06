@@ -2280,9 +2280,7 @@
             const py = moveFlag ? srcY : sY;
 
             const prevInfo =
-              this.#eyePrevInfo[py] === undefined || this.#eyePrevInfo[py][px] === undefined
-                ? { dx: 0, dy: 0 }
-                : this.#eyePrevInfo[py][px];
+              this.#eyePrevInfo[py] === undefined || this.#eyePrevInfo[py][px] === undefined ? { dx: 0, dy: 0 } : this.#eyePrevInfo[py][px];
             const pdx = prevInfo.dx;
             const pdy = prevInfo.dy;
 
@@ -2747,13 +2745,7 @@
         const dx = this.#moveDx;
         const dy = this.#moveDy;
         const { srcX, srcY } = this.#getSrc(sX, sY, dx, dy);
-        if (
-          this.#xMin - 1 <= srcX &&
-          srcX <= this.#xMax &&
-          this.#yMin - 1 <= srcY &&
-          srcY <= this.#yMax &&
-          this.#moveFlags[srcY][srcX]
-        ) {
+        if (this.#xMin - 1 <= srcX && srcX <= this.#xMax && this.#yMin - 1 <= srcY && srcY <= this.#yMax && this.#moveFlags[srcY][srcX]) {
           gElems = gElemsAnimation2;
           if (dx + dy === 0) {
             document.documentElement.style.setProperty(
@@ -2762,8 +2754,7 @@
             );
 
             const animationClass = animationMovingClasses[this.#axis.type];
-            const additionalInfo =
-              this.#axis.type === Level.SYMMETRY_TYPE.POINT2 && this.#mirrorFlag ? '-reversed' : '';
+            const additionalInfo = this.#axis.type === Level.SYMMETRY_TYPE.POINT2 && this.#mirrorFlag ? '-reversed' : '';
             elem.classList.add(animationClass + additionalInfo);
           } else {
             elem.classList.add('animation-move');

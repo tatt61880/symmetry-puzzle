@@ -288,10 +288,7 @@
     }
 
     // 連番モード
-    if (
-      app.common.isShownElem(elems.title.buttonToggleToNormalDiv) ||
-      app.common.isShownElem(elems.title.buttonToggleToNumDiv)
-    ) {
+    if (app.common.isShownElem(elems.title.buttonToggleToNormalDiv) || app.common.isShownElem(elems.title.buttonToggleToNumDiv)) {
       const tr = document.createElement('tr');
       tbody.appendChild(tr);
       {

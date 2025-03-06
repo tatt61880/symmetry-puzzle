@@ -310,13 +310,10 @@
                     break;
                 }
                 const r = replayStr;
-                const prefixStepInfo =
-                  prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
+                const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
                 const completedLevelObj = getCompletedLevelObj(r);
                 const completedLevelObjStr = levelObjToStr(completedLevelObj);
-                app.console.log(
-                  `/* [LEVEL ${levelId}][map.size: ${stateStrMap.size}] */ ${completedLevelObjStr}${prefixStepInfo}`
-                );
+                app.console.log(`/* [LEVEL ${levelId}][map.size: ${stateStrMap.size}] */ ${completedLevelObjStr}${prefixStepInfo}`);
                 const shapeStr = level.getShapeStr(app.states.isTarget).replace(/\n$/, '');
                 if (!shapeStrMap.has(shapeStr)) {
                   shapeStrInfoArray.push({
@@ -352,9 +349,7 @@
             if (solutionNum > 0) {
               app.console.log(` First solution: ${solutionStepFirst} steps`);
               if (solutionNum > 1) {
-                app.console.log(
-                  `Second solution: ${solutionStepSecond} steps (+${solutionStepSecond - solutionStepFirst})`
-                );
+                app.console.log(`Second solution: ${solutionStepSecond} steps (+${solutionStepSecond - solutionStepFirst})`);
               }
             }
 
@@ -389,9 +384,9 @@
         if (options.console) {
           const time = performance.now();
           app.console.info(
-            `// ${step} steps completed. [Time: ${msToSecStr(time - startTime)}] (+${msToSecStr(
-              time - prevTime
-            )}) [map.size: ${stateStrMap.size}]`
+            `// ${step} steps completed. [Time: ${msToSecStr(time - startTime)}] (+${msToSecStr(time - prevTime)}) [map.size: ${
+              stateStrMap.size
+            }]`
           );
           prevTime = time;
         }

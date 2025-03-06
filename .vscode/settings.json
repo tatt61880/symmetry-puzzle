@@ -16,7 +16,7 @@
   "files.encoding": "utf8",
   "files.insertFinalNewline": true,
   "html.format.indentInnerHtml": false,
-  "html.format.wrapLineLength": 120,
+  "html.format.wrapLineLength": 140,
   "liveServer.settings.port": 5501,
   "search.exclude": {
     "package-lock.json": true

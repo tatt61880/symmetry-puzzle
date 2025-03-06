@@ -43,8 +43,7 @@
 
   function prevPage() {
     if (app.common.isShownElem(elems.levels.prev)) {
-      elems.levels.dialog.dataset.selectCount =
-        Number(elems.levels.dialog.dataset.selectCount) - LEVEL_SELECT_NUM_PER_PAGE;
+      elems.levels.dialog.dataset.selectCount = Number(elems.levels.dialog.dataset.selectCount) - LEVEL_SELECT_NUM_PER_PAGE;
       const page = Number(elems.levels.dialog.dataset.page) - 1;
       updateLevelsDialog(page);
     }
@@ -52,8 +51,7 @@
 
   function nextPage() {
     if (app.common.isShownElem(elems.levels.next)) {
-      elems.levels.dialog.dataset.selectCount =
-        Number(elems.levels.dialog.dataset.selectCount) + LEVEL_SELECT_NUM_PER_PAGE;
+      elems.levels.dialog.dataset.selectCount = Number(elems.levels.dialog.dataset.selectCount) + LEVEL_SELECT_NUM_PER_PAGE;
       const page = Number(elems.levels.dialog.dataset.page) + 1;
       updateLevelsDialog(page);
     }
@@ -419,10 +417,7 @@
 
       // 盤面表示
       if (!hideDetailFlag) {
-        const blockSize = Math.min(
-          (LEVEL_SELECT_WIDTH - 4) / level.getWidth(),
-          (LEVEL_SELECT_HEIGHT - 42) / level.getHeight()
-        );
+        const blockSize = Math.min((LEVEL_SELECT_WIDTH - 4) / level.getWidth(), (LEVEL_SELECT_HEIGHT - 42) / level.getHeight());
         const levelSvgG = level.createSvgG({
           blockSize,
           edgeColor: backgroundColor,

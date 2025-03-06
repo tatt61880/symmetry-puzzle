@@ -230,11 +230,7 @@
           checkMode,
         });
         const yMargin = 20;
-        const blockSize = Math.min(
-          (SELECT_WIDTH - 8) / w,
-          (SELECT_HEIGHT - yMargin - 4) / h,
-          (SELECT_HEIGHT - yMargin - 4) / 5
-        );
+        const blockSize = Math.min((SELECT_WIDTH - 8) / w, (SELECT_HEIGHT - yMargin - 4) / h, (SELECT_HEIGHT - yMargin - 4) / 5);
         const levelSvgG = level.createSvgG({
           blockSize,
           drawBackground: false,

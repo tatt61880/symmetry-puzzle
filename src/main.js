@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.06';
+  const VERSION_TEXT = 'v' + '2025.03.07';
 
   const app = window.app;
   Object.freeze(app);
@@ -87,14 +87,8 @@
 
     const moveFlag = common.level.move(dx, dy);
     if (moveFlag) {
-      document.documentElement.style.setProperty(
-        '--animation-move-transform',
-        `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`
-      );
-      document.documentElement.style.setProperty(
-        '--animation-move-sub-transform',
-        `translate(0, ${-0.125 * blockSize}px)`
-      );
+      document.documentElement.style.setProperty('--animation-move-transform', `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`);
+      document.documentElement.style.setProperty('--animation-move-sub-transform', `translate(0, ${-0.125 * blockSize}px)`);
       addUndo(dir);
     }
     return moveFlag;
@@ -113,10 +107,7 @@
 
     if (completeFlag) {
       const center = common.level.getCenter(app.states.isTarget);
-      document.documentElement.style.setProperty(
-        '--animation-origin',
-        `${blockSize * center.x}px ${blockSize * center.y}px`
-      );
+      document.documentElement.style.setProperty('--animation-origin', `${blockSize * center.x}px ${blockSize * center.y}px`);
     }
   }
 
@@ -1251,22 +1242,10 @@
       elems.edit.redo.addEventListener(pointerdownEventName, redodown);
 
       elems.controller.buttons.up.addEventListener(pointerdownEventName, moveButtonStart.bind(null, app.Input.DIRS.UP));
-      elems.controller.buttons.right.addEventListener(
-        pointerdownEventName,
-        moveButtonStart.bind(null, app.Input.DIRS.RIGHT)
-      );
-      elems.controller.buttons.down.addEventListener(
-        pointerdownEventName,
-        moveButtonStart.bind(null, app.Input.DIRS.DOWN)
-      );
-      elems.controller.buttons.left.addEventListener(
-        pointerdownEventName,
-        moveButtonStart.bind(null, app.Input.DIRS.LEFT)
-      );
-      elems.controller.buttons.axis.addEventListener(
-        pointerdownEventName,
-        moveButtonStart.bind(null, app.Input.DIRS.AXIS)
-      );
+      elems.controller.buttons.right.addEventListener(pointerdownEventName, moveButtonStart.bind(null, app.Input.DIRS.RIGHT));
+      elems.controller.buttons.down.addEventListener(pointerdownEventName, moveButtonStart.bind(null, app.Input.DIRS.DOWN));
+      elems.controller.buttons.left.addEventListener(pointerdownEventName, moveButtonStart.bind(null, app.Input.DIRS.LEFT));
+      elems.controller.buttons.axis.addEventListener(pointerdownEventName, moveButtonStart.bind(null, app.Input.DIRS.AXIS));
 
       elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
 
@@ -1631,10 +1610,7 @@
       })();
 
       const pixel = 4;
-      document.documentElement.style.setProperty(
-        '--animation-illegal-move',
-        `translate(${dx * pixel}px, ${dy * pixel}px)`
-      );
+      document.documentElement.style.setProperty('--animation-illegal-move', `translate(${dx * pixel}px, ${dy * pixel}px)`);
 
       drawMainSvg(); // 目の向きをリセットするために、描画し直します。
       // 動けないときは盤面を振動させます。
@@ -1987,9 +1963,9 @@
             const s = levelObj.s;
             const r = levelObj.r;
             const axis = levelObj.axis !== undefined ? ` axis: '${levelObj.axis}',` : '';
-            const levelParams = `w: ${w}, h: ${h}, s: '${s}',${axis} r: '${replayStr}', step: ${
-              replayStr.length
-            }, subject: '${levelObj.subject ?? ''}'`;
+            const levelParams = `w: ${w}, h: ${h}, s: '${s}',${axis} r: '${replayStr}', step: ${replayStr.length}, subject: '${
+              levelObj.subject ?? ''
+            }'`;
 
             const levelObjStr = `{ ${levelParams} },`;
             // if (common.levelId === null) {
@@ -2384,9 +2360,7 @@
   }
 
   function updateButtonSpeedDisplay() {
-    (settingsAuto.interval === settingsAuto.INTERVAL_MAX ? common.hideElem : common.showElem)(
-      elems.auto.buttonSpeedDown
-    );
+    (settingsAuto.interval === settingsAuto.INTERVAL_MAX ? common.hideElem : common.showElem)(elems.auto.buttonSpeedDown);
     (settingsAuto.interval === 1 ? common.hideElem : common.showElem)(elems.auto.buttonSpeedUp);
   }
 

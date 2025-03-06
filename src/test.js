@@ -100,9 +100,7 @@
     }
 
     if (levelObj.r.length !== levelObj.step) {
-      app.console.error(
-        `Error: ${levelInfo()} Step check failed. step: ${levelObj.step} (r.length = ${levelObj.r.length})`
-      );
+      app.console.error(`Error: ${levelInfo()} Step check failed. step: ${levelObj.step} (r.length = ${levelObj.r.length})`);
       return false;
     }
 
