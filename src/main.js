@@ -2487,12 +2487,19 @@
 
   function intervalFuncAuto() {
     const r = common.level.getLevelObj()?.r;
-    if (!editMode && settings.autoMode && r !== undefined) {
-      const stepIndex = undoInfo.getIndex();
-      if (!settingsAuto.paused) {
-        if (stepIndex < r.length) {
-          input.inputDir = Number(r[stepIndex]);
-          inputFunc();
+    if (!editMode && settings.autoMode) {
+      if (r !== undefined) {
+        const stepIndex = undoInfo.getIndex();
+        if (!settingsAuto.paused) {
+          if (stepIndex < r.length) {
+            input.inputDir = Number(r[stepIndex]);
+            inputFunc();
+          }
+        }
+      } else {
+        if (!settingsAuto.paused) {
+          settingsAuto.paused = true;
+          updateAutoStartPauseButtons();
         }
       }
     }
