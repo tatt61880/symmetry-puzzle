@@ -20,7 +20,7 @@
     display: flex;
     align-items: center;
 
-    &:first-child {
+    #dialog-shapes-close-svg {
       margin: 10px;
     }
   }
