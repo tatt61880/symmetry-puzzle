@@ -1333,6 +1333,9 @@
           rx: 1 / 8,
           ry: 3 / 8,
           fill,
+          stroke: 'white',
+          strokeWidth: blockSize / 1500,
+          strokeOpacity: 0.75,
         });
         ellipse.classList.add('symmetry-axis');
         return ellipse;
@@ -1342,7 +1345,6 @@
         const x = center.x;
         const y = center.y;
         const size = 3 / 8;
-        const fill2 = (x + y) % 1 === 0 ? fill : app.colors.symmetryAxisInvalid;
         const polygon = app.svg.createPolygon(blockSize, {
           points: [
             [x, y - size],
@@ -1350,7 +1352,10 @@
             [x, y + size],
             [x - size, y],
           ],
-          fill: fill2,
+          fill: (x + y) % 1 === 0 ? fill : app.colors.symmetryAxisInvalid,
+          stroke: 'white',
+          strokeWidth: blockSize / 1500,
+          strokeOpacity: 0.75,
         });
         polygon.classList.add('symmetry-axis');
         return polygon;

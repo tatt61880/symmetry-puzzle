@@ -50,7 +50,7 @@
     return circle;
   };
 
-  svg.createEllipse = (blockSize, { cx, cy, rx, ry, fill, stroke, strokeWidth }) => {
+  svg.createEllipse = (blockSize, { cx, cy, rx, ry, fill, stroke, strokeWidth, strokeOpacity }) => {
     const ellipse = document.createElementNS(SVG_NS, 'ellipse');
     ellipse.setAttribute('cx', blockSize * cx);
     ellipse.setAttribute('cy', blockSize * cy);
@@ -59,6 +59,7 @@
     if (fill) ellipse.setAttribute('fill', fill);
     if (stroke) ellipse.setAttribute('stroke', stroke);
     if (strokeWidth) ellipse.setAttribute('stroke-width', blockSize * strokeWidth);
+    if (strokeOpacity !== undefined) ellipse.setAttribute('stroke-opacity', strokeOpacity);
     return ellipse;
   };
 
@@ -74,7 +75,7 @@
     return rect;
   };
 
-  svg.createPolygon = (blockSize, { points, fill, stroke, strokeWidth }) => {
+  svg.createPolygon = (blockSize, { points, fill, stroke, strokeWidth, strokeOpacity }) => {
     const polygon = document.createElementNS(SVG_NS, 'polygon');
     let pointsStr = '';
     for (const point of points) {
@@ -85,6 +86,7 @@
     if (fill) polygon.setAttribute('fill', fill);
     if (stroke) polygon.setAttribute('stroke', stroke);
     if (strokeWidth) polygon.setAttribute('stroke-width', blockSize * strokeWidth);
+    if (strokeOpacity !== undefined) polygon.setAttribute('stroke-opacity', strokeOpacity);
     return polygon;
   };
 
