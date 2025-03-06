@@ -9,7 +9,7 @@
   const common = app.common;
   common.loadLevelById = loadLevelById;
 
-  // この値を変更するときは、iOSの省電力モード時のsetIntervalの動作を確認した上で変更してください。
+  // この値を変更するときは、iOSの省電力モード時の setInterval の動作を確認した上で変更してください。
   // 詳細: https://github.com/tatt61880/symmetry-puzzle/issues/38
   const INPUT_INTERVAL_MSEC = 28;
 
