@@ -67,7 +67,7 @@
   colors.frameFill = '#ffeedd';
   colors.frameStroke = '#ffbb77';
   colors.frameFillNumMode = '#ddeeff';
-  colors.frameStrokeNumMode = '#a8d4ff';
+  colors.frameStrokeNumMode = '#aad0ff';
   colors.frameEditSize = '#ffdd33';
 
   colors.congratulations = '#ffdd33';
