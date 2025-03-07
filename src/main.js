@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.08';
+  const VERSION_TEXT = 'v' + '2025.03.08b';
 
   const app = window.app;
   Object.freeze(app);
@@ -577,6 +577,7 @@
     elems.main.svg.setAttribute('height', blockSize * common.level.getHeight() + 2 * frameSizeH);
 
     document.documentElement.style.setProperty('--animation-jump', `translate(0, ${-0.5 * blockSize}px)`);
+    document.documentElement.style.setProperty('--animation-jump-small', `translate(0, ${-0.125 * blockSize}px)`);
   }
 
   function updateUndoRedoButton() {

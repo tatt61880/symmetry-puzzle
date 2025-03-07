@@ -2714,6 +2714,7 @@
       let child = elem;
 
       if (symmetryType !== null) {
+        // クリア時のアニメーション
         if (app.states.isUser(state)) {
           if (isSoloUser) {
             const g = app.svg.createG();
@@ -2731,6 +2732,27 @@
           const animationClass = animationClasses[symmetryType];
           elem.classList.add(animationClass);
           gElems = gElemsAnimation2;
+        }
+      } else {
+        if (app.states.isUser(state)) {
+          // 移動しなかったときのアニメーション
+          const dx = this.#moveDx;
+          const dy = this.#moveDy;
+          const { srcX, srcY } = this.#getSrc(sX, sY, dx, dy);
+          if (!this.#moveFlags[srcY][srcX]) {
+            if (isSoloUser) {
+              const g = app.svg.createG();
+              g.appendChild(elem);
+              child = g;
+              const animationClass = animationClasses[symmetryType];
+              elem.classList.add(animationClass);
+              elem.style.transformOrigin = `${blockSize * (x + 0.5)}px ${blockSize * (y + 0.5)}px`;
+              g.classList.add('animation-jump-small');
+            } else {
+              elem.classList.add('animation-jump-small');
+            }
+            gElems = gElemsAnimation1;
+          }
         }
       }
 

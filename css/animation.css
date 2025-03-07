@@ -16,6 +16,24 @@
 }
 
 /* Blocks jumping animation */
+.animation-jump-small {
+  animation: animation-jump-small cubic-bezier(0, 0.5, 1, 0.5) forwards;
+  animation-duration: var(--animation-duration);
+}
+
+@keyframes animation-jump-small {
+  0%,
+  20%,
+  80%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: var(--animation-jump-small);
+  }
+}
+
 .animation-jump {
   animation: animation-jump cubic-bezier(0, 0.5, 1, 0.5) forwards;
   animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-1));
