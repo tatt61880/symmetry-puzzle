@@ -19,14 +19,19 @@
   function show() {
     const table = createRecordsTable();
     elems.records.tableDiv.innerHTML = '';
-    const spanTitle = document.createElement('span');
-    const spanVersion = document.createElement('span');
-    spanTitle.textContent = `${elems.appTitle.textContent}`;
-    spanVersion.textContent = `${elems.version.textContent}`;
-    spanTitle.classList.add('record-dialog-title');
-    spanVersion.classList.add('record-dialog-version');
-    elems.records.tableDiv.appendChild(spanTitle);
-    elems.records.tableDiv.appendChild(spanVersion);
+    {
+      const divFlex = document.createElement('div');
+      const spanTitle = document.createElement('span');
+      const spanVersion = document.createElement('span');
+      spanTitle.textContent = `${elems.appTitle.textContent}`;
+      spanVersion.textContent = `${elems.version.textContent}`;
+      spanTitle.classList.add('record-dialog-title');
+      spanVersion.classList.add('record-dialog-version');
+      divFlex.classList.add('flex');
+      elems.records.tableDiv.appendChild(divFlex);
+      divFlex.appendChild(spanTitle);
+      divFlex.appendChild(spanVersion);
+    }
     elems.records.tableDiv.appendChild(table);
     elems.records.dialog.showModal();
   }
