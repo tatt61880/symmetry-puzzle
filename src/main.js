@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.07';
+  const VERSION_TEXT = 'v' + '2025.03.07b';
 
   const app = window.app;
   Object.freeze(app);
@@ -1700,7 +1700,7 @@
       blockSize,
       symmetryAnimationFlag,
       showCharsFlag,
-      edgeColor: app.colors.frame,
+      edgeColor: app.common.isNumMode ? app.colors.frameFillNumMode : app.colors.frameFill,
     });
     levelSvgG.classList.add('group-level-main');
     levelSvgG.setAttribute('transform', `translate(${frameSizeW},${frameSizeH})`);
@@ -1749,7 +1749,7 @@
     const wallStrShift = app.colors[app.states.wall].fill === app.colors[app.states.wall].stroke ? 0 : 0.05;
 
     {
-      const frameColor = app.colors.frame;
+      const frameColor = app.common.isNumMode ? app.colors.frameFillNumMode : app.colors.frameFill;
       const rectU = app.svg.createRect(1, {
         x: 0,
         y: 0,
@@ -1783,7 +1783,7 @@
       g.appendChild(rectD);
       g.appendChild(rectL);
 
-      const borderColor = app.colors.frameBorder;
+      const borderColor = app.common.isNumMode ? app.colors.frameStrokeNumMode : app.colors.frameStroke;
       const rectUb = app.svg.createRect(1, {
         x: 0,
         y: 0,

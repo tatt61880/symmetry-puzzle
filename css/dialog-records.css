@@ -40,7 +40,7 @@
       margin: 5px auto;
       font-size: 18px;
       border-collapse: collapse;
-      border: 5px solid #a8d4ff;
+      border: 5px solid #ccccff;
     }
 
     & th,
@@ -49,7 +49,7 @@
       padding: 5px 15px;
       font-size: 1.3rem;
       font-weight: bold;
-      border: 3px solid #a8d4ff;
+      border: 3px solid #ccccff;
 
       & * {
         vertical-align: middle;
@@ -61,8 +61,7 @@
     }
 
     & th {
-      color: #001a33;
-      background-color: #ddeeff;
+      background-color: #eeeeff;
     }
 
     .border-top-bold {

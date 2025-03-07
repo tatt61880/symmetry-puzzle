@@ -64,8 +64,10 @@
   colors.levelSymmetryAxis = '#3333f8';
   colors.levelSymmetryAxisCenter = '#5555f8';
 
-  colors.frame = '#ffeedd';
-  colors.frameBorder = '#ffbb77';
+  colors.frameFill = '#ffeedd';
+  colors.frameStroke = '#ffbb77';
+  colors.frameFillNumMode = '#ddeeff';
+  colors.frameStrokeNumMode = '#a8d4ff';
   colors.frameEditSize = '#ffdd33';
 
   colors.congratulations = '#ffdd33';

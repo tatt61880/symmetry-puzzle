@@ -36,6 +36,11 @@
     background-color: #ffeedd;
     border: 6px solid #ffbb77;
 
+    &.title-button-num {
+      background-color: #ddeeff;
+      border-color: #a8d4ff;
+    }
+
     &:hover {
       opacity: 0.8;
     }
@@ -55,11 +60,29 @@
       border-radius: 30%;
     }
 
-    &#button-toggle-to-normal,
-    &#button-toggle-to-num,
-    &#button-records {
+    &#button-toggle-to-normal {
+      background-color: #ffeedd;
+      border-color: #ffbb77;
+      border-radius: 20%;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    &#button-toggle-to-num {
       background-color: #ddeeff;
       border-color: #a8d4ff;
+      border-radius: 20%;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    &#button-records {
+      background-color: #eeeeff;
+      border-color: #ccccff;
       border-radius: 20%;
 
       &:hover {

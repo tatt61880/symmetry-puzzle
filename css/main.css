@@ -38,7 +38,7 @@ header {
   align-items: center;
   height: 42px;
   text-align: left;
-  background-color: #c0cbff;
+  background-color: #ccccff;
 
   .title {
     margin-left: 10px;
@@ -65,7 +65,7 @@ footer {
   font-size: 1rem;
   font-weight: bold;
   color: #7777aa;
-  background-color: #c0cbff;
+  background-color: #ccccff;
 }
 
 @media (width <= 501px) {
@@ -130,7 +130,7 @@ text {
 }
 
 #console-widget {
-  color: #eef0ff;
+  color: #eeeeff;
   background-color: #335577;
   border: 3px solid #113355;
 
