@@ -2018,10 +2018,10 @@
       // 今回の手数
       {
         const currentStep = undoInfo.getIndex();
-        let color = isCompleted ? common.getStepColor(currentStep, bestStep) : app.colors.stepNormal;
-        if (highestScorePrev) {
-          if (currentStep > highestScorePrev) {
-            color = app.colors.stepNormal;
+        let color = common.isNumMode ? app.colors.stepNum : app.colors.stepNormal;
+        if (isCompleted) {
+          if (!highestScorePrev || currentStep <= highestScorePrev) {
+            color = common.getStepColor(currentStep, bestStep);
           }
         }
         const text = app.svg.createText(frameSizeH, {
