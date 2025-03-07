@@ -258,8 +258,9 @@
   .warn {
     padding: 5px;
     margin: 5px;
-    color: #603000;
-    background: #ffe1bd;
+    font-weight: bold;
+    color: #402000;
+    background: #ffddbb;
   }
 
   .flex {
