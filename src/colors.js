@@ -80,13 +80,15 @@
   colors.congratulations = '#ffdd33';
   colors.newRecords = '#ffdd33';
 
+  // 手数
   colors.stepWin = '#ff5555';
   colors.stepDraw = '#ff7700';
   colors.stepLose = '#777777';
-  colors.stepUnknown = '#a0a0a0';
+  colors.stepUnknown = '#999999';
   colors.stepNormal = '#884400';
   colors.stepNum = '#303080'; // 連番モード用
 
+  // 形状数
   colors.shapeNumPerfect = '#ff7700';
   colors.shapeNumNormal = '#884400';
 
@@ -96,7 +98,7 @@
   };
 
   colors.levelsDialogCurrentLevel = '#cceeff';
-  colors.levelsDialogSelect = 'red';
+  colors.levelsDialogSelect = '#ee0000';
 
   Object.freeze(colors);
 
