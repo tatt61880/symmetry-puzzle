@@ -215,7 +215,7 @@
           width: SELECT_WIDTH,
           height: SELECT_HEIGHT,
           fill,
-          stroke: '#dddddd',
+          stroke: '#cccccc',
         });
         rect.setAttribute('rx', '5');
         rect.setAttribute('ry', '5');
@@ -281,7 +281,7 @@
 
       {
         const x = (count % SELECT_COLS) * SELECT_WIDTH + 1;
-        const y = Math.floor((count % SELECT_NUM_PER_PAGE) / SELECT_COLS) * SELECT_HEIGHT;
+        const y = Math.floor((count % SELECT_NUM_PER_PAGE) / SELECT_COLS) * SELECT_HEIGHT + 1;
         g.setAttribute('transform', `translate(${x},${y})`);
       }
     }

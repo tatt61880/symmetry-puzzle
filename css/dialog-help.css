@@ -42,7 +42,7 @@
       color: #505050;
       cursor: pointer;
       user-select: none;
-      background-color: #dddddd;
+      background-color: #eeeeee;
       border: 4px solid #cccccc;
       outline: none;
 
@@ -80,7 +80,7 @@
     text-align: center;
     cursor: pointer;
     user-select: none;
-    background-color: #dddddd;
+    background-color: #eeeeee;
     border: 4px solid #cccccc;
 
     &:hover {

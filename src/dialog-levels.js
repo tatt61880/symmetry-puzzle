@@ -249,7 +249,7 @@
           width: LEVEL_SELECT_WIDTH,
           height: LEVEL_SELECT_HEIGHT,
           fill: backgroundColor,
-          stroke: '#dddddd',
+          stroke: '#cccccc',
         });
         rect.setAttribute('rx', '5');
         rect.setAttribute('ry', '5');
@@ -270,7 +270,7 @@
 
       {
         const x = ((num - 1) % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH + 1;
-        const y = Math.floor(((num - 1) % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT;
+        const y = Math.floor(((num - 1) % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT + 1;
         g.setAttribute('transform', `translate(${x},${y})`);
       }
       g.dataset.id = num;
@@ -348,7 +348,7 @@
           width: LEVEL_SELECT_WIDTH,
           height: LEVEL_SELECT_HEIGHT,
           fill: backgroundColor,
-          stroke: '#dddddd',
+          stroke: '#cccccc',
         });
         rect.setAttribute('rx', '5');
         rect.setAttribute('ry', '5');
@@ -428,7 +428,7 @@
 
       {
         const x = (count % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH + 1;
-        const y = Math.floor((count % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT;
+        const y = Math.floor((count % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT + 1;
         g.setAttribute('transform', `translate(${x},${y})`);
       }
       g.dataset.id = id;
