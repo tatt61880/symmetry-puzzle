@@ -575,9 +575,6 @@
 
     elems.main.svg.setAttribute('width', blockSize * common.level.getWidth() + 2 * frameSizeW);
     elems.main.svg.setAttribute('height', blockSize * common.level.getHeight() + 2 * frameSizeH);
-
-    document.documentElement.style.setProperty('--animation-jump', `translate(0, ${-0.5 * blockSize}px)`);
-    document.documentElement.style.setProperty('--animation-jump-small', `translate(0, ${-0.125 * blockSize}px)`);
   }
 
   function updateUndoRedoButton() {

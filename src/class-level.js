@@ -985,6 +985,8 @@
       edgeColor = null,
     }) {
       const g = app.svg.createG();
+      g.style.setProperty('--animation-jump-small', `translate(0, ${-0.125 * blockSize}px)`);
+      g.style.setProperty('--animation-jump', `translate(0, ${-0.5 * blockSize}px)`);
 
       const symmetryType = symmetryAnimationFlag ? this.getSymmetryType(app.states.isTarget) : null;
 
@@ -1111,7 +1113,7 @@
         const center = this.getCenter(app.states.isTarget);
         const gg = app.svg.createG('group-symmetry-axis');
         g.appendChild(gg);
-        document.documentElement.style.setProperty('--animation-jump-count', jumpCounts[symmetryType]);
+        g.style.setProperty('--animation-jump-count', jumpCounts[symmetryType]);
         switch (symmetryType) {
           case Level.SYMMETRY_TYPE.LINE1: {
             // m (｜)
@@ -2775,10 +2777,7 @@
         if (this.#xMin - 1 <= srcX && srcX <= this.#xMax && this.#yMin - 1 <= srcY && srcY <= this.#yMax && this.#moveFlags[srcY][srcX]) {
           gElems = gElemsAnimation2;
           if (dx + dy === 0) {
-            document.documentElement.style.setProperty(
-              '--animation-origin',
-              `${(blockSize * this.#axis.cx) / 2}px ${(blockSize * this.#axis.cy) / 2}px`
-            );
+            gElems.style.setProperty('--animation-origin', `${(blockSize * this.#axis.cx) / 2}px ${(blockSize * this.#axis.cy) / 2}px`);
 
             const animationClass = animationMovingClasses[this.#axis.type];
             const additionalInfo = this.#axis.type === Level.SYMMETRY_TYPE.POINT2 && this.#mirrorFlag ? '-reversed' : '';
