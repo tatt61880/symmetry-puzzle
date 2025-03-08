@@ -16,7 +16,7 @@
   colors[app.states.shape] = {
     fill: '#ffbb77',
     stroke: '#ff7700',
-    text: '#884400',
+    text: '#663300',
     error: '#f80000',
   };
 
@@ -39,7 +39,7 @@
     colors[i] = {
       fill: '#ffbb77',
       stroke: '#ff7700',
-      text: '#884400',
+      text: '#663300',
       error: '#f80000',
     };
   }
@@ -72,8 +72,8 @@
 
   // フレーム
   colors.frameFill = '#ffeedd';
-  colors.frameStroke = '#ffbb77';
   colors.frameFillNumMode = '#ddeeff';
+  colors.frameStroke = '#ffbb77';
   colors.frameStrokeNumMode = '#99ccff';
   colors.frameEditSize = '#ffdd33';
 
@@ -85,19 +85,19 @@
   colors.stepDraw = '#ff7700';
   colors.stepLose = '#777777';
   colors.stepUnknown = '#999999';
-  colors.stepNormal = '#884400';
+  colors.stepNormal = '#663300';
   colors.stepNum = '#303080'; // 連番モード用
 
   // 形状数
-  colors.shapeNumPerfect = '#ff7700';
-  colors.shapeNumNormal = '#884400';
+  colors.shapeNumPerfect = colors.stepDraw;
+  colors.shapeNumNormal = colors.stepNormal;
 
   colors.editButton = {
     fill: '#e5a0e5',
     stroke: '#aa33aa',
   };
 
-  colors.levelsDialogCurrentLevel = '#cceeff';
+  colors.levelsDialogCurrentLevel = '#ffeedd';
   colors.levelsDialogSelect = '#ee0000';
 
   Object.freeze(colors);
