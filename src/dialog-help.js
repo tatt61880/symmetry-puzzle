@@ -27,8 +27,8 @@
 
   function show() {
     {
-      const setBlock = (elem, char, w, checkMode) => {
-        elem.textContent = '';
+      const setBlock = (elemSvg, char, w, checkMode) => {
+        elemSvg.textContent = '';
 
         const level = new app.Level({
           levelObj: { w, h: 1, s: char.repeat(w) },
@@ -44,9 +44,11 @@
           width: w,
           height: 1,
         });
-        elem.setAttribute('width', blockSize * w);
-        elem.setAttribute('height', blockSize);
-        elem.appendChild(g);
+        const marginTop = 2;
+        g.setAttribute('transform', `translate(0, ${marginTop})`);
+        elemSvg.setAttribute('width', blockSize * w);
+        elemSvg.setAttribute('height', blockSize + marginTop * 2);
+        elemSvg.appendChild(g);
       };
 
       for (const elem of document.getElementsByClassName('user-block-line')) {

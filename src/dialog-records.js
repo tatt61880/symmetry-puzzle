@@ -61,7 +61,7 @@
     {
       const th = document.createElement('th');
       const img = document.createElement('img');
-      img.src = './images/logo-line.png?2025.03.01';
+      img.src = './images/logo-line.png?2025.03.07';
       img.setAttribute('width', imgSize);
       img.setAttribute('height', imgSize);
       img.classList.add('animation-icon-line');
@@ -72,7 +72,7 @@
     {
       const th = document.createElement('th');
       const img = document.createElement('img');
-      img.src = './images/logo-point.png?2025.03.01';
+      img.src = './images/logo-point.png?2025.03.07';
       img.setAttribute('width', imgSize);
       img.setAttribute('height', imgSize);
       img.classList.add('animation-icon-point');
@@ -83,7 +83,7 @@
     {
       const th = document.createElement('th');
       const img = document.createElement('img');
-      img.src = './images/logo-special.png?2025.03.01';
+      img.src = './images/logo-special.png?2025.03.07';
       img.setAttribute('width', imgSize);
       img.setAttribute('height', imgSize);
       img.classList.add('animation-icon-special');
@@ -299,7 +299,7 @@
       {
         const th = document.createElement('th');
         const img = document.createElement('img');
-        img.src = './images/logo-123.png?2025.03.01';
+        img.src = './images/logo-123.png?2025.03.07';
         const imgSize = '35';
         img.setAttribute('width', imgSize);
         img.setAttribute('height', imgSize);
