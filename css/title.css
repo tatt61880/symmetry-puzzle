@@ -38,7 +38,7 @@
 
     &.title-button-num {
       background-color: #ddeeff;
-      border-color: #aad0ff;
+      border-color: #99ccff;
     }
 
     &:hover {
@@ -72,7 +72,7 @@
 
     &#button-toggle-to-num {
       background-color: #ddeeff;
-      border-color: #aad0ff;
+      border-color: #99ccff;
       border-radius: 20%;
 
       &:hover {
