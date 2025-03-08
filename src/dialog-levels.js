@@ -243,7 +243,7 @@
 
       let backgroundColor;
       if (num === app.common.levelId) {
-        backgroundColor = app.colors.levelsDialogCurrentLevel;
+        backgroundColor = app.colors.levelsDialogCurrentLevelNumMode;
       } else {
         backgroundColor = '#ffffff';
       }

@@ -97,7 +97,8 @@
     stroke: '#aa33aa',
   };
 
-  colors.levelsDialogCurrentLevel = '#ffeedd';
+  colors.levelsDialogCurrentLevel = colors.frameFill;
+  colors.levelsDialogCurrentLevelNumMode = colors.frameFillNumMode;
   colors.levelsDialogSelect = '#ee0000';
 
   Object.freeze(colors);
