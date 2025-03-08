@@ -88,7 +88,7 @@
   colors.stepNum = '#303080'; // 連番モード用
 
   colors.shapeNumPerfect = '#ff7700';
-  colors.shapeNumNormal = '#777777';
+  colors.shapeNumNormal = '#884400';
 
   colors.editButton = {
     fill: '#e5a0e5',
