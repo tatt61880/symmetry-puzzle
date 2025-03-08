@@ -90,30 +90,25 @@
     return polygon;
   };
 
-  svg.createCrown = (blockSize, { x, y, fill, stroke }) => {
+  svg.createCrown = (blockSize, { x, y, fill, stroke, strokeWidth }) => {
     const g = svg.createG();
-    const polygon = svg.createPolygon(blockSize, {
-      points: [
-        [x + 0.1, y + 0.3],
-        [x + 0.33, y + 0.5],
-        [x + 0.5, y + 0.15],
-        [x + 0.67, y + 0.5],
-        [x + 0.9, y + 0.3],
-        [x + 0.8, y + 0.7],
-        [x + 0.2, y + 0.7],
-      ],
-      fill,
-      stroke,
-    });
-    const rect = svg.createRect(blockSize, {
-      x: x + 0.2,
-      y: y + 0.75,
-      width: 0.6,
-      height: 0.15,
-      fill,
-      stroke,
-    });
-    g.appendChild(polygon);
+
+    g.appendChild(
+      svg.createPolygon(blockSize, {
+        points: [
+          [x + 0.1, y + 0.3],
+          [x + 0.33, y + 0.5],
+          [x + 0.5, y + 0.15],
+          [x + 0.67, y + 0.5],
+          [x + 0.9, y + 0.3],
+          [x + 0.8, y + 0.7],
+          [x + 0.2, y + 0.7],
+        ],
+        fill,
+        stroke,
+        strokeWidth,
+      })
+    );
     g.appendChild(
       svg.createCircle(blockSize, {
         cx: x + 0.1,
@@ -121,6 +116,7 @@
         r: 0.07,
         fill,
         stroke,
+        strokeWidth,
       })
     );
     g.appendChild(
@@ -130,6 +126,7 @@
         r: 0.07,
         fill,
         stroke,
+        strokeWidth,
       })
     );
     g.appendChild(
@@ -139,9 +136,21 @@
         r: 0.07,
         fill,
         stroke,
+        strokeWidth,
       })
     );
-    g.appendChild(rect);
+    g.appendChild(
+      svg.createRect(blockSize, {
+        x: x + 0.2,
+        y: y + 0.75,
+        width: 0.6,
+        height: 0.15,
+        fill,
+        stroke,
+        strokeWidth,
+      })
+    );
+
     return g;
   };
 

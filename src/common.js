@@ -103,6 +103,7 @@
         y,
         fill: '#ffffff00', // クリックできるようにします。透明です。
         stroke: app.colors.stepUnknown,
+        strokeWidth: size / 800,
       });
       g.appendChild(crown);
       g.setAttribute('stroke-dasharray', `${size * 0.02} ${size * 0.05}`);
