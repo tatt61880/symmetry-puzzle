@@ -77,16 +77,6 @@
     }
   }
 
-  &::backdrop {
-    cursor: pointer;
-    background-color: rgb(0 0 0 / 50%);
-  }
-
-  &,
-  &::backdrop {
-    animation: fade-in-dialog 0.1s ease-out 1 forwards;
-  }
-
   .record-dialog-title {
     font-size: 1.3rem;
     font-weight: bold;
@@ -98,6 +88,16 @@
     font-size: 0.9rem;
     font-weight: bold;
     color: #7777cc;
+  }
+
+  &::backdrop {
+    cursor: pointer;
+    background-color: rgb(0 0 0 / 50%);
+  }
+
+  &,
+  &::backdrop {
+    animation: fade-in-dialog 0.1s ease-out 1 forwards;
   }
 }
 
