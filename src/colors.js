@@ -12,6 +12,7 @@
     app.states = require('./states.js');
   }
 
+  // 形状
   colors[app.states.shape] = {
     fill: '#ffbb77',
     stroke: '#ff7700',
@@ -19,18 +20,21 @@
     error: '#f80000',
   };
 
-  colors[app.states.none] = {
-    fill: '#ffffff',
-    stroke: '#aaaaaa',
-    text: '#888888',
-  };
-
+  // 壁
   colors[app.states.wall] = {
     fill: '#222244',
     stroke: '#222244',
     text: '#bbbbbb',
   };
 
+  // None
+  colors[app.states.none] = {
+    fill: '#ffffff',
+    stroke: '#aaaaaa',
+    text: '#888888',
+  };
+
+  // ターゲットブロック
   for (let i = app.states.targetMin; i <= app.states.targetMax; ++i) {
     colors[i] = {
       fill: '#ffbb77',
@@ -40,6 +44,7 @@
     };
   }
 
+  // 灰色ブロック
   for (let i = app.states.otherMin; i <= app.states.otherMax; ++i) {
     colors[i] = {
       fill: '#e5e5e5',
@@ -49,6 +54,7 @@
     };
   }
 
+  // 操作キャラ
   for (let i = app.states.userMin; i <= app.states.userMax; ++i) {
     colors[i] = {
       fill: '#aaccff',
@@ -64,6 +70,7 @@
   colors.levelSymmetryAxis = '#3333f8';
   colors.levelSymmetryAxisCenter = '#5555f8';
 
+  // フレーム
   colors.frameFill = '#ffeedd';
   colors.frameStroke = '#ffbb77';
   colors.frameFillNumMode = '#ddeeff';
