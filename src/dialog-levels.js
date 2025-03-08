@@ -83,14 +83,16 @@
 
   function selectRight() {
     const selectCount = Number(elems.levels.dialog.dataset.selectCount) + 1;
-    if (selectCount <= Number(elems.levels.dialog.dataset.maxCount)) {
+    const maxCount = Number(elems.levels.dialog.dataset.maxCount);
+    if (maxCount === -1 || selectCount <= maxCount) {
       levelSelectUpdate(selectCount);
     }
   }
 
   function selectDown() {
     const selectCount = Number(elems.levels.dialog.dataset.selectCount) + LEVEL_SELECT_COLS;
-    if (selectCount <= Number(elems.levels.dialog.dataset.maxCount)) {
+    const maxCount = Number(elems.levels.dialog.dataset.maxCount);
+    if (maxCount === -1 || selectCount <= maxCount) {
       levelSelectUpdate(selectCount);
     }
   }
@@ -104,8 +106,13 @@
 
   function selectEnter() {
     const selectCount = Number(elems.levels.dialog.dataset.selectCount);
-    const id = JSON.parse(elems.levels.dialog.dataset.selectIds)[selectCount];
-    app.common.loadLevelById(id);
+    const maxCount = Number(elems.levels.dialog.dataset.maxCount);
+    if (maxCount === -1) {
+      app.common.loadLevelById(selectCount + 1);
+    } else {
+      const id = JSON.parse(elems.levels.dialog.dataset.selectIds)[selectCount];
+      app.common.loadLevelById(id);
+    }
     elems.levels.dialog.close();
   }
 
@@ -135,7 +142,7 @@
       if (page === null) {
         const num = app.common.levelId;
         page = Math.floor((num - 1) / LEVEL_SELECT_NUM_PER_PAGE);
-        elems.levels.dialog.dataset.selectCount = num;
+        elems.levels.dialog.dataset.selectCount = num - 1;
       }
     } else {
       const levels = app.common.levels.getAllLevels();
@@ -179,14 +186,13 @@
     }
 
     let count = 0;
-    const selectIds = {};
 
     if (app.common.isNumMode) {
       for (let num = page * LEVEL_SELECT_NUM_PER_PAGE + 1; num <= (page + 1) * LEVEL_SELECT_NUM_PER_PAGE; num++) {
         appendLevelForNumMode(num);
-        selectIds[count] = num;
       }
     } else {
+      const selectIds = {};
       const levels = app.common.levels.getAllLevels();
       for (const { levelId, levelObj } of levels) {
         if (levelId === 0) continue;
@@ -197,13 +203,14 @@
         }
         count++;
       }
+      elems.levels.dialog.dataset.selectIds = JSON.stringify(selectIds);
     }
-    elems.levels.dialog.dataset.selectIds = JSON.stringify(selectIds);
 
     // 選択枠
     if (!app.common.isTouchDevice()) {
-      if (Number(elems.levels.dialog.dataset.selectCount) > Number(elems.levels.dialog.dataset.maxCount)) {
-        elems.levels.dialog.dataset.selectCount = Number(elems.levels.dialog.dataset.maxCount);
+      const maxCount = Number(elems.levels.dialog.dataset.maxCount);
+      if (maxCount !== -1 && Number(elems.levels.dialog.dataset.selectCount) > maxCount) {
+        elems.levels.dialog.dataset.selectCount = maxCount;
       }
 
       const selectCount = Number(elems.levels.dialog.dataset.selectCount);
