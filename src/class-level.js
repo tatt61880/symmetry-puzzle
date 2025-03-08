@@ -2576,7 +2576,7 @@
 
           // 邪魔ブロック
           if (app.states.isOther(state)) {
-            const size = blockBorderWidth * 1.75;
+            const size = blockBorderWidth * 2;
             if (!flags[dirs.u]) {
               // 左上
               if (!flags[dirs.l]) {
