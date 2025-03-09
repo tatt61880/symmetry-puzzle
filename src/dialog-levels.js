@@ -427,6 +427,7 @@
         const blockSize = Math.min((LEVEL_SELECT_WIDTH - 4) / level.getWidth(), (LEVEL_SELECT_HEIGHT - 42) / level.getHeight());
         const levelSvgG = level.createSvgG({
           blockSize,
+          smallJumpFlag: true,
           edgeColor: backgroundColor,
         });
         levelSvgG.setAttribute('transform', `translate(${(LEVEL_SELECT_WIDTH - blockSize * level.getWidth()) / 2},40)`);
