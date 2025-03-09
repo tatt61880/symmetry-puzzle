@@ -986,7 +986,7 @@
       edgeColor = null,
     }) {
       const g = app.svg.createG();
-      g.style.setProperty('--animation-jump-small', `translate(0, ${-0.125 * blockSize}px)`);
+      g.style.setProperty('--animation-jump-small', `translate(0, ${-0.25 * blockSize}px)`);
       g.style.setProperty('--animation-jump', `translate(0, ${-0.5 * blockSize}px)`);
 
       const symmetryType = symmetryAnimationFlag ? this.getSymmetryType(app.states.isTarget) : null;
