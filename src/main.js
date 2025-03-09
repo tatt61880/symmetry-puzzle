@@ -1712,7 +1712,9 @@
   }
 
   function drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag) {
-    const smallJumpFlag = !undoInfo.isUndoable();
+    // 盤面の初回表示時に小さくジャンプするようにします。
+    const smallJumpFlag = !undoInfo.isUndoable() && input.inputDir === app.Input.DIRS.NEUTRAL;
+
     const levelSvgG = common.level.createSvgG({
       blockSize,
       symmetryAnimationFlag,
