@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.09b';
+  const VERSION_TEXT = 'v' + '2025.03.09c';
 
   const app = window.app;
   Object.freeze(app);
@@ -1020,6 +1020,7 @@
   function onloadApp() {
     elems.version.textContent = VERSION_TEXT;
     elems.help.version.textContent = VERSION_TEXT;
+    elems.records.version.textContent = VERSION_TEXT;
 
     initElems();
     initBlock();

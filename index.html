@@ -15,51 +15,51 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2025.03.07">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2025.03.07">
 
-  <link rel="stylesheet" href="./css/main.css?2025.03.09b">
-  <link rel="stylesheet" href="./css/title.css?2025.03.09b">
-  <link rel="stylesheet" href="./css/game.css?2025.03.09b">
-  <link rel="stylesheet" href="./css/dialog-help.css?2025.03.09b">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2025.03.09b">
-  <link rel="stylesheet" href="./css/dialog-records.css?2025.03.09b">
-  <link rel="stylesheet" href="./css/dialog-shapes.css?2025.03.09b">
-  <link rel="stylesheet" href="./css/animation.css?2025.03.09b">
+  <link rel="stylesheet" href="./css/main.css?2025.03.09c">
+  <link rel="stylesheet" href="./css/title.css?2025.03.09c">
+  <link rel="stylesheet" href="./css/game.css?2025.03.09c">
+  <link rel="stylesheet" href="./css/dialog-help.css?2025.03.09c">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2025.03.09c">
+  <link rel="stylesheet" href="./css/dialog-records.css?2025.03.09c">
+  <link rel="stylesheet" href="./css/dialog-shapes.css?2025.03.09c">
+  <link rel="stylesheet" href="./css/animation.css?2025.03.09c">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-  <script src="./src/states.js?2025.03.09b"></script>
-  <script src="./src/colors.js?2025.03.09b"></script>
-  <script src="./src/svg.js?2025.03.09b"></script>
-  <script src="./src/common.js?2025.03.09b"></script>
+  <script src="./src/states.js?2025.03.09c"></script>
+  <script src="./src/colors.js?2025.03.09c"></script>
+  <script src="./src/svg.js?2025.03.09c"></script>
+  <script src="./src/common.js?2025.03.09c"></script>
 
-  <script src="./src/class-stack.js?2025.03.09b"></script>
-  <script src="./src/class-level.js?2025.03.09b"></script>
-  <script src="./src/class-levels.js?2025.03.09b"></script>
+  <script src="./src/class-stack.js?2025.03.09c"></script>
+  <script src="./src/class-level.js?2025.03.09c"></script>
+  <script src="./src/class-levels.js?2025.03.09c"></script>
 
-  <script src="./src/class-savedata.js?2025.03.09b"></script>
-  <script src="./src/class-undo-info.js?2025.03.09b"></script>
-  <script src="./src/class-elems.js?2025.03.09b"></script>
-  <script src="./src/class-input.js?2025.03.09b"></script>
+  <script src="./src/class-savedata.js?2025.03.09c"></script>
+  <script src="./src/class-undo-info.js?2025.03.09c"></script>
+  <script src="./src/class-elems.js?2025.03.09c"></script>
+  <script src="./src/class-input.js?2025.03.09c"></script>
 
-  <script src="./src/levels-line.js?2025.03.09b"></script>
-  <script src="./src/levels-line-ex.js?2025.03.09b"></script>
-  <script src="./src/levels-point.js?2025.03.09b"></script>
-  <script src="./src/levels-point-ex.js?2025.03.09b"></script>
-  <script src="./src/levels-special.js?2025.03.09b"></script>
-  <script src="./src/levels-special-ex.js?2025.03.09b"></script>
+  <script src="./src/levels-line.js?2025.03.09c"></script>
+  <script src="./src/levels-line-ex.js?2025.03.09c"></script>
+  <script src="./src/levels-point.js?2025.03.09c"></script>
+  <script src="./src/levels-point-ex.js?2025.03.09c"></script>
+  <script src="./src/levels-special.js?2025.03.09c"></script>
+  <script src="./src/levels-special-ex.js?2025.03.09c"></script>
 
-  <script src="./src/elems.js?2025.03.09b"></script>
+  <script src="./src/elems.js?2025.03.09c"></script>
 
-  <script src="./src/solve.js?2025.03.09b"></script>
+  <script src="./src/solve.js?2025.03.09c"></script>
 
-  <script src="./src/dialog-help.js?2025.03.09b"></script>
-  <script src="./src/dialog-levels.js?2025.03.09b"></script>
-  <script src="./src/dialog-records.js?2025.03.09b"></script>
-  <script src="./src/dialog-shapes.js?2025.03.09b"></script>
+  <script src="./src/dialog-help.js?2025.03.09c"></script>
+  <script src="./src/dialog-levels.js?2025.03.09c"></script>
+  <script src="./src/dialog-records.js?2025.03.09c"></script>
+  <script src="./src/dialog-shapes.js?2025.03.09c"></script>
 
-  <script src="./src/analyze-url.js?2025.03.09b"></script>
-  <script src="./src/main.js?2025.03.09b"></script>
+  <script src="./src/analyze-url.js?2025.03.09c"></script>
+  <script src="./src/main.js?2025.03.09c"></script>
 </head>
 
 <body>
@@ -424,7 +424,65 @@
           <div class="spacer"></div>
           <svg width="48" height="48"></svg>
         </div>
+
         <div id="records-table-div">
+          <div class="flex">
+            <span id="record-dialog-title" class="translatable-toggle" data-en="Symmetry Puzzle" data-ja="対称パズル"></span>
+            <span id="record-dialog-version"></span>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th class="border-right-bold border-bottom-bold">
+                </th>
+                <th class="border-bottom-bold">
+                  <svg class="animation-icon-line logo-image logo-line" data-size="16" width="48" height="32"></svg>
+                </th>
+                <th class="border-bottom-bold">
+                  <svg class="animation-icon-point logo-image logo-point" data-size="16" width="48" height="32"></svg>
+                </th>
+                <th class="border-bottom-bold">
+                  <svg class="animation-icon-special logo-image logo-special" data-size="16" width="32" height="32"></svg>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <!-- 最短手数クリア済み -->
+              <tr>
+                <th id="records-icon-shortest" class="border-right-bold"></th>
+                <td id="records-line-shortest"></td>
+                <td id="records-point-shortest"></td>
+                <td id="records-special-shortest"></td>
+              </tr>
+
+              <!-- クリア済み -->
+              <tr>
+                <th id="records-icon-cleared" class="border-right-bold"></th>
+                <td id="records-line-cleared"></td>
+                <td id="records-point-cleared"></td>
+                <td id="records-special-cleared"></td>
+              </tr>
+
+              <!-- 未クリア -->
+              <tr>
+                <th id="records-icon-uncleared" class="border-right-bold"></th>
+                <td id="records-line-uncleared"></td>
+                <td id="records-point-uncleared"></td>
+                <td id="records-special-uncleared"></td>
+              </tr>
+
+              <tr id="record-num-mode">
+                <th class="border-top-bold border-right-bold">
+                  <svg class="logo-image logo-123" data-size="7" width="35" height="35"></svg>
+                </th>
+                <td id="records-line-num" class="border-top-bold"></td>
+                <td id="records-point-num" class="border-top-bold"></td>
+                <td id="records-special-num" class="border-top-bold"></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </dialog>

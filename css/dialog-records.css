@@ -55,11 +55,11 @@
       & * {
         vertical-align: middle;
       }
+    }
 
-      &.record-num-mode {
-        color: #303080;
-        background-color: #ddeeff;
-      }
+    #record-num-mode td {
+      color: #303080;
+      background-color: #ddeeff;
     }
 
     & th {
@@ -79,13 +79,13 @@
     }
   }
 
-  .record-dialog-title {
+  #record-dialog-title {
     font-size: 1.3rem;
     font-weight: bold;
     color: #333388;
   }
 
-  .record-dialog-version {
+  #record-dialog-version {
     margin-left: 10px;
     font-size: 0.9rem;
     font-weight: bold;

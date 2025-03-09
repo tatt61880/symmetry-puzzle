@@ -17,88 +17,11 @@
   const elems = app.elems;
 
   function show() {
-    const table = createRecordsTable();
-    elems.records.tableDiv.innerHTML = '';
-    {
-      const divFlex = document.createElement('div');
-      const spanTitle = document.createElement('span');
-      const spanVersion = document.createElement('span');
-      spanTitle.textContent = `${elems.appTitle.textContent}`;
-      spanVersion.textContent = `${elems.version.textContent}`;
-      spanTitle.classList.add('record-dialog-title');
-      spanVersion.classList.add('record-dialog-version');
-      divFlex.classList.add('flex');
-      elems.records.tableDiv.appendChild(divFlex);
-      divFlex.appendChild(spanTitle);
-      divFlex.appendChild(spanVersion);
-    }
-    elems.records.tableDiv.appendChild(table);
+    updateTable();
     elems.records.dialog.showModal();
   }
 
-  function createRecordsTable() {
-    const table = document.createElement('table');
-    const thead = createRecordsThead();
-    const tbody = createRecordsTbody();
-    table.appendChild(thead);
-    table.appendChild(tbody);
-    return table;
-  }
-
-  function createRecordsThead() {
-    const thead = document.createElement('thead');
-
-    const tr = document.createElement('tr');
-    thead.appendChild(tr);
-
-    const imgSize = '50';
-    {
-      const th = document.createElement('th');
-      th.classList.add('border-right-bold');
-      th.classList.add('border-bottom-bold');
-      tr.appendChild(th);
-    }
-    {
-      const th = document.createElement('th');
-      const img = document.createElement('img');
-      img.src = './images/logo-line.png?2025.03.07';
-      img.setAttribute('width', imgSize);
-      img.setAttribute('height', imgSize);
-      img.classList.add('animation-icon-line');
-      th.classList.add('border-bottom-bold');
-      tr.appendChild(th);
-      th.appendChild(img);
-    }
-    {
-      const th = document.createElement('th');
-      const img = document.createElement('img');
-      img.src = './images/logo-point.png?2025.03.07';
-      img.setAttribute('width', imgSize);
-      img.setAttribute('height', imgSize);
-      img.classList.add('animation-icon-point');
-      th.classList.add('border-bottom-bold');
-      tr.appendChild(th);
-      th.appendChild(img);
-    }
-    {
-      const th = document.createElement('th');
-      const img = document.createElement('img');
-      img.src = './images/logo-special.png?2025.03.07';
-      img.setAttribute('width', imgSize);
-      img.setAttribute('height', imgSize);
-      img.classList.add('animation-icon-special');
-      th.classList.add('border-bottom-bold');
-      tr.appendChild(th);
-      th.appendChild(img);
-    }
-
-    return thead;
-  }
-
-  function createRecordsTbody() {
-    const tbody = document.createElement('tbody');
-    const crownSize = 35;
-
+  function updateTable() {
     let numLineNotSolved = 0;
     let numLineSolvedNormal = 0;
     let numLineSolvedBest = 0;
@@ -186,155 +109,113 @@
       td.setAttribute('style', style);
     };
 
-    {
-      const tr = document.createElement('tr');
-      tbody.appendChild(tr);
+    const crownSize = 35;
 
+    {
       // 最短記録達成
       {
-        const th = document.createElement('th');
+        const th = elems.records.icon.shortest;
+        th.innerText = '';
         const svg = app.svg.createSvg();
         svg.setAttribute('width', crownSize);
         svg.setAttribute('height', crownSize);
         const crown = app.common.createCrown(crownSize, 0, 0, 1, 1);
-        th.classList.add('border-right-bold');
-        tr.appendChild(th);
         th.appendChild(svg);
         svg.appendChild(crown);
       }
       {
-        const td = document.createElement('td');
+        const td = elems.records.line.shortest;
         td.innerText = numLineSolvedBest;
         setBackgroundBar(td, numLineSolvedBest / numLineTotal);
-        tr.appendChild(td);
       }
       {
-        const td = document.createElement('td');
+        const td = elems.records.point.shortest;
         td.innerText = numPointSolvedBest;
         setBackgroundBar(td, numPointSolvedBest / numPointTotal);
-        tr.appendChild(td);
       }
       {
-        const td = document.createElement('td');
+        const td = elems.records.special.shortest;
         td.innerText = numSpecialSolvedBest;
         setBackgroundBar(td, numSpecialSolvedBest / numSpecialTotal);
-        tr.appendChild(td);
       }
     }
 
     // クリア済み
     {
-      const tr = document.createElement('tr');
-      tbody.appendChild(tr);
       {
-        const th = document.createElement('th');
+        const th = elems.records.icon.cleared;
+        th.innerText = '';
         const svg = app.svg.createSvg();
         svg.setAttribute('width', crownSize);
         svg.setAttribute('height', crownSize);
         const crown = app.common.createCrown(crownSize, 0, 0, 1, 0);
-        th.classList.add('border-right-bold');
-        tr.appendChild(th);
         th.appendChild(svg);
         svg.appendChild(crown);
       }
       {
-        const td = document.createElement('td');
+        const td = elems.records.line.cleared;
         td.innerText = numLineSolvedNormal;
         setBackgroundBar(td, numLineSolvedNormal / numLineTotal);
-        tr.appendChild(td);
       }
       {
-        const td = document.createElement('td');
+        const td = elems.records.point.cleared;
         td.innerText = numPointSolvedNormal;
         setBackgroundBar(td, numPointSolvedNormal / numPointTotal);
-        tr.appendChild(td);
       }
       {
-        const td = document.createElement('td');
+        const td = elems.records.special.cleared;
         td.innerText = numSpecialSolvedNormal;
         setBackgroundBar(td, numSpecialSolvedNormal / numSpecialTotal);
-        tr.appendChild(td);
       }
     }
 
     // 未クリア
     {
-      const tr = document.createElement('tr');
-      tbody.appendChild(tr);
       {
-        const th = document.createElement('th');
+        const th = elems.records.icon.uncleared;
+        th.innerText = '';
         const svg = app.svg.createSvg();
         svg.setAttribute('width', crownSize);
         svg.setAttribute('height', crownSize);
         const crown = app.common.createCrown(crownSize, 0, 0, null, 1);
-        th.classList.add('border-right-bold');
-        tr.appendChild(th);
         th.appendChild(svg);
         svg.appendChild(crown);
       }
       {
-        const td = document.createElement('td');
+        const td = elems.records.line.uncleared;
         td.innerText = numLineNotSolved;
         setBackgroundBar(td, numLineNotSolved / numLineTotal);
-        tr.appendChild(td);
       }
       {
-        const td = document.createElement('td');
+        const td = elems.records.point.uncleared;
         td.innerText = numPointNotSolved;
         setBackgroundBar(td, numPointNotSolved / numPointTotal);
-        tr.appendChild(td);
       }
       {
-        const td = document.createElement('td');
+        const td = elems.records.special.uncleared;
         td.innerText = numSpecialNotSolved;
         setBackgroundBar(td, numSpecialNotSolved / numSpecialTotal);
-        tr.appendChild(td);
       }
     }
 
     // 連番モード
     if (app.common.isShownElem(elems.title.buttonToggleToNormalDiv) || app.common.isShownElem(elems.title.buttonToggleToNumDiv)) {
-      const tr = document.createElement('tr');
-      tbody.appendChild(tr);
       {
-        const th = document.createElement('th');
-        const img = document.createElement('img');
-        img.src = './images/logo-123.png?2025.03.07';
-        const imgSize = '35';
-        img.setAttribute('width', imgSize);
-        img.setAttribute('height', imgSize);
-        th.classList.add('border-top-bold');
-        th.classList.add('border-right-bold');
-        tr.appendChild(th);
-        th.appendChild(img);
-      }
-      {
-        const td = document.createElement('td');
+        const td = elems.records.line.num;
         const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.LINE) - 1;
         td.innerText = num;
-        td.classList.add('border-top-bold');
-        td.classList.add('record-num-mode');
-        tr.appendChild(td);
       }
       {
-        const td = document.createElement('td');
+        const td = elems.records.point.num;
         const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.POINT) - 1;
         td.innerText = num;
-        td.classList.add('border-top-bold');
-        td.classList.add('record-num-mode');
-        tr.appendChild(td);
       }
       {
-        const td = document.createElement('td');
+        const td = elems.records.special.num;
         const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.SPECIAL) - 1;
         td.innerText = num;
-        td.classList.add('border-top-bold');
-        td.classList.add('record-num-mode');
-        tr.appendChild(td);
       }
     }
-
-    return tbody;
   }
 
   function close() {

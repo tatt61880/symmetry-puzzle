@@ -11,12 +11,14 @@
     header: 'header',
     footer: 'footer',
     top: 'top',
-    appTitle: 'app-title',
+
     iconApp: 'icon-app',
     icon123: 'icon-123',
     iconLine: 'icon-line',
     iconPoint: 'icon-point',
     iconSpecial: 'icon-special',
+
+    appTitle: 'app-title',
     version: 'title-version',
 
     contents: 'contents',
@@ -39,12 +41,40 @@
     },
 
     records: {
+      version: 'record-dialog-version',
       button: 'button-records',
       buttonSvg: 'button-records-svg',
       dialog: 'dialog-records',
       dialogDiv: 'dialog-records-div',
       close: 'dialog-records-close',
       tableDiv: 'records-table-div',
+
+      icon: {
+        shortest: 'records-icon-shortest',
+        cleared: 'records-icon-cleared',
+        uncleared: 'records-icon-uncleared',
+      },
+
+      line: {
+        shortest: 'records-line-shortest',
+        cleared: 'records-line-cleared',
+        uncleared: 'records-line-uncleared',
+        num: 'records-line-num',
+      },
+
+      point: {
+        shortest: 'records-point-shortest',
+        cleared: 'records-point-cleared',
+        uncleared: 'records-point-uncleared',
+        num: 'records-point-num',
+      },
+
+      special: {
+        shortest: 'records-special-shortest',
+        cleared: 'records-special-cleared',
+        uncleared: 'records-special-uncleared',
+        num: 'records-special-num',
+      },
     },
 
     category: {
