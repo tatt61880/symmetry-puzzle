@@ -124,13 +124,14 @@
 
   .help-mode-creator {
     margin-left: 5px;
+    font-size: 1.1rem;
     font-weight: bold;
     color: #333388;
   }
 
   .help-mode-tester {
     font-weight: bold;
-    color: #7777cc;
+    color: #333388;
   }
 
   .help-example-caption-svg {
