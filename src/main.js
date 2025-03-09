@@ -1551,104 +1551,40 @@
   }
 
   function initLogo() {
-    for (const elem of document.getElementsByClassName('logo-app')) {
-      elem.textContent = '';
+    function initLogoSub({ className, levelObj, checkMode }) {
+      for (const elem of document.getElementsByClassName(className)) {
+        elem.textContent = '';
 
-      const level = new app.Level({
-        levelObj: { w: 3, h: 3, s: '01-222-02' },
-        checkMode: app.Level.CHECK_MODE.SPECIAL,
-      });
+        const level = new app.Level({
+          levelObj,
+          checkMode,
+        });
 
-      const blockSize = Number(elem.dataset.size);
-      const g = level.createSvgG({
-        blockSize,
-        drawBackground: false,
-        x0: 1,
-        y0: 1,
-        width: 3,
-        height: 3,
-      });
-      elem.appendChild(g);
+        const blockSize = Number(elem.dataset.size);
+        const g = level.createSvgG({
+          blockSize,
+          drawBackground: false,
+          x0: 1,
+          y0: 1,
+          width: levelObj.w,
+          height: levelObj.h,
+        });
+        elem.appendChild(g);
+      }
     }
 
-    for (const elem of document.getElementsByClassName('logo-line')) {
-      elem.textContent = '';
-
-      const level = new app.Level({
-        levelObj: { w: 3, h: 2, s: '112-01' },
-        checkMode: app.Level.CHECK_MODE.LINE,
-      });
-
-      const blockSize = Number(elem.dataset.size);
-      const g = level.createSvgG({
-        blockSize,
-        drawBackground: false,
-        x0: 1,
-        y0: 1,
-        width: 3,
-        height: 2,
-      });
-      elem.appendChild(g);
-    }
-
-    for (const elem of document.getElementsByClassName('logo-point')) {
-      elem.textContent = '';
-
-      const level = new app.Level({
-        levelObj: { w: 3, h: 2, s: '11-012' },
-        checkMode: app.Level.CHECK_MODE.POINT,
-      });
-
-      const blockSize = Number(elem.dataset.size);
-      const g = level.createSvgG({
-        blockSize,
-        drawBackground: false,
-        x0: 1,
-        y0: 1,
-        width: 3,
-        height: 2,
-      });
-      elem.appendChild(g);
-    }
-
-    for (const elem of document.getElementsByClassName('logo-special')) {
-      elem.textContent = '';
-
-      const level = new app.Level({
-        levelObj: { w: 2, h: 2, s: '11-21' },
-        checkMode: app.Level.CHECK_MODE.SPECIAL,
-      });
-
-      const blockSize = Number(elem.dataset.size);
-      const g = level.createSvgG({
-        blockSize,
-        drawBackground: false,
-        x0: 1,
-        y0: 1,
-        width: 2,
-        height: 2,
-      });
-      elem.appendChild(g);
-    }
-
-    for (const elem of document.getElementsByClassName('logo-123')) {
-      elem.textContent = '';
-
-      const level = new app.Level({
+    for (const obj of [
+      { className: 'logo-app', levelObj: { w: 3, h: 3, s: '01-222-02' }, checkMode: app.Level.CHECK_MODE.SPECIAL },
+      { className: 'logo-line', levelObj: { w: 3, h: 2, s: '112-01' }, checkMode: app.Level.CHECK_MODE.LINE },
+      { className: 'logo-point', levelObj: { w: 3, h: 2, s: '11-012' }, checkMode: app.Level.CHECK_MODE.POINT },
+      { className: 'logo-special', levelObj: { w: 3, h: 2, s: '11-21' }, checkMode: app.Level.CHECK_MODE.SPECIAL },
+      {
+        className: 'logo-123',
         levelObj: { w: 5, h: 5, s: '0102-34567-0809-(10)(11)(12)(13)(14)-0(15)0(16)' },
         checkMode: app.Level.CHECK_MODE.SPECIAL,
-      });
-
-      const blockSize = Number(elem.dataset.size);
-      const g = level.createSvgG({
-        blockSize,
-        drawBackground: false,
-        x0: 1,
-        y0: 1,
-        width: 5,
-        height: 5,
-      });
-      elem.appendChild(g);
+      },
+    ]) {
+      initLogoSub(obj);
     }
   }
 
