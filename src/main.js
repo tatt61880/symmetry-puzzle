@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.09';
+  const VERSION_TEXT = 'v' + '2025.03.09b';
 
   const app = window.app;
   Object.freeze(app);
@@ -1591,26 +1591,6 @@
       elem.appendChild(g);
     }
 
-    for (const elem of document.getElementsByClassName('logo-line')) {
-      elem.textContent = '';
-
-      const level = new app.Level({
-        levelObj: { w: 3, h: 2, s: '112-01' },
-        checkMode: app.Level.CHECK_MODE.LINE,
-      });
-
-      const blockSize = Number(elem.dataset.size);
-      const g = level.createSvgG({
-        blockSize,
-        drawBackground: false,
-        x0: 1,
-        y0: 1,
-        width: 3,
-        height: 2,
-      });
-      elem.appendChild(g);
-    }
-
     for (const elem of document.getElementsByClassName('logo-point')) {
       elem.textContent = '';
 
@@ -1647,6 +1627,26 @@
         y0: 1,
         width: 2,
         height: 2,
+      });
+      elem.appendChild(g);
+    }
+
+    for (const elem of document.getElementsByClassName('logo-123')) {
+      elem.textContent = '';
+
+      const level = new app.Level({
+        levelObj: { w: 5, h: 5, s: '0102-34567-0809-(10)(11)(12)(13)(14)-0(15)0(16)' },
+        checkMode: app.Level.CHECK_MODE.SPECIAL,
+      });
+
+      const blockSize = Number(elem.dataset.size);
+      const g = level.createSvgG({
+        blockSize,
+        drawBackground: false,
+        x0: 1,
+        y0: 1,
+        width: 5,
+        height: 5,
       });
       elem.appendChild(g);
     }
