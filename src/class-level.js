@@ -977,6 +977,7 @@
       blockSize,
       symmetryAnimationFlag = false,
       showCharsFlag = false,
+      smallJumpFlag = false,
       drawBackground = true,
       x0 = 0,
       y0 = 0,
@@ -1038,6 +1039,7 @@
             blockSize,
             symmetryType,
             showCharsFlag,
+            smallJumpFlag,
             eyeFlag,
             isSoloUser,
             gShadows,
@@ -2700,6 +2702,7 @@
       blockSize,
       symmetryType,
       showCharsFlag,
+      smallJumpFlag,
       eyeFlag,
       isSoloUser,
       gShadows,
@@ -2735,7 +2738,7 @@
           elem.classList.add(animationClass);
           gElems = gElemsAnimation2;
         }
-      } else {
+      } else if (smallJumpFlag) {
         if (app.states.isUser(state)) {
           // 移動しなかったときのアニメーション
           const dx = this.#moveDx;

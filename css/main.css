@@ -154,16 +154,8 @@ text {
   }
 }
 
-.user-block-right {
-  margin: 0 7px;
-}
-
 .symmetry-axis {
   opacity: 0.7;
-}
-
-footer .user-block-right {
-  scale: 0.7;
 }
 
 .user-block-title {

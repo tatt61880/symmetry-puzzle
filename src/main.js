@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.09d';
+  const VERSION_TEXT = 'v' + '2025.03.10';
 
   const app = window.app;
   Object.freeze(app);
@@ -908,31 +908,6 @@
   }
 
   function initBlock() {
-    for (const elem of document.getElementsByClassName('user-block-right')) {
-      elem.textContent = '';
-
-      const checkMode = app.Level.CHECK_MODE.SPECIAL;
-      const level = new app.Level({
-        levelObj: { w: 2, h: 1, s: 's' },
-        checkMode,
-      });
-      level.move(1, 0);
-
-      const blockSize = 30;
-      const g = level.createSvgG({
-        blockSize,
-        drawBackground: false,
-        x0: 2,
-        y0: 1,
-        width: 1,
-        height: 1,
-      });
-
-      elem.setAttribute('width', blockSize);
-      elem.setAttribute('height', blockSize);
-      elem.appendChild(g);
-    }
-
     for (const elem of document.getElementsByClassName('user-block-title')) {
       initTitleCharacter(elem, true);
     }
@@ -1295,6 +1270,7 @@
         const g = levelForEditChar.createSvgG({
           blockSize: 40,
           showCharsFlag: true,
+          smallJumpFlag: true,
           drawBackground: char === '0',
           x0: 2,
           y0: 2,
@@ -1736,10 +1712,12 @@
   }
 
   function drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag) {
+    const smallJumpFlag = !undoInfo.isUndoable();
     const levelSvgG = common.level.createSvgG({
       blockSize,
       symmetryAnimationFlag,
       showCharsFlag,
+      smallJumpFlag,
       edgeColor: app.common.isNumMode ? app.colors.frameFillNumMode : app.colors.frameFill,
     });
     levelSvgG.classList.add('group-level-main');

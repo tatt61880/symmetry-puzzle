@@ -38,6 +38,7 @@
         const blockSize = 30;
         const g = level.createSvgG({
           blockSize,
+          smallJumpFlag: true,
           drawBackground: false,
           x0: 1,
           y0: 1,
