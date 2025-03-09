@@ -75,6 +75,8 @@
         uncleared: 'records-special-uncleared',
         num: 'records-special-num',
       },
+
+      numMode: 'record-num-mode',
     },
 
     category: {

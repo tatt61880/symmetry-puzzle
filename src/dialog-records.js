@@ -199,7 +199,7 @@
     }
 
     // 連番モード
-    if (app.common.isShownElem(elems.title.buttonToggleToNormalDiv) || app.common.isShownElem(elems.title.buttonToggleToNumDiv)) {
+    {
       {
         const td = elems.records.line.num;
         const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.LINE) - 1;

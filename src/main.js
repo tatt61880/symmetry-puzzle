@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.09c';
+  const VERSION_TEXT = 'v' + '2025.03.09d';
 
   const app = window.app;
   Object.freeze(app);
@@ -1096,6 +1096,7 @@
     // ある程度クリアするまで連番モードを隠します。
     if (common.isShownElem(elems.title.buttonNormalsTr)) {
       common.showElem(elems.title.buttonToggleToNumDiv);
+      common.showElem(elems.records.numMode);
       for (const [levelsList, mode] of [
         [app.levelsLine, app.Level.CHECK_MODE.LINE],
         [app.levelsPoint, app.Level.CHECK_MODE.POINT],
@@ -1106,6 +1107,7 @@
         const highestScore = app.savedata.getHighestScore(levelObj, mode);
         if (highestScore === null) {
           common.hideElem(elems.title.buttonToggleToNumDiv);
+          common.hideElem(elems.records.numMode);
         }
       }
     }
