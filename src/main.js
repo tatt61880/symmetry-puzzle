@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.08c';
+  const VERSION_TEXT = 'v' + '2025.03.09';
 
   const app = window.app;
   Object.freeze(app);
@@ -1214,6 +1214,7 @@
     initElemsForLevelWidget();
     initElemsForLevelsDialog();
     initElemsForShapesDialog();
+    initLogo();
 
     // キー入力用
     {
@@ -1547,6 +1548,108 @@
     elems.shapes.close.addEventListener('click', app.dialog.shapes.close);
     elems.shapes.prev.addEventListener('click', app.dialog.shapes.prevPage);
     elems.shapes.next.addEventListener('click', app.dialog.shapes.nextPage);
+  }
+
+  function initLogo() {
+    for (const elem of document.getElementsByClassName('logo-app')) {
+      elem.textContent = '';
+
+      const level = new app.Level({
+        levelObj: { w: 3, h: 3, s: '01-222-02' },
+        checkMode: app.Level.CHECK_MODE.SPECIAL,
+      });
+
+      const blockSize = Number(elem.dataset.size);
+      const g = level.createSvgG({
+        blockSize,
+        drawBackground: false,
+        x0: 1,
+        y0: 1,
+        width: 3,
+        height: 3,
+      });
+      elem.appendChild(g);
+    }
+
+    for (const elem of document.getElementsByClassName('logo-line')) {
+      elem.textContent = '';
+
+      const level = new app.Level({
+        levelObj: { w: 3, h: 2, s: '112-01' },
+        checkMode: app.Level.CHECK_MODE.LINE,
+      });
+
+      const blockSize = Number(elem.dataset.size);
+      const g = level.createSvgG({
+        blockSize,
+        drawBackground: false,
+        x0: 1,
+        y0: 1,
+        width: 3,
+        height: 2,
+      });
+      elem.appendChild(g);
+    }
+
+    for (const elem of document.getElementsByClassName('logo-line')) {
+      elem.textContent = '';
+
+      const level = new app.Level({
+        levelObj: { w: 3, h: 2, s: '112-01' },
+        checkMode: app.Level.CHECK_MODE.LINE,
+      });
+
+      const blockSize = Number(elem.dataset.size);
+      const g = level.createSvgG({
+        blockSize,
+        drawBackground: false,
+        x0: 1,
+        y0: 1,
+        width: 3,
+        height: 2,
+      });
+      elem.appendChild(g);
+    }
+
+    for (const elem of document.getElementsByClassName('logo-point')) {
+      elem.textContent = '';
+
+      const level = new app.Level({
+        levelObj: { w: 3, h: 2, s: '11-012' },
+        checkMode: app.Level.CHECK_MODE.POINT,
+      });
+
+      const blockSize = Number(elem.dataset.size);
+      const g = level.createSvgG({
+        blockSize,
+        drawBackground: false,
+        x0: 1,
+        y0: 1,
+        width: 3,
+        height: 2,
+      });
+      elem.appendChild(g);
+    }
+
+    for (const elem of document.getElementsByClassName('logo-special')) {
+      elem.textContent = '';
+
+      const level = new app.Level({
+        levelObj: { w: 2, h: 2, s: '11-21' },
+        checkMode: app.Level.CHECK_MODE.SPECIAL,
+      });
+
+      const blockSize = Number(elem.dataset.size);
+      const g = level.createSvgG({
+        blockSize,
+        drawBackground: false,
+        x0: 1,
+        y0: 1,
+        width: 2,
+        height: 2,
+      });
+      elem.appendChild(g);
+    }
   }
 
   function intervalFunc() {

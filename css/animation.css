@@ -926,8 +926,8 @@
 }
 
 /* icon animation */
-#help-tab-app:checked + .tab > img,
-#help-tab-special:checked + .tab > img,
+#help-tab-app:checked + .tab > svg,
+#help-tab-special:checked + .tab > svg,
 .animation-icon-app,
 .animation-icon-123,
 .animation-icon-special {
@@ -936,14 +936,14 @@
   animation-duration: calc(var(--animation-duration-symmetry) * 1.5);
 }
 
-#help-tab-line:checked + .tab > img,
+#help-tab-line:checked + .tab > svg,
 .animation-icon-line {
   transform-origin: center;
   animation: animation-axis-line1 linear forwards;
   animation-duration: var(--animation-duration-symmetry);
 }
 
-#help-tab-point:checked + .tab > img,
+#help-tab-point:checked + .tab > svg,
 .animation-icon-point {
   transform-origin: center;
   animation: animation-axis-point1 linear forwards;
