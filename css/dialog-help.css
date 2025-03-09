@@ -110,6 +110,7 @@
     }
 
     .help-mode-name {
+      margin-left: 7px;
       font-size: 1.1rem;
       font-weight: bold;
       color: #333388;
