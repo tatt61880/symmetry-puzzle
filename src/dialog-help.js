@@ -45,10 +45,10 @@
           width: w,
           height: 1,
         });
-        const marginTop = 2;
+        const marginTop = 7;
         g.setAttribute('transform', `translate(0, ${marginTop})`);
         elemSvg.setAttribute('width', blockSize * w);
-        elemSvg.setAttribute('height', blockSize + marginTop * 2);
+        elemSvg.setAttribute('height', blockSize + marginTop + 2);
         elemSvg.appendChild(g);
       };
 

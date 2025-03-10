@@ -97,7 +97,7 @@
     .user-block-point,
     .user-block-special,
     .target-block {
-      margin: 0 7px;
+      margin: -5px 7px 0;
     }
 
     .help-mode-title {
