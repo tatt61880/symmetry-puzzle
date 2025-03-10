@@ -10,6 +10,7 @@
   padding: 0;
   margin: 130px auto;
   border: none;
+  outline: none;
 
   .toggle-label svg {
     width: 100%;

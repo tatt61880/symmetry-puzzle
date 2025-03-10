@@ -9,6 +9,7 @@
   padding: 0;
   margin: 42px auto;
   border: none;
+  outline: none;
 
   #dialog-help-version {
     margin-left: 10px;

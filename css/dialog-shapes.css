@@ -10,6 +10,7 @@
   padding: 0;
   margin: 0 auto;
   border: none;
+  outline: none;
 
   #dialog-shapes-div {
     padding: 5px;

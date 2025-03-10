@@ -10,6 +10,7 @@
   padding: 0;
   margin: 42px auto;
   border: none;
+  outline: none;
 
   #dialog-records-div {
     padding: 5px;
