@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.10';
+  const VERSION_TEXT = 'v' + '2025.03.10b';
 
   const app = window.app;
   Object.freeze(app);
@@ -717,20 +717,29 @@
       const shapesObj = app.savedata.getShapesObj(common.level.getLevelObj(), common.checkMode);
 
       if (shapesObj) {
-        common.showElem(elems.shapes.button);
+        common.showElem(elems.shapes.buttonG);
         const numerator = Object.keys(shapesObj).length;
         const denumerator = common.level.getShapes() ?? '?';
         elems.shapes.buttonNumerator.textContent = numerator;
         elems.shapes.buttonDenumerator.textContent = denumerator;
-        const fill = numerator === denumerator ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
-        elems.shapes.buttonNumerator.setAttribute('fill', fill);
-        elems.shapes.buttonLine.setAttribute('fill', fill);
-        elems.shapes.buttonDenumerator.setAttribute('fill', fill);
+        const fontColor = (() => {
+          if (app.common.isNumMode) {
+            return app.colors.shapeNumNumMode;
+          }
+          return numerator === denumerator ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
+        })();
+        elems.shapes.buttonNumerator.setAttribute('fill', fontColor);
+        elems.shapes.buttonLine.setAttribute('fill', fontColor);
+        elems.shapes.buttonDenumerator.setAttribute('fill', fontColor);
+        const fill = app.common.isNumMode ? app.colors.frameFillNumMode : app.colors.frameFill;
+        const stroke = app.common.isNumMode ? app.colors.frameStrokeNumMode : app.colors.frameStroke;
+        elems.shapes.button.setAttribute('fill', fill);
+        elems.shapes.button.setAttribute('stroke', stroke);
         return;
       }
     }
 
-    common.hideElem(elems.shapes.button);
+    common.hideElem(elems.shapes.buttonG);
   }
 
   function loadLevelObj(levelObj, param = {}) {
@@ -1521,7 +1530,7 @@
 
   // 形状一覧ダイアログ
   function initElemsForShapesDialog() {
-    elems.shapes.button.addEventListener('click', app.dialog.shapes.show);
+    elems.shapes.buttonG.addEventListener('click', app.dialog.shapes.show);
     elems.shapes.dialog.addEventListener('click', app.dialog.shapes.close);
     elems.shapes.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
     elems.shapes.close.addEventListener('click', app.dialog.shapes.close);

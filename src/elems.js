@@ -138,6 +138,7 @@
     },
 
     shapes: {
+      buttonG: 'button-shapes-g',
       button: 'button-shapes',
       buttonNumerator: 'button-shapes-numerator',
       buttonLine: 'button-shapes-line',

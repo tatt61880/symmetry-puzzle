@@ -91,6 +91,7 @@
   // 形状数
   colors.shapeNumPerfect = colors.stepDraw;
   colors.shapeNumNormal = colors.stepNormal;
+  colors.shapeNumNumMode = colors.stepNum;
 
   colors.editButton = {
     fill: '#e5a0e5',
