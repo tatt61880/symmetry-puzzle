@@ -28,7 +28,7 @@
 
   const shapeSelectId = 'shapes-select';
 
-  const SELECT_NUM_PER_PAGE = 5;
+  const SELECT_NUM_PER_PAGE = 10;
   const SELECT_HEIGHT = 125;
   const SELECT_WIDTH = 90;
   const SELECT_COLS = 5;
@@ -134,7 +134,10 @@
     const selectR = {};
     const levelShapes = levelObj.shapes;
     const iEnd = levelShapes ?? shapeStrs.length;
-    elems.shapes.dialogSvg.style.width = `${Math.min(iEnd, 5) * 90 + 2}px`;
+    elems.shapes.dialogSvg.style.width = `${Math.min(iEnd, SELECT_COLS) * SELECT_WIDTH + 2}px`;
+    elems.shapes.dialogSvg.style.height = `${Math.min(Math.floor((iEnd + SELECT_COLS - 1) / SELECT_COLS), 2) * SELECT_HEIGHT + 2}px`;
+    const dialogTop = iEnd > SELECT_COLS ? 130 : 240;
+    elems.shapes.dialog.style.marginTop = `${dialogTop}px`;
 
     let prevHide = false;
 

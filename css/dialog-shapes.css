@@ -6,9 +6,9 @@
   left: 0;
   box-sizing: border-box;
   width: 480px;
-  max-height: 380px;
+  max-height: 450px;
   padding: 0;
-  margin: 255px auto;
+  margin: 0 auto;
   border: none;
 
   #dialog-shapes-div {
