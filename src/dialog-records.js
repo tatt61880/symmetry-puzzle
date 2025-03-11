@@ -109,11 +109,10 @@
       td.setAttribute('style', style);
     };
 
-    const crownSize = 35;
-
     {
       // 最短記録達成
       {
+        const crownSize = Number(elems.records.icon.shortest.dataset.crownSize);
         const th = elems.records.icon.shortest;
         th.innerText = '';
         const svg = app.svg.createSvg();
@@ -143,6 +142,7 @@
     // クリア済み
     {
       {
+        const crownSize = Number(elems.records.icon.cleared.dataset.crownSize);
         const th = elems.records.icon.cleared;
         th.innerText = '';
         const svg = app.svg.createSvg();
@@ -172,6 +172,7 @@
     // 未クリア
     {
       {
+        const crownSize = Number(elems.records.icon.uncleared.dataset.crownSize);
         const th = elems.records.icon.uncleared;
         th.innerText = '';
         const svg = app.svg.createSvg();

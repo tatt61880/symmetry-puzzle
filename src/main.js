@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.11';
+  const VERSION_TEXT = 'v' + '2025.03.11b';
 
   const app = window.app;
   Object.freeze(app);
@@ -1498,7 +1498,7 @@
 
   // 記録画面用
   function initElemsForRecords() {
-    const size = 50;
+    const size = Number(elems.records.buttonSvg.dataset.crownSize);
     const crown = common.createCrown(size, 0, 0, 1, 1);
     elems.records.buttonSvg.appendChild(crown);
     elems.records.button.addEventListener('click', app.dialog.records.show);
