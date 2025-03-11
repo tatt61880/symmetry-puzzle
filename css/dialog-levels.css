@@ -30,8 +30,11 @@
       margin-left: 10px;
     }
 
+    .spacer {
+      flex-grow: 1;
+    }
+
     #dialog-levels-title {
-      margin: auto;
       font-size: 1.5rem;
       font-weight: bold;
       color: #333388;
@@ -41,7 +44,6 @@
       display: flex;
       align-items: center;
       margin-right: 10px;
-      margin-left: auto;
 
       .toggle-text {
         font-size: 1.2rem;
