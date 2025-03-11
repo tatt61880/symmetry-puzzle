@@ -12,11 +12,15 @@
     footer: 'footer',
     top: 'top',
 
-    iconApp: 'icon-app',
-    icon123: 'icon-123',
+    iconTitle: 'icon-title',
     iconLine: 'icon-line',
     iconPoint: 'icon-point',
     iconSpecial: 'icon-special',
+
+    iconTitle123: 'icon-title-123',
+    iconLine123: 'icon-line-123',
+    iconPoint123: 'icon-point-123',
+    iconSpecial123: 'icon-special-123',
 
     appTitle: 'app-title',
     version: 'title-version',

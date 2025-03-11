@@ -928,8 +928,7 @@
 /* icon animation */
 #help-tab-app:checked + .tab > svg,
 #help-tab-special:checked + .tab > svg,
-.animation-icon-app,
-.animation-icon-123,
+.animation-icon-title,
 .animation-icon-special {
   transform-origin: center;
   animation: animation-axis-4mm linear forwards;

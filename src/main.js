@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.11b';
+  const VERSION_TEXT = 'v' + '2025.03.11c';
 
   const app = window.app;
   Object.freeze(app);
@@ -723,7 +723,7 @@
         elems.shapes.buttonNumerator.textContent = numerator;
         elems.shapes.buttonDenumerator.textContent = denumerator;
         const fontColor = (() => {
-          if (app.common.isNumMode) {
+          if (common.isNumMode) {
             return app.colors.shapeNumNumMode;
           }
           return numerator === denumerator ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
@@ -731,8 +731,8 @@
         elems.shapes.buttonNumerator.setAttribute('fill', fontColor);
         elems.shapes.buttonLine.setAttribute('fill', fontColor);
         elems.shapes.buttonDenumerator.setAttribute('fill', fontColor);
-        const fill = app.common.isNumMode ? app.colors.frameFillNumMode : app.colors.frameFill;
-        const stroke = app.common.isNumMode ? app.colors.frameStrokeNumMode : app.colors.frameStroke;
+        const fill = common.isNumMode ? app.colors.frameFillNumMode : app.colors.frameFill;
+        const stroke = common.isNumMode ? app.colors.frameStrokeNumMode : app.colors.frameStroke;
         elems.shapes.button.setAttribute('fill', fill);
         elems.shapes.button.setAttribute('stroke', stroke);
         return;
@@ -868,11 +868,14 @@
   function animateIcons() {
     if (elems.help.dialog.open) return; // ダイアログ表示中にアニメーションするとSafariで画面がちらつく問題があるため。
 
-    addAnimationClass(elems.iconApp, 'animation-icon-app');
-    addAnimationClass(elems.icon123, 'animation-icon-123');
+    addAnimationClass(elems.iconTitle, 'animation-icon-title');
+    addAnimationClass(elems.iconTitle123, 'animation-icon-title');
     addAnimationClass(elems.iconLine, 'animation-icon-line');
+    addAnimationClass(elems.iconLine123, 'animation-icon-line');
     addAnimationClass(elems.iconPoint, 'animation-icon-point');
+    addAnimationClass(elems.iconPoint123, 'animation-icon-point');
     addAnimationClass(elems.iconSpecial, 'animation-icon-special');
+    addAnimationClass(elems.iconSpecial123, 'animation-icon-special');
   }
 
   function removeAnimationClass(elem, className) {
@@ -1123,7 +1126,7 @@
         default:
           console.assert(false);
       }
-      common.isNumMode = !idFlag;
+      updateNormalNumMode(!idFlag);
       if (common.isNumMode) {
         levelsList = [levelsList[0]];
       }
@@ -1466,8 +1469,8 @@
     onloadId(minNum, false);
   }
 
-  function toggleNormalNumMode() {
-    if (common.isShownElem(elems.title.buttonToggleToNumDiv)) {
+  function updateNormalNumMode(isNumMode) {
+    if (isNumMode) {
       common.isNumMode = true;
       common.hideElem(elems.title.buttonNormalsTr);
       common.showElem(elems.title.buttonNumsTr);
@@ -1480,7 +1483,7 @@
       for (const elem of document.getElementsByClassName('num-mode')) {
         elem.classList.remove('hide');
       }
-    } else if (common.isShownElem(elems.title.buttonToggleToNormalDiv)) {
+    } else {
       common.isNumMode = false;
       common.showElem(elems.title.buttonNormalsTr);
       common.hideElem(elems.title.buttonNumsTr);
@@ -1493,6 +1496,14 @@
       for (const elem of document.getElementsByClassName('num-mode')) {
         elem.classList.add('hide');
       }
+    }
+  }
+
+  function toggleNormalNumMode() {
+    if (common.isShownElem(elems.title.buttonToggleToNumDiv)) {
+      updateNormalNumMode(true);
+    } else if (common.isShownElem(elems.title.buttonToggleToNormalDiv)) {
+      updateNormalNumMode(false);
     }
   }
 
@@ -1729,7 +1740,7 @@
       symmetryAnimationFlag,
       showCharsFlag,
       smallJumpFlag,
-      edgeColor: app.common.isNumMode ? app.colors.frameFillNumMode : app.colors.frameFill,
+      edgeColor: common.isNumMode ? app.colors.frameFillNumMode : app.colors.frameFill,
     });
     levelSvgG.classList.add('group-level-main');
     levelSvgG.setAttribute('transform', `translate(${frameSizeW},${frameSizeH})`);
@@ -1778,7 +1789,7 @@
     const wallStrShift = app.colors[app.states.wall].fill === app.colors[app.states.wall].stroke ? 0 : 0.05;
 
     {
-      const frameColor = app.common.isNumMode ? app.colors.frameFillNumMode : app.colors.frameFill;
+      const frameColor = common.isNumMode ? app.colors.frameFillNumMode : app.colors.frameFill;
       const rectU = app.svg.createRect(1, {
         x: 0,
         y: 0,
@@ -1812,7 +1823,7 @@
       g.appendChild(rectD);
       g.appendChild(rectL);
 
-      const borderColor = app.common.isNumMode ? app.colors.frameStrokeNumMode : app.colors.frameStroke;
+      const borderColor = common.isNumMode ? app.colors.frameStrokeNumMode : app.colors.frameStroke;
       const rectUb = app.svg.createRect(1, {
         x: 0,
         y: 0,
