@@ -2749,8 +2749,10 @@
               const g = app.svg.createG();
               g.appendChild(elem);
               child = g;
-              const animationClass = animationClasses[symmetryType];
-              elem.classList.add(animationClass);
+              if (symmetryType !== null) {
+                const animationClass = animationClasses[symmetryType];
+                elem.classList.add(animationClass);
+              }
               elem.style.transformOrigin = `${blockSize * (x + 0.5)}px ${blockSize * (y + 0.5)}px`;
               g.classList.add('animation-jump-small');
             } else {
