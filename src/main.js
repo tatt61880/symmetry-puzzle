@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.11c';
+  const VERSION_TEXT = 'v' + '2025.03.12';
 
   const app = window.app;
   Object.freeze(app);
@@ -1507,6 +1507,8 @@
     elems.records.dialog.addEventListener('click', app.dialog.records.close);
     elems.records.close.addEventListener('click', app.dialog.records.close);
     elems.records.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
+    elems.records.backup.addEventListener('click', app.dialog.records.backup);
+    elems.records.restore.addEventListener('click', app.dialog.records.restore);
   }
 
   // レベル操作用

@@ -17,6 +17,15 @@
       this.#load();
     }
 
+    getBackupData() {
+      return this.data;
+    }
+
+    restoreBackupData(data) {
+      this.data = data;
+      this.#save();
+    }
+
     #load() {
       this.data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
 

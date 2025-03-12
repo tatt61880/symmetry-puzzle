@@ -12,6 +12,8 @@
   window.app.dialog.records = {
     show,
     close,
+    backup,
+    restore,
   };
 
   const elems = app.elems;
@@ -221,5 +223,50 @@
 
   function close() {
     elems.records.dialog.close();
+  }
+
+  async function backup() {
+    const dataText = JSON.stringify(app.savedata.getBackupData());
+    const encodedData = btoa(encodeURIComponent(dataText));
+    const obj = {
+      confirm: 'yyyymmdd',
+      data: encodedData,
+    };
+    const clipboardText = JSON.stringify(obj);
+
+    try {
+      await navigator.clipboard.writeText(clipboardText);
+      alert('バックアップデータをクリップボードにコピーしました。\nCopied the backup data to clipboard.');
+    } catch (error) {
+      alert(error);
+    }
+  }
+
+  async function restore() {
+    const clipboardText = await navigator.clipboard.readText();
+    try {
+      const yyyymmdd = (() => {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return year + month + day;
+      })();
+
+      const parsedObj = JSON.parse(clipboardText);
+      if (parsedObj?.confirm === yyyymmdd && parsedObj?.data !== undefined) {
+        const decodedText = decodeURIComponent(atob(parsedObj.data));
+        const restoreData = JSON.parse(decodedText);
+        app.savedata.restoreBackupData(restoreData);
+        updateTable();
+        alert('リストアを実行しました。\nData restored.');
+      } else if (parsedObj?.confirm !== undefined && typeof parsedObj.confirm === 'string' && parsedObj?.data !== undefined) {
+        alert(`失敗しました。\nFailed.\n\nconfirm の値を '${parsedObj?.confirm}' から '${yyyymmdd}' に書き換えて再実行してください。`);
+      } else {
+        alert('データ形式が想定外です。\nThe data format is invalid.');
+      }
+    } catch (error) {
+      alert(`Error: ${error}`);
+    }
   }
 })();

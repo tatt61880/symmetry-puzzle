@@ -81,6 +81,9 @@
       },
 
       numMode: 'record-num-mode',
+
+      backup: 'record-button-backup',
+      restore: 'record-button-restore',
     },
 
     category: {
