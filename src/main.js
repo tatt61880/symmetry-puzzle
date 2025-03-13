@@ -869,12 +869,8 @@
     addAnimationClass(elems.iconSpecial123, 'animation-icon-special');
   }
 
-  function removeAnimationClass(elem, className) {
-    elem.classList.remove(className);
-  }
-
   function addAnimationClass(elem, className) {
-    removeAnimationClass(elem, className);
+    elem.classList.remove(className);
     setTimeout(() => {
       elem.classList.add(className);
     }, 100);
@@ -1605,7 +1601,7 @@
     moveIntervalCount = 0;
 
     const classAnimationIllegalMove = 'animation-illegal-move';
-    removeAnimationClass(elems.main.svg, classAnimationIllegalMove);
+    elems.main.svg.classList.remove(classAnimationIllegalMove);
 
     const movedFlag = tryMoving(input.inputDir);
     if (movedFlag) {
@@ -1712,7 +1708,7 @@
     const mainSvgG = app.svg.createG();
 
     const classAnimationIllegalMove = 'animation-illegal-move';
-    removeAnimationClass(elems.main.svg, classAnimationIllegalMove);
+    elems.main.svg.classList.remove(classAnimationIllegalMove);
     elems.main.svg.textContent = '';
     elems.main.svg.appendChild(mainSvgG);
 
