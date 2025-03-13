@@ -13,8 +13,7 @@
   outline: none;
 
   #dialog-shapes-div {
-    padding: 5px;
-    padding-bottom: 7px;
+    padding: 5px 5px 15px;
   }
 
   #dialog-shapes-top {
