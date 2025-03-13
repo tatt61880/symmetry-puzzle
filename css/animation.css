@@ -18,7 +18,7 @@
 /* Blocks jumping animation */
 .animation-jump-small {
   animation: animation-jump-small cubic-bezier(0, 0.5, 1, 0.5) forwards;
-  animation-duration: var(--animation-duration);
+  animation-duration: calc(var(--animation-duration) * 2);
 }
 
 @keyframes animation-jump-small {
