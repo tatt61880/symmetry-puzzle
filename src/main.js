@@ -1488,6 +1488,8 @@
         elem.classList.add('hide');
       }
     }
+
+    animateIcons();
   }
 
   function toggleNormalNumMode() {
