@@ -932,21 +932,21 @@
 .animation-icon-special {
   transform-origin: center;
   animation: animation-axis-4mm linear forwards;
-  animation-duration: calc(var(--animation-duration-symmetry) * 1.5);
+  animation-duration: calc(var(--animation-duration-symmetry) * 2.1);
 }
 
 #help-tab-line:checked + .tab > svg,
 .animation-icon-line {
   transform-origin: center;
   animation: animation-axis-line1 linear forwards;
-  animation-duration: var(--animation-duration-symmetry);
+  animation-duration: calc(var(--animation-duration-symmetry) * 1.4);
 }
 
 #help-tab-point:checked + .tab > svg,
 .animation-icon-point {
   transform-origin: center;
   animation: animation-axis-point1 linear forwards;
-  animation-duration: var(--animation-duration-symmetry);
+  animation-duration: calc(var(--animation-duration-symmetry) * 1.4);
 }
 
 @keyframes animation-axis-4mm {
