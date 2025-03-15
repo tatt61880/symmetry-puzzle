@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.12';
+  const VERSION_TEXT = 'v' + '2025.03.15';
 
   const app = window.app;
   Object.freeze(app);
@@ -1279,8 +1279,8 @@
         elem.appendChild(g);
 
         const func = () => {
-          elems.edit.drawing.innerHTML = '';
-          elems.edit.drawing.appendChild(g.cloneNode(true));
+          const transform = elem.getAttribute('transform');
+          elems.edit.drawing.setAttribute('transform', `${transform} translate(-4,-4)`);
           const state = app.states.charToState[char];
           drawingState = state;
         };

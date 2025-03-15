@@ -15,51 +15,51 @@
   <link rel="icon" type="image/x-icon" href="./images/favicon.png?2025.03.07">
   <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-touch-icon.png?2025.03.07">
 
-  <link rel="stylesheet" href="./css/main.css?2025.03.12">
-  <link rel="stylesheet" href="./css/title.css?2025.03.12">
-  <link rel="stylesheet" href="./css/game.css?2025.03.12">
-  <link rel="stylesheet" href="./css/dialog-help.css?2025.03.12">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2025.03.12">
-  <link rel="stylesheet" href="./css/dialog-records.css?2025.03.12">
-  <link rel="stylesheet" href="./css/dialog-shapes.css?2025.03.12">
-  <link rel="stylesheet" href="./css/animation.css?2025.03.12">
+  <link rel="stylesheet" href="./css/main.css?2025.03.15">
+  <link rel="stylesheet" href="./css/title.css?2025.03.15">
+  <link rel="stylesheet" href="./css/game.css?2025.03.15">
+  <link rel="stylesheet" href="./css/dialog-help.css?2025.03.15">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2025.03.15">
+  <link rel="stylesheet" href="./css/dialog-records.css?2025.03.15">
+  <link rel="stylesheet" href="./css/dialog-shapes.css?2025.03.15">
+  <link rel="stylesheet" href="./css/animation.css?2025.03.15">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-  <script src="./src/states.js?2025.03.12"></script>
-  <script src="./src/colors.js?2025.03.12"></script>
-  <script src="./src/svg.js?2025.03.12"></script>
-  <script src="./src/common.js?2025.03.12"></script>
+  <script src="./src/states.js?2025.03.15"></script>
+  <script src="./src/colors.js?2025.03.15"></script>
+  <script src="./src/svg.js?2025.03.15"></script>
+  <script src="./src/common.js?2025.03.15"></script>
 
-  <script src="./src/class-stack.js?2025.03.12"></script>
-  <script src="./src/class-level.js?2025.03.12"></script>
-  <script src="./src/class-levels.js?2025.03.12"></script>
+  <script src="./src/class-stack.js?2025.03.15"></script>
+  <script src="./src/class-level.js?2025.03.15"></script>
+  <script src="./src/class-levels.js?2025.03.15"></script>
 
-  <script src="./src/class-savedata.js?2025.03.12"></script>
-  <script src="./src/class-undo-info.js?2025.03.12"></script>
-  <script src="./src/class-elems.js?2025.03.12"></script>
-  <script src="./src/class-input.js?2025.03.12"></script>
+  <script src="./src/class-savedata.js?2025.03.15"></script>
+  <script src="./src/class-undo-info.js?2025.03.15"></script>
+  <script src="./src/class-elems.js?2025.03.15"></script>
+  <script src="./src/class-input.js?2025.03.15"></script>
 
-  <script src="./src/levels-line.js?2025.03.12"></script>
-  <script src="./src/levels-line-ex.js?2025.03.12"></script>
-  <script src="./src/levels-point.js?2025.03.12"></script>
-  <script src="./src/levels-point-ex.js?2025.03.12"></script>
-  <script src="./src/levels-special.js?2025.03.12"></script>
-  <script src="./src/levels-special-ex.js?2025.03.12"></script>
+  <script src="./src/levels-line.js?2025.03.15"></script>
+  <script src="./src/levels-line-ex.js?2025.03.15"></script>
+  <script src="./src/levels-point.js?2025.03.15"></script>
+  <script src="./src/levels-point-ex.js?2025.03.15"></script>
+  <script src="./src/levels-special.js?2025.03.15"></script>
+  <script src="./src/levels-special-ex.js?2025.03.15"></script>
 
-  <script src="./src/elems.js?2025.03.12"></script>
+  <script src="./src/elems.js?2025.03.15"></script>
 
-  <script src="./src/solve.js?2025.03.12"></script>
+  <script src="./src/solve.js?2025.03.15"></script>
 
-  <script src="./src/dialog-help.js?2025.03.12"></script>
-  <script src="./src/dialog-levels.js?2025.03.12"></script>
-  <script src="./src/dialog-records.js?2025.03.12"></script>
-  <script src="./src/dialog-shapes.js?2025.03.12"></script>
+  <script src="./src/dialog-help.js?2025.03.15"></script>
+  <script src="./src/dialog-levels.js?2025.03.15"></script>
+  <script src="./src/dialog-records.js?2025.03.15"></script>
+  <script src="./src/dialog-shapes.js?2025.03.15"></script>
 
-  <script src="./src/analyze-url.js?2025.03.12"></script>
-  <script src="./src/main.js?2025.03.12"></script>
+  <script src="./src/analyze-url.js?2025.03.15"></script>
+  <script src="./src/main.js?2025.03.15"></script>
 </head>
 
 <body>
@@ -751,9 +751,6 @@
         <svg width="490" height="220">
           <rect x="2" y="2" width="486" height="216" fill="#def" stroke="skyblue" stroke-width="4" />
 
-          <g transform="translate(20,10) scale(1.5, 1.5)" id="edit-drawing-shape">
-          </g>
-
           <!-- Undoボタン -->
           <g id="button-undo-edit" class="button active-hover" transform="translate(50,116) scale(1.2,1.2)">
             <g>
@@ -790,6 +787,10 @@
 
             <!-- エラー時などに全部の軸が表示されてしまう可能性を減らす目的 -->
             <rect class="hide" x="-35" y="-35" rx="12" width="70" height="70" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+          </g>
+
+          <g transform="translate(96,16)" id="edit-drawing-shape">
+            <rect x="0" y="0" width="48" height="48" fill="none" stroke="#f80000" stroke-width="4"></rect>
           </g>
 
           <!-- 0 -->
