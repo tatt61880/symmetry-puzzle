@@ -97,6 +97,8 @@
   }
 
   function completeCheck() {
+    if (isDrawing) return;
+
     const symmetryFlagPrev = symmetryFlag;
     completeFlag = common.level.isCompleted(); // 連結した対称図形であるとき
     symmetryFlag = common.level.isSymmetry(app.states.isTarget); // 連結しているか否かに関わらず対称図形であるとき
@@ -827,6 +829,9 @@
     updateLevelVisibility();
     updateEditAxisButton();
     updateEditMode(editMode);
+    if (!editMode) {
+      completeCheck();
+    }
     drawMainSvg();
   }
 
