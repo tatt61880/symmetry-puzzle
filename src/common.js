@@ -19,6 +19,8 @@
 
   const maxW = 50;
   const maxH = 50;
+  const minEditW = 3;
+  const minEditH = 3;
   const maxEditW = 10;
   const maxEditH = 10;
   let level;
@@ -27,6 +29,8 @@
   const common = {
     maxW,
     maxH,
+    minEditW,
+    minEditH,
     maxEditW,
     maxEditH,
     level,

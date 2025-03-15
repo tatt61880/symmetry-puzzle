@@ -2133,8 +2133,8 @@
     }
 
     function addEditButton(button, onClick, color) {
-      if (button.dx === -1 && common.level.getW() <= 1) return;
-      if (button.dy === -1 && common.level.getH() <= 1) return;
+      if (button.dx === -1 && common.level.getW() <= common.minEditW) return;
+      if (button.dy === -1 && common.level.getH() <= common.minEditH) return;
       if (button.dx === 1 && common.level.getW() >= common.maxEditW) return;
       if (button.dy === 1 && common.level.getH() >= common.maxEditH) return;
 
