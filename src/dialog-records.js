@@ -225,48 +225,85 @@
     elems.records.dialog.close();
   }
 
-  async function backup() {
-    const dataText = JSON.stringify(app.savedata.getBackupData());
-    const encodedData = btoa(encodeURIComponent(dataText));
-    const obj = {
-      confirm: 'yyyymmdd',
-      data: encodedData,
-    };
-    const clipboardText = JSON.stringify(obj);
+  function getYyyymmdd() {
+    const yyyymmdd = (() => {
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return year + month + day;
+    })();
+    return yyyymmdd;
+  }
 
-    try {
-      await navigator.clipboard.writeText(clipboardText);
-      alert('バックアップデータをクリップボードにコピーしました。\nCopied the backup data to clipboard.');
-    } catch (error) {
-      alert(error);
+  function backup() {
+    const backupData = app.savedata.getBackupData();
+    const yyyymmdd = getYyyymmdd();
+    const obj = {
+      yyyymmdd,
+      backupData,
+    };
+    const backupJsonText = JSON.stringify(obj);
+
+    const filename = `symmetry-puzzle-backup-${yyyymmdd}.json`;
+    alert(`ファイル「${filename}」を作成します。\nBackup file '${filename}' will be created.`);
+    downloadJsonAsFile(filename, backupJsonText);
+
+    function downloadJsonAsFile(fileName, fileContent) {
+      const blob = new Blob([fileContent], { type: 'application/json' });
+
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+      link.click();
+
+      URL.revokeObjectURL(link.href);
     }
   }
 
   async function restore() {
-    const clipboardText = await navigator.clipboard.readText();
-    try {
-      const yyyymmdd = (() => {
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return year + month + day;
-      })();
+    const hiddenFileInput = document.createElement('input');
+    hiddenFileInput.type = 'file';
+    hiddenFileInput.accept = '.json';
+    hiddenFileInput.style.display = 'none';
 
-      const parsedObj = JSON.parse(clipboardText);
-      if (parsedObj?.confirm === yyyymmdd && parsedObj?.data !== undefined) {
-        const decodedText = decodeURIComponent(atob(parsedObj.data));
-        const restoreData = JSON.parse(decodedText);
-        app.savedata.restoreBackupData(restoreData);
-        updateTable();
-        alert('リストアを実行しました。\nData restored.');
-      } else if (parsedObj?.confirm !== undefined && typeof parsedObj.confirm === 'string' && parsedObj?.data !== undefined) {
-        alert(`失敗しました。\nFailed.\n\nconfirm の値を '${parsedObj?.confirm}' から '${yyyymmdd}' に書き換えて再実行してください。`);
-      } else {
-        alert('データ形式が想定外です。\nThe data format is invalid.');
-      }
-    } catch (error) {
-      alert(`Error: ${error}`);
+    function readLocalFile(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsText(file);
+      });
     }
+
+    hiddenFileInput.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      try {
+        try {
+          const jsonText = await readLocalFile(file);
+
+          const obj = JSON.parse(jsonText);
+          if (obj?.yyyymmdd !== undefined && obj?.backupData !== undefined) {
+            app.savedata.restoreBackupData(obj.backupData);
+            updateTable();
+            alert('リストアを実行しました。\nData restored.');
+          } else {
+            alert('データ形式が想定外です。\nThe data format is invalid.');
+          }
+        } catch (error) {
+          alert(`Error: ${error}`);
+        }
+      } catch (error) {
+        alert('Error: ファイル読み込み時にエラーが発生しました。');
+      } finally {
+        // 同じファイルを再度選択しても change イベントが発火するようにするために初期化します。
+        hiddenFileInput.value = '';
+      }
+    });
+
+    document.body.appendChild(hiddenFileInput);
+    hiddenFileInput.click();
   }
 })();
