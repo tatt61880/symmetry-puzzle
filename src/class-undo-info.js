@@ -49,9 +49,8 @@
     getReplayStr() {
       let replayStr = '';
       for (let i = 1; i <= this.#undoIdx; ++i) {
-        if (this.undoArray[i].dir !== null) {
-          replayStr += this.undoArray[i].dir;
-        }
+        if (this.undoArray[i].dir === null) return null;
+        replayStr += this.undoArray[i].dir;
       }
       return replayStr;
     }

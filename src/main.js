@@ -829,6 +829,9 @@
     updateLevelVisibility();
     updateEditAxisButton();
     updateEditMode(editMode);
+    if (!editMode) {
+      completeCheck();
+    }
     drawMainSvg();
   }
 
@@ -1972,7 +1975,8 @@
 
         gg.appendChild(text);
         g.appendChild(gg);
-        {
+
+        if (validStepCheck()) {
           const levelObj = common.level.getLevelObj();
           const replayStr = undoInfo.getReplayStr();
 
@@ -2164,6 +2168,18 @@
       });
       text.setAttribute('font-size', `${blockSize * 0.7}px`);
       g.appendChild(text);
+    }
+
+    // リプレイ用文字列が正常か否かのチェック。
+    function validStepCheck() {
+      const replayStr = undoInfo.getReplayStr();
+      if (replayStr === null) {
+        return false;
+      }
+
+      // TODO: クリアできるリプレイデータになっているかチェック。
+
+      return true;
     }
   }
 
