@@ -829,9 +829,6 @@
     updateLevelVisibility();
     updateEditAxisButton();
     updateEditMode(editMode);
-    if (!editMode) {
-      completeCheck();
-    }
     drawMainSvg();
   }
 
@@ -2310,13 +2307,11 @@
     if (!isRemoving && common.level.getState(x, y) !== drawingState) {
       common.level.applyState(x, y, drawingState);
       addUndo(null);
-      completeCheck();
       updateLinkUrl();
       drawMainSvg();
     } else if (isRemoving && common.level.getState(x, y) !== app.states.none) {
       common.level.applyState(x, y, app.states.none);
       addUndo(null);
-      completeCheck();
       updateLinkUrl();
       drawMainSvg();
     }
