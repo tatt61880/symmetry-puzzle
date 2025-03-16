@@ -398,9 +398,7 @@
           text.setAttribute('text-anchor', 'start');
           g.appendChild(text);
         }
-      }
 
-      {
         // 形状数
         {
           const levelObj = level.getLevelObj();
