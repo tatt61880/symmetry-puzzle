@@ -97,7 +97,7 @@
   }
 
   function completeCheck() {
-    if (isDrawing) return;
+    if (editMode) return;
 
     const symmetryFlagPrev = symmetryFlag;
     completeFlag = common.level.isCompleted(); // 連結した対称図形であるとき
