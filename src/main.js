@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.16';
+  const VERSION_TEXT = 'v' + '2025.03.17';
 
   const app = window.app;
   Object.freeze(app);
@@ -1073,23 +1073,7 @@
     replaceUrlTitle();
 
     // ある程度クリアするまで連番モードを隠します。
-    if (common.isShownElem(elems.title.buttonNormalsTr)) {
-      common.showElem(elems.title.buttonToggleToNumDiv);
-      common.showElem(elems.records.numMode);
-      for (const [levelsList, mode] of [
-        [app.levelsLine, app.Level.CHECK_MODE.LINE],
-        [app.levelsPoint, app.Level.CHECK_MODE.POINT],
-        [app.levelsSpecial, app.Level.CHECK_MODE.SPECIAL],
-      ]) {
-        const levels = new app.Levels({ levelsList, levelsListEx: undefined });
-        const levelObj = levels.getLevelObj(1);
-        const highestScore = app.savedata.getHighestScore(levelObj, mode);
-        if (highestScore === null) {
-          common.hideElem(elems.title.buttonToggleToNumDiv);
-          common.hideElem(elems.records.numMode);
-        }
-      }
-    }
+    common.updateTitleNumModeButton();
   }
 
   function onloadId(id_, idFlag = true) {

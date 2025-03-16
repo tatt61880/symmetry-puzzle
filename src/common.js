@@ -27,6 +27,7 @@
   let levels;
 
   const common = {
+    // 変数
     maxW,
     maxH,
     minEditW,
@@ -39,6 +40,7 @@
     checkMode,
     loadLevelById,
 
+    // 関数
     isTouchDevice,
     isShownElem,
     isHiddenElem,
@@ -48,6 +50,7 @@
     inactiveElem,
     getStepColor,
     createCrown,
+    updateTitleNumModeButton,
   };
 
   function isTouchDevice() {
@@ -118,6 +121,27 @@
         y,
         fill: color,
       });
+    }
+  }
+
+  // タイトル画面の連番モード用のボタンを表示するか否かを判定して更新します。
+  function updateTitleNumModeButton() {
+    if (common.isShownElem(app.elems.title.buttonNormalsTr)) {
+      common.showElem(app.elems.title.buttonToggleToNumDiv);
+      common.showElem(app.elems.records.numMode);
+      for (const [levelsList, mode] of [
+        [app.levelsLine, app.Level.CHECK_MODE.LINE],
+        [app.levelsPoint, app.Level.CHECK_MODE.POINT],
+        [app.levelsSpecial, app.Level.CHECK_MODE.SPECIAL],
+      ]) {
+        const levels = new app.Levels({ levelsList, levelsListEx: undefined });
+        const levelObj = levels.getLevelObj(1);
+        const highestScore = app.savedata.getHighestScore(levelObj, mode);
+        if (highestScore === null) {
+          common.hideElem(app.elems.title.buttonToggleToNumDiv);
+          common.hideElem(app.elems.records.numMode);
+        }
+      }
     }
   }
 

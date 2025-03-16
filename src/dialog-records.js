@@ -287,6 +287,7 @@
           const obj = JSON.parse(jsonText);
           if (obj?.yyyymmdd !== undefined && obj?.backupData !== undefined) {
             app.savedata.restoreBackupData(obj.backupData);
+            app.common.updateTitleNumModeButton();
             updateTable();
             alert('リストアを実行しました。\nData restored.');
           } else {
