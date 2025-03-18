@@ -20,6 +20,7 @@
   #dialog-levels-div {
     padding: 5px;
     padding-bottom: 7px;
+    background-color: #ddeeff;
   }
 
   #dialog-levels-top {
@@ -38,6 +39,10 @@
       font-size: 1.5rem;
       font-weight: bold;
       color: #333388;
+    }
+
+    #text-display {
+      color: #7799bb;
     }
 
     #toggle-div {
@@ -65,8 +70,8 @@
         height: 100%;
         margin: 5px;
         cursor: pointer;
-        background: #eeeeee;
-        border: 3px solid #999999;
+        background: #f1f8ff;
+        border: 4px solid #99ccff;
         border-radius: 20%;
 
         svg {
