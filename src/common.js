@@ -41,6 +41,7 @@
     loadLevelById,
 
     // 関数
+    applyLang,
     isTouchDevice,
     isShownElem,
     isHiddenElem,
@@ -52,6 +53,31 @@
     createCrown,
     updateTitleNumModeButton,
   };
+
+  function applyLang(lang) {
+    window.getSelection().removeAllRanges();
+
+    for (const elem of document.getElementsByClassName('setting-lang-button')) {
+      elem.classList.remove('active');
+    }
+    const langButton = document.getElementById(`setting-lang-${lang}`);
+    langButton.classList.add('active');
+    for (const elem of document.getElementsByClassName('translatable')) {
+      elem.classList.add('hide-lang');
+    }
+
+    for (const elem of document.getElementsByClassName(`translatable ${lang}`)) {
+      elem.classList.remove('hide-lang');
+    }
+
+    for (const elem of document.getElementsByClassName(`translatable-toggle`)) {
+      if (elem instanceof SVGTextElement) {
+        elem.textContent = elem.dataset[lang];
+      } else {
+        elem.innerText = elem.dataset[lang];
+      }
+    }
+  }
 
   function isTouchDevice() {
     return document.ontouchstart !== undefined;

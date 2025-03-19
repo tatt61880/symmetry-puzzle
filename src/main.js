@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.19';
+  const VERSION_TEXT = 'v' + '2025.03.20';
 
   const app = window.app;
   Object.freeze(app);
@@ -871,33 +871,8 @@
     }, 100);
   }
 
-  function applyLang(lang) {
-    window.getSelection().removeAllRanges();
-
-    for (const elem of document.getElementsByClassName('setting-lang-button')) {
-      elem.classList.remove('active');
-    }
-    const langButton = document.getElementById(`setting-lang-${lang}`);
-    langButton.classList.add('active');
-    for (const elem of document.getElementsByClassName('translatable')) {
-      elem.classList.add('hide-lang');
-    }
-
-    for (const elem of document.getElementsByClassName(`translatable ${lang}`)) {
-      elem.classList.remove('hide-lang');
-    }
-
-    for (const elem of document.getElementsByClassName(`translatable-toggle`)) {
-      if (elem instanceof SVGTextElement) {
-        elem.textContent = elem.dataset[lang];
-      } else {
-        elem.innerText = elem.dataset[lang];
-      }
-    }
-  }
-
   function selectLang(lang) {
-    applyLang(lang);
+    common.applyLang(lang);
     app.savedata.saveLang(lang);
   }
 
@@ -983,7 +958,7 @@
       app.savedata.saveLang(lang);
       app.dialog.help.show();
     }
-    applyLang(lang);
+    common.applyLang(lang);
   }
 
   function onloadApp() {

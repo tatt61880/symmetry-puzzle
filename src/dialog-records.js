@@ -246,7 +246,12 @@
     const backupJsonText = JSON.stringify(obj);
 
     const filename = `symmetry-puzzle-backup-${yyyymmdd}.json`;
-    alert(`ファイル「${filename}」を作成します。\nBackup file '${filename}' will be created.`);
+    const lang = app.savedata.loadLang();
+    if (lang === 'ja') {
+      alert(`ファイル「${filename}」を作成します。`);
+    } else {
+      alert(`Backup file '${filename}' will be created.`);
+    }
     downloadJsonAsFile(filename, backupJsonText);
 
     function downloadJsonAsFile(fileName, fileContent) {
@@ -281,23 +286,32 @@
       if (!file) return;
 
       try {
-        try {
-          const jsonText = await readLocalFile(file);
+        const jsonText = await readLocalFile(file);
 
-          const obj = JSON.parse(jsonText);
-          if (obj?.yyyymmdd !== undefined && obj?.backupData !== undefined) {
-            app.savedata.restoreBackupData(obj.backupData);
-            app.common.updateTitleNumModeButton();
-            updateTable();
-            alert('リストアを実行しました。\nData restored.');
+        const obj = JSON.parse(jsonText);
+        if (obj?.yyyymmdd !== undefined && obj?.backupData !== undefined) {
+          const langPrev = app.savedata.loadLang();
+          app.savedata.restoreBackupData(obj.backupData);
+          const lang = app.savedata.loadLang();
+          app.common.applyLang(lang);
+          app.common.updateTitleNumModeButton();
+          updateTable();
+
+          if (langPrev === 'ja') {
+            alert('リストアを実行しました。');
           } else {
-            alert('データ形式が想定外です。\nThe data format is invalid.');
+            alert('Data restored.');
           }
-        } catch (error) {
-          alert(`Error: ${error}`);
+        } else {
+          const lang = app.savedata.loadLang();
+          if (lang === 'ja') {
+            alert('データ形式が想定外です。');
+          } else {
+            alert('The data format is invalid.');
+          }
         }
       } catch (error) {
-        alert('Error: ファイル読み込み時にエラーが発生しました。');
+        alert(`Error: ${error}`);
       } finally {
         // 同じファイルを再度選択しても change イベントが発火するようにするために初期化します。
         hiddenFileInput.value = '';
