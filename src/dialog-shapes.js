@@ -211,14 +211,15 @@
 
       {
         // 背景
-        const fill = shapeStr !== null ? '#ffffff' : '#ffeeee';
+        const fill = '#ffffff';
+        const stroke = '#ffbb77';
         const rect = app.svg.createRect(1, {
           x: 0,
           y: 0,
           width: SELECT_WIDTH,
           height: SELECT_HEIGHT,
           fill,
-          stroke: '#cccccc',
+          stroke,
         });
         rect.setAttribute('rx', '5');
         rect.setAttribute('ry', '5');
