@@ -259,11 +259,11 @@
       {
         const text = app.svg.createText(1, {
           x: LEVEL_SELECT_WIDTH / 2,
-          y: 12,
+          y: 14,
           text: num,
           fill: 'black',
         });
-        text.setAttribute('font-size', '16px');
+        text.setAttribute('font-size', '20px');
         g.appendChild(text);
       }
 
@@ -354,11 +354,11 @@
       {
         const text = app.svg.createText(1, {
           x: LEVEL_SELECT_WIDTH / 2,
-          y: 12,
+          y: 14,
           text: id,
           fill: 'black',
         });
-        text.setAttribute('font-size', '16px');
+        text.setAttribute('font-size', '20px');
         g.appendChild(text);
       }
 
