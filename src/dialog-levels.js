@@ -120,19 +120,11 @@
     let page = page_;
     window.getSelection().removeAllRanges();
 
-    if (!elems.levels.crown.shortest.hasChildNodes()) {
-      elems.levels.crown.shortest.appendChild(app.common.createCrown(38, 0.1, 0.1, 1, 1));
-    }
-    if (!elems.levels.crown.cleared.hasChildNodes()) {
-      elems.levels.crown.cleared.appendChild(app.common.createCrown(38, 0.1, 0.1, 1, 0));
-    }
-    if (!elems.levels.crown.numMode.hasChildNodes()) {
-      elems.levels.crown.numMode.appendChild(app.common.createCrown(38, 0.1, 0.1, 1, undefined));
+    if (!elems.levels.display.crown.hasChildNodes()) {
+      elems.levels.display.crown.appendChild(app.common.createCrown(38, 0.1, 0.1, 1, undefined));
     }
 
-    const largeCrownForShortestFlag = elems.levels.checkbox.shortest.checked;
-    const largeCrownForClearedFlag = elems.levels.checkbox.cleared.checked;
-    const largeCrownForNumModeFlag = elems.levels.checkbox.numMode.checked;
+    const largeCrownFlag = elems.levels.display.checkbox.checked;
 
     elems.levels.dialogSvg.innerHTML = '';
 
@@ -291,7 +283,7 @@
       const highestScore = app.savedata.getHighestScoreForNumMode(num, mode);
 
       let hideDetailFlag = false;
-      if (largeCrownForNumModeFlag) {
+      if (largeCrownFlag) {
         hideDetailFlag = true;
       }
 
@@ -329,11 +321,7 @@
 
       let hideDetailFlag = false;
       if (highestScore !== null) {
-        if (highestScore <= bestStep) {
-          if (largeCrownForShortestFlag) hideDetailFlag = true;
-        } else {
-          if (largeCrownForClearedFlag) hideDetailFlag = true;
-        }
+        if (largeCrownFlag) hideDetailFlag = true;
       }
 
       const g = app.svg.createG();

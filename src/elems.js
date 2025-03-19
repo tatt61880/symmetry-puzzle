@@ -122,22 +122,12 @@
       dialog: 'dialog-levels',
       dialogDiv: 'dialog-levels-div',
       close: 'dialog-levels-close',
-      crown: {
-        shortest: 'crown-shortest-levels',
-        cleared: 'crown-cleared-levels',
-        numMode: 'crown-num-mode-levels',
+      display: {
+        button: 'display-button',
+        checkbox: 'display-checkbox',
+        crown: 'display-crown',
       },
       toggleDiv: 'toggle-div',
-      buttons: {
-        shortest: 'show-shortest-levels-button',
-        cleared: 'show-cleared-levels-button',
-        numMode: 'show-num-mode-levels-button',
-      },
-      checkbox: {
-        shortest: 'show-shortest-levels',
-        cleared: 'show-cleared-levels',
-        numMode: 'show-num-mode-levels',
-      },
       dialogSvg: 'dialog-levels-svg',
       buttonSvg: 'button-levels-svg',
       prev: 'button-levels-prev',
