@@ -21,7 +21,7 @@
       r: '11221',
       step: 5,
       shapes: 1,
-      subject: 'はじまり',
+      subject: '点対称のはじまり',
     },
     {
       w: 5,
