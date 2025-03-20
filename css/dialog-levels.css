@@ -28,7 +28,7 @@
     align-items: center;
 
     #dialog-levels-close-svg {
-      margin-left: 10px;
+      margin: 0 10px 5px;
     }
 
     .spacer {
