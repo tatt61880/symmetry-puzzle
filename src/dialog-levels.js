@@ -24,7 +24,7 @@
 
   const elems = app.elems;
 
-  const levelSelectId = 'level-select';
+  const levelSelectId = 'level-select-id';
 
   const LEVEL_SELECT_NUM_PER_PAGE = 10;
   const LEVEL_SELECT_HEIGHT = 125;
@@ -272,7 +272,9 @@
         const y = Math.floor(((num - 1) % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT + 1;
         g.setAttribute('transform', `translate(${x},${y})`);
       }
+
       g.dataset.id = num;
+      g.classList.add('button', 'active-hover');
       g.addEventListener('click', function () {
         const id = Number(g.dataset.id);
         app.common.loadLevelById(id);
@@ -427,7 +429,9 @@
         const y = Math.floor((count % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT + 1;
         g.setAttribute('transform', `translate(${x},${y})`);
       }
+
       g.dataset.id = id;
+      g.classList.add('button', 'active-hover');
       g.addEventListener('click', function () {
         const id = Number(g.dataset.id);
         app.common.loadLevelById(id);

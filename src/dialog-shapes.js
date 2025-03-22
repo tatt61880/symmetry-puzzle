@@ -26,7 +26,7 @@
   const elems = app.elems;
   const common = app.common;
 
-  const shapeSelectId = 'shapes-select';
+  const shapeSelectId = 'shapes-select-id';
 
   const SELECT_NUM_PER_PAGE = 10;
   const SELECT_HEIGHT = 125;
@@ -267,6 +267,7 @@
         {
           g.dataset.r = r;
           g.classList.add('shape-select');
+          g.classList.add('button', 'active-hover');
           g.addEventListener('click', function () {
             selectShape(g.dataset.r);
             close();
