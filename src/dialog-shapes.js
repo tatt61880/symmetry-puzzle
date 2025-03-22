@@ -233,7 +233,7 @@
           levelObj: { w, h, s: shapeStr },
           checkMode,
         });
-        const yMargin = 20;
+        const yMargin = 16;
         const blockSize = Math.min((SELECT_WIDTH - 8) / w, (SELECT_HEIGHT - yMargin - 8) / h, (SELECT_HEIGHT - yMargin - 8) / 5);
         const levelSvgG = level.createSvgG({
           blockSize,
@@ -251,6 +251,7 @@
         }
         g.appendChild(levelSvgG);
 
+        // 手数情報
         {
           const text = app.svg.createText(1, {
             x: SELECT_WIDTH / 2,
