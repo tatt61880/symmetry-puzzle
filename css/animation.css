@@ -852,12 +852,16 @@
 
 @keyframes animation-next-level {
   0%,
-  80% {
+  70% {
     opacity: 0;
   }
 
-  100% {
+  99.9% {
     opacity: 1;
+  }
+
+  100% {
+    opacity: none;
   }
 }
 
