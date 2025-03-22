@@ -169,14 +169,14 @@
       const yyyymmdd = getYyyymmdd();
 
       const data = {
-        yyyymmdd: `${yyyymmdd}`,
+        yyyymmdd,
         backupData: savedata.getBackupData(),
       };
 
       const savedataText = JSON.stringify(data);
 
       const fs = require('fs');
-      fs.writeFileSync('backup.json', savedataText);
+      fs.writeFileSync(`symmetry-puzzle-solve-${yyyymmdd}.json`, savedataText);
     }
   }
 
