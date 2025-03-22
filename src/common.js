@@ -71,7 +71,9 @@
     }
 
     for (const elem of document.getElementsByClassName(`translatable-toggle`)) {
-      if (elem instanceof SVGTextElement) {
+      if (elem.tagName === 'A') {
+        elem.setAttribute('href', elem.dataset[lang]);
+      } else if (elem instanceof SVGTextElement) {
         elem.textContent = elem.dataset[lang];
       } else {
         elem.innerText = elem.dataset[lang];
