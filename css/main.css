@@ -94,12 +94,12 @@ div.user-select-none {
 }
 
 .active-hover:hover {
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 .active-elem,
 .active-hover:active:hover {
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 svg {
