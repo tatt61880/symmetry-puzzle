@@ -4,7 +4,6 @@
 
   let app = {};
   let options;
-  let checkMode = null;
 
   if (isBrowser) {
     app = window.app;
@@ -56,57 +55,66 @@
     savedata = new app.Savedata();
   }
 
-  if (!isBrowser) {
-    switch (options.mode) {
-      case 'line':
-        checkMode = app.Level.CHECK_MODE.LINE;
-        break;
-      case 'point':
-        checkMode = app.Level.CHECK_MODE.POINT;
-        break;
-      case 'special':
-        checkMode = app.Level.CHECK_MODE.SPECIAL;
-        break;
-    }
-  }
-
   const levelId = options.id;
   if (isBrowser) {
     1;
   } else if (levelId !== undefined) {
-    let levelsList;
-    let levelsListEx;
-    switch (checkMode) {
-      case app.Level.CHECK_MODE.LINE:
-        levelsList = app.levelsLine;
-        levelsListEx = app.levelsLineEx;
+    const checkModes = [];
+
+    switch (options.mode) {
+      case 'line':
+        checkModes.push(app.Level.CHECK_MODE.LINE);
         break;
-      case app.Level.CHECK_MODE.POINT:
-        levelsList = app.levelsPoint;
-        levelsListEx = app.levelsPointEx;
+      case 'point':
+        checkModes.push(app.Level.CHECK_MODE.POINT);
         break;
-      case app.Level.CHECK_MODE.SPECIAL:
-        levelsList = app.levelsSpecial;
-        levelsListEx = app.levelsSpecialEx;
+      case 'special':
+        checkModes.push(app.Level.CHECK_MODE.SPECIAL);
         break;
-      default:
-        app.console.error('mode error');
-        return;
+      case 'all':
+        checkModes.push(app.Level.CHECK_MODE.LINE);
+        checkModes.push(app.Level.CHECK_MODE.POINT);
+        checkModes.push(app.Level.CHECK_MODE.SPECIAL);
+        break;
     }
 
-    const levels = new app.Levels({ levelsList, levelsListEx });
-
-    if (levelId === 'all') {
-      const allLevels = levels.getAllLevels();
-      for (const { levelId, levelObj } of allLevels) {
-        if (levelId === 0) continue;
-        solveLevelObj(levelId, levelObj);
+    for (const checkMode of checkModes) {
+      let levelsList;
+      let levelsListEx;
+      switch (checkMode) {
+        case app.Level.CHECK_MODE.LINE:
+          levelsList = app.levelsLine;
+          levelsListEx = app.levelsLineEx;
+          break;
+        case app.Level.CHECK_MODE.POINT:
+          levelsList = app.levelsPoint;
+          levelsListEx = app.levelsPointEx;
+          break;
+        case app.Level.CHECK_MODE.SPECIAL:
+          levelsList = app.levelsSpecial;
+          levelsListEx = app.levelsSpecialEx;
+          break;
+        default:
+          app.console.error('mode error');
+          return;
       }
-    } else {
-      const levelObj = levels.getLevelObj(levelId);
-      solveLevelObj(levelId, levelObj);
+
+      const levels = new app.Levels({ levelsList, levelsListEx });
+
+      if (levelId === 'all') {
+        const allLevels = levels.getAllLevels();
+        for (const { levelId, levelObj } of allLevels) {
+          if (levelId === 0) continue;
+          solveLevelObj(levelId, levelObj, checkMode);
+        }
+      } else {
+        const levelObj = levels.getLevelObj(levelId);
+        solveLevelObj(levelId, levelObj, checkMode);
+      }
     }
-  } else if (options.w !== undefined) {
+  } else if (options.w === undefined) {
+    // test.js から呼ぶとここを通ります。
+  } else {
     if (options.w === undefined) {
       app.console.error('Error: w === undefined');
       process.exitCode = 1;
@@ -137,7 +145,22 @@
       return;
     }
     const levelObj = { w, h, s, axis };
-    solveLevelObj(null, levelObj);
+
+    let checkMode = null;
+
+    switch (options.mode) {
+      case 'line':
+        checkMode = app.Level.CHECK_MODE.LINE;
+        break;
+      case 'point':
+        checkMode = app.Level.CHECK_MODE.POINT;
+        break;
+      case 'special':
+        checkMode = app.Level.CHECK_MODE.SPECIAL;
+        break;
+    }
+
+    solveLevelObj(null, levelObj, checkMode);
   }
 
   if (!isBrowser) {
@@ -168,7 +191,7 @@
     return yyyymmdd;
   }
 
-  function solveLevelObj(levelId, levelObj) {
+  function solveLevelObj(levelId, levelObj, checkMode) {
     if (levelObj === undefined) {
       app.console.error(`Error: [LEVEL ${levelId}] levelObj === undefined`);
       process.exitCode = 1;
@@ -247,6 +270,8 @@
       const dxs = [0, 1, 0, -1, 0];
       const dys = [-1, 0, 1, 0, 0];
 
+      const checkMode = level.getCheckMode();
+
       const userMax = level.getMaxValue(app.states.isUser);
 
       const completedFlag = level.isCompleted();
@@ -258,11 +283,14 @@
       const shapeStrMap = new Map();
       const stateStrMap = new Map();
       let replayStr = '';
+
       {
         const stateStr = level.getS();
         stateStrMap.set(stateStr, replayStr);
       }
+
       let step = 0;
+
       for (const dirChar of prefixStep) {
         step++;
         const dir = Number(dirChar);
