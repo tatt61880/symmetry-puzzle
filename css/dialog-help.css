@@ -282,6 +282,34 @@
     justify-content: center;
   }
 
+  .share-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 48px;
+    margin: 5px;
+    border-radius: 12px;
+
+    &.share-button-x {
+      background-color: black;
+
+      img {
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    &.share-button-bluesky {
+      background-color: #0085ff;
+
+      svg {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+
   .tatt61880-icon {
     width: 48px;
     height: 48px;
