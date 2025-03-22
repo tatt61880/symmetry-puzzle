@@ -1,10 +1,15 @@
 (function () {
   'use strict';
   const isBrowser = typeof window !== 'undefined';
-  if (!isBrowser) return;
 
-  const app = window.app;
-  if (app?.savedata) return;
+  let app = {};
+  if (isBrowser) {
+    app = window.app;
+    if (app?.savedata) return;
+  } else {
+    app.Level = require('./class-level.js');
+  }
+
   console.assert(app?.Level !== undefined);
 
   const LOCAL_STORAGE_KEY = 'tatt61880-symmetry-puzzle';
@@ -27,7 +32,9 @@
     }
 
     #load() {
-      this.data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+      if (isBrowser) {
+        this.data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+      }
 
       if (this.data === null) {
         this.data = {};
@@ -44,6 +51,7 @@
     }
 
     #save() {
+      if (!isBrowser) return;
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.data));
     }
 
@@ -123,7 +131,7 @@
     }
 
     #getLevelKey(levelObj, checkMode) {
-      if (app.common.levelNum === null || app.common.level === null) {
+      if (!isBrowser || app.common.levelNum === null || app.common.level === null) {
         return app.Level.getUrlQuery(levelObj, checkMode);
       } else {
         const mode = app.Level.getCheckModeStr(app.common.level.getCheckMode());
@@ -153,5 +161,7 @@
     window.app = window.app || {};
     const savedata = new Savedata();
     window.app.savedata = savedata;
+  } else {
+    module.exports = Savedata;
   }
 })();

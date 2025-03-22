@@ -20,6 +20,7 @@
     app.states = require('./states.js');
     app.Level = require('./class-level.js');
     app.Levels = require('./class-levels.js');
+    app.Savedata = require('./class-savedata.js');
 
     app.levelsLine = require('./levels-line.js');
     app.levelsLineEx = require('./levels-line-ex.js');
@@ -43,10 +44,16 @@
       .option('-d, --draw', 'draw target shape')
       .option('-n, --normalize', 'normalize state')
       .option('-m, --max <max-step>', 'max step', Number)
-      .option('-t, --time <time-limit>', 'time limit', Number);
+      .option('-t, --time <time-limit>', 'time limit', Number)
+      .option('--backup', 'create backup');
 
     program.parse();
     options = program.opts();
+  }
+
+  let savedata;
+  if (!isBrowser) {
+    savedata = new app.Savedata();
   }
 
   if (!isBrowser) {
@@ -131,6 +138,34 @@
     }
     const levelObj = { w, h, s, axis };
     solveLevelObj(null, levelObj);
+  }
+
+  if (!isBrowser) {
+    if (options.backup) {
+      savedata.saveLang('ja');
+      const yyyymmdd = getYyyymmdd();
+
+      const data = {
+        yyyymmdd: `${yyyymmdd}`,
+        backupData: savedata.getBackupData(),
+      };
+
+      const savedataText = JSON.stringify(data);
+
+      const fs = require('fs');
+      fs.writeFileSync('backup.json', savedataText);
+    }
+  }
+
+  function getYyyymmdd() {
+    const yyyymmdd = (() => {
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return year + month + day;
+    })();
+    return yyyymmdd;
   }
 
   function solveLevelObj(levelId, levelObj) {
@@ -328,6 +363,17 @@
                     app.console.log(shapeStr);
                     app.console.info('*/');
                   }
+
+                  if (options.backup) {
+                    if (shapeStrMap.size === 1) {
+                      // ステップデータを記録
+                      savedata.saveSteps(level.getLevelObj(), checkMode, replayStr);
+                    }
+
+                    // 形状データを記録
+                    const shape = level.getTargetShapeForSavedata();
+                    savedata.saveShape(level.getLevelObj(), checkMode, shape, replayStr);
+                  }
                 } else {
                   if (options.draw) {
                     const shapeId = shapeStrMap.get(shapeStr);
@@ -335,6 +381,14 @@
                   }
                 }
               } else {
+                if (options.backup) {
+                  // ステップデータを記録
+                  savedata.saveSteps(level.getLevelObj(), checkMode, replayStr);
+
+                  // 形状データを記録
+                  const shape = level.getTargetShapeForSavedata();
+                  savedata.saveShape(level.getLevelObj(), checkMode, shape, replayStr);
+                }
                 return { replayStr };
               }
             } else {
