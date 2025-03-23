@@ -1,11 +1,11 @@
 @charset "UTF-8";
 
 :root {
-  --animation-move-transform: none;
-  --animation-move-sub-transform: none;
-  --animation-duration: none;
-  --animation-duration-shadow: none;
-  --animation-duration-symmetry: none;
+  --animation-move-transform: translate(0, 0);
+  --animation-move-sub-transform: translate(0, 0);
+  --animation-duration: 1000ms;
+  --animation-duration-shadow: 1000ms;
+  --animation-duration-symmetry: 1000ms;
   --animation-origin: 0 0;
   --animation-axis-1: 1;
   --animation-axis-2: 2;
@@ -13,8 +13,8 @@
   --animation-axis-4: 4;
   --animation-axis-8: 8;
   --animation-illegal-move: translate(0, 0);
-  --animation-jump-small: none;
-  --animation-jump: none;
+  --animation-jump-small: translate(0, 0);
+  --animation-jump: translate(0, 0);
 }
 
 /* Blocks jumping animation */
