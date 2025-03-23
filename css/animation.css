@@ -863,7 +863,7 @@
   }
 
   100% {
-    opacity: revert;
+    opacity: revert-layer;
   }
 }
 
