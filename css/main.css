@@ -84,6 +84,7 @@ img.check-mode {
 }
 
 div.user-select-none {
+  cursor: default;
   -webkit-user-select: none; /* Safari 対応 */
   user-select: none;
 }
