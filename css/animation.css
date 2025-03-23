@@ -788,7 +788,7 @@
 
 .axis-2-1 {
   animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-2));
-  animation-delay: 0;
+  animation-delay: 0s;
 }
 
 .axis-2-2 {
@@ -808,7 +808,7 @@
 
 .axis-4-1 {
   animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-4) * 0.25);
-  animation-delay: 0;
+  animation-delay: 0s;
 }
 
 .axis-4-2 {
@@ -863,7 +863,7 @@
   }
 
   100% {
-    opacity: revert-layer;
+    /* opacity */
   }
 }
 
