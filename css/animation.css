@@ -15,6 +15,7 @@
   --animation-illegal-move: translate(0, 0);
   --animation-jump-small: translate(0, 0);
   --animation-jump: translate(0, 0);
+  --animation-jump-count: 1;
 }
 
 /* Blocks jumping animation */
