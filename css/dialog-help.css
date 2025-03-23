@@ -282,6 +282,10 @@
     justify-content: center;
   }
 
+  .share-button-div {
+    margin: 5px;
+  }
+
   /* SNS シェアボタン */
   .share-button {
     display: flex;
