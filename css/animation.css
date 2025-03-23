@@ -13,6 +13,8 @@
   --animation-axis-4: 4;
   --animation-axis-8: 8;
   --animation-illegal-move: translate(0, 0);
+  --animation-jump-small: none;
+  --animation-jump: none;
 }
 
 /* Blocks jumping animation */
