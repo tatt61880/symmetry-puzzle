@@ -261,7 +261,7 @@
           x: LEVEL_SELECT_WIDTH / 2,
           y: 14,
           text: num,
-          fill: 'black',
+          fill: '#303080',
         });
         text.setAttribute('font-size', '20px');
         g.appendChild(text);
@@ -358,7 +358,7 @@
           x: LEVEL_SELECT_WIDTH / 2,
           y: 14,
           text: id,
-          fill: 'black',
+          fill: '#303080',
         });
         text.setAttribute('font-size', '20px');
         g.appendChild(text);
