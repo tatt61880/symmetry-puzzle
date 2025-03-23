@@ -863,7 +863,7 @@
   }
 
   100% {
-    opacity: none;
+    opacity: revert;
   }
 }
 
