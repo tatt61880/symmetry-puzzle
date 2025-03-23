@@ -57,6 +57,8 @@
   function applyLang(lang) {
     window.getSelection().removeAllRanges();
 
+    document.documentElement.setAttribute('lang', lang);
+
     for (const elem of document.getElementsByClassName('setting-lang-button')) {
       elem.classList.remove('active');
     }
