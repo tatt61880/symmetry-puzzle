@@ -282,6 +282,7 @@
     justify-content: center;
   }
 
+  /* SNS シェアボタン */
   .share-button {
     display: flex;
     align-items: center;
@@ -291,8 +292,9 @@
     margin: 5px;
     border-radius: 12px;
 
+    /* X */
     &.share-button-x {
-      background-color: black;
+      background-color: #000000;
 
       svg {
         width: 40px;
@@ -300,6 +302,7 @@
       }
     }
 
+    /* Bluesky */
     &.share-button-bluesky {
       background-color: #0085ff;
 
