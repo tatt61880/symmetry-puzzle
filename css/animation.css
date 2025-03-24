@@ -849,8 +849,9 @@
 
 /* 次のレベルへ */
 #next-level:not(.hide) {
-  animation: animation-next-level linear forwards;
+  animation-name: animation-next-level;
   animation-duration: calc(var(--animation-duration-symmetry) * 2);
+  animation-timing-function: linear;
   animation-fill-mode: none;
 }
 
@@ -935,8 +936,9 @@
 .animation-icon-title,
 .animation-icon-special {
   transform-origin: center;
-  animation: animation-axis-4mm linear forwards;
+  animation-name: animation-axis-4mm;
   animation-duration: calc(var(--animation-duration-symmetry) * 2.1);
+  animation-timing-function: linear;
   animation-fill-mode: none;
 }
 
