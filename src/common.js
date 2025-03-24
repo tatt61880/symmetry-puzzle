@@ -75,8 +75,9 @@
     for (const elem of document.getElementsByClassName(`translatable-toggle`)) {
       if (elem.tagName === 'A') {
         elem.setAttribute('href', elem.dataset[lang]);
-        elem.setAttribute('title', elem.dataset[lang + 'Title']); // 例: data-ja-title
-        elem.setAttribute('area-label', elem.dataset[lang + 'Title']); // 例: data-ja-title
+        const title = elem.dataset[lang + 'Title']; // 例: data-ja-title
+        elem.setAttribute('title', title);
+        elem.setAttribute('area-label', title);
       } else if (elem instanceof SVGTextElement) {
         elem.textContent = elem.dataset[lang];
       } else {
