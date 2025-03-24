@@ -945,15 +945,19 @@
 #help-tab-line:checked + .tab > svg,
 .animation-icon-line {
   transform-origin: center;
-  animation: animation-axis-line1 linear forwards;
+  animation-name: animation-axis-line1;
   animation-duration: calc(var(--animation-duration-symmetry) * 1.4);
+  animation-timing-function: linear;
+  animation-fill-mode: none;
 }
 
 #help-tab-point:checked + .tab > svg,
 .animation-icon-point {
   transform-origin: center;
-  animation: animation-axis-point1 linear forwards;
+  animation-name: animation-axis-point1;
   animation-duration: calc(var(--animation-duration-symmetry) * 1.4);
+  animation-timing-function: linear;
+  animation-fill-mode: none;
 }
 
 @keyframes animation-axis-4mm {
