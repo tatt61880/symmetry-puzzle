@@ -8,25 +8,12 @@
 html {
   font-size: 16px;
   touch-action: manipulation;
-
-  /*
-  -webkit-text-size-adjust: 100%;
-  */
 }
 
 body {
   margin: 0;
   font-family: 'Kosugi Maru', 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
   background-color: #ccffff;
-
-  /*
-  font-feature-settings: 'kern' 0;
-  font-kerning: none;
-  font-variant-ligatures: none;
-  letter-spacing: -0.01em;
-  word-spacing: -0.1em;
-  text-rendering: geometricPrecision;
-  */
 }
 
 #contents {
