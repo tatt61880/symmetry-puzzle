@@ -32,8 +32,9 @@
 
     .caption {
       font-size: 1.5rem;
-      font-weight: bold;
+      font-weight: normal;
       color: #ff7700;
+      text-shadow: var(--pseudo-bold-shadow);
     }
   }
 

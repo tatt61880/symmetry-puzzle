@@ -5,6 +5,14 @@
   ],
   "rules": {
     "color-hex-length": "long",
+    "value-keyword-case": [
+      "lower",
+      {
+        "ignoreKeywords": [
+          "currentColor"
+        ]
+      }
+    ],
     "property-no-vendor-prefix": [
       true,
       {

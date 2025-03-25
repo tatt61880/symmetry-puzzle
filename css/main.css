@@ -1,5 +1,10 @@
 @charset "UTF-8";
 
+:root {
+  --pseudo-bold-shadow: 0.015em 0 currentColor, -0.015em 0 currentColor, 0 0.015em currentColor, 0 -0.015em currentColor,
+    0.01em 0.01em currentColor, -0.01em 0.01em currentColor, 0.01em -0.01em currentColor, -0.01em -0.01em currentColor;
+}
+
 html {
   font-size: 16px;
   touch-action: manipulation;
@@ -43,15 +48,17 @@ header {
   .title {
     margin-left: 10px;
     font-size: 1.3rem;
-    font-weight: bold;
+    font-weight: normal;
     color: #333388;
+    text-shadow: var(--pseudo-bold-shadow);
   }
 
   .title-sub {
     margin-left: 10px;
     font-size: 0.9rem;
-    font-weight: bold;
+    font-weight: normal;
     color: #7777cc;
+    text-shadow: var(--pseudo-bold-shadow);
   }
 }
 
@@ -62,8 +69,9 @@ footer {
   justify-content: center;
   height: 26px;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: normal;
   color: #7777cc;
+  text-shadow: var(--pseudo-bold-shadow);
   background-color: #ccccff;
 }
 

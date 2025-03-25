@@ -37,8 +37,9 @@
 
     #dialog-levels-title {
       font-size: 1.5rem;
-      font-weight: bold;
+      font-weight: normal;
       color: #333388;
+      text-shadow: var(--pseudo-bold-shadow);
     }
 
     #display-text {
@@ -52,7 +53,8 @@
 
       .toggle-text {
         font-size: 1.2rem;
-        font-weight: bold;
+        font-weight: normal;
+        text-shadow: var(--pseudo-bold-shadow);
       }
 
       .toggle-button {

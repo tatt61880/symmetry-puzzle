@@ -92,6 +92,7 @@
   }
 
   .title-button-text {
-    font-weight: bold;
+    font-weight: normal;
+    text-shadow: var(--pseudo-bold-shadow);
   }
 }
