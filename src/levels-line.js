@@ -448,9 +448,9 @@
     {
       w: 7,
       h: 7,
-      s: '01000x-2xxxxx-0x00sx-xxxxxx-00000x-xxxxxxx',
-      axis: 'l4-x14',
-      r: '334333341140',
+      s: '0x0001-0xxxxx2-0xs00x-0xxxxxx-0x-xxxxxxx',
+      axis: 'l3',
+      r: '114111143340',
       step: 12,
       shapes: 2,
     },
