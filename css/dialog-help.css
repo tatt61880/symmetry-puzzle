@@ -305,11 +305,11 @@
     width: 100px;
     height: 48px;
     margin: 5px;
-    border-radius: 12px;
 
     /* X */
     &.share-button-x {
       background-color: #000000;
+      border-radius: 10px 20px;
 
       svg {
         width: 40px;
@@ -320,6 +320,7 @@
     /* Bluesky */
     &.share-button-bluesky {
       background-color: #0085ff;
+      border-radius: 10px 10px 20px 20px;
 
       svg {
         width: 40px;
