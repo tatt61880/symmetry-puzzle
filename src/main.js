@@ -102,7 +102,9 @@
     const symmetryFlagPrev = symmetryFlag;
     completeFlag = common.level.isCompleted(); // 連結した対称図形であるとき
     symmetryFlag = common.level.isSymmetry(app.states.isTarget); // 連結しているか否かに関わらず対称図形であるとき
-    const redrawFlag = completeFlag || (symmetryFlag && symmetryFlag !== symmetryFlagPrev);
+    const redrawFlag =
+      completeFlag || // 完成したとき。
+      (undoInfo.isUndoable() && symmetryFlag && symmetryFlag !== symmetryFlagPrev); // 初手以外で、対称フラグが変わったとき。
     if (redrawFlag) {
       const delay = settings.autoMode ? settingsAuto.interval * INPUT_INTERVAL_MSEC : MOVE_INTERVAL_MSEC;
       clearTimeout(redrawTimerId);
