@@ -126,12 +126,24 @@
     }
 
     .help-mode-name {
-      margin-right: 7px;
-      margin-left: 14px;
+      margin: 0 12px;
       font-size: 1.1rem;
       font-weight: normal;
       color: #333388;
       text-shadow: var(--pseudo-bold-shadow);
+
+      /* 操作キャラアイコン */
+      & + svg {
+        margin: 0 12px 0 0;
+      }
+    }
+
+    span.flex > svg.logo-image {
+      margin: 0;
+
+      &.logo-special {
+        margin-left: 14px;
+      }
     }
 
     .help-mode-condition {
