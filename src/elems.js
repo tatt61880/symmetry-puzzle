@@ -111,6 +111,7 @@
     level: {
       widget: 'level-widget',
       retry: 'button-level-retry',
+      retryArrow: 'button-level-retry-arrow',
       prev: 'button-level-prev',
       id: 'level-id',
       next: 'button-level-next',

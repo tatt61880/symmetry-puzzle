@@ -980,3 +980,17 @@
     transform: rotate(90deg) rotate3d(1, 0, 0, 180deg) rotate3d(1, 1, 0, 180deg);
   }
 }
+
+@keyframes rotate-once {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.rotate {
+  animation: rotate-once 0.3s linear;
+}

@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.23';
+  const VERSION_TEXT = 'v' + '2025.03.27';
 
   const app = window.app;
   Object.freeze(app);
@@ -515,7 +515,19 @@
       common.level.applyObj(levelObj, resizeFlag);
     }
 
+    {
+      elems.level.retryArrow.classList.remove('rotate');
+
+      setTimeout(() => {
+        elems.level.retryArrow.classList.add('rotate');
+      }, 100);
+    }
+
     draw();
+  }
+
+  function removeRotateClass() {
+    elems.level.retryArrow.classList.remove('rotate');
   }
 
   function resetUndo() {
@@ -1468,6 +1480,7 @@
   // レベル操作用
   function initElemsForLevelWidget() {
     elems.level.retry.addEventListener('click', retryLevel);
+    elems.level.retryArrow.addEventListener('animationend', removeRotateClass);
     elems.level.prev.addEventListener('click', gotoPrevLevel);
     elems.level.next.addEventListener('click', gotoNextLevel);
     elems.level.edit.addEventListener('click', toggleEditLevel);
