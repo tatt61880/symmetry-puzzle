@@ -134,7 +134,7 @@
 
       /* 操作キャラアイコン */
       & + svg {
-        margin: -8px 12px 0 0;
+        margin: -8px 13px 0 0;
       }
     }
 
@@ -142,7 +142,7 @@
       margin: 0;
 
       &.logo-special {
-        margin-left: 14px;
+        margin-left: 15px;
       }
     }
 
