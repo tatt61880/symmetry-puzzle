@@ -516,6 +516,8 @@
     }
 
     addAnimationClass(elems.level.retryArrow, 'rotate');
+
+    draw();
   }
 
   function resetUndo() {
@@ -868,9 +870,9 @@
 
   function addAnimationClass(elem, className) {
     elem.classList.remove(className);
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       elem.classList.add(className);
-    }, 10);
+    });
 
     elem.addEventListener(
       'animationend',
