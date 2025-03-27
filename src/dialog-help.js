@@ -35,7 +35,7 @@
           checkMode,
         });
 
-        const blockSize = 30;
+        const blockSize = 32;
         const g = level.createSvgG({
           blockSize,
           smallJumpFlag: true,
@@ -45,10 +45,10 @@
           width: w,
           height: 1,
         });
-        const marginTop = 7;
+        const marginTop = blockSize / 4;
         g.setAttribute('transform', `translate(0, ${marginTop})`);
         elemSvg.setAttribute('width', blockSize * w);
-        elemSvg.setAttribute('height', blockSize + marginTop + 2);
+        elemSvg.setAttribute('height', blockSize + marginTop);
         elemSvg.appendChild(g);
       };
 
