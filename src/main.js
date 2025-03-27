@@ -505,17 +505,14 @@
     clearTimeout(nextLevelTimerId);
     clearTimeout(redrawTimerId);
 
-    common.activeElem(elems.level.retry);
     animateIcons();
-    common.inactiveElem(elems.level.retry);
+    addAnimationClass(elems.level.retryArrow, 'rotate');
 
     {
       const levelObj = undoInfo.undoAll();
       const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
     }
-
-    addAnimationClass(elems.level.retryArrow, 'rotate');
 
     draw();
   }
