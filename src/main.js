@@ -515,19 +515,7 @@
       common.level.applyObj(levelObj, resizeFlag);
     }
 
-    {
-      elems.level.retryArrow.classList.remove('rotate');
-
-      setTimeout(() => {
-        elems.level.retryArrow.classList.add('rotate');
-      }, 100);
-    }
-
-    draw();
-  }
-
-  function removeRotateClass() {
-    elems.level.retryArrow.classList.remove('rotate');
+    addAnimationClass(elems.level.retryArrow, 'rotate');
   }
 
   function resetUndo() {
@@ -1488,7 +1476,6 @@
   // レベル操作用
   function initElemsForLevelWidget() {
     elems.level.retry.addEventListener('click', retryLevel);
-    elems.level.retryArrow.addEventListener('animationend', removeRotateClass);
     elems.level.prev.addEventListener('click', gotoPrevLevel);
     elems.level.next.addEventListener('click', gotoNextLevel);
     elems.level.edit.addEventListener('click', toggleEditLevel);
@@ -1575,9 +1562,6 @@
     }
     moveIntervalCount = 0;
 
-    const classAnimationIllegalMove = 'animation-illegal-move';
-    elems.main.svg.classList.remove(classAnimationIllegalMove);
-
     const movedFlag = tryMoving(input.inputDir);
     if (movedFlag) {
       drawMainSvg();
@@ -1618,7 +1602,7 @@
 
       drawMainSvg(); // 目の向きをリセットするために、描画し直します。
       // 動けないときは盤面を振動させます。
-      addAnimationClass(elems.main.svg, classAnimationIllegalMove);
+      addAnimationClass(elems.main.svg, 'animation-illegal-move');
     }
   }
 
