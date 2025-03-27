@@ -882,7 +882,15 @@
     elem.classList.remove(className);
     setTimeout(() => {
       elem.classList.add(className);
-    }, 100);
+    }, 10);
+
+    elem.addEventListener(
+      'animationend',
+      () => {
+        elem.classList.remove(className);
+      },
+      { once: true }
+    );
   }
 
   function selectLang(lang) {
@@ -1674,8 +1682,6 @@
 
     const mainSvgG = app.svg.createG();
 
-    const classAnimationIllegalMove = 'animation-illegal-move';
-    elems.main.svg.classList.remove(classAnimationIllegalMove);
     elems.main.svg.textContent = '';
     elems.main.svg.appendChild(mainSvgG);
 
