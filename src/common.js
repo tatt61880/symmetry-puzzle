@@ -59,6 +59,12 @@
 
     document.documentElement.setAttribute('lang', lang);
 
+    if (lang === 'ja') {
+      document.title = '対称パズル';
+    } else {
+      document.title = 'Symmetry Puzzle';
+    }
+
     for (const elem of document.getElementsByClassName('setting-lang-button')) {
       elem.classList.remove('active');
     }
