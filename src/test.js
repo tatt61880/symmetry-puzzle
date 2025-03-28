@@ -62,19 +62,19 @@
     for (const level of levels) {
       const levelId = level.levelId;
       const levelObj = level.levelObj;
-      levelSet.add(`${levelObj.w},${levelObj.h},${levelObj.s}`);
+      const key = `w=${levelObj.w}, h=${levelObj.h}, s=${levelObj.s}, axis=${levelObj.axis}`;
+      if (levelSet.has(key)) {
+        app.console.error(`Error: There are same levels. [${key}]`);
+        process.exitCode = 1;
+        return;
+      }
+      levelSet.add(key);
       const res = testLevel(levelId, levelObj);
       if (!res) {
         app.console.error('Error: Test failed.');
         process.exitCode = 1;
         return;
       }
-    }
-
-    if (levelSet.size !== app.levels.length + Object.keys(app.levelsEx).length) {
-      app.console.error('Error: There are same levels.');
-      process.exitCode = 1;
-      return;
     }
   }
 
