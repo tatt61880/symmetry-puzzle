@@ -426,6 +426,15 @@
     {
       w: 7,
       h: 7,
+      s: '0x000x-0xxxxx1-0xs00x-xxxxxx-000x02-xxxxxxx-000x',
+      axis: 'p1-x7-y7',
+      r: '114334224004334114334222',
+      step: 24,
+      shapes: 2,
+    },
+    {
+      w: 7,
+      h: 7,
       s: '000x0x-xxxxxxx-0xsx01-xxxxxx-0x0x0x-xx0xxx2-0x0x0x',
       axis: 'p2-x7-y7',
       r: '44422444004443344000',
