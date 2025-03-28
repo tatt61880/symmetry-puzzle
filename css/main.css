@@ -72,6 +72,19 @@ footer {
   }
 }
 
+noscript p {
+  margin: 1rem 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.highlight-js {
+  font-family: monospace;
+  font-weight: bold;
+  color: #333388;
+}
+
 image.check-mode,
 img.check-mode {
   width: 40px;
