@@ -248,7 +248,7 @@
     const filename = `symmetry-puzzle-backup-${yyyymmdd}.json`;
     const lang = app.savedata.loadLang();
     if (lang === 'ja') {
-      alert(`ファイル「${filename}」を作成します。`);
+      alert(`バックアップファイル「${filename}」を作成します。`);
     } else {
       alert(`Backup file '${filename}' will be created.`);
     }
@@ -297,11 +297,13 @@
           app.common.updateTitleNumModeButton();
           updateTable();
 
-          if (langPrev === 'ja') {
-            alert('リストアを実行しました。');
-          } else {
-            alert('Data restored.');
-          }
+          setTimeout(() => {
+            if (langPrev === 'ja') {
+              alert('リストアを実行しました。');
+            } else {
+              alert('Data restored.');
+            }
+          }, 10);
         } else {
           const lang = app.savedata.loadLang();
           if (lang === 'ja') {
