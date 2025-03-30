@@ -108,7 +108,9 @@
       return this.data.shapes[key];
     }
 
-    getHighestScore(levelObj, checkMode) {
+    getHighestScore(level) {
+      const levelObj = level.getLevelObj();
+      const checkMode = level.getCheckMode();
       const key = this.#getLevelKey(levelObj, checkMode);
       const r = this.data.steps[key];
       if (r) {

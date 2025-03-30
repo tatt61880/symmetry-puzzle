@@ -1932,7 +1932,7 @@
           const replayStr = undoInfo.getReplayStr();
 
           // 記録保存
-          highestScorePrev = app.savedata.getHighestScore(levelObj, common.level.getCheckMode());
+          highestScorePrev = app.savedata.getHighestScore(common.level);
           if (bestStep !== undefined) {
             app.savedata.saveSteps(levelObj, common.checkMode, replayStr);
           }
@@ -2027,8 +2027,7 @@
 
       // 自己最高記録
       if (common.levelId !== null) {
-        const levelObj = common.level.getLevelObj();
-        const highestScore = app.savedata.getHighestScore(levelObj, common.level.getCheckMode());
+        const highestScore = app.savedata.getHighestScore(common.level);
 
         {
           const crown = common.createCrown(

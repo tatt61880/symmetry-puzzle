@@ -319,7 +319,7 @@
         checkMode: app.common.checkMode,
       });
       const bestStep = level.getBestStep();
-      const highestScore = app.savedata.getHighestScore(levelObj, level.getCheckMode());
+      const highestScore = app.savedata.getHighestScore(level);
 
       let hideDetailFlag = false;
       if (highestScore !== null) {

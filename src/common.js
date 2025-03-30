@@ -168,14 +168,18 @@
     if (common.isShownElem(app.elems.title.buttonNormalsTr)) {
       common.showElem(app.elems.title.buttonToggleToNumDiv);
       common.showElem(app.elems.records.numMode);
-      for (const [levelsList, mode] of [
+      for (const [levelsList, checkMode] of [
         [app.levelsLine, app.Level.CHECK_MODE.LINE],
         [app.levelsPoint, app.Level.CHECK_MODE.POINT],
         [app.levelsSpecial, app.Level.CHECK_MODE.SPECIAL],
       ]) {
         const levels = new app.Levels({ levelsList, levelsListEx: undefined });
         const levelObj = levels.getLevelObj(1);
-        const highestScore = app.savedata.getHighestScore(levelObj, mode);
+        const level = new app.Level({
+          levelObj,
+          checkMode,
+        });
+        const highestScore = app.savedata.getHighestScore(level);
         if (highestScore === null) {
           common.hideElem(app.elems.title.buttonToggleToNumDiv);
           common.hideElem(app.elems.records.numMode);

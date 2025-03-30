@@ -38,11 +38,11 @@
         if (levelId === 0) continue;
         if (levelId === 'NaN') continue;
 
-        const playerScore = app.savedata.getHighestScore(levelObj, app.Level.CHECK_MODE.LINE);
         const level = new app.Level({
           levelObj,
           checkMode: app.Level.CHECK_MODE.LINE,
         });
+        const playerScore = app.savedata.getHighestScore(level);
         const shapesObj = app.savedata.getShapesObj(level);
         numLineShapes += shapesObj ? Object.keys(shapesObj).length : 0;
         const appScore = levelObj.step;
@@ -70,11 +70,11 @@
         if (levelId === 0) continue;
         if (levelId === 'NaN') continue;
 
-        const playerScore = app.savedata.getHighestScore(levelObj, app.Level.CHECK_MODE.POINT);
         const level = new app.Level({
           levelObj,
           checkMode: app.Level.CHECK_MODE.POINT,
         });
+        const playerScore = app.savedata.getHighestScore(level);
         const shapesObj = app.savedata.getShapesObj(level);
         numPointShapes += shapesObj ? Object.keys(shapesObj).length : 0;
         const appScore = levelObj.step;
@@ -102,11 +102,11 @@
         if (levelId === 0) continue;
         if (levelId === 'NaN') continue;
 
-        const playerScore = app.savedata.getHighestScore(levelObj, app.Level.CHECK_MODE.SPECIAL);
         const level = new app.Level({
           levelObj,
           checkMode: app.Level.CHECK_MODE.SPECIAL,
         });
+        const playerScore = app.savedata.getHighestScore(level);
         const shapesObj = app.savedata.getShapesObj(level);
         numSpecialShapes += shapesObj ? Object.keys(shapesObj).length : 0;
         const appScore = levelObj.step;
