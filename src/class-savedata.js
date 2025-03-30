@@ -120,7 +120,7 @@
       return this.#getMinStepsinShapes(key);
     }
 
-    getHighestScoreForNumMode(num, checkMode) {
+    getHighestScoreForSeqMode(num, checkMode) {
       const key = this.#getNumModeKey(num, checkMode);
       return this.#getMinStepsinShapes(key);
     }

@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.29';
+  const VERSION_TEXT = 'v' + '2025.03.30';
 
   const app = window.app;
   Object.freeze(app);
@@ -1430,7 +1430,7 @@
       for (const elem of document.getElementsByClassName('normal-mode')) {
         elem.classList.add('hide');
       }
-      for (const elem of document.getElementsByClassName('num-mode')) {
+      for (const elem of document.getElementsByClassName('seq-mode')) {
         elem.classList.remove('hide');
       }
     } else {
@@ -1443,7 +1443,7 @@
       for (const elem of document.getElementsByClassName('normal-mode')) {
         elem.classList.remove('hide');
       }
-      for (const elem of document.getElementsByClassName('num-mode')) {
+      for (const elem of document.getElementsByClassName('seq-mode')) {
         elem.classList.add('hide');
       }
     }

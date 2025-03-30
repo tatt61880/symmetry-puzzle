@@ -181,7 +181,7 @@
 
     if (app.common.isNumMode) {
       for (let num = page * LEVEL_SELECT_NUM_PER_PAGE + 1; num <= (page + 1) * LEVEL_SELECT_NUM_PER_PAGE; num++) {
-        appendLevelForNumMode(num);
+        appendLevelForSeqMode(num);
       }
     } else {
       const selectIds = {};
@@ -228,7 +228,7 @@
       g.setAttribute('transform', `translate(${x},${y})`);
     }
 
-    function appendLevelForNumMode(num) {
+    function appendLevelForSeqMode(num) {
       const g = app.svg.createG();
       g.classList.add('level-select');
       elems.levels.dialogSvg.appendChild(g);
@@ -282,7 +282,7 @@
       });
 
       const mode = app.Level.getCheckModeStr(app.common.level.getCheckMode());
-      const highestScore = app.savedata.getHighestScoreForNumMode(num, mode);
+      const highestScore = app.savedata.getHighestScoreForSeqMode(num, mode);
 
       let hideDetailFlag = false;
       if (largeCrownFlag) {

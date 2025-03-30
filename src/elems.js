@@ -83,7 +83,7 @@
         num: 'records-special-num',
       },
 
-      numMode: 'record-num-mode',
+      seqMode: 'record-seq-mode',
 
       backup: 'record-button-backup',
       restore: 'record-button-restore',
