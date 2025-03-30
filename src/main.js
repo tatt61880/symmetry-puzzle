@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.28';
+  const VERSION_TEXT = 'v' + '2025.03.29';
 
   const app = window.app;
   Object.freeze(app);
@@ -708,7 +708,7 @@
 
   function updateShapeButton() {
     if (common.level !== null) {
-      const shapesObj = app.savedata.getShapesObj(common.level.getLevelObj(), common.checkMode);
+      const shapesObj = app.savedata.getShapesObj(common.level);
 
       if (shapesObj) {
         common.showElem(elems.shapes.buttonG);

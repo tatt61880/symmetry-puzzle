@@ -391,9 +391,7 @@
 
         // 形状数
         {
-          const levelObj = level.getLevelObj();
-          const checkMode = app.common.checkMode;
-          const shapesObj = app.savedata.getShapesObj(levelObj, checkMode);
+          const shapesObj = app.savedata.getShapesObj(level);
           const shapeNum = shapesObj !== undefined ? Object.keys(shapesObj).length : '0';
           const shapes = level.getShapes() ?? '?';
 

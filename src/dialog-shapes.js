@@ -117,9 +117,7 @@
 
     elems.shapes.dialogSvg.innerHTML = '';
 
-    const levelObj = common.level.getLevelObj();
-    const checkMode = common.checkMode;
-    const shapesObj = app.savedata.getShapesObj(levelObj, checkMode);
+    const shapesObj = app.savedata.getShapesObj(common.level);
     const shapeStrs = Object.keys(shapesObj).sort((a, b) => shapesObj[a].length - shapesObj[b].length);
     const totalNum = shapeStrs.length;
     elems.shapes.dialog.dataset.maxCount = totalNum - 1;
@@ -132,7 +130,7 @@
 
     let count = 0;
     const selectR = {};
-    const levelShapes = levelObj.shapes;
+    const levelShapes = common.level.getLevelObj().shapes;
     const iEnd = levelShapes ?? shapeStrs.length;
     elems.shapes.dialogSvg.style.width = `${Math.min(iEnd, SELECT_COLS) * SELECT_WIDTH + 2}px`;
     elems.shapes.dialogSvg.style.height = `${Math.min(Math.floor((iEnd + SELECT_COLS - 1) / SELECT_COLS), 2) * SELECT_HEIGHT + 2}px`;

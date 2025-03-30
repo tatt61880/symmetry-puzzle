@@ -101,7 +101,9 @@
       }
     }
 
-    getShapesObj(levelObj, checkMode) {
+    getShapesObj(level) {
+      const levelObj = level.getLevelObj();
+      const checkMode = level.getCheckMode();
       const key = this.#getLevelKey(levelObj, checkMode);
       return this.data.shapes[key];
     }
