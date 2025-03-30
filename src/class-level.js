@@ -235,7 +235,7 @@
       return this.#getUrlQuerySub(levelObj);
     }
 
-    #getUrlQuery() {
+    #getCurrentUrlQuery() {
       const levelObj = this.getCurrentLevelObj();
       return this.#getUrlQuerySub(levelObj);
     }
@@ -249,7 +249,7 @@
       console.log(`{ w: ${w}, h: ${h}, s: '${s}'${axis} },`); // コピペ用
       this.printSolveJsStr();
 
-      const urlQuery = this.#getUrlQuery();
+      const urlQuery = this.#getCurrentUrlQuery();
       const urlStr = `${location.href.split('?')[0]}?${urlQuery}`;
 
       return urlStr;
