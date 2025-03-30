@@ -326,7 +326,7 @@
       switch (e.key) {
         case 't':
           if (e.shiftKey) return;
-          if (common.isNumMode) {
+          if (common.isSeqMode) {
             gotoNumLineMode();
           } else {
             gotoNormalLineMode();
@@ -334,7 +334,7 @@
           break;
         case 'z':
           if (e.shiftKey) return;
-          if (common.isNumMode) {
+          if (common.isSeqMode) {
             gotoNumPointMode();
           } else {
             gotoNormalPointMode();
@@ -342,7 +342,7 @@
           break;
         case 'o':
           if (e.shiftKey) return;
-          if (common.isNumMode) {
+          if (common.isSeqMode) {
             gotoNumSpecialMode();
           } else {
             gotoNormalSpecialMode();
@@ -350,7 +350,7 @@
           break;
         case '+':
         case '#':
-          toggleNormalNumMode();
+          toggleNormalSeqMode();
           break;
         case '!':
           app.dialog.records.show();
@@ -717,16 +717,16 @@
         elems.shapes.buttonNumerator.textContent = numerator;
         elems.shapes.buttonDenumerator.textContent = denumerator;
         const fontColor = (() => {
-          if (common.isNumMode) {
-            return app.colors.shapeNumNumMode;
+          if (common.isSeqMode) {
+            return app.colors.shapeNumSeqMode;
           }
           return numerator === denumerator ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
         })();
         elems.shapes.buttonNumerator.setAttribute('fill', fontColor);
         elems.shapes.buttonLine.setAttribute('fill', fontColor);
         elems.shapes.buttonDenumerator.setAttribute('fill', fontColor);
-        const fill = common.isNumMode ? app.colors.frameFillNumMode : app.colors.frameFill;
-        const stroke = common.isNumMode ? app.colors.frameStrokeNumMode : app.colors.frameStroke;
+        const fill = common.isSeqMode ? app.colors.frameFillSeqMode : app.colors.frameFill;
+        const stroke = common.isSeqMode ? app.colors.frameStrokeSeqMode : app.colors.frameStroke;
         elems.shapes.button.setAttribute('fill', fill);
         elems.shapes.button.setAttribute('stroke', stroke);
         return;
@@ -1047,7 +1047,7 @@
     replaceUrlTitle();
 
     // ある程度クリアするまで連番モードを隠します。
-    common.updateTitleNumModeButton();
+    common.updateTitleSeqModeButton();
   }
 
   function onloadId(id_, idFlag = true) {
@@ -1076,8 +1076,8 @@
         default:
           console.assert(false);
       }
-      updateNormalNumMode(!idFlag);
-      if (common.isNumMode) {
+      updateNormalSeqMode(!idFlag);
+      if (common.isSeqMode) {
         levelsList = [levelsList[0]];
       }
       common.levels = new app.Levels({ levelsList, levelsListEx });
@@ -1382,8 +1382,8 @@
     // 線点対称-連番モード
     elems.title.buttonNumSpecial.addEventListener('click', gotoNumSpecialMode);
 
-    elems.title.buttonToggleToNormal.addEventListener('click', toggleNormalNumMode);
-    elems.title.buttonToggleToNum.addEventListener('click', toggleNormalNumMode);
+    elems.title.buttonToggleToNormal.addEventListener('click', toggleNormalSeqMode);
+    elems.title.buttonToggleToNum.addEventListener('click', toggleNormalSeqMode);
   }
 
   function gotoNormalLineMode() {
@@ -1419,9 +1419,9 @@
     onloadId(minNum, false);
   }
 
-  function updateNormalNumMode(isNumMode) {
-    if (isNumMode) {
-      common.isNumMode = true;
+  function updateNormalSeqMode(isSeqMode) {
+    if (isSeqMode) {
+      common.isSeqMode = true;
       common.hideElem(elems.title.buttonNormalsTr);
       common.showElem(elems.title.buttonNumsTr);
       common.showElem(elems.title.buttonToggleToNormalDiv);
@@ -1434,7 +1434,7 @@
         elem.classList.remove('hide');
       }
     } else {
-      common.isNumMode = false;
+      common.isSeqMode = false;
       common.showElem(elems.title.buttonNormalsTr);
       common.hideElem(elems.title.buttonNumsTr);
       common.hideElem(elems.title.buttonToggleToNormalDiv);
@@ -1451,11 +1451,11 @@
     animateIcons();
   }
 
-  function toggleNormalNumMode() {
+  function toggleNormalSeqMode() {
     if (common.isShownElem(elems.title.buttonToggleToNumDiv)) {
-      updateNormalNumMode(true);
+      updateNormalSeqMode(true);
     } else if (common.isShownElem(elems.title.buttonToggleToNormalDiv)) {
-      updateNormalNumMode(false);
+      updateNormalSeqMode(false);
     }
   }
 
@@ -1687,7 +1687,7 @@
       symmetryAnimationFlag,
       showCharsFlag,
       smallJumpFlag,
-      edgeColor: common.isNumMode ? app.colors.frameFillNumMode : app.colors.frameFill,
+      edgeColor: common.isSeqMode ? app.colors.frameFillSeqMode : app.colors.frameFill,
     });
     levelSvgG.classList.add('group-level-main');
     levelSvgG.setAttribute('transform', `translate(${frameSizeW},${frameSizeH})`);
@@ -1736,7 +1736,7 @@
     const wallStrShift = app.colors[app.states.wall].fill === app.colors[app.states.wall].stroke ? 0 : 0.05;
 
     {
-      const frameColor = common.isNumMode ? app.colors.frameFillNumMode : app.colors.frameFill;
+      const frameColor = common.isSeqMode ? app.colors.frameFillSeqMode : app.colors.frameFill;
       const rectU = app.svg.createRect(1, {
         x: 0,
         y: 0,
@@ -1770,7 +1770,7 @@
       g.appendChild(rectD);
       g.appendChild(rectL);
 
-      const borderColor = common.isNumMode ? app.colors.frameStrokeNumMode : app.colors.frameStroke;
+      const borderColor = common.isSeqMode ? app.colors.frameStrokeSeqMode : app.colors.frameStroke;
       const rectUb = app.svg.createRect(1, {
         x: 0,
         y: 0,
@@ -2006,7 +2006,7 @@
       // 今回の手数
       {
         const currentStep = undoInfo.getIndex();
-        let color = common.isNumMode ? app.colors.stepNum : app.colors.stepNormal;
+        let color = common.isSeqMode ? app.colors.stepNum : app.colors.stepNormal;
         if (isCompleted) {
           if (!highestScorePrev || currentStep <= highestScorePrev) {
             color = common.getStepColor(currentStep, bestStep);

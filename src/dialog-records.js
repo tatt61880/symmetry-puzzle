@@ -331,7 +331,7 @@
           app.savedata.restoreBackupData(obj.backupData);
           const lang = app.savedata.loadLang();
           app.common.applyLang(lang);
-          app.common.updateTitleNumModeButton();
+          app.common.updateTitleSeqModeButton();
           updateTable();
 
           setTimeout(() => {

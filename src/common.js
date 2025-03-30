@@ -51,7 +51,7 @@
     inactiveElem,
     getStepColor,
     createCrown,
-    updateTitleNumModeButton,
+    updateTitleSeqModeButton,
   };
 
   function applyLang(lang) {
@@ -164,7 +164,7 @@
   }
 
   // タイトル画面の連番モード用のボタンを表示するか否かを判定して更新します。
-  function updateTitleNumModeButton() {
+  function updateTitleSeqModeButton() {
     if (common.isShownElem(app.elems.title.buttonNormalsTr)) {
       common.showElem(app.elems.title.buttonToggleToNumDiv);
       common.showElem(app.elems.records.seqMode);

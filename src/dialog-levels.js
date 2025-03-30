@@ -130,7 +130,7 @@
 
     let totalNum = 0;
 
-    if (app.common.isNumMode) {
+    if (app.common.isSeqMode) {
       if (page === null) {
         const num = app.common.levelId;
         page = Math.floor((num - 1) / LEVEL_SELECT_NUM_PER_PAGE);
@@ -179,7 +179,7 @@
 
     let count = 0;
 
-    if (app.common.isNumMode) {
+    if (app.common.isSeqMode) {
       for (let num = page * LEVEL_SELECT_NUM_PER_PAGE + 1; num <= (page + 1) * LEVEL_SELECT_NUM_PER_PAGE; num++) {
         appendLevelForSeqMode(num);
       }
@@ -235,7 +235,7 @@
 
       let backgroundColor;
       if (num === app.common.levelId) {
-        backgroundColor = app.colors.levelsDialogCurrentLevelNumMode;
+        backgroundColor = app.colors.levelsDialogCurrentLevelSeqMode;
       } else {
         backgroundColor = '#ffffff';
       }
@@ -248,7 +248,7 @@
           width: LEVEL_SELECT_WIDTH,
           height: LEVEL_SELECT_HEIGHT,
           fill: backgroundColor,
-          stroke: app.colors.frameStrokeNumMode,
+          stroke: app.colors.frameStrokeSeqMode,
         });
         rect.setAttribute('rx', '5');
         rect.setAttribute('ry', '5');

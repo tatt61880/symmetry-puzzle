@@ -72,9 +72,9 @@
 
   // フレーム
   colors.frameFill = '#ffeedd';
-  colors.frameFillNumMode = '#ddeeff';
+  colors.frameFillSeqMode = '#ddeeff';
   colors.frameStroke = '#ffbb77';
-  colors.frameStrokeNumMode = '#99ccff';
+  colors.frameStrokeSeqMode = '#99ccff';
   colors.frameEditSize = '#ffdd33';
 
   colors.congratulations = '#ffdd33';
@@ -91,7 +91,7 @@
   // 形状数
   colors.shapeNumPerfect = colors.stepDraw;
   colors.shapeNumNormal = colors.stepNormal;
-  colors.shapeNumNumMode = colors.stepNum;
+  colors.shapeNumSeqMode = colors.stepNum;
 
   colors.editButton = {
     fill: '#e5a0e5',
@@ -99,7 +99,7 @@
   };
 
   colors.levelsDialogCurrentLevel = colors.frameFill;
-  colors.levelsDialogCurrentLevelNumMode = colors.frameFillNumMode;
+  colors.levelsDialogCurrentLevelSeqMode = colors.frameFillSeqMode;
   colors.levelsDialogSelect = '#ee0000';
 
   Object.freeze(colors);

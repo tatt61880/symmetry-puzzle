@@ -121,7 +121,7 @@
     }
 
     getHighestScoreForSeqMode(num, checkMode) {
-      const key = this.#getNumModeKey(num, checkMode);
+      const key = this.#getSeqModeKey(num, checkMode);
       return this.#getMinStepsinShapes(key);
     }
 
@@ -139,11 +139,11 @@
         return app.Level.getUrlQuery(levelObj, checkMode);
       } else {
         const mode = app.Level.getCheckModeStr(app.common.level.getCheckMode());
-        return this.#getNumModeKey(app.common.levelNum, mode);
+        return this.#getSeqModeKey(app.common.levelNum, mode);
       }
     }
 
-    #getNumModeKey(num, checkMode) {
+    #getSeqModeKey(num, checkMode) {
       return `mode=${checkMode}&num=${num}`;
     }
 
