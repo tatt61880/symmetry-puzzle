@@ -63,7 +63,11 @@
         shortest: 'records-line-shortest',
         cleared: 'records-line-cleared',
         uncleared: 'records-line-uncleared',
-        shapes: 'records-line-shapes',
+        shapes: {
+          numerator: 'records-line-shapes-numerator',
+          line: 'records-line-shapes-line',
+          denumerator: 'records-line-shapes-denumerator',
+        },
         num: 'records-line-num',
       },
 
@@ -71,7 +75,11 @@
         shortest: 'records-point-shortest',
         cleared: 'records-point-cleared',
         uncleared: 'records-point-uncleared',
-        shapes: 'records-point-shapes',
+        shapes: {
+          numerator: 'records-point-shapes-numerator',
+          line: 'records-point-shapes-line',
+          denumerator: 'records-point-shapes-denumerator',
+        },
         num: 'records-point-num',
       },
 
@@ -79,7 +87,11 @@
         shortest: 'records-special-shortest',
         cleared: 'records-special-cleared',
         uncleared: 'records-special-uncleared',
-        shapes: 'records-special-shapes',
+        shapes: {
+          numerator: 'records-special-shapes-numerator',
+          line: 'records-special-shapes-line',
+          denumerator: 'records-special-shapes-denumerator',
+        },
         num: 'records-special-num',
       },
 

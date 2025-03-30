@@ -28,6 +28,8 @@
     let numLineSolvedNormal = 0;
     let numLineSolvedBest = 0;
     let numLineShapes = 0;
+    let numLineShapesTotal = 0;
+    let numLineShapesUnknownFlag = false;
 
     {
       const levelsList = app.levelsLine;
@@ -44,7 +46,12 @@
         });
         const playerScore = app.savedata.getHighestScore(level);
         const shapesObj = app.savedata.getShapesObj(level);
-        numLineShapes += shapesObj ? Object.keys(shapesObj).length : 0;
+        if (shapesObj) {
+          numLineShapes += Object.keys(shapesObj).length;
+          numLineShapesTotal += levelObj.shapes;
+        } else {
+          numLineShapesUnknownFlag = true;
+        }
         const appScore = levelObj.step;
         if (playerScore === null) {
           ++numLineNotSolved;
@@ -60,6 +67,8 @@
     let numPointSolvedNormal = 0;
     let numPointSolvedBest = 0;
     let numPointShapes = 0;
+    let numPointShapesTotal = 0;
+    let numPointShapesUnknownFlag = false;
 
     {
       const levelsList = app.levelsPoint;
@@ -76,7 +85,12 @@
         });
         const playerScore = app.savedata.getHighestScore(level);
         const shapesObj = app.savedata.getShapesObj(level);
-        numPointShapes += shapesObj ? Object.keys(shapesObj).length : 0;
+        if (shapesObj) {
+          numPointShapes += Object.keys(shapesObj).length;
+          numPointShapesTotal += levelObj.shapes;
+        } else {
+          numPointShapesUnknownFlag = true;
+        }
         const appScore = levelObj.step;
         if (playerScore === null) {
           ++numPointNotSolved;
@@ -92,6 +106,8 @@
     let numSpecialSolvedNormal = 0;
     let numSpecialSolvedBest = 0;
     let numSpecialShapes = 0;
+    let numSpecialShapesTotal = 0;
+    let numSpecialShapesUnknownFlag = false;
 
     {
       const levelsList = app.levelsSpecial;
@@ -108,7 +124,12 @@
         });
         const playerScore = app.savedata.getHighestScore(level);
         const shapesObj = app.savedata.getShapesObj(level);
-        numSpecialShapes += shapesObj ? Object.keys(shapesObj).length : 0;
+        if (shapesObj) {
+          numSpecialShapes += Object.keys(shapesObj).length;
+          numSpecialShapesTotal += levelObj.shapes;
+        } else {
+          numSpecialShapesUnknownFlag = true;
+        }
         const appScore = levelObj.step;
         if (playerScore === null) {
           ++numSpecialNotSolved;
@@ -225,16 +246,55 @@
     // 形状数
     {
       {
-        const td = elems.records.line.shapes;
-        td.innerText = numLineShapes;
+        elems.records.line.shapes.numerator.textContent = numLineShapes;
+        let denumerator = numLineShapesTotal;
+        if (numLineShapesUnknownFlag) {
+          if (numLineShapesTotal) {
+            denumerator += '+?';
+          } else {
+            denumerator = '?';
+          }
+        }
+        elems.records.line.shapes.denumerator.textContent = denumerator;
+
+        const fill = numLineShapes === denumerator ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
+        elems.records.line.shapes.numerator.setAttribute('fill', fill);
+        elems.records.line.shapes.line.setAttribute('fill', fill);
+        elems.records.line.shapes.denumerator.setAttribute('fill', fill);
       }
       {
-        const td = elems.records.point.shapes;
-        td.innerText = numPointShapes;
+        elems.records.point.shapes.numerator.textContent = numPointShapes;
+        let denumerator = numPointShapesTotal;
+        if (numPointShapesUnknownFlag) {
+          if (numPointShapesTotal) {
+            denumerator += '+?';
+          } else {
+            denumerator = '?';
+          }
+        }
+        elems.records.point.shapes.denumerator.textContent = denumerator;
+
+        const fill = numPointShapes === denumerator ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
+        elems.records.point.shapes.numerator.setAttribute('fill', fill);
+        elems.records.point.shapes.line.setAttribute('fill', fill);
+        elems.records.point.shapes.denumerator.setAttribute('fill', fill);
       }
       {
-        const td = elems.records.special.shapes;
-        td.innerText = numSpecialShapes;
+        elems.records.special.shapes.numerator.textContent = numSpecialShapes;
+        let denumerator = numSpecialShapesTotal;
+        if (numSpecialShapesUnknownFlag) {
+          if (numSpecialShapesTotal) {
+            denumerator += '+?';
+          } else {
+            denumerator = '?';
+          }
+        }
+        elems.records.special.shapes.denumerator.textContent = denumerator;
+
+        const fill = numSpecialShapes === denumerator ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
+        elems.records.special.shapes.numerator.setAttribute('fill', fill);
+        elems.records.special.shapes.line.setAttribute('fill', fill);
+        elems.records.special.shapes.denumerator.setAttribute('fill', fill);
       }
     }
 

@@ -26,51 +26,51 @@
 
   <link rel="canonical" href="https://tatt61880.github.io/symmetry-puzzle/">
 
-  <link rel="stylesheet" href="./css/main.css?2025.03.30b">
-  <link rel="stylesheet" href="./css/title.css?2025.03.30b">
-  <link rel="stylesheet" href="./css/game.css?2025.03.30b">
-  <link rel="stylesheet" href="./css/dialog-help.css?2025.03.30b">
-  <link rel="stylesheet" href="./css/dialog-levels.css?2025.03.30b">
-  <link rel="stylesheet" href="./css/dialog-records.css?2025.03.30b">
-  <link rel="stylesheet" href="./css/dialog-shapes.css?2025.03.30b">
-  <link rel="stylesheet" href="./css/animation.css?2025.03.30b">
+  <link rel="stylesheet" href="./css/main.css?2025.03.31">
+  <link rel="stylesheet" href="./css/title.css?2025.03.31">
+  <link rel="stylesheet" href="./css/game.css?2025.03.31">
+  <link rel="stylesheet" href="./css/dialog-help.css?2025.03.31">
+  <link rel="stylesheet" href="./css/dialog-levels.css?2025.03.31">
+  <link rel="stylesheet" href="./css/dialog-records.css?2025.03.31">
+  <link rel="stylesheet" href="./css/dialog-shapes.css?2025.03.31">
+  <link rel="stylesheet" href="./css/animation.css?2025.03.31">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-  <script src="./src/states.js?2025.03.30b"></script>
-  <script src="./src/colors.js?2025.03.30b"></script>
-  <script src="./src/svg.js?2025.03.30b"></script>
-  <script src="./src/common.js?2025.03.30b"></script>
+  <script src="./src/states.js?2025.03.31"></script>
+  <script src="./src/colors.js?2025.03.31"></script>
+  <script src="./src/svg.js?2025.03.31"></script>
+  <script src="./src/common.js?2025.03.31"></script>
 
-  <script src="./src/class-stack.js?2025.03.30b"></script>
-  <script src="./src/class-level.js?2025.03.30b"></script>
-  <script src="./src/class-levels.js?2025.03.30b"></script>
+  <script src="./src/class-stack.js?2025.03.31"></script>
+  <script src="./src/class-level.js?2025.03.31"></script>
+  <script src="./src/class-levels.js?2025.03.31"></script>
 
-  <script src="./src/class-savedata.js?2025.03.30b"></script>
-  <script src="./src/class-undo-info.js?2025.03.30b"></script>
-  <script src="./src/class-elems.js?2025.03.30b"></script>
-  <script src="./src/class-input.js?2025.03.30b"></script>
+  <script src="./src/class-savedata.js?2025.03.31"></script>
+  <script src="./src/class-undo-info.js?2025.03.31"></script>
+  <script src="./src/class-elems.js?2025.03.31"></script>
+  <script src="./src/class-input.js?2025.03.31"></script>
 
-  <script src="./src/levels-line.js?2025.03.30b"></script>
-  <script src="./src/levels-line-ex.js?2025.03.30b"></script>
-  <script src="./src/levels-point.js?2025.03.30b"></script>
-  <script src="./src/levels-point-ex.js?2025.03.30b"></script>
-  <script src="./src/levels-special.js?2025.03.30b"></script>
-  <script src="./src/levels-special-ex.js?2025.03.30b"></script>
+  <script src="./src/levels-line.js?2025.03.31"></script>
+  <script src="./src/levels-line-ex.js?2025.03.31"></script>
+  <script src="./src/levels-point.js?2025.03.31"></script>
+  <script src="./src/levels-point-ex.js?2025.03.31"></script>
+  <script src="./src/levels-special.js?2025.03.31"></script>
+  <script src="./src/levels-special-ex.js?2025.03.31"></script>
 
-  <script src="./src/elems.js?2025.03.30b"></script>
+  <script src="./src/elems.js?2025.03.31"></script>
 
-  <script src="./src/solve.js?2025.03.30b"></script>
+  <script src="./src/solve.js?2025.03.31"></script>
 
-  <script src="./src/dialog-help.js?2025.03.30b"></script>
-  <script src="./src/dialog-levels.js?2025.03.30b"></script>
-  <script src="./src/dialog-records.js?2025.03.30b"></script>
-  <script src="./src/dialog-shapes.js?2025.03.30b"></script>
+  <script src="./src/dialog-help.js?2025.03.31"></script>
+  <script src="./src/dialog-levels.js?2025.03.31"></script>
+  <script src="./src/dialog-records.js?2025.03.31"></script>
+  <script src="./src/dialog-shapes.js?2025.03.31"></script>
 
-  <script src="./src/analyze-url.js?2025.03.30b"></script>
-  <script src="./src/main.js?2025.03.30b"></script>
+  <script src="./src/analyze-url.js?2025.03.31"></script>
+  <script src="./src/main.js?2025.03.31"></script>
 </head>
 
 <body>
@@ -567,9 +567,39 @@
               <!-- 形状数 -->
               <tr>
                 <th id="records-icon-shapes" class="border-right-bold translatable-toggle" data-en="SHAPES" data-ja="形状数"></th>
-                <td id="records-line-shapes"></td>
-                <td id="records-point-shapes"></td>
-                <td id="records-special-shapes"></td>
+                <td>
+                  <svg width="80" height="68">
+                    <g transform="translate(40,34)">
+                      <text id="records-line-shapes-numerator" x="0" y="-14" dominant-baseline="middle" text-anchor="middle"
+                        font-weight="bold" font-size="24px" fill="#ff7700">?</text>
+                      <rect id="records-line-shapes-line" x="-38" y="-2" rx="2" width="76" height="4" fill="#ff7700" />
+                      <text id="records-line-shapes-denumerator" x="0" y="20" dominant-baseline="middle" text-anchor="middle"
+                        font-weight="bold" font-size="24px" fill="#ff7700" stroke="none">?</text>
+                    </g>
+                  </svg>
+                </td>
+                <td>
+                  <svg width="80" height="68">
+                    <g transform="translate(40,34)">
+                      <text id="records-point-shapes-numerator" x="0" y="-14" dominant-baseline="middle" text-anchor="middle"
+                        font-weight="bold" font-size="24px" fill="#ff7700">?</text>
+                      <rect id="records-point-shapes-line" x="-38" y="-2" rx="2" width="76" height="4" fill="#ff7700" />
+                      <text id="records-point-shapes-denumerator" x="0" y="20" dominant-baseline="middle" text-anchor="middle"
+                        font-weight="bold" font-size="24px" fill="#ff7700" stroke="none">?</text>
+                    </g>
+                  </svg>
+                </td>
+                <td>
+                  <svg width="80" height="68">
+                    <g transform="translate(40,34)">
+                      <text id="records-special-shapes-numerator" x="0" y="-14" dominant-baseline="middle" text-anchor="middle"
+                        font-weight="bold" font-size="24px" fill="#ff7700">?</text>
+                      <rect id="records-special-shapes-line" x="-38" y="-2" rx="2" width="76" height="4" fill="#ff7700" />
+                      <text id="records-special-shapes-denumerator" x="0" y="20" dominant-baseline="middle" text-anchor="middle"
+                        font-weight="bold" font-size="24px" fill="#ff7700" stroke="none">?</text>
+                    </g>
+                  </svg>
+                </td>
               </tr>
 
               <tr id="record-seq-mode">
@@ -938,10 +968,10 @@
 
               <rect id="button-shapes" x="-35" y="-35" rx="12" width="70" height="70" fill="#ffeedd" stroke="#ffbb77" stroke-width="4" />
               <text id="button-shapes-numerator" x="0" y="-14" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
-                font-size="30px" fill="#ff7700">1</text>
+                font-size="30px" fill="#ff7700" stroke="none">?</text>
               <rect id="button-shapes-line" x="-23" y="-2" rx="2" width="46" height="4" fill="#ff7700" />
               <text id="button-shapes-denumerator" x="0" y="20" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
-                font-size="30px" fill="#ff7700">1</text>
+                font-size="30px" fill="#ff7700" stroke="none">?</text>
             </g>
 
             <!-- Undoボタン -->
