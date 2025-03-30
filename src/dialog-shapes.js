@@ -272,12 +272,11 @@
           });
         }
       } else {
-        const titleColor = '#ff3333';
         const text = app.svg.createText(1, {
           x: SELECT_WIDTH / 2,
           y: SELECT_HEIGHT / 2 + 4,
           text: '?',
-          fill: titleColor,
+          fill: '#ff7700',
         });
         text.setAttribute('font-size', '32px');
         g.appendChild(text);
