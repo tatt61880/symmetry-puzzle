@@ -63,6 +63,7 @@
         shortest: 'records-line-shortest',
         cleared: 'records-line-cleared',
         uncleared: 'records-line-uncleared',
+        shapes: 'records-line-shapes',
         num: 'records-line-num',
       },
 
@@ -70,6 +71,7 @@
         shortest: 'records-point-shortest',
         cleared: 'records-point-cleared',
         uncleared: 'records-point-uncleared',
+        shapes: 'records-point-shapes',
         num: 'records-point-num',
       },
 
@@ -77,6 +79,7 @@
         shortest: 'records-special-shortest',
         cleared: 'records-special-cleared',
         uncleared: 'records-special-uncleared',
+        shapes: 'records-special-shapes',
         num: 'records-special-num',
       },
 

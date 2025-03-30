@@ -27,6 +27,7 @@
     let numLineNotSolved = 0;
     let numLineSolvedNormal = 0;
     let numLineSolvedBest = 0;
+    let numLineShapes = 0;
 
     {
       const levelsList = app.levelsLine;
@@ -38,6 +39,12 @@
         if (levelId === 'NaN') continue;
 
         const playerScore = app.savedata.getHighestScore(levelObj, app.Level.CHECK_MODE.LINE);
+        const level = new app.Level({
+          levelObj,
+          checkMode: app.Level.CHECK_MODE.LINE,
+        });
+        const shapesObj = app.savedata.getShapesObj(level);
+        numLineShapes += shapesObj ? Object.keys(shapesObj).length : 0;
         const appScore = levelObj.step;
         if (playerScore === null) {
           ++numLineNotSolved;
@@ -52,6 +59,7 @@
     let numPointNotSolved = 0;
     let numPointSolvedNormal = 0;
     let numPointSolvedBest = 0;
+    let numPointShapes = 0;
 
     {
       const levelsList = app.levelsPoint;
@@ -63,6 +71,12 @@
         if (levelId === 'NaN') continue;
 
         const playerScore = app.savedata.getHighestScore(levelObj, app.Level.CHECK_MODE.POINT);
+        const level = new app.Level({
+          levelObj,
+          checkMode: app.Level.CHECK_MODE.POINT,
+        });
+        const shapesObj = app.savedata.getShapesObj(level);
+        numPointShapes += shapesObj ? Object.keys(shapesObj).length : 0;
         const appScore = levelObj.step;
         if (playerScore === null) {
           ++numPointNotSolved;
@@ -77,6 +91,7 @@
     let numSpecialNotSolved = 0;
     let numSpecialSolvedNormal = 0;
     let numSpecialSolvedBest = 0;
+    let numSpecialShapes = 0;
 
     {
       const levelsList = app.levelsSpecial;
@@ -88,6 +103,12 @@
         if (levelId === 'NaN') continue;
 
         const playerScore = app.savedata.getHighestScore(levelObj, app.Level.CHECK_MODE.SPECIAL);
+        const level = new app.Level({
+          levelObj,
+          checkMode: app.Level.CHECK_MODE.SPECIAL,
+        });
+        const shapesObj = app.savedata.getShapesObj(level);
+        numSpecialShapes += shapesObj ? Object.keys(shapesObj).length : 0;
         const appScore = levelObj.step;
         if (playerScore === null) {
           ++numSpecialNotSolved;
@@ -198,6 +219,22 @@
         const td = elems.records.special.uncleared;
         td.innerText = numSpecialNotSolved;
         setBackgroundBar(td, numSpecialNotSolved / numSpecialTotal);
+      }
+    }
+
+    // 形状数
+    {
+      {
+        const td = elems.records.line.shapes;
+        td.innerText = numLineShapes;
+      }
+      {
+        const td = elems.records.point.shapes;
+        td.innerText = numPointShapes;
+      }
+      {
+        const td = elems.records.special.shapes;
+        td.innerText = numSpecialShapes;
       }
     }
 
