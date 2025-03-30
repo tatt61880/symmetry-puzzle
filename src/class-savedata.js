@@ -64,14 +64,14 @@
       return this.data.lang;
     }
 
-    saveSteps(levelObj, checkMode, r_) {
+    saveSteps(level, r_) {
       let r = r_;
       const step = r.length;
       if (step > maxStep) {
         r = r.substring(0, maxStep);
       }
 
-      const key = this.#getLevelKey(levelObj, checkMode);
+      const key = this.#getLevelKey(level);
       const highestScoreR = this.data.steps[key];
       if (highestScoreR === undefined || step < highestScoreR.length) {
         this.data.steps[key] = r;
@@ -79,14 +79,14 @@
       }
     }
 
-    saveShape(levelObj, checkMode, targetShape, r_) {
+    saveShape(level, targetShape, r_) {
       let r = r_;
       const step = r.length;
       if (step > maxStep) {
         r = r.substring(0, maxStep);
       }
 
-      const key = this.#getLevelKey(levelObj, checkMode);
+      const key = this.#getLevelKey(level);
       if (this.data.shapes[key] === undefined) {
         this.data.shapes[key] = {};
       }
@@ -102,16 +102,12 @@
     }
 
     getShapesObj(level) {
-      const levelObj = level.getLevelObj();
-      const checkMode = level.getCheckMode();
-      const key = this.#getLevelKey(levelObj, checkMode);
+      const key = this.#getLevelKey(level);
       return this.data.shapes[key];
     }
 
     getHighestScore(level) {
-      const levelObj = level.getLevelObj();
-      const checkMode = level.getCheckMode();
-      const key = this.#getLevelKey(levelObj, checkMode);
+      const key = this.#getLevelKey(level);
       const r = this.data.steps[key];
       if (r) {
         return r.length;
@@ -134,9 +130,9 @@
       return num;
     }
 
-    #getLevelKey(levelObj, checkMode) {
+    #getLevelKey(level) {
       if (!isBrowser || app.common.levelNum === null || app.common.level === null) {
-        return app.Level.getUrlQuery(levelObj, checkMode);
+        return level.getUrlQuery();
       } else {
         const mode = app.Level.getCheckModeStr(app.common.level.getCheckMode());
         return this.#getSeqModeKey(app.common.levelNum, mode);

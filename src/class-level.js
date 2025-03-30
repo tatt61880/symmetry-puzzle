@@ -220,7 +220,8 @@
       console.log(solveJsStr);
     }
 
-    static getUrlQuery(levelObj, checkMode) {
+    #getUrlQuerySub(levelObj) {
+      const checkMode = this.getCheckMode();
       const w = levelObj.w;
       const h = levelObj.h;
       const s = levelObj.s;
@@ -229,10 +230,14 @@
       return `mode=${checkModeStr}&w=${w}&h=${h}&s=${s}${a}`;
     }
 
+    getUrlQuery() {
+      const levelObj = this.getLevelObj();
+      return this.#getUrlQuerySub(levelObj);
+    }
+
     #getUrlQuery() {
       const levelObj = this.getCurrentLevelObj();
-      const checkMode = this.getCheckMode();
-      return Level.getUrlQuery(levelObj, checkMode);
+      return this.#getUrlQuerySub(levelObj);
     }
 
     getUrlStr() {

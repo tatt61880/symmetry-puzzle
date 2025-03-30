@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.30';
+  const VERSION_TEXT = 'v' + '2025.03.30b';
 
   const app = window.app;
   Object.freeze(app);
@@ -1928,19 +1928,18 @@
         g.appendChild(gg);
 
         if (validStepCheck()) {
-          const levelObj = common.level.getLevelObj();
           const replayStr = undoInfo.getReplayStr();
 
           // 記録保存
           highestScorePrev = app.savedata.getHighestScore(common.level);
           if (bestStep !== undefined) {
-            app.savedata.saveSteps(levelObj, common.checkMode, replayStr);
+            app.savedata.saveSteps(common.level, replayStr);
           }
 
           // シルエットデータ保存
           {
             const shapeStr = common.level.getTargetShapeForSavedata();
-            const result = app.savedata.saveShape(levelObj, common.checkMode, shapeStr, replayStr);
+            const result = app.savedata.saveShape(common.level, shapeStr, replayStr);
             if (result) {
               updateShapeButton();
             }
@@ -1948,6 +1947,7 @@
 
           // ログ出力
           {
+            const levelObj = common.level.getLevelObj();
             const w = levelObj.w;
             const h = levelObj.h;
             const s = levelObj.s;
@@ -2344,8 +2344,7 @@
     const base = location.href.split('?')[0];
     let urlQuery;
     if (common.levelNum === null) {
-      const levelObj = common.level.getLevelObj();
-      urlQuery = app.Level.getUrlQuery(levelObj, common.level.getCheckMode());
+      urlQuery = common.level.getUrlQuery();
     } else {
       const mode = app.Level.getCheckModeStr(common.level.getCheckMode());
       urlQuery = `mode=${mode}&num=${common.levelNum}`;

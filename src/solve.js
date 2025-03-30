@@ -270,8 +270,6 @@
       const dxs = [0, 1, 0, -1, 0];
       const dys = [-1, 0, 1, 0, 0];
 
-      const checkMode = level.getCheckMode();
-
       const userMax = level.getMaxValue(app.states.isUser);
 
       const completedFlag = level.isCompleted();
@@ -395,12 +393,12 @@
                   if (options.backup) {
                     if (shapeStrMap.size === 1) {
                       // ステップデータを記録
-                      savedata.saveSteps(level.getLevelObj(), checkMode, replayStr);
+                      savedata.saveSteps(level, replayStr);
                     }
 
                     // 形状データを記録
                     const shape = level.getTargetShapeForSavedata();
-                    savedata.saveShape(level.getLevelObj(), checkMode, shape, replayStr);
+                    savedata.saveShape(level, shape, replayStr);
                   }
                 } else {
                   if (options.draw) {
@@ -411,11 +409,11 @@
               } else {
                 if (options.backup) {
                   // ステップデータを記録
-                  savedata.saveSteps(level.getLevelObj(), checkMode, replayStr);
+                  savedata.saveSteps(level, replayStr);
 
                   // 形状データを記録
                   const shape = level.getTargetShapeForSavedata();
-                  savedata.saveShape(level.getLevelObj(), checkMode, shape, replayStr);
+                  savedata.saveShape(level, shape, replayStr);
                 }
                 return { replayStr };
               }
