@@ -60,13 +60,14 @@
       }
     }
 
+    & th {
+      color: #ff7700;
+      background-color: #e4e4ff;
+    }
+
     #record-seq-mode td {
       color: #303080;
       background-color: #ddeeff;
-    }
-
-    & th {
-      background-color: #e4e4ff;
     }
 
     .border-top-bold {
