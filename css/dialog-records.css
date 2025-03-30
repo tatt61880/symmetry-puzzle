@@ -55,6 +55,10 @@
       text-shadow: var(--pseudo-bold-shadow);
       border: 3px solid #aaaaff;
 
+      & svg {
+        text-shadow: none;
+      }
+
       & * {
         vertical-align: middle;
       }
