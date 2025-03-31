@@ -99,6 +99,12 @@
 
       backup: 'record-button-backup',
       restore: 'record-button-restore',
+
+      alert: {
+        backdrop: 'dialog-records-alert-backdrop',
+        message: 'dialog-records-alert-message',
+        button: 'dialog-records-alert-button',
+      },
     },
 
     category: {

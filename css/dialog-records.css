@@ -111,6 +111,44 @@
   &::backdrop {
     animation: fade-in-dialog 0.1s ease-out 1 forwards;
   }
+
+  #dialog-records-alert-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background: #00000080;
+
+    #dialog-records-alert-div {
+      width: 400px;
+      padding: 20px;
+      text-align: center;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #00000050;
+
+      #dialog-records-alert-message {
+        font-size: 1.3rem;
+        font-weight: normal;
+        line-height: 1.5;
+        color: #333388;
+      }
+
+      #dialog-records-alert-button {
+        width: 100px;
+        height: 50px;
+        margin-top: 10px;
+        background-color: #aaccff;
+        border: 4px solid #0000f8;
+        border-radius: 15px;
+      }
+    }
+  }
 }
 
 @keyframes fade-in-dialog {

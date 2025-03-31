@@ -333,7 +333,7 @@
     return yyyymmdd;
   }
 
-  function backup() {
+  async function backup() {
     const backupData = app.savedata.getBackupData();
     const yyyymmdd = getYyyymmdd();
     const obj = {
@@ -345,9 +345,9 @@
     const filename = `symmetry-puzzle-backup-${yyyymmdd}.json`;
     const lang = app.savedata.loadLang();
     if (lang === 'ja') {
-      alert(`バックアップファイル「${filename}」を作成します。`);
+      await customAlert(`バックアップファイルを作成します。\n${filename}`);
     } else {
-      alert(`Backup file '${filename}' will be created.`);
+      await customAlert(`Backup file will be created.\n${filename}`);
     }
     downloadJsonAsFile(filename, backupJsonText);
 
@@ -396,21 +396,21 @@
 
           setTimeout(() => {
             if (langPrev === 'ja') {
-              alert('リストアを実行しました。');
+              customAlert('リストアを実行しました。');
             } else {
-              alert('Data restored.');
+              customAlert('Data restored.');
             }
           }, 10);
         } else {
           const lang = app.savedata.loadLang();
           if (lang === 'ja') {
-            alert('データ形式が想定外です。');
+            await customAlert('データ形式が想定外です。');
           } else {
-            alert('The data format is invalid.');
+            await customAlert('The data format is invalid.');
           }
         }
       } catch (error) {
-        alert(`Error: ${error}`);
+        await customAlert(`Error: ${error}`);
       } finally {
         // 同じファイルを再度選択しても change イベントが発火するようにするために初期化します。
         hiddenFileInput.value = '';
@@ -419,5 +419,19 @@
 
     document.body.appendChild(hiddenFileInput);
     hiddenFileInput.click();
+  }
+
+  function customAlert(message) {
+    elems.records.alert.message.innerText = message;
+    elems.records.alert.backdrop.style.display = 'flex';
+
+    return new Promise((resolve) => {
+      const handler = () => {
+        elems.records.alert.backdrop.style.display = 'none';
+        elems.records.alert.button.removeEventListener('click', handler);
+        resolve();
+      };
+      elems.records.alert.button.addEventListener('click', handler);
+    });
   }
 })();
