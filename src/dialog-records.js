@@ -12,6 +12,7 @@
   window.app.dialog.records = {
     show,
     close,
+    cancel,
     backup,
     restore,
   };
@@ -320,6 +321,12 @@
 
   function close() {
     elems.records.dialog.close();
+  }
+
+  function cancel() {
+    if (elems.records.alert.backdrop.style.display !== 'none') {
+      elems.records.alert.backdrop.style.display = 'none';
+    }
   }
 
   function getYyyymmdd() {

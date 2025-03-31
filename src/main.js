@@ -1466,6 +1466,7 @@
     elems.records.buttonSvg.appendChild(crown);
     elems.records.button.addEventListener('click', app.dialog.records.show);
     elems.records.dialog.addEventListener('click', app.dialog.records.close);
+    elems.records.dialog.addEventListener('cancel', app.dialog.records.cancel); // Escで閉じたとき用。
     elems.records.close.addEventListener('click', app.dialog.records.close);
     elems.records.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
     elems.records.backup.addEventListener('click', app.dialog.records.backup);
