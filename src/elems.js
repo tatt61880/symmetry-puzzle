@@ -25,8 +25,6 @@
     appTitle: 'app-title',
     version: 'title-version',
 
-    contents: 'contents',
-
     help: {
       button: 'button-help',
       dialog: 'dialog-help',

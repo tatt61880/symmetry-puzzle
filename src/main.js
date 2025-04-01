@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.03.31b';
+  const VERSION_TEXT = 'v' + '2025.04.01';
 
   const app = window.app;
   Object.freeze(app);
@@ -1131,13 +1131,13 @@
     {
       const touchDevice = common.isTouchDevice();
 
-      elems.contents.addEventListener('mousedown', (e) => {
+      document.body.addEventListener('mousedown', (e) => {
         // ダブルタップしたときの画面の拡大縮小をしないようにする。
         e.preventDefault();
       });
 
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
-      elems.contents.addEventListener(pointermoveEventName, (e) => {
+      document.body.addEventListener(pointermoveEventName, (e) => {
         if (common.isShownElem(elems.console.widget)) return;
         // スワイプ操作を無効化する。
         e.preventDefault();
