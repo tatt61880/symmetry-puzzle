@@ -1129,8 +1129,6 @@
     });
 
     {
-      const touchDevice = common.isTouchDevice();
-
       [document.body, elems.contents].forEach((elem) => {
         elem.addEventListener('mousedown', (e) => {
           // ダブルタップしたときの画面の拡大縮小をしないようにする。
@@ -1138,6 +1136,7 @@
         });
       });
 
+      const touchDevice = common.isTouchDevice();
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       [document.body, elems.contents].forEach((elem) => {
         elem.addEventListener(pointermoveEventName, (e) => {

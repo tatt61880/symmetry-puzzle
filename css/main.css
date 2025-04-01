@@ -91,6 +91,7 @@ img.check-mode {
   height: 40px;
 }
 
+body.user-select-none,
 div.user-select-none {
   cursor: default;
   -webkit-user-select: none; /* Safari 対応 */
