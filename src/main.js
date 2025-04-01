@@ -1139,11 +1139,15 @@
       const touchDevice = common.isTouchDevice();
       const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       [document.body, elems.contents].forEach((elem) => {
-        elem.addEventListener(pointermoveEventName, (e) => {
-          if (common.isShownElem(elems.console.widget)) return;
-          // スワイプ操作を無効化する。
-          e.preventDefault();
-        });
+        elem.addEventListener(
+          pointermoveEventName,
+          (e) => {
+            if (common.isShownElem(elems.console.widget)) return;
+            // スワイプ操作を無効化する。
+            e.preventDefault();
+          },
+          { passive: false } // Safari on iOS で passive のデフォルトが true になっていないために body を拡大縮小できてしまう問題に対する対策。
+        );
       });
     }
 
