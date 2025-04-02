@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.04.01b';
+  const VERSION_TEXT = 'v' + '2025.04.02';
 
   const app = window.app;
   Object.freeze(app);
@@ -529,7 +529,7 @@
   }
 
   function onWindowResize() {
-    draw();
+    setTimeout(draw, 500);
   }
 
   function draw() {
