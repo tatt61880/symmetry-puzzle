@@ -506,7 +506,7 @@
     clearTimeout(redrawTimerId);
 
     animateIcons();
-    addAnimationClass(elems.level.retryArrow, 'rotate');
+    addAnimationClass(elems.level.retryArrow, 'rotate-ccw');
 
     {
       const levelObj = undoInfo.undoAll();

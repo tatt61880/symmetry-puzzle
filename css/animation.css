@@ -991,6 +991,6 @@
   }
 }
 
-.rotate {
+.rotate-ccw {
   animation: rotate-once 0.3s linear;
 }
