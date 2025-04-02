@@ -1880,10 +1880,10 @@
         ];
 
         buttons.forEach((button) => {
-          if (button.dx === 1 && !common.level.axisCxIncAble()) return;
           if (button.dx === -1 && !common.level.axisCxDecAble()) return;
-          if (button.dy === 1 && !common.level.axisCyIncAble()) return;
           if (button.dy === -1 && !common.level.axisCyDecAble()) return;
+          if (button.dx === 1 && !common.level.axisCxIncAble()) return;
+          if (button.dy === 1 && !common.level.axisCyIncAble()) return;
 
           addEditButton(button, moveAxis.bind(null, button.dx, button.dy), app.colors[app.states.userMin]);
         });
@@ -1906,6 +1906,11 @@
         ];
 
         buttons.forEach((button) => {
+          if (button.dx === -1 && common.level.getW() <= common.minEditW) return;
+          if (button.dy === -1 && common.level.getH() <= common.minEditH) return;
+          if (button.dx === 1 && common.level.getW() >= common.maxEditW) return;
+          if (button.dy === 1 && common.level.getH() >= common.maxEditH) return;
+
           addEditButton(button, resizeLevel.bind(null, button.dx, button.dy, button.flag), app.colors.editButton);
         });
       }
@@ -2097,11 +2102,6 @@
     }
 
     function addEditButton(button, onClick, color) {
-      if (button.dx === -1 && common.level.getW() <= common.minEditW) return;
-      if (button.dy === -1 && common.level.getH() <= common.minEditH) return;
-      if (button.dx === 1 && common.level.getW() >= common.maxEditW) return;
-      if (button.dy === 1 && common.level.getH() >= common.maxEditH) return;
-
       const points = [];
       for (const point of button.points) {
         points.push([button.cx + 0.45 * point[0], button.cy + 0.45 * point[1]]);
