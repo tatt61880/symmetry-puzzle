@@ -519,6 +519,7 @@
 
     // 正規化
     normalize() {
+      // ブロック番号の正規化
       const map = {};
       let nextTarget = app.states.targetMin;
       let nextOther = app.states.otherMin;
@@ -540,6 +541,49 @@
             }
           }
           this.#states[y][x] = map[state];
+        }
+      }
+
+      // 対称軸座標の正規化
+      if (this.hasAxis()) {
+        switch (this.#axis.type) {
+          case Level.SYMMETRY_TYPE.LINE1: {
+            // 軸座標を上の壁沿いに移動。
+            this.#axis.cy = this.#yMin * 2;
+            break;
+          }
+          case Level.SYMMETRY_TYPE.LINE2: {
+            // 軸座標を左の壁沿いに移動。
+            this.#axis.cx = this.#xMin * 2;
+            break;
+          }
+          case Level.SYMMETRY_TYPE.LINE3: {
+            while (this.#axis.cy > this.#yMin * 2 && this.#axis.cx > this.#xMin * 2) {
+              // 軸座標が上あるいは左の壁沿いに来るまで左上に移動。
+              this.#axis.cx--;
+              this.#axis.cy--;
+            }
+            break;
+          }
+          case Level.SYMMETRY_TYPE.LINE4: {
+            while (true) {
+              if (this.#xMin * 2 <= this.#axis.cx && this.#axis.cx <= this.#xMax * 2 && this.#axis.cy === this.#yMin * 2) {
+                // 軸座標が上の壁沿いにある。
+                break;
+              } else if (this.#axis.cx === this.#xMax * 2 && this.#yMin * 2 <= this.#axis.cy && this.#axis.cy <= this.#yMax * 2) {
+                // 軸座標が右の壁沿いにある。
+                break;
+              } else if (this.#axis.cx < this.#xMin * 2 || this.#axis.cy < this.#yMin * 2) {
+                // 軸座標が異常な位置にあります。
+                break;
+              } else {
+                this.#axis.cx++;
+                this.#axis.cy--;
+                // 軸座標を左上に移動。
+              }
+            }
+            break;
+          }
         }
       }
     }
@@ -604,7 +648,9 @@
       return true;
     }
 
+    // 正規化チェック
     isNormalized() {
+      // ブロック番号の正規化チェック
       const exists = {};
       for (let y = this.#yMin; y < this.#yMax; ++y) {
         for (let x = this.#xMin; x < this.#xMax; ++x) {
@@ -627,6 +673,49 @@
           }
         }
       }
+
+      // 対称軸座標の正規化チェック
+      if (this.hasAxis()) {
+        switch (this.#axis.type) {
+          case Level.SYMMETRY_TYPE.LINE1: {
+            if (this.#axis.cy === this.#yMin * 2) {
+              // 軸座標が上の壁沿いにある。
+            } else {
+              return false;
+            }
+            break;
+          }
+          case Level.SYMMETRY_TYPE.LINE2: {
+            if (this.#axis.cx === this.#xMin * 2) {
+              // 軸座標が左の壁沿いにある。
+            } else {
+              return false;
+            }
+            break;
+          }
+          case Level.SYMMETRY_TYPE.LINE3: {
+            if (this.#axis.cy === this.#yMin * 2) {
+              // 軸座標が上の壁沿いにある。
+            } else if (this.#axis.cx === this.#xMin * 2) {
+              // 軸座標が左の壁沿いにある。
+            } else {
+              return false;
+            }
+            break;
+          }
+          case Level.SYMMETRY_TYPE.LINE4: {
+            if (this.#xMin * 2 <= this.#axis.cx && this.#axis.cx <= this.#xMax * 2 && this.#axis.cy === this.#yMin * 2) {
+              // 軸座標が上の壁沿いにある。
+            } else if (this.#axis.cx === this.#xMax * 2 && this.#yMin * 2 <= this.#axis.cy && this.#axis.cy <= this.#yMax * 2) {
+              // 軸座標が右の壁沿いにある。
+            } else {
+              return false;
+            }
+            break;
+          }
+        }
+      }
+
       return true;
     }
 
