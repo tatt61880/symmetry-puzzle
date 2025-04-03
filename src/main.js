@@ -844,6 +844,7 @@
     updateEditAxisButton();
     updateEditMode(editMode);
     if (!editMode) {
+      // 現在の盤面を初期値とするレベルに更新しておかないと、クリア時のセーブ情報がバグります。
       common.level = new app.Level({ levelObj: common.level.getCurrentLevelObj(), checkMode: common.checkMode });
       const base = location.href.split('?')[0];
       const urlQuery = common.level.getCurrentUrlQuery();
