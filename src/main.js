@@ -850,6 +850,7 @@
       const url = `${base}?${urlQuery}`;
       history.replaceState(null, '', url);
 
+      updateShapeButton();
       completeCheck();
     }
 
