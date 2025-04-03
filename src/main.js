@@ -430,22 +430,27 @@
             return null;
           }
           switch (e.key) {
+            // ↑
             case 'ArrowUp':
             case 'w':
             case 'k':
               return app.Input.DIRS.UP;
+            // →
             case 'ArrowRight':
             case 'd':
             case 'l':
               return app.Input.DIRS.RIGHT;
+            // ↓
             case 'ArrowDown':
             case 's':
             case 'j':
               return app.Input.DIRS.DOWN;
+            // ←
             case 'ArrowLeft':
             case 'a':
             case 'h':
               return app.Input.DIRS.LEFT;
+            // 軸
             case 'Enter':
               if (common.level.hasAxis()) {
                 return app.Input.DIRS.AXIS;
