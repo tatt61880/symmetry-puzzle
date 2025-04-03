@@ -837,6 +837,11 @@
       common.hideElem(elems.edit.widget);
       common.showElem(elems.controller.widget);
       common.showElem(elems.level.retry);
+
+      if (undoInfoForNormal) {
+        resetUndo();
+        addUndo(null);
+      }
     }
   }
 
