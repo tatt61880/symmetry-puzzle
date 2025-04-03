@@ -49,7 +49,8 @@
   let isRemoving = false;
   let touchStart = false;
 
-  let undoInfo;
+  const undoInfoForEdit = new app.UndoInfo();
+  let undoInfoForNormal;
   let undoFlag = false;
   let redoFlag = false;
   let undoIntervalId = null;
@@ -104,7 +105,7 @@
     symmetryFlag = common.level.isSymmetry(app.states.isTarget); // 連結しているか否かに関わらず対称図形であるとき
     const redrawFlag =
       completeFlag || // 完成したとき。
-      (undoInfo.isUndoable() && symmetryFlag && symmetryFlag !== symmetryFlagPrev); // 初手以外で、対称フラグが変わったとき。
+      (undoInfoForNormal.isUndoable() && symmetryFlag && symmetryFlag !== symmetryFlagPrev); // 初手以外で、対称フラグが変わったとき。
     if (redrawFlag) {
       const delay = settings.autoMode ? settingsAuto.interval * INPUT_INTERVAL_MSEC : MOVE_INTERVAL_MSEC;
       clearTimeout(redrawTimerId);
@@ -500,6 +501,8 @@
   }
 
   function retryLevel() {
+    if (editMode) return;
+
     window.getSelection().removeAllRanges();
 
     clearTimeout(nextLevelTimerId);
@@ -509,7 +512,7 @@
     addAnimationClass(elems.level.retryArrow, 'rotate-ccw');
 
     {
-      const levelObj = undoInfo.undoAll();
+      const levelObj = undoInfoForNormal.undoAll();
       const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
     }
@@ -518,7 +521,7 @@
   }
 
   function resetUndo() {
-    undoInfo = new app.UndoInfo();
+    undoInfoForNormal = new app.UndoInfo();
   }
 
   function initLevel(paramObj) {
@@ -581,33 +584,50 @@
   }
 
   function updateUndoRedoButton() {
-    if (undoInfo === undefined) return;
+    if (undoInfoForNormal !== undefined) {
+      if (undoInfoForNormal.isUndoable()) {
+        common.showElem(elems.controller.undo);
+      } else {
+        common.hideElem(elems.controller.undo);
+      }
 
-    if (undoInfo.isUndoable()) {
-      common.showElem(elems.controller.undo);
-      common.showElem(elems.edit.undo);
-    } else {
-      common.hideElem(elems.controller.undo);
-      common.hideElem(elems.edit.undo);
+      if (undoInfoForNormal.isRedoable()) {
+        common.showElem(elems.controller.redo);
+      } else {
+        common.hideElem(elems.controller.redo);
+      }
     }
 
-    if (undoInfo.isRedoable()) {
-      common.showElem(elems.controller.redo);
-      common.showElem(elems.edit.redo);
-    } else {
-      common.hideElem(elems.controller.redo);
-      common.hideElem(elems.edit.redo);
+    // エディトモード用
+    if (undoInfoForEdit !== undefined) {
+      if (undoInfoForEdit.isUndoable()) {
+        common.showElem(elems.edit.undo);
+      } else {
+        common.hideElem(elems.edit.undo);
+      }
+
+      if (undoInfoForEdit.isRedoable()) {
+        common.showElem(elems.edit.redo);
+      } else {
+        common.hideElem(elems.edit.redo);
+      }
     }
   }
 
   function execUndo() {
     window.getSelection().removeAllRanges();
 
+    const undoInfo = editMode ? undoInfoForEdit : undoInfoForNormal;
+
     if (undoInfo.isUndoable()) {
       const levelObj = undoInfo.undo();
       const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
       common.level.applyAxis(levelObj.axis);
+      if (common.checkMode !== levelObj.checkMode) {
+        common.level.setCheckMode(levelObj.checkMode);
+        updateCheckMode(levelObj.checkMode);
+      }
       draw();
     }
   }
@@ -615,11 +635,17 @@
   function execRedo() {
     window.getSelection().removeAllRanges();
 
+    const undoInfo = editMode ? undoInfoForEdit : undoInfoForNormal;
+
     if (undoInfo.isRedoable()) {
       const levelObj = undoInfo.redo();
       const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
       common.level.applyAxis(levelObj.axis);
+      if (common.checkMode !== levelObj.checkMode) {
+        common.level.setCheckMode(levelObj.checkMode);
+        updateCheckMode(levelObj.checkMode);
+      }
       draw();
     }
   }
@@ -805,6 +831,7 @@
       common.hideElem(elems.controller.widget);
       common.hideElem(elems.level.retry);
       updateLinkUrl();
+      addUndo(null);
     } else {
       common.hideElem(elems.url.div);
       common.hideElem(elems.edit.widget);
@@ -1308,6 +1335,7 @@
     updateEditAxisButton();
     editboxFunctions[app.states.stateToChar[app.states.none]]();
 
+    // モード変更ボタン
     elems.edit.switchMode.addEventListener('click', () => {
       switch (common.level.getCheckMode()) {
         case app.Level.CHECK_MODE.LINE:
@@ -1320,25 +1348,30 @@
           updateCheckMode(app.Level.CHECK_MODE.LINE);
           break;
       }
+
       const levelObj = common.level.getCurrentLevelObj();
       common.level = new app.Level({ levelObj, checkMode: common.checkMode });
       updateEditElems();
       completeCheck();
+      addUndo(null);
       draw();
     });
 
+    // 鏡映ボタン
     elems.edit.mirror.addEventListener('click', () => {
       common.level.mirror();
       addUndo(null);
       draw();
     });
 
+    // 回転ボタン
     elems.edit.rotate.addEventListener('click', () => {
       common.level.rotate(1);
       addUndo(null);
       draw();
     });
 
+    // 正規化ボタン
     elems.edit.normalize.addEventListener('click', () => {
       if (!common.level.isNormalized()) {
         common.level.normalize();
@@ -1686,7 +1719,7 @@
 
   function drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag) {
     // 盤面の初回表示時に小さくジャンプするようにします。
-    const smallJumpFlag = !undoInfo.isUndoable() && input.inputDir === app.Input.DIRS.NEUTRAL;
+    const smallJumpFlag = !editMode && !undoInfoForNormal.isUndoable() && input.inputDir === app.Input.DIRS.NEUTRAL;
 
     const levelSvgG = common.level.createSvgG({
       blockSize,
@@ -1939,7 +1972,7 @@
         g.appendChild(gg);
 
         if (validStepCheck()) {
-          const replayStr = undoInfo.getReplayStr();
+          const replayStr = undoInfoForNormal.getReplayStr();
 
           // 記録保存
           highestScorePrev = app.savedata.getHighestScore(common.level);
@@ -1974,7 +2007,7 @@
             // }
             consoleLog(levelObjStr);
 
-            const completedStep = undoInfo.getIndex();
+            const completedStep = undoInfoForNormal.getIndex();
             if (r === undefined) {
               consoleWarn('参照用公式記録の情報がありません！');
             } else if (completedStep < bestStep) {
@@ -2016,7 +2049,7 @@
 
       // 今回の手数
       {
-        const currentStep = undoInfo.getIndex();
+        const currentStep = undoInfoForNormal.getIndex();
         let color = common.isSeqMode ? app.colors.stepNum : app.colors.stepNormal;
         if (isCompleted) {
           if (!highestScorePrev || currentStep <= highestScorePrev) {
@@ -2128,7 +2161,7 @@
 
     // リプレイ用文字列が正常か否かのチェック。
     function validStepCheck() {
-      const replayStr = undoInfo.getReplayStr();
+      const replayStr = undoInfoForNormal.getReplayStr();
       if (replayStr === null) {
         return false;
       }
@@ -2327,10 +2360,13 @@
   }
 
   function addUndo(dir) {
+    const undoInfo = editMode ? undoInfoForEdit : undoInfoForNormal;
+
     undoInfo.pushData({
       dir,
       ...common.level.getCurrentLevelObj(),
       r: common.level.getR(),
+      checkMode: common.level.getCheckMode(),
     });
 
     updateUndoRedoButton();
@@ -2472,7 +2508,7 @@
     if (!editMode && settings.autoMode) {
       if (!settingsAuto.paused) {
         if (r !== undefined) {
-          const stepIndex = undoInfo.getIndex();
+          const stepIndex = undoInfoForNormal.getIndex();
           if (stepIndex < r.length) {
             input.inputDir = Number(r[stepIndex]);
             inputFunc();

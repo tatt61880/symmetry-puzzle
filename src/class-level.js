@@ -1817,6 +1817,10 @@
       this.#checkMode = mode;
     }
 
+    setCheckMode(mode) {
+      this.#setCheckMode(mode);
+    }
+
     #setState(x, y, state) {
       this.#states[y][x] = state;
     }
