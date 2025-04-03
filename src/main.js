@@ -1603,7 +1603,7 @@
     if (input.inputDir === app.Input.DIRS.NEUTRAL) return;
     if (undoFlag) return;
     if (redoFlag) return;
-    if (completeFlag) return;
+    if (!editMode && completeFlag) return;
 
     if (settings.autoMode) {
       input.update(input.inputDir);
