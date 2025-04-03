@@ -844,12 +844,13 @@
     updateEditAxisButton();
     updateEditMode(editMode);
     if (!editMode) {
-      completeCheck();
       common.level = new app.Level({ levelObj: common.level.getCurrentLevelObj(), checkMode: common.checkMode });
       const base = location.href.split('?')[0];
       const urlQuery = common.level.getCurrentUrlQuery();
       const url = `${base}?${urlQuery}`;
       history.replaceState(null, '', url);
+
+      completeCheck();
     }
 
     drawMainSvg();
