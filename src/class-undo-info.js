@@ -9,7 +9,7 @@
     constructor() {
       this.undoArray = [];
       this.#undoIdx = -1;
-      this.#undoMaxIdx = 0;
+      this.#undoMaxIdx = -1;
     }
 
     pushData(data) {
