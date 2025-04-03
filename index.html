@@ -857,7 +857,7 @@
           <rect x="2" y="2" width="486" height="216" fill="#def" stroke="skyblue" stroke-width="4" />
 
           <!-- Undoボタン -->
-          <g id="button-undo-edit" class="button active-hover" transform="translate(50,116) scale(1.2,1.2)">
+          <g id="button-undo-edit" class="button active-hover" transform="translate(50,124) scale(1.25,1.25)">
             <g>
               <circle cx="0" cy="0" r="28" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
               <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#888888" stroke-width="4" />
@@ -866,8 +866,9 @@
                 fill="#888888">Z</text>
             </g>
           </g>
+
           <!-- Redoボタン -->
-          <g id="button-redo-edit" class="button active-hover" transform="translate(440,116) scale(-1.2,1.2)">
+          <g id="button-redo-edit" class="button active-hover" transform="translate(440,124) scale(-1.25,1.25)">
             <g>
               <circle cx="0" cy="0" r="28" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
               <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#888888" stroke-width="4" />
@@ -878,8 +879,8 @@
           </g>
 
           <!-- 軸 -->
-          <g id="edit-buttons-axis" class="button active-hover" transform="translate(440,40) scale(0.9)">
-            <rect x="-35" y="-35" rx="12" width="70" height="70" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+          <g id="edit-buttons-axis" class="button active-hover" transform="translate(440,42) scale(0.9)">
+            <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
             <rect id="edit-buttons-axis-line1" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8" />
             <rect id="edit-buttons-axis-line2" class="hide" x="-25" y="-2" width="50" height="4" fill="#0000f8" />
             <rect id="edit-buttons-axis-line3" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8"
@@ -891,7 +892,7 @@
               transform="rotate(45 0 0)" />
 
             <!-- エラー時などに全部の軸が表示されてしまう可能性を減らす目的 -->
-            <rect class="hide" x="-35" y="-35" rx="12" width="70" height="70" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+            <rect class="hide" x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
           </g>
 
           <g transform="translate(96,16)" id="edit-drawing-shape">
@@ -969,7 +970,7 @@
             <g id="controller-buttons-menu" class="button active-hover" transform="translate(-185,-50)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#888888"
                 class="translatable-toggle" data-en="MENU" data-ja="メニュー"></text>
-              <rect x="-35" y="-35" rx="12" width="70" height="70" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
+              <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
               <rect x="-23" y="-23" rx="5" width="46" height="10" fill="#888888" />
               <rect x="-23" y="-5" rx="5" width="46" height="10" fill="#888888" />
               <rect x="-23" y="13" rx="5" width="46" height="10" fill="#888888" />
@@ -980,7 +981,7 @@
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#888888"
                 class="translatable-toggle" data-en="SHAPES" data-ja="形状"></text>
 
-              <rect id="button-shapes" x="-35" y="-35" rx="12" width="70" height="70" fill="#ffeedd" stroke="#ffbb77" stroke-width="4" />
+              <rect id="button-shapes" x="-36" y="-36" rx="12" width="72" height="72" fill="#ffeedd" stroke="#ffbb77" stroke-width="4" />
               <text id="button-shapes-numerator" x="0" y="-14" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
                 font-size="30" fill="#ff7700" stroke="none">?</text>
               <rect id="button-shapes-line" x="-23" y="-2" rx="2" width="46" height="4" fill="#ff7700" />
@@ -992,7 +993,7 @@
             <g id="button-undo" class="button active-hover" transform="translate(-185,60)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#888888"
                 class="translatable-toggle" data-en="STEP BACKWARD" data-ja="1ステップ戻す"></text>
-              <g transform="scale(1.2,1.2)">
+              <g transform="scale(1.25,1.25)">
                 <circle cx="0" cy="0" r="28" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
                 <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#888888" stroke-width="4" />
                 <path d="M 1,-20.5 l -13,9 14.5,5.2 z" fill="#888888" stroke="none" />
@@ -1000,11 +1001,12 @@
                   fill="#888888">Z</text>
               </g>
             </g>
+
             <!-- Redoボタン -->
             <g id="button-redo" class="button active-hover" transform="translate(185,60)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#888888"
                 class="translatable-toggle" data-en="STEP FORWARD" data-ja="1ステップ進める"></text>
-              <g transform="scale(-1.2,1.2)">
+              <g transform="scale(-1.25,1.25)">
                 <circle cx="0" cy="0" r="28" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
                 <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#888888" stroke-width="4" />
                 <path d="M 1,-20.5 l -13,9 14.5,5.2 z" fill="#888888" stroke="none" />
@@ -1017,28 +1019,28 @@
             <g id="controller-buttons-root">
               <g id="controller-buttons-base" transform="translate(0,0)">
                 <!-- ↑ -->
-                <g id="controller-buttons-up" class="button active-hover" transform="translate(0,-80)">
-                  <rect x="-35" y="-35" rx="12" width="70" height="70" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+                <g id="controller-buttons-up" class="button active-hover" transform="translate(0,-79)">
+                  <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
                   <polygon transform="rotate(0 0 0)" points="0,-21 10,0 3,0 3,21 -3,21 -3,0 -10,0" fill="#0000f8" />
                 </g>
                 <!-- → -->
-                <g id="controller-buttons-right" class="button active-hover" transform="translate(80,0)">
-                  <rect x="-35" y="-35" rx="12" width="70" height="70" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+                <g id="controller-buttons-right" class="button active-hover" transform="translate(79,0)">
+                  <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
                   <polygon transform="rotate(90 0 0)" points="0,-21 10,0 3,0 3,21 -3,21 -3,0 -10,0" fill="#0000f8" />
                 </g>
                 <!-- ↓ -->
-                <g id="controller-buttons-down" class="button active-hover" transform="translate(0,80)">
-                  <rect x="-35" y="-35" rx="12" width="70" height="70" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+                <g id="controller-buttons-down" class="button active-hover" transform="translate(0,79)">
+                  <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
                   <polygon transform="rotate(180 0 0)" points="0,-21 10,0 3,0 3,21 -3,21 -3,0 -10,0" fill="#0000f8" />
                 </g>
                 <!-- ← -->
-                <g id="controller-buttons-left" class="button active-hover" transform="translate(-80,0)">
-                  <rect x="-35" y="-35" rx="12" width="70" height="70" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+                <g id="controller-buttons-left" class="button active-hover" transform="translate(-79,0)">
+                  <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
                   <polygon transform="rotate(270 0 0)" points="0,-21 10,0 3,0 3,21 -3,21 -3,0 -10,0" fill="#0000f8" />
                 </g>
                 <!-- 軸 -->
                 <g id="controller-buttons-axis" class="button active-hover" transform="translate(0,0)">
-                  <rect x="-35" y="-35" rx="12" width="70" height="70" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+                  <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
                   <rect id="controller-buttons-axis-line1" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8" />
                   <rect id="controller-buttons-axis-line2" class="hide" x="-25" y="-2" width="50" height="4" fill="#0000f8" />
                   <rect id="controller-buttons-axis-line3" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8"
