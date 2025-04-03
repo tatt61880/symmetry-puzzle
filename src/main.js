@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.04.02';
+  const VERSION_TEXT = 'v' + '2025.04.03';
 
   const app = window.app;
   Object.freeze(app);
@@ -1118,8 +1118,6 @@
   }
 
   function initElems() {
-    onWindowResize();
-
     let setTimeoutIdOnWindowResize = null;
     window.addEventListener('resize', () => {
       if (setTimeoutIdOnWindowResize !== null) {
