@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.04.03b';
+  const VERSION_TEXT = 'v' + '2025.04.04';
 
   const app = window.app;
   Object.freeze(app);
@@ -541,7 +541,6 @@
     updateSvg();
     updateUndoRedoButton();
     updateEditAxisButton();
-    updateLinkUrl();
     completeCheck();
     drawMainSvg();
   }
@@ -551,12 +550,12 @@
       window.innerHeight -
       10 -
       [
+        //
         elems.header,
         elems.level.widget,
         elems.auto.buttons,
         elems.controller.widget,
         elems.edit.widget,
-        elems.url.div,
         elems.footer,
       ].reduce((sum, elem) => sum + elem.getBoundingClientRect().height, 0);
     elems.main.div.style.setProperty('height', `${divMainHeight}px`);
@@ -817,23 +816,15 @@
     }
   }
 
-  function updateLinkUrl() {
-    if (!editMode) return;
-    const url = common.level.getUrlStr();
-    elems.url.a.innerHTML = `<a href="${url}">現在の盤面を0手目として完成！</a>`;
-  }
+  function updateEditMode(isEditMode) {
+    editMode = isEditMode;
 
-  function updateEditMode(isOn) {
-    editMode = isOn;
     if (editMode) {
-      common.showElem(elems.url.div);
       common.showElem(elems.edit.widget);
       common.hideElem(elems.controller.widget);
       common.hideElem(elems.level.retry);
-      updateLinkUrl();
       addUndo(null);
     } else {
-      common.hideElem(elems.url.div);
       common.hideElem(elems.edit.widget);
       common.showElem(elems.controller.widget);
       common.showElem(elems.level.retry);
@@ -854,7 +845,12 @@
     updateEditMode(editMode);
     if (!editMode) {
       completeCheck();
+      const base = location.href.split('?')[0];
+      const urlQuery = common.level.getCurrentUrlQuery();
+      const url = `${base}?${urlQuery}`;
+      history.replaceState(null, '', url);
     }
+
     drawMainSvg();
   }
 
@@ -1609,7 +1605,6 @@
     if (movedFlag) {
       drawMainSvg();
       completeCheck();
-      updateLinkUrl();
     } else {
       const dxs = [0, 1, 0, -1];
       const dys = [-1, 0, 1, 0];
@@ -2317,12 +2312,10 @@
     if (!isRemoving && common.level.getState(x, y) !== drawingState) {
       common.level.applyState(x, y, drawingState);
       addUndo(null);
-      updateLinkUrl();
       drawMainSvg();
     } else if (isRemoving && common.level.getState(x, y) !== app.states.none) {
       common.level.applyState(x, y, app.states.none);
       addUndo(null);
-      updateLinkUrl();
       drawMainSvg();
     }
     return;
@@ -2374,6 +2367,7 @@
       checkMode: common.level.getCheckMode(),
     });
 
+    common.level.printDebugInfo();
     updateUndoRedoButton();
   }
 
@@ -2409,16 +2403,16 @@
     (settingsAuto.interval === 1 ? common.hideElem : common.showElem)(elems.auto.buttonSpeedUp);
   }
 
-  function updateAutoMode(isOn) {
-    if (isOn) {
-      settings.autoMode = true;
+  function updateAutoMode(isAutoMode) {
+    settings.autoMode = isAutoMode;
+
+    if (isAutoMode) {
       input.disable();
       common.showElem(elems.auto.buttons);
       updateEditMode(false);
     } else {
       clearTimeout(nextLevelTimerId);
       clearTimeout(redrawTimerId);
-      settings.autoMode = false;
       settingsAuto.paused = true;
       input.enable();
       common.hideElem(elems.auto.buttons);

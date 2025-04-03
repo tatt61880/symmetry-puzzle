@@ -235,12 +235,12 @@
       return this.#getUrlQuerySub(levelObj);
     }
 
-    #getCurrentUrlQuery() {
+    getCurrentUrlQuery() {
       const levelObj = this.getCurrentLevelObj();
       return this.#getUrlQuerySub(levelObj);
     }
 
-    getUrlStr() {
+    printDebugInfo() {
       const w = this.getW();
       const h = this.getH();
       const s = this.getS();
@@ -248,11 +248,6 @@
 
       console.log(`{ w: ${w}, h: ${h}, s: '${s}'${axis} },`); // コピペ用
       this.printSolveJsStr();
-
-      const urlQuery = this.#getCurrentUrlQuery();
-      const urlStr = `${location.href.split('?')[0]}?${urlQuery}`;
-
-      return urlStr;
     }
 
     getCenter(isX) {
