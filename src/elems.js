@@ -207,11 +207,6 @@
       normalize: 'edit-normalize',
     },
 
-    url: {
-      div: 'url-div',
-      a: 'url',
-    },
-
     controller: {
       widget: 'controller-widget',
       undo: 'button-undo',
