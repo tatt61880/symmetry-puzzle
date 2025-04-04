@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.04.05';
+  const VERSION_TEXT = 'v' + '2025.04.05b';
 
   const app = window.app;
   Object.freeze(app);
@@ -2463,12 +2463,21 @@
   function addUndo(dir) {
     const undoInfo = editMode ? undoInfoForEdit : undoInfoForNormal;
 
-    undoInfo.pushData({
-      dir,
+    const data = {
+      dir: editMode ? null : dir,
       ...common.level.getCurrentLevelObj(),
       r: common.level.getR(),
       checkMode: common.level.getCheckMode(),
-    });
+    };
+
+    if (editMode) {
+      // 直前の盤面と同じ場合は無視します。
+      if (undoInfo.getIndex() < 0 || JSON.stringify(data) !== JSON.stringify(undoInfo.getTopData())) {
+        undoInfo.pushData(data);
+      }
+    } else {
+      undoInfo.pushData(data);
+    }
 
     common.level.printDebugInfo();
     updateUndoRedoButton();

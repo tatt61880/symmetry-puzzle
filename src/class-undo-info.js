@@ -46,6 +46,10 @@
       return this.#undoIdx;
     }
 
+    getTopData() {
+      return this.undoArray[this.getIndex()];
+    }
+
     getReplayStr() {
       let replayStr = '';
       for (let i = 1; i <= this.#undoIdx; ++i) {
