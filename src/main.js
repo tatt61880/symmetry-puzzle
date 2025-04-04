@@ -57,6 +57,13 @@
   let redoIntervalId = null;
   let autoIntervalId = null;
 
+  let gotoPrevLevelIntervalId = null;
+  let gotoNextLevelIntervalId = null;
+  let gotoLevelsPrevPageIntervalId = null;
+  let gotoLevelsNextPageIntervalId = null;
+  let gotoShapesPrevPageIntervalId = null;
+  let gotoShapesNextPageIntervalId = null;
+
   let completeFlag = false;
   let symmetryFlag = false;
 
@@ -175,6 +182,12 @@
   function pointerup() {
     undoEnd();
     redoEnd();
+    clearInterval(gotoPrevLevelIntervalId);
+    clearInterval(gotoNextLevelIntervalId);
+    clearInterval(gotoLevelsPrevPageIntervalId);
+    clearInterval(gotoLevelsNextPageIntervalId);
+    clearInterval(gotoShapesPrevPageIntervalId);
+    clearInterval(gotoShapesNextPageIntervalId);
   }
 
   function getCursorPos(elem, e) {
@@ -1524,8 +1537,15 @@
   // レベル操作用
   function initElemsForLevelWidget() {
     elems.level.retry.addEventListener('click', retryLevel);
-    elems.level.prev.addEventListener('click', gotoPrevLevel);
-    elems.level.next.addEventListener('click', gotoNextLevel);
+    {
+      const touchDevice = common.isTouchDevice();
+      const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
+      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
+      elems.level.prev.addEventListener(pointerdownEventName, gotoPrevLevelStart);
+      elems.level.prev.addEventListener(pointerupEventName, gotoPrevLevelEnd);
+      elems.level.next.addEventListener(pointerdownEventName, gotoNextLevelStart);
+      elems.level.next.addEventListener(pointerupEventName, gotoNextLevelEnd);
+    }
     elems.level.edit.addEventListener('click', toggleEditLevel);
     elems.levels.button.addEventListener('click', app.dialog.levels.show);
     elems.levels.dialog.addEventListener('click', app.dialog.levels.close);
@@ -1533,11 +1553,58 @@
     elems.levels.display.checkbox.addEventListener('click', app.dialog.levels.update);
   }
 
+  function gotoPrevLevelStart(e) {
+    if (e.button === 2) return; // 右クリックは無視
+    gotoPrevLevel();
+    gotoPrevLevelIntervalId = setInterval(gotoPrevLevel, MOVE_INTERVAL_MSEC * 1.5);
+  }
+
+  function gotoPrevLevelEnd() {
+    clearInterval(gotoPrevLevelIntervalId);
+  }
+
+  function gotoNextLevelStart(e) {
+    if (e.button === 2) return; // 右クリックは無視
+    gotoNextLevel();
+    gotoNextLevelIntervalId = setInterval(gotoNextLevel, MOVE_INTERVAL_MSEC * 1.5);
+  }
+
+  function gotoNextLevelEnd() {
+    clearInterval(gotoNextLevelIntervalId);
+  }
+
   // レベル一覧ダイアログ
   function initElemsForLevelsDialog() {
     elems.levels.close.addEventListener('click', app.dialog.levels.close);
-    elems.levels.prev.addEventListener('click', app.dialog.levels.prevPage);
-    elems.levels.next.addEventListener('click', app.dialog.levels.nextPage);
+    {
+      const touchDevice = common.isTouchDevice();
+      const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
+      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
+      elems.levels.prev.addEventListener(pointerdownEventName, gotoLevelsPrevPageStart);
+      elems.levels.prev.addEventListener(pointerupEventName, gotoLevelsPrevPageEnd);
+      elems.levels.next.addEventListener(pointerdownEventName, gotoLevelsNextPageStart);
+      elems.levels.next.addEventListener(pointerupEventName, gotoLevelsNextPageEnd);
+    }
+  }
+
+  function gotoLevelsPrevPageStart(e) {
+    if (e.button === 2) return; // 右クリックは無視
+    app.dialog.levels.prevPage();
+    gotoLevelsPrevPageIntervalId = setInterval(app.dialog.levels.prevPage, MOVE_INTERVAL_MSEC * 1.5);
+  }
+
+  function gotoLevelsPrevPageEnd() {
+    clearInterval(gotoLevelsPrevPageIntervalId);
+  }
+
+  function gotoLevelsNextPageStart(e) {
+    if (e.button === 2) return; // 右クリックは無視
+    app.dialog.levels.nextPage();
+    gotoLevelsNextPageIntervalId = setInterval(app.dialog.levels.nextPage, MOVE_INTERVAL_MSEC * 1.5);
+  }
+
+  function gotoLevelsNextPageEnd() {
+    clearInterval(gotoLevelsNextPageIntervalId);
   }
 
   // 形状一覧ダイアログ
@@ -1546,8 +1613,35 @@
     elems.shapes.dialog.addEventListener('click', app.dialog.shapes.close);
     elems.shapes.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
     elems.shapes.close.addEventListener('click', app.dialog.shapes.close);
-    elems.shapes.prev.addEventListener('click', app.dialog.shapes.prevPage);
-    elems.shapes.next.addEventListener('click', app.dialog.shapes.nextPage);
+    {
+      const touchDevice = common.isTouchDevice();
+      const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
+      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
+      elems.shapes.prev.addEventListener(pointerdownEventName, gotoShapesPrevPageStart);
+      elems.shapes.prev.addEventListener(pointerupEventName, gotoShapesPrevPageEnd);
+      elems.shapes.next.addEventListener(pointerdownEventName, gotoShapesNextPageStart);
+      elems.shapes.next.addEventListener(pointerupEventName, gotoShapesNextPageEnd);
+    }
+  }
+
+  function gotoShapesPrevPageStart(e) {
+    if (e.button === 2) return; // 右クリックは無視
+    app.dialog.shapes.prevPage();
+    gotoShapesPrevPageIntervalId = setInterval(app.dialog.shapes.prevPage, MOVE_INTERVAL_MSEC * 1.5);
+  }
+
+  function gotoShapesPrevPageEnd() {
+    clearInterval(gotoShapesPrevPageIntervalId);
+  }
+
+  function gotoShapesNextPageStart(e) {
+    if (e.button === 2) return; // 右クリックは無視
+    app.dialog.shapes.nextPage();
+    gotoShapesNextPageIntervalId = setInterval(app.dialog.shapes.nextPage, MOVE_INTERVAL_MSEC * 1.5);
+  }
+
+  function gotoShapesNextPageEnd() {
+    clearInterval(gotoShapesNextPageIntervalId);
   }
 
   function initLogo() {
