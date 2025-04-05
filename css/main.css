@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
 :root {
-  --pseudo-bold-shadow: 0.015em 0 currentColor, -0.015em 0 currentColor, 0 0.015em currentColor, 0 -0.015em currentColor,
-    0.01em 0.01em currentColor, -0.01em 0.01em currentColor, 0.01em -0.01em currentColor, -0.01em -0.01em currentColor;
+  --pseudo-bold-shadow: 0.015rem 0 currentColor, -0.015rem 0 currentColor, 0 0.015rem currentColor, 0 -0.015rem currentColor,
+    0.01rem 0.01rem currentColor, -0.01rem 0.01rem currentColor, 0.01rem -0.01rem currentColor, -0.01rem -0.01rem currentColor;
 }
 
 html {
