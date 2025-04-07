@@ -254,9 +254,13 @@
           const text = app.svg.createText(1, {
             x: SELECT_WIDTH / 2,
             y: 12,
-            text: `${r.length} steps`,
+            text: '',
             fill: 'black',
           });
+          text.classList.add('translatable-toggle');
+          text.dataset.ja = `${r.length} 手`;
+          text.dataset.en = `${r.length} steps`;
+          common.applyLang(text, app.savedata.getLang());
           text.setAttribute('font-size', '14px');
           g.appendChild(text);
         }
