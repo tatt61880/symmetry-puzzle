@@ -94,7 +94,7 @@
   colors.shapeNumSeqMode = colors.stepNum;
 
   colors.editButton = {
-    fill: '#e5a0e5',
+    fill: '#ffddff',
     stroke: '#aa33aa',
   };
 
