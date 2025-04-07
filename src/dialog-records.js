@@ -350,7 +350,7 @@
     const backupJsonText = JSON.stringify(obj);
 
     const filename = `symmetry-puzzle-backup-${yyyymmdd}.json`;
-    const lang = app.savedata.loadLang();
+    const lang = app.savedata.getLang();
     if (lang === 'ja') {
       await customAlert(`バックアップファイルを作成します。\n${filename}`);
     } else {
@@ -394,10 +394,10 @@
 
         const obj = JSON.parse(jsonText);
         if (obj?.yyyymmdd !== undefined && obj?.backupData !== undefined) {
-          const langPrev = app.savedata.loadLang();
+          const langPrev = app.savedata.getLang();
           app.savedata.restoreBackupData(obj.backupData);
-          const lang = app.savedata.loadLang();
-          app.common.applyLang(lang);
+          const lang = app.savedata.getLang();
+          app.common.applyLangAll(lang);
           app.common.updateTitleSeqModeButton();
           updateTable();
 
@@ -409,7 +409,7 @@
             }
           }, 10);
         } else {
-          const lang = app.savedata.loadLang();
+          const lang = app.savedata.getLang();
           if (lang === 'ja') {
             await customAlert('データ形式が想定外です。');
           } else {

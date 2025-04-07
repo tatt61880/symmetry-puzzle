@@ -933,7 +933,7 @@
   }
 
   function selectLang(lang) {
-    common.applyLang(lang);
+    common.applyLangAll(lang);
     app.savedata.saveLang(lang);
   }
 
@@ -1007,7 +1007,7 @@
   }
 
   function initLang() {
-    let lang = app.savedata.loadLang();
+    let lang = app.savedata.getLang();
     if (lang === undefined) {
       switch (window.navigator.language) {
         case 'ja':
@@ -1019,7 +1019,7 @@
       app.savedata.saveLang(lang);
       app.dialog.help.show();
     }
-    common.applyLang(lang);
+    common.applyLangAll(lang);
   }
 
   function onloadApp() {
@@ -1956,9 +1956,14 @@
         const text = app.svg.createText(frameSizeH, {
           x: 0,
           y: 0.5,
-          text: 'Not normalized',
-          fill: app.colors.editStroke,
+          text: '',
+          fill: '#663300',
         });
+        text.classList.add('translatable-toggle');
+        text.dataset.ja = '正規化されていません。';
+        text.dataset.en = 'Not normalized.';
+        common.applyLang(text, app.savedata.getLang());
+
         const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
         const height = frameBorderWidth;
         text.setAttribute('font-size', fontSize);
@@ -2165,9 +2170,14 @@
         const text = app.svg.createText(frameSizeH, {
           x: 0,
           y: 0.5,
-          text: `${currentStep} steps`,
+          text: '',
           fill: color,
         });
+        text.classList.add('translatable-toggle');
+        text.dataset.ja = `${currentStep} 手目`;
+        text.dataset.en = `${currentStep} steps`;
+        common.applyLang(text, app.savedata.getLang());
+
         text.setAttribute('font-size', fontSize);
         const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
         const height = common.level.getHeight() * blockSize + frameSizeH - frameBorderWidth / 2;
@@ -2206,9 +2216,14 @@
           const text = app.svg.createText(frameSizeH, {
             x: 0,
             y: 0.5,
-            text: `Your best: ${highestScore} steps`,
+            text: '',
             fill: color,
           });
+          text.classList.add('translatable-toggle');
+          text.dataset.ja = `自己ベスト: ${highestScore} 手`;
+          text.dataset.en = `Your best: ${highestScore} steps`;
+          common.applyLang(text, app.savedata.getLang());
+
           const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
           const height = frameBorderWidth / 2;
           text.setAttribute('font-size', fontSize);
@@ -2223,10 +2238,14 @@
           const text = app.svg.createText(blockSize, {
             x: width / blockSize,
             y: height / blockSize,
-            text: 'New record!',
+            text: '',
             fill: app.colors.newRecords,
           });
           text.setAttribute('font-size', fontSize2);
+          text.classList.add('translatable-toggle');
+          text.dataset.ja = '記録更新!';
+          text.dataset.en = 'New record!';
+          common.applyLang(text, app.savedata.getLang());
 
           const gg = app.svg.createG();
           gg.setAttribute('transform-origin', `${width}px ${height}px`);

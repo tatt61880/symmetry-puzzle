@@ -60,7 +60,7 @@
       this.#save();
     }
 
-    loadLang() {
+    getLang() {
       return this.data.lang;
     }
 
