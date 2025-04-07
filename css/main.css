@@ -1,6 +1,7 @@
 @charset "UTF-8";
 
 :root {
+  --button-translate-y: 2px;
   --pseudo-bold-shadow: 0.015rem 0 currentColor, -0.015rem 0 currentColor, 0 0.015rem currentColor, 0 -0.015rem currentColor,
     0.01rem 0.01rem currentColor, -0.01rem 0.01rem currentColor, 0.01rem -0.01rem currentColor, -0.01rem -0.01rem currentColor;
 }
@@ -115,12 +116,12 @@ div.user-select-none {
   opacity: 0.5;
 
   & > .button-transform {
-    transform: translate(0, 2px);
+    transform: translateY(var(--button-translate-y));
   }
 }
 
 .button-transform-parent:has(> :active:hover) {
-  transform: translate(0, 2px);
+  transform: translateY(var(--button-translate-y));
 }
 
 svg {
