@@ -259,7 +259,7 @@
           });
           text.classList.add('translatable-toggle');
           text.dataset.ja = `${r.length}手`;
-          text.dataset.en = `${r.length} steps`;
+          text.dataset.en = `${r.length} step${r.length === 1 ? '' : 's'}`; // 0 steps, 1 step, 2 steps, ......
           common.applyLang(text, app.savedata.getLang());
           text.setAttribute('font-size', '14px');
           g.appendChild(text);

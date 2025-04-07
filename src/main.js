@@ -2180,7 +2180,7 @@
         });
         text.classList.add('translatable-toggle');
         text.dataset.ja = `${currentStep}手目`;
-        text.dataset.en = `${currentStep} steps`;
+        text.dataset.en = `${currentStep} step${currentStep === 1 ? '' : 's'}`; // 0 steps, 1 step, 2 steps, ......
         common.applyLang(text, app.savedata.getLang());
 
         text.setAttribute('font-size', fontSize);
@@ -2226,7 +2226,7 @@
           });
           text.classList.add('translatable-toggle');
           text.dataset.ja = `自己ベスト: ${highestScore}手`;
-          text.dataset.en = `Your best: ${highestScore} steps`;
+          text.dataset.en = `Your best: ${highestScore} step${highestScore === 1 ? '' : 's'}`; // 0 steps, 1 step, 2 steps, ......
           common.applyLang(text, app.savedata.getLang());
 
           const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
