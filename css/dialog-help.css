@@ -50,7 +50,7 @@
     .setting-lang-button {
       width: calc(100% / 4 - 10px);
       height: 40px;
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: normal;
       color: #505050;
       text-shadow: var(--pseudo-bold-shadow);
@@ -62,6 +62,11 @@
 
       &:hover {
         opacity: 0.8;
+
+        &:active {
+          opacity: 0.5;
+          transform: translate(0, 1px);
+        }
       }
 
       &.active {
@@ -99,6 +104,11 @@
 
     &:hover {
       opacity: 0.8;
+    }
+
+    &:active {
+      opacity: 0.5;
+      transform: translate(0, 1px);
     }
   }
 
