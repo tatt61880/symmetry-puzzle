@@ -41,10 +41,6 @@
       border-color: #99ccff;
     }
 
-    &:hover {
-      opacity: 0.8;
-    }
-
     &#button-normal-line,
     &#button-num-line {
       border-radius: 20% 20% 40% 40%;
@@ -64,30 +60,18 @@
       background-color: #ffeedd;
       border-color: #ffbb77;
       border-radius: 20%;
-
-      &:hover {
-        opacity: 0.8;
-      }
     }
 
     &#button-toggle-to-num {
       background-color: #ddeeff;
       border-color: #99ccff;
       border-radius: 20%;
-
-      &:hover {
-        opacity: 0.8;
-      }
     }
 
     &#button-records {
       background-color: #e4e4ff;
       border-color: #aaaaff;
       border-radius: 20%;
-
-      &:hover {
-        opacity: 0.8;
-      }
     }
   }
 
