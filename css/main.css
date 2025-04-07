@@ -114,9 +114,13 @@ div.user-select-none {
 .active-hover:active:hover {
   opacity: 0.5;
 
-  & .button-transform {
+  & > .button-transform {
     transform: translate(0, 1px);
   }
+}
+
+.button-transform-parent:has(> :active:hover) {
+  transform: translate(0, 1px);
 }
 
 svg {
