@@ -2466,7 +2466,7 @@
     const data = {
       dir: editMode ? null : dir,
       ...common.level.getCurrentLevelObj(),
-      r: common.level.getR(),
+      r: editMode ? null : common.level.getR(),
       checkMode: common.level.getCheckMode(),
     };
 
