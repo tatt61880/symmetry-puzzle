@@ -115,12 +115,12 @@ div.user-select-none {
   opacity: 0.5;
 
   & > .button-transform {
-    transform: translate(0, 1px);
+    transform: translate(0, 2px);
   }
 }
 
 .button-transform-parent:has(> :active:hover) {
-  transform: translate(0, 1px);
+  transform: translate(0, 2px);
 }
 
 svg {

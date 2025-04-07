@@ -65,7 +65,7 @@
 
         &:active {
           opacity: 0.5;
-          transform: translate(0, 1px);
+          transform: translate(0, 2px);
         }
       }
 
@@ -210,7 +210,7 @@
 
     &:not(:checked):active:hover + .tab {
       opacity: 0.5;
-      transform: translate(0, 1px);
+      transform: translate(0, 2px);
     }
 
     &:checked + .tab-app + .tab-app-content,
