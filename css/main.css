@@ -109,6 +109,10 @@ div.user-select-none {
 .active-elem,
 .active-hover:active:hover {
   opacity: 0.5;
+
+  & .button-transform {
+    transform: translate(0, 1px);
+  }
 }
 
 svg {

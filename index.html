@@ -142,8 +142,10 @@
 
       <svg width="40" height="40" style="margin: 0 0 0 auto;">
         <g id="button-help" class="button active-hover">
-          <rect x="1.5" y="1.5" rx="7.6" width="37" height="37" fill="#ddeeff" stroke="#0000f8" stroke-width="3" />
-          <text x="20" y="23" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="28" fill="#0000f8">?</text>
+          <g class="button-transform">
+            <rect x="1.5" y="1.5" rx="7.6" width="37" height="37" fill="#ddeeff" stroke="#0000f8" stroke-width="3" />
+            <text x="20" y="23" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="28" fill="#0000f8">?</text>
+          </g>
         </g>
       </svg>
     </header>
@@ -154,9 +156,11 @@
         <div id="dialog-help-top">
           <svg width="48" height="48">
             <g id="dialog-help-close" class="button active-hover" transform="translate(24,24)">
-              <circle cx="0" cy="0" r="22" fill="#f8f8f8" stroke="#cccccc" stroke-width="4" />
-              <path d="M -10,-10 10,10" fill="none" stroke="#cccccc" stroke-width="4.5" stroke-linecap="round" />
-              <path d="M -10,10 10,-10" fill="none" stroke="#cccccc" stroke-width="4.5" stroke-linecap="round" />
+              <g class="button-transform">
+                <circle cx="0" cy="0" r="22" fill="#f8f8f8" stroke="#cccccc" stroke-width="4" />
+                <path d="M -10,-10 10,10" fill="none" stroke="#cccccc" stroke-width="4.5" stroke-linecap="round" />
+                <path d="M -10,10 10,-10" fill="none" stroke="#cccccc" stroke-width="4.5" stroke-linecap="round" />
+              </g>
             </g>
           </svg>
 
@@ -519,9 +523,11 @@
         <div id="records-top">
           <svg width="48" height="48">
             <g id="dialog-records-close" class="button active-hover" transform="translate(24,24)">
-              <circle cx="0" cy="0" r="22" fill="#f4f4ff" stroke="#aaaaff" stroke-width="4" />
-              <path d="M -10,-10 10,10" fill="none" stroke="#aaaaff" stroke-width="4.5" stroke-linecap="round" />
-              <path d="M -10,10 10,-10" fill="none" stroke="#aaaaff" stroke-width="4.5" stroke-linecap="round" />
+              <g class="button-transform">
+                <circle cx="0" cy="0" r="22" fill="#f4f4ff" stroke="#aaaaff" stroke-width="4" />
+                <path d="M -10,-10 10,10" fill="none" stroke="#aaaaff" stroke-width="4.5" stroke-linecap="round" />
+                <path d="M -10,10 10,-10" fill="none" stroke="#aaaaff" stroke-width="4.5" stroke-linecap="round" />
+              </g>
             </g>
           </svg>
           <div class="spacer"></div>
@@ -630,14 +636,18 @@
 
         <svg width="400" height="100">
           <g id="record-button-backup" class="button active-hover" transform="translate(100,50)">
-            <rect x="-80" y="-30" rx="15" width="160" height="60" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
-            <text x="0" y="0" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="20" fill="#0000f8"
-              class="translatable-toggle" data-en="BACKUP" data-ja="バックアップ"></text>
+            <g class="button-transform">
+              <rect x="-80" y="-30" rx="15" width="160" height="60" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+              <text x="0" y="0" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="20" fill="#0000f8"
+                class="translatable-toggle" data-en="BACKUP" data-ja="バックアップ"></text>
+            </g>
           </g>
           <g id="record-button-restore" class="button active-hover" transform="translate(300,50)">
-            <rect x="-80" y="-30" rx="15" width="160" height="60" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
-            <text x="0" y="0" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="20" fill="#0000f8"
-              class="translatable-toggle" data-en="RESTORE" data-ja="リストア"></text>
+            <g class="button-transform">
+              <rect x="-80" y="-30" rx="15" width="160" height="60" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+              <text x="0" y="0" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="20" fill="#0000f8"
+                class="translatable-toggle" data-en="RESTORE" data-ja="リストア"></text>
+            </g>
           </g>
         </svg>
       </div>
@@ -651,10 +661,12 @@
           <g id="button-level-retry" class="button active-hover" transform="translate(35,50)">
             <text x="0" y="-38" fill="#7799bb" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
               class="translatable-toggle" data-en="RETRY" data-ja="リトライ" />
-            <circle cx="0" cy="0" r="28" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
-            <g id="button-level-retry-arrow">
-              <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#99ccff" stroke-width="4" />
-              <path d="M 1,-20.5 l -13,9 14.5,5.2 z" fill="#99ccff" stroke="none" />
+            <g class="button-transform">
+              <circle cx="0" cy="0" r="28" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
+              <g id="button-level-retry-arrow">
+                <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#99ccff" stroke-width="4" />
+                <path d="M 1,-20.5 l -13,9 14.5,5.2 z" fill="#99ccff" stroke="none" />
+              </g>
             </g>
             <text class="shortcut-key" x="0" y="42" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16"
               fill="#7799bb">R</text>
@@ -664,8 +676,10 @@
           <g id="button-level-prev" class="button active-hover" transform="translate(95,50)">
             <text x="40" y="-38" fill="#7799bb" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
               class="translatable-toggle" data-en="PREV" data-ja="前" />
-            <rect x="0" y="-28" rx="28" width="80" height="56" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
-            <path d="M 50,-14 l -25,14 25,14 z" fill="#99ccff" />
+            <g class="button-transform">
+              <rect x="0" y="-28" rx="28" width="80" height="56" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
+              <path d="M 50,-14 l -25,14 25,14 z" fill="#99ccff" />
+            </g>
             <text class="shortcut-key" x="40" y="42" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
               fill="#7799bb">Shift ←</text>
           </g>
@@ -678,15 +692,19 @@
           <g id="button-level-next" class="button active-hover" transform="translate(275,50)">
             <text x="40" y="-38" fill="#7799bb" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
               class="translatable-toggle" data-en="NEXT" data-ja="次" />
-            <rect x="0" y="-28" rx="28" width="80" height="56" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
-            <path d="M 30,-14 l 25,14 -25,14 z" fill="#99ccff" />
+            <g class="button-transform">
+              <rect x="0" y="-28" rx="28" width="80" height="56" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
+              <path d="M 30,-14 l 25,14 -25,14 z" fill="#99ccff" />
+            </g>
             <text class="shortcut-key" x="40" y="42" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
               fill="#7799bb">Shift →</text>
           </g>
 
           <!-- Edit -->
           <g id="button-level-edit" class="button active-hover" transform="translate(415,50)">
-            <circle cx="0" cy="0" r="28" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
+            <g class="button-transform">
+              <circle cx="0" cy="0" r="28" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
+            </g>
             <text class="shortcut-key" x="0" y="42" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16"
               fill="#7799bb">@</text>
           </g>
@@ -695,12 +713,14 @@
           <g id="button-levels" class="button active-hover" transform="translate(415,50)">
             <text x="0" y="-38" fill="#7799bb" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
               class="translatable-toggle" data-en="LEVELS" data-ja="一覧" />
-            <rect x="-28" y="-28" width="56" height="56" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
-            <rect x="-22" y="-22" width="44" height="44" fill="#99ccff" />
-            <rect x="-10" y="-23" width="4" height="46" fill="#f1f8ff" />
-            <rect x="6" y="-23" width="4" height="46" fill="#f1f8ff" />
-            <rect x="-23" y="-10" width="46" height="4" fill="#f1f8ff" />
-            <rect x="-23" y="6" width="46" height="4" fill="#f1f8ff" />
+            <g class="button-transform">
+              <rect x="-28" y="-28" width="56" height="56" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
+              <rect x="-22" y="-22" width="44" height="44" fill="#99ccff" />
+              <rect x="-10" y="-23" width="4" height="46" fill="#f1f8ff" />
+              <rect x="6" y="-23" width="4" height="46" fill="#f1f8ff" />
+              <rect x="-23" y="-10" width="46" height="4" fill="#f1f8ff" />
+              <rect x="-23" y="6" width="46" height="4" fill="#f1f8ff" />
+            </g>
             <text class="shortcut-key" x="0" y="42" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16"
               fill="#7799bb">#</text>
           </g>
@@ -713,9 +733,11 @@
           <div id="dialog-levels-top">
             <svg id="dialog-levels-close-svg" width="48" height="48">
               <g id="dialog-levels-close" class="button active-hover" transform="translate(24,24)">
-                <circle cx="0" cy="0" r="22" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
-                <path d="M -10,-10 10,10" fill="none" stroke="#99ccff" stroke-width="4.5" stroke-linecap="round" />
-                <path d="M -10,10 10,-10" fill="none" stroke="#99ccff" stroke-width="4.5" stroke-linecap="round" />
+                <g class="button-transform">
+                  <circle cx="0" cy="0" r="22" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
+                  <path d="M -10,-10 10,10" fill="none" stroke="#99ccff" stroke-width="4.5" stroke-linecap="round" />
+                  <path d="M -10,10 10,-10" fill="none" stroke="#99ccff" stroke-width="4.5" stroke-linecap="round" />
+                </g>
               </g>
             </svg>
 
@@ -741,8 +763,10 @@
             <g id="button-levels-prev" class="button active-hover" transform="translate(95,10)">
               <text x="40" y="0" fill="#7799bb" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
                 class="translatable-toggle" data-en="PREV" data-ja="前" />
-              <rect x="0" y="10" rx="28" width="80" height="56" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
-              <path d="M 50,24 24,38 50,52 z" fill="#99ccff" />
+              <g class="button-transform">
+                <rect x="0" y="10" rx="28" width="80" height="56" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
+                <path d="M 50,24 24,38 50,52 z" fill="#99ccff" />
+              </g>
               <text class="shortcut-key" x="40" y="79" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
                 fill="#7799bb">Shift ←</text>
             </g>
@@ -750,8 +774,10 @@
             <g id="button-levels-next" class="button active-hover" transform="translate(275,10)">
               <text x="40" y="0" fill="#7799bb" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
                 class="translatable-toggle" data-en="NEXT" data-ja="次" />
-              <rect x="0" y="10" rx="28" width="80" height="56" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
-              <path d="M 30,24 55,38 30,52 z" fill="#99ccff" />
+              <g class="button-transform">
+                <rect x="0" y="10" rx="28" width="80" height="56" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
+                <path d="M 30,24 55,38 30,52 z" fill="#99ccff" />
+              </g>
               <text class="shortcut-key" x="40" y="79" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
                 fill="#7799bb">Shift →</text>
             </g>
@@ -765,9 +791,11 @@
           <div id="dialog-shapes-top">
             <svg id="dialog-shapes-close-svg" width="48" height="48">
               <g id="dialog-shapes-close" class="button active-hover" transform="translate(24,24)">
-                <circle cx="0" cy="0" r="22" fill="#fff8f1" stroke="#ffbb77" stroke-width="4" />
-                <path d="M -10,-10 10,10" fill="none" stroke="#ffbb77" stroke-width="4.5" stroke-linecap="round" />
-                <path d="M -10,10 10,-10" fill="none" stroke="#ffbb77" stroke-width="4.5" stroke-linecap="round" />
+                <g class="button-transform">
+                  <circle cx="0" cy="0" r="22" fill="#fff8f1" stroke="#ffbb77" stroke-width="4" />
+                  <path d="M -10,-10 10,10" fill="none" stroke="#ffbb77" stroke-width="4.5" stroke-linecap="round" />
+                  <path d="M -10,10 10,-10" fill="none" stroke="#ffbb77" stroke-width="4.5" stroke-linecap="round" />
+                </g>
               </g>
             </svg>
 
@@ -785,8 +813,10 @@
             <g id="button-shapes-prev" class="button active-hover" transform="translate(95,10)">
               <text x="40" y="0" fill="#bb9977" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
                 class="translatable-toggle" data-en="PREV" data-ja="前" />
-              <rect x="0" y="10" rx="28" width="80" height="56" fill="#fff8f1" stroke="#ffbb77" stroke-width="4" />
-              <path d="M 50,24 24,38 50,52 z" fill="#ffbb77" />
+              <g class="button-transform">
+                <rect x="0" y="10" rx="28" width="80" height="56" fill="#fff8f1" stroke="#ffbb77" stroke-width="4" />
+                <path d="M 50,24 24,38 50,52 z" fill="#ffbb77" />
+              </g>
               <text class="shortcut-key" x="40" y="79" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
                 fill="#bb9977">Shift ←</text>
             </g>
@@ -794,8 +824,10 @@
             <g id="button-shapes-next" class="button active-hover" transform="translate(275,10)">
               <text x="40" y="0" fill="#bb9977" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
                 class="translatable-toggle" data-en="NEXT" data-ja="次" />
-              <rect x="0" y="10" rx="28" width="80" height="56" fill="#fff8f1" stroke="#ffbb77" stroke-width="4" />
-              <path d="M 30,24 55,38 30,52 z" fill="#ffbb77" />
+              <g class="button-transform">
+                <rect x="0" y="10" rx="28" width="80" height="56" fill="#fff8f1" stroke="#ffbb77" stroke-width="4" />
+                <path d="M 30,24 55,38 30,52 z" fill="#ffbb77" />
+              </g>
               <text class="shortcut-key" x="40" y="79" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
                 fill="#bb9977">Shift →</text>
             </g>
@@ -971,35 +1003,40 @@
             <g id="controller-buttons-menu" class="button active-hover" transform="translate(-185,-50)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#888888"
                 class="translatable-toggle" data-en="MENU" data-ja="メニュー"></text>
-              <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
-              <rect x="-23" y="-23" rx="5" width="46" height="10" fill="#888888" />
-              <rect x="-23" y="-5" rx="5" width="46" height="10" fill="#888888" />
-              <rect x="-23" y="13" rx="5" width="46" height="10" fill="#888888" />
+              <g class="button-transform">
+                <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
+                <rect x="-23" y="-23" rx="5" width="46" height="10" fill="#888888" />
+                <rect x="-23" y="-5" rx="5" width="46" height="10" fill="#888888" />
+                <rect x="-23" y="13" rx="5" width="46" height="10" fill="#888888" />
+              </g>
             </g>
 
             <!-- 形状ダイアログボタン -->
             <g id="button-shapes-g" class="button active-hover" transform="translate(185,-50)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#888888"
                 class="translatable-toggle" data-en="SHAPES" data-ja="形状"></text>
-
-              <rect id="button-shapes" x="-36" y="-36" rx="12" width="72" height="72" fill="#ffeedd" stroke="#ffbb77" stroke-width="4" />
-              <text id="button-shapes-numerator" x="0" y="-14" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
-                font-size="30" fill="#ff7700" stroke="none">?</text>
-              <rect id="button-shapes-line" x="-23" y="-2" rx="2" width="46" height="4" fill="#ff7700" />
-              <text id="button-shapes-denumerator" x="0" y="20" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
-                font-size="30" fill="#ff7700" stroke="none">?</text>
+              <g class="button-transform">
+                <rect id="button-shapes" x="-36" y="-36" rx="12" width="72" height="72" fill="#ffeedd" stroke="#ffbb77" stroke-width="4" />
+                <text id="button-shapes-numerator" x="0" y="-14" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
+                  font-size="30" fill="#ff7700" stroke="none">?</text>
+                <rect id="button-shapes-line" x="-23" y="-2" rx="2" width="46" height="4" fill="#ff7700" />
+                <text id="button-shapes-denumerator" x="0" y="20" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
+                  font-size="30" fill="#ff7700" stroke="none">?</text>
+              </g>
             </g>
 
             <!-- Undoボタン -->
             <g id="button-undo" class="button active-hover" transform="translate(-185,60)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#888888"
                 class="translatable-toggle" data-en="STEP BACKWARD" data-ja="1ステップ戻す"></text>
-              <g transform="scale(1.25,1.25)">
-                <circle cx="0" cy="0" r="28" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
-                <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#888888" stroke-width="4" />
-                <path d="M 1,-20.5 l -13,9 14.5,5.2 z" fill="#888888" stroke="none" />
-                <text class="shortcut-key" x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
-                  fill="#888888">Z</text>
+              <g class="button-transform">
+                <g transform="scale(1.25,1.25)">
+                  <circle cx="0" cy="0" r="28" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
+                  <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#888888" stroke-width="4" />
+                  <path d="M 1,-20.5 l -13,9 14.5,5.2 z" fill="#888888" stroke="none" />
+                  <text class="shortcut-key" x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
+                    fill="#888888">Z</text>
+                </g>
               </g>
             </g>
 
@@ -1007,12 +1044,14 @@
             <g id="button-redo" class="button active-hover" transform="translate(185,60)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#888888"
                 class="translatable-toggle" data-en="STEP FORWARD" data-ja="1ステップ進める"></text>
-              <g transform="scale(-1.25,1.25)">
-                <circle cx="0" cy="0" r="28" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
-                <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#888888" stroke-width="4" />
-                <path d="M 1,-20.5 l -13,9 14.5,5.2 z" fill="#888888" stroke="none" />
-                <text class="shortcut-key" x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
-                  fill="#888888">Y</text>
+              <g class="button-transform">
+                <g transform="scale(-1.25,1.25)">
+                  <circle cx="0" cy="0" r="28" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
+                  <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#888888" stroke-width="4" />
+                  <path d="M 1,-20.5 l -13,9 14.5,5.2 z" fill="#888888" stroke="none" />
+                  <text class="shortcut-key" x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
+                    fill="#888888">Y</text>
+                </g>
               </g>
             </g>
 
@@ -1021,46 +1060,58 @@
               <g id="controller-buttons-base" transform="translate(0,0)">
                 <!-- ↑ -->
                 <g id="controller-buttons-up" class="button active-hover" transform="translate(0,-79)">
-                  <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
-                  <polygon transform="rotate(0 0 0)" points="0,-21 10,0 3,0 3,21 -3,21 -3,0 -10,0" fill="#0000f8" />
+                  <g class="button-transform">
+                    <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+                    <polygon transform="rotate(0 0 0)" points="0,-21 10,0 3,0 3,21 -3,21 -3,0 -10,0" fill="#0000f8" />
+                  </g>
                 </g>
                 <!-- → -->
                 <g id="controller-buttons-right" class="button active-hover" transform="translate(79,0)">
-                  <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
-                  <polygon transform="rotate(90 0 0)" points="0,-21 10,0 3,0 3,21 -3,21 -3,0 -10,0" fill="#0000f8" />
+                  <g class="button-transform">
+                    <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+                    <polygon transform="rotate(90 0 0)" points="0,-21 10,0 3,0 3,21 -3,21 -3,0 -10,0" fill="#0000f8" />
+                  </g>
                 </g>
                 <!-- ↓ -->
                 <g id="controller-buttons-down" class="button active-hover" transform="translate(0,79)">
-                  <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
-                  <polygon transform="rotate(180 0 0)" points="0,-21 10,0 3,0 3,21 -3,21 -3,0 -10,0" fill="#0000f8" />
+                  <g class="button-transform">
+                    <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+                    <polygon transform="rotate(180 0 0)" points="0,-21 10,0 3,0 3,21 -3,21 -3,0 -10,0" fill="#0000f8" />
+                  </g>
                 </g>
                 <!-- ← -->
                 <g id="controller-buttons-left" class="button active-hover" transform="translate(-79,0)">
-                  <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
-                  <polygon transform="rotate(270 0 0)" points="0,-21 10,0 3,0 3,21 -3,21 -3,0 -10,0" fill="#0000f8" />
+                  <g class="button-transform">
+                    <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+                    <polygon transform="rotate(270 0 0)" points="0,-21 10,0 3,0 3,21 -3,21 -3,0 -10,0" fill="#0000f8" />
+                  </g>
                 </g>
                 <!-- 軸 -->
                 <g id="controller-buttons-axis" class="button active-hover" transform="translate(0,0)">
-                  <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
-                  <rect id="controller-buttons-axis-line1" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8" />
-                  <rect id="controller-buttons-axis-line2" class="hide" x="-25" y="-2" width="50" height="4" fill="#0000f8" />
-                  <rect id="controller-buttons-axis-line3" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8"
-                    transform="rotate(-45 0 0)" />
-                  <rect id="controller-buttons-axis-line4" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8"
-                    transform="rotate(45 0 0)" />
-                  <ellipse id="controller-buttons-axis-point1" class="hide" cx="0" cy="0" rx="6" ry="18" fill="#0000f8" />
-                  <rect id="controller-buttons-axis-point2" class="hide" x="-10" y="-10" width="20" height="20" fill="#0000f8"
-                    transform="rotate(45 0 0)" />
+                  <g class="button-transform">
+                    <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+                    <rect id="controller-buttons-axis-line1" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8" />
+                    <rect id="controller-buttons-axis-line2" class="hide" x="-25" y="-2" width="50" height="4" fill="#0000f8" />
+                    <rect id="controller-buttons-axis-line3" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8"
+                      transform="rotate(-45 0 0)" />
+                    <rect id="controller-buttons-axis-line4" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8"
+                      transform="rotate(45 0 0)" />
+                    <ellipse id="controller-buttons-axis-point1" class="hide" cx="0" cy="0" rx="6" ry="18" fill="#0000f8" />
+                    <rect id="controller-buttons-axis-point2" class="hide" x="-10" y="-10" width="20" height="20" fill="#0000f8"
+                      transform="rotate(45 0 0)" />
 
-                  <!-- エラー時などに全部の軸が表示されてしまう可能性を減らす目的 -->
-                  <rect class="hide" x="-35" y="-35" rx="12" width="70" height="70" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+                    <!-- エラー時などに全部の軸が表示されてしまう可能性を減らす目的 -->
+                    <rect class="hide" x="-35" y="-35" rx="12" width="70" height="70" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+                  </g>
                 </g>
               </g>
 
               <g id="next-level" class="button active-hover hide" transform="translate(0,0)">
-                <rect x="-115" y="-35" rx="12" width="230" height="70" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
-                <text x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="24" fill="#0000f8"
-                  class="translatable-toggle" data-en="NEXT LEVEL" data-ja="次のレベルへ"></text>
+                <g class="button-transform">
+                  <rect x="-115" y="-35" rx="12" width="230" height="70" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+                  <text x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="24" fill="#0000f8"
+                    class="translatable-toggle" data-en="NEXT LEVEL" data-ja="次のレベルへ"></text>
+                </g>
               </g>
             </g>
 
@@ -1069,14 +1120,18 @@
                 <rect x="-125" y="-120" width="250" height="240" fill="#e5e5e5" stroke="none" />
               </g>
               <g id="controller-buttons-title" class="button active-hover" transform="translate(0,-40)">
-                <rect x="-120" y="-25" rx="10" width="240" height="50" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
-                <text x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22" fill="#888888"
-                  class="translatable-toggle" data-en="RETURN TO TITLE" data-ja="タイトル画面に戻る"></text>
+                <g class="button-transform">
+                  <rect x="-120" y="-25" rx="10" width="240" height="50" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
+                  <text x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22" fill="#888888"
+                    class="translatable-toggle" data-en="RETURN TO TITLE" data-ja="タイトル画面に戻る"></text>
+                </g>
               </g>
               <g id="controller-buttons-retry" class="button active-hover" transform="translate(0,40)">
-                <rect x="-120" y="-25" rx="10" width="240" height="50" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
-                <text x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22" fill="#888888"
-                  class="translatable-toggle" data-en="RETRY" data-ja="リトライ"></text>
+                <g class="button-transform">
+                  <rect x="-120" y="-25" rx="10" width="240" height="50" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
+                  <text x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22" fill="#888888"
+                    class="translatable-toggle" data-en="RETRY" data-ja="リトライ"></text>
+                </g>
               </g>
             </g>
           </g>

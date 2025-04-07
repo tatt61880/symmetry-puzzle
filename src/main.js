@@ -1247,7 +1247,7 @@
 
       elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
 
-      elems.controller.buttons.menu.addEventListener(pointerdownEventName, onButtonMenu);
+      elems.controller.buttons.menu.addEventListener('click', onButtonMenu);
       elems.controller.buttons.title.addEventListener('click', gotoTitlePage);
       elems.controller.buttons.retry.addEventListener('click', retryLevel);
 
