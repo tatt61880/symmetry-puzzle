@@ -1447,7 +1447,7 @@
             x2: x2 + dd,
             y2: y2 + dd,
             stroke: stroke2,
-            strokeWidth: 0.125,
+            strokeWidth: 0.08838,
           });
           g.appendChild(line);
         }
@@ -1500,7 +1500,7 @@
             x2: x2 - dd,
             y2: y2 + dd,
             stroke: stroke2,
-            strokeWidth: 0.125,
+            strokeWidth: 0.08838,
           });
           g.appendChild(line);
         }
