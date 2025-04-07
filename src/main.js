@@ -2179,7 +2179,7 @@
           fill: color,
         });
         text.classList.add('translatable-toggle');
-        text.dataset.ja = `${currentStep} 手目`;
+        text.dataset.ja = `${currentStep}手目`;
         text.dataset.en = `${currentStep} steps`;
         common.applyLang(text, app.savedata.getLang());
 
@@ -2225,7 +2225,7 @@
             fill: color,
           });
           text.classList.add('translatable-toggle');
-          text.dataset.ja = `自己ベスト: ${highestScore} 手`;
+          text.dataset.ja = `自己ベスト: ${highestScore}手`;
           text.dataset.en = `Your best: ${highestScore} steps`;
           common.applyLang(text, app.savedata.getLang());
 

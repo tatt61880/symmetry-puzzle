@@ -258,7 +258,7 @@
             fill: 'black',
           });
           text.classList.add('translatable-toggle');
-          text.dataset.ja = `${r.length} 手`;
+          text.dataset.ja = `${r.length}手`;
           text.dataset.en = `${r.length} steps`;
           common.applyLang(text, app.savedata.getLang());
           text.setAttribute('font-size', '14px');
