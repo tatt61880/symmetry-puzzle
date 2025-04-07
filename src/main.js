@@ -483,6 +483,8 @@
     if (editMode) {
       if (editboxFunctions[e.key]) {
         editboxFunctions[e.key]();
+      } else if (e.key === '-' || e.key === '_' || e.key === '/' || e.key === '\\' || e.key === '|') {
+        changeAxis();
       }
     } else {
       switch (e.key) {
@@ -1358,6 +1360,9 @@
     updateEditAxisButton();
     editboxFunctions[app.states.stateToChar[app.states.none]]();
 
+    // 軸変更ボタン
+    elems.edit.buttons.axis.addEventListener('click', changeAxis);
+
     // モード変更ボタン
     elems.edit.switchMode.addEventListener('click', () => {
       switch (common.level.getCheckMode()) {
@@ -1402,15 +1407,13 @@
         draw();
       }
     });
+  }
 
-    elems.edit.buttons.axis.addEventListener('click', changeAxis);
-
-    function changeAxis() {
-      common.level.changeAxis();
-      updateEditAxisButton();
-      addUndo(null);
-      draw();
-    }
+  function changeAxis() {
+    common.level.changeAxis();
+    updateEditAxisButton();
+    addUndo(null);
+    draw();
   }
 
   // ヘルプ画面用
