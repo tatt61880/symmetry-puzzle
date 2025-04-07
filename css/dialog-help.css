@@ -60,12 +60,17 @@
       border: 4px solid #cccccc;
       outline: none;
 
-      &:not(.active):hover {
-        opacity: 0.8;
-
+      &:not(.active) {
         &:active {
-          opacity: 0.5;
           transform: translateY(var(--button-translate-y));
+        }
+
+        &:hover {
+          opacity: 0.8;
+
+          &:active {
+            opacity: 0.5;
+          }
         }
       }
 
@@ -208,9 +213,12 @@
       opacity: 1;
     }
 
+    &:not(:checked):active + .tab {
+      transform: translateY(var(--button-translate-y));
+    }
+
     &:not(:checked):active:hover + .tab {
       opacity: 0.5;
-      transform: translateY(var(--button-translate-y));
     }
 
     &:checked + .tab-app + .tab-app-content,

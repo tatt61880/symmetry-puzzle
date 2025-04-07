@@ -112,15 +112,17 @@ div.user-select-none {
 }
 
 .active-elem,
-.active-hover:active:hover {
-  opacity: 0.5;
+.active-hover:active {
+  &:hover {
+    opacity: 0.5;
+  }
 
   & > .button-transform {
     transform: translateY(var(--button-translate-y));
   }
 }
 
-.button-transform-parent:has(> :active:hover) {
+.button-transform-parent:has(> :active) {
   transform: translateY(var(--button-translate-y));
 }
 
