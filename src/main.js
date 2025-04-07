@@ -2073,6 +2073,11 @@
           text: 'Congratulations!',
           fill: app.colors.congratulations,
         });
+        text.classList.add('translatable-toggle');
+        const currentStep = undoInfoForNormal.getIndex();
+        text.dataset.ja = currentStep === bestStep ? 'お見事！' : 'クリア！';
+        text.dataset.en = currentStep === bestStep ? 'Well done!' : 'Cleared!';
+        common.applyLang(text, app.savedata.getLang());
         text.setAttribute('font-size', fontSize2);
 
         const gg = app.svg.createG();
