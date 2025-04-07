@@ -1458,7 +1458,7 @@
             x2: x2 + dd,
             y2: y2 + dd + 0.07,
             stroke: 'white',
-            strokeWidth: 0.025,
+            strokeWidth: 0.017675,
             strokeOpacity: 0.5,
           });
           g.appendChild(line);
@@ -1470,7 +1470,7 @@
             x2: x2 + dd + 0.07,
             y2: y2 + dd,
             stroke: 'white',
-            strokeWidth: 0.025,
+            strokeWidth: 0.017675,
             strokeOpacity: 0.5,
           });
           g.appendChild(line);
@@ -1511,7 +1511,7 @@
             x2: x2 - dd - 0.07,
             y2: y2 + dd,
             stroke: 'white',
-            strokeWidth: 0.025,
+            strokeWidth: 0.017675,
             strokeOpacity: 0.5,
           });
           g.appendChild(line);
@@ -1523,7 +1523,7 @@
             x2: x2 - dd,
             y2: y2 + dd + 0.07,
             stroke: 'white',
-            strokeWidth: 0.025,
+            strokeWidth: 0.017675,
             strokeOpacity: 0.5,
           });
           g.appendChild(line);
