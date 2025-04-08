@@ -2584,26 +2584,33 @@
     if (common.level.getBestStep() === undefined) {
       retryLevel();
       const levelObj = common.level.getCurrentLevelObj();
-      // TODO activeElem を盤面に反映させてから計算する。Promiseを使うといけそう。
-      // common.activeElem(elems.auto.buttonStart);
-      const levelTemp = new app.Level({
-        levelObj,
-        checkMode: common.checkMode,
-      });
-      const maxStep = 1000; // 探索ステップ数上限値は大きな値にしておきます。時間制限もあるので、この制限にかかることはほぼないはずです。
-      const timeLimit = 10;
-      const result = app.solveLevel(null, levelTemp, { maxStep, timeLimit });
-      // common.inactiveElem(elems.auto.buttonStart);
-      if (result.replayStr === null) {
-        window.alert(result.errorMessage);
-        return;
-      } else {
-        resetUndo();
-        const newLevelObj = { ...levelObj, ...{ r: result.replayStr } };
-        initLevel({ levelObj: newLevelObj });
-      }
-    }
+      common.activeElem(elems.auto.buttonStart);
 
+      setTimeout(() => {
+        const levelTemp = new app.Level({
+          levelObj,
+          checkMode: common.checkMode,
+        });
+        const maxStep = 1000; // 探索ステップ数上限値は大きな値にしておきます。時間制限もあるので、この制限にかかることはほぼないはずです。
+        const timeLimit = 10;
+        const result = app.solveLevel(null, levelTemp, { maxStep, timeLimit });
+        common.inactiveElem(elems.auto.buttonStart);
+        if (result.replayStr === null) {
+          window.alert(result.errorMessage);
+          return;
+        } else {
+          resetUndo();
+          const newLevelObj = { ...levelObj, ...{ r: result.replayStr } };
+          initLevel({ levelObj: newLevelObj });
+        }
+        onButtonStartSub();
+      }, 10);
+    } else {
+      onButtonStartSub();
+    }
+  }
+
+  function onButtonStartSub() {
     settingsAuto.paused = false;
     updateAutoStartPauseButtons();
     if (common.level.isCompleted()) {
