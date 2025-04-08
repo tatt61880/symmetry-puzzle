@@ -323,6 +323,11 @@
     background: #ffddbb;
   }
 
+  .help-warn-svg {
+    fill: none;
+    stroke: #402000;
+  }
+
   .flex {
     display: flex;
     align-items: center;
