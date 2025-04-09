@@ -212,6 +212,9 @@
       undo: 'button-undo',
       redo: 'button-redo',
       nextLevel: 'next-level',
+      shareLevel: 'share-level',
+      shareLevelX: 'share-level-x',
+      shareLevelBluesky: 'share-level-bluesky',
       menu: 'controller-menu',
 
       buttons: {

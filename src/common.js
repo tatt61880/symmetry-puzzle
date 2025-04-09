@@ -93,7 +93,11 @@
     } else if (elem instanceof SVGTextElement) {
       elem.textContent = elem.dataset[lang];
     } else {
-      elem.innerText = elem.dataset[lang];
+      if (elem.innerText === undefined) {
+        elem.textContent = elem.dataset[lang];
+      } else {
+        elem.innerText = elem.dataset[lang];
+      }
     }
   }
 

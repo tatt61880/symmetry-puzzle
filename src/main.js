@@ -1795,12 +1795,38 @@
       common.hideElem(elems.controller.buttons.base);
       if (common.isShownElem(elems.level.next)) {
         common.showElem(elems.controller.nextLevel);
+        common.hideElem(elems.controller.shareLevel);
       } else {
         common.hideElem(elems.controller.nextLevel);
+        common.showElem(elems.controller.shareLevel);
+        if (app.savedata.getLang() === 'ja') {
+          elems.controller.shareLevelX.setAttribute(
+            'href',
+            `https://twitter.com/intent/tweet?text=%22%E5%AF%BE%E7%A7%B0%E3%83%91%E3%82%BA%E3%83%AB%22&url=${encodeURIComponent(
+              location.href
+            )}&hashtags=%E5%AF%BE%E7%A7%B0%E3%83%91%E3%82%BA%E3%83%AB`
+          );
+          elems.controller.shareLevelBluesky.setAttribute(
+            'href',
+            `https://bsky.app/intent/compose?text=%22%E5%AF%BE%E7%A7%B0%E3%83%91%E3%82%BA%E3%83%AB%22+${encodeURIComponent(
+              location.href
+            )}%20%23%E5%AF%BE%E7%A7%B0%E3%83%91%E3%82%BA%E3%83%AB`
+          );
+        } else {
+          elems.controller.shareLevelX.setAttribute(
+            'href',
+            `https://twitter.com/intent/tweet?text=%22Symmetry%20Puzzle%22&url=${encodeURIComponent(location.href)}&hashtags=SymmetryPuzzle`
+          );
+          elems.controller.shareLevelBluesky.setAttribute(
+            'href',
+            `https://bsky.app/intent/compose?text=%22Symmetry%20Puzzle%22+${encodeURIComponent(location.href)}%20%23SymmetryPuzzle`
+          );
+        }
       }
     } else {
       common.showElem(elems.controller.buttons.base);
       common.hideElem(elems.controller.nextLevel);
+      common.hideElem(elems.controller.shareLevel);
     }
   }
 
