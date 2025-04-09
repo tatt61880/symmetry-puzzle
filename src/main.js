@@ -1799,28 +1799,32 @@
       } else {
         common.hideElem(elems.controller.nextLevel);
         common.showElem(elems.controller.shareLevel);
-        if (app.savedata.getLang() === 'ja') {
-          elems.controller.shareLevelX.setAttribute(
-            'href',
-            `https://twitter.com/intent/tweet?text=%22%E5%AF%BE%E7%A7%B0%E3%83%91%E3%82%BA%E3%83%AB%22&url=${encodeURIComponent(
+
+        {
+          const textJa = '"対称パズルのレベルを共有！"';
+          const textEn = '"Share a level from Symmetry Puzzle"';
+          const hashtagJa = '対称パズル';
+          const hashtagEn = 'SymmetryPuzzle';
+          {
+            const base = 'https://twitter.com/intent/tweet';
+            const elem = elems.controller.shareLevelX;
+            elem.classList.add('translatable-toggle');
+            elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}&url=${encodeURIComponent(
               location.href
-            )}&hashtags=%E5%AF%BE%E7%A7%B0%E3%83%91%E3%82%BA%E3%83%AB`
-          );
-          elems.controller.shareLevelBluesky.setAttribute(
-            'href',
-            `https://bsky.app/intent/compose?text=%22%E5%AF%BE%E7%A7%B0%E3%83%91%E3%82%BA%E3%83%AB%22+${encodeURIComponent(
+            )}&hashtags=${encodeURIComponent(hashtagJa)}`;
+            elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}&url=${encodeURIComponent(
               location.href
-            )}%20%23%E5%AF%BE%E7%A7%B0%E3%83%91%E3%82%BA%E3%83%AB`
-          );
-        } else {
-          elems.controller.shareLevelX.setAttribute(
-            'href',
-            `https://twitter.com/intent/tweet?text=%22Symmetry%20Puzzle%22&url=${encodeURIComponent(location.href)}&hashtags=SymmetryPuzzle`
-          );
-          elems.controller.shareLevelBluesky.setAttribute(
-            'href',
-            `https://bsky.app/intent/compose?text=%22Symmetry%20Puzzle%22+${encodeURIComponent(location.href)}%20%23SymmetryPuzzle`
-          );
+            )}&hashtags=${encodeURIComponent(hashtagEn)}`;
+            common.applyLang(elem, app.savedata.getLang());
+          }
+          {
+            const base = 'https://bsky.app/intent/compose';
+            const elem = elems.controller.shareLevelBluesky;
+            elem.classList.add('translatable-toggle');
+            elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}+${encodeURIComponent(location.href + ' #' + hashtagJa)}`;
+            elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}+${encodeURIComponent(location.href + ' #' + hashtagEn)}`;
+            common.applyLang(elem, app.savedata.getLang());
+          }
         }
       }
     } else {

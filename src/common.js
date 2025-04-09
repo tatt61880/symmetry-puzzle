@@ -85,7 +85,7 @@
   }
 
   function applyLang(elem, lang) {
-    if (elem.tagName === 'A') {
+    if (elem.tagName.toLowerCase() === 'a') {
       elem.setAttribute('href', elem.dataset[lang]);
       const title = elem.dataset[lang + 'Title']; // 例: data-ja-title
       elem.setAttribute('title', title);
