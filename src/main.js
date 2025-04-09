@@ -1802,7 +1802,7 @@
 
         {
           const textJa = '"対称パズルのレベルを共有！"';
-          const textEn = '"Share a level from Symmetry Puzzle"';
+          const textEn = '"Share a level from Symmetry Puzzle!"';
           const hashtagJa = '対称パズル';
           const hashtagEn = 'SymmetryPuzzle';
           {
