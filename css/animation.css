@@ -848,6 +848,7 @@
 }
 
 /* 次のレベルへ */
+#share-level:not(.hide),
 #next-level:not(.hide) {
   animation-name: animation-next-level;
   animation-duration: calc(var(--animation-duration-symmetry) * 2);
