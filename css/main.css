@@ -165,6 +165,12 @@ text {
   background-color: #335577;
   border: 3px solid #113355;
 
+  #console-widget-caption {
+    font-size: 1.3rem;
+    font-weight: normal;
+    text-shadow: var(--pseudo-bold-shadow);
+  }
+
   & ul {
     padding: 0;
     margin: 0;
@@ -183,12 +189,6 @@ text {
       background-color: #fffbe5;
       border: 1px solid #fff5c2;
     }
-  }
-
-  #console-widget-caption {
-    font-size: 1.3rem;
-    font-weight: normal;
-    text-shadow: var(--pseudo-bold-shadow);
   }
 }
 
