@@ -39,38 +39,38 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-  <script src="./src/states.js?2025.04.09"></script>
-  <script src="./src/colors.js?2025.04.09"></script>
-  <script src="./src/svg.js?2025.04.09"></script>
-  <script src="./src/common.js?2025.04.09"></script>
+  <script src="./src/states.js?2025.04.09" defer></script>
+  <script src="./src/colors.js?2025.04.09" defer></script>
+  <script src="./src/svg.js?2025.04.09" defer></script>
+  <script src="./src/common.js?2025.04.09" defer></script>
 
-  <script src="./src/class-stack.js?2025.04.09"></script>
-  <script src="./src/class-level.js?2025.04.09"></script>
-  <script src="./src/class-levels.js?2025.04.09"></script>
+  <script src="./src/class-stack.js?2025.04.09" defer></script>
+  <script src="./src/class-level.js?2025.04.09" defer></script>
+  <script src="./src/class-levels.js?2025.04.09" defer></script>
 
-  <script src="./src/class-savedata.js?2025.04.09"></script>
-  <script src="./src/class-undo-info.js?2025.04.09"></script>
-  <script src="./src/class-elems.js?2025.04.09"></script>
-  <script src="./src/class-input.js?2025.04.09"></script>
+  <script src="./src/class-savedata.js?2025.04.09" defer></script>
+  <script src="./src/class-undo-info.js?2025.04.09" defer></script>
+  <script src="./src/class-elems.js?2025.04.09" defer></script>
+  <script src="./src/class-input.js?2025.04.09" defer></script>
 
-  <script src="./src/levels-line.js?2025.04.09"></script>
-  <script src="./src/levels-line-ex.js?2025.04.09"></script>
-  <script src="./src/levels-point.js?2025.04.09"></script>
-  <script src="./src/levels-point-ex.js?2025.04.09"></script>
-  <script src="./src/levels-special.js?2025.04.09"></script>
-  <script src="./src/levels-special-ex.js?2025.04.09"></script>
+  <script src="./src/levels-line.js?2025.04.09" defer></script>
+  <script src="./src/levels-line-ex.js?2025.04.09" defer></script>
+  <script src="./src/levels-point.js?2025.04.09" defer></script>
+  <script src="./src/levels-point-ex.js?2025.04.09" defer></script>
+  <script src="./src/levels-special.js?2025.04.09" defer></script>
+  <script src="./src/levels-special-ex.js?2025.04.09" defer></script>
 
-  <script src="./src/elems.js?2025.04.09"></script>
+  <script src="./src/elems.js?2025.04.09" defer></script>
 
-  <script src="./src/solve.js?2025.04.09"></script>
+  <script src="./src/solve.js?2025.04.09" defer></script>
 
-  <script src="./src/dialog-help.js?2025.04.09"></script>
-  <script src="./src/dialog-levels.js?2025.04.09"></script>
-  <script src="./src/dialog-records.js?2025.04.09"></script>
-  <script src="./src/dialog-shapes.js?2025.04.09"></script>
+  <script src="./src/dialog-help.js?2025.04.09" defer></script>
+  <script src="./src/dialog-levels.js?2025.04.09" defer></script>
+  <script src="./src/dialog-records.js?2025.04.09" defer></script>
+  <script src="./src/dialog-shapes.js?2025.04.09" defer></script>
 
-  <script src="./src/analyze-url.js?2025.04.09"></script>
-  <script src="./src/main.js?2025.04.09"></script>
+  <script src="./src/analyze-url.js?2025.04.09" defer></script>
+  <script src="./src/main.js?2025.04.09" defer></script>
 </head>
 
 <body>
@@ -457,6 +457,7 @@
       <div id="title-inner">
         <div id="title-inner-sub">
           <table>
+            <!-- 上段（ノーマルモード） -->
             <tr id="button-normals-tr">
               <td>
                 <div class="button-transform-parent">
@@ -481,6 +482,7 @@
               </td>
             </tr>
 
+            <!-- 上段（連番モード） -->
             <tr id="button-nums-tr" class="hide">
               <td>
                 <div class="button-transform-parent">
@@ -505,6 +507,7 @@
               </td>
             </tr>
 
+            <!-- 下段 -->
             <tr>
               <td>
                 <div id="button-toggle-to-normal-div" class="button-transform-parent hide">
@@ -512,7 +515,7 @@
                     <svg class="logo-app" data-size="26" width="78" height="78"></svg>
                   </div>
                 </div>
-                <div id="button-toggle-to-num-div" class="button-transform-parent">
+                <div id="button-toggle-to-num-div" class="button-transform-parent hide">
                   <div id="button-toggle-to-num" class="title-button button active-hover">
                     <svg class="logo-123" data-size="15" width="75" height="75"></svg>
                   </div>
