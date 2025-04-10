@@ -2348,7 +2348,9 @@
         const input = elems.main.svg;
         const output = elems.console.image;
         const svgData = new XMLSerializer().serializeToString(input);
-        const svgDataBase64 = window.btoa(svgData);
+        // UTF-8 → Base64 に変換
+        const utf8Bytes = new TextEncoder().encode(svgData);
+        const svgDataBase64 = btoa(String.fromCharCode(...utf8Bytes));
         const svgDataUrl = `data:image/svg+xml;charset=utf-8;base64,${svgDataBase64}`;
 
         const image = new Image();
