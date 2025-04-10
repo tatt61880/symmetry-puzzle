@@ -175,7 +175,7 @@
   // タイトル画面の連番モード用のボタンを表示するか否かを判定して更新します。
   function updateTitleSeqModeButton() {
     if (common.isShownElem(app.elems.title.buttonNormalsTr)) {
-      common.showElem(app.elems.title.buttonToggleToNumDiv);
+      common.showElem(app.elems.title.buttonToggleToSeqDiv);
       common.showElem(app.elems.records.seqMode);
       for (const [levelsList, checkMode] of [
         [app.levelsLine, app.Level.CHECK_MODE.LINE],
@@ -190,7 +190,7 @@
         });
         const highestScore = app.savedata.getHighestScore(level);
         if (highestScore === null) {
-          common.hideElem(app.elems.title.buttonToggleToNumDiv);
+          common.hideElem(app.elems.title.buttonToggleToSeqDiv);
           common.hideElem(app.elems.records.seqMode);
         }
       }

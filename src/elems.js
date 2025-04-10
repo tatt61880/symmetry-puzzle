@@ -68,7 +68,7 @@
           line: 'records-line-shapes-line',
           denumerator: 'records-line-shapes-denumerator',
         },
-        num: 'records-line-num',
+        num: 'records-line-seq',
       },
 
       point: {
@@ -80,7 +80,7 @@
           line: 'records-point-shapes-line',
           denumerator: 'records-point-shapes-denumerator',
         },
-        num: 'records-point-num',
+        num: 'records-point-seq',
       },
 
       special: {
@@ -92,7 +92,7 @@
           line: 'records-special-shapes-line',
           denumerator: 'records-special-shapes-denumerator',
         },
-        num: 'records-special-num',
+        num: 'records-special-seq',
       },
 
       seqMode: 'record-seq-mode',
@@ -118,14 +118,14 @@
       buttonNormalLine: 'button-normal-line',
       buttonNormalPoint: 'button-normal-point',
       buttonNormalSpecial: 'button-normal-special',
-      buttonNumsTr: 'button-nums-tr',
-      buttonNumLine: 'button-num-line',
-      buttonNumPoint: 'button-num-point',
-      buttonNumSpecial: 'button-num-special',
+      buttonSeqsTr: 'button-seqs-tr',
+      buttonSeqLine: 'button-seq-line',
+      buttonSeqPoint: 'button-seq-point',
+      buttonSeqSpecial: 'button-seq-special',
       buttonToggleToNormalDiv: 'button-toggle-to-normal-div',
-      buttonToggleToNumDiv: 'button-toggle-to-num-div',
+      buttonToggleToSeqDiv: 'button-toggle-to-seq-div',
       buttonToggleToNormal: 'button-toggle-to-normal',
-      buttonToggleToNum: 'button-toggle-to-num',
+      buttonToggleToSeq: 'button-toggle-to-seq',
       // buttonEdit: 'button-edit',
     },
 

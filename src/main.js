@@ -1438,16 +1438,16 @@
     elems.title.buttonNormalSpecial.addEventListener('click', gotoNormalSpecialMode);
 
     // 線対称-連番モード
-    elems.title.buttonNumLine.addEventListener('click', gotoNumLineMode);
+    elems.title.buttonSeqLine.addEventListener('click', gotoNumLineMode);
 
     // 点対称-連番モード
-    elems.title.buttonNumPoint.addEventListener('click', gotoNumPointMode);
+    elems.title.buttonSeqPoint.addEventListener('click', gotoNumPointMode);
 
     // 線点対称-連番モード
-    elems.title.buttonNumSpecial.addEventListener('click', gotoNumSpecialMode);
+    elems.title.buttonSeqSpecial.addEventListener('click', gotoNumSpecialMode);
 
     elems.title.buttonToggleToNormal.addEventListener('click', toggleNormalSeqMode);
-    elems.title.buttonToggleToNum.addEventListener('click', toggleNormalSeqMode);
+    elems.title.buttonToggleToSeq.addEventListener('click', toggleNormalSeqMode);
   }
 
   function gotoNormalLineMode() {
@@ -1487,9 +1487,9 @@
     if (isSeqMode) {
       common.isSeqMode = true;
       common.hideElem(elems.title.buttonNormalsTr);
-      common.showElem(elems.title.buttonNumsTr);
+      common.showElem(elems.title.buttonSeqsTr);
       common.showElem(elems.title.buttonToggleToNormalDiv);
-      common.hideElem(elems.title.buttonToggleToNumDiv);
+      common.hideElem(elems.title.buttonToggleToSeqDiv);
 
       for (const elem of document.getElementsByClassName('normal-mode')) {
         elem.classList.add('hide');
@@ -1500,9 +1500,9 @@
     } else {
       common.isSeqMode = false;
       common.showElem(elems.title.buttonNormalsTr);
-      common.hideElem(elems.title.buttonNumsTr);
+      common.hideElem(elems.title.buttonSeqsTr);
       common.hideElem(elems.title.buttonToggleToNormalDiv);
-      common.showElem(elems.title.buttonToggleToNumDiv);
+      common.showElem(elems.title.buttonToggleToSeqDiv);
 
       for (const elem of document.getElementsByClassName('normal-mode')) {
         elem.classList.remove('hide');
@@ -1516,7 +1516,7 @@
   }
 
   function toggleNormalSeqMode() {
-    if (common.isShownElem(elems.title.buttonToggleToNumDiv)) {
+    if (common.isShownElem(elems.title.buttonToggleToSeqDiv)) {
       updateNormalSeqMode(true);
     } else if (common.isShownElem(elems.title.buttonToggleToNormalDiv)) {
       updateNormalSeqMode(false);

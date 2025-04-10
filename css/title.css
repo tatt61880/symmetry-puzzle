@@ -36,23 +36,23 @@
     background-color: #ffeedd;
     border: 6px solid #ffbb77;
 
-    &.title-button-num {
+    &.title-button-seq {
       background-color: #ddeeff;
       border-color: #99ccff;
     }
 
     &#button-normal-line,
-    &#button-num-line {
+    &#button-seq-line {
       border-radius: 20% 20% 40% 40%;
     }
 
     &#button-normal-point,
-    &#button-num-point {
+    &#button-seq-point {
       border-radius: 20% 40%;
     }
 
     &#button-normal-special,
-    &#button-num-special {
+    &#button-seq-special {
       border-radius: 30%;
     }
 
@@ -62,7 +62,7 @@
       border-radius: 20%;
     }
 
-    &#button-toggle-to-num {
+    &#button-toggle-to-seq {
       background-color: #ddeeff;
       border-color: #99ccff;
       border-radius: 20%;
