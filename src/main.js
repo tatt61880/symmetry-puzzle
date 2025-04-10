@@ -1009,8 +1009,10 @@
   function initLang() {
     let lang = app.savedata.getLang();
     if (lang === undefined) {
-      switch (window.navigator.language) {
+      const userLang = window.navigator.language;
+      switch (userLang) {
         case 'ja':
+        case 'ja-JP':
           lang = 'ja';
           break;
         default:
