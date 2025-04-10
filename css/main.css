@@ -156,6 +156,10 @@ text {
   cursor: pointer;
 }
 
+#controller-widget {
+  height: 240px;
+}
+
 #console-widget {
   color: #eeeeff;
   background-color: #335577;
@@ -179,6 +183,12 @@ text {
       background-color: #fffbe5;
       border: 1px solid #fff5c2;
     }
+  }
+
+  #console-widget-caption {
+    font-size: 1.3rem;
+    font-weight: normal;
+    text-shadow: var(--pseudo-bold-shadow);
   }
 }
 
