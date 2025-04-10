@@ -52,6 +52,10 @@ header {
     color: #7777cc;
     text-shadow: var(--pseudo-bold-shadow);
   }
+
+  & > *:last-child {
+    margin-left: auto;
+  }
 }
 
 footer {
