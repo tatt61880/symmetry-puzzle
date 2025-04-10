@@ -1659,7 +1659,7 @@
           checkMode,
         });
 
-        const blockSize = Number(elem.dataset.size);
+        const blockSize = Number(elem.dataset.blocksize);
         const g = level.createSvgG({
           blockSize,
           drawBackground: false,
