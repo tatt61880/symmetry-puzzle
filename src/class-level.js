@@ -72,7 +72,7 @@
       POINT1: Symbol('point1'), // 2
       POINT2: Symbol('point2'), // 4
 
-      // 線点対称の分類
+      // 線&点対称の分類
       SPECIAL1: Symbol('special1'), // 2mm (｜―)
       SPECIAL2: Symbol('special2'), // 2mm (＼／)
       SPECIAL3: Symbol('special3'), // 4mm (｜―＼／)
