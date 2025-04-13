@@ -1544,6 +1544,8 @@
   function initElemsForAchievements() {
     elems.achievements.button.addEventListener('click', app.dialog.achievements.show);
     elems.achievements.dialog.addEventListener('click', app.dialog.achievements.close);
+    elems.achievements.close.addEventListener('click', app.dialog.achievements.close);
+    elems.achievements.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
   }
 
   // レベル操作用
