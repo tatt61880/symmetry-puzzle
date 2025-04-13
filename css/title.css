@@ -68,7 +68,8 @@
       border-radius: 20%;
     }
 
-    &#button-records {
+    &#button-records,
+    &#button-achievements {
       background-color: #e4e4ff;
       border-color: #aaaaff;
       border-radius: 20%;

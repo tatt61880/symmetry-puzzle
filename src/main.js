@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.04.10';
+  const VERSION_TEXT = 'v' + '2025.04.11';
 
   const app = window.app;
   Object.freeze(app);
@@ -1659,7 +1659,7 @@
           checkMode,
         });
 
-        const blockSize = Number(elem.dataset.blocksize);
+        const blockSize = Number(elem.dataset.blockSize);
         const g = level.createSvgG({
           blockSize,
           drawBackground: false,

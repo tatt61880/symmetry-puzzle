@@ -1,0 +1,112 @@
+@charset "UTF-8";
+
+#dialog-achievements {
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 460px;
+  max-height: 618px;
+  padding: 0;
+  margin: 42px auto;
+  border: none;
+  outline: none;
+
+  #dialog-achievements-div {
+    padding: 5px;
+    padding-bottom: 10px;
+  }
+
+  #achievements-top {
+    display: flex;
+    align-items: center;
+
+    & * {
+      margin: 5px;
+    }
+
+    .spacer {
+      flex-grow: 1;
+    }
+
+    .caption {
+      font-size: 1.5rem;
+      font-weight: normal;
+      color: #333388;
+      text-shadow: var(--pseudo-bold-shadow);
+    }
+  }
+
+  #record-dialog-title {
+    font-size: 1.3rem;
+    font-weight: normal;
+    color: #333388;
+    text-shadow: var(--pseudo-bold-shadow);
+  }
+
+  #record-dialog-version {
+    margin-left: 10px;
+    font-size: 0.9rem;
+    font-weight: normal;
+    color: #7777cc;
+    text-shadow: var(--pseudo-bold-shadow);
+  }
+
+  &::backdrop {
+    cursor: pointer;
+    background-color: rgb(0 0 0 / 50%);
+  }
+
+  &,
+  &::backdrop {
+    animation: fade-in-dialog 0.1s ease-out 1 forwards;
+  }
+
+  #dialog-achievements-alert-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background: #00000080;
+
+    #dialog-achievements-alert-div {
+      width: 400px;
+      padding: 20px;
+      text-align: center;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #00000050;
+
+      #dialog-achievements-alert-message {
+        font-size: 1.3rem;
+        font-weight: normal;
+        line-height: 1.5;
+        color: #333388;
+      }
+
+      #dialog-achievements-alert-button {
+        width: 100px;
+        height: 50px;
+        margin-top: 10px;
+        background-color: #aaccff;
+        border: 4px solid #0000f8;
+        border-radius: 15px;
+      }
+    }
+  }
+}
+
+@keyframes fade-in-dialog {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
