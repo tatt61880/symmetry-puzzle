@@ -540,8 +540,8 @@
               <td>
                 <div class="button-transform-parent flex">
                   <div id="button-achievements" class="title-button button active-hover">
-                    <svg id="button-achievements-svg" data-crown-size="70" width="70" height="70">
-                    </svg>
+                    <div class="translatable-toggle" data-en="Achievements" data-ja="実績">
+                    </div>
                   </div>
                 </div>
               </td>
@@ -713,9 +713,44 @@
             </g>
           </svg>
           <div class="spacer"></div>
-          <div class="caption translatable-toggle" data-en="Achievements" data-ja="実績ダイアログ"></div>
+          <div class="caption translatable-toggle" data-en="Achievements" data-ja="実績"></div>
           <div class="spacer"></div>
           <svg width="48" height="48"></svg>
+        </div>
+
+        <div id="achievements-table-div">
+          <table>
+            <thead>
+              <tr>
+                <th class="border-right-bold border-bottom-bold">
+                </th>
+                <th class="border-bottom-bold translatable-toggle" data-en="Title" data-ja="称号">
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th class="border-right-bold">
+                  <svg class="animation-icon-line logo-image logo-line" data-block-size="16" width="48" height="32"></svg>
+                </th>
+                <td id="achievements-line-solved"></td>
+              </tr>
+
+              <tr>
+                <th class="border-right-bold">
+                  <svg class="animation-icon-point logo-image logo-point" data-block-size="16" width="48" height="32"></svg>
+                </th>
+                <td id="achievements-point-solved"></td>
+              </tr>
+
+              <tr>
+                <th class="border-right-bold">
+                  <svg class="animation-icon-special logo-image logo-special" data-block-size="16" width="32" height="32"></svg>
+                </th>
+                <td id="achievements-special-solved"></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </dialog>

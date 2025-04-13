@@ -114,6 +114,16 @@
       dialog: 'dialog-achievements',
       dialogDiv: 'dialog-achievements-div',
       close: 'dialog-achievements-close',
+      tableDiv: 'achievements-table-div',
+      line: {
+        solved: 'achievements-line-solved',
+      },
+      point: {
+        solved: 'achievements-point-solved',
+      },
+      special: {
+        solved: 'achievements-special-solved',
+      },
     },
 
     category: {

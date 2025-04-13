@@ -70,6 +70,9 @@
 
     &#button-records,
     &#button-achievements {
+      font-weight: normal;
+      color: #333388;
+      text-shadow: var(--pseudo-bold-shadow);
       background-color: #e4e4ff;
       border-color: #aaaaff;
       border-radius: 20%;
