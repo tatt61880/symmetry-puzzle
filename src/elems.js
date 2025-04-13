@@ -107,6 +107,15 @@
       },
     },
 
+    achievements: {
+      version: 'record-dialog-version',
+      button: 'button-achievements',
+      buttonSvg: 'button-achievements-svg',
+      dialog: 'dialog-achievements',
+      dialogDiv: 'dialog-achievements-div',
+      close: 'dialog-achievements-close',
+    },
+
     category: {
       title: 'title',
       game: 'game',

@@ -1210,6 +1210,7 @@
     initElemsForHelp();
     initElemsForTitle();
     initElemsForRecords();
+    initElemsForAchievements();
     initElemsForLevelWidget();
     initElemsForLevelsDialog();
     initElemsForShapesDialog();
@@ -1537,6 +1538,12 @@
     elems.records.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
     elems.records.backup.addEventListener('click', app.dialog.records.backup);
     elems.records.restore.addEventListener('click', app.dialog.records.restore);
+  }
+
+  // 実績画面用
+  function initElemsForAchievements() {
+    elems.achievements.button.addEventListener('click', app.dialog.achievements.show);
+    elems.achievements.dialog.addEventListener('click', app.dialog.achievements.close);
   }
 
   // レベル操作用

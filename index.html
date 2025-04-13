@@ -512,7 +512,7 @@
 
             <!-- 下段 -->
             <tr>
-              <!-- ノーマルモード - 連番モード 切替 -->
+              <!-- ノーマルモード - 連番モード 切替ボタン -->
               <td>
                 <div id="button-toggle-to-normal-div" class="button-transform-parent hide">
                   <div id="button-toggle-to-normal" class="title-button button active-hover">
@@ -526,7 +526,7 @@
                 </div>
               </td>
 
-              <!-- 記録ダイアログ -->
+              <!-- 記録ダイアログボタン -->
               <td>
                 <div class="button-transform-parent flex">
                   <div id="button-records" class="title-button button active-hover">
@@ -536,16 +536,14 @@
                 </div>
               </td>
 
-              <!-- 記録ダイアログ -->
+              <!-- 実績ダイアログボタン -->
               <td>
-                <!--
-                  <div class="button-transform-parent flex">
-                    <div id="button-achievements" class="title-button button active-hover">
-                      <svg id="button-achievements-svg" data-crown-size="70" width="70" height="70">
-                      </svg>
-                    </div>
+                <div class="button-transform-parent flex">
+                  <div id="button-achievements" class="title-button button active-hover">
+                    <svg id="button-achievements-svg" data-crown-size="70" width="70" height="70">
+                    </svg>
                   </div>
-                  -->
+                </div>
               </td>
             </tr>
           </table>
@@ -706,6 +704,19 @@
     <!-- 実績ダイアログ -->
     <dialog id="dialog-achievements">
       <div id="dialog-achievements-div">
+        <div id="achievements-top">
+          <svg width="48" height="48" class="button-transform-parent">
+            <g id="dialog-achievements-close" class="button active-hover" transform="translate(24,24)">
+              <circle cx="0" cy="0" r="22" fill="#f4f4ff" stroke="#aaaaff" stroke-width="4" />
+              <path d="M -10,-10 10,10" fill="none" stroke="#aaaaff" stroke-width="4.5" stroke-linecap="round" />
+              <path d="M -10,10 10,-10" fill="none" stroke="#aaaaff" stroke-width="4.5" stroke-linecap="round" />
+            </g>
+          </svg>
+          <div class="spacer"></div>
+          <div class="caption translatable-toggle" data-en="Achievements" data-ja="実績ダイアログ"></div>
+          <div class="spacer"></div>
+          <svg width="48" height="48"></svg>
+        </div>
       </div>
     </dialog>
 
