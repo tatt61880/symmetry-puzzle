@@ -1725,10 +1725,10 @@
       drawMainSvg();
       completeCheck();
     } else {
-      const dxs = [0, 1, 0, -1];
-      const dys = [-1, 0, 1, 0];
       const { dx, dy } = (() => {
         if (input.inputDir !== app.Input.DIRS.AXIS) {
+          const dxs = [0, 1, 0, -1];
+          const dys = [-1, 0, 1, 0];
           return { dx: dxs[input.inputDir], dy: dys[input.inputDir] };
         } else {
           switch (common.level.getAxisType()) {
