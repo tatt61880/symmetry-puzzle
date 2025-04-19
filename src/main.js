@@ -1738,6 +1738,9 @@
         // 動けないときは盤面を振動させます。
         addAnimationClass(elems.main.svg, 'animation-illegal-move');
       } else {
+        const { cx, cy } = common.level.getAxisCenter();
+        elems.main.svg.style.setProperty('--animation-origin', `${(blockSize * cx) / 2}px ${(blockSize * cy) / 2}px`);
+
         switch (common.level.getAxisType()) {
           case app.Level.SYMMETRY_TYPE.LINE1: {
             addAnimationClass(elems.main.svg, 'animation-illegal-move-line1');

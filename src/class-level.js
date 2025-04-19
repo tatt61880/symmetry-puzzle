@@ -335,6 +335,10 @@
       }
     }
 
+    getAxisCenter() {
+      return { cx: this.#axis.cx, cy: this.#axis.cy };
+    }
+
     axisCxDecAble() {
       return this.#axis.cx > 2;
     }

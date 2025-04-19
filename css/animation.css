@@ -240,7 +240,7 @@
 }
 
 .animation-illegal-move-line1 {
-  transform-origin: center;
+  transform-origin: var(--animation-origin);
   animation: animation-illegal-move-line1 linear;
   animation-duration: calc(var(--animation-duration) * 0.5);
 }
@@ -257,7 +257,7 @@
 }
 
 .animation-illegal-move-line2 {
-  transform-origin: center;
+  transform-origin: var(--animation-origin);
   animation: animation-illegal-move-line2 linear;
   animation-duration: calc(var(--animation-duration) * 0.5);
 }
@@ -274,7 +274,7 @@
 }
 
 .animation-illegal-move-line3 {
-  transform-origin: center;
+  transform-origin: var(--animation-origin);
   animation: animation-illegal-move-line3 linear;
   animation-duration: calc(var(--animation-duration) * 0.5);
 }
@@ -291,7 +291,7 @@
 }
 
 .animation-illegal-move-line4 {
-  transform-origin: center;
+  transform-origin: var(--animation-origin);
   animation: animation-illegal-move-line4 linear;
   animation-duration: calc(var(--animation-duration) * 0.5);
 }
@@ -309,7 +309,7 @@
 
 .animation-illegal-move-point1,
 .animation-illegal-move-point2 {
-  transform-origin: center;
+  transform-origin: var(--animation-origin);
   animation: animation-illegal-move-point linear;
   animation-duration: calc(var(--animation-duration) * 0.5);
 }
