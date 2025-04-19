@@ -239,6 +239,108 @@
   }
 }
 
+.animation-illegal-move-line1 {
+  transform-origin: center;
+  animation: animation-illegal-move-line1 linear;
+  animation-duration: calc(var(--animation-duration) * 0.5);
+}
+
+@keyframes animation-illegal-move-line1 {
+  0%,
+  100% {
+    transform: translateY(-50%) translateX(0) scaleX(1);
+  }
+
+  50% {
+    transform: translateY(-50%) translateX(0) scaleX(0.98);
+  }
+}
+
+.animation-illegal-move-line2 {
+  transform-origin: center;
+  animation: animation-illegal-move-line2 linear;
+  animation-duration: calc(var(--animation-duration) * 0.5);
+}
+
+@keyframes animation-illegal-move-line2 {
+  0%,
+  100% {
+    transform: translateY(-50%) translateX(0) scaleY(1);
+  }
+
+  50% {
+    transform: translateY(-50%) translateX(0) scaleY(0.98);
+  }
+}
+
+.animation-illegal-move-line3 {
+  transform-origin: center;
+  animation: animation-illegal-move-line3 linear;
+  animation-duration: calc(var(--animation-duration) * 0.5);
+}
+
+@keyframes animation-illegal-move-line3 {
+  0%,
+  100% {
+    transform: translateY(-50%) translateX(0) rotate3d(1, 1, 0, 0deg);
+  }
+
+  50% {
+    transform: translateY(-50%) translateX(0) rotate3d(1, 1, 0, 15deg);
+  }
+}
+
+.animation-illegal-move-line4 {
+  transform-origin: center;
+  animation: animation-illegal-move-line4 linear;
+  animation-duration: calc(var(--animation-duration) * 0.5);
+}
+
+@keyframes animation-illegal-move-line4 {
+  0%,
+  100% {
+    transform: translateY(-50%) translateX(0) rotate3d(1, -1, 0, 0deg);
+  }
+
+  50% {
+    transform: translateY(-50%) translateX(0) rotate3d(1, -1, 0, 15deg);
+  }
+}
+
+.animation-illegal-move-point1 {
+  transform-origin: center;
+  animation: animation-illegal-move-point1 linear;
+  animation-duration: calc(var(--animation-duration) * 0.5);
+}
+
+@keyframes animation-illegal-move-point1 {
+  0%,
+  100% {
+    transform: translateY(-50%) translateX(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-50%) translateX(0) rotate(2deg);
+  }
+}
+
+.animation-illegal-move-point2 {
+  transform-origin: center;
+  animation: animation-illegal-move-point2 linear;
+  animation-duration: calc(var(--animation-duration) * 0.5);
+}
+
+@keyframes animation-illegal-move-point2 {
+  0%,
+  100% {
+    transform: translateY(-50%) translateX(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-50%) translateX(0) rotate(2deg);
+  }
+}
+
 /* Blocks completed animation */
 .animation-axis-line1 {
   transform-origin: var(--animation-origin);

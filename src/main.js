@@ -1725,41 +1725,46 @@
       drawMainSvg();
       completeCheck();
     } else {
-      const { dx, dy } = (() => {
-        if (input.inputDir !== app.Input.DIRS.AXIS) {
-          const dxs = [0, 1, 0, -1];
-          const dys = [-1, 0, 1, 0];
-          return { dx: dxs[input.inputDir], dy: dys[input.inputDir] };
-        } else {
-          switch (common.level.getAxisType()) {
-            case app.Level.SYMMETRY_TYPE.LINE1: {
-              return { dx: 1, dy: 0 };
-            }
-            case app.Level.SYMMETRY_TYPE.LINE2: {
-              return { dx: 0, dy: 1 };
-            }
-            case app.Level.SYMMETRY_TYPE.LINE3: {
-              return { dx: 1, dy: -1 };
-            }
-            case app.Level.SYMMETRY_TYPE.LINE4: {
-              return { dx: 1, dy: 1 };
-            }
-            case app.Level.SYMMETRY_TYPE.POINT1: {
-              return { dx: 1, dy: 1 };
-            }
-            case app.Level.SYMMETRY_TYPE.POINT2: {
-              return { dx: 1, dy: 1 };
-            }
+      if (input.inputDir !== app.Input.DIRS.AXIS) {
+        const dxs = [0, 1, 0, -1];
+        const dys = [-1, 0, 1, 0];
+        const dx = dxs[input.inputDir];
+        const dy = dys[input.inputDir];
+
+        const pixel = 4;
+        document.documentElement.style.setProperty('--animation-illegal-move', `translate(${dx * pixel}px, ${dy * pixel}px)`);
+
+        drawMainSvg(); // 目の向きをリセットするために、描画し直します。
+        // 動けないときは盤面を振動させます。
+        addAnimationClass(elems.main.svg, 'animation-illegal-move');
+      } else {
+        switch (common.level.getAxisType()) {
+          case app.Level.SYMMETRY_TYPE.LINE1: {
+            addAnimationClass(elems.main.svg, 'animation-illegal-move-line1');
+            break;
+          }
+          case app.Level.SYMMETRY_TYPE.LINE2: {
+            addAnimationClass(elems.main.svg, 'animation-illegal-move-line2');
+            break;
+          }
+          case app.Level.SYMMETRY_TYPE.LINE3: {
+            addAnimationClass(elems.main.svg, 'animation-illegal-move-line3');
+            break;
+          }
+          case app.Level.SYMMETRY_TYPE.LINE4: {
+            addAnimationClass(elems.main.svg, 'animation-illegal-move-line4');
+            break;
+          }
+          case app.Level.SYMMETRY_TYPE.POINT1: {
+            addAnimationClass(elems.main.svg, 'animation-illegal-move-point1');
+            break;
+          }
+          case app.Level.SYMMETRY_TYPE.POINT2: {
+            addAnimationClass(elems.main.svg, 'animation-illegal-move-point2');
+            break;
           }
         }
-      })();
-
-      const pixel = 4;
-      document.documentElement.style.setProperty('--animation-illegal-move', `translate(${dx * pixel}px, ${dy * pixel}px)`);
-
-      drawMainSvg(); // 目の向きをリセットするために、描画し直します。
-      // 動けないときは盤面を振動させます。
-      addAnimationClass(elems.main.svg, 'animation-illegal-move');
+      }
     }
   }
 
