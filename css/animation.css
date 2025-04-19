@@ -307,30 +307,14 @@
   }
 }
 
-.animation-illegal-move-point1 {
-  transform-origin: center;
-  animation: animation-illegal-move-point1 linear;
-  animation-duration: calc(var(--animation-duration) * 0.5);
-}
-
-@keyframes animation-illegal-move-point1 {
-  0%,
-  100% {
-    transform: translateY(-50%) translateX(0) rotate(0deg);
-  }
-
-  50% {
-    transform: translateY(-50%) translateX(0) rotate(2deg);
-  }
-}
-
+.animation-illegal-move-point1,
 .animation-illegal-move-point2 {
   transform-origin: center;
-  animation: animation-illegal-move-point2 linear;
+  animation: animation-illegal-move-point linear;
   animation-duration: calc(var(--animation-duration) * 0.5);
 }
 
-@keyframes animation-illegal-move-point2 {
+@keyframes animation-illegal-move-point {
   0%,
   100% {
     transform: translateY(-50%) translateX(0) rotate(0deg);
