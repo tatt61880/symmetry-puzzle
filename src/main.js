@@ -416,6 +416,8 @@
       }
     } else if (e.key === 'Enter' && common.isShownElem(elems.controller.nextLevel)) {
       gotoNextLevel();
+    } else if (e.key === 'Enter' && common.isShownElem(elems.controller.prevLevel)) {
+      gotoPrevLevel();
     } else if (e.key === ' ') {
       if (settings.autoMode) {
         if (settingsAuto.paused) {
@@ -836,8 +838,16 @@
     }
   }
 
+  function gotoPrevLevelButton() {
+    const style = window.getComputedStyle(elems.controller.prevLevel);
+    if (style.opacity > 0.5) {
+      gotoPrevLevel();
+    }
+  }
+
   function updateEditMode(isEditMode) {
     editMode = isEditMode;
+    common.isSeqMode = false;
 
     if (editMode) {
       common.showElem(elems.edit.widget);
@@ -1251,6 +1261,7 @@
       elems.controller.buttons.axis.addEventListener(pointerdownEventName, moveButtonStart.bind(null, app.Input.DIRS.AXIS));
 
       elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
+      elems.controller.prevLevel.addEventListener('click', gotoPrevLevelButton);
 
       elems.controller.buttons.menu.addEventListener('click', onButtonMenu);
       elems.controller.buttons.title.addEventListener('click', gotoTitlePage);
@@ -1809,14 +1820,24 @@
     }
 
     common.showElem(elems.controller.buttons.root);
+    common.showElem(elems.controller.buttons.base);
     common.hideElem(elems.controller.menu);
+    common.hideElem(elems.controller.nextLevel);
+    common.hideElem(elems.controller.prevLevel);
+    common.hideElem(elems.controller.shareLevel);
+
     if (completeFlag) {
       common.hideElem(elems.controller.buttons.base);
-      if (common.isShownElem(elems.level.next)) {
+
+      if (!common.isSeqMode && common.isShownElem(elems.level.next)) {
         common.showElem(elems.controller.nextLevel);
-        common.hideElem(elems.controller.shareLevel);
+      } else if (common.isSeqMode) {
+        if (common.levelNum > 0) {
+          common.showElem(elems.controller.nextLevel);
+        } else {
+          common.showElem(elems.controller.prevLevel);
+        }
       } else {
-        common.hideElem(elems.controller.nextLevel);
         common.showElem(elems.controller.shareLevel);
 
         {
@@ -1846,10 +1867,6 @@
           }
         }
       }
-    } else {
-      common.showElem(elems.controller.buttons.base);
-      common.hideElem(elems.controller.nextLevel);
-      common.hideElem(elems.controller.shareLevel);
     }
   }
 

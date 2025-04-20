@@ -241,6 +241,7 @@
       undo: 'button-undo',
       redo: 'button-redo',
       nextLevel: 'next-level',
+      prevLevel: 'prev-level',
       shareLevel: 'share-level',
       shareLevelX: 'share-level-x',
       shareLevelBluesky: 'share-level-bluesky',
