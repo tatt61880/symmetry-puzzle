@@ -1774,7 +1774,7 @@
         })();
 
         const { cx, cy } = common.level.getAxisCenter();
-        elems.main.svg.style.setProperty('--animation-origin', `${(blockSize * cx) / 2}px ${(blockSize * cy) / 2}px`);
+        elems.main.svg.style.setProperty('--animation-origin-illegal', `${(blockSize * cx) / 2}px ${(blockSize * cy) / 2}px`);
         addAnimationClass(elems.main.svg, className);
       }
     }
