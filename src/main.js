@@ -1738,35 +1738,32 @@
         // 動けないときは盤面を振動させます。
         addAnimationClass(elems.main.svg, 'animation-illegal-move');
       } else {
+        const className = (() => {
+          switch (common.level.getAxisType()) {
+            case app.Level.SYMMETRY_TYPE.LINE1: {
+              return 'animation-illegal-move-line1';
+            }
+            case app.Level.SYMMETRY_TYPE.LINE2: {
+              return 'animation-illegal-move-line2';
+            }
+            case app.Level.SYMMETRY_TYPE.LINE3: {
+              return 'animation-illegal-move-line3';
+            }
+            case app.Level.SYMMETRY_TYPE.LINE4: {
+              return 'animation-illegal-move-line4';
+            }
+            case app.Level.SYMMETRY_TYPE.POINT1: {
+              return 'animation-illegal-move-point1';
+            }
+            case app.Level.SYMMETRY_TYPE.POINT2: {
+              return 'animation-illegal-move-point2';
+            }
+          }
+        })();
+
         const { cx, cy } = common.level.getAxisCenter();
         elems.main.svg.style.setProperty('--animation-origin', `${(blockSize * cx) / 2}px ${(blockSize * cy) / 2}px`);
-
-        switch (common.level.getAxisType()) {
-          case app.Level.SYMMETRY_TYPE.LINE1: {
-            addAnimationClass(elems.main.svg, 'animation-illegal-move-line1');
-            break;
-          }
-          case app.Level.SYMMETRY_TYPE.LINE2: {
-            addAnimationClass(elems.main.svg, 'animation-illegal-move-line2');
-            break;
-          }
-          case app.Level.SYMMETRY_TYPE.LINE3: {
-            addAnimationClass(elems.main.svg, 'animation-illegal-move-line3');
-            break;
-          }
-          case app.Level.SYMMETRY_TYPE.LINE4: {
-            addAnimationClass(elems.main.svg, 'animation-illegal-move-line4');
-            break;
-          }
-          case app.Level.SYMMETRY_TYPE.POINT1: {
-            addAnimationClass(elems.main.svg, 'animation-illegal-move-point1');
-            break;
-          }
-          case app.Level.SYMMETRY_TYPE.POINT2: {
-            addAnimationClass(elems.main.svg, 'animation-illegal-move-point2');
-            break;
-          }
-        }
+        addAnimationClass(elems.main.svg, className);
       }
     }
   }
