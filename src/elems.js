@@ -27,6 +27,7 @@
 
     contents: 'contents',
 
+    // ヘルプダイアログ
     help: {
       button: 'button-help',
       dialog: 'dialog-help',
@@ -44,6 +45,7 @@
       version: 'dialog-help-version',
     },
 
+    // 記録ダイアログ
     records: {
       version: 'record-dialog-version',
       button: 'button-records',
@@ -107,6 +109,7 @@
       },
     },
 
+    // 実績ダイアログ
     achievements: {
       version: 'record-dialog-version',
       button: 'button-achievements',
@@ -131,6 +134,7 @@
       game: 'game',
     },
 
+    // タイトル画面
     title: {
       inner: 'title-inner',
       buttonNormalsTr: 'button-normals-tr',
@@ -148,6 +152,7 @@
       // buttonEdit: 'button-edit',
     },
 
+    // レベル
     level: {
       widget: 'level-widget',
       retry: 'button-level-retry',
@@ -158,6 +163,7 @@
       edit: 'button-level-edit',
     },
 
+    // レベルダイアログ
     levels: {
       button: 'button-levels',
       dialog: 'dialog-levels',
@@ -175,6 +181,7 @@
       next: 'button-levels-next',
     },
 
+    // 形状ダイアログ
     shapes: {
       buttonG: 'button-shapes-g',
       button: 'button-shapes',
@@ -205,6 +212,7 @@
       buttonSpeedUp: 'button-speed-up',
     },
 
+    // エディト
     edit: {
       widget: 'edit-widget',
       drawing: 'edit-drawing-shape',
@@ -226,6 +234,7 @@
       normalize: 'edit-normalize',
     },
 
+    // コントローラー
     controller: {
       widget: 'controller-widget',
       undo: 'button-undo',
@@ -259,6 +268,7 @@
       },
     },
 
+    // コンソール
     console: {
       widget: 'console-widget',
       image: 'console-image',
