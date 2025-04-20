@@ -1725,6 +1725,8 @@
       drawMainSvg();
       completeCheck();
     } else {
+      drawMainSvg(); // 目の向きをリセットするために、描画し直します。
+
       if (input.inputDir !== app.Input.DIRS.AXIS) {
         const dxs = [0, 1, 0, -1];
         const dys = [-1, 0, 1, 0];
@@ -1734,7 +1736,6 @@
         const pixel = 4;
         document.documentElement.style.setProperty('--animation-illegal-move', `translate(${dx * pixel}px, ${dy * pixel}px)`);
 
-        drawMainSvg(); // 目の向きをリセットするために、描画し直します。
         // 動けないときは盤面を振動させます。
         addAnimationClass(elems.main.svg, 'animation-illegal-move');
       } else {
