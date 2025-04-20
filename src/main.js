@@ -1829,15 +1829,7 @@
     if (completeFlag) {
       common.hideElem(elems.controller.buttons.base);
 
-      if (!common.isSeqMode && common.isShownElem(elems.level.next)) {
-        common.showElem(elems.controller.nextLevel);
-      } else if (common.isSeqMode) {
-        if (common.levelNum > 0) {
-          common.showElem(elems.controller.nextLevel);
-        } else {
-          common.showElem(elems.controller.prevLevel);
-        }
-      } else {
+      if (!common.isShownElem(elems.level.prev) && !common.isShownElem(elems.level.next)) {
         common.showElem(elems.controller.shareLevel);
 
         {
@@ -1865,6 +1857,16 @@
             elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}+${encodeURIComponent(location.href + ' #' + hashtagEn)}`;
             common.applyLang(elem, app.savedata.getLang());
           }
+        }
+      } else if (!common.isSeqMode) {
+        if (common.isShownElem(elems.level.next)) {
+          common.showElem(elems.controller.nextLevel);
+        }
+      } else if (common.isSeqMode) {
+        if (common.levelNum > 0) {
+          common.showElem(elems.controller.nextLevel);
+        } else {
+          common.showElem(elems.controller.prevLevel);
         }
       }
     }
