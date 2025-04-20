@@ -202,6 +202,7 @@
       svg: 'main-svg',
     },
 
+    // オートモード
     auto: {
       buttons: 'buttons-auto',
       buttonStop: 'button-stop',
@@ -212,7 +213,7 @@
       buttonSpeedUp: 'button-speed-up',
     },
 
-    // エディト
+    // エディトモード
     edit: {
       widget: 'edit-widget',
       drawing: 'edit-drawing-shape',
