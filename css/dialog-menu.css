@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+#dialog-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 460px;
+  max-height: 618px;
+  padding: 0;
+  margin: auto;
+  border: none;
+  outline: none;
+
+  #dialog-menu-div {
+    padding: 5px;
+    padding-bottom: 10px;
+  }
+
+  #menu-top {
+    display: flex;
+    align-items: center;
+
+    & * {
+      margin: 5px;
+    }
+
+    .spacer {
+      flex-grow: 1;
+    }
+
+    .caption {
+      font-size: 1.5rem;
+      font-weight: normal;
+      color: #888888;
+      text-shadow: var(--pseudo-bold-shadow);
+    }
+  }
+
+  &::backdrop {
+    cursor: pointer;
+    background-color: rgb(0 0 0 / 50%);
+  }
+
+  &,
+  &::backdrop {
+    animation: fade-in-dialog 0.1s ease-out 1 forwards;
+  }
+}
+
+@keyframes fade-in-dialog {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

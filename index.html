@@ -31,6 +31,7 @@
   <link rel="stylesheet" href="./css/game.css?2025.04.20">
   <link rel="stylesheet" href="./css/dialog-help.css?2025.04.20">
   <link rel="stylesheet" href="./css/dialog-levels.css?2025.04.20">
+  <link rel="stylesheet" href="./css/dialog-menu.css?2025.04.20">
   <link rel="stylesheet" href="./css/dialog-shapes.css?2025.04.20">
   <link rel="stylesheet" href="./css/dialog-records.css?2025.04.20">
   <link rel="stylesheet" href="./css/dialog-achievements.css?2025.04.20">
@@ -67,6 +68,7 @@
 
   <script src="./src/dialog-help.js?2025.04.20" defer></script>
   <script src="./src/dialog-levels.js?2025.04.20" defer></script>
+  <script src="./src/dialog-menu.js?2025.04.20" defer></script>
   <script src="./src/dialog-shapes.js?2025.04.20" defer></script>
   <script src="./src/dialog-records.js?2025.04.20" defer></script>
   <script src="./src/dialog-achievements.js?2025.04.20" defer></script>
@@ -1253,27 +1255,6 @@
                 </a>
               </g>
             </g>
-
-            <g id="controller-menu" class="hide">
-              <g>
-                <rect x="-140" y="-120" width="390" height="240" fill="#e5e5e5" stroke="none" />
-                <rect x="-250" y="0" width="500" height="120" fill="#e5e5e5" stroke="none" />
-              </g>
-              <g id="controller-buttons-title" class="button active-hover" transform="translate(0,-40)">
-                <g class="button-transform">
-                  <rect x="-120" y="-25" rx="10" width="240" height="50" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
-                  <text x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22" fill="#888888"
-                    class="translatable-toggle" data-en="RETURN TO TITLE" data-ja="タイトル画面に戻る"></text>
-                </g>
-              </g>
-              <g id="controller-buttons-retry" class="button active-hover" transform="translate(0,40)">
-                <g class="button-transform">
-                  <rect x="-120" y="-25" rx="10" width="240" height="50" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
-                  <text x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22" fill="#888888"
-                    class="translatable-toggle" data-en="RETRY" data-ja="リトライ"></text>
-                </g>
-              </g>
-            </g>
           </g>
         </svg>
       </div>
@@ -1284,6 +1265,43 @@
         <ul id="console-log"></ul>
       </div>
     </div>
+
+
+    <!-- メニューダイアログ -->
+    <dialog id="dialog-menu">
+      <div id="dialog-menu-div">
+        <div id="menu-top">
+          <svg width="48" height="48" class="button-transform-parent">
+            <g id="dialog-menu-close" class="button active-hover" transform="translate(24,24)">
+              <circle cx="0" cy="0" r="22" fill="#f8f8f8" stroke="#cccccc" stroke-width="4" />
+              <path d="M -10,-10 10,10" fill="none" stroke="#cccccc" stroke-width="4.5" stroke-linecap="round" />
+              <path d="M -10,10 10,-10" fill="none" stroke="#cccccc" stroke-width="4.5" stroke-linecap="round" />
+            </g>
+          </svg>
+          <div class="spacer"></div>
+          <div class="caption translatable-toggle" data-en="MENU" data-ja="メニュー"></div>
+          <div class="spacer"></div>
+          <svg width="48" height="48"></svg>
+        </div>
+
+        <svg width="400" height="130">
+          <g id="dialog-menu-buttons-title" class="button active-hover" transform="translate(200,30)">
+            <g class="button-transform">
+              <rect x="-120" y="-25" rx="10" width="240" height="50" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
+              <text x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22" fill="#888888"
+                class="translatable-toggle" data-en="RETURN TO TITLE" data-ja="タイトル画面に戻る"></text>
+            </g>
+          </g>
+          <g id="dialog-menu-buttons-retry" class="button active-hover" transform="translate(200,100)">
+            <g class="button-transform">
+              <rect x="-120" y="-25" rx="10" width="240" height="50" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
+              <text x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="22" fill="#888888"
+                class="translatable-toggle" data-en="RETRY" data-ja="リトライ"></text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </dialog>
 
     <footer id="footer">
       <span class="translatable-toggle" data-en="&quot;Symmetry Puzzle&quot; tatt61880" data-ja="『対称パズル』 tatt61880"></span>

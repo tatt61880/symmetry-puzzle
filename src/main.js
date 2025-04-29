@@ -1263,21 +1263,27 @@
       elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
       elems.controller.prevLevel.addEventListener('click', gotoPrevLevelButton);
 
-      elems.controller.buttons.menu.addEventListener('click', onButtonMenu);
-      elems.controller.buttons.title.addEventListener('click', gotoTitlePage);
-      elems.controller.buttons.retry.addEventListener('click', retryLevel);
+      // メニューダイアログ
+      elems.menu.button.addEventListener('click', app.dialog.menu.show);
+      elems.menu.dialog.addEventListener('click', app.dialog.menu.close);
+      elems.menu.close.addEventListener('click', app.dialog.menu.close);
+      elems.menu.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
+      elems.menu.title.addEventListener('click', menuGotoTitlePage);
+      elems.menu.retry.addEventListener('click', menuRetryLevel);
 
       document.addEventListener(pointerupEventName, pointerup);
 
       input = new app.Input(elems.controller.buttons);
     }
 
-    function onButtonMenu() {
-      if (common.isShownElem(elems.controller.menu)) {
-        common.hideElem(elems.controller.menu);
-      } else {
-        common.showElem(elems.controller.menu);
-      }
+    function menuGotoTitlePage() {
+      app.dialog.menu.close();
+      gotoTitlePage();
+    }
+
+    function menuRetryLevel() {
+      app.dialog.menu.close();
+      retryLevel();
     }
   }
 
@@ -1821,7 +1827,6 @@
 
     common.showElem(elems.controller.buttons.root);
     common.showElem(elems.controller.buttons.base);
-    common.hideElem(elems.controller.menu);
     common.hideElem(elems.controller.nextLevel);
     common.hideElem(elems.controller.prevLevel);
     common.hideElem(elems.controller.shareLevel);

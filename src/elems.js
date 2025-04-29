@@ -181,6 +181,16 @@
       next: 'button-levels-next',
     },
 
+    // メニューダイアログ
+    menu: {
+      button: 'controller-buttons-menu',
+      dialog: 'dialog-menu',
+      dialogDiv: 'dialog-menu-div',
+      close: 'dialog-menu-close',
+      title: 'dialog-menu-buttons-title',
+      retry: 'dialog-menu-buttons-retry',
+    },
+
     // 形状ダイアログ
     shapes: {
       buttonG: 'button-shapes-g',
@@ -245,7 +255,6 @@
       shareLevel: 'share-level',
       shareLevelX: 'share-level-x',
       shareLevelBluesky: 'share-level-bluesky',
-      menu: 'controller-menu',
 
       buttons: {
         root: 'controller-buttons-root',
@@ -263,10 +272,6 @@
         axisL4: 'controller-buttons-axis-line4',
         axisP1: 'controller-buttons-axis-point1',
         axisP2: 'controller-buttons-axis-point2',
-
-        menu: 'controller-buttons-menu',
-        title: 'controller-buttons-title',
-        retry: 'controller-buttons-retry',
       },
     },
 
