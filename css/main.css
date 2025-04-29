@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 :root {
-  --button-translate-y: 3px;
+  --button-translate-y: 1px;
   --pseudo-bold-shadow: 0.015rem 0 currentColor, -0.015rem 0 currentColor, 0 0.015rem currentColor, 0 -0.015rem currentColor,
     0.01rem 0.01rem currentColor, -0.01rem 0.01rem currentColor, 0.01rem -0.01rem currentColor, -0.01rem -0.01rem currentColor;
 }
