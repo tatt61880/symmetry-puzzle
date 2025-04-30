@@ -1838,28 +1838,22 @@
         common.showElem(elems.controller.shareLevel);
 
         {
-          const textJa = '"対称パズルのレベルを共有！"';
-          const textEn = '"Share a level from Symmetry Puzzle!"';
-          const hashtagJa = '対称パズル';
-          const hashtagEn = 'SymmetryPuzzle';
+          const textJa = '"対称パズルのレベルを共有！" #対称パズル';
+          const textEn = '"Share a level from Symmetry Puzzle!" #SymmetryPuzzle';
           {
             const base = 'https://twitter.com/intent/tweet';
             const elem = elems.controller.shareLevelX;
             elem.classList.add('translatable-toggle');
-            elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}&url=${encodeURIComponent(
-              location.href
-            )}&hashtags=${encodeURIComponent(hashtagJa)}`;
-            elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}&url=${encodeURIComponent(
-              location.href
-            )}&hashtags=${encodeURIComponent(hashtagEn)}`;
+            elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}&url=${encodeURIComponent(location.href)}`;
+            elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}&url=${encodeURIComponent(location.href)}`;
             common.applyLang(elem, app.savedata.getLang());
           }
           {
             const base = 'https://bsky.app/intent/compose';
             const elem = elems.controller.shareLevelBluesky;
             elem.classList.add('translatable-toggle');
-            elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}+${encodeURIComponent(location.href + ' #' + hashtagJa)}`;
-            elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}+${encodeURIComponent(location.href + ' #' + hashtagEn)}`;
+            elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}+${encodeURIComponent(location.href)}`;
+            elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}+${encodeURIComponent(location.href)}`;
             common.applyLang(elem, app.savedata.getLang());
           }
         }
