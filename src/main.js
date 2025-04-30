@@ -1838,8 +1838,8 @@
         common.showElem(elems.controller.shareLevel);
 
         {
-          const textJa = '"対称パズルのレベルを共有！" #対称パズル';
-          const textEn = '"Share a level from Symmetry Puzzle!" #SymmetryPuzzle';
+          const textJa = '"対称パズルのレベルを共有！"\n#対称パズル\n';
+          const textEn = '"Share a level from Symmetry Puzzle!"\n#SymmetryPuzzle\n';
           {
             const base = 'https://twitter.com/intent/tweet';
             const elem = elems.controller.shareLevelX;
