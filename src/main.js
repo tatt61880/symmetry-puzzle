@@ -750,6 +750,14 @@
     updateLevelVisibility();
     elems.level.id.textContent = common.levelId;
     replaceUrl();
+
+    if (id_ === 1 && common.levelNum === null) {
+      // 通常モードのレベル1をロード時、レベル1を未クリアのときはヘルプ画面を表示する。
+      const playerScore = app.savedata.getHighestScore(common.level);
+      if (playerScore === null) {
+        app.dialog.help.show();
+      }
+    }
   }
 
   function updateShapeButton() {
