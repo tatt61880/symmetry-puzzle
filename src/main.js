@@ -1838,22 +1838,23 @@
         common.showElem(elems.controller.shareLevel);
 
         {
-          const textJa = '"対称パズルのレベルを共有！"\n#対称パズル\n';
-          const textEn = '"Share a level from Symmetry Puzzle!"\n#SymmetryPuzzle\n';
+          const textJa = '"対称パズルのレベルを共有！"\n#対称パズル';
+          const textEn = '"Share a level from Symmetry Puzzle!"\n#SymmetryPuzzle';
+          const url = 'https://tatt61880.github.io/symmetry-puzzle/?' + location.href.split('?')[1];
           {
             const base = 'https://twitter.com/intent/tweet';
             const elem = elems.controller.shareLevelX;
             elem.classList.add('translatable-toggle');
-            elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}&url=${encodeURIComponent(location.href)}`;
-            elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}&url=${encodeURIComponent(location.href)}`;
+            elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}%0A${encodeURIComponent(url)}`;
+            elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}%0A${encodeURIComponent(url)}`;
             common.applyLang(elem, app.savedata.getLang());
           }
           {
             const base = 'https://bsky.app/intent/compose';
             const elem = elems.controller.shareLevelBluesky;
             elem.classList.add('translatable-toggle');
-            elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}+${encodeURIComponent(location.href)}`;
-            elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}+${encodeURIComponent(location.href)}`;
+            elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}%0A${encodeURIComponent(url)}`;
+            elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}%0A${encodeURIComponent(url)}`;
             common.applyLang(elem, app.savedata.getLang());
           }
         }
