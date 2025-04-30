@@ -671,13 +671,9 @@
     }
   }
 
-  function createObjById(id_) {
-    const digits = [];
-    let id = Math.floor(id_);
-    if (id !== id_) {
-      loadLevelById(id);
-      return;
-    }
+  function createObjByNum(num_) {
+    common.levelId = num_;
+    common.levelNum = num_;
 
     const digitStates = {
       //   -, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
@@ -688,17 +684,19 @@
       4: '000111001111111001111111001111111',
     };
 
-    common.levelId = id;
-    common.levelNum = id;
     let isMinus = false;
-    if (id < 0) {
-      id = -id;
+
+    let num = num_;
+    if (num < 0) {
+      num = -num;
       isMinus = true;
     }
 
-    while (id) {
-      digits.unshift(id % 10);
-      id = Math.floor(id / 10);
+    const digits = [];
+
+    while (num) {
+      digits.unshift(num % 10);
+      num = Math.floor(num / 10);
     }
 
     if (isMinus) {
@@ -738,7 +736,8 @@
     let levelObj = common.levels.getLevelObj(common.levelId);
 
     if (levelObj === null) {
-      levelObj = createObjById(common.levelId);
+      const num = Math.floor(id);
+      levelObj = createObjByNum(num);
     }
 
     consoleLog(`[LEVEL ${id}]${levelObj?.subject ?? ''}`);
