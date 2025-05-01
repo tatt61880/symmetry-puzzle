@@ -2670,6 +2670,7 @@
         const timeLimit = 10;
         const result = app.solveLevel(null, levelTemp, { maxStep, timeLimit });
         common.inactiveElem(elems.auto.buttonStart);
+        window.getSelection().removeAllRanges();
         if (result.replayStr === null) {
           window.alert(result.errorMessage);
           return;
