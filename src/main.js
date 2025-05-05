@@ -873,6 +873,7 @@
     }
   }
 
+  // エディトモードのオンオフ
   function toggleEditLevel() {
     editMode = !editMode;
     common.levelId = null;
