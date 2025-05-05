@@ -883,6 +883,9 @@
       updateEditAxisButton();
       updateEditElems();
     } else {
+      // 正規化します。
+      common.level.normalize();
+
       // 現在の盤面を初期値とするレベルに更新しておかないと、クリア時のセーブ情報がバグります。
       common.level = new app.Level({ levelObj: common.level.getCurrentLevelObj(), checkMode: common.checkMode });
       const base = location.href.split('?')[0];
