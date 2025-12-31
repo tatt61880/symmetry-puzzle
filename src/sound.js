@@ -26,11 +26,9 @@
       if (audioCtx.state !== 'running') return;
       const t0 = audioCtx.currentTime;
 
-      // 同時刻近辺の多重発音を抑制
       if (lastStepAt >= 0 && t0 - lastStepAt < minStepIntervalSec) return;
       lastStepAt = t0;
 
-      // --- キラッとした「チッ」 ---
       const oscHi = audioCtx.createOscillator();
       oscHi.type = 'triangle';
       oscHi.frequency.setValueAtTime(1200, t0);
@@ -41,7 +39,6 @@
       hiGain.gain.exponentialRampToValueAtTime(0.22, t0 + 0.005);
       hiGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.12);
 
-      // --- ふんわり胴鳴り「て」 ---
       const oscLo = audioCtx.createOscillator();
       oscLo.type = 'sine';
       oscLo.frequency.setValueAtTime(420, t0);
@@ -52,7 +49,6 @@
       loGain.gain.exponentialRampToValueAtTime(0.12, t0 + 0.006);
       loGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.14);
 
-      // --- ほんの少しノイズ（輪郭） ---
       const noiseDur = 0.03;
       const noiseBuf = audioCtx.createBuffer(1, Math.floor(audioCtx.sampleRate * noiseDur), audioCtx.sampleRate);
       const data = noiseBuf.getChannelData(0);
@@ -78,17 +74,15 @@
       noiseGain.gain.exponentialRampToValueAtTime(0.1, t0 + 0.004);
       noiseGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.09);
 
-      // --- 可愛い「ぽよ」感（超弱い揺れ） ---
       const lfo = audioCtx.createOscillator();
       lfo.type = 'sine';
       lfo.frequency.setValueAtTime(7.0, t0);
 
       const lfoGain = audioCtx.createGain();
-      lfoGain.gain.setValueAtTime(8.0, t0); // 揺れ幅(Hz)
+      lfoGain.gain.setValueAtTime(8.0, t0);
       lfo.connect(lfoGain);
       lfoGain.connect(oscHi.frequency);
 
-      // --- ミックス ---
       oscHi.connect(hiGain);
       hiGain.connect(destination);
 
@@ -100,7 +94,6 @@
       lp.connect(noiseGain);
       noiseGain.connect(destination);
 
-      // --- 再生 ---
       lfo.start(t0);
       oscHi.start(t0);
       oscLo.start(t0);
@@ -119,7 +112,6 @@
       if (lastBumpAt >= 0 && t0 - lastBumpAt < minBumpIntervalSec) return;
       lastBumpAt = t0;
 
-      // 壁音専用のゲイン（master手前で増幅）
       const bumpGain = audioCtx.createGain();
       bumpGain.gain.setValueAtTime(bumpBoost, t0);
       bumpGain.connect(destination);
@@ -187,7 +179,6 @@
       if (lastUndoAt >= 0 && t0 - lastUndoAt < minUndoIntervalSec) return;
       lastUndoAt = t0;
 
-      // かわいい「くるっ↓」（短い下降スライド）
       const osc = audioCtx.createOscillator();
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(720, t0);
@@ -198,7 +189,6 @@
       g.gain.exponentialRampToValueAtTime(0.2, t0 + 0.008);
       g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.18);
 
-      // 少し丸める
       const lp = audioCtx.createBiquadFilter();
       lp.type = 'lowpass';
       lp.frequency.setValueAtTime(2600, t0);
@@ -218,7 +208,6 @@
       if (lastRedoAt >= 0 && t0 - lastRedoAt < minRedoIntervalSec) return;
       lastRedoAt = t0;
 
-      // かわいい「ぴょん↑」（短い上昇スライド）
       const osc = audioCtx.createOscillator();
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(520, t0);
@@ -245,14 +234,12 @@
       if (audioCtx.state !== 'running') return;
       const t0 = audioCtx.currentTime;
 
-      // 連打抑制（開始/リセット用）
       if (lastStartAt >= 0 && t0 - lastStartAt < minStartIntervalSec) return;
       lastStartAt = t0;
 
-      // かわいい「ぴん♪」：短い2音の上昇（開始にもリセットにも使える）
       const notes = [
-        { f: 784, dt: 0.0 }, // G5
-        { f: 1047, dt: 0.1 }, // C6
+        { f: 784, dt: 0.0 },
+        { f: 1047, dt: 0.1 },
       ];
 
       for (const n of notes) {
@@ -267,7 +254,6 @@
         g.gain.exponentialRampToValueAtTime(0.2, t + 0.01);
         g.gain.exponentialRampToValueAtTime(0.0001, t + 0.13);
 
-        // 少し丸めて可愛く
         const lp = audioCtx.createBiquadFilter();
         lp.type = 'lowpass';
         lp.frequency.setValueAtTime(3600, t);
@@ -288,7 +274,6 @@
       if (lastClearAt >= 0 && t0 - lastClearAt < minClearIntervalSec) return;
       lastClearAt = t0;
 
-      // 短いジングル（約0.45秒）
       const notes = [
         { f: 740, dt: 0.0 },
         { f: 988, dt: 0.1 },
@@ -347,12 +332,72 @@
   }
 
   function createAudioManager(options = {}) {
-    const volume = typeof options.volume === 'number' ? options.volume : 0.35;
+    const defaultVolume = typeof options.volume === 'number' ? options.volume : 0.35;
+    let currentVolume = defaultVolume;
 
     let audioCtx = null;
     let master = null;
     let enabled = false;
     let sfx = null;
+
+    let hooksInstalled = false;
+    let unlockHookInstalled = false;
+
+    async function resumeIfNeeded() {
+      if (!audioCtx) return;
+
+      // iOSで稀に closed になるケースを拾う（この場合は作り直し）
+      if (audioCtx.state === 'closed') {
+        audioCtx = null;
+        master = null;
+        sfx = null;
+        await enable(); // enabled=true のまま復旧
+        return;
+      }
+
+      if (audioCtx.state === 'running') return;
+
+      try {
+        await audioCtx.resume();
+        if (master) master.gain.value = enabled ? currentVolume : 0.0;
+      } catch (_) {
+        installUnlockHook();
+      }
+    }
+
+    function installUnlockHook() {
+      if (unlockHookInstalled) return;
+      unlockHookInstalled = true;
+
+      const once = async () => {
+        unlockHookInstalled = false;
+        window.removeEventListener('pointerdown', once, true);
+        window.removeEventListener('touchstart', once, true);
+        window.removeEventListener('keydown', once, true);
+        await resumeIfNeeded();
+      };
+
+      window.addEventListener('pointerdown', once, { capture: true, passive: false });
+      window.addEventListener('touchstart', once, { capture: true, passive: false });
+      window.addEventListener('keydown', once, true);
+    }
+
+    function installReturnHooks() {
+      if (hooksInstalled) return;
+      hooksInstalled = true;
+
+      // bfcache復帰など
+      window.addEventListener('pageshow', () => {
+        if (enabled) resumeIfNeeded();
+      });
+
+      // タブ復帰・アプリ復帰
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && enabled) {
+          resumeIfNeeded();
+        }
+      });
+    }
 
     async function enable() {
       enabled = true;
@@ -360,7 +405,6 @@
       if (!audioCtx) {
         audioCtx = new (global.AudioContext || global.webkitAudioContext)();
         master = audioCtx.createGain();
-        master.gain.value = volume;
         master.connect(audioCtx.destination);
 
         sfx = createSfx(audioCtx, master, {
@@ -372,12 +416,12 @@
           minStartIntervalSec: options.minStartIntervalSec,
           minClearIntervalSec: options.minClearIntervalSec,
         });
+
+        installReturnHooks();
       }
 
-      if (audioCtx.state === 'suspended') {
-        await audioCtx.resume();
-      }
-      master.gain.value = volume;
+      await resumeIfNeeded();
+      if (master) master.gain.value = currentVolume;
     }
 
     function disable() {
@@ -391,7 +435,8 @@
 
     function setVolume(v) {
       if (typeof v !== 'number') return;
-      if (master) master.gain.value = enabled ? v : 0.0;
+      currentVolume = v;
+      if (master) master.gain.value = enabled ? currentVolume : 0.0;
     }
 
     function playStep() {
@@ -430,6 +475,7 @@
       playRedo,
       playStart,
       playClear,
+      resumeIfNeeded,
       get audioCtx() {
         return audioCtx;
       },
