@@ -1057,6 +1057,30 @@
     common.applyLangAll(lang);
   }
 
+  function initSound() {
+    const toggleSound = async (e) => {
+      e.preventDefault();
+
+      if (!sound.isEnabled()) {
+        await sound.enable();
+        setSoundUi(true);
+      } else {
+        sound.disable();
+        setSoundUi(false);
+      }
+
+      function setSoundUi(isOn) {
+        elems.help.sound.classList.toggle('active', isOn);
+        elems.help.sound.setAttribute('aria-pressed', String(isOn));
+      }
+    };
+
+    const touchDevice = common.isTouchDevice();
+    const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
+
+    elems.help.sound.addEventListener(pointerupEventName, toggleSound);
+  }
+
   function onloadApp() {
     elems.version.textContent = VERSION_TEXT;
     elems.help.version.textContent = VERSION_TEXT;
@@ -1076,6 +1100,9 @@
 
     const id = queryParams.id;
     const num = queryParams.num;
+
+    initSound();
+
     if (id === null && num === null && queryParams.levelObj.s === null) {
       gotoTitlePage();
       initLang();
@@ -1084,30 +1111,6 @@
 
     updateCheckMode(settings.mode);
     initLang();
-
-    {
-      const toggleSound = async (e) => {
-        e.preventDefault();
-
-        if (!sound.isEnabled()) {
-          await sound.enable();
-          setSoundUi(true);
-        } else {
-          sound.disable();
-          setSoundUi(false);
-        }
-
-        function setSoundUi(isOn) {
-          elems.help.sound.classList.toggle('active', isOn);
-          elems.help.sound.setAttribute('aria-pressed', String(isOn));
-        }
-      };
-
-      const touchDevice = common.isTouchDevice();
-      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
-
-      elems.help.sound.addEventListener(pointerupEventName, toggleSound);
-    }
 
     if (id !== null) {
       onloadId(id);
