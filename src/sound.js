@@ -12,12 +12,14 @@
     const minBumpIntervalSec = typeof opts.minBumpIntervalSec === 'number' ? opts.minBumpIntervalSec : 0.06;
     const minUndoIntervalSec = typeof opts.minUndoIntervalSec === 'number' ? opts.minUndoIntervalSec : 0.04;
     const minRedoIntervalSec = typeof opts.minRedoIntervalSec === 'number' ? opts.minRedoIntervalSec : 0.04;
+    const minStartIntervalSec = typeof opts.minStartIntervalSec === 'number' ? opts.minStartIntervalSec : 0.12;
     const minClearIntervalSec = typeof opts.minClearIntervalSec === 'number' ? opts.minClearIntervalSec : 0.2;
 
     let lastStepAt = -1;
     let lastBumpAt = -1;
     let lastUndoAt = -1;
     let lastRedoAt = -1;
+    let lastStartAt = -1;
     let lastClearAt = -1;
 
     function playStep() {
@@ -239,6 +241,46 @@
       osc.stop(t0 + 0.18);
     }
 
+    function playStart() {
+      if (audioCtx.state !== 'running') return;
+      const t0 = audioCtx.currentTime;
+
+      // 連打抑制（開始/リセット用）
+      if (lastStartAt >= 0 && t0 - lastStartAt < minStartIntervalSec) return;
+      lastStartAt = t0;
+
+      // かわいい「ぴん♪」：短い2音の上昇（開始にもリセットにも使える）
+      const notes = [
+        { f: 784, dt: 0.0 }, // G5
+        { f: 1047, dt: 0.1 }, // C6
+      ];
+
+      for (const n of notes) {
+        const t = t0 + n.dt;
+
+        const osc = audioCtx.createOscillator();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(n.f, t);
+
+        const g = audioCtx.createGain();
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.2, t + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.13);
+
+        // 少し丸めて可愛く
+        const lp = audioCtx.createBiquadFilter();
+        lp.type = 'lowpass';
+        lp.frequency.setValueAtTime(3600, t);
+
+        osc.connect(g);
+        g.connect(lp);
+        lp.connect(destination);
+
+        osc.start(t);
+        osc.stop(t + 0.15);
+      }
+    }
+
     function playClear() {
       if (audioCtx.state !== 'running') return;
       const t0 = audioCtx.currentTime;
@@ -301,7 +343,7 @@
       }, 700);
     }
 
-    return { playStep, playBump, playUndo, playRedo, playClear };
+    return { playStep, playBump, playUndo, playRedo, playStart, playClear };
   }
 
   function createAudioManager(options = {}) {
@@ -327,6 +369,7 @@
           minBumpIntervalSec: options.minBumpIntervalSec,
           minUndoIntervalSec: options.minUndoIntervalSec,
           minRedoIntervalSec: options.minRedoIntervalSec,
+          minStartIntervalSec: options.minStartIntervalSec,
           minClearIntervalSec: options.minClearIntervalSec,
         });
       }
@@ -367,6 +410,10 @@
       if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
       sfx.playRedo();
     }
+    function playStart() {
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
+      sfx.playStart();
+    }
     function playClear() {
       if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
       sfx.playClear();
@@ -381,6 +428,7 @@
       playBump,
       playUndo,
       playRedo,
+      playStart,
       playClear,
       get audioCtx() {
         return audioCtx;

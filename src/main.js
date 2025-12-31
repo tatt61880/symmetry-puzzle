@@ -536,6 +536,8 @@
     animateIcons();
     addAnimationClass(elems.level.retryArrow, 'rotate-ccw');
 
+    sound.playStart();
+
     {
       const levelObj = undoInfoForNormal.undoAll();
       const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
@@ -552,6 +554,9 @@
   function initLevel(paramObj) {
     paramObj.checkMode = common.checkMode;
     common.level = new app.Level(paramObj);
+
+    sound.playStart();
+
     addUndo(null);
     draw();
   }
