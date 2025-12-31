@@ -12,6 +12,7 @@
     const minStartIntervalSec = typeof opts.minStartIntervalSec === 'number' ? opts.minStartIntervalSec : 0.12;
     const minClearIntervalSec = typeof opts.minClearIntervalSec === 'number' ? opts.minClearIntervalSec : 0.2;
     const minUiIntervalSec = typeof opts.minUiIntervalSec === 'number' ? opts.minUiIntervalSec : 0.06;
+    const minButtonIntervalSec = typeof opts.minButtonIntervalSec === 'number' ? opts.minButtonIntervalSec : 0.045;
 
     let lastStepAt = -1;
     let lastBumpAt = -1;
@@ -20,6 +21,7 @@
     let lastStartAt = -1;
     let lastClearAt = -1;
     let lastUiAt = -1;
+    let lastButtonAt = -1;
 
     function playStep() {
       if (audioCtx.state !== 'running') return;
@@ -392,7 +394,65 @@
       osc.stop(t0 + 0.15);
     }
 
-    return { playStep, playBump, playUndo, playRedo, playStart, playClear, playUiOpen, playUiClose };
+    function playButton() {
+      if (audioCtx.state !== 'running') return;
+      const t0 = audioCtx.currentTime;
+
+      if (lastButtonAt >= 0 && t0 - lastButtonAt < minButtonIntervalSec) return;
+      lastButtonAt = t0;
+
+      // ちいさく「コッ」（短いクリック＋少し丸める）
+      const osc = audioCtx.createOscillator();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(980, t0);
+      osc.frequency.exponentialRampToValueAtTime(780, t0 + 0.05);
+
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.12, t0 + 0.006);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.08);
+
+      const lp = audioCtx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.setValueAtTime(3000, t0);
+
+      // ほんの少しノイズを足してクリック感（弱め）
+      const noiseDur = 0.012;
+      const noiseBuf = audioCtx.createBuffer(1, Math.floor(audioCtx.sampleRate * noiseDur), audioCtx.sampleRate);
+      const data = noiseBuf.getChannelData(0);
+      for (let i = 0; i < data.length; i++) {
+        const x = i / data.length;
+        const env = Math.exp(-28 * x);
+        data[i] = (Math.random() * 2 - 1) * 0.1 * env;
+      }
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = noiseBuf;
+
+      const nlp = audioCtx.createBiquadFilter();
+      nlp.type = 'lowpass';
+      nlp.frequency.setValueAtTime(3400, t0);
+
+      const ng = audioCtx.createGain();
+      ng.gain.setValueAtTime(0.0001, t0);
+      ng.gain.exponentialRampToValueAtTime(0.06, t0 + 0.003);
+      ng.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.04);
+
+      osc.connect(g);
+      g.connect(lp);
+      lp.connect(destination);
+
+      noise.connect(nlp);
+      nlp.connect(ng);
+      ng.connect(destination);
+
+      osc.start(t0);
+      noise.start(t0);
+
+      noise.stop(t0 + noiseDur);
+      osc.stop(t0 + 0.09);
+    }
+
+    return { playStep, playBump, playUndo, playRedo, playStart, playClear, playUiOpen, playUiClose, playButton };
   }
 
   function createAudioManager(options = {}) {
@@ -428,6 +488,7 @@
           minStartIntervalSec: options.minStartIntervalSec,
           minClearIntervalSec: options.minClearIntervalSec,
           minUiIntervalSec: options.minUiIntervalSec,
+          minButtonIntervalSec: options.minButtonIntervalSec,
         });
 
         // 状態が落ちたら次のユーザー操作で復帰できるようにする
@@ -680,6 +741,10 @@
       if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
       sfx.playUiClose();
     }
+    function playButton() {
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
+      sfx.playButton();
+    }
 
     function debug(tag = '') {
       const ctx = audioCtx;
@@ -708,6 +773,7 @@
       playClear,
       playUiOpen,
       playUiClose,
+      playButton,
       debug,
       get audioCtx() {
         return audioCtx;

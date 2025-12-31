@@ -350,6 +350,7 @@
       backupData,
     };
     const backupJsonText = JSON.stringify(obj);
+    window.sound.playButton();
 
     const filename = `symmetry-puzzle-backup-${yyyymmdd}.json`;
     const lang = app.savedata.getLang();
@@ -361,6 +362,8 @@
     downloadJsonAsFile(filename, backupJsonText);
 
     function downloadJsonAsFile(fileName, fileContent) {
+      window.sound.playButton();
+
       const blob = new Blob([fileContent], { type: 'application/json' });
 
       const link = document.createElement('a');
@@ -377,6 +380,7 @@
     hiddenFileInput.type = 'file';
     hiddenFileInput.accept = '.json';
     hiddenFileInput.style.display = 'none';
+    window.sound.playButton();
 
     function readLocalFile(file) {
       return new Promise((resolve, reject) => {

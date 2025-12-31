@@ -886,6 +886,7 @@
 
   // エディトモードのオンオフ
   function toggleEditLevel() {
+    sound.playButton();
     editMode = !editMode;
     common.levelId = null;
     common.levelNum = null;
@@ -967,6 +968,7 @@
   }
 
   function selectLang(lang) {
+    sound.playButton();
     common.applyLangAll(lang);
     app.savedata.saveLang(lang);
   }
@@ -1164,6 +1166,7 @@
     common.hideElem(elems.category.game);
     updateAutoMode(false);
     replaceUrlTitle();
+    sound.playButton();
 
     // ある程度クリアするまで連番モードを隠します。
     common.updateTitleSeqModeButton();
@@ -1591,6 +1594,8 @@
   }
 
   function toggleNormalSeqMode() {
+    sound.playButton();
+
     if (common.isShownElem(elems.title.buttonToggleToSeqDiv)) {
       updateNormalSeqMode(true);
     } else if (common.isShownElem(elems.title.buttonToggleToNormalDiv)) {
