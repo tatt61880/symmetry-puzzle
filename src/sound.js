@@ -4,9 +4,18 @@
   function createSfx(audioCtx, destination, opts = {}) {
     const bumpBoost = typeof opts.bumpBoost === 'number' ? opts.bumpBoost : 1.4;
 
+    // 歩行音の最小間隔（秒）
+    const minStepIntervalSec = opts && typeof opts.minStepIntervalSec === 'number' ? opts.minStepIntervalSec : 0.06; // 60ms
+    let lastStepAt = -1;
+
     function playStep() {
       if (audioCtx.state !== 'running') return;
+
       const t0 = audioCtx.currentTime;
+
+      // 同時刻近辺の連打を無視（うるささ防止）
+      if (lastStepAt >= 0 && t0 - lastStepAt < minStepIntervalSec) return;
+      lastStepAt = t0;
 
       // キラッとした「チッ」
       const oscHi = audioCtx.createOscillator();
