@@ -1078,7 +1078,9 @@
     updateCheckMode(settings.mode);
     initLang();
 
-    elems.help.sound.addEventListener('pointerdown', async () => {
+    const onPress = async (e) => {
+      e.preventDefault();
+
       if (!sound.isEnabled()) {
         await sound.enable();
         setSoundUi(true);
@@ -1092,7 +1094,10 @@
         btn.classList.toggle('is-on', isOn);
         btn.setAttribute('aria-pressed', String(isOn));
       }
-    });
+    };
+
+    elems.help.sound.addEventListener('pointerdown', onPress, { passive: false });
+    elems.help.sound.addEventListener('touchstart', onPress, { passive: false });
 
     if (id !== null) {
       onloadId(id);
