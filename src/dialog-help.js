@@ -25,7 +25,7 @@
     }
   }
 
-  function show(sound) {
+  function show(sound = true) {
     {
       const setBlock = (elemSvg, char, w, checkMode) => {
         elemSvg.textContent = '';

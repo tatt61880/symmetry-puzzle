@@ -224,15 +224,19 @@
           break;
         case '+':
           elems.help.tabApp.checked = true;
+          sound.playButton();
           break;
         case 't':
           elems.help.tabLine.checked = true;
+          sound.playButton();
           break;
         case 'z':
           elems.help.tabPoint.checked = true;
+          sound.playButton();
           break;
         case 'o':
           elems.help.tabSpecial.checked = true;
+          sound.playButton();
           break;
       }
       return;
@@ -1446,6 +1450,8 @@
 
     // モード変更ボタン
     elems.edit.switchMode.addEventListener('click', () => {
+      sound.playButton();
+
       switch (common.level.getCheckMode()) {
         case app.Level.CHECK_MODE.LINE:
           updateCheckMode(app.Level.CHECK_MODE.POINT);
@@ -1468,6 +1474,7 @@
 
     // 鏡映ボタン
     elems.edit.mirror.addEventListener('click', () => {
+      sound.playButton();
       common.level.mirror();
       addUndo(null);
       draw();
@@ -1475,6 +1482,7 @@
 
     // 回転ボタン
     elems.edit.rotate.addEventListener('click', () => {
+      sound.playButton();
       common.level.rotate(1);
       addUndo(null);
       draw();
@@ -1482,6 +1490,8 @@
 
     // 正規化ボタン
     elems.edit.normalize.addEventListener('click', () => {
+      sound.playButton();
+
       if (!common.level.isNormalized()) {
         common.level.normalize();
         addUndo(null);
@@ -1491,6 +1501,8 @@
   }
 
   function changeAxis() {
+    sound.playButton();
+
     common.level.changeAxis();
     updateEditAxisButton();
     addUndo(null);
@@ -1505,6 +1517,14 @@
     elems.help.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
     elems.help.langEn.addEventListener('click', () => selectLang('en'));
     elems.help.langJa.addEventListener('click', () => selectLang('ja'));
+    elems.help.tabApp.addEventListener('click', selectTab);
+    elems.help.tabLine.addEventListener('click', selectTab);
+    elems.help.tabPoint.addEventListener('click', selectTab);
+    elems.help.tabSpecial.addEventListener('click', selectTab);
+
+    function selectTab() {
+      sound.playButton();
+    }
   }
 
   // タイトル画面用
@@ -2603,6 +2623,8 @@
 
   // 盤面サイズ変更
   function resizeLevel(dx, dy, flag) {
+    sound.playButton();
+
     const w = common.level.getW() + dx;
     const h = common.level.getH() + dy;
     if (w < 1) return;
@@ -2617,6 +2639,7 @@
 
   // 軸位置変更
   function moveAxis(dx, dy) {
+    sound.playButton();
     common.level.moveAxis(dx, dy);
     addUndo(null);
     draw();
