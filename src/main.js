@@ -968,9 +968,12 @@
   }
 
   function selectLang(lang) {
-    sound.playButton();
-    common.applyLangAll(lang);
-    app.savedata.saveLang(lang);
+    const langPrev = app.savedata.getLang();
+    if (langPrev !== lang) {
+      sound.playButton();
+      common.applyLangAll(lang);
+      app.savedata.saveLang(lang);
+    }
   }
 
   function initBlock() {
