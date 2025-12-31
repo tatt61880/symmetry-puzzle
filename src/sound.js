@@ -1,6 +1,3 @@
-// sound.js（scriptタグで読み込むグローバル版）
-// window.SymmetrySfx.createAudioManager(...) を使います。
-
 (function (global) {
   'use strict';
 
@@ -332,107 +329,29 @@
   }
 
   function createAudioManager(options = {}) {
-    const defaultVolume = typeof options.volume === 'number' ? options.volume : 0.35;
-    let currentVolume = defaultVolume;
+    const initialVolume = typeof options.volume === 'number' ? options.volume : 0.35;
 
     let audioCtx = null;
     let master = null;
     let enabled = false;
     let sfx = null;
 
-    let hooksInstalled = false;
+    let currentVolume = initialVolume;
+
+    // unlock フックの多重登録防止
     let unlockHookInstalled = false;
+    // 自動復帰フックの多重登録防止
+    let autoHooksInstalled = false;
 
-    async function resumeIfNeeded() {
-      if (!audioCtx) return;
-
-      // iOSで稀に closed になるケースを拾う（この場合は作り直し）
-      if (audioCtx.state === 'closed') {
-        audioCtx = null;
-        master = null;
-        sfx = null;
-        enable(); // 非同期だが、ここは待たなくてOK
-        return;
+    function ensureContext() {
+      // iOSで稀に closed になる／壊れるケースに備える
+      if (audioCtx && audioCtx.state === 'closed') {
+        teardownContext();
       }
-
-      if (audioCtx.state !== 'running') {
-        try {
-          await audioCtx.resume();
-        } catch (_) {
-          installUnlockHook();
-          return;
-        }
-
-        // resume後も running でなければ、次のユーザー操作待ち
-        if (audioCtx.state !== 'running') {
-          installUnlockHook();
-          return;
-        }
-      }
-
-      if (master) master.gain.value = enabled ? currentVolume : 0.0;
-    }
-
-    function installUnlockHook() {
-      if (unlockHookInstalled) return;
-      unlockHookInstalled = true;
-
-      const onUser = () => {
-        unlockHookInstalled = false;
-        window.removeEventListener('pointerdown', onUser, true);
-        window.removeEventListener('touchstart', onUser, true);
-        window.removeEventListener('touchend', onUser, true);
-        window.removeEventListener('click', onUser, true);
-        window.removeEventListener('keydown', onUser, true);
-
-        // ★ユーザー操作の瞬間に resume を“同期的に”投げておく（iOS対策）
-        try {
-          if (audioCtx && audioCtx.state !== 'running') audioCtx.resume();
-        } catch (_) {}
-
-        // 仕上げ（running確認・ゲイン復帰・ダメなら再フック）
-        resumeIfNeeded();
-      };
-
-      window.addEventListener('pointerdown', onUser, true);
-      window.addEventListener('touchstart', onUser, { capture: true, passive: true });
-      window.addEventListener('touchend', onUser, { capture: true, passive: true });
-      window.addEventListener('click', onUser, true);
-      window.addEventListener('keydown', onUser, true);
-    }
-
-    function installReturnHooks() {
-      if (hooksInstalled) return;
-      hooksInstalled = true;
-
-      // bfcache復帰など
-      window.addEventListener('pageshow', () => {
-        if (enabled) resumeIfNeeded();
-      });
-
-      // タブ復帰・アプリ復帰
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible' && enabled) {
-          resumeIfNeeded();
-        }
-      });
-    }
-
-    function ensureRunningOrScheduleResume() {
-      if (!enabled || !audioCtx) return false;
-      if (audioCtx.state === 'running') return true;
-
-      // ★ここが重要：効果音の入口で必ず復帰を試みる
-      resumeIfNeeded();
-      return false;
-    }
-
-    async function enable() {
-      enabled = true;
-
       if (!audioCtx) {
         audioCtx = new (global.AudioContext || global.webkitAudioContext)();
         master = audioCtx.createGain();
+        master.gain.value = enabled ? currentVolume : 0.0;
         master.connect(audioCtx.destination);
 
         sfx = createSfx(audioCtx, master, {
@@ -445,11 +364,171 @@
           minClearIntervalSec: options.minClearIntervalSec,
         });
 
-        installReturnHooks();
+        // 状態が落ちたら次のユーザー操作で復帰できるようにする
+        audioCtx.onstatechange = () => {
+          if (!enabled) return;
+          if (audioCtx && audioCtx.state !== 'running') {
+            installUnlockHook();
+          }
+        };
+      }
+    }
+
+    function teardownContext() {
+      try {
+        if (master) master.disconnect();
+      } catch (_) {}
+      master = null;
+      sfx = null;
+
+      if (audioCtx) {
+        try {
+          // close は Promise ですが await 不要（失敗しても握りつぶす）
+          audioCtx.close?.();
+        } catch (_) {}
+      }
+      audioCtx = null;
+    }
+
+    // 「ユーザー操作に紐づく瞬間」に小さな音声処理を通して unlock を助ける
+    function playSilentTick() {
+      if (!audioCtx || !master) return;
+      try {
+        const buf = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
+        const src = audioCtx.createBufferSource();
+        src.buffer = buf;
+
+        const g = audioCtx.createGain();
+        // 完全な0だと最適化で無視されることがあるので極小
+        g.gain.value = 0.0001;
+
+        src.connect(g);
+        g.connect(master);
+
+        src.start();
+        src.stop(audioCtx.currentTime + 0.01);
+
+        setTimeout(() => {
+          try {
+            src.disconnect();
+          } catch (_) {}
+          try {
+            g.disconnect();
+          } catch (_) {}
+        }, 50);
+      } catch (_) {}
+    }
+
+    async function resumeWithTimeout(ms) {
+      if (!audioCtx) return false;
+      if (audioCtx.state === 'running') return true;
+
+      try {
+        await Promise.race([audioCtx.resume(), new Promise((resolve) => setTimeout(resolve, ms))]);
+      } catch (_) {
+        // resume が例外を投げる場合は false 扱い
+        return false;
       }
 
-      await resumeIfNeeded();
+      return audioCtx.state === 'running';
+    }
+
+    // fromGesture=true のときは「ユーザー操作の中」でできる限り粘る
+    async function resumeCore(fromGesture) {
+      if (!enabled) return;
+
+      ensureContext();
+      if (!audioCtx) return;
+
+      // すでに動いている
+      if (audioCtx.state === 'running') {
+        if (master) master.gain.value = currentVolume;
+        return;
+      }
+
+      if (fromGesture) {
+        // resume前後で軽く刺激
+        playSilentTick();
+      }
+
+      const ok1 = await resumeWithTimeout(250);
+
+      if (fromGesture) {
+        playSilentTick();
+      }
+
+      if (ok1) {
+        if (master) master.gain.value = currentVolume;
+        return;
+      }
+
+      // ここまででダメなら「作り直し」を同じユーザー操作内で試す（最終手段）
+      // ※これでも復帰できないケースは iOS 側仕様/不具合寄りのことがあります :contentReference[oaicite:4]{index=4}
+      if (fromGesture) {
+        teardownContext();
+        ensureContext();
+
+        playSilentTick();
+        const ok2 = await resumeWithTimeout(250);
+        playSilentTick();
+
+        if (ok2) {
+          if (master) master.gain.value = currentVolume;
+          return;
+        }
+      }
+
+      // 次のユーザー操作待ち
+      installUnlockHook();
+    }
+
+    function installUnlockHook() {
+      if (unlockHookInstalled) return;
+      unlockHookInstalled = true;
+
+      const handler = () => {
+        unlockHookInstalled = false;
+        // ユーザー操作の「同期的な瞬間」に resume を仕掛けたいので await しない
+        resumeCore(true);
+      };
+
+      const opt = { once: true, capture: true, passive: true };
+      global.addEventListener('pointerdown', handler, opt);
+      global.addEventListener('touchend', handler, opt);
+      global.addEventListener('click', handler, opt);
+      global.addEventListener('keydown', handler, opt);
+    }
+
+    function installAutoResumeHooks() {
+      if (autoHooksInstalled) return;
+      autoHooksInstalled = true;
+
+      // これらのイベント自体では「ユーザー操作扱い」にならないので、
+      // resume を試し、ダメなら unlock hook を仕込む、という役割
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && enabled) {
+          resumeCore(false);
+        }
+      });
+
+      global.addEventListener('pageshow', () => {
+        if (enabled) resumeCore(false);
+      });
+
+      global.addEventListener('focus', () => {
+        if (enabled) resumeCore(false);
+      });
+    }
+
+    // public
+    async function enable(fromGesture = true) {
+      enabled = true;
+      ensureContext();
       if (master) master.gain.value = currentVolume;
+
+      installAutoResumeHooks();
+
+      await resumeCore(fromGesture);
     }
 
     function disable() {
@@ -467,34 +546,33 @@
       if (master) master.gain.value = enabled ? currentVolume : 0.0;
     }
 
+    function resumeIfNeeded(fromGesture = false) {
+      if (!enabled) return Promise.resolve();
+      return resumeCore(fromGesture);
+    }
+
     function playStep() {
-      if (!enabled || !audioCtx || !sfx) return;
-      if (!ensureRunningOrScheduleResume()) return;
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
       sfx.playStep();
     }
     function playBump() {
-      if (!enabled || !audioCtx || !sfx) return;
-      if (!ensureRunningOrScheduleResume()) return;
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
       sfx.playBump();
     }
     function playUndo() {
-      if (!enabled || !audioCtx || !sfx) return;
-      if (!ensureRunningOrScheduleResume()) return;
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
       sfx.playUndo();
     }
     function playRedo() {
-      if (!enabled || !audioCtx || !sfx) return;
-      if (!ensureRunningOrScheduleResume()) return;
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
       sfx.playRedo();
     }
     function playStart() {
-      if (!enabled || !audioCtx || !sfx) return;
-      if (!ensureRunningOrScheduleResume()) return;
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
       sfx.playStart();
     }
     function playClear() {
-      if (!enabled || !audioCtx || !sfx) return;
-      if (!ensureRunningOrScheduleResume()) return;
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
       sfx.playClear();
     }
 
@@ -503,13 +581,13 @@
       disable,
       isEnabled,
       setVolume,
+      resumeIfNeeded,
       playStep,
       playBump,
       playUndo,
       playRedo,
       playStart,
       playClear,
-      resumeIfNeeded,
       get audioCtx() {
         return audioCtx;
       },
