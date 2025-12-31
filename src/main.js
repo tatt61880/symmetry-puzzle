@@ -766,7 +766,7 @@
       // 通常モードのレベル1をロード時、レベル1を未クリアのときはヘルプ画面を表示する。
       const playerScore = app.savedata.getHighestScore(common.level);
       if (playerScore === null) {
-        app.dialog.help.show();
+        app.dialog.help.show(false);
       }
     }
   }
@@ -1053,7 +1053,7 @@
           lang = 'en';
       }
       app.savedata.saveLang(lang);
-      app.dialog.help.show();
+      app.dialog.help.show(false);
     }
     common.applyLangAll(lang);
   }

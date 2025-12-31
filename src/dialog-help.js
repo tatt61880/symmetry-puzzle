@@ -25,7 +25,7 @@
     }
   }
 
-  function show() {
+  function show(sound) {
     {
       const setBlock = (elemSvg, char, w, checkMode) => {
         elemSvg.textContent = '';
@@ -80,7 +80,9 @@
         elems.help.tabApp.checked = true;
     }
 
-    window.sound.playUiOpen();
+    if (sound) {
+      window.sound.playUiOpen();
+    }
     elems.help.dialog.showModal();
   }
 
