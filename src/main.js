@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.12.31';
+  const VERSION_TEXT = 'v' + '2025.12.31b';
 
   const app = window.app;
   Object.freeze(app);
@@ -1078,26 +1078,30 @@
     updateCheckMode(settings.mode);
     initLang();
 
-    const onPress = async (e) => {
-      e.preventDefault();
+    {
+      const toggleSound = async (e) => {
+        e.preventDefault();
 
-      if (!sound.isEnabled()) {
-        await sound.enable();
-        setSoundUi(true);
-      } else {
-        sound.disable();
-        setSoundUi(false);
-      }
+        if (!sound.isEnabled()) {
+          await sound.enable();
+          setSoundUi(true);
+        } else {
+          sound.disable();
+          setSoundUi(false);
+        }
 
-      function setSoundUi(isOn) {
-        const btn = elems.help.sound;
-        btn.classList.toggle('is-on', isOn);
-        btn.setAttribute('aria-pressed', String(isOn));
-      }
-    };
+        function setSoundUi(isOn) {
+          const btn = elems.help.sound;
+          btn.classList.toggle('is-on', isOn);
+          btn.setAttribute('aria-pressed', String(isOn));
+        }
+      };
 
-    elems.help.sound.addEventListener('pointerdown', onPress, { passive: false });
-    elems.help.sound.addEventListener('touchstart', onPress, { passive: false });
+      const touchDevice = common.isTouchDevice();
+      const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
+
+      elems.help.sound.addEventListener(pointerdownEventName, toggleSound, { passive: false });
+    }
 
     if (id !== null) {
       onloadId(id);
