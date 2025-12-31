@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.12.31f';
+  const VERSION_TEXT = 'v' + '2026.01.01';
 
   const app = window.app;
   Object.freeze(app);
