@@ -346,11 +346,12 @@
     async function resumeIfNeeded() {
       if (!audioCtx) return;
 
+      // iOSで稀に closed になるケースを拾う（この場合は作り直し）
       if (audioCtx.state === 'closed') {
         audioCtx = null;
         master = null;
         sfx = null;
-        await enable(); // 復旧（enabled=trueのまま）
+        enable(); // 非同期だが、ここは待たなくてOK
         return;
       }
 
@@ -376,17 +377,28 @@
       if (unlockHookInstalled) return;
       unlockHookInstalled = true;
 
-      const once = async () => {
+      const onUser = () => {
         unlockHookInstalled = false;
-        window.removeEventListener('pointerdown', once, true);
-        window.removeEventListener('touchstart', once, true);
-        window.removeEventListener('keydown', once, true);
-        await resumeIfNeeded();
+        window.removeEventListener('pointerdown', onUser, true);
+        window.removeEventListener('touchstart', onUser, true);
+        window.removeEventListener('touchend', onUser, true);
+        window.removeEventListener('click', onUser, true);
+        window.removeEventListener('keydown', onUser, true);
+
+        // ★ユーザー操作の瞬間に resume を“同期的に”投げておく（iOS対策）
+        try {
+          if (audioCtx && audioCtx.state !== 'running') audioCtx.resume();
+        } catch (_) {}
+
+        // 仕上げ（running確認・ゲイン復帰・ダメなら再フック）
+        resumeIfNeeded();
       };
 
-      window.addEventListener('pointerdown', once, { capture: true, passive: false });
-      window.addEventListener('touchstart', once, { capture: true, passive: false });
-      window.addEventListener('keydown', once, true);
+      window.addEventListener('pointerdown', onUser, true);
+      window.addEventListener('touchstart', onUser, { capture: true, passive: true });
+      window.addEventListener('touchend', onUser, { capture: true, passive: true });
+      window.addEventListener('click', onUser, true);
+      window.addEventListener('keydown', onUser, true);
     }
 
     function installReturnHooks() {
@@ -404,6 +416,15 @@
           resumeIfNeeded();
         }
       });
+    }
+
+    function ensureRunningOrScheduleResume() {
+      if (!enabled || !audioCtx) return false;
+      if (audioCtx.state === 'running') return true;
+
+      // ★ここが重要：効果音の入口で必ず復帰を試みる
+      resumeIfNeeded();
+      return false;
     }
 
     async function enable() {
@@ -447,27 +468,33 @@
     }
 
     function playStep() {
-      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
+      if (!enabled || !audioCtx || !sfx) return;
+      if (!ensureRunningOrScheduleResume()) return;
       sfx.playStep();
     }
     function playBump() {
-      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
+      if (!enabled || !audioCtx || !sfx) return;
+      if (!ensureRunningOrScheduleResume()) return;
       sfx.playBump();
     }
     function playUndo() {
-      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
+      if (!enabled || !audioCtx || !sfx) return;
+      if (!ensureRunningOrScheduleResume()) return;
       sfx.playUndo();
     }
     function playRedo() {
-      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
+      if (!enabled || !audioCtx || !sfx) return;
+      if (!ensureRunningOrScheduleResume()) return;
       sfx.playRedo();
     }
     function playStart() {
-      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
+      if (!enabled || !audioCtx || !sfx) return;
+      if (!ensureRunningOrScheduleResume()) return;
       sfx.playStart();
     }
     function playClear() {
-      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
+      if (!enabled || !audioCtx || !sfx) return;
+      if (!ensureRunningOrScheduleResume()) return;
       sfx.playClear();
     }
 
