@@ -653,6 +653,7 @@
     let enabled = false;
     let sfx = null;
     let bgm = null;
+    let bgmWasPlaying = false;
     let bgmVolume = 0.8;
     let staleAfterBackground = false;
 
@@ -809,7 +810,6 @@
       unlockHookInstalled = true;
 
       const onUserGesture = async () => {
-        // 1回だけでOK
         unlockHookInstalled = false;
         window.removeEventListener('pointerdown', onUserGesture, true);
         window.removeEventListener('touchstart', onUserGesture, true);
@@ -817,7 +817,8 @@
         window.removeEventListener('click', onUserGesture, true);
         window.removeEventListener('keydown', onUserGesture, true);
 
-        // バックグラウンド復帰後は「runningでも無音」になり得るので、作り直す
+        const shouldRestartBgm = bgmWasPlaying || (bgm && bgm.isPlaying && bgm.isPlaying());
+
         if (staleAfterBackground) {
           staleAfterBackground = false;
 
@@ -831,18 +832,26 @@
           audioCtx = null;
           master = null;
           sfx = null;
+          bgm = null;
         }
 
-        // ユーザー操作中に enable() を走らせる（iOSで復帰しやすい）
         try {
+          // enable() の中で audioCtx/master/sfx/bgm を作る設計にしておく
           await enable();
+
+          if (shouldRestartBgm) {
+            // enable() 内で bgm が作られている前提
+            if (bgm && audioCtx && audioCtx.state === 'running') {
+              bgm.start(bgmVolume);
+              bgmWasPlaying = true;
+            }
+          }
         } catch (_) {
           // 失敗したら次の操作で再チャレンジ
           installUnlockHook();
         }
       };
 
-      // iOS対策：複数系統で拾う（captureで先に取る）
       window.addEventListener('pointerdown', onUserGesture, true);
       window.addEventListener('touchstart', onUserGesture, { capture: true, passive: true });
       window.addEventListener('touchend', onUserGesture, { capture: true, passive: true });
@@ -944,10 +953,12 @@
     function startBgm() {
       if (!enabled || !audioCtx || audioCtx.state !== 'running' || !bgm) return;
       bgm.start(bgmVolume);
+      bgmWasPlaying = true;
     }
     function stopBgm() {
       if (!bgm) return;
       bgm.stop();
+      bgmWasPlaying = false;
     }
     function setBgmVolume(v) {
       if (typeof v !== 'number') return;
