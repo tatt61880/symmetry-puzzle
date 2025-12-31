@@ -11,6 +11,7 @@
     const minRedoIntervalSec = typeof opts.minRedoIntervalSec === 'number' ? opts.minRedoIntervalSec : 0.04;
     const minStartIntervalSec = typeof opts.minStartIntervalSec === 'number' ? opts.minStartIntervalSec : 0.12;
     const minClearIntervalSec = typeof opts.minClearIntervalSec === 'number' ? opts.minClearIntervalSec : 0.2;
+    const minUiIntervalSec = typeof opts.minUiIntervalSec === 'number' ? opts.minUiIntervalSec : 0.06;
 
     let lastStepAt = -1;
     let lastBumpAt = -1;
@@ -18,6 +19,7 @@
     let lastRedoAt = -1;
     let lastStartAt = -1;
     let lastClearAt = -1;
+    let lastUiAt = -1;
 
     function playStep() {
       if (audioCtx.state !== 'running') return;
@@ -330,7 +332,67 @@
       }, 700);
     }
 
-    return { playStep, playBump, playUndo, playRedo, playStart, playClear };
+    function playUiOpen() {
+      if (audioCtx.state !== 'running') return;
+      const t0 = audioCtx.currentTime;
+
+      if (lastUiAt >= 0 && t0 - lastUiAt < minUiIntervalSec) return;
+      lastUiAt = t0;
+
+      // ふわっと「ぽん♪」（上がる）
+      const osc = audioCtx.createOscillator();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(660, t0);
+      osc.frequency.exponentialRampToValueAtTime(880, t0 + 0.09);
+
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.16, t0 + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.14);
+
+      const lp = audioCtx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.setValueAtTime(2800, t0);
+
+      osc.connect(g);
+      g.connect(lp);
+      lp.connect(destination);
+
+      osc.start(t0);
+      osc.stop(t0 + 0.16);
+    }
+
+    function playUiClose() {
+      if (audioCtx.state !== 'running') return;
+      const t0 = audioCtx.currentTime;
+
+      if (lastUiAt >= 0 && t0 - lastUiAt < minUiIntervalSec) return;
+      lastUiAt = t0;
+
+      // すっと「ぽ」 （下がる）
+      const osc = audioCtx.createOscillator();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(740, t0);
+      osc.frequency.exponentialRampToValueAtTime(520, t0 + 0.09);
+
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.15, t0 + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.13);
+
+      const lp = audioCtx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.setValueAtTime(2500, t0);
+
+      osc.connect(g);
+      g.connect(lp);
+      lp.connect(destination);
+
+      osc.start(t0);
+      osc.stop(t0 + 0.15);
+    }
+
+    return { playStep, playBump, playUndo, playRedo, playStart, playClear, playUiOpen, playUiClose };
   }
 
   function createAudioManager(options = {}) {
@@ -365,6 +427,7 @@
           minRedoIntervalSec: options.minRedoIntervalSec,
           minStartIntervalSec: options.minStartIntervalSec,
           minClearIntervalSec: options.minClearIntervalSec,
+          minUiIntervalSec: options.minUiIntervalSec,
         });
 
         // 状態が落ちたら次のユーザー操作で復帰できるようにする
@@ -609,6 +672,14 @@
       if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
       sfx.playClear();
     }
+    function playUiOpen() {
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
+      sfx.playUiOpen();
+    }
+    function playUiClose() {
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
+      sfx.playUiClose();
+    }
 
     function debug(tag = '') {
       const ctx = audioCtx;
@@ -635,6 +706,8 @@
       playRedo,
       playStart,
       playClear,
+      playUiOpen,
+      playUiClose,
       debug,
       get audioCtx() {
         return audioCtx;

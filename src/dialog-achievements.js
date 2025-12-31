@@ -18,6 +18,7 @@
 
   function show() {
     updateTable();
+    window.sound.playUiOpen();
     elems.achievements.dialog.showModal();
   }
 
@@ -140,6 +141,7 @@
   }
 
   function close() {
+    window.sound.playUiClose();
     elems.achievements.dialog.close();
   }
 })();

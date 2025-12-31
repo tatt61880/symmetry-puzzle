@@ -80,10 +80,12 @@
         elems.help.tabApp.checked = true;
     }
 
+    window.sound.playUiOpen();
     elems.help.dialog.showModal();
   }
 
   function close() {
+    window.sound.playUiClose();
     elems.help.dialog.close();
   }
 })();

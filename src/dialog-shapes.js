@@ -35,6 +35,7 @@
 
   function show() {
     updateDialog();
+    window.sound.playUiOpen();
     elems.shapes.dialog.showModal();
   }
 
@@ -108,7 +109,7 @@
     const selectCount = Number(elems.shapes.dialog.dataset.selectCount);
     const r = JSON.parse(elems.shapes.dialog.dataset.selectR)[selectCount];
     selectShape(r);
-    elems.shapes.dialog.close();
+    elems.shapes.dialog.close(false);
   }
 
   function updateDialog(page_ = null) {
@@ -272,7 +273,7 @@
           g.classList.add('button', 'active-hover');
           g.addEventListener('click', function () {
             selectShape(g.dataset.r);
-            close();
+            close(false);
           });
         }
       } else {
@@ -305,7 +306,10 @@
     return { w, h };
   }
 
-  function close() {
+  function close(sound = true) {
+    if (sound) {
+      window.sound.playUiClose();
+    }
     elems.shapes.dialog.close();
   }
 })();

@@ -21,6 +21,7 @@
 
   function show() {
     updateTable();
+    window.sound.playUiOpen();
     elems.records.dialog.showModal();
   }
 
@@ -320,6 +321,7 @@
   }
 
   function close() {
+    window.sound.playUiClose();
     elems.records.dialog.close();
   }
 

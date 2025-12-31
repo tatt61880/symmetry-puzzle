@@ -86,6 +86,7 @@
   document.documentElement.style.setProperty('--animation-duration-symmetry', `${ROTATION_MSEC}ms`);
 
   const sound = window.SymmetrySfx.createAudioManager({ volume: 0.35, bumpBoost: 1.4 });
+  window.sound = sound;
 
   document.addEventListener('DOMContentLoaded', onloadApp);
   return;
@@ -1329,12 +1330,12 @@
     }
 
     function menuGotoTitlePage() {
-      app.dialog.menu.close();
+      app.dialog.menu.close(false);
       gotoTitlePage();
     }
 
     function menuRetryLevel() {
-      app.dialog.menu.close();
+      app.dialog.menu.close(false);
       retryLevel();
     }
   }

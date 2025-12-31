@@ -33,6 +33,7 @@
 
   function show() {
     updateLevelsDialog();
+    window.sound.playUiOpen();
     elems.levels.dialog.showModal();
   }
 
@@ -278,7 +279,7 @@
       g.addEventListener('click', function () {
         const id = Number(g.dataset.id);
         app.common.loadLevelById(id);
-        close();
+        close(false);
       });
 
       const mode = app.Level.getCheckModeStr(app.common.level.getCheckMode());
@@ -433,12 +434,15 @@
       g.addEventListener('click', function () {
         const id = Number(g.dataset.id);
         app.common.loadLevelById(id);
-        close();
+        close(false);
       });
     }
   }
 
-  function close() {
+  function close(sound = true) {
+    if (sound) {
+      window.sound.playUiClose();
+    }
     elems.levels.dialog.close();
   }
 })();
