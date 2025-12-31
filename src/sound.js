@@ -28,60 +28,65 @@
 
       const oscHi = audioCtx.createOscillator();
       oscHi.type = 'triangle';
-      oscHi.frequency.setValueAtTime(1200, t0);
-      oscHi.frequency.exponentialRampToValueAtTime(900, t0 + 0.05);
+      oscHi.frequency.setValueAtTime(1050, t0);
+      oscHi.frequency.exponentialRampToValueAtTime(820, t0 + 0.06);
 
       const hiGain = audioCtx.createGain();
       hiGain.gain.setValueAtTime(0.0001, t0);
-      hiGain.gain.exponentialRampToValueAtTime(0.22, t0 + 0.005);
-      hiGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.12);
+      hiGain.gain.exponentialRampToValueAtTime(0.22, t0 + 0.009);
+      hiGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.14);
+
+      const hiLP = audioCtx.createBiquadFilter();
+      hiLP.type = 'lowpass';
+      hiLP.frequency.setValueAtTime(2600, t0);
 
       const oscLo = audioCtx.createOscillator();
       oscLo.type = 'sine';
-      oscLo.frequency.setValueAtTime(420, t0);
-      oscLo.frequency.exponentialRampToValueAtTime(320, t0 + 0.07);
+      oscLo.frequency.setValueAtTime(400, t0);
+      oscLo.frequency.exponentialRampToValueAtTime(300, t0 + 0.08);
 
       const loGain = audioCtx.createGain();
       loGain.gain.setValueAtTime(0.0001, t0);
-      loGain.gain.exponentialRampToValueAtTime(0.12, t0 + 0.006);
-      loGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.14);
+      loGain.gain.exponentialRampToValueAtTime(0.13, t0 + 0.01);
+      loGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.16);
 
-      const noiseDur = 0.03;
+      const noiseDur = 0.028;
       const noiseBuf = audioCtx.createBuffer(1, Math.floor(audioCtx.sampleRate * noiseDur), audioCtx.sampleRate);
       const data = noiseBuf.getChannelData(0);
       for (let i = 0; i < data.length; i++) {
         const x = i / data.length;
-        const env = Math.exp(-16 * x);
-        data[i] = (Math.random() * 2 - 1) * 0.35 * env;
+        const env = Math.exp(-18 * x);
+        data[i] = (Math.random() * 2 - 1) * 0.22 * env;
       }
 
       const noise = audioCtx.createBufferSource();
       noise.buffer = noiseBuf;
 
-      const lp = audioCtx.createBiquadFilter();
-      lp.type = 'lowpass';
-      lp.frequency.setValueAtTime(3800, t0);
-
       const hp = audioCtx.createBiquadFilter();
       hp.type = 'highpass';
-      hp.frequency.setValueAtTime(700, t0);
+      hp.frequency.setValueAtTime(850, t0);
+
+      const lp = audioCtx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.setValueAtTime(2600, t0);
 
       const noiseGain = audioCtx.createGain();
       noiseGain.gain.setValueAtTime(0.0001, t0);
-      noiseGain.gain.exponentialRampToValueAtTime(0.1, t0 + 0.004);
-      noiseGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.09);
+      noiseGain.gain.exponentialRampToValueAtTime(0.075, t0 + 0.006);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.1);
 
       const lfo = audioCtx.createOscillator();
       lfo.type = 'sine';
-      lfo.frequency.setValueAtTime(7.0, t0);
+      lfo.frequency.setValueAtTime(6.2, t0);
 
       const lfoGain = audioCtx.createGain();
-      lfoGain.gain.setValueAtTime(8.0, t0);
+      lfoGain.gain.setValueAtTime(4.8, t0);
       lfo.connect(lfoGain);
       lfoGain.connect(oscHi.frequency);
 
       oscHi.connect(hiGain);
-      hiGain.connect(destination);
+      hiGain.connect(hiLP);
+      hiLP.connect(destination);
 
       oscLo.connect(loGain);
       loGain.connect(destination);
@@ -97,9 +102,9 @@
       noise.start(t0);
 
       noise.stop(t0 + noiseDur);
-      oscHi.stop(t0 + 0.13);
-      oscLo.stop(t0 + 0.15);
-      lfo.stop(t0 + 0.13);
+      oscHi.stop(t0 + 0.15);
+      oscLo.stop(t0 + 0.17);
+      lfo.stop(t0 + 0.15);
     }
 
     function playBump() {
