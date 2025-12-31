@@ -34,6 +34,7 @@
       dialogDiv: 'dialog-help-div',
 
       close: 'dialog-help-close',
+      sound: 'setting-sound-toggle',
       langJa: 'setting-lang-ja',
       langEn: 'setting-lang-en',
 

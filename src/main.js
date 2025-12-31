@@ -85,6 +85,8 @@
   document.documentElement.style.setProperty('--animation-duration-shadow', `${SHADOW_MSEC}ms`);
   document.documentElement.style.setProperty('--animation-duration-symmetry', `${ROTATION_MSEC}ms`);
 
+  const sound = window.SymmetrySfx.createAudioManager({ volume: 0.35, bumpBoost: 1.4 });
+
   document.addEventListener('DOMContentLoaded', onloadApp);
   return;
   // ==========================================================================
@@ -97,6 +99,7 @@
 
     const moveFlag = common.level.move(dx, dy);
     if (moveFlag) {
+      sound.playStep();
       document.documentElement.style.setProperty('--animation-move-transform', `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`);
       document.documentElement.style.setProperty('--animation-move-sub-transform', `translate(0, ${-0.125 * blockSize}px)`);
       addUndo(dir);
@@ -1075,6 +1078,22 @@
     updateCheckMode(settings.mode);
     initLang();
 
+    elems.help.sound.addEventListener('pointerdown', async () => {
+      if (!sound.isEnabled()) {
+        await sound.enable();
+        setSoundUi(true);
+      } else {
+        sound.disable();
+        setSoundUi(false);
+      }
+
+      function setSoundUi(isOn) {
+        const btn = elems.help.sound;
+        btn.classList.toggle('is-on', isOn);
+        btn.setAttribute('aria-pressed', String(isOn));
+      }
+    });
+
     if (id !== null) {
       onloadId(id);
     } else if (num !== null) {
@@ -1581,6 +1600,7 @@
   // レベル操作用
   function initElemsForLevelWidget() {
     elems.level.retry.addEventListener('click', retryLevel);
+
     {
       const touchDevice = common.isTouchDevice();
       const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
@@ -1766,6 +1786,7 @@
 
         // 動けないときは盤面を振動させます。
         addAnimationClass(elems.main.svg, 'animation-illegal-move');
+        sound.playBump();
       } else {
         const className = (() => {
           switch (common.level.getAxisType()) {

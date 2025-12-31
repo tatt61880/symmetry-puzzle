@@ -44,6 +44,7 @@
   <script src="./src/states.js?2025.05.01" defer></script>
   <script src="./src/colors.js?2025.05.01" defer></script>
   <script src="./src/svg.js?2025.05.01" defer></script>
+  <script src="./src/sound.js?2025.12.31" defer></script>
   <script src="./src/common.js?2025.05.01" defer></script>
 
   <script src="./src/class-stack.js?2025.05.01" defer></script>
@@ -171,6 +172,27 @@
           <div id="dialog-help-title" class="toggle-text translatable-toggle" data-en="" data-ja=""></div>
           <div class="spacer"></div>
 
+          <button id="setting-sound-toggle" type="button" aria-pressed="false" title="Sound">
+            <!-- 1つのSVGで ON/OFF を切替（CSSで表示切替） -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Sound toggle" role="img">
+              <!-- speaker -->
+              <path d="M3 10v4" />
+              <path d="M5 9h3l5-4v14l-5-4H5z" />
+
+              <!-- ON: waves -->
+              <g class="sound-on">
+                <path d="M16 9.5c1 .9 1.6 2 1.6 2.5S17 13.6 16 14.5" />
+                <path d="M18.5 7.5c1.8 1.6 2.9 3.5 2.9 4.5s-1.1 2.9-2.9 4.5" />
+              </g>
+
+              <!-- OFF: X -->
+              <g class="sound-off">
+                <path d="M16.5 9.5l5 5" />
+                <path d="M21.5 9.5l-5 5" />
+              </g>
+            </svg>
+          </button>
           <button id="setting-lang-ja" class="setting-lang-button">日本語</button>
           <button id="setting-lang-en" class="setting-lang-button">English</button>
         </div>
