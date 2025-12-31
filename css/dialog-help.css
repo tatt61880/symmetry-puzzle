@@ -39,7 +39,11 @@
       text-shadow: var(--pseudo-bold-shadow);
     }
 
-    & * {
+    & .button-transform-parent {
+      margin: 5px;
+    }
+
+    button {
       margin: 5px;
     }
 
@@ -85,22 +89,44 @@
     #setting-sound-toggle {
       width: calc(100% / 4 - 10px);
       height: 40px;
+      padding: 0;
       cursor: pointer;
       user-select: none;
+      background-color: #f8f8f8;
       border: 4px solid #cccccc;
       outline: none;
 
       .sound-on {
         display: none;
+        border: 4px solid #aaaaff;
       }
 
-      &.is-on {
+      &.active {
+        color: #333388;
+        background-color: #e4e4ff;
+        border: 4px solid #aaaaff;
+        opacity: 1;
+
         .sound-on {
           display: inline;
         }
 
         .sound-off {
           display: none;
+        }
+      }
+
+      &:not(.active) {
+        &:active {
+          transform: translateY(var(--button-translate-y));
+        }
+
+        &:hover {
+          opacity: 0.8;
+
+          &:active {
+            opacity: 0.5;
+          }
         }
       }
     }

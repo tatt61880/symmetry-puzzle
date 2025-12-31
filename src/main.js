@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.12.31c';
+  const VERSION_TEXT = 'v' + '2025.12.31d';
 
   const app = window.app;
   Object.freeze(app);
@@ -1091,7 +1091,7 @@
         }
 
         function setSoundUi(isOn) {
-          elems.help.sound.classList.toggle('is-on', isOn);
+          elems.help.sound.classList.toggle('active', isOn);
           elems.help.sound.setAttribute('aria-pressed', String(isOn));
         }
       };
