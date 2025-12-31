@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2025.12.31d';
+  const VERSION_TEXT = 'v' + '2025.12.31e';
 
   const app = window.app;
   Object.freeze(app);
@@ -1924,6 +1924,9 @@
     {
       const symmetryAnimationFlag = isCompleted;
       const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
+      if (symmetryAnimationFlag) {
+        sound.playClear();
+      }
       drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag);
     }
 

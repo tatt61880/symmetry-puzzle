@@ -155,7 +155,70 @@
       }, 200);
     }
 
-    return { playStep, playBump };
+    function playClear() {
+      if (audioCtx.state !== 'running') return;
+      const t0 = audioCtx.currentTime;
+
+      // かわいい系の短いジングル（約0.45秒）
+      // 周波数は雰囲気重視で選んでいます
+      const notes = [
+        { f: 740, dt: 0.0 }, // ちょい低め
+        { f: 988, dt: 0.1 },
+        { f: 1319, dt: 0.2 },
+        { f: 1760, dt: 0.3 }, // キラッ
+      ];
+
+      // ほんの少しだけ余韻（簡易ディレイ）
+      const delay = audioCtx.createDelay(0.25);
+      delay.delayTime.setValueAtTime(0.11, t0);
+
+      const fb = audioCtx.createGain();
+      fb.gain.setValueAtTime(0.18, t0); // 余韻量
+
+      delay.connect(fb);
+      fb.connect(delay);
+
+      // 直音＋ディレイを合流
+      const mix = audioCtx.createGain();
+      mix.gain.setValueAtTime(1.0, t0);
+      mix.connect(destination);
+      delay.connect(destination);
+
+      for (const n of notes) {
+        const t = t0 + n.dt;
+
+        const osc = audioCtx.createOscillator();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(n.f, t);
+
+        const g = audioCtx.createGain();
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.22, t + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.14);
+
+        osc.connect(g);
+        g.connect(mix);
+        g.connect(delay);
+
+        osc.start(t);
+        osc.stop(t + 0.16);
+      }
+
+      // 後始末
+      setTimeout(() => {
+        try {
+          delay.disconnect();
+        } catch (_) {}
+        try {
+          fb.disconnect();
+        } catch (_) {}
+        try {
+          mix.disconnect();
+        } catch (_) {}
+      }, 700);
+    }
+
+    return { playStep, playBump, playClear };
   }
 
   function createAudioManager(options = {}) {
@@ -208,6 +271,11 @@
       sfx.playBump();
     }
 
+    function playClear() {
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
+      sfx.playClear();
+    }
+
     return {
       enable,
       disable,
@@ -215,6 +283,7 @@
       setVolume,
       playStep,
       playBump,
+      playClear,
       get audioCtx() {
         return audioCtx;
       },
