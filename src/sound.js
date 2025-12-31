@@ -503,7 +503,16 @@
 
     // 対称っぽい（鏡写し）フレーズ
     // 0..4 のスケール番号を行ったり来たり
-    const motif = [0, 1, 2, 3, 2, 1, 0, 1];
+    const motif = [
+      // 1小節目：ドレミソミレド(休)
+      0, 1, 2, 3, 2, 1, 0, -1,
+      // 2小節目：少し変化（ドレミラミレド(休)）
+      0, 1, 2, 4, 2, 1, 0, -1,
+      // 3小節目：上に寄せる（レミソラソミレ(休)）
+      1, 2, 3, 4, 3, 2, 1, -1,
+      // 4小節目：最初に戻して締める
+      0, 1, 2, 3, 2, 1, 0, -1,
+    ];
 
     function hz(scaleIndex, octaveShift = 0) {
       const si = ((scaleIndex % semis.length) + semis.length) % semis.length;
@@ -571,21 +580,23 @@
       const now = audioCtx.currentTime;
 
       while (nextTime < now + lookAheadSec) {
-        // 4ステップごとに「場面（和音）」を変える（対称感を保つため少なめ）
-        const section = Math.floor(step / 4) % 2;
-        const rootScale = section === 0 ? 0 : 2; // C系↔E系っぽく
+        const phrasePos = step % motif.length; // 0..31
+        const bar = Math.floor(phrasePos / 8); // 0..3（8分×8＝1小節想定）
+        const rootScaleByBar = [0, 2, 2, 0]; // 4小節で往復（対称っぽい）
+        const rootScale = rootScaleByBar[bar];
 
         const noteScale = motif[step % motif.length];
+        if (noteScale >= 0) {
+          // メロディ（軽い粒）
+          schedulePluck(nextTime, hz(noteScale, 0), 0.085);
 
-        // メロディ（軽い粒）
-        schedulePluck(nextTime, hz(noteScale, 0), 0.085);
-
-        // たまに上でキラッ（控えめ）
-        if (step % 8 === 4) {
-          schedulePluck(nextTime, hz(noteScale, 1), 0.06);
+          // たまに上でキラッ（控えめ）
+          if (step % 8 === 4) {
+            schedulePluck(nextTime, hz(noteScale, 1), 0.06);
+          }
         }
 
-        // パッド（さらに控えめ、1拍ごと）
+        // パッド（1拍ごと）は休符でも鳴らしてOK（空間が埋まる）
         if (step % 2 === 0) {
           schedulePad(nextTime, hz(rootScale, 0), 0.02);
         }
