@@ -644,6 +644,7 @@
     const undoInfo = editMode ? undoInfoForEdit : undoInfoForNormal;
 
     if (undoInfo.isUndoable()) {
+      sound.playUndo();
       const levelObj = undoInfo.undo();
       const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
@@ -662,6 +663,7 @@
     const undoInfo = editMode ? undoInfoForEdit : undoInfoForNormal;
 
     if (undoInfo.isRedoable()) {
+      sound.playRedo();
       const levelObj = undoInfo.redo();
       const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);

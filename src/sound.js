@@ -1,23 +1,34 @@
+// sound.js（scriptタグで読み込むグローバル版）
+// window.SymmetrySfx.createAudioManager(...) を使います。
+
 (function (global) {
   'use strict';
 
   function createSfx(audioCtx, destination, opts = {}) {
     const bumpBoost = typeof opts.bumpBoost === 'number' ? opts.bumpBoost : 1.4;
 
-    // 歩行音の最小間隔（秒）
-    const minStepIntervalSec = opts && typeof opts.minStepIntervalSec === 'number' ? opts.minStepIntervalSec : 0.06; // 60ms
+    // 連打抑制（秒）
+    const minStepIntervalSec = typeof opts.minStepIntervalSec === 'number' ? opts.minStepIntervalSec : 0.06; // 60ms
+    const minBumpIntervalSec = typeof opts.minBumpIntervalSec === 'number' ? opts.minBumpIntervalSec : 0.06;
+    const minUndoIntervalSec = typeof opts.minUndoIntervalSec === 'number' ? opts.minUndoIntervalSec : 0.04;
+    const minRedoIntervalSec = typeof opts.minRedoIntervalSec === 'number' ? opts.minRedoIntervalSec : 0.04;
+    const minClearIntervalSec = typeof opts.minClearIntervalSec === 'number' ? opts.minClearIntervalSec : 0.2;
+
     let lastStepAt = -1;
+    let lastBumpAt = -1;
+    let lastUndoAt = -1;
+    let lastRedoAt = -1;
+    let lastClearAt = -1;
 
     function playStep() {
       if (audioCtx.state !== 'running') return;
-
       const t0 = audioCtx.currentTime;
 
-      // 同時刻近辺の連打を無視（うるささ防止）
+      // 同時刻近辺の多重発音を抑制
       if (lastStepAt >= 0 && t0 - lastStepAt < minStepIntervalSec) return;
       lastStepAt = t0;
 
-      // キラッとした「チッ」
+      // --- キラッとした「チッ」 ---
       const oscHi = audioCtx.createOscillator();
       oscHi.type = 'triangle';
       oscHi.frequency.setValueAtTime(1200, t0);
@@ -28,7 +39,7 @@
       hiGain.gain.exponentialRampToValueAtTime(0.22, t0 + 0.005);
       hiGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.12);
 
-      // ふんわり胴鳴り「て」
+      // --- ふんわり胴鳴り「て」 ---
       const oscLo = audioCtx.createOscillator();
       oscLo.type = 'sine';
       oscLo.frequency.setValueAtTime(420, t0);
@@ -39,7 +50,7 @@
       loGain.gain.exponentialRampToValueAtTime(0.12, t0 + 0.006);
       loGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.14);
 
-      // ほんの少しノイズ（輪郭）
+      // --- ほんの少しノイズ（輪郭） ---
       const noiseDur = 0.03;
       const noiseBuf = audioCtx.createBuffer(1, Math.floor(audioCtx.sampleRate * noiseDur), audioCtx.sampleRate);
       const data = noiseBuf.getChannelData(0);
@@ -65,7 +76,7 @@
       noiseGain.gain.exponentialRampToValueAtTime(0.1, t0 + 0.004);
       noiseGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.09);
 
-      // 可愛い「ぽよ」感（超弱い揺れ）
+      // --- 可愛い「ぽよ」感（超弱い揺れ） ---
       const lfo = audioCtx.createOscillator();
       lfo.type = 'sine';
       lfo.frequency.setValueAtTime(7.0, t0);
@@ -75,7 +86,7 @@
       lfo.connect(lfoGain);
       lfoGain.connect(oscHi.frequency);
 
-      // ミックス
+      // --- ミックス ---
       oscHi.connect(hiGain);
       hiGain.connect(destination);
 
@@ -87,7 +98,7 @@
       lp.connect(noiseGain);
       noiseGain.connect(destination);
 
-      // 再生
+      // --- 再生 ---
       lfo.start(t0);
       oscHi.start(t0);
       oscLo.start(t0);
@@ -102,6 +113,9 @@
     function playBump() {
       if (audioCtx.state !== 'running') return;
       const t0 = audioCtx.currentTime;
+
+      if (lastBumpAt >= 0 && t0 - lastBumpAt < minBumpIntervalSec) return;
+      lastBumpAt = t0;
 
       // 壁音専用のゲイン（master手前で増幅）
       const bumpGain = audioCtx.createGain();
@@ -164,30 +178,91 @@
       }, 200);
     }
 
+    function playUndo() {
+      if (audioCtx.state !== 'running') return;
+      const t0 = audioCtx.currentTime;
+
+      if (lastUndoAt >= 0 && t0 - lastUndoAt < minUndoIntervalSec) return;
+      lastUndoAt = t0;
+
+      // かわいい「くるっ↓」（短い下降スライド）
+      const osc = audioCtx.createOscillator();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(720, t0);
+      osc.frequency.exponentialRampToValueAtTime(440, t0 + 0.12);
+
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.2, t0 + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.18);
+
+      // 少し丸める
+      const lp = audioCtx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.setValueAtTime(2600, t0);
+
+      osc.connect(g);
+      g.connect(lp);
+      lp.connect(destination);
+
+      osc.start(t0);
+      osc.stop(t0 + 0.2);
+    }
+
+    function playRedo() {
+      if (audioCtx.state !== 'running') return;
+      const t0 = audioCtx.currentTime;
+
+      if (lastRedoAt >= 0 && t0 - lastRedoAt < minRedoIntervalSec) return;
+      lastRedoAt = t0;
+
+      // かわいい「ぴょん↑」（短い上昇スライド）
+      const osc = audioCtx.createOscillator();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(520, t0);
+      osc.frequency.exponentialRampToValueAtTime(860, t0 + 0.11);
+
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.22, t0 + 0.007);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.16);
+
+      const lp = audioCtx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.setValueAtTime(3200, t0);
+
+      osc.connect(g);
+      g.connect(lp);
+      lp.connect(destination);
+
+      osc.start(t0);
+      osc.stop(t0 + 0.18);
+    }
+
     function playClear() {
       if (audioCtx.state !== 'running') return;
       const t0 = audioCtx.currentTime;
 
-      // かわいい系の短いジングル（約0.45秒）
-      // 周波数は雰囲気重視で選んでいます
+      if (lastClearAt >= 0 && t0 - lastClearAt < minClearIntervalSec) return;
+      lastClearAt = t0;
+
+      // 短いジングル（約0.45秒）
       const notes = [
-        { f: 740, dt: 0.0 }, // ちょい低め
+        { f: 740, dt: 0.0 },
         { f: 988, dt: 0.1 },
         { f: 1319, dt: 0.2 },
-        { f: 1760, dt: 0.3 }, // キラッ
+        { f: 1760, dt: 0.3 },
       ];
 
-      // ほんの少しだけ余韻（簡易ディレイ）
       const delay = audioCtx.createDelay(0.25);
       delay.delayTime.setValueAtTime(0.11, t0);
 
       const fb = audioCtx.createGain();
-      fb.gain.setValueAtTime(0.18, t0); // 余韻量
+      fb.gain.setValueAtTime(0.18, t0);
 
       delay.connect(fb);
       fb.connect(delay);
 
-      // 直音＋ディレイを合流
       const mix = audioCtx.createGain();
       mix.gain.setValueAtTime(1.0, t0);
       mix.connect(destination);
@@ -213,7 +288,6 @@
         osc.stop(t + 0.16);
       }
 
-      // 後始末
       setTimeout(() => {
         try {
           delay.disconnect();
@@ -227,12 +301,11 @@
       }, 700);
     }
 
-    return { playStep, playBump, playClear };
+    return { playStep, playBump, playUndo, playRedo, playClear };
   }
 
   function createAudioManager(options = {}) {
     const volume = typeof options.volume === 'number' ? options.volume : 0.35;
-    const bumpBoost = typeof options.bumpBoost === 'number' ? options.bumpBoost : 1.4;
 
     let audioCtx = null;
     let master = null;
@@ -247,7 +320,15 @@
         master = audioCtx.createGain();
         master.gain.value = volume;
         master.connect(audioCtx.destination);
-        sfx = createSfx(audioCtx, master, { bumpBoost });
+
+        sfx = createSfx(audioCtx, master, {
+          bumpBoost: options.bumpBoost,
+          minStepIntervalSec: options.minStepIntervalSec,
+          minBumpIntervalSec: options.minBumpIntervalSec,
+          minUndoIntervalSec: options.minUndoIntervalSec,
+          minRedoIntervalSec: options.minRedoIntervalSec,
+          minClearIntervalSec: options.minClearIntervalSec,
+        });
       }
 
       if (audioCtx.state === 'suspended') {
@@ -274,12 +355,18 @@
       if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
       sfx.playStep();
     }
-
     function playBump() {
       if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
       sfx.playBump();
     }
-
+    function playUndo() {
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
+      sfx.playUndo();
+    }
+    function playRedo() {
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
+      sfx.playRedo();
+    }
     function playClear() {
       if (!enabled || !audioCtx || audioCtx.state !== 'running' || !sfx) return;
       sfx.playClear();
@@ -292,6 +379,8 @@
       setVolume,
       playStep,
       playBump,
+      playUndo,
+      playRedo,
       playClear,
       get audioCtx() {
         return audioCtx;
