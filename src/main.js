@@ -1073,11 +1073,13 @@
 
       if (!sound.isEnabled()) {
         await sound.enable();
-        await sound.resumeIfNeeded?.();
-        sound.playStart?.();
+        await sound.resumeIfNeeded();
+        sound.playStart();
+        sound.startBgm();
         // sound.debug('enable');
       } else {
         sound.disable();
+        sound.stopBgm();
         // sound.debug('disable');
       }
 

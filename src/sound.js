@@ -455,6 +455,195 @@
     return { playStep, playBump, playUndo, playRedo, playStart, playClear, playUiOpen, playUiClose, playButton };
   }
 
+  function createBgm(audioCtx, destination, opts = {}) {
+    const tempo = typeof opts.tempo === 'number' ? opts.tempo : 92;
+    const lookAheadSec = typeof opts.lookAheadSec === 'number' ? opts.lookAheadSec : 0.18;
+    const tickMs = typeof opts.tickMs === 'number' ? opts.tickMs : 25;
+
+    // BGM専用ボリューム（SFXとは別）
+    const gain = audioCtx.createGain();
+    gain.gain.value = 0.5;
+    const comp = audioCtx.createDynamicsCompressor();
+    comp.threshold.value = -22;
+    comp.knee.value = 18;
+    comp.ratio.value = 3.5;
+    comp.attack.value = 0.01;
+    comp.release.value = 0.12;
+
+    gain.connect(comp);
+    comp.connect(destination);
+
+    // ほんの少し空間（控えめディレイ）
+    const delay = audioCtx.createDelay(0.25);
+    delay.delayTime.value = 0.12;
+
+    const fb = audioCtx.createGain();
+    fb.gain.value = 0.12;
+
+    delay.connect(fb);
+    fb.connect(delay);
+
+    const wet = audioCtx.createGain();
+    wet.gain.value = 0.22;
+
+    delay.connect(wet);
+    wet.connect(gain);
+
+    let playing = false;
+    let timerId = null;
+    let nextTime = 0;
+    let step = 0;
+
+    // 8分音符（穏やか）
+    const stepSec = 60 / tempo / 2;
+
+    // ペンタトニック（C D E G A）
+    const base = 261.63; // C4
+    const semis = [0, 2, 4, 7, 9];
+
+    // 対称っぽい（鏡写し）フレーズ
+    // 0..4 のスケール番号を行ったり来たり
+    const motif = [0, 1, 2, 3, 2, 1, 0, 1];
+
+    function hz(scaleIndex, octaveShift = 0) {
+      const si = ((scaleIndex % semis.length) + semis.length) % semis.length;
+      const semi = semis[si] + 12 * octaveShift;
+      return base * Math.pow(2, semi / 12);
+    }
+
+    function schedulePluck(t, f, amp) {
+      const osc = audioCtx.createOscillator();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(f, t);
+
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(amp, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+
+      const lp = audioCtx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.setValueAtTime(2400, t);
+
+      osc.connect(g);
+      g.connect(lp);
+      lp.connect(gain);
+      lp.connect(delay); // 少しだけ空間
+
+      osc.start(t);
+      osc.stop(t + 0.22);
+    }
+
+    function schedulePad(t, rootHz, amp) {
+      // すごく薄いパッド（2音だけ）
+      const f1 = rootHz / 2; // 低いルート
+      const f2 = (rootHz * 1.5) / 2; // 低い5度
+
+      const make = (f) => {
+        const osc = audioCtx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, t);
+
+        const g = audioCtx.createGain();
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(amp, t + 0.06);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
+
+        const lp = audioCtx.createBiquadFilter();
+        lp.type = 'lowpass';
+        lp.frequency.setValueAtTime(1200, t);
+
+        osc.connect(g);
+        g.connect(lp);
+        lp.connect(gain);
+
+        osc.start(t);
+        osc.stop(t + 1.0);
+      };
+
+      make(f1);
+      make(f2);
+    }
+
+    function tick() {
+      if (!playing) return;
+
+      const now = audioCtx.currentTime;
+
+      while (nextTime < now + lookAheadSec) {
+        // 4ステップごとに「場面（和音）」を変える（対称感を保つため少なめ）
+        const section = Math.floor(step / 4) % 2;
+        const rootScale = section === 0 ? 0 : 2; // C系↔E系っぽく
+
+        const noteScale = motif[step % motif.length];
+
+        // メロディ（軽い粒）
+        schedulePluck(nextTime, hz(noteScale, 0), 0.085);
+
+        // たまに上でキラッ（控えめ）
+        if (step % 8 === 4) {
+          schedulePluck(nextTime, hz(noteScale, 1), 0.06);
+        }
+
+        // パッド（さらに控えめ、1拍ごと）
+        if (step % 2 === 0) {
+          schedulePad(nextTime, hz(rootScale, 0), 0.02);
+        }
+
+        nextTime += stepSec;
+        step++;
+      }
+    }
+
+    function start(targetVolume = 0.25) {
+      if (playing) return;
+      if (audioCtx.state !== 'running') return; // 呼び出し側で resume 済みにする想定
+
+      playing = true;
+      step = 0;
+      nextTime = audioCtx.currentTime + 0.05;
+
+      // フェードイン
+      const t0 = audioCtx.currentTime;
+      gain.gain.cancelScheduledValues(t0);
+      gain.gain.setValueAtTime(gain.gain.value, t0);
+      gain.gain.linearRampToValueAtTime(targetVolume, t0 + 0.6);
+
+      timerId = setInterval(tick, tickMs);
+    }
+
+    function stop() {
+      if (!playing) return;
+      playing = false;
+
+      // フェードアウト
+      const t0 = audioCtx.currentTime;
+      gain.gain.cancelScheduledValues(t0);
+      gain.gain.setValueAtTime(gain.gain.value, t0);
+      gain.gain.linearRampToValueAtTime(0.0, t0 + 0.5);
+
+      if (timerId) {
+        const id = timerId;
+        timerId = null;
+        setTimeout(() => clearInterval(id), 600);
+      }
+    }
+
+    function setVolume(v) {
+      if (typeof v !== 'number') return;
+      const t0 = audioCtx.currentTime;
+      gain.gain.cancelScheduledValues(t0);
+      gain.gain.setValueAtTime(gain.gain.value, t0);
+      gain.gain.linearRampToValueAtTime(v, t0 + 0.15);
+    }
+
+    function isPlaying() {
+      return playing;
+    }
+
+    return { start, stop, setVolume, isPlaying };
+  }
+
   function createAudioManager(options = {}) {
     const defaultVolume = typeof options.volume === 'number' ? options.volume : 0.35;
     let currentVolume = defaultVolume;
@@ -463,6 +652,8 @@
     let master = null;
     let enabled = false;
     let sfx = null;
+    let bgm = null;
+    let bgmVolume = 0.8;
     let staleAfterBackground = false;
 
     let hooksInstalled = false;
@@ -489,6 +680,10 @@
           minClearIntervalSec: options.minClearIntervalSec,
           minUiIntervalSec: options.minUiIntervalSec,
           minButtonIntervalSec: options.minButtonIntervalSec,
+        });
+
+        bgm = createBgm(audioCtx, master, {
+          tempo: 92,
         });
 
         // 状態が落ちたら次のユーザー操作で復帰できるようにする
@@ -746,17 +941,36 @@
       sfx.playButton();
     }
 
+    function startBgm() {
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !bgm) return;
+      bgm.start(bgmVolume);
+    }
+    function stopBgm() {
+      if (!bgm) return;
+      bgm.stop();
+    }
+    function setBgmVolume(v) {
+      if (typeof v !== 'number') return;
+      bgmVolume = v;
+      if (bgm && enabled && audioCtx && audioCtx.state === 'running') {
+        bgm.setVolume(bgmVolume);
+      }
+    }
+    function isBgmPlaying() {
+      return bgm && bgm.isPlaying();
+    }
+
     function debug(tag = '') {
-      const ctx = audioCtx;
-      const msg =
-        `[sound debug] ${tag}\n` +
-        `enabled=${enabled}\n` +
-        `ctx=${ctx ? 'yes' : 'no'}\n` +
-        `state=${ctx?.state}\n` +
-        `time=${ctx?.currentTime}\n` +
-        `gain=${master?.gain?.value}\n` +
-        `visibility=${document.visibilityState}\n`;
-      alert(msg);
+      alert(
+        `[bgm] ${tag}\n` +
+          `enabled=${enabled}\n` +
+          `ctx=${audioCtx}\n` +
+          `state=${audioCtx?.state}\n` +
+          `masterGain=${master?.gain?.value}\n` +
+          `bgm=${bgm}\n` +
+          `playing=${bgm?.isPlaying?.()}\n` +
+          `bgmVol=${bgmVolume}\n`
+      );
     }
 
     return {
@@ -774,6 +988,10 @@
       playUiOpen,
       playUiClose,
       playButton,
+      startBgm,
+      stopBgm,
+      setBgmVolume,
+      isBgmPlaying,
       debug,
       get audioCtx() {
         return audioCtx;
@@ -783,6 +1001,5 @@
 
   global.SymmetrySfx = {
     createAudioManager,
-    createSfx,
   };
 })(window);
