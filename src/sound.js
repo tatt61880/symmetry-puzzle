@@ -346,23 +346,30 @@
     async function resumeIfNeeded() {
       if (!audioCtx) return;
 
-      // iOSで稀に closed になるケースを拾う（この場合は作り直し）
       if (audioCtx.state === 'closed') {
         audioCtx = null;
         master = null;
         sfx = null;
-        await enable(); // enabled=true のまま復旧
+        await enable(); // 復旧（enabled=trueのまま）
         return;
       }
 
-      if (audioCtx.state === 'running') return;
+      if (audioCtx.state !== 'running') {
+        try {
+          await audioCtx.resume();
+        } catch (_) {
+          installUnlockHook();
+          return;
+        }
 
-      try {
-        await audioCtx.resume();
-        if (master) master.gain.value = enabled ? currentVolume : 0.0;
-      } catch (_) {
-        installUnlockHook();
+        // resume後も running でなければ、次のユーザー操作待ち
+        if (audioCtx.state !== 'running') {
+          installUnlockHook();
+          return;
+        }
       }
+
+      if (master) master.gain.value = enabled ? currentVolume : 0.0;
     }
 
     function installUnlockHook() {
