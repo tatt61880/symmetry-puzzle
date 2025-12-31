@@ -576,6 +576,19 @@
       sfx.playClear();
     }
 
+    function debug(tag = '') {
+      const ctx = audioCtx;
+      const msg =
+        `[sound debug] ${tag}\n` +
+        `enabled=${enabled}\n` +
+        `ctx=${ctx ? 'yes' : 'no'}\n` +
+        `state=${ctx?.state}\n` +
+        `time=${ctx?.currentTime}\n` +
+        `gain=${master?.gain?.value}\n` +
+        `visibility=${document.visibilityState}\n`;
+      alert(msg);
+    }
+
     return {
       enable,
       disable,
@@ -588,6 +601,7 @@
       playRedo,
       playStart,
       playClear,
+      debug,
       get audioCtx() {
         return audioCtx;
       },

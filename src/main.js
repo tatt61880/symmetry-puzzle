@@ -1065,8 +1065,10 @@
         await sound.enable();
         await sound.resumeIfNeeded?.();
         sound.playStart?.();
+        // sound.debug('enable');
       } else {
         sound.disable();
+        // sound.debug('disable');
       }
 
       setSoundUi(sound.isEnabled());
