@@ -1063,11 +1063,13 @@
 
       if (!sound.isEnabled()) {
         await sound.enable();
-        setSoundUi(true);
+        await sound.resumeIfNeeded?.();
+        sound.playStart?.();
       } else {
         sound.disable();
-        setSoundUi(false);
       }
+
+      setSoundUi(sound.isEnabled());
 
       function setSoundUi(isOn) {
         elems.help.sound.classList.toggle('active', isOn);
