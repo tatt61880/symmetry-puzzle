@@ -504,13 +504,22 @@
     // 対称っぽい（鏡写し）フレーズ
     // 0..4 のスケール番号を行ったり来たり
     const motif = [
-      // 1小節目：ドレミソミレド(休)
+      // A
       0, 1, 2, 3, 2, 1, 0, -1,
-      // 2小節目：少し変化（ドレミラミレド(休)）
+      // B
       0, 1, 2, 4, 2, 1, 0, -1,
-      // 3小節目：上に寄せる（レミソラソミレ(休)）
+      // C
       1, 2, 3, 4, 3, 2, 1, -1,
-      // 4小節目：最初に戻して締める
+      // A
+      0, 1, 2, 3, 2, 1, 0, -1,
+
+      // A
+      0, 1, 2, 3, 2, 1, 0, -1,
+      // C（鏡側）
+      1, 2, 3, 4, 3, 2, 1, -1,
+      // B（鏡側）
+      0, 1, 2, 4, 2, 1, 0, -1,
+      // A
       0, 1, 2, 3, 2, 1, 0, -1,
     ];
 
@@ -582,7 +591,7 @@
       while (nextTime < now + lookAheadSec) {
         const phrasePos = step % motif.length; // 0..31
         const bar = Math.floor(phrasePos / 8); // 0..3（8分×8＝1小節想定）
-        const rootScaleByBar = [0, 2, 2, 0]; // 4小節で往復（対称っぽい）
+        const rootScaleByBar = [0, 2, 2, 0, 0, 2, 2, 0];
         const rootScale = rootScaleByBar[bar];
 
         const noteScale = motif[step % motif.length];
