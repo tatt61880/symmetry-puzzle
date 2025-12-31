@@ -442,6 +442,7 @@
       const handler = () => {
         elems.records.alert.backdrop.style.display = 'none';
         elems.records.alert.button.removeEventListener('click', handler);
+        window.sound.playButton();
         resolve();
       };
       elems.records.alert.button.addEventListener('click', handler);
