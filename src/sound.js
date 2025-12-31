@@ -462,7 +462,9 @@
 
     // BGM専用ボリューム（SFXとは別）
     const gain = audioCtx.createGain();
-    gain.gain.value = 0.5;
+    gain.gain.value = 0.0;
+
+    // ちょい前に出すための軽いコンプ（BGM専用）
     const comp = audioCtx.createDynamicsCompressor();
     comp.threshold.value = -22;
     comp.knee.value = 18;
@@ -492,17 +494,19 @@
     let playing = false;
     let timerId = null;
     let nextTime = 0;
-    let step = 0;
 
-    // 8分音符（穏やか）
+    // 「次に鳴らすステップ」を保持（復帰時にここから再開）
+    let step = 0;
+    let cursorStep = 0;
+
+    // 8分音符
     const stepSec = 60 / tempo / 2;
 
     // ペンタトニック（C D E G A）
     const base = 261.63; // C4
     const semis = [0, 2, 4, 7, 9];
 
-    // 対称っぽい（鏡写し）フレーズ
-    // 0..4 のスケール番号を行ったり来たり
+    // 対称っぽい（鏡写し）フレーズ（8小節=64ステップ）
     const motif = [
       // A
       0, 1, 2, 3, 2, 1, 0, -1,
@@ -524,6 +528,7 @@
     ];
 
     function hz(scaleIndex, octaveShift = 0) {
+      if (!Number.isFinite(scaleIndex)) return base;
       const si = ((scaleIndex % semis.length) + semis.length) % semis.length;
       const semi = semis[si] + 12 * octaveShift;
       return base * Math.pow(2, semi / 12);
@@ -589,63 +594,92 @@
       const now = audioCtx.currentTime;
 
       while (nextTime < now + lookAheadSec) {
-        const phrasePos = step % motif.length; // 0..31
-        const bar = Math.floor(phrasePos / 8); // 0..3（8分×8＝1小節想定）
+        const phrasePos = step; // 0..motif.length-1
+        const bar = Math.floor(phrasePos / 8); // 0..7（8分×8＝1小節想定）
         const rootScaleByBar = [0, 2, 2, 0, 0, 2, 2, 0];
-        const rootScale = rootScaleByBar[bar];
+        const rootScale = rootScaleByBar[bar] ?? 0;
 
-        const noteScale = motif[step % motif.length];
+        const noteScale = motif[phrasePos];
+
         if (noteScale >= 0) {
           // メロディ（軽い粒）
           schedulePluck(nextTime, hz(noteScale, 0), 0.085);
 
           // たまに上でキラッ（控えめ）
-          if (step % 8 === 4) {
+          if (phrasePos % 8 === 4) {
             schedulePluck(nextTime, hz(noteScale, 1), 0.06);
           }
         }
 
-        // パッド（1拍ごと）は休符でも鳴らしてOK（空間が埋まる）
-        if (step % 2 === 0) {
+        // パッド（1拍ごと）
+        if (phrasePos % 2 === 0) {
           schedulePad(nextTime, hz(rootScale, 0), 0.02);
         }
 
         nextTime += stepSec;
-        step++;
+        step = (step + 1) % motif.length;
       }
     }
 
-    function start(targetVolume = 0.25) {
+    function start(targetVolume = 0.25, resume = false) {
       if (playing) return;
       if (audioCtx.state !== 'running') return; // 呼び出し側で resume 済みにする想定
 
       playing = true;
-      step = 0;
+
+      step = resume ? cursorStep : 0;
       nextTime = audioCtx.currentTime + 0.05;
 
       // フェードイン
       const t0 = audioCtx.currentTime;
       gain.gain.cancelScheduledValues(t0);
       gain.gain.setValueAtTime(gain.gain.value, t0);
-      gain.gain.linearRampToValueAtTime(targetVolume, t0 + 0.6);
+      gain.gain.linearRampToValueAtTime(targetVolume, t0 + 0.4);
 
       timerId = setInterval(tick, tickMs);
     }
 
-    function stop() {
+    function pause() {
       if (!playing) return;
+
       playing = false;
+      cursorStep = step; // 次に鳴らす位置を保持
+
+      // 短めフェードアウト
+      const t0 = audioCtx.currentTime;
+      gain.gain.cancelScheduledValues(t0);
+      gain.gain.setValueAtTime(gain.gain.value, t0);
+      gain.gain.linearRampToValueAtTime(0.0, t0 + 0.12);
+
+      if (timerId) {
+        const id = timerId;
+        timerId = null;
+        setTimeout(() => clearInterval(id), 160);
+      }
+    }
+
+    function resume(targetVolume = 0.25) {
+      start(targetVolume, true);
+    }
+
+    function stop() {
+      // stop は「位置もリセット」
+      if (!playing && cursorStep === 0 && gain.gain.value === 0) return;
+
+      playing = false;
+      cursorStep = 0;
+      step = 0;
 
       // フェードアウト
       const t0 = audioCtx.currentTime;
       gain.gain.cancelScheduledValues(t0);
       gain.gain.setValueAtTime(gain.gain.value, t0);
-      gain.gain.linearRampToValueAtTime(0.0, t0 + 0.5);
+      gain.gain.linearRampToValueAtTime(0.0, t0 + 0.35);
 
       if (timerId) {
         const id = timerId;
         timerId = null;
-        setTimeout(() => clearInterval(id), 600);
+        setTimeout(() => clearInterval(id), 450);
       }
     }
 
@@ -661,7 +695,19 @@
       return playing;
     }
 
-    return { start, stop, setVolume, isPlaying };
+    function getCursorStep() {
+      return cursorStep;
+    }
+
+    function setCursorStep(s) {
+      if (!Number.isFinite(s)) return;
+      const n = motif.length;
+      const v = ((Math.floor(s) % n) + n) % n;
+      cursorStep = v;
+      if (!playing) step = v;
+    }
+
+    return { start, stop, pause, resume, setVolume, isPlaying, getCursorStep, setCursorStep };
   }
 
   function createAudioManager(options = {}) {
@@ -675,6 +721,7 @@
     let bgm = null;
     let bgmWasPlaying = false;
     let bgmVolume = 0.8;
+    let bgmCursorStep = 0;
     let staleAfterBackground = false;
 
     let hooksInstalled = false;
@@ -707,6 +754,11 @@
           tempo: 92,
         });
 
+        // 途中位置からの復帰用（別画面/バックグラウンドから戻るとき）
+        try {
+          bgm && bgm.setCursorStep && bgm.setCursorStep(bgmCursorStep);
+        } catch (_) {}
+
         // 状態が落ちたら次のユーザー操作で復帰できるようにする
         audioCtx.onstatechange = () => {
           if (!enabled) return;
@@ -723,6 +775,7 @@
       } catch (_) {}
       master = null;
       sfx = null;
+      bgm = null;
 
       if (audioCtx) {
         try {
@@ -837,34 +890,27 @@
         window.removeEventListener('click', onUserGesture, true);
         window.removeEventListener('keydown', onUserGesture, true);
 
-        const shouldRestartBgm = bgmWasPlaying || (bgm && bgm.isPlaying && bgm.isPlaying());
-
+        // 別タブ/バックグラウンド復帰後は「runningでも無音」になり得るので、必要なら作り直す
         if (staleAfterBackground) {
           staleAfterBackground = false;
-
           try {
-            master && master.disconnect();
+            teardownContext();
           } catch (_) {}
-          try {
-            audioCtx && audioCtx.close && audioCtx.close();
-          } catch (_) {}
-
-          audioCtx = null;
-          master = null;
-          sfx = null;
-          bgm = null;
         }
 
-        try {
-          // enable() の中で audioCtx/master/sfx/bgm を作る設計にしておく
-          await enable();
+        const shouldStartBgm = bgmWasPlaying;
 
-          if (shouldRestartBgm) {
-            // enable() 内で bgm が作られている前提
-            if (bgm && audioCtx && audioCtx.state === 'running') {
-              bgm.start(bgmVolume);
-              bgmWasPlaying = true;
-            }
+        try {
+          // ユーザー操作中に enable()（iOSで復帰しやすい）
+          await enable(true);
+
+          // BGMを最初から再開（必要な場合のみ）
+          if (shouldStartBgm && bgm && audioCtx && audioCtx.state === 'running') {
+            try {
+              bgm.stop && bgm.stop();
+            } catch (_) {}
+            bgm.start(bgmVolume, false);
+            bgmWasPlaying = true;
           }
         } catch (_) {
           // 失敗したら次の操作で再チャレンジ
@@ -872,6 +918,7 @@
         }
       };
 
+      // iOS対策：複数系統で拾う（captureで先に取る）
       window.addEventListener('pointerdown', onUserGesture, true);
       window.addEventListener('touchstart', onUserGesture, { capture: true, passive: true });
       window.addEventListener('touchend', onUserGesture, { capture: true, passive: true });
@@ -883,22 +930,51 @@
       if (hooksInstalled) return;
       hooksInstalled = true;
 
-      // 裏に回ったら「次の操作で作り直す」
+      // 別タブ/別アプリへ：BGMは停止（最初からでOK）
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'hidden') {
           staleAfterBackground = true;
-        } else if (document.visibilityState === 'visible' && enabled) {
-          // visible になったら、次の操作で復旧できるよう保険
+
+          try {
+            if (bgm && bgm.isPlaying && bgm.isPlaying()) {
+              bgmWasPlaying = true; // 戻ったら再開する意思だけ覚える
+              bgm.stop && bgm.stop();
+              bgmCursorStep = 0;
+            }
+          } catch (_) {}
+          return;
+        }
+
+        // visible に戻ったら：最初のユーザー操作で復帰できるよう仕込む
+        if (document.visibilityState === 'visible' && enabled) {
           installUnlockHook();
         }
       });
 
+      // Safari(iOS)では pagehide/pageshow も拾っておくと安定
       window.addEventListener('pagehide', () => {
         staleAfterBackground = true;
+
+        try {
+          if (bgm && bgm.isPlaying && bgm.isPlaying()) {
+            bgmWasPlaying = true;
+            bgm.stop && bgm.stop();
+            bgmCursorStep = 0;
+          }
+        } catch (_) {}
       });
 
       window.addEventListener('pageshow', () => {
-        if (enabled) installUnlockHook();
+        if (enabled) {
+          installUnlockHook();
+        }
+      });
+
+      // フォーカス復帰でも念押し（PC/一部ブラウザ）
+      window.addEventListener('focus', () => {
+        if (enabled) {
+          installUnlockHook();
+        }
       });
     }
 
@@ -972,13 +1048,45 @@
 
     function startBgm() {
       if (!enabled || !audioCtx || audioCtx.state !== 'running' || !bgm) return;
+
+      // 明示的に開始する場合は先頭から
+      try {
+        bgm.setCursorStep?.(0);
+      } catch (_) {}
+      bgmCursorStep = 0;
+
       bgm.start(bgmVolume);
       bgmWasPlaying = true;
     }
+
+    function pauseBgm() {
+      if (!bgm) return;
+      try {
+        if (bgm.isPlaying && bgm.isPlaying()) bgmWasPlaying = true;
+        bgm.pause?.();
+        bgmCursorStep = bgm.getCursorStep?.() ?? bgmCursorStep;
+      } catch (_) {}
+    }
+
+    function resumeBgm() {
+      if (!enabled || !audioCtx || audioCtx.state !== 'running' || !bgm) return;
+      try {
+        bgm.setCursorStep?.(bgmCursorStep);
+      } catch (_) {}
+
+      if (bgm.resume) {
+        bgm.resume(bgmVolume);
+      } else {
+        bgm.start(bgmVolume, true);
+      }
+      bgmWasPlaying = true;
+    }
+
     function stopBgm() {
       if (!bgm) return;
       bgm.stop();
       bgmWasPlaying = false;
+      bgmCursorStep = 0;
     }
     function setBgmVolume(v) {
       if (typeof v !== 'number') return;
@@ -1020,6 +1128,8 @@
       playUiClose,
       playButton,
       startBgm,
+      pauseBgm,
+      resumeBgm,
       stopBgm,
       setBgmVolume,
       isBgmPlaying,
