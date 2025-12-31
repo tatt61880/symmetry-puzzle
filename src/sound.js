@@ -329,19 +329,17 @@
   }
 
   function createAudioManager(options = {}) {
-    const initialVolume = typeof options.volume === 'number' ? options.volume : 0.35;
+    const defaultVolume = typeof options.volume === 'number' ? options.volume : 0.35;
+    let currentVolume = defaultVolume;
 
     let audioCtx = null;
     let master = null;
     let enabled = false;
     let sfx = null;
+    let staleAfterBackground = false;
 
-    let currentVolume = initialVolume;
-
-    // unlock フックの多重登録防止
+    let hooksInstalled = false;
     let unlockHookInstalled = false;
-    // 自動復帰フックの多重登録防止
-    let autoHooksInstalled = false;
 
     function ensureContext() {
       // iOSで稀に closed になる／壊れるケースに備える
@@ -486,37 +484,68 @@
       if (unlockHookInstalled) return;
       unlockHookInstalled = true;
 
-      const handler = () => {
+      const onUserGesture = async () => {
+        // 1回だけでOK
         unlockHookInstalled = false;
-        // ユーザー操作の「同期的な瞬間」に resume を仕掛けたいので await しない
-        resumeCore(true);
+        window.removeEventListener('pointerdown', onUserGesture, true);
+        window.removeEventListener('touchstart', onUserGesture, true);
+        window.removeEventListener('touchend', onUserGesture, true);
+        window.removeEventListener('click', onUserGesture, true);
+        window.removeEventListener('keydown', onUserGesture, true);
+
+        // バックグラウンド復帰後は「runningでも無音」になり得るので、作り直す
+        if (staleAfterBackground) {
+          staleAfterBackground = false;
+
+          try {
+            master && master.disconnect();
+          } catch (_) {}
+          try {
+            audioCtx && audioCtx.close && audioCtx.close();
+          } catch (_) {}
+
+          audioCtx = null;
+          master = null;
+          sfx = null;
+        }
+
+        // ユーザー操作中に enable() を走らせる（iOSで復帰しやすい）
+        try {
+          await enable();
+        } catch (_) {
+          // 失敗したら次の操作で再チャレンジ
+          installUnlockHook();
+        }
       };
 
-      const opt = { once: true, capture: true, passive: true };
-      global.addEventListener('pointerdown', handler, opt);
-      global.addEventListener('touchend', handler, opt);
-      global.addEventListener('click', handler, opt);
-      global.addEventListener('keydown', handler, opt);
+      // iOS対策：複数系統で拾う（captureで先に取る）
+      window.addEventListener('pointerdown', onUserGesture, true);
+      window.addEventListener('touchstart', onUserGesture, { capture: true, passive: true });
+      window.addEventListener('touchend', onUserGesture, { capture: true, passive: true });
+      window.addEventListener('click', onUserGesture, true);
+      window.addEventListener('keydown', onUserGesture, true);
     }
 
-    function installAutoResumeHooks() {
-      if (autoHooksInstalled) return;
-      autoHooksInstalled = true;
+    function installReturnHooks() {
+      if (hooksInstalled) return;
+      hooksInstalled = true;
 
-      // これらのイベント自体では「ユーザー操作扱い」にならないので、
-      // resume を試し、ダメなら unlock hook を仕込む、という役割
+      // 裏に回ったら「次の操作で作り直す」
       document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible' && enabled) {
-          resumeCore(false);
+        if (document.visibilityState === 'hidden') {
+          staleAfterBackground = true;
+        } else if (document.visibilityState === 'visible' && enabled) {
+          // visible になったら、次の操作で復旧できるよう保険
+          installUnlockHook();
         }
       });
 
-      global.addEventListener('pageshow', () => {
-        if (enabled) resumeCore(false);
+      window.addEventListener('pagehide', () => {
+        staleAfterBackground = true;
       });
 
-      global.addEventListener('focus', () => {
-        if (enabled) resumeCore(false);
+      window.addEventListener('pageshow', () => {
+        if (enabled) installUnlockHook();
       });
     }
 
@@ -526,7 +555,7 @@
       ensureContext();
       if (master) master.gain.value = currentVolume;
 
-      installAutoResumeHooks();
+      installReturnHooks();
 
       await resumeCore(fromGesture);
     }
