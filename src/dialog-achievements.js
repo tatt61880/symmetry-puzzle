@@ -116,7 +116,8 @@
       const ja = data.ja;
       const en = data.en;
       const num = data.num;
-      console.log(data);
+
+      // テキスト
       if (num < 10) {
         elem.dataset.ja = `${ja}対称の初心者`;
         elem.dataset.en = `${en} Symmetry Beginner`;
@@ -136,7 +137,15 @@
         elem.dataset.ja = `${ja}対称の達人`;
         elem.dataset.en = `${en} Symmetry Master`;
       }
+
       app.common.applyLang(elem, lang);
+
+      // 装飾
+      {
+        const percent = (num % 10) * 10;
+        const style = `background: linear-gradient(to right, rgb(250, 250, 150) ${percent}%, transparent ${percent}%);`;
+        elem.setAttribute('style', style);
+      }
     });
   }
 
