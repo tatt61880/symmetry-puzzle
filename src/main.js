@@ -879,7 +879,7 @@
     }
   }
 
-  function updateEditMode(isEditMode) {
+  function updateEditMode(isEditMode, resetFlag = true) {
     editMode = isEditMode;
     common.isSeqMode = false;
 
@@ -893,7 +893,7 @@
       common.showElem(elems.controller.widget);
       common.showElem(elems.level.retry);
 
-      if (undoInfoForNormal) {
+      if (resetFlag && undoInfoForNormal) {
         resetUndo();
         addUndo(null);
       }
@@ -2723,7 +2723,7 @@
     if (isAutoMode) {
       input.disable();
       common.showElem(elems.auto.buttons);
-      updateEditMode(false);
+      updateEditMode(false, false);
     } else {
       clearTimeout(nextLevelTimerId);
       clearTimeout(redrawTimerId);
