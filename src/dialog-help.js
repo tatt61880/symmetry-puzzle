@@ -7,12 +7,15 @@
   console.assert(app?.elems !== undefined);
   console.assert(app?.common !== undefined);
 
+  let tab = null;
+
   window.app = window.app || {};
   window.app.dialog = window.app.dialog || {};
   window.app.dialog.help = {
     toggle,
     show,
     close,
+    tab,
   };
 
   const elems = app.elems;
@@ -68,15 +71,19 @@
 
     switch (app.common.checkMode) {
       case app.Level.CHECK_MODE.LINE:
+        tab = app.Level.CHECK_MODE.LINE;
         elems.help.tabLine.checked = true;
         break;
       case app.Level.CHECK_MODE.POINT:
+        tab = app.Level.CHECK_MODE.POINT;
         elems.help.tabPoint.checked = true;
         break;
       case app.Level.CHECK_MODE.SPECIAL:
+        tab = app.Level.CHECK_MODE.SPECIAL;
         elems.help.tabSpecial.checked = true;
         break;
       default:
+        tab = null;
         elems.help.tabApp.checked = true;
     }
 

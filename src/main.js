@@ -224,19 +224,31 @@
           break;
         case '+':
           elems.help.tabApp.checked = true;
-          sound.playButton();
+          if (app.dialog.help.tab !== null) {
+            app.dialog.help.tab = null;
+            sound.playButton();
+          }
           break;
         case 't':
           elems.help.tabLine.checked = true;
-          sound.playButton();
+          if (app.dialog.help.tab !== app.Level.CHECK_MODE.LINE) {
+            app.dialog.help.tab = app.Level.CHECK_MODE.LINE;
+            sound.playButton();
+          }
           break;
         case 'z':
           elems.help.tabPoint.checked = true;
-          sound.playButton();
+          if (app.dialog.help.tab !== app.Level.CHECK_MODE.POINT) {
+            app.dialog.help.tab = app.Level.CHECK_MODE.POINT;
+            sound.playButton();
+          }
           break;
         case 'o':
           elems.help.tabSpecial.checked = true;
-          sound.playButton();
+          if (app.dialog.help.tab !== app.Level.CHECK_MODE.SPECIAL) {
+            app.dialog.help.tab = app.Level.CHECK_MODE.SPECIAL;
+            sound.playButton();
+          }
           break;
       }
       return;
@@ -1519,13 +1531,16 @@
     elems.help.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
     elems.help.langEn.addEventListener('click', () => selectLang('en'));
     elems.help.langJa.addEventListener('click', () => selectLang('ja'));
-    elems.help.tabApp.addEventListener('click', selectTab);
-    elems.help.tabLine.addEventListener('click', selectTab);
-    elems.help.tabPoint.addEventListener('click', selectTab);
-    elems.help.tabSpecial.addEventListener('click', selectTab);
+    elems.help.tabApp.addEventListener('click', selectTab.bind(null, null));
+    elems.help.tabLine.addEventListener('click', selectTab.bind(null, app.Level.CHECK_MODE.LINE));
+    elems.help.tabPoint.addEventListener('click', selectTab.bind(null, app.Level.CHECK_MODE.POINT));
+    elems.help.tabSpecial.addEventListener('click', selectTab.bind(null, app.Level.CHECK_MODE.SPECIAL));
 
-    function selectTab() {
-      sound.playButton();
+    function selectTab(mode) {
+      if (app.dialog.help.tab !== mode) {
+        app.dialog.help.tab = mode;
+        sound.playButton();
+      }
     }
   }
 
