@@ -90,6 +90,7 @@
       width: calc(100% / 4 - 10px);
       height: 40px;
       padding: 0;
+      color: #505050;
       cursor: pointer;
       user-select: none;
       background-color: #f8f8f8;
