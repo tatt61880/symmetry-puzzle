@@ -117,35 +117,60 @@
       const en = data.en;
       const num = data.num;
 
-      // テキスト
-      if (num < 10) {
-        elem.dataset.ja = `${ja}対称の初心者`;
-        elem.dataset.en = `${en} Symmetry Beginner`;
-      } else if (num < 20) {
-        elem.dataset.ja = `${ja}対称の挑戦者`;
-        elem.dataset.en = `${en} Symmetry Challenger`;
-      } else if (num < 30) {
-        elem.dataset.ja = `${ja}対称の探究者`;
-        elem.dataset.en = `${en} Symmetry Seeker`;
-      } else if (num < 40) {
-        elem.dataset.ja = `${ja}対称の熟練者`;
-        elem.dataset.en = `${en} Symmetry Adept`;
-      } else if (num < 50) {
-        elem.dataset.ja = `${ja}対称の名手`;
-        elem.dataset.en = `${en} Symmetry Expert`;
-      } else {
-        elem.dataset.ja = `${ja}対称の達人`;
-        elem.dataset.en = `${en} Symmetry Master`;
-      }
+      elem.innerText = '';
 
-      app.common.applyLang(elem, lang);
-
-      // 装飾
+      // 背景
       {
         const percent = (num % 10) * 10;
-        const style = `background: linear-gradient(to right, rgb(250, 250, 150) ${percent}%, transparent ${percent}%);`;
-        elem.setAttribute('style', style);
+        elem.setAttribute(
+          'style',
+          `padding: 5px 10px; background: linear-gradient(to right, rgb(250, 250, 150) ${percent}%, transparent ${percent}%);`
+        );
       }
+
+      // ★
+      const starNum = Math.floor(num / 10);
+      for (let i = 0; i < starNum; i++) {
+        const size = 30;
+        const svg = app.svg.createSvg();
+        svg.setAttribute('width', size);
+        svg.setAttribute('height', size);
+        const g = app.svg.createStar(size, { x: 0, y: 0, fill: '#FFD54A', stroke: '#C08A00', strokeWidth: size * 0.002 });
+        elem.appendChild(svg);
+        svg.appendChild(g);
+
+        if (i === starNum - 1) {
+          elem.appendChild(document.createElement('br'));
+        }
+      }
+
+      // テキスト
+      const div = document.createElement('div');
+
+      if (num < 10) {
+        div.dataset.ja = `${ja}対称の初心者`;
+        div.dataset.en = `${en} Symmetry Beginner`;
+      } else if (num < 20) {
+        div.dataset.ja = `${ja}対称の挑戦者`;
+        div.dataset.en = `${en} Symmetry Challenger`;
+      } else if (num < 30) {
+        div.dataset.ja = `${ja}対称の探究者`;
+        div.dataset.en = `${en} Symmetry Seeker`;
+      } else if (num < 40) {
+        div.dataset.ja = `${ja}対称の熟練者`;
+        div.dataset.en = `${en} Symmetry Adept`;
+      } else if (num < 50) {
+        div.dataset.ja = `${ja}対称の名手`;
+        div.dataset.en = `${en} Symmetry Expert`;
+      } else {
+        div.dataset.ja = `${ja}対称の達人`;
+        div.dataset.en = `${en} Symmetry Master`;
+      }
+
+      app.common.applyLang(div, lang);
+
+      div.setAttribute('style', 'margin: 10px 0');
+      elem.appendChild(div);
     });
   }
 

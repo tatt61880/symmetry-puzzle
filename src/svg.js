@@ -155,6 +155,33 @@
     return g;
   };
 
+  svg.createStar = (blockSize, { x, y, fill, stroke, strokeWidth }) => {
+    const g = svg.createG();
+
+    const polygon = svg.createPolygon(blockSize, {
+      points: [
+        [x + 0.5, y + 0.05],
+        [x + 0.61, y + 0.38],
+        [x + 0.95, y + 0.38],
+        [x + 0.67, y + 0.58],
+        [x + 0.78, y + 0.91],
+        [x + 0.5, y + 0.72],
+        [x + 0.22, y + 0.91],
+        [x + 0.33, y + 0.58],
+        [x + 0.05, y + 0.38],
+        [x + 0.39, y + 0.38],
+      ],
+      fill,
+      stroke,
+      strokeWidth,
+    });
+    polygon.setAttribute('stroke-linejoin', 'round');
+
+    g.appendChild(polygon);
+
+    return g;
+  };
+
   svg.createText = (blockSize, { x, y, text, fill }) => {
     const textElem = document.createElementNS(SVG_NS, 'text');
     textElem.setAttribute('x', blockSize * x);

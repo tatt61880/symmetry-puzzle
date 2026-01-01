@@ -80,6 +80,11 @@
     .border-bottom-bold {
       border-bottom-width: 5px;
     }
+
+    .achievements-info {
+      width: 330px;
+      height: 80px;
+    }
   }
 
   &::backdrop {
