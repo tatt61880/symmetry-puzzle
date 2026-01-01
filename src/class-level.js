@@ -1985,7 +1985,7 @@
       return true;
     }
 
-    #createOneBlock(x, y, sX, sY, blockSize, symmetryType, showCharsFlag, eyeFlag) {
+    #createOneBlock(x, y, sX, sY, blockSize, showCharsFlag, eyeFlag) {
       const state = this.getState(sX, sY);
       const color = app.colors[state];
 
@@ -2924,7 +2924,7 @@
       const state = this.getState(sX, sY);
       const color = app.colors[state];
 
-      const elem = this.#createOneBlock(x, y, sX, sY, blockSize, symmetryType, showCharsFlag, eyeFlag);
+      const elem = this.#createOneBlock(x, y, sX, sY, blockSize, showCharsFlag, eyeFlag);
 
       let child = elem;
 
