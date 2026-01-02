@@ -25,4 +25,18 @@
       transform: translateY(-50%);
     }
   }
+
+  #button-undo,
+  #button-redo,
+  #button-undo-edit,
+  #button-redo-edit {
+    display: block;
+    opacity: 1;
+    transition: opacity 150ms ease, transform 150ms ease;
+
+    &.hide {
+      pointer-events: none;
+      opacity: 0;
+    }
+  }
 }
