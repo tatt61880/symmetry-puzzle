@@ -1385,17 +1385,25 @@
           levelObj: { w: 3, h: 3, s: `-0${char}` },
           checkMode: common.checkMode,
         });
-        const g = levelForEditChar.createSvgG({
-          blockSize: 40,
-          showCharsFlag: true,
-          smallJumpFlag: true,
-          drawBackground: char === '0',
-          x0: 2,
-          y0: 2,
-          width: 1,
-          height: 1,
-        });
-        elem.appendChild(g);
+
+        {
+          const g = app.svg.createG();
+          g.classList.add('button-transform');
+
+          const gBlock = levelForEditChar.createSvgG({
+            blockSize: 40,
+            showCharsFlag: true,
+            smallJumpFlag: true,
+            drawBackground: char === '0',
+            x0: 2,
+            y0: 2,
+            width: 1,
+            height: 1,
+          });
+
+          g.appendChild(gBlock);
+          elem.appendChild(g);
+        }
 
         const func = () => {
           sound.playButton();
