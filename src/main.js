@@ -1993,6 +1993,14 @@
 
     drawDotLines(mainSvgG);
     drawFrame(mainSvgG, isCompleted);
+
+    if (isCompleted) {
+      const gConfetti = app.svg.createG();
+      elems.main.svg.appendChild(gConfetti);
+      const width = blockSize * common.level.getWidth() + 2 * frameSizeW;
+      const height = blockSize * common.level.getHeight() + 2 * frameSizeH;
+      window.playSvgConfetti(gConfetti, width, height);
+    }
   }
 
   function drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag) {
