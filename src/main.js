@@ -1634,11 +1634,11 @@
   }
 
   function toggleNormalSeqMode() {
-    sound.playButton();
-
     if (common.isShownElem(elems.title.buttonToggleToSeqDiv)) {
+      sound.playButton();
       updateNormalSeqMode(true);
     } else if (common.isShownElem(elems.title.buttonToggleToNormalDiv)) {
+      sound.playButton();
       updateNormalSeqMode(false);
     }
   }
