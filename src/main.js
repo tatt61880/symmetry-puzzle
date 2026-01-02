@@ -1398,6 +1398,7 @@
         elem.appendChild(g);
 
         const func = () => {
+          sound.playButton();
           const transform = elem.getAttribute('transform');
           elems.edit.drawing.setAttribute('transform', `${transform} translate(-4,-4)`);
           const state = app.states.charToState[char];
