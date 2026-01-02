@@ -109,6 +109,7 @@ div.user-select-none {
 .button {
   cursor: pointer;
   user-select: none;
+  opacity: 1;
 }
 
 .active-hover:hover {
@@ -122,8 +123,8 @@ div.user-select-none {
   }
 
   & > .button-transform {
-    transform: translateY(var(--button-translate-y));
     opacity: 0.5;
+    transform: translateY(var(--button-translate-y));
   }
 }
 
