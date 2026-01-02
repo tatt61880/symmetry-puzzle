@@ -1,9 +1,9 @@
-import fs from "node:fs";
-import path from "node:path";
-import crypto from "node:crypto";
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
 
-const distDir = process.argv[2] || "dist";
-const extsToHash = new Set([".js", ".mjs", ".css"]); // 必要なら増やす
+const distDir = process.argv[2] || 'dist';
+const extsToHash = new Set(['.js', '.mjs', '.css']); // 必要なら増やす
 
 function walk(dir, out = []) {
   for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -15,36 +15,33 @@ function walk(dir, out = []) {
 }
 
 function sha8(buf) {
-  return crypto.createHash("sha256").update(buf).digest("hex").slice(0, 8);
+  return crypto.createHash('sha256').update(buf).digest('hex').slice(0, 8);
 }
 
 // すでに foo.<8hex>.js みたいな名前なら二重ハッシュしない
 function alreadyHasHash(fileBase, ext) {
-  const re = new RegExp(`\\.[0-9a-f]{8}\\${ext}$`, "i");
+  const re = new RegExp(`\\.[0-9a-f]{8}\\${ext}$`, 'i');
   return re.test(fileBase + ext);
 }
 
 // dist配下の絶対パス -> HTML内で出てくる相対パス表現（/ を使う）へ
 function toWebPath(absPath) {
   const rel = path.relative(distDir, absPath);
-  return rel.split(path.sep).join("/");
+  return rel.split(path.sep).join('/');
 }
 
 function processHtml(filePath, mapping) {
-  let html = fs.readFileSync(filePath, "utf8");
+  let html = fs.readFileSync(filePath, 'utf8');
 
   // src/href の値だけを置換対象にする（雑に全文置換しない）
-  html = html.replace(
-    /\b(src|href)\s*=\s*(["'])([^"']+)\2/gi,
-    (m, attr, quote, url) => {
-      // クエリ/ハッシュが付いている場合は分離して戻す
-      const [base, tail = ""] = url.split(/(?=[?#])/); // # or ? 以降を残す
-      const replaced = mapping.get(base) || base;
-      return `${attr}=${quote}${replaced}${tail}${quote}`;
-    }
-  );
+  html = html.replace(/\b(src|href)\s*=\s*(["'])([^"']+)\2/gi, (m, attr, quote, url) => {
+    // クエリ/ハッシュが付いている場合は分離して戻す
+    const [base, tail = ''] = url.split(/(?=[?#])/); // # or ? 以降を残す
+    const replaced = mapping.get(base) || base;
+    return `${attr}=${quote}${replaced}${tail}${quote}`;
+  });
 
-  fs.writeFileSync(filePath, html, "utf8");
+  fs.writeFileSync(filePath, html, 'utf8');
 }
 
 function main() {
@@ -75,13 +72,13 @@ function main() {
     const newWeb = toWebPath(newAbs);
     // HTMLでは "./" が付く場合もあるので両方対応しておく
     mapping.set(oldWeb, newWeb);
-    mapping.set("./" + oldWeb, "./" + newWeb);
-    mapping.set("/" + oldWeb, "/" + newWeb);
+    mapping.set('./' + oldWeb, './' + newWeb);
+    mapping.set('/' + oldWeb, '/' + newWeb);
   }
 
   // 2) dist内の全HTMLの参照を書き換える
   for (const abs of walk(distDir)) {
-    if (abs.toLowerCase().endsWith(".html")) {
+    if (abs.toLowerCase().endsWith('.html')) {
       processHtml(abs, mapping);
     }
   }
