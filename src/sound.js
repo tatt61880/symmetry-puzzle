@@ -720,7 +720,7 @@
     let sfx = null;
     let bgm = null;
     let bgmWasPlaying = false;
-    let bgmVolume = 0.8;
+    let bgmVolume = 1.0;
     let bgmCursorStep = 0;
     let staleAfterBackground = false;
 
