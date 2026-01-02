@@ -2761,9 +2761,11 @@
     updateAutoMode(false);
     clearTimeout(nextLevelTimerId);
     clearTimeout(redrawTimerId);
+    sound.playButton();
   }
 
   function onButtonStart() {
+    sound.playButton();
     if (common.level.getBestStep() === undefined) {
       retryLevel();
       const levelObj = common.level.getCurrentLevelObj();
@@ -2804,6 +2806,7 @@
   }
 
   function onButtonPause() {
+    sound.playButton();
     settingsAuto.paused = true;
     updateAutoStartPauseButtons();
     clearTimeout(nextLevelTimerId);
@@ -2812,6 +2815,7 @@
   }
 
   function onButtonEnd() {
+    sound.playButton();
     const levelObj = common.level.getLevelObj();
     const r = levelObj.r;
     retryAndExecReplayStr(r);
@@ -2857,6 +2861,7 @@
     if (settingsAuto.interval >= settingsAuto.INTERVAL_MAX) {
       settingsAuto.interval = settingsAuto.INTERVAL_MAX;
     }
+    sound.playButton();
     updateButtonSpeedDisplay();
   }
 
@@ -2865,6 +2870,7 @@
     if (settingsAuto.interval <= settingsAuto.INTERVAL_MIN) {
       settingsAuto.interval = settingsAuto.INTERVAL_MIN;
     }
+    sound.playButton();
     updateButtonSpeedDisplay();
   }
 

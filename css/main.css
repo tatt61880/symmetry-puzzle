@@ -207,6 +207,8 @@ text {
 #button-levels-next,
 #button-shapes-prev,
 #button-shapes-next,
+#button-speed-down,
+#button-speed-up,
 #button-undo,
 #button-redo,
 #button-undo-edit,
@@ -215,7 +217,7 @@ text {
 #button-shapes-g {
   display: block;
   opacity: 1;
-  transition: opacity 150ms ease, transform 150ms ease;
+  transition: opacity 150ms ease;
 
   &.hide {
     pointer-events: none;
