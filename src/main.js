@@ -2455,7 +2455,7 @@
         stroke: color.stroke,
         strokeWidth: 0.1,
       });
-      polygon.classList.add('button');
+      polygon.classList.add('button', 'active-hover');
       polygon.addEventListener('click', onClick);
       g.appendChild(polygon);
 
