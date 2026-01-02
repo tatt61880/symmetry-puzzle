@@ -216,7 +216,6 @@ text {
 #controller-buttons-axis,
 #button-shapes-g {
   display: block;
-  opacity: 1;
   transition: opacity 150ms ease;
 
   &.hide {
