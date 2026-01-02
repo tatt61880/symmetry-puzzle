@@ -1017,7 +1017,7 @@
 
           <!-- Undoボタン -->
           <g id="button-undo-edit" class="button active-hover" transform="translate(50,130) scale(1.25,1.25)">
-            <g>
+            <g class="button-transform">
               <circle cx="0" cy="0" r="28" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
               <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#888888" stroke-width="4" />
               <path d="M 1,-20.5 l -13,9 14.5,5.2 z" fill="#888888" stroke="none" />
@@ -1028,7 +1028,7 @@
 
           <!-- Redoボタン -->
           <g id="button-redo-edit" class="button active-hover" transform="translate(440,130) scale(-1.25,1.25)">
-            <g>
+            <g class="button-transform">
               <circle cx="0" cy="0" r="28" fill="#d8d8d8" stroke="#888888" stroke-width="4" />
               <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#888888" stroke-width="4" />
               <path d="M 1,-20.5 l -13,9 14.5,5.2 z" fill="#888888" stroke="none" />
@@ -1039,19 +1039,21 @@
 
           <!-- 軸 -->
           <g id="edit-buttons-axis" class="button active-hover" transform="translate(440,47) scale(0.9)">
-            <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
-            <rect id="edit-buttons-axis-line1" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8" />
-            <rect id="edit-buttons-axis-line2" class="hide" x="-25" y="-2" width="50" height="4" fill="#0000f8" />
-            <rect id="edit-buttons-axis-line3" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8"
-              transform="rotate(-45 0 0)" />
-            <rect id="edit-buttons-axis-line4" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8"
-              transform="rotate(45 0 0)" />
-            <ellipse id="edit-buttons-axis-point1" class="hide" cx="0" cy="0" rx="6" ry="18" fill="#0000f8" />
-            <rect id="edit-buttons-axis-point2" class="hide" x="-10" y="-10" width="20" height="20" fill="#0000f8"
-              transform="rotate(45 0 0)" />
+            <g class="button-transform">
+              <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+              <rect id="edit-buttons-axis-line1" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8" />
+              <rect id="edit-buttons-axis-line2" class="hide" x="-25" y="-2" width="50" height="4" fill="#0000f8" />
+              <rect id="edit-buttons-axis-line3" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8"
+                transform="rotate(-45 0 0)" />
+              <rect id="edit-buttons-axis-line4" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8"
+                transform="rotate(45 0 0)" />
+              <ellipse id="edit-buttons-axis-point1" class="hide" cx="0" cy="0" rx="6" ry="18" fill="#0000f8" />
+              <rect id="edit-buttons-axis-point2" class="hide" x="-10" y="-10" width="20" height="20" fill="#0000f8"
+                transform="rotate(45 0 0)" />
 
-            <!-- エラー時などに全部の軸が表示されてしまう可能性を減らす目的 -->
-            <rect class="hide" x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+              <!-- エラー時などに全部の軸が表示されてしまう可能性を減らす目的 -->
+              <rect class="hide" x="-36" y="-36" rx="12" width="72" height="72" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
+            </g>
           </g>
 
           <g transform="translate(96,16)" id="edit-drawing-shape">

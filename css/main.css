@@ -123,6 +123,7 @@ div.user-select-none {
 
   & > .button-transform {
     transform: translateY(var(--button-translate-y));
+    opacity: 0.5;
   }
 }
 
