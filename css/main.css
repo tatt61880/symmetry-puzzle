@@ -199,3 +199,26 @@ text {
 .user-block-title {
   width: 100%;
 }
+
+#button-level-prev,
+#button-level-next,
+#button-level-edit,
+#button-levels-prev,
+#button-levels-next,
+#button-shapes-prev,
+#button-shapes-next,
+#button-undo,
+#button-redo,
+#button-undo-edit,
+#button-redo-edit,
+#controller-buttons-axis,
+#button-shapes-g {
+  display: block;
+  opacity: 1;
+  transition: opacity 150ms ease, transform 150ms ease;
+
+  &.hide {
+    pointer-events: none;
+    opacity: 0;
+  }
+}
