@@ -2158,6 +2158,9 @@
         text.setAttribute('font-size', fontSize);
         text.setAttribute('transform', `translate(${width},${height})`);
         g.appendChild(text);
+        common.showElem(elems.edit.normalize);
+      } else {
+        common.hideElem(elems.edit.normalize);
       }
 
       const pointsR = [

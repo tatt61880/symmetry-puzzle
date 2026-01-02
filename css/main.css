@@ -216,6 +216,7 @@ text {
 #button-undo-edit,
 #button-redo-edit,
 #controller-buttons-axis,
+#edit-normalize,
 #button-shapes-g {
   display: block;
   transition: opacity 150ms ease;
