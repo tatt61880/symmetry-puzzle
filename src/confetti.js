@@ -1,4 +1,3 @@
-// グローバルに公開（window.～ で呼べる）
 window.playSvgConfetti = function playSvgConfetti(gConfetti, width, height, opt = {}) {
   const {
     count = 40,
@@ -15,12 +14,11 @@ window.playSvgConfetti = function playSvgConfetti(gConfetti, width, height, opt 
   } = opt;
 
   const ns = 'http://www.w3.org/2000/svg';
-  const baseSpeed = Math.max(width, height) * 1.6;
-
-  // 既存の紙吹雪を消す（好みで変更OK）
-  while (gConfetti.firstChild) gConfetti.removeChild(gConfetti.firstChild);
-
+  const baseSpeed = Math.max(width, height) * 1.3;
   const lerp = (a, b, t) => a + (b - a) * t;
+
+  // 念のため中身は空にしておく
+  while (gConfetti.firstChild) gConfetti.removeChild(gConfetti.firstChild);
 
   const ps = [];
   for (let i = 0; i < count; i++) {
@@ -56,14 +54,16 @@ window.playSvgConfetti = function playSvgConfetti(gConfetti, width, height, opt 
   let last = t0;
   let stopped = false;
 
+  const removeGroup = () => {
+    // すでにDOMから外れていてもOK
+    if (gConfetti && gConfetti.parentNode) gConfetti.parentNode.removeChild(gConfetti);
+  };
+
   const stop = () => {
     if (stopped) return;
     stopped = true;
     if (raf) cancelAnimationFrame(raf);
-    for (const p of ps) {
-      if (p.el.parentNode === gConfetti) gConfetti.removeChild(p.el);
-    }
-    gConfetti.setAttribute('opacity', '1');
+    removeGroup();
   };
 
   const tick = (now) => {
