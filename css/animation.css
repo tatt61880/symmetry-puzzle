@@ -1018,7 +1018,39 @@
   }
 }
 
+@keyframes animation-sound-on {
+  0% {
+    transform: scaleY(-1);
+  }
+
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes animation-sound-off {
+  0% {
+    transform: scaleY(1);
+  }
+
+  100% {
+    transform: scaleY(-1);
+  }
+}
+
 /* icon animation */
+#setting-sound-toggle {
+  & > svg {
+    transition: transform 250ms ease;
+    transform: scaleY(1);
+    transform-origin: center;
+  }
+
+  &.active > svg {
+    transform: scaleY(-1);
+  }
+}
+
 #help-tab-app:checked + .tab > svg,
 #help-tab-special:checked + .tab > svg,
 .animation-icon-title,
