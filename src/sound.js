@@ -714,6 +714,17 @@
     const defaultVolume = typeof options.volume === 'number' ? options.volume : 0.35;
     let currentVolume = defaultVolume;
 
+
+    // 全体の音量をまとめてブースト（効果音・BGMともに）
+    const gainBoost = typeof options.gainBoost === 'number' ? options.gainBoost : 2.0;
+
+    function effectiveMasterGainValue() {
+      const v = currentVolume * gainBoost;
+      if (v <= 0) return 0.0;
+      if (v >= 1.0) return 1.0;
+      return v;
+    }
+
     let audioCtx = null;
     let master = null;
     let enabled = false;
@@ -735,7 +746,7 @@
       if (!audioCtx) {
         audioCtx = new (global.AudioContext || global.webkitAudioContext)();
         master = audioCtx.createGain();
-        master.gain.value = enabled ? currentVolume : 0.0;
+        master.gain.value = enabled ? effectiveMasterGainValue() : 0.0;
         master.connect(audioCtx.destination);
 
         sfx = createSfx(audioCtx, master, {
@@ -838,7 +849,7 @@
 
       // すでに動いている
       if (audioCtx.state === 'running') {
-        if (master) master.gain.value = currentVolume;
+        if (master) master.gain.value = effectiveMasterGainValue();
         return;
       }
 
@@ -854,7 +865,7 @@
       }
 
       if (ok1) {
-        if (master) master.gain.value = currentVolume;
+        if (master) master.gain.value = effectiveMasterGainValue();
         return;
       }
 
@@ -869,7 +880,7 @@
         playSilentTick();
 
         if (ok2) {
-          if (master) master.gain.value = currentVolume;
+          if (master) master.gain.value = effectiveMasterGainValue();
           return;
         }
       }
@@ -982,7 +993,7 @@
     async function enable(fromGesture = true) {
       enabled = true;
       ensureContext();
-      if (master) master.gain.value = currentVolume;
+      if (master) master.gain.value = effectiveMasterGainValue();
 
       installReturnHooks();
 
@@ -1001,7 +1012,7 @@
     function setVolume(v) {
       if (typeof v !== 'number') return;
       currentVolume = v;
-      if (master) master.gain.value = enabled ? currentVolume : 0.0;
+      if (master) master.gain.value = enabled ? effectiveMasterGainValue() : 0.0;
     }
 
     function resumeIfNeeded(fromGesture = false) {
