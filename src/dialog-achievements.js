@@ -130,19 +130,21 @@
 
       // ★
       const starNum = Math.floor(num / 10);
-      for (let i = 0; i < starNum; i++) {
+      for (let i = 0; i < 5; i++) {
         const size = 30;
         const svg = app.svg.createSvg();
         svg.setAttribute('width', size);
         svg.setAttribute('height', size);
-        const g = app.svg.createStar(size, { x: 0, y: 0, fill: '#FFD54A', stroke: '#C08A00', strokeWidth: size * 0.002 });
-        elem.appendChild(svg);
-        svg.appendChild(g);
-
-        if (i === starNum - 1) {
-          elem.appendChild(document.createElement('br'));
+        if (i < starNum) {
+          const g = app.svg.createStar(size, { x: 0, y: 0, fill: '#ffd54a', stroke: '#c08a00', strokeWidth: size * 0.002 });
+          svg.appendChild(g);
+        } else {
+          const g = app.svg.createStar(size, { x: 0, y: 0, fill: '#ffffff', stroke: '#c08a0060', strokeWidth: size * 0.002 });
+          svg.appendChild(g);
         }
+        elem.appendChild(svg);
       }
+      elem.appendChild(document.createElement('br'));
 
       // テキスト
       const div = document.createElement('div');
