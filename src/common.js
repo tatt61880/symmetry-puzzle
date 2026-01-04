@@ -161,7 +161,6 @@
         strokeWidth: 0.02,
       });
       g.appendChild(crown);
-      g.setAttribute('stroke-dasharray', `${size * 0.01} ${size * 0.04}`);
       return g;
     } else {
       return app.svg.createCrown(size, {
