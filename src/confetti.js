@@ -1,11 +1,13 @@
 window.playSvgConfetti = function playSvgConfetti(gConfetti, width, height, opt = {}) {
   const {
     count = 40,
-    durationMs = 800,
+    durationMs = 1000,
     startX = width * 0.5,
     startY = height * 0.75,
     spreadRad = Math.PI * 0.6,
     gravity = Math.max(width, height) * 2.2,
+    gravityMul = 1,
+    speedMul = 1,
     drag = 0.985,
     minW = Math.max(width, height) * 0.012,
     maxW = Math.max(width, height) * 0.022,
@@ -14,7 +16,8 @@ window.playSvgConfetti = function playSvgConfetti(gConfetti, width, height, opt 
   } = opt;
 
   const ns = 'http://www.w3.org/2000/svg';
-  const baseSpeed = Math.max(width, height) * 1.3;
+  const baseSpeed = Math.max(width, height) * 1.3 * speedMul;
+  const gravityEff = gravity * gravityMul;
   const lerp = (a, b, t) => a + (b - a) * t;
 
   // 念のため中身は空にしておく
@@ -78,7 +81,7 @@ window.playSvgConfetti = function playSvgConfetti(gConfetti, width, height, opt 
 
     for (const p of ps) {
       p.vx *= drag;
-      p.vy = p.vy * drag + gravity * dt;
+      p.vy = p.vy * drag + gravityEff * dt;
 
       p.x += p.vx * dt;
       p.y += p.vy * dt;
