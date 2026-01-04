@@ -593,18 +593,20 @@
   }
 
   function updateSvg() {
-    const divMainHeight =
+    const divMainHeight = Math.max(
+      frameSizeH * 3,
       window.innerHeight -
-      10 -
-      [
-        //
-        elems.header,
-        elems.level.widget,
-        elems.auto.buttons,
-        elems.controller.widget,
-        elems.edit.widget,
-        elems.footer,
-      ].reduce((sum, elem) => sum + elem.getBoundingClientRect().height, 0);
+        10 -
+        [
+          //
+          elems.header,
+          elems.level.widget,
+          elems.auto.buttons,
+          elems.controller.widget,
+          elems.edit.widget,
+          elems.footer,
+        ].reduce((sum, elem) => sum + elem.getBoundingClientRect().height, 0)
+    );
     elems.main.div.style.setProperty('height', `${divMainHeight}px`);
 
     // フレームの横幅をデフォルト値に戻してブロックサイズを計算します。
