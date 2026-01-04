@@ -84,7 +84,7 @@
   colors.stepWin = '#ff5555';
   colors.stepDraw = '#ff7700';
   colors.stepLose = '#777777';
-  colors.stepUnknown = '#999999';
+  colors.stepUnknown = '#404040';
   colors.stepNormal = '#663300';
   colors.stepNum = '#303080'; // 連番モード用
 

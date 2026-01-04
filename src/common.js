@@ -156,12 +156,12 @@
       const crown = app.svg.createCrown(size, {
         x,
         y,
-        fill: '#ffffff00', // クリックできるようにします。透明です。
+        fill: '#ffffff40',
         stroke: app.colors.stepUnknown,
-        strokeWidth: 0.025,
+        strokeWidth: 0.02,
       });
       g.appendChild(crown);
-      g.setAttribute('stroke-dasharray', `${size * 0.02} ${size * 0.05}`);
+      g.setAttribute('stroke-dasharray', `${size * 0.01} ${size * 0.04}`);
       return g;
     } else {
       return app.svg.createCrown(size, {
