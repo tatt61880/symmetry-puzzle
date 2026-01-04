@@ -5,9 +5,9 @@ window.playSvgConfetti = function playSvgConfetti(gConfetti, width, height, opt 
     startX = width * 0.5,
     startY = height * 0.75,
     spreadRad = Math.PI * 0.6,
-    gravity = Math.max(width, height) * 2.2,
+    gravity = null,
     gravityMul = 1,
-    speedMul = 1,
+    speedMul = 0.75,
     drag = 0.985,
     minW = Math.max(width, height) * 0.012,
     maxW = Math.max(width, height) * 0.022,
@@ -16,8 +16,37 @@ window.playSvgConfetti = function playSvgConfetti(gConfetti, width, height, opt 
   } = opt;
 
   const ns = 'http://www.w3.org/2000/svg';
-  const baseSpeed = Math.max(width, height) * 1.3 * speedMul;
-  const gravityEff = gravity * gravityMul;
+  const { baseSpeed, gravityEff } = (() => {
+    // width/height と startY/durationMs から「上にも下にも程よく届く」ように自動調整
+    const T = Math.max(0.05, durationMs / 1000);
+    const y0 = startY;
+
+    // 目標：少し上（画面外）まで上がって、最後は少し下まで落ちる
+    const peakY = -height * 0.05;
+    const endY = height * 1.05;
+
+    const A = 2 * Math.max(1, y0 - peakY); // vy^2 / g
+    const delta = Math.max(1, endY - y0);
+
+    const sqrtA = Math.sqrt(A);
+    const u = (sqrtA + Math.sqrt(sqrtA * sqrtA + 2 * delta)) / T; // u = sqrt(g)
+    const gravityAuto = u * u;
+
+    // angle/speed の平均を考慮して baseSpeed を決める
+    const spread = Math.max(1e-4, spreadRad);
+    const meanCos = spread < 1e-3 ? 1 : (2 * Math.sin(spread / 2)) / spread; // E[cos(delta)]
+    const meanSpeedMul = 1.1; // E[0.8 + 0.6*U]
+    const meanVyFactor = Math.max(0.05, meanSpeedMul * meanCos);
+
+    const vy0Abs = sqrtA * u; // |vy0|（目標）
+    const baseSpeedAuto = vy0Abs / meanVyFactor;
+
+    const g = (Number.isFinite(gravity) ? gravity : gravityAuto) * gravityMul;
+    const s = baseSpeedAuto * speedMul;
+
+    return { baseSpeed: s, gravityEff: g };
+  })();
+
   const lerp = (a, b, t) => a + (b - a) * t;
 
   // 念のため中身は空にしておく
