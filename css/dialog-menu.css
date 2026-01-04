@@ -15,7 +15,7 @@
   #dialog-menu-div {
     padding: 5px;
     padding-bottom: 10px;
-    background-color: #e5e5e5;
+    background-color: #ddeeff;
   }
 
   #menu-top {
@@ -33,7 +33,7 @@
     .caption {
       font-size: 1.5rem;
       font-weight: normal;
-      color: #888888;
+      color: #303080;
       text-shadow: var(--pseudo-bold-shadow);
     }
   }
