@@ -149,9 +149,9 @@
 
     const numSpecialTotal = numSpecialSolvedBest + numSpecialSolvedNormal + numSpecialNotSolved;
 
-    const setBackgroundBar = (td, ratio) => {
+    const setBackgroundBar = (td, ratio, color = 'rgb(250, 250, 150)') => {
       const percent = ratio * 100;
-      const style = `width: 80px; background: linear-gradient(to right, rgb(250, 250, 150) ${percent}%, transparent ${percent}%);`;
+      const style = `width: 80px; background: linear-gradient(to right, ${color} ${percent}%, transparent ${percent}%);`;
       td.setAttribute('style', style);
     };
 
@@ -231,17 +231,17 @@
       {
         const td = elems.records.line.uncleared;
         td.innerText = numLineNotSolved;
-        setBackgroundBar(td, numLineNotSolved / numLineTotal);
+        setBackgroundBar(td, numLineNotSolved / numLineTotal, 'rgb(230, 230, 230)');
       }
       {
         const td = elems.records.point.uncleared;
         td.innerText = numPointNotSolved;
-        setBackgroundBar(td, numPointNotSolved / numPointTotal);
+        setBackgroundBar(td, numPointNotSolved / numPointTotal, 'rgb(230, 230, 230)');
       }
       {
         const td = elems.records.special.uncleared;
         td.innerText = numSpecialNotSolved;
-        setBackgroundBar(td, numSpecialNotSolved / numSpecialTotal);
+        setBackgroundBar(td, numSpecialNotSolved / numSpecialTotal, 'rgb(230, 230, 230)');
       }
     }
 
