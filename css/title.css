@@ -7,6 +7,7 @@
     display: table;
     width: 100%;
     height: calc(100svh - 68px);
+    background-color: #f1f8ff;
   }
 
   #title-inner-sub {

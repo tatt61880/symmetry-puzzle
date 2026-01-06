@@ -3,6 +3,7 @@
 #game {
   box-sizing: border-box;
   width: 500px;
+  background-color: #f1f8ff;
 
   #level-widget {
     box-sizing: border-box;
