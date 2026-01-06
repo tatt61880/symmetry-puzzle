@@ -1812,9 +1812,15 @@
 
     for (const obj of [
       { className: 'logo-app', levelObj: { w: 3, h: 3, s: '01-222-02' }, checkMode: app.Level.CHECK_MODE.SPECIAL },
+
+      { className: 'logo-line-s', levelObj: { w: 5, h: 4, s: '-112-01s' }, checkMode: app.Level.CHECK_MODE.LINE },
+      { className: 'logo-point-s', levelObj: { w: 5, h: 4, s: '-11s-012' }, checkMode: app.Level.CHECK_MODE.POINT },
+      { className: 'logo-special-s', levelObj: { w: 5, h: 4, s: '-11-21s' }, checkMode: app.Level.CHECK_MODE.SPECIAL },
+
       { className: 'logo-line', levelObj: { w: 3, h: 2, s: '112-01' }, checkMode: app.Level.CHECK_MODE.LINE },
       { className: 'logo-point', levelObj: { w: 3, h: 2, s: '11-012' }, checkMode: app.Level.CHECK_MODE.POINT },
       { className: 'logo-special', levelObj: { w: 2, h: 2, s: '11-21' }, checkMode: app.Level.CHECK_MODE.SPECIAL },
+
       {
         className: 'logo-123',
         levelObj: { w: 5, h: 5, s: '0102-34567-0809-(10)(11)(12)(13)(14)-0(15)0(16)' },
