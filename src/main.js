@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2026.01.04';
+  const VERSION_TEXT = 'v' + '2026.01.07';
 
   const app = window.app;
   Object.freeze(app);
@@ -1115,6 +1115,7 @@
     elems.version.textContent = VERSION_TEXT;
     elems.help.version.textContent = VERSION_TEXT;
     elems.records.version.textContent = VERSION_TEXT;
+    elems.achievements.version.textContent = VERSION_TEXT;
 
     initElems();
     initBlock();
@@ -1670,6 +1671,9 @@
 
   // 実績画面用
   function initElemsForAchievements() {
+    const size = Number(elems.achievements.buttonSvg.dataset.starSize);
+    const star = app.svg.createStar(size, { x: 0, y: 0, fill: '#ffd54a', stroke: '#c08a00' });
+    elems.achievements.buttonSvg.appendChild(star);
     elems.achievements.button.addEventListener('click', app.dialog.achievements.show);
     elems.achievements.dialog.addEventListener('click', app.dialog.achievements.close);
     elems.achievements.close.addEventListener('click', app.dialog.achievements.close);

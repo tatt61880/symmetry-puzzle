@@ -112,7 +112,7 @@
 
     // 実績ダイアログ
     achievements: {
-      version: 'record-dialog-version',
+      version: 'achievements-dialog-version',
       button: 'button-achievements',
       buttonSvg: 'button-achievements-svg',
       dialog: 'dialog-achievements',

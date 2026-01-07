@@ -136,10 +136,10 @@
         svg.setAttribute('width', size);
         svg.setAttribute('height', size);
         if (i < starNum) {
-          const g = app.svg.createStar(size, { x: 0, y: 0, fill: '#ffd54a', stroke: '#c08a00', strokeWidth: size * 0.002 });
+          const g = app.svg.createStar(size, { x: 0, y: 0, fill: '#ffd54a', stroke: '#c08a00' });
           svg.appendChild(g);
         } else {
-          const g = app.svg.createStar(size, { x: 0, y: 0, fill: '#ffffff', stroke: '#c08a0060', strokeWidth: size * 0.002 });
+          const g = app.svg.createStar(size, { x: 0, y: 0, fill: '#ffffff', stroke: '#c08a0060' });
           svg.appendChild(g);
         }
         elem.appendChild(svg);

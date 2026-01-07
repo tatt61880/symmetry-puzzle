@@ -155,7 +155,7 @@
     return g;
   };
 
-  svg.createStar = (blockSize, { x, y, fill, stroke, strokeWidth }) => {
+  svg.createStar = (blockSize, { x, y, fill, stroke, strokeWidth = 0.05 }) => {
     const g = svg.createG();
 
     const polygon = svg.createPolygon(blockSize, {

@@ -89,6 +89,21 @@
     }
   }
 
+  #achievements-dialog-title {
+    font-size: 1.3rem;
+    font-weight: normal;
+    color: #333388;
+    text-shadow: var(--pseudo-bold-shadow);
+  }
+
+  #achievements-dialog-version {
+    margin-left: 10px;
+    font-size: 0.9rem;
+    font-weight: normal;
+    color: #7777cc;
+    text-shadow: var(--pseudo-bold-shadow);
+  }
+
   &::backdrop {
     cursor: pointer;
     background-color: rgb(0 0 0 / 50%);
