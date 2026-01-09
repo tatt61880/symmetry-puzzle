@@ -212,6 +212,12 @@
       }
     }
 
+    .help-mode-description {
+      font-size: 1rem;
+      font-weight: normal;
+      color: #333388;
+    }
+
     .help-mode-condition {
       font-size: 1.1rem;
       font-weight: normal;
@@ -387,6 +393,7 @@
 
   .share-button-div {
     margin: 5px;
+    color: #333388;
   }
 
   /* SNS シェアボタン */
