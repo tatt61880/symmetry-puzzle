@@ -714,7 +714,6 @@
     const defaultVolume = typeof options.volume === 'number' ? options.volume : 0.35;
     let currentVolume = defaultVolume;
 
-
     // 全体の音量をまとめてブースト（効果音・BGMともに）
     const gainBoost = typeof options.gainBoost === 'number' ? options.gainBoost : 2.0;
 
