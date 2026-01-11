@@ -200,11 +200,6 @@
 
         <div>
           <div class="tab-area">
-            <!-- 対称パズル -->
-            <input type="radio" name="help-tab" id="help-tab-app" checked>
-            <label class="flex tab tab-app" for="help-tab-app">
-              <svg class="logo-image logo-app" data-block-size="16" width="48" height="48"></svg>
-            </label>
             <div class="tab-app-content">
               <div class="help-mode-title flex">
                 <span class="translatable-toggle" data-en="Symmetry Puzzle" data-ja="対称パズル"></span>
@@ -321,7 +316,7 @@
               </div>
 
               <hr>
-              <div>
+              <div id="help-credits">
                 <div class="flex">
                   <img class="tatt61880-icon" alt="icon: tatt61880" src="./images/tatt61880.png?2025.03.30">
                   <span class="translatable-toggle help-mode-creator" data-en="Created by Tatt" data-ja="作者: Tatt">
@@ -331,24 +326,6 @@
                 <div class="translatable-toggle help-mode-tester" data-en="Tester: Hatsuki" data-ja="テスター: Hatsuki"></div>
               </div>
             </div>
-
-            <!-- 線対称パズル -->
-            <input type="radio" name="help-tab" id="help-tab-line" class="input-tab-mode-line">
-            <label class="flex tab tab-mode tab-mode-line" for="help-tab-line">
-              <svg class="logo-image logo-line" data-block-size="16" width="48" height="32"></svg>
-            </label>
-
-            <!-- 点対称パズル -->
-            <input type="radio" name="help-tab" id="help-tab-point" class="input-tab-mode-point">
-            <label class="flex tab tab-mode tab-mode-point" for="help-tab-point">
-              <svg class="logo-image logo-point" data-block-size="16" width="48" height="32"></svg>
-            </label>
-
-            <!-- 線&点対称パズル -->
-            <input type="radio" name="help-tab" id="help-tab-special" class="input-tab-mode-special">
-            <label class="flex tab tab-mode tab-mode-special" for="help-tab-special">
-              <svg class="logo-image logo-special" data-block-size="16" width="32" height="32"></svg>
-            </label>
 
             <div class="tab-mode-content">
               <div class="help-mode-title translatable-toggle tab-mode-content-line" data-en="Line Symmetry Puzzle" data-ja="線対称パズル"></div>
@@ -468,6 +445,30 @@
                 </span>
               </div>
             </div>
+
+            <!-- 対称パズル -->
+            <input type="radio" name="help-tab" id="help-tab-app" checked>
+            <label class="flex tab tab-app" for="help-tab-app">
+              <svg class="logo-image logo-app" data-block-size="16" width="48" height="48"></svg>
+            </label>
+
+            <!-- 線対称パズル -->
+            <input type="radio" name="help-tab" id="help-tab-line" class="input-tab-mode-line">
+            <label class="flex tab tab-mode tab-mode-line" for="help-tab-line">
+              <svg class="logo-image logo-line" data-block-size="16" width="48" height="32"></svg>
+            </label>
+
+            <!-- 点対称パズル -->
+            <input type="radio" name="help-tab" id="help-tab-point" class="input-tab-mode-point">
+            <label class="flex tab tab-mode tab-mode-point" for="help-tab-point">
+              <svg class="logo-image logo-point" data-block-size="16" width="48" height="32"></svg>
+            </label>
+
+            <!-- 線&点対称パズル -->
+            <input type="radio" name="help-tab" id="help-tab-special" class="input-tab-mode-special">
+            <label class="flex tab tab-mode tab-mode-special" for="help-tab-special">
+              <svg class="logo-image logo-special" data-block-size="16" width="32" height="32"></svg>
+            </label>
           </div>
         </div>
       </div>

@@ -21,7 +21,7 @@
   }
 
   #dialog-help-div {
-    min-height: 570px;
+    min-height: 565px;
     padding: 5px;
   }
 
@@ -134,12 +134,6 @@
     }
   }
 
-  .tab-area {
-    display: flex;
-    flex-wrap: wrap;
-    margin: auto;
-  }
-
   .tab {
     box-sizing: border-box;
     display: block;
@@ -163,10 +157,15 @@
     }
   }
 
+  #help-credits {
+    margin-bottom: 5px;
+  }
+
   .tab-app-content,
   .tab-mode-content {
     display: none;
     width: 100%;
+    min-height: 435px;
 
     .user-block-line,
     .user-block-point,
@@ -233,6 +232,27 @@
     }
   }
 
+  .tab-mode-content-line,
+  .tab-mode-content-point,
+  .tab-mode-content-special {
+    display: none;
+  }
+
+  .tab-area {
+    flex-wrap: wrap;
+    margin: auto;
+
+    &:has(input#help-tab-app:checked) .tab-app-content,
+    &:has(input#help-tab-line:checked) .tab-mode-content,
+    &:has(input#help-tab-line:checked) .tab-mode-content-line,
+    &:has(input#help-tab-point:checked) .tab-mode-content,
+    &:has(input#help-tab-point:checked) .tab-mode-content-point,
+    &:has(input#help-tab-special:checked) .tab-mode-content,
+    &:has(input#help-tab-special:checked) .tab-mode-content-special {
+      display: block;
+    }
+  }
+
   .help-mode-creator {
     margin-left: 5px;
     font-size: 1.1rem;
@@ -260,12 +280,6 @@
     color: #883333;
   }
 
-  .tab-mode-content-line,
-  .tab-mode-content-point,
-  .tab-mode-content-special {
-    display: none;
-  }
-
   & input {
     &[name='help-tab'] {
       display: none;
@@ -283,17 +297,6 @@
 
     &:not(:checked):active:hover + .tab {
       opacity: 0.5;
-    }
-
-    &:checked + .tab-app + .tab-app-content,
-    &:checked + .tab-mode ~ .tab-mode-content {
-      display: block;
-    }
-
-    &.input-tab-mode-line:checked ~ * .tab-mode-content-line,
-    &.input-tab-mode-point:checked ~ * .tab-mode-content-point,
-    &.input-tab-mode-special:checked ~ * .tab-mode-content-special {
-      display: block;
     }
   }
 
