@@ -220,6 +220,7 @@
     }
 
     .help-mode-description {
+      min-height: 105px;
       font-size: 1rem;
       font-weight: normal;
       color: #333388;
