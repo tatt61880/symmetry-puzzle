@@ -21,7 +21,7 @@
   }
 
   #dialog-help-div {
-    min-height: 565px;
+    min-height: 570px;
     padding: 5px;
   }
 
@@ -165,7 +165,7 @@
   .tab-mode-content {
     display: none;
     width: 100%;
-    min-height: 435px;
+    min-height: 440px;
 
     .user-block-line,
     .user-block-point,
