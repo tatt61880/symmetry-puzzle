@@ -21,6 +21,7 @@
   }
 
   #dialog-help-div {
+    min-height: 578px;
     padding: 5px;
   }
 
