@@ -1564,7 +1564,7 @@
     // 点対称-通常モード
     elems.title.buttonNormalPoint.addEventListener('click', gotoNormalPointMode);
 
-    // 線&点対称-通常モード
+    // 線点対称-通常モード
     elems.title.buttonNormalSpecial.addEventListener('click', gotoNormalSpecialMode);
 
     // 線対称-連番モード
@@ -1573,7 +1573,7 @@
     // 点対称-連番モード
     elems.title.buttonSeqPoint.addEventListener('click', gotoNumPointMode);
 
-    // 線&点対称-連番モード
+    // 線点対称-連番モード
     elems.title.buttonSeqSpecial.addEventListener('click', gotoNumSpecialMode);
 
     elems.title.buttonToggleToNormal.addEventListener('click', toggleNormalSeqMode);

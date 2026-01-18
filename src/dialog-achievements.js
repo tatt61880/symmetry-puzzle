@@ -94,19 +94,19 @@
       {
         elem: elems.achievements.line.solved,
         ja: '線',
-        en: 'Line',
+        en: 'Line:',
         num: numLineSolved,
       },
       {
         elem: elems.achievements.point.solved,
         ja: '点',
-        en: 'Point',
+        en: 'Point:',
         num: numPointSolved,
       },
       {
         elem: elems.achievements.special.solved,
-        ja: '線&点',
-        en: 'Line & Point',
+        ja: '線点',
+        en: 'Line & Point:',
         num: numSpecialSolved,
       },
     ];
@@ -151,22 +151,22 @@
 
       if (num < 10) {
         div.dataset.ja = `${ja}対称の初心者`;
-        div.dataset.en = `${en} Symmetry Beginner`;
+        div.dataset.en = `${en} Beginner`;
       } else if (num < 20) {
         div.dataset.ja = `${ja}対称の挑戦者`;
-        div.dataset.en = `${en} Symmetry Challenger`;
+        div.dataset.en = `${en} Challenger`;
       } else if (num < 30) {
         div.dataset.ja = `${ja}対称の探究者`;
-        div.dataset.en = `${en} Symmetry Seeker`;
+        div.dataset.en = `${en} Seeker`;
       } else if (num < 40) {
         div.dataset.ja = `${ja}対称の熟練者`;
-        div.dataset.en = `${en} Symmetry Adept`;
+        div.dataset.en = `${en} Adept`;
       } else if (num < 50) {
         div.dataset.ja = `${ja}対称の名手`;
-        div.dataset.en = `${en} Symmetry Expert`;
+        div.dataset.en = `${en} Expert`;
       } else {
         div.dataset.ja = `${ja}対称の達人`;
-        div.dataset.en = `${en} Symmetry Master`;
+        div.dataset.en = `${en} Master`;
       }
 
       app.common.applyLang(div, lang);
