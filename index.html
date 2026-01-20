@@ -745,41 +745,44 @@
           <g id="record-button-backup" class="button active-hover" transform="translate(100,50)">
             <g class="button-transform">
               <rect x="-80" y="-40" rx="15" width="160" height="100" fill="#e4e4ff" stroke="#aaaaff" stroke-width="4" />
+
               <text x="0" y="-20" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="20" fill="#333388"
                 class="translatable-toggle" data-en="Backup" data-ja="ファイルへの"></text>
               <text x="0" y="4" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="20" fill="#333388"
                 class="translatable-toggle" data-en="to file" data-ja="バックアップ"></text>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" x="-18" y="15" fill="none"
-                stroke="currentColor" style="color:#333388" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
-                aria-label="ファイルへのバックアップ">
+
+              <!-- icon (no nested svg) -->
+              <g transform="translate(-18,15) scale(1.5)" fill="none" stroke="#333388" stroke-width="1.4" stroke-linecap="round"
+                stroke-linejoin="round" aria-label="ファイルへのバックアップ">
                 <path d="M7 3h8l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
                 <path d="M15 3v4h4" />
                 <path d="M12 9v8" />
                 <path d="M9.5 14.5L12 17l2.5-2.5" />
-              </svg>
+              </g>
             </g>
           </g>
+
           <g id="record-button-restore" class="button active-hover" transform="translate(300,50)">
             <g class="button-transform">
               <rect x="-80" y="-40" rx="15" width="160" height="100" fill="#e4e4ff" stroke="#aaaaff" stroke-width="4" />
+
               <text x="0" y="-20" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="20" fill="#333388"
                 class="translatable-toggle" data-en="Restore" data-ja="ファイルからの"></text>
               <text x="0" y="4" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="20" fill="#333388"
                 class="translatable-toggle" data-en="from file" data-ja="リストア"></text>
-            </g>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" x="-18" y="15" fill="none"
-              stroke="currentColor" style="color:#333388" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
-              aria-label="ファイルからのリストア">
-              <!-- file -->
-              <path d="M7 3h8l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
-              <path d="M15 3v4h4" />
 
-              <!-- arrow up -->
-              <path d="M12 17V9" />
-              <path d="M9.5 11.5L12 9l2.5 2.5" />
-            </svg>
+              <!-- icon (no nested svg) -->
+              <g transform="translate(-18,15) scale(1.5)" fill="none" stroke="#333388" stroke-width="1.4" stroke-linecap="round"
+                stroke-linejoin="round" aria-label="ファイルからのリストア">
+                <path d="M7 3h8l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+                <path d="M15 3v4h4" />
+                <path d="M12 17V9" />
+                <path d="M9.5 11.5L12 9l2.5 2.5" />
+              </g>
+            </g>
           </g>
         </svg>
+
       </div>
     </dialog>
 
