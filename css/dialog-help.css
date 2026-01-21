@@ -255,14 +255,14 @@
 
   .help-mode-creator {
     margin-left: 5px;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: normal;
     color: #333388;
     text-shadow: var(--pseudo-bold-shadow);
   }
 
   .help-mode-tester {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: normal;
     color: #333388;
     text-shadow: var(--pseudo-bold-shadow);
