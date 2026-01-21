@@ -100,7 +100,7 @@
     .setting-lang-button {
       width: calc(100% / 4 - 10px);
       height: 48px;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: normal;
       color: #505050;
       text-shadow: var(--pseudo-bold-shadow);
