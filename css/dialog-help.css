@@ -111,13 +111,13 @@
       border-radius: 15px;
       outline: none;
 
-      &.left {
+      &.setting-lang-button-left {
         margin-right: 0;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
       }
 
-      &.right {
+      &.setting-lang-button-right {
         margin-left: 0;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
