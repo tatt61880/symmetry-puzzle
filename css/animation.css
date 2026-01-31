@@ -1094,3 +1094,49 @@
 .rotate-ccw {
   animation: rotate-once 0.3s linear;
 }
+
+.tatt61880-icon {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  transform-origin: center;
+  perspective: 800px;
+  transform-style: preserve-3d;
+  animation-name: animation-tatt61880;
+  animation-duration: calc(var(--animation-duration-symmetry) * 1.4);
+  animation-timing-function: linear;
+  animation-fill-mode: none;
+
+  img {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .front {
+    transform: rotateY(0deg);
+  }
+
+  .back {
+    transform: rotateY(180deg);
+  }
+}
+
+@keyframes animation-tatt61880 {
+  0% {
+    transform: rotateY(0deg);
+  }
+
+  30%,
+  70% {
+    transform: rotateY(180deg);
+  }
+
+  100% {
+    transform: rotateY(360deg);
+  }
+}
