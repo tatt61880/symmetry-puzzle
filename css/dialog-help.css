@@ -66,13 +66,13 @@
 
       .sound-on {
         display: none;
-        border: 4px solid #aaaaff;
+        border-color: #aaaaff;
       }
 
       &.active {
         color: #333388;
         background-color: #e4e4ff;
-        border: 4px solid #aaaaff;
+        border-color: #aaaaff;
         opacity: 1;
 
         .sound-on {
@@ -98,7 +98,7 @@
     }
 
     .setting-lang-button {
-      width: calc(100% / 4 - 10px);
+      width: calc(100% / 4 - 5px);
       height: 48px;
       font-size: 1.2rem;
       font-weight: normal;
@@ -110,6 +110,18 @@
       border: 4px solid #cccccc;
       border-radius: 15px;
       outline: none;
+
+      &.left {
+        margin-right: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      &.right {
+        margin-left: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
 
       &:not(.active) {
         &:active {
@@ -128,7 +140,7 @@
       &.active {
         color: #333388;
         background-color: #e4e4ff;
-        border: 4px solid #aaaaff;
+        border-color: #aaaaff;
         opacity: 1;
       }
     }
