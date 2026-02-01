@@ -21,6 +21,7 @@
         autoMode: false,
         debugFlag: false,
         mirrorFlag: false,
+        sharedFlag: false,
         rotateNum: 0,
       },
     };
@@ -72,6 +73,9 @@
           break;
         case 'mirror':
           res.settings.mirrorFlag = true;
+          break;
+        case 'shared':
+          res.settings.sharedFlag = true;
           break;
         case 'rotate':
           res.settings.rotateNum = Number(paramVal) % 4;

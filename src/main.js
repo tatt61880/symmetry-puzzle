@@ -28,6 +28,7 @@
     autoMode: false,
     debugFlag: false,
     mirrorFlag: false,
+    sharedFlag: false,
     rotateNum: 0,
   };
 
@@ -846,14 +847,19 @@
   function updateLevelVisibility() {
     (showLevelPrev() ? common.showElem : common.hideElem)(elems.level.prev);
     (showLevelNext() ? common.showElem : common.hideElem)(elems.level.next);
+
+    common.hideElem(elems.level.edit);
+
     if (common.levelId !== null) {
       common.showElem(elems.level.id);
       common.showElem(elems.levels.button);
-      common.hideElem(elems.level.edit);
     } else {
       common.hideElem(elems.level.id);
       common.hideElem(elems.levels.button);
-      common.showElem(elems.level.edit);
+
+      if (!settings.sharedFlag) {
+        common.showElem(elems.level.edit);
+      }
     }
   }
 
@@ -904,12 +910,15 @@
 
   // エディトモードのオンオフ
   function toggleEditLevel() {
+    settings.sharedFlag = false;
+
     sound.playButton();
     editMode = !editMode;
     common.levelId = null;
     common.levelNum = null;
     updateLevelVisibility();
     updateEditMode(editMode);
+
     if (editMode) {
       updateEditAxisButton();
       updateEditElems();
@@ -1181,6 +1190,8 @@
   }
 
   function gotoTitlePage() {
+    settings.sharedFlag = false;
+
     completeFlag = false;
     window.getSelection().removeAllRanges();
 
@@ -1960,9 +1971,18 @@
         common.showElem(elems.controller.shareLevel);
 
         {
-          const textJa = '"対称パズルのレベルを共有！"\n#対称パズル';
-          const textEn = '"Share a level from Symmetry Puzzle!"\n#SymmetryPuzzle';
-          const url = 'https://tatt61880.github.io/symmetry-puzzle/?' + location.href.split('?')[1];
+          const textJaCreated = '"対称パズルのレベルを共有！"\n#対称パズル';
+          const textJaShared = '"共有されたレベルをクリア！"\n#対称パズル';
+          const textJa = settings.sharedFlag ? textJaShared : textJaCreated;
+
+          const textEnCreated = '"Share a level from Symmetry Puzzle!"\n#SymmetryPuzzle';
+          const textEnShared = '"Cleared shared level!"\n#SymmetryPuzzle';
+          const textEn = settings.sharedFlag ? textEnShared : textEnCreated;
+
+          const urlBase = 'https://tatt61880.github.io/symmetry-puzzle/?';
+          const url = urlBase + location.href.split('?')[1] + (settings.sharedFlag ? '' : '&shared');
+
+          // Twitter
           {
             const base = 'https://twitter.com/intent/tweet';
             const elem = elems.controller.shareLevelX;
@@ -1971,6 +1991,8 @@
             elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}%0A${encodeURIComponent(url)}`;
             common.applyLang(elem, app.savedata.getLang());
           }
+
+          // Bluesky
           {
             const base = 'https://bsky.app/intent/compose';
             const elem = elems.controller.shareLevelBluesky;
@@ -2740,6 +2762,7 @@
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';
     if (settings.mirrorFlag) url += '&mirror';
+    if (settings.sharedFlag) url += '&shared';
     if (settings.rotateNum !== 0) url += `&rotate=${settings.rotateNum}`;
     history.replaceState(null, '', url);
   }
