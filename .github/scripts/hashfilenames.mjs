@@ -15,7 +15,7 @@ function walk(dir, out = []) {
 }
 
 function sha8(buf) {
-  return crypto.createHash('sha256').update(buf).digest('hex').slice(0, 8);
+  return crypto.createHash('sha256').update(buf).digest('hex').slice(0, 16);
 }
 
 // すでに foo.<8hex>.js みたいな名前なら二重ハッシュしない
