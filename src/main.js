@@ -1788,23 +1788,30 @@
   function initLogo() {
     function initLogoSub({ className, levelObj, checkMode }) {
       for (const elem of document.getElementsByClassName(className)) {
-        elem.textContent = '';
+        const initElem = () => {
+          elem.textContent = '';
 
-        const level = new app.Level({
-          levelObj,
-          checkMode,
-        });
+          const level = new app.Level({
+            levelObj,
+            checkMode,
+          });
 
-        const blockSize = Number(elem.dataset.blockSize);
-        const g = level.createSvgG({
-          blockSize,
-          drawBackground: false,
-          x0: 1,
-          y0: 1,
-          width: levelObj.w,
-          height: levelObj.h,
-        });
-        elem.appendChild(g);
+          const blockSize = Number(elem.dataset.blockSize);
+          const g = level.createSvgG({
+            blockSize,
+            smallJumpFlag: true,
+            drawBackground: false,
+            x0: 1,
+            y0: 1,
+            width: levelObj.w,
+            height: levelObj.h,
+          });
+          elem.appendChild(g);
+        };
+
+        initElem();
+
+        elem.addEventListener('pointerdown', initElem);
       }
     }
 

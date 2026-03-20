@@ -31,28 +31,34 @@
   function show(sound = true) {
     {
       const setBlock = (elemSvg, char, w, checkMode) => {
-        elemSvg.textContent = '';
+        const initElem = () => {
+          elemSvg.textContent = '';
 
-        const level = new app.Level({
-          levelObj: { w, h: 1, s: char.repeat(w) },
-          checkMode,
-        });
+          const level = new app.Level({
+            levelObj: { w, h: 1, s: char.repeat(w) },
+            checkMode,
+          });
 
-        const blockSize = 32;
-        const g = level.createSvgG({
-          blockSize,
-          smallJumpFlag: true,
-          drawBackground: false,
-          x0: 1,
-          y0: 1,
-          width: w,
-          height: 1,
-        });
-        const marginTop = blockSize / 4;
-        g.setAttribute('transform', `translate(0, ${marginTop})`);
-        elemSvg.setAttribute('width', blockSize * w);
-        elemSvg.setAttribute('height', blockSize + marginTop);
-        elemSvg.appendChild(g);
+          const blockSize = 32;
+          const g = level.createSvgG({
+            blockSize,
+            smallJumpFlag: true,
+            drawBackground: false,
+            x0: 1,
+            y0: 1,
+            width: w,
+            height: 1,
+          });
+          const marginTop = blockSize / 4;
+          g.setAttribute('transform', `translate(0, ${marginTop})`);
+          elemSvg.setAttribute('width', blockSize * w);
+          elemSvg.setAttribute('height', blockSize + marginTop);
+          elemSvg.appendChild(g);
+        };
+
+        initElem();
+
+        elemSvg.addEventListener('pointerdown', initElem);
       };
 
       for (const elem of document.getElementsByClassName('user-block-line')) {
