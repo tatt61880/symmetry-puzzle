@@ -30,9 +30,7 @@
     }
 
     #init() {
-      const touchDevice = document.ontouchstart !== undefined;
-      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
-      document.addEventListener(pointerupEventName, (e) => {
+      document.addEventListener('pointerup', (e) => {
         this.#pointerup(e);
       });
     }

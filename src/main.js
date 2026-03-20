@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2026.01.11';
+  const VERSION_TEXT = 'v' + '2026.03.20';
 
   const app = window.app;
   Object.freeze(app);
@@ -1114,10 +1114,7 @@
       }
     };
 
-    const touchDevice = common.isTouchDevice();
-    const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
-
-    elems.help.sound.addEventListener(pointerupEventName, toggleSound);
+    elems.help.sound.addEventListener('pointerup', toggleSound);
   }
 
   function onloadApp() {
@@ -1291,11 +1288,9 @@
         });
       });
 
-      const touchDevice = common.isTouchDevice();
-      const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       [document.body, elems.contents].forEach((elem) => {
         elem.addEventListener(
-          pointermoveEventName,
+          'pointermove',
           (e) => {
             if (common.isShownElem(elems.console.widget)) return;
             // スワイプ操作を無効化する。
@@ -1327,29 +1322,24 @@
 
     // タッチ入力用
     {
-      const touchDevice = common.isTouchDevice();
-      const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
-      const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
-      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
-
-      elems.main.svg.addEventListener(pointerdownEventName, pointerDown);
-      elems.main.svg.addEventListener(pointermoveEventName, pointerMove);
-      elems.main.svg.addEventListener(pointerupEventName, pointerUp);
+      elems.main.svg.addEventListener('pointerdown', pointerDown);
+      elems.main.svg.addEventListener('pointermove', pointerMove);
+      elems.main.svg.addEventListener('pointerup', pointerUp);
       elems.main.svg.oncontextmenu = function () {
         return !editMode;
       };
 
-      elems.controller.undo.addEventListener(pointerdownEventName, undodown);
-      elems.edit.undo.addEventListener(pointerdownEventName, undodown);
+      elems.controller.undo.addEventListener('pointerdown', undodown);
+      elems.edit.undo.addEventListener('pointerdown', undodown);
 
-      elems.controller.redo.addEventListener(pointerdownEventName, redodown);
-      elems.edit.redo.addEventListener(pointerdownEventName, redodown);
+      elems.controller.redo.addEventListener('pointerdown', redodown);
+      elems.edit.redo.addEventListener('pointerdown', redodown);
 
-      elems.controller.buttons.up.addEventListener(pointerdownEventName, moveButtonStart.bind(null, app.Input.DIRS.UP));
-      elems.controller.buttons.right.addEventListener(pointerdownEventName, moveButtonStart.bind(null, app.Input.DIRS.RIGHT));
-      elems.controller.buttons.down.addEventListener(pointerdownEventName, moveButtonStart.bind(null, app.Input.DIRS.DOWN));
-      elems.controller.buttons.left.addEventListener(pointerdownEventName, moveButtonStart.bind(null, app.Input.DIRS.LEFT));
-      elems.controller.buttons.axis.addEventListener(pointerdownEventName, moveButtonStart.bind(null, app.Input.DIRS.AXIS));
+      elems.controller.buttons.up.addEventListener('pointerdown', moveButtonStart.bind(null, app.Input.DIRS.UP));
+      elems.controller.buttons.right.addEventListener('pointerdown', moveButtonStart.bind(null, app.Input.DIRS.RIGHT));
+      elems.controller.buttons.down.addEventListener('pointerdown', moveButtonStart.bind(null, app.Input.DIRS.DOWN));
+      elems.controller.buttons.left.addEventListener('pointerdown', moveButtonStart.bind(null, app.Input.DIRS.LEFT));
+      elems.controller.buttons.axis.addEventListener('pointerdown', moveButtonStart.bind(null, app.Input.DIRS.AXIS));
 
       elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
       elems.controller.prevLevel.addEventListener('click', gotoPrevLevelButton);
@@ -1362,7 +1352,7 @@
       elems.menu.title.addEventListener('click', menuGotoTitlePage);
       elems.menu.retry.addEventListener('click', menuRetryLevel);
 
-      document.addEventListener(pointerupEventName, pointerup);
+      document.addEventListener('pointerup', pointerup);
 
       input = new app.Input(elems.controller.buttons);
     }
@@ -1696,13 +1686,10 @@
     elems.level.retry.addEventListener('click', retryLevel);
 
     {
-      const touchDevice = common.isTouchDevice();
-      const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
-      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
-      elems.level.prev.addEventListener(pointerdownEventName, gotoPrevLevelStart);
-      elems.level.prev.addEventListener(pointerupEventName, gotoPrevLevelEnd);
-      elems.level.next.addEventListener(pointerdownEventName, gotoNextLevelStart);
-      elems.level.next.addEventListener(pointerupEventName, gotoNextLevelEnd);
+      elems.level.prev.addEventListener('pointerdown', gotoPrevLevelStart);
+      elems.level.prev.addEventListener('pointerup', gotoPrevLevelEnd);
+      elems.level.next.addEventListener('pointerdown', gotoNextLevelStart);
+      elems.level.next.addEventListener('pointerup', gotoNextLevelEnd);
     }
     elems.level.edit.addEventListener('click', toggleEditLevel);
     elems.levels.button.addEventListener('click', app.dialog.levels.show);
@@ -1735,13 +1722,10 @@
   function initElemsForLevelsDialog() {
     elems.levels.close.addEventListener('click', app.dialog.levels.close);
     {
-      const touchDevice = common.isTouchDevice();
-      const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
-      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
-      elems.levels.prev.addEventListener(pointerdownEventName, gotoLevelsPrevPageStart);
-      elems.levels.prev.addEventListener(pointerupEventName, gotoLevelsPrevPageEnd);
-      elems.levels.next.addEventListener(pointerdownEventName, gotoLevelsNextPageStart);
-      elems.levels.next.addEventListener(pointerupEventName, gotoLevelsNextPageEnd);
+      elems.levels.prev.addEventListener('pointerdown', gotoLevelsPrevPageStart);
+      elems.levels.prev.addEventListener('pointerup', gotoLevelsPrevPageEnd);
+      elems.levels.next.addEventListener('pointerdown', gotoLevelsNextPageStart);
+      elems.levels.next.addEventListener('pointerup', gotoLevelsNextPageEnd);
     }
   }
 
@@ -1772,13 +1756,10 @@
     elems.shapes.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
     elems.shapes.close.addEventListener('click', app.dialog.shapes.close);
     {
-      const touchDevice = common.isTouchDevice();
-      const pointerdownEventName = touchDevice ? 'touchstart' : 'mousedown';
-      const pointerupEventName = touchDevice ? 'touchend' : 'mouseup';
-      elems.shapes.prev.addEventListener(pointerdownEventName, gotoShapesPrevPageStart);
-      elems.shapes.prev.addEventListener(pointerupEventName, gotoShapesPrevPageEnd);
-      elems.shapes.next.addEventListener(pointerdownEventName, gotoShapesNextPageStart);
-      elems.shapes.next.addEventListener(pointerupEventName, gotoShapesNextPageEnd);
+      elems.shapes.prev.addEventListener('pointerdown', gotoShapesPrevPageStart);
+      elems.shapes.prev.addEventListener('pointerup', gotoShapesPrevPageEnd);
+      elems.shapes.next.addEventListener('pointerdown', gotoShapesNextPageStart);
+      elems.shapes.next.addEventListener('pointerup', gotoShapesNextPageEnd);
     }
   }
 
