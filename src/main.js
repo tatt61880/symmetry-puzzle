@@ -1877,9 +1877,7 @@
         // 動けないときは盤面を振動させます。
         addAnimationClass(elems.main.svg, 'animation-illegal-move');
         sound.playBump();
-        if ('vibrate' in navigator) {
-          navigator.vibrate(30);
-        }
+        navigator.vibrate?.(30);
       } else {
         const className = (() => {
           switch (common.level.getAxisType()) {
@@ -1908,9 +1906,7 @@
         elems.main.svg.style.setProperty('--animation-origin-illegal', `${(blockSize * cx) / 2}px ${(blockSize * cy) / 2}px`);
         addAnimationClass(elems.main.svg, className);
         sound.playBump();
-        if ('vibrate' in navigator) {
-          navigator.vibrate(30);
-        }
+        navigator.vibrate?.(30);
       }
     }
   }
