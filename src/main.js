@@ -1288,9 +1288,11 @@
         });
       });
 
+      const touchDevice = common.isTouchDevice();
+      const pointermoveEventName = touchDevice ? 'touchmove' : 'mousemove';
       [document.body, elems.contents].forEach((elem) => {
         elem.addEventListener(
-          'pointermove',
+          pointermoveEventName,
           (e) => {
             if (common.isShownElem(elems.console.widget)) return;
             // スワイプ操作を無効化する。
