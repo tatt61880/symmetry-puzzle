@@ -1804,7 +1804,7 @@
   }
 
   function initLogo() {
-    function initLogoSub({ className, levelObj, checkMode }) {
+    function initLogoSub({ className, levelObj, checkMode, pointerdownEvent = false }) {
       for (const elem of document.getElementsByClassName(className)) {
         const initElem = () => {
           elem.textContent = '';
@@ -1825,20 +1825,38 @@
             height: levelObj.h,
           });
           elem.appendChild(g);
+          console.log(123);
         };
 
         initElem();
 
-        elem.addEventListener('pointerdown', initElem);
+        if (pointerdownEvent) {
+          elem.addEventListener('pointerdown', initElem);
+        }
       }
     }
 
     for (const obj of [
       { className: 'logo-app', levelObj: { w: 3, h: 3, s: '01-222-02' }, checkMode: app.Level.CHECK_MODE.SPECIAL },
 
-      { className: 'logo-line-s', levelObj: { w: 5, h: 4, s: '-0112-001s' }, checkMode: app.Level.CHECK_MODE.LINE },
-      { className: 'logo-point-s', levelObj: { w: 5, h: 4, s: '-011s-0012' }, checkMode: app.Level.CHECK_MODE.POINT },
-      { className: 'logo-special-s', levelObj: { w: 5, h: 4, s: '-011-021s' }, checkMode: app.Level.CHECK_MODE.SPECIAL },
+      {
+        className: 'logo-line-s',
+        levelObj: { w: 5, h: 4, s: '-0112-001s' },
+        checkMode: app.Level.CHECK_MODE.LINE,
+        pointerdownEvent: true,
+      },
+      {
+        className: 'logo-point-s',
+        levelObj: { w: 5, h: 4, s: '-011s-0012' },
+        checkMode: app.Level.CHECK_MODE.POINT,
+        pointerdownEvent: true,
+      },
+      {
+        className: 'logo-special-s',
+        levelObj: { w: 5, h: 4, s: '-011-021s' },
+        checkMode: app.Level.CHECK_MODE.SPECIAL,
+        pointerdownEvent: true,
+      },
 
       { className: 'logo-line', levelObj: { w: 3, h: 2, s: '112-01' }, checkMode: app.Level.CHECK_MODE.LINE },
       { className: 'logo-point', levelObj: { w: 3, h: 2, s: '11-012' }, checkMode: app.Level.CHECK_MODE.POINT },
