@@ -58,7 +58,9 @@
 
         initElem();
 
-        elemSvg.addEventListener('pointerdown', initElem);
+        if (char === 's') {
+          elemSvg.addEventListener('pointerdown', initElem);
+        }
       };
 
       for (const elem of document.getElementsByClassName('user-block-line')) {
