@@ -1806,9 +1806,7 @@
   function initLogo() {
     function initLogoSub({ className, levelObj, checkMode, pointerdownEvent = false }) {
       for (const elem of document.getElementsByClassName(className)) {
-        const initElem = (e) => {
-          e?.preventDefault();
-
+        const initElem = () => {
           elem.textContent = '';
 
           const level = new app.Level({
@@ -1833,7 +1831,7 @@
         initElem();
 
         if (pointerdownEvent) {
-          elem.addEventListener('pointerdown', initElem);
+          // elem.addEventListener('pointerdown', initElem);
         }
       }
     }

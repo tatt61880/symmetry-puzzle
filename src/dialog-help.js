@@ -31,9 +31,7 @@
   function show(sound = true) {
     {
       const setBlock = (elemSvg, char, w, checkMode) => {
-        const initElem = (e) => {
-          e?.preventDefault();
-
+        const initElem = () => {
           elemSvg.textContent = '';
 
           const level = new app.Level({
@@ -60,9 +58,9 @@
 
         initElem();
 
-        if (char === 's') {
-          elemSvg.addEventListener('pointerdown', initElem);
-        }
+        // if (char === 's') {
+        //   elemSvg.addEventListener('pointerdown', initElem);
+        // }
       };
 
       for (const elem of document.getElementsByClassName('user-block-line')) {
