@@ -1824,8 +1824,8 @@
             width: levelObj.w,
             height: levelObj.h,
           });
+
           elem.appendChild(g);
-          console.log(123);
         };
 
         initElem();
