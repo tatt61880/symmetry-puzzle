@@ -1012,10 +1012,6 @@
   function initTitleCharacter(elem, firstFlag = false) {
     const getRand = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
-    if (elem.titleCharacterOnPointerDown) {
-      elem.removeEventListener('pointerdown', elem.titleCharacterOnPointerDown);
-    }
-
     const interval = MOVE_INTERVAL_MSEC * (1.5 + 0.4 * getRand(1, 5));
     const checkMode = (() => {
       switch (getRand(1, 3)) {
@@ -1045,12 +1041,19 @@
 
     let stopFlag = false;
 
-    const onPointerDown = () => {
+    const ON_POINTER_UP = Symbol('onPointerUp');
+
+    if (elem[ON_POINTER_UP]) {
+      elem.removeEventListener('pointerup', elem[ON_POINTER_UP]);
+    }
+
+    const onPointerUp = () => {
       stopFlag = true;
     };
 
-    elem.titleCharacterOnPointerDown = onPointerDown;
-    elem.addEventListener('pointerdown', onPointerDown);
+    elem[ON_POINTER_UP] = onPointerUp;
+    // pointerdown だと、スワイプ操作の無効化との相性が悪いので、 pointerup にします。
+    elem.addEventListener('pointerup', onPointerUp);
 
     const intervalId = setInterval(() => {
       if (!common.isShownElem(elems.category.title)) {
@@ -1804,7 +1807,7 @@
   }
 
   function initLogo() {
-    function initLogoSub({ className, levelObj, checkMode, pointerdownEvent = false }) {
+    function initLogoSub({ className, levelObj, checkMode, event = false }) {
       for (const elem of document.getElementsByClassName(className)) {
         const initElem = () => {
           elem.textContent = '';
@@ -1830,7 +1833,8 @@
 
         initElem();
 
-        if (pointerdownEvent) {
+        if (event) {
+          // pointerdown だと、スワイプ操作の無効化との相性が悪いので、 pointerup にします。
           elem.addEventListener('pointerup', initElem);
         }
       }
@@ -1839,24 +1843,9 @@
     for (const obj of [
       { className: 'logo-app', levelObj: { w: 3, h: 3, s: '01-222-02' }, checkMode: app.Level.CHECK_MODE.SPECIAL },
 
-      {
-        className: 'logo-line-s',
-        levelObj: { w: 5, h: 4, s: '-0112-001s' },
-        checkMode: app.Level.CHECK_MODE.LINE,
-        pointerdownEvent: true,
-      },
-      {
-        className: 'logo-point-s',
-        levelObj: { w: 5, h: 4, s: '-011s-0012' },
-        checkMode: app.Level.CHECK_MODE.POINT,
-        pointerdownEvent: true,
-      },
-      {
-        className: 'logo-special-s',
-        levelObj: { w: 5, h: 4, s: '-011-021s' },
-        checkMode: app.Level.CHECK_MODE.SPECIAL,
-        pointerdownEvent: true,
-      },
+      { className: 'logo-line-s', levelObj: { w: 5, h: 4, s: '-0112-001s' }, checkMode: app.Level.CHECK_MODE.LINE, event: true },
+      { className: 'logo-point-s', levelObj: { w: 5, h: 4, s: '-011s-0012' }, checkMode: app.Level.CHECK_MODE.POINT, event: true },
+      { className: 'logo-special-s', levelObj: { w: 5, h: 4, s: '-011-021s' }, checkMode: app.Level.CHECK_MODE.SPECIAL, event: true },
 
       { className: 'logo-line', levelObj: { w: 3, h: 2, s: '112-01' }, checkMode: app.Level.CHECK_MODE.LINE },
       { className: 'logo-point', levelObj: { w: 3, h: 2, s: '11-012' }, checkMode: app.Level.CHECK_MODE.POINT },

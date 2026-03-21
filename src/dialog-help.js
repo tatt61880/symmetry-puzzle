@@ -58,9 +58,10 @@
 
         initElem();
 
-        // if (char === 's') {
-        //   elemSvg.addEventListener('pointerdown', initElem);
-        // }
+        if (char === 's') {
+          // pointerdown だと、スワイプ操作の無効化との相性が悪いので、 pointerup にします。
+          elemSvg.addEventListener('pointerup', initElem);
+        }
       };
 
       for (const elem of document.getElementsByClassName('user-block-line')) {
