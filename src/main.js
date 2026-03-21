@@ -1012,6 +1012,10 @@
   function initTitleCharacter(elem, firstFlag = false) {
     const getRand = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
+    if (elem.titleCharacterOnPointerDown) {
+      elem.removeEventListener('pointerdown', elem.titleCharacterOnPointerDown);
+    }
+
     const interval = MOVE_INTERVAL_MSEC * (1.5 + 0.4 * getRand(1, 5));
     const checkMode = (() => {
       switch (getRand(1, 3)) {
@@ -1034,27 +1038,41 @@
       },
       checkMode,
     });
-    const blockSize = 50;
 
+    const blockSize = 50;
     const dx = 1;
     const dy = 0;
+
+    let stopFlag = false;
+
+    const onPointerDown = () => {
+      stopFlag = true;
+    };
+
+    elem.titleCharacterOnPointerDown = onPointerDown;
+    elem.addEventListener('pointerdown', onPointerDown);
 
     const intervalId = setInterval(() => {
       if (!common.isShownElem(elems.category.title)) {
         return;
       }
-      if (getRand(1, 15) !== 1) {
+
+      if (stopFlag) {
+        stopFlag = false;
+      } else if (getRand(1, 15) !== 1) {
         const moveFlag = level.move(dx, 0);
         if (!moveFlag) {
           clearInterval(intervalId);
           initTitleCharacter(elem);
+          return;
         }
       }
+
       elem.textContent = '';
-      {
-        elem.style.setProperty('--animation-move-transform', `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`);
-        elem.style.setProperty('--animation-move-sub-transform', `translate(0, ${-0.125 * blockSize}px)`);
-      }
+
+      elem.style.setProperty('--animation-move-transform', `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`);
+      elem.style.setProperty('--animation-move-sub-transform', `translate(0, ${-0.125 * blockSize}px)`);
+
       const g = level.createSvgG({
         blockSize,
         drawBackground: false,
