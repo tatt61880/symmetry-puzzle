@@ -31,7 +31,9 @@
   function show(sound = true) {
     {
       const setBlock = (elemSvg, char, w, checkMode) => {
-        const initElem = () => {
+        const initElem = (e) => {
+          e?.preventDefault();
+
           elemSvg.textContent = '';
 
           const level = new app.Level({

@@ -1806,7 +1806,9 @@
   function initLogo() {
     function initLogoSub({ className, levelObj, checkMode, pointerdownEvent = false }) {
       for (const elem of document.getElementsByClassName(className)) {
-        const initElem = () => {
+        const initElem = (e) => {
+          e?.preventDefault();
+
           elem.textContent = '';
 
           const level = new app.Level({
