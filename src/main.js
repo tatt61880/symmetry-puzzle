@@ -1831,7 +1831,7 @@
         initElem();
 
         if (pointerdownEvent) {
-          // elem.addEventListener('pointerdown', initElem);
+          elem.addEventListener('pointerup', initElem);
         }
       }
     }
