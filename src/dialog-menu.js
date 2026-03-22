@@ -17,13 +17,13 @@
   const elems = app.elems;
 
   function show() {
-    window.sound.playUiOpen();
+    app.sound.playUiOpen();
     elems.menu.dialog.showModal();
   }
 
   function close(sound = true) {
     if (sound) {
-      window.sound.playUiClose();
+      app.sound.playUiClose();
     }
     elems.menu.dialog.close();
   }

@@ -86,9 +86,6 @@
   document.documentElement.style.setProperty('--animation-duration-shadow', `${SHADOW_MSEC}ms`);
   document.documentElement.style.setProperty('--animation-duration-symmetry', `${ROTATION_MSEC}ms`);
 
-  const sound = app.SymmetrySfx.createAudioManager({ volume: 0.35, bumpBoost: 1.4 });
-  window.sound = sound;
-
   document.addEventListener('DOMContentLoaded', onloadApp);
   return;
   // ==========================================================================
@@ -101,7 +98,7 @@
 
     const moveFlag = common.level.move(dx, dy);
     if (moveFlag) {
-      sound.playStep();
+      app.sound.playStep();
       document.documentElement.style.setProperty('--animation-move-transform', `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`);
       document.documentElement.style.setProperty('--animation-move-sub-transform', `translate(0, ${-0.125 * blockSize}px)`);
       addUndo(dir);
@@ -227,28 +224,28 @@
           elems.help.tabApp.checked = true;
           if (app.dialog.help.tab !== null) {
             app.dialog.help.tab = null;
-            sound.playButton();
+            app.sound.playButton();
           }
           break;
         case 't':
           elems.help.tabLine.checked = true;
           if (app.dialog.help.tab !== app.Level.CHECK_MODE.LINE) {
             app.dialog.help.tab = app.Level.CHECK_MODE.LINE;
-            sound.playButton();
+            app.sound.playButton();
           }
           break;
         case 'z':
           elems.help.tabPoint.checked = true;
           if (app.dialog.help.tab !== app.Level.CHECK_MODE.POINT) {
             app.dialog.help.tab = app.Level.CHECK_MODE.POINT;
-            sound.playButton();
+            app.sound.playButton();
           }
           break;
         case 'o':
           elems.help.tabSpecial.checked = true;
           if (app.dialog.help.tab !== app.Level.CHECK_MODE.SPECIAL) {
             app.dialog.help.tab = app.Level.CHECK_MODE.SPECIAL;
-            sound.playButton();
+            app.sound.playButton();
           }
           break;
       }
@@ -554,7 +551,7 @@
     animateIcons();
     addAnimationClass(elems.level.retryArrow, 'rotate-ccw');
 
-    sound.playStart();
+    app.sound.playStart();
 
     {
       const levelObj = undoInfoForNormal.undoAll();
@@ -573,7 +570,7 @@
     paramObj.checkMode = common.checkMode;
     common.level = new app.Level(paramObj);
 
-    sound.playStart();
+    app.sound.playStart();
 
     addUndo(null);
     draw();
@@ -669,7 +666,7 @@
     const undoInfo = editMode ? undoInfoForEdit : undoInfoForNormal;
 
     if (undoInfo.isUndoable()) {
-      sound.playUndo();
+      app.sound.playUndo();
       const levelObj = undoInfo.undo();
       const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
@@ -688,7 +685,7 @@
     const undoInfo = editMode ? undoInfoForEdit : undoInfoForNormal;
 
     if (undoInfo.isRedoable()) {
-      sound.playRedo();
+      app.sound.playRedo();
       const levelObj = undoInfo.redo();
       const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
@@ -912,7 +909,7 @@
   function toggleEditLevel() {
     settings.sharedFlag = false;
 
-    sound.playButton();
+    app.sound.playButton();
     editMode = !editMode;
     common.levelId = null;
     common.levelNum = null;
@@ -997,7 +994,7 @@
   function selectLang(lang) {
     const langPrev = app.savedata.getLang();
     if (langPrev !== lang) {
-      sound.playButton();
+      app.sound.playButton();
       common.applyLangAll(lang);
       app.savedata.saveLang(lang);
     }
@@ -1115,19 +1112,19 @@
     const toggleSound = async (e) => {
       e.preventDefault();
 
-      if (!sound.isEnabled()) {
-        await sound.enable();
-        await sound.resumeIfNeeded();
-        sound.playStart();
-        sound.startBgm();
-        // sound.debug('enable');
+      if (!app.sound.isEnabled()) {
+        await app.sound.enable();
+        await app.sound.resumeIfNeeded();
+        app.sound.playStart();
+        app.sound.startBgm();
+        // app.sound.debug('enable');
       } else {
-        sound.disable();
-        sound.stopBgm();
-        // sound.debug('disable');
+        app.sound.disable();
+        app.sound.stopBgm();
+        // app.sound.debug('disable');
       }
 
-      setSoundUi(sound.isEnabled());
+      setSoundUi(app.sound.isEnabled());
 
       function setSoundUi(isOn) {
         elems.help.sound.classList.toggle('active', isOn);
@@ -1219,7 +1216,7 @@
     common.hideElem(elems.category.game);
     updateAutoMode(false);
     replaceUrlTitle();
-    sound.playButton();
+    app.sound.playButton();
 
     // ある程度クリアするまで連番モードを隠します。
     common.updateTitleSeqModeButton();
@@ -1433,7 +1430,7 @@
         }
 
         const func = () => {
-          sound.playButton();
+          app.sound.playButton();
           const transform = elem.getAttribute('transform');
           elems.edit.drawing.setAttribute('transform', `${transform} translate(-4,-4)`);
           const state = app.states.charToState[char];
@@ -1500,7 +1497,7 @@
 
     // モード変更ボタン
     elems.edit.switchMode.addEventListener('click', () => {
-      sound.playButton();
+      app.sound.playButton();
 
       switch (common.level.getCheckMode()) {
         case app.Level.CHECK_MODE.LINE:
@@ -1524,7 +1521,7 @@
 
     // 鏡映ボタン
     elems.edit.mirror.addEventListener('click', () => {
-      sound.playButton();
+      app.sound.playButton();
       common.level.mirror();
       addUndo(null);
       draw();
@@ -1532,7 +1529,7 @@
 
     // 回転ボタン
     elems.edit.rotate.addEventListener('click', () => {
-      sound.playButton();
+      app.sound.playButton();
       common.level.rotate(1);
       addUndo(null);
       draw();
@@ -1540,7 +1537,7 @@
 
     // 正規化ボタン
     elems.edit.normalize.addEventListener('click', () => {
-      sound.playButton();
+      app.sound.playButton();
 
       if (!common.level.isNormalized()) {
         common.level.normalize();
@@ -1551,7 +1548,7 @@
   }
 
   function changeAxis() {
-    sound.playButton();
+    app.sound.playButton();
 
     common.level.changeAxis();
     updateEditAxisButton();
@@ -1575,7 +1572,7 @@
     function selectTab(mode) {
       if (app.dialog.help.tab !== mode) {
         app.dialog.help.tab = mode;
-        sound.playButton();
+        app.sound.playButton();
       }
     }
   }
@@ -1671,10 +1668,10 @@
 
   function toggleNormalSeqMode() {
     if (common.isShownElem(elems.title.buttonToggleToSeqDiv)) {
-      sound.playButton();
+      app.sound.playButton();
       updateNormalSeqMode(true);
     } else if (common.isShownElem(elems.title.buttonToggleToNormalDiv)) {
-      sound.playButton();
+      app.sound.playButton();
       updateNormalSeqMode(false);
     }
   }
@@ -1901,7 +1898,7 @@
 
         // 動けないときは盤面を振動させます。
         addAnimationClass(elems.main.svg, 'animation-illegal-move');
-        sound.playBump();
+        app.sound.playBump();
       } else {
         const className = (() => {
           switch (common.level.getAxisType()) {
@@ -1929,7 +1926,7 @@
         const { cx, cy } = common.level.getAxisCenter();
         elems.main.svg.style.setProperty('--animation-origin-illegal', `${(blockSize * cx) / 2}px ${(blockSize * cy) / 2}px`);
         addAnimationClass(elems.main.svg, className);
-        sound.playBump();
+        app.sound.playBump();
       }
     }
   }
@@ -2044,7 +2041,7 @@
       const symmetryAnimationFlag = isCompleted;
       const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
       if (symmetryAnimationFlag) {
-        sound.playClear();
+        app.sound.playClear();
       }
       drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag);
     }
@@ -2710,7 +2707,7 @@
 
   // 盤面サイズ変更
   function resizeLevel(dx, dy, flag) {
-    sound.playButton();
+    app.sound.playButton();
 
     const w = common.level.getW() + dx;
     const h = common.level.getH() + dy;
@@ -2726,7 +2723,7 @@
 
   // 軸位置変更
   function moveAxis(dx, dy) {
-    sound.playButton();
+    app.sound.playButton();
     common.level.moveAxis(dx, dy);
     addUndo(null);
     draw();
@@ -2824,11 +2821,11 @@
     updateAutoMode(false);
     clearTimeout(nextLevelTimerId);
     clearTimeout(redrawTimerId);
-    sound.playButton();
+    app.sound.playButton();
   }
 
   function onButtonStart() {
-    sound.playButton();
+    app.sound.playButton();
     if (common.level.getBestStep() === undefined) {
       retryLevel();
       const levelObj = common.level.getCurrentLevelObj();
@@ -2869,7 +2866,7 @@
   }
 
   function onButtonPause() {
-    sound.playButton();
+    app.sound.playButton();
     settingsAuto.paused = true;
     updateAutoStartPauseButtons();
     clearTimeout(nextLevelTimerId);
@@ -2878,7 +2875,7 @@
   }
 
   function onButtonEnd() {
-    sound.playButton();
+    app.sound.playButton();
     const levelObj = common.level.getLevelObj();
     const r = levelObj.r;
     retryAndExecReplayStr(r);
@@ -2924,7 +2921,7 @@
     if (settingsAuto.interval >= settingsAuto.INTERVAL_MAX) {
       settingsAuto.interval = settingsAuto.INTERVAL_MAX;
     }
-    sound.playButton();
+    app.sound.playButton();
     updateButtonSpeedDisplay();
   }
 
@@ -2933,7 +2930,7 @@
     if (settingsAuto.interval <= settingsAuto.INTERVAL_MIN) {
       settingsAuto.interval = settingsAuto.INTERVAL_MIN;
     }
-    sound.playButton();
+    app.sound.playButton();
     updateButtonSpeedDisplay();
   }
 

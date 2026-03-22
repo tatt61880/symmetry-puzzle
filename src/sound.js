@@ -1150,8 +1150,8 @@
     };
   }
 
+  const sound = createAudioManager({ volume: 0.35, bumpBoost: 1.4 });
+
   global.app = global.app || {};
-  global.app.SymmetrySfx = {
-    createAudioManager,
-  };
+  global.app.sound = sound;
 })(window);

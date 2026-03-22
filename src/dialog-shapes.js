@@ -35,7 +35,7 @@
 
   function show() {
     updateDialog();
-    window.sound.playUiOpen();
+    app.sound.playUiOpen();
     elems.shapes.dialog.showModal();
   }
 
@@ -46,7 +46,7 @@
 
   function prevPage() {
     if (common.isShownElem(elems.shapes.prev)) {
-      window.sound.playButton();
+      app.sound.playButton();
       elems.shapes.dialog.dataset.selectCount = Number(elems.shapes.dialog.dataset.selectCount) - SELECT_NUM_PER_PAGE;
       const page = Number(elems.shapes.dialog.dataset.page) - 1;
       updateDialog(page);
@@ -55,7 +55,7 @@
 
   function nextPage() {
     if (common.isShownElem(elems.shapes.next)) {
-      window.sound.playButton();
+      app.sound.playButton();
       elems.shapes.dialog.dataset.selectCount = Number(elems.shapes.dialog.dataset.selectCount) + SELECT_NUM_PER_PAGE;
       const page = Number(elems.shapes.dialog.dataset.page) + 1;
       updateDialog(page);
@@ -308,7 +308,7 @@
 
   function close(sound = true) {
     if (sound) {
-      window.sound.playUiClose();
+      app.sound.playUiClose();
     }
     elems.shapes.dialog.close();
   }

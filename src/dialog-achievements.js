@@ -18,7 +18,7 @@
 
   function show() {
     updateTable();
-    window.sound.playUiOpen();
+    app.sound.playUiOpen();
     elems.achievements.dialog.showModal();
   }
 
@@ -177,7 +177,7 @@
   }
 
   function close() {
-    window.sound.playUiClose();
+    app.sound.playUiClose();
     elems.achievements.dialog.close();
   }
 })();

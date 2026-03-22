@@ -21,7 +21,7 @@
 
   function show() {
     updateTable();
-    window.sound.playUiOpen();
+    app.sound.playUiOpen();
     elems.records.dialog.showModal();
   }
 
@@ -321,7 +321,7 @@
   }
 
   function close() {
-    window.sound.playUiClose();
+    app.sound.playUiClose();
     elems.records.dialog.close();
   }
 
@@ -350,7 +350,7 @@
       backupData,
     };
     const backupJsonText = JSON.stringify(obj);
-    window.sound.playButton();
+    app.sound.playButton();
 
     const filename = `symmetry-puzzle-backup-${yyyymmdd}.json`;
     const lang = app.savedata.getLang();
@@ -362,7 +362,7 @@
     downloadJsonAsFile(filename, backupJsonText);
 
     function downloadJsonAsFile(fileName, fileContent) {
-      window.sound.playButton();
+      app.sound.playButton();
 
       const blob = new Blob([fileContent], { type: 'application/json' });
 
@@ -380,7 +380,7 @@
     hiddenFileInput.type = 'file';
     hiddenFileInput.accept = '.json';
     hiddenFileInput.style.display = 'none';
-    window.sound.playButton();
+    app.sound.playButton();
 
     function readLocalFile(file) {
       return new Promise((resolve, reject) => {
@@ -442,7 +442,7 @@
       const handler = () => {
         elems.records.alert.backdrop.style.display = 'none';
         elems.records.alert.button.removeEventListener('click', handler);
-        window.sound.playButton();
+        app.sound.playButton();
         resolve();
       };
       elems.records.alert.button.addEventListener('click', handler);

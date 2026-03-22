@@ -97,13 +97,13 @@
     }
 
     if (sound) {
-      window.sound.playUiOpen();
+      app.sound.playUiOpen();
     }
     elems.help.dialog.showModal();
   }
 
   function close() {
-    window.sound.playUiClose();
+    app.sound.playUiClose();
     elems.help.dialog.close();
   }
 })();

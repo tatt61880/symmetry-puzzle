@@ -33,19 +33,19 @@
 
   function show() {
     updateLevelsDialog();
-    window.sound.playUiOpen();
+    app.sound.playUiOpen();
     elems.levels.dialog.showModal();
   }
 
   function update() {
-    window.sound.playButton();
+    app.sound.playButton();
     const page = Number(elems.levels.dialog.dataset.page);
     updateLevelsDialog(page);
   }
 
   function prevPage() {
     if (app.common.isShownElem(elems.levels.prev)) {
-      window.sound.playButton();
+      app.sound.playButton();
       elems.levels.dialog.dataset.selectCount = Number(elems.levels.dialog.dataset.selectCount) - LEVEL_SELECT_NUM_PER_PAGE;
       const page = Number(elems.levels.dialog.dataset.page) - 1;
       updateLevelsDialog(page);
@@ -54,7 +54,7 @@
 
   function nextPage() {
     if (app.common.isShownElem(elems.levels.next)) {
-      window.sound.playButton();
+      app.sound.playButton();
       elems.levels.dialog.dataset.selectCount = Number(elems.levels.dialog.dataset.selectCount) + LEVEL_SELECT_NUM_PER_PAGE;
       const page = Number(elems.levels.dialog.dataset.page) + 1;
       updateLevelsDialog(page);
@@ -444,7 +444,7 @@
 
   function close(sound = true) {
     if (sound) {
-      window.sound.playUiClose();
+      app.sound.playUiClose();
     }
     elems.levels.dialog.close();
   }
