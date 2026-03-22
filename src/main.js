@@ -2058,7 +2058,7 @@
       elems.main.svg.appendChild(gConfetti);
       const width = blockSize * common.level.getWidth() + 2 * frameSizeW;
       const height = blockSize * common.level.getHeight() + 2 * frameSizeH;
-      window.playSvgConfetti(gConfetti, width, height);
+      app.playSvgConfetti(gConfetti, width, height);
     }
   }
 
