@@ -1150,7 +1150,8 @@
     };
   }
 
-  global.SymmetrySfx = {
+  global.app = global.app || {};
+  global.app.SymmetrySfx = {
     createAudioManager,
   };
 })(window);

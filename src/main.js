@@ -86,7 +86,7 @@
   document.documentElement.style.setProperty('--animation-duration-shadow', `${SHADOW_MSEC}ms`);
   document.documentElement.style.setProperty('--animation-duration-symmetry', `${ROTATION_MSEC}ms`);
 
-  const sound = window.SymmetrySfx.createAudioManager({ volume: 0.35, bumpBoost: 1.4 });
+  const sound = app.SymmetrySfx.createAudioManager({ volume: 0.35, bumpBoost: 1.4 });
   window.sound = sound;
 
   document.addEventListener('DOMContentLoaded', onloadApp);
