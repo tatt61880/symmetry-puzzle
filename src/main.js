@@ -2052,6 +2052,7 @@
     drawDotLines(mainSvgG);
     drawFrame(mainSvgG, isCompleted);
 
+    // 紙吹雪
     if (isCompleted) {
       const gConfetti = app.svg.createG();
       elems.main.svg.appendChild(gConfetti);
