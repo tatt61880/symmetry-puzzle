@@ -1120,8 +1120,8 @@
           const isSoloUser = (() => {
             if (!app.states.isUser(state)) return false;
             if (!eyeFlag) return false;
-            if (app.states.isUser(this.getState(x + 1, y))) return false;
-            if (app.states.isUser(this.getState(x, y + 1))) return false;
+            if (this.getState(x + 1, y) === state) return false;
+            if (this.getState(x, y + 1) === state) return false;
             return true;
           })();
           this.#addOneBlock(
