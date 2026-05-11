@@ -14,13 +14,13 @@ function walk(dir, out = []) {
   return out;
 }
 
-function sha8(buf) {
+function sha16(buf) {
   return crypto.createHash('sha256').update(buf).digest('hex').slice(0, 16);
 }
 
-// すでに foo.<8hex>.js みたいな名前なら二重ハッシュしない
+// すでに foo.<16hex>.js みたいな名前なら二重ハッシュしない
 function alreadyHasHash(fileBase, ext) {
-  const re = new RegExp(`\\.[0-9a-f]{8}\\${ext}$`, 'i');
+  const re = new RegExp(`\\.[0-9a-f]{16}\\${ext}$`, 'i');
   return re.test(fileBase + ext);
 }
 
@@ -61,7 +61,7 @@ function main() {
     if (alreadyHasHash(base, ext)) continue;
 
     const buf = fs.readFileSync(abs);
-    const h = sha8(buf);
+    const h = sha16(buf);
 
     const newName = `${base}.${h}${ext}`;
     const newAbs = path.join(dir, newName);
