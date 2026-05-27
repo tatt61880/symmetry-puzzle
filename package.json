@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/tatt61880/symmetry-puzzle#readme",
   "scripts": {
-    "eslint": "eslint ./src/*.js --fix",
+    "eslint": "eslint eslint.config.js ./src/*.js --fix",
     "htmlhint": "htmlhint ./*.html",
     "stylelint": "stylelint ./css/*.css --fix",
     "test": "node ./src/test.js",

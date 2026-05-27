@@ -2,9 +2,6 @@ const js = require('@eslint/js');
 const globals = require('globals');
 
 module.exports = [
-  {
-    ignores: ['html/**', 'submissions/**'],
-  },
   js.configs.recommended,
   {
     files: ['eslint.config.js'],
@@ -17,7 +14,7 @@ module.exports = [
     },
   },
   {
-    files: ['src/*.js', 'lib/*.js'],
+    files: ['src/*.js'],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'script',
