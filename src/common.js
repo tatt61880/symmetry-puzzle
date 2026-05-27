@@ -12,19 +12,12 @@
     app.svg = require('./svg.js');
   }
 
-  let checkMode;
-  let levelId;
-
-  let loadLevelById;
-
   const maxW = 50;
   const maxH = 50;
   const minEditW = 3;
   const minEditH = 3;
   const maxEditW = 10;
   const maxEditH = 10;
-  let level;
-  let levels;
 
   const common = {
     // 変数
@@ -34,11 +27,11 @@
     minEditH,
     maxEditW,
     maxEditH,
-    level,
-    levels,
-    levelId,
-    checkMode,
-    loadLevelById,
+    level: undefined,
+    levels: undefined,
+    levelId: undefined,
+    checkMode: undefined,
+    loadLevelById: undefined,
 
     // 関数
     applyLang,
