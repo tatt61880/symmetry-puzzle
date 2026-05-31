@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/tatt61880/symmetry-puzzle/issues"
   },
-  "homepage": "https://github.com/tatt61880/symmetry-puzzle#readme",
+  "homepage": "https://tatt61880.github.io/symmetry-puzzle/",
   "scripts": {
     "eslint": "eslint eslint.config.js ./src/*.js --fix",
     "htmlhint": "htmlhint ./*.html",
