@@ -6,7 +6,7 @@ module.exports = [
   {
     files: ['eslint.config.js'],
     languageOptions: {
-      ecmaVersion: 2021,
+      ecmaVersion: 2022,
       sourceType: 'commonjs',
       globals: {
         ...globals.node,
