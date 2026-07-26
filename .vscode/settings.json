@@ -1,15 +1,15 @@
 {
   "[html]": {
-    "editor.defaultFormatter": "vscode.html-language-features",
+    "editor.defaultFormatter": "vscode.html-language-features"
   },
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
-    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
   "editor.formatOnSave": true,
   "files.autoGuessEncoding": false,
@@ -20,5 +20,5 @@
   "liveServer.settings.port": 5501,
   "search.exclude": {
     "package-lock.json": true
-  },
+  }
 }
