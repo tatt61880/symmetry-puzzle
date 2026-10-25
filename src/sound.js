@@ -259,21 +259,24 @@
 
       if (lastClearAt >= 0 && t0 - lastClearAt < minClearIntervalSec) return;
       lastClearAt = t0;
+
+      // 中央から左右へ開き、最後に中央へ戻る「対称完成」の成功音。
       const notes = [
-        { f: 740, dt: 0.0 },
-        { f: 988, dt: 0.1 },
-        { f: 1319, dt: 0.2 },
-        { f: 1760, dt: 0.3 },
+        { f: 523.25, dt: 0.0, pan: 0.0, gain: 0.2 },   // C5
+        { f: 698.46, dt: 0.1, pan: -0.38, gain: 0.16 }, // F5
+        { f: 783.99, dt: 0.1, pan: 0.38, gain: 0.16 },  // G5
+        { f: 1046.5, dt: 0.24, pan: 0.0, gain: 0.22 },  // C6
       ];
 
       const delay = audioCtx.createDelay(0.25);
-      delay.delayTime.setValueAtTime(0.11, t0);
+      delay.delayTime.setValueAtTime(0.12, t0);
 
       const fb = audioCtx.createGain();
-      fb.gain.setValueAtTime(0.18, t0);
+      fb.gain.setValueAtTime(0.14, t0);
 
       delay.connect(fb);
       fb.connect(delay);
+
       const mix = audioCtx.createGain();
       mix.gain.setValueAtTime(1.0, t0);
       mix.connect(destination);
@@ -281,22 +284,31 @@
 
       for (const n of notes) {
         const t = t0 + n.dt;
-
         const osc = audioCtx.createOscillator();
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(n.f, t);
+
         const g = audioCtx.createGain();
         g.gain.setValueAtTime(0.0001, t);
-        g.gain.exponentialRampToValueAtTime(0.22, t + 0.01);
-        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.14);
+        g.gain.exponentialRampToValueAtTime(n.gain, t + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
 
         osc.connect(g);
-        g.connect(mix);
-        g.connect(delay);
+        if (typeof audioCtx.createStereoPanner === 'function') {
+          const panner = audioCtx.createStereoPanner();
+          panner.pan.setValueAtTime(n.pan, t);
+          g.connect(panner);
+          panner.connect(mix);
+          panner.connect(delay);
+        } else {
+          g.connect(mix);
+          g.connect(delay);
+        }
 
         osc.start(t);
-        osc.stop(t + 0.16);
+        osc.stop(t + 0.2);
       }
+
       setTimeout(() => {
         try {
           delay.disconnect();
@@ -307,7 +319,7 @@
         try {
           mix.disconnect();
         } catch (_) {}
-      }, 700);
+      }, 750);
     }
 
     function playUiOpen() {
@@ -503,13 +515,13 @@
       ['G', 'A5:1 G5:0.5 F5:0.5 D5:1 R:1'],
 
       ['C', 'E5:1 G5:0.5 A5:0.5 G5:1 E5:0.5 R:0.5'],
-      ['GB', 'D5:1 G5:1 A5:0.5 G5:0.5 R:1'],
+      ['GB', 'D5:0.5 G5:0.5 A5:1 G5:0.5 D5:0.5 R:1'],
       ['Am', 'C5:0.5 E5:0.5 G5:1 A5:0.5 G5:0.5 E5:0.5 R:0.5'],
-      ['Em', 'D5:1 B4:1 E5:1 R:1'],
+      ['Em', 'D5:0.5 B4:0.5 E5:1 B4:0.5 D5:0.5 R:1'],
       ['F', 'C5:1 E5:0.5 G5:0.5 A5:1 G5:0.5 R:0.5'],
-      ['CE', 'G5:1 E5:1 D5:0.5 C5:0.5 R:1'],
+      ['CE', 'G5:0.5 E5:0.5 D5:1 E5:0.5 G5:0.5 R:1'],
       ['Dm', 'A4:0.5 C5:0.5 D5:1 F5:1 E5:0.5 R:0.5'],
-      ['G', 'D5:1 B4:1 R:2'],
+      ['G', 'D5:0.5 B4:0.5 G4:1 B4:0.5 D5:0.5 R:1'],
     ];
 
     const bars = score.map(([name, phrase], barIndex) => {
