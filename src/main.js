@@ -2051,10 +2051,6 @@
       app.sound.playClear();
       if (!editMode) {
         highestScorePrev = recordCompletion();
-        if (settings.autoMode && !settingsAuto.paused) {
-          clearTimeout(nextLevelTimerId);
-          nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
-        }
       }
     }
     drawBoard(elems.main.svg, common.level, undoInfoForNormal?.getIndex(), {
@@ -2082,8 +2078,15 @@
         bestStep: common.level.getBestStep(),
         highestScore: !editMode && common.levelId !== null ? app.savedata.getHighestScore(common.level) : undefined,
         highestScorePrev,
+        onClearMessageDrawn: scheduleAutoNextLevel,
       },
     });
+  }
+
+  function scheduleAutoNextLevel() {
+    if (!settings.autoMode || settingsAuto.paused) return;
+    clearTimeout(nextLevelTimerId);
+    nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
   }
 
   function recordCompletion() {
