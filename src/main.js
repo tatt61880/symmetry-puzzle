@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION_TEXT = 'v' + '2026.03.20';
+  const VERSION_TEXT = 'v' + '2026.11.07';
 
   const app = window.app;
   Object.freeze(app);
@@ -2068,6 +2068,7 @@
       symmetryAnimationFlag,
       showCharsFlag,
       smallJumpFlag,
+      idleAnimationFlag: !showCharsFlag && !settings.autoMode && !completeFlag,
       edgeColor: common.isSeqMode ? app.colors.frameFillSeqMode : app.colors.frameFill,
     });
     levelSvgG.classList.add('group-level-main');

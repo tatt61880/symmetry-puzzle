@@ -1071,6 +1071,7 @@
       symmetryAnimationFlag = false,
       showCharsFlag = false,
       smallJumpFlag = false,
+      idleAnimationFlag = false,
       drawBackground = true,
       x0 = 0,
       y0 = 0,
@@ -1133,6 +1134,7 @@
             symmetryType,
             showCharsFlag,
             smallJumpFlag,
+            idleAnimationFlag,
             eyeFlag,
             isSoloUser,
             gShadows,
@@ -1985,7 +1987,7 @@
       return true;
     }
 
-    #createOneBlock(x, y, sX, sY, blockSize, showCharsFlag, eyeFlag) {
+    #createOneBlock(x, y, sX, sY, blockSize, showCharsFlag, eyeFlag, idleAnimationFlag) {
       const state = this.getState(sX, sY);
       const color = app.colors[state];
 
@@ -2516,6 +2518,18 @@
             }
             gElem.appendChild(eyeLeft);
             gElem.appendChild(eyeRight);
+            if (idleAnimationFlag) {
+              gElem.style.setProperty('--sleep-eye-offset', `${-dx * blockSize}px ${-dy * blockSize}px`);
+              eyeLeft.classList.add('player-idle-eye');
+              eyeRight.classList.add('player-idle-eye');
+
+              const z = app.svg.createText(blockSize, { x: x + 0.73, y: y + 0.2, text: 'Z', fill: color.stroke });
+              z.classList.add('player-sleep-z');
+              z.setAttribute('font-size', blockSize * 0.24);
+              z.setAttribute('opacity', 0);
+              z.setAttribute('aria-hidden', 'true');
+              gElem.appendChild(z);
+            }
           }
         } else {
           // 操作キャラ以外
@@ -2913,6 +2927,7 @@
       symmetryType,
       showCharsFlag,
       smallJumpFlag,
+      idleAnimationFlag,
       eyeFlag,
       isSoloUser,
       gShadows,
@@ -2924,7 +2939,7 @@
       const state = this.getState(sX, sY);
       const color = app.colors[state];
 
-      const elem = this.#createOneBlock(x, y, sX, sY, blockSize, showCharsFlag, eyeFlag);
+      const elem = this.#createOneBlock(x, y, sX, sY, blockSize, showCharsFlag, eyeFlag, idleAnimationFlag);
 
       let child = elem;
 

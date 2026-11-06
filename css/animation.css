@@ -16,6 +16,69 @@
   --animation-jump-small: translate(0, 0);
   --animation-jump: translate(0, 0);
   --animation-jump-count: 1;
+  --player-sleep-delay: 12s;
+}
+
+/* 操作を休むと一度まばたきしてから眠ります。盤面が描き直されると目を覚まします。 */
+.player-idle-eye {
+  animation: player-fall-asleep var(--player-sleep-delay) ease-in-out forwards;
+}
+
+@keyframes player-fall-asleep {
+  0%,
+  35%,
+  37%,
+  95% {
+    scale: 1;
+    translate: 0;
+  }
+
+  36% {
+    scale: 1 0.2;
+  }
+
+  100% {
+    scale: 1 0.2;
+    translate: var(--sleep-eye-offset);
+  }
+}
+
+.player-sleep-z {
+  animation: player-sleep-z 2.4s ease-in-out var(--player-sleep-delay) infinite;
+}
+
+@keyframes player-sleep-z {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  35%,
+  65% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0.32em, -0.44em);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .player-idle-eye {
+    animation-duration: 0s;
+    animation-delay: var(--player-sleep-delay);
+  }
+
+  .player-sleep-z {
+    animation: player-show-z 0s var(--player-sleep-delay) forwards;
+  }
+}
+
+@keyframes player-show-z {
+  to {
+    opacity: 0.8;
+  }
 }
 
 /* Blocks jumping animation */
