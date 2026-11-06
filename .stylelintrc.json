@@ -17,7 +17,7 @@
       true,
       {
         "ignoreProperties": [
-          "user-select"
+          "-webkit-user-select"
         ]
       }
     ]
