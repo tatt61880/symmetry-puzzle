@@ -76,7 +76,6 @@
   const defaultFrameSize = 32;
   let frameSizeW = defaultFrameSize;
   const frameSizeH = defaultFrameSize;
-  const frameBorderWidth = 5;
 
   common.level = null;
   window.retryAndExecReplayStr = retryAndExecReplayStr;
@@ -2047,512 +2046,100 @@
     if (!completeFlag || editMode || settings.autoMode) stopReplay();
     updateController();
 
-    const mainSvgG = app.svg.createG();
-
-    elems.main.svg.textContent = '';
-    elems.main.svg.appendChild(mainSvgG);
-
-    {
-      const symmetryAnimationFlag = isCompleted;
-      const showCharsFlag = editMode || settings.debugFlag || temporaryShowCharsFlag;
-      if (symmetryAnimationFlag) {
-        app.sound.playClear();
-      }
-      drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag);
-    }
-
-    drawDotLines(mainSvgG);
-    drawFrame(mainSvgG, isCompleted);
-
-    // 紙吹雪
+    let highestScorePrev = null;
     if (isCompleted) {
-      const gConfetti = app.svg.createG();
-      elems.main.svg.appendChild(gConfetti);
-      const width = blockSize * common.level.getWidth() + 2 * frameSizeW;
-      const height = blockSize * common.level.getHeight() + 2 * frameSizeH;
-      app.playSvgConfetti(gConfetti, width, height);
-    }
-  }
-
-  function drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag, level = common.level) {
-    // 盤面の初回表示時に小さくジャンプするようにします。
-    const smallJumpFlag = !editMode && !undoInfoForNormal.isUndoable() && input.inputDir === app.Input.DIRS.NEUTRAL;
-
-    const levelSvgG = level.createSvgG({
-      blockSize,
-      symmetryAnimationFlag,
-      showCharsFlag,
-      smallJumpFlag,
-      idleAnimationFlag: !showCharsFlag && !settings.autoMode && !completeFlag,
-      edgeColor: common.isSeqMode ? app.colors.frameFillSeqMode : app.colors.frameFill,
-    });
-    levelSvgG.classList.add('group-level-main');
-    levelSvgG.setAttribute('transform', `translate(${frameSizeW},${frameSizeH})`);
-    levelSvgG.style.setProperty('pointer-events', 'none'); // スマホ等での操作時にtouchstartからtouchendまで連続して図形描画するため。
-
-    mainSvgG.appendChild(levelSvgG);
-  }
-
-  function drawDotLines(mainSvgG) {
-    const dotRatio = 1 / 40;
-    const size = blockSize * dotRatio;
-    const strokeDasharray = `${size} ${4 * size}`;
-    const g = app.svg.createG('group-dot-lines');
-    mainSvgG.appendChild(g);
-    // 横線
-    for (let y = 1; y < common.level.getHeight(); ++y) {
-      const line = app.svg.createLine(blockSize, {
-        x1: -0.5 * dotRatio,
-        y1: y,
-        x2: common.level.getWidth(),
-        y2: y,
-        stroke: app.colors.line,
-      });
-      line.setAttribute('stroke-dasharray', strokeDasharray);
-      g.appendChild(line);
-    }
-    // 縦線
-    for (let x = 1; x < common.level.getWidth(); ++x) {
-      const line = app.svg.createLine(blockSize, {
-        x1: x,
-        y1: -0.5 * dotRatio,
-        x2: x,
-        y2: common.level.getHeight(),
-        stroke: app.colors.line,
-      });
-      line.setAttribute('stroke-dasharray', strokeDasharray);
-      g.appendChild(line);
-    }
-    g.setAttribute('transform', `translate(${frameSizeW},${frameSizeH})`);
-  }
-
-  function drawFrame(mainSvgG, isCompleted = false, currentStep = undoInfoForNormal?.getIndex()) {
-    const g = app.svg.createG('group-frame');
-    mainSvgG.appendChild(g);
-
-    const wallStrShift = app.colors[app.states.wall].fill === app.colors[app.states.wall].stroke ? 0 : 0.05;
-
-    {
-      const frameColor = common.isSeqMode ? app.colors.frameFillSeqMode : app.colors.frameFill;
-      const rectU = app.svg.createRect(1, {
-        x: 0,
-        y: 0,
-        width: common.level.getWidth() * blockSize + 2 * frameSizeW,
-        height: frameSizeH,
-        fill: frameColor,
-      });
-      const rectR = app.svg.createRect(1, {
-        x: common.level.getWidth() * blockSize + frameSizeW,
-        y: 0,
-        width: frameSizeW,
-        height: common.level.getHeight() * blockSize + 2 * frameSizeH,
-        fill: frameColor,
-      });
-      const rectD = app.svg.createRect(1, {
-        x: 0,
-        y: common.level.getHeight() * blockSize + frameSizeH,
-        width: common.level.getWidth() * blockSize + 2 * frameSizeW,
-        height: frameSizeH,
-        fill: frameColor,
-      });
-      const rectL = app.svg.createRect(1, {
-        x: 0,
-        y: 0,
-        width: frameSizeW,
-        height: common.level.getHeight() * blockSize + 2 * frameSizeH,
-        fill: frameColor,
-      });
-      g.appendChild(rectU);
-      g.appendChild(rectR);
-      g.appendChild(rectD);
-      g.appendChild(rectL);
-
-      const borderColor = common.isSeqMode ? app.colors.frameStrokeSeqMode : app.colors.frameStroke;
-      const rectUb = app.svg.createRect(1, {
-        x: 0,
-        y: 0,
-        width: common.level.getWidth() * blockSize + 2 * frameSizeW,
-        height: frameBorderWidth,
-        fill: borderColor,
-      });
-      const rectRb = app.svg.createRect(1, {
-        x: common.level.getWidth() * blockSize + 2 * frameSizeW - frameBorderWidth,
-        y: 0,
-        width: frameBorderWidth,
-        height: common.level.getHeight() * blockSize + 2 * frameSizeH,
-        fill: borderColor,
-      });
-      const rectDb = app.svg.createRect(1, {
-        x: 0,
-        y: common.level.getHeight() * blockSize + 2 * frameSizeH - frameBorderWidth,
-        width: common.level.getWidth() * blockSize + 2 * frameSizeW,
-        height: frameBorderWidth,
-        fill: borderColor,
-      });
-      const rectLb = app.svg.createRect(1, {
-        x: 0,
-        y: 0,
-        width: frameBorderWidth,
-        height: common.level.getHeight() * blockSize + 2 * frameSizeH,
-        fill: borderColor,
-      });
-      g.appendChild(rectUb);
-      g.appendChild(rectRb);
-      g.appendChild(rectDb);
-      g.appendChild(rectLb);
-    }
-
-    if (editMode) {
-      if (!common.level.isNormalized()) {
-        const fontSize = `${frameSizeH * 0.7}px`;
-        const text = app.svg.createText(frameSizeH, {
-          x: 0,
-          y: 0.5,
-          text: '',
-          fill: '#663300',
-        });
-        text.classList.add('translatable-toggle');
-        text.dataset.ja = '正規化されていません。';
-        text.dataset.en = 'Not normalized.';
-        common.applyLang(text, app.savedata.getLang());
-
-        const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
-        const height = frameBorderWidth;
-        text.setAttribute('font-size', fontSize);
-        text.setAttribute('transform', `translate(${width},${height})`);
-        g.appendChild(text);
-        common.showElem(elems.edit.normalize);
-      } else {
-        common.hideElem(elems.edit.normalize);
-      }
-
-      const pointsR = [
-        [0, -1],
-        [1, 0],
-        [0, 1],
-        [-1, 1],
-        [-1, -1],
-      ];
-      const pointsL = [
-        [0, -1],
-        [1, -1],
-        [1, 1],
-        [0, 1],
-        [-1, 0],
-      ];
-      const pointsD = [
-        [1, -1],
-        [1, 0],
-        [0, 1],
-        [-1, 0],
-        [-1, -1],
-      ];
-      const pointsU = [
-        [0, -1],
-        [1, 0],
-        [1, 1],
-        [-1, 1],
-        [-1, 0],
-      ];
-
-      const cx1 = frameSizeW / blockSize + 0.5;
-      const cx2 = frameSizeW / blockSize + common.level.getWidth() * 0.3;
-      const cx3 = frameSizeW / blockSize + common.level.getWidth() * 0.7;
-      const cx4 = frameSizeW / blockSize + common.level.getWidth() - 0.5;
-      const cxM = frameSizeW / blockSize + common.level.getWidth() * 0.5;
-
-      const cy1 = frameSizeH / blockSize + 0.5;
-      const cy2 = frameSizeH / blockSize + common.level.getHeight() * 0.3;
-      const cy3 = frameSizeH / blockSize + common.level.getHeight() * 0.7;
-      const cy4 = frameSizeH / blockSize + common.level.getHeight() - 0.5;
-      const cyM = frameSizeH / blockSize + common.level.getHeight() * 0.5;
-
-      // 軸位置変更ボタンの追加
-      if (common.level.hasAxis()) {
-        const buttons = [
-          { cx: cxM, cy: cy1, points: pointsU, dx: +0, dy: -1 },
-          { cx: cx4, cy: cyM, points: pointsR, dx: +1, dy: +0 },
-          { cx: cxM, cy: cy4, points: pointsD, dx: +0, dy: +1 },
-          { cx: cx1, cy: cyM, points: pointsL, dx: -1, dy: +0 },
-        ];
-
-        buttons.forEach((button) => {
-          if (button.dx === -1 && !common.level.axisCxDecAble()) return;
-          if (button.dy === -1 && !common.level.axisCyDecAble()) return;
-          if (button.dx === 1 && !common.level.axisCxIncAble()) return;
-          if (button.dy === 1 && !common.level.axisCyIncAble()) return;
-
-          addEditButton(button, moveAxis.bind(null, button.dx, button.dy), app.colors[app.states.userMin]);
-        });
-      }
-
-      // 盤面サイズ変更ボタンの追加
-      {
-        const buttons = [
-          // 左右
-          { cx: cx1, cy: cy2, points: pointsR, dx: -1, dy: 0, flag: true },
-          { cx: cx1, cy: cy3, points: pointsL, dx: +1, dy: 0, flag: true },
-          { cx: cx4, cy: cy2, points: pointsL, dx: -1, dy: 0, flag: false },
-          { cx: cx4, cy: cy3, points: pointsR, dx: +1, dy: 0, flag: false },
-
-          // 上下
-          { cx: cx2, cy: cy1, points: pointsD, dx: 0, dy: -1, flag: true },
-          { cx: cx3, cy: cy1, points: pointsU, dx: 0, dy: +1, flag: true },
-          { cx: cx2, cy: cy4, points: pointsU, dx: 0, dy: -1, flag: false },
-          { cx: cx3, cy: cy4, points: pointsD, dx: 0, dy: +1, flag: false },
-        ];
-
-        buttons.forEach((button) => {
-          if (button.dx === -1 && common.level.getW() <= common.minEditW) return;
-          if (button.dy === -1 && common.level.getH() <= common.minEditH) return;
-          if (button.dx === 1 && common.level.getW() >= common.maxEditW) return;
-          if (button.dy === 1 && common.level.getH() >= common.maxEditH) return;
-
-          addEditButton(button, resizeLevel.bind(null, button.dx, button.dy, button.flag), app.colors.editButton);
-        });
-      }
-    } else {
-      const fontSize = `${frameSizeH * 0.7}px`;
-      const fontSize2 = `${blockSize * 0.65}px`;
-      const bestStep = common.level.getBestStep();
-
-      let highestScorePrev = null;
-
-      // クリア時のメッセージ
-      if (isCompleted) {
-        const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
-        const height = (common.level.getHeight() - 0.5 + wallStrShift) * blockSize + frameSizeH;
-        const text = app.svg.createText(blockSize, {
-          x: width / blockSize,
-          y: height / blockSize,
-          text: 'Congratulations!',
-          fill: app.colors.congratulations,
-        });
-        text.classList.add('translatable-toggle');
-        text.dataset.ja = currentStep === bestStep ? 'お見事！' : 'クリア！';
-        text.dataset.en = currentStep === bestStep ? 'Well done!' : 'Cleared!';
-        common.applyLang(text, app.savedata.getLang());
-        text.setAttribute('font-size', fontSize2);
-
-        const gg = app.svg.createG();
-        gg.setAttribute('transform-origin', `${width}px ${height}px`);
-        gg.classList.add('animation-congratulations');
-
-        gg.appendChild(text);
-        g.appendChild(gg);
-
-        if (validStepCheck()) {
-          const replayStr = undoInfoForNormal.getReplayStr();
-
-          // 記録保存
-          highestScorePrev = app.savedata.getHighestScore(common.level);
-          if (bestStep !== undefined) {
-            app.savedata.saveSteps(common.level, replayStr);
-          }
-
-          // シルエットデータ保存
-          {
-            const shapeStr = common.level.getTargetShapeForSavedata();
-            const result = app.savedata.saveShape(common.level, shapeStr, replayStr);
-            if (result) {
-              updateShapeButton();
-            }
-          }
-
-          // ログ出力
-          {
-            const levelObj = common.level.getLevelObj();
-            const w = levelObj.w;
-            const h = levelObj.h;
-            const s = levelObj.s;
-            const r = levelObj.r;
-            const axis = levelObj.axis !== undefined ? ` axis: '${levelObj.axis}',` : '';
-            const levelParams = `w: ${w}, h: ${h}, s: '${s}',${axis} r: '${replayStr}', step: ${replayStr.length}, subject: '${
-              levelObj.subject ?? ''
-            }'`;
-
-            const levelObjStr = `{ ${levelParams} },`;
-            // if (common.levelId === null) {
-            //   copyTextToClipboard(levelObjStr);
-            // }
-            consoleLog(levelObjStr);
-
-            const completedStep = undoInfoForNormal.getIndex();
-            if (r === undefined) {
-              consoleWarn('参照用公式記録の情報がありません！');
-            } else if (completedStep < bestStep) {
-              consoleLog(
-                `参照用公式記録を破りました！\n参照用公式記録[${bestStep}] → あなたの記録[${completedStep}] (${
-                  completedStep - bestStep
-                } 手)`
-              );
-            } else {
-              if (replayStr === r) {
-                consoleLog('参照用公式記録と完全に同じ手順です。');
-              } else {
-                consoleLog(`参照用公式記録は ${bestStep} 手です。\n(差: ${completedStep - bestStep} 手)`);
-              }
-            }
-          }
-        }
-
+      app.sound.playClear();
+      if (!editMode) {
+        highestScorePrev = recordCompletion();
         if (settings.autoMode && !settingsAuto.paused) {
           clearTimeout(nextLevelTimerId);
           nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
         }
+      }
+    }
+    drawBoard(elems.main.svg, common.level, undoInfoForNormal?.getIndex(), {
+      isCompleted,
+      highestScorePrev,
+      showCharsFlag: editMode || settings.debugFlag || temporaryShowCharsFlag,
+    });
+  }
+
+  function drawBoard(svg, level, currentStep, { isCompleted = false, highestScorePrev = null, showCharsFlag = settings.debugFlag } = {}) {
+    const edit = editMode ? { normalized: level.isNormalized(), moveAxis, resizeLevel } : null;
+    if (edit) elems.edit.normalize.classList.toggle('hide', edit.normalized);
+
+    app.BoardRenderer.drawBoard(svg, level, {
+      layout: { blockSize, frameSizeW, frameSizeH },
+      isSeqMode: common.isSeqMode,
+      lang: app.savedata.getLang(),
+      symmetryAnimationFlag: isCompleted,
+      showCharsFlag,
+      smallJumpFlag: !editMode && !undoInfoForNormal.isUndoable() && input.inputDir === app.Input.DIRS.NEUTRAL,
+      idleAnimationFlag: !showCharsFlag && !settings.autoMode && !completeFlag,
+      edit,
+      score: {
+        currentStep,
+        bestStep: common.level.getBestStep(),
+        highestScore: !editMode && common.levelId !== null ? app.savedata.getHighestScore(common.level) : undefined,
+        highestScorePrev,
+      },
+    });
+  }
+
+  function recordCompletion() {
+    const replayStr = undoInfoForNormal.getReplayStr();
+    if (replayStr === null) return null;
+
+    const bestStep = common.level.getBestStep();
+    // 記録保存
+    const highestScorePrev = app.savedata.getHighestScore(common.level);
+    if (bestStep !== undefined) {
+      app.savedata.saveSteps(common.level, replayStr);
+    }
+
+    // シルエットデータ保存
+    {
+      const shapeStr = common.level.getTargetShapeForSavedata();
+      const result = app.savedata.saveShape(common.level, shapeStr, replayStr);
+      if (result) {
+        updateShapeButton();
+      }
+    }
+
+    // ログ出力
+    {
+      const levelObj = common.level.getLevelObj();
+      const w = levelObj.w;
+      const h = levelObj.h;
+      const s = levelObj.s;
+      const r = levelObj.r;
+      const axis = levelObj.axis !== undefined ? ` axis: '${levelObj.axis}',` : '';
+      const levelParams = `w: ${w}, h: ${h}, s: '${s}',${axis} r: '${replayStr}', step: ${replayStr.length}, subject: '${
+        levelObj.subject ?? ''
+      }'`;
+
+      const levelObjStr = `{ ${levelParams} },`;
+      // if (common.levelId === null) {
+      //   copyTextToClipboard(levelObjStr);
+      // }
+      consoleLog(levelObjStr);
+
+      const completedStep = undoInfoForNormal.getIndex();
+      if (r === undefined) {
+        consoleWarn('参照用公式記録の情報がありません！');
+      } else if (completedStep < bestStep) {
+        consoleLog(
+          `参照用公式記録を破りました！\n参照用公式記録[${bestStep}] → あなたの記録[${completedStep}] (${completedStep - bestStep} 手)`
+        );
       } else {
-        // if (symmetryFlag) {
-        //   const text = app.svg.createText(blockSize, {
-        //     x: 0,
-        //     y: 0.5 + wallStrShift,
-        //     text: 'Not connected',
-        //     fill: 'white',
-        //   });
-        //   const width =
-        //     (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
-        //   const height = (common.level.getHeight() - 1) * blockSize + frameSizeH;
-        //   text.setAttribute('font-size', fontSize2);
-        //   text.setAttribute('transform', `translate(${width},${height})`);
-        //   g.appendChild(text);
-        // }
-      }
-
-      // 今回の手数
-      {
-        let color = common.isSeqMode ? app.colors.stepNum : app.colors.stepNormal;
-        if (isCompleted) {
-          if (!highestScorePrev || currentStep <= highestScorePrev) {
-            color = common.getStepColor(currentStep, bestStep);
-          }
-        }
-        const text = app.svg.createText(frameSizeH, {
-          x: 0,
-          y: 0.5,
-          text: '',
-          fill: color,
-        });
-        text.classList.add('translatable-toggle');
-        text.dataset.ja = `${currentStep}手目`;
-        text.dataset.en = `${currentStep} step${currentStep === 1 ? '' : 's'}`; // 0 steps, 1 step, 2 steps, ......
-        common.applyLang(text, app.savedata.getLang());
-
-        text.setAttribute('font-size', fontSize);
-        const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
-        const height = common.level.getHeight() * blockSize + frameSizeH - frameBorderWidth / 2;
-        text.setAttribute('transform', `translate(${width},${height})`);
-        g.appendChild(text);
-      }
-
-      // 自己最高記録
-      if (common.levelId !== null) {
-        const highestScore = app.savedata.getHighestScore(common.level);
-
-        {
-          const crown = common.createCrown(
-            frameSizeH,
-            frameBorderWidth / frameSizeH,
-            frameBorderWidth / frameSizeH,
-            highestScore,
-            bestStep
-          );
-          g.appendChild(crown);
-          if (isCompleted) {
-            const animationNewRecordCrownClass = 'animation-new-record-crown';
-            if (highestScorePrev === null) {
-              console.log('初回クリア');
-              crown.classList.add(animationNewRecordCrownClass);
-            } else if (highestScore === bestStep && highestScorePrev !== bestStep) {
-              console.log('初回金冠');
-              crown.classList.add(animationNewRecordCrownClass);
-            }
-          }
-        }
-
-        if (highestScore !== null) {
-          const color = common.getStepColor(highestScore, bestStep);
-
-          const text = app.svg.createText(frameSizeH, {
-            x: 0,
-            y: 0.5,
-            text: '',
-            fill: color,
-          });
-          text.classList.add('translatable-toggle');
-          text.dataset.ja = `自己ベスト: ${highestScore}手`;
-          text.dataset.en = `Your best: ${highestScore} step${highestScore === 1 ? '' : 's'}`; // 0 steps, 1 step, 2 steps, ......
-          common.applyLang(text, app.savedata.getLang());
-
-          const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
-          const height = frameBorderWidth / 2;
-          text.setAttribute('font-size', fontSize);
-          text.setAttribute('transform', `translate(${width},${height})`);
-          g.appendChild(text);
-        }
-
-        // 記録更新？
-        if (highestScore !== null && highestScorePrev !== null && highestScore < highestScorePrev) {
-          const width = (common.level.getWidth() * blockSize + 2 * frameSizeW) / 2;
-          const height = frameSizeH + (0.5 - wallStrShift) * blockSize;
-          const text = app.svg.createText(blockSize, {
-            x: width / blockSize,
-            y: height / blockSize,
-            text: '',
-            fill: app.colors.newRecords,
-          });
-          text.setAttribute('font-size', fontSize2);
-          text.classList.add('translatable-toggle');
-          text.dataset.ja = '記録更新!';
-          text.dataset.en = 'New record!';
-          common.applyLang(text, app.savedata.getLang());
-
-          const gg = app.svg.createG();
-          gg.setAttribute('transform-origin', `${width}px ${height}px`);
-          gg.classList.add('animation-new-record');
-
-          gg.appendChild(text);
-          g.appendChild(gg);
+        if (replayStr === r) {
+          consoleLog('参照用公式記録と完全に同じ手順です。');
+        } else {
+          consoleLog(`参照用公式記録は ${bestStep} 手です。\n(差: ${completedStep - bestStep} 手)`);
         }
       }
     }
-
-    function addEditButton(button, onClick, color) {
-      const points = [];
-      for (const point of button.points) {
-        points.push([button.cx + 0.45 * point[0], button.cy + 0.45 * point[1]]);
-      }
-
-      const polygon = app.svg.createPolygon(blockSize, {
-        points,
-        fill: color.fill,
-        stroke: color.stroke,
-        strokeWidth: 0.1,
-      });
-      polygon.classList.add('button', 'active-hover');
-      polygon.addEventListener('click', onClick);
-      g.appendChild(polygon);
-
-      const char = button.dx + button.dy > 0 ? '+' : '-';
-      const text = app.svg.createText(blockSize, {
-        x: button.cx,
-        y: button.cy,
-        text: char,
-        fill: color.stroke,
-      });
-      text.setAttribute('font-size', `${blockSize * 0.7}px`);
-      g.appendChild(text);
-    }
-
-    // リプレイ用文字列が正常か否かのチェック。
-    function validStepCheck() {
-      const replayStr = undoInfoForNormal.getReplayStr();
-      if (replayStr === null) {
-        return false;
-      }
-
-      // TODO: クリアできるリプレイデータになっているかチェック。
-
-      return true;
-    }
+    return highestScorePrev;
   }
 
   function secretSequenceAdd(c) {
@@ -2911,11 +2498,7 @@
     drawStep();
 
     function drawStep() {
-      const g = app.svg.createG();
-      drawLevel(g, false, settings.debugFlag, level);
-      drawDotLines(g);
-      drawFrame(g, false, step);
-      svg.replaceChildren(g);
+      drawBoard(svg, level, step);
       replayTimerId = setTimeout(nextStep, MOVE_INTERVAL_MSEC * 2);
     }
 
