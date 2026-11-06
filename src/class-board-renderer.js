@@ -1183,7 +1183,12 @@
             gElem.appendChild(eyeRight);
             if (showPushMotion && !showCharsFlag) gElem.appendChild(createSweatDrop());
             if (idleAnimationFlag) {
-              gElem.style.setProperty('--sleep-eye-offset', `${-dx * blockSize}px ${-dy * blockSize}px`);
+              const centerX = -dx * blockSize;
+              const centerY = -dy * blockSize;
+              const glance = 0.075 * blockSize;
+              gElem.style.setProperty('--idle-eye-left', `${centerX - glance}px ${centerY}px`);
+              gElem.style.setProperty('--idle-eye-right', `${centerX + glance}px ${centerY}px`);
+              gElem.style.setProperty('--idle-eye-center', `${centerX}px ${centerY}px`);
               eyeLeft.classList.add('player-idle-eye');
               eyeRight.classList.add('player-idle-eye');
 

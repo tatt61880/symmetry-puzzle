@@ -19,7 +19,7 @@
   --player-sleep-delay: 12s;
 }
 
-/* 操作を休むと一度まばたきしてから眠ります。盤面が描き直されると目を覚まします。 */
+/* 操作を休むとまばたきをし、左右を一度見回してから眠ります。 */
 .player-idle-eye {
   animation: player-fall-asleep var(--player-sleep-delay) ease-in-out forwards;
 }
@@ -27,8 +27,7 @@
 @keyframes player-fall-asleep {
   0%,
   35%,
-  37%,
-  95% {
+  37% {
     scale: 1;
     translate: 0;
   }
@@ -37,9 +36,31 @@
     scale: 1 0.2;
   }
 
+  50% {
+    translate: 0;
+  }
+
+  52%,
+  56% {
+    translate: var(--idle-eye-left);
+  }
+
+  59%,
+  63% {
+    translate: var(--idle-eye-right);
+  }
+
+  65% {
+    translate: var(--idle-eye-center);
+  }
+
+  95% {
+    scale: 1;
+  }
+
   100% {
     scale: 1 0.2;
-    translate: var(--sleep-eye-offset);
+    translate: var(--idle-eye-center);
   }
 }
 
