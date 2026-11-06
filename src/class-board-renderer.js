@@ -1552,7 +1552,7 @@
         // 上を押すときは、しずくの先端が右目の中央の少し下から流れるようにします。
         const { startX, startY, angle, driftY, startOffset } =
           move.dy < 0
-            ? { startX: 0.82, startY: 0.48, angle: 90, driftY: 0.1, startOffset: pushSquintOffset }
+            ? { startX: 0.85, startY: 0.65, angle: 90, driftY: 0.1, startOffset: pushSquintOffset }
             : { startX: 0.5 + side * 0.28, startY: 0.24, angle: 0, driftY: -0.11, startOffset: 0 };
         const cx = (x + startX) * blockSize;
         const cy = (y + startY) * blockSize;
