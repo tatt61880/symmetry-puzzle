@@ -42,6 +42,7 @@
   let nextLevelTimerId = null;
 
   let redrawTimerId = null;
+  let replayTimerId = null;
 
   let editMode = false;
   let temporaryShowCharsFlag = false;
@@ -91,19 +92,22 @@
   // ==========================================================================
 
   function tryMoving(dir) {
+    if (!moveLevel(common.level, dir, document.documentElement)) return false;
+    addUndo(dir);
+    return true;
+  }
+
+  function moveLevel(level, dir, elem) {
     const dxs = [0, 1, 0, -1, 0];
     const dys = [-1, 0, 1, 0, 0];
     const dx = dxs[dir];
     const dy = dys[dir];
 
-    const moveFlag = common.level.move(dx, dy);
-    if (moveFlag) {
-      app.sound.playStep();
-      document.documentElement.style.setProperty('--animation-move-transform', `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`);
-      document.documentElement.style.setProperty('--animation-move-sub-transform', `translate(0, ${-0.125 * blockSize}px)`);
-      addUndo(dir);
-    }
-    return moveFlag;
+    if (!level.move(dx, dy)) return false;
+    app.sound.playStep();
+    elem.style.setProperty('--animation-move-transform', `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`);
+    elem.style.setProperty('--animation-move-sub-transform', `translate(0, ${-0.125 * blockSize}px)`);
+    return true;
   }
 
   function completeCheck() {
@@ -207,6 +211,7 @@
 
   async function keydown(e) {
     if (e.altKey) return;
+    if (e.target === elems.controller.replay && (e.key === 'Enter' || e.key === ' ')) return;
 
     // 記録ダイアログで有効
     if (elems.records.dialog.open) {
@@ -567,6 +572,7 @@
   }
 
   function initLevel(paramObj) {
+    stopReplay();
     paramObj.checkMode = common.checkMode;
     common.level = new app.Level(paramObj);
 
@@ -625,8 +631,10 @@
       frameSizeW = (svgMinWidth - blockSize * common.level.getWidth()) / 2;
     }
 
-    elems.main.svg.setAttribute('width', blockSize * common.level.getWidth() + 2 * frameSizeW);
-    elems.main.svg.setAttribute('height', blockSize * common.level.getHeight() + 2 * frameSizeH);
+    for (const svg of [elems.main.svg, elems.main.replaySvg]) {
+      svg.setAttribute('width', blockSize * common.level.getWidth() + 2 * frameSizeW);
+      svg.setAttribute('height', blockSize * common.level.getHeight() + 2 * frameSizeH);
+    }
   }
 
   function updateUndoRedoButton() {
@@ -1205,6 +1213,7 @@
   }
 
   function gotoTitlePage() {
+    stopReplay();
     settings.sharedFlag = false;
 
     completeFlag = false;
@@ -1363,6 +1372,7 @@
 
       elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
       elems.controller.prevLevel.addEventListener('click', gotoPrevLevelButton);
+      elems.controller.replay.addEventListener('click', toggleReplay);
 
       // メニューダイアログ
       elems.menu.button.addEventListener('click', app.dialog.menu.show);
@@ -1974,10 +1984,14 @@
     common.showElem(elems.controller.buttons.base);
     common.hideElem(elems.controller.nextLevel);
     common.hideElem(elems.controller.prevLevel);
+    common.hideElem(elems.controller.replay);
     common.hideElem(elems.controller.shareLevel);
 
     if (completeFlag) {
       common.hideElem(elems.controller.buttons.base);
+      if (!editMode && !settings.autoMode && undoInfoForNormal.getReplayStr()) {
+        common.showElem(elems.controller.replay);
+      }
 
       if (!common.isShownElem(elems.level.prev) && !common.isShownElem(elems.level.next)) {
         common.showElem(elems.controller.shareLevel);
@@ -2030,6 +2044,7 @@
 
   // 描画
   function drawMainSvg(isCompleted = false) {
+    if (!completeFlag || editMode || settings.autoMode) stopReplay();
     updateController();
 
     const mainSvgG = app.svg.createG();
@@ -2059,11 +2074,11 @@
     }
   }
 
-  function drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag) {
+  function drawLevel(mainSvgG, symmetryAnimationFlag, showCharsFlag, level = common.level) {
     // 盤面の初回表示時に小さくジャンプするようにします。
     const smallJumpFlag = !editMode && !undoInfoForNormal.isUndoable() && input.inputDir === app.Input.DIRS.NEUTRAL;
 
-    const levelSvgG = common.level.createSvgG({
+    const levelSvgG = level.createSvgG({
       blockSize,
       symmetryAnimationFlag,
       showCharsFlag,
@@ -2111,7 +2126,7 @@
     g.setAttribute('transform', `translate(${frameSizeW},${frameSizeH})`);
   }
 
-  function drawFrame(mainSvgG, isCompleted = false) {
+  function drawFrame(mainSvgG, isCompleted = false, currentStep = undoInfoForNormal?.getIndex()) {
     const g = app.svg.createG('group-frame');
     mainSvgG.appendChild(g);
 
@@ -2314,7 +2329,6 @@
           fill: app.colors.congratulations,
         });
         text.classList.add('translatable-toggle');
-        const currentStep = undoInfoForNormal.getIndex();
         text.dataset.ja = currentStep === bestStep ? 'お見事！' : 'クリア！';
         text.dataset.en = currentStep === bestStep ? 'Well done!' : 'Cleared!';
         common.applyLang(text, app.savedata.getLang());
@@ -2405,7 +2419,6 @@
 
       // 今回の手数
       {
-        const currentStep = undoInfoForNormal.getIndex();
         let color = common.isSeqMode ? app.colors.stepNum : app.colors.stepNormal;
         if (isCompleted) {
           if (!highestScorePrev || currentStep <= highestScorePrev) {
@@ -2880,6 +2893,55 @@
     const levelObj = common.level.getLevelObj();
     const r = levelObj.r;
     retryAndExecReplayStr(r);
+  }
+
+  function toggleReplay() {
+    if (replayTimerId !== null) {
+      stopReplay();
+      return;
+    }
+    if (window.getComputedStyle(elems.controller.replay).opacity <= 0.5) return;
+
+    const moves = undoInfoForNormal.getReplayStr();
+    if (!moves) return;
+    const level = common.level.createReplayLevel(undoInfoForNormal.undoArray[0]);
+    const svg = elems.main.replaySvg;
+    setReplayVisible(true);
+    let step = 0;
+    drawStep();
+
+    function drawStep() {
+      const g = app.svg.createG();
+      drawLevel(g, false, settings.debugFlag, level);
+      drawDotLines(g);
+      drawFrame(g, false, step);
+      svg.replaceChildren(g);
+      replayTimerId = setTimeout(nextStep, MOVE_INTERVAL_MSEC * 2);
+    }
+
+    function nextStep() {
+      if (step === moves.length || !moveLevel(level, moves[step], svg)) {
+        stopReplay();
+        return;
+      }
+      step++;
+      drawStep();
+    }
+  }
+
+  function stopReplay() {
+    if (replayTimerId === null) return;
+    clearTimeout(replayTimerId);
+    replayTimerId = null;
+    elems.main.replaySvg.replaceChildren();
+    setReplayVisible(false);
+  }
+
+  function setReplayVisible(visible) {
+    elems.main.svg.classList.toggle('hide', visible);
+    elems.main.replaySvg.classList.toggle('hide', !visible);
+    elems.controller.replay.firstElementChild.classList.toggle('hide', visible);
+    elems.controller.replay.lastElementChild.classList.toggle('hide', !visible);
   }
 
   function execReplayStr(r) {

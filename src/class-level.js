@@ -163,6 +163,13 @@
       return this.#levelObj;
     }
 
+    createReplayLevel(initialState) {
+      const level = new Level({ levelObj: { ...initialState }, checkMode: this.#checkMode });
+      // 初期盤面はすでに鏡映・回転済みです。鏡映時の軸操作の回転方向も引き継ぎます。
+      level.#mirrorFlag = this.#mirrorFlag;
+      return level;
+    }
+
     getBestStep() {
       return this.#levelObj?.r?.length;
     }

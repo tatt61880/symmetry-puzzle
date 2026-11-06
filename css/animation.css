@@ -999,6 +999,7 @@
 /* 次のレベルへ */
 #next-level:not(.hide),
 #prev-level:not(.hide),
+#button-replay:not(.hide),
 #share-level:not(.hide) {
   animation-name: animation-next-level;
   animation-duration: calc(var(--animation-duration-symmetry) * 2);

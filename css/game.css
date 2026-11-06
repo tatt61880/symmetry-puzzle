@@ -20,10 +20,39 @@
     padding: 0;
     margin: 5px;
 
-    #main-svg {
+    & > svg {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
+    }
+  }
+
+  #controller-widget {
+    position: relative;
+
+    #button-replay {
+      position: absolute;
+      bottom: 9px;
+      left: 50%;
+      width: 186px;
+      height: 52px;
+      font: inherit;
+      font-size: 22px;
+      font-weight: bold;
+      color: #335588;
+      cursor: pointer;
+      background-color: #f1f8ff;
+      border: 3px solid #7799bb;
+      border-radius: 12px;
+      transform: translateX(-50%);
+
+      &:hover {
+        background-color: #e1eeff;
+      }
+    }
+
+    &:has(#button-replay:not(.hide)) #share-level {
+      transform: translateY(-15px) scale(0.87);
     }
   }
 }

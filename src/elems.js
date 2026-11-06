@@ -211,6 +211,7 @@
     main: {
       div: 'main-div',
       svg: 'main-svg',
+      replaySvg: 'replay-svg',
     },
 
     // オートモード
@@ -252,6 +253,7 @@
       undo: 'button-undo',
       redo: 'button-redo',
       nextLevel: 'next-level',
+      replay: 'button-replay',
       prevLevel: 'prev-level',
       shareLevel: 'share-level',
       shareLevelX: 'share-level-x',
