@@ -39,12 +39,19 @@
       const g = app.svg.createG();
       svg.replaceChildren(g);
 
-      const blocks = level.createSvgG({ blockSize, ...blockOptions, edgeColor: frameColor });
+      const sleepMarks = blockOptions.idleAnimationFlag ? app.svg.createG('group-sleep-marks') : null;
+      const boardOffset = `translate(${frameSizeW},${frameSizeH})`;
+      const blocks = level.createSvgG({ blockSize, ...blockOptions, edgeColor: frameColor, sleepMarks });
       blocks.classList.add('group-level-main');
-      blocks.setAttribute('transform', `translate(${frameSizeW},${frameSizeH})`);
+      blocks.setAttribute('transform', boardOffset);
       blocks.style.setProperty('pointer-events', 'none'); // タッチで連続して編集できるようにします。
       g.appendChild(blocks);
       drawDotLines(g, level, layout);
+      if (sleepMarks) {
+        sleepMarks.setAttribute('transform', boardOffset);
+        sleepMarks.setAttribute('pointer-events', 'none');
+        g.appendChild(sleepMarks); // 枠を越えた「Z」も隣のブロックや格子の手前に表示します。
+      }
 
       const frame = app.svg.createG('group-frame');
       g.appendChild(frame);
@@ -68,6 +75,7 @@
       showCharsFlag = false,
       smallJumpFlag = false,
       idleAnimationFlag = false,
+      sleepMarks = null,
       drawBackground = true,
       x0 = 0,
       y0 = 0,
@@ -138,6 +146,15 @@
             gElemsAnimation1,
             gElemsAnimation2
           );
+          if (eyeFlag && idleAnimationFlag) {
+            const z = app.svg.createText(blockSize, { x: x - x0 + 0.74, y: y - y0 + 0.27, text: 'Z', fill: app.colors.sleepZ.fill });
+            z.classList.add('player-sleep-z');
+            z.setAttribute('stroke', app.colors.sleepZ.stroke);
+            z.setAttribute('font-size', blockSize * 0.26);
+            z.setAttribute('opacity', 0);
+            z.setAttribute('aria-hidden', 'true');
+            (sleepMarks ?? g).appendChild(z);
+          }
         }
       }
 
@@ -1191,13 +1208,6 @@
               gElem.style.setProperty('--idle-eye-center', `${centerX}px ${centerY}px`);
               eyeLeft.classList.add('player-idle-eye');
               eyeRight.classList.add('player-idle-eye');
-
-              const z = app.svg.createText(blockSize, { x: x + 0.73, y: y + 0.2, text: 'Z', fill: color.stroke });
-              z.classList.add('player-sleep-z');
-              z.setAttribute('font-size', blockSize * 0.24);
-              z.setAttribute('opacity', 0);
-              z.setAttribute('aria-hidden', 'true');
-              gElem.appendChild(z);
             }
           }
         } else {

@@ -65,7 +65,10 @@
 }
 
 .player-sleep-z {
+  stroke-linejoin: round;
+  stroke-width: 0.14em;
   animation: player-sleep-z 2.4s ease-in-out var(--player-sleep-delay) infinite;
+  paint-order: stroke;
 }
 
 @keyframes player-sleep-z {
@@ -76,12 +79,12 @@
 
   35%,
   65% {
-    opacity: 0.8;
+    opacity: 1;
   }
 
   100% {
     opacity: 0;
-    transform: translate(0.32em, -0.44em);
+    transform: translate(1em, -0.48em);
   }
 }
 
@@ -98,7 +101,7 @@
 
 @keyframes player-show-z {
   to {
-    opacity: 0.8;
+    opacity: 1;
   }
 }
 
