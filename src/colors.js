@@ -64,6 +64,7 @@
     };
   }
 
+  colors.pushSweat = { fill: '#bff6ff', stroke: '#176889' };
   colors.line = '#888888';
   colors.symmetryAxis = '#ffdd33';
   colors.symmetryAxisInvalid = '#f85555';

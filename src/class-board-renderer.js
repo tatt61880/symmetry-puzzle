@@ -5,6 +5,8 @@
   const app = window.app;
   const { Level, common } = app;
   const frameBorderWidth = 5;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const pushSquintOffset = 0.15;
   const dirs = {
     u: 0,
     r: 1,
@@ -661,6 +663,7 @@
     #createOneBlock(x, y, sX, sY, blockSize, showCharsFlag, eyeFlag, idleAnimationFlag, flags, move) {
       const state = this.#level.getState(sX, sY);
       const color = app.colors[state];
+      const showPushMotion = eyeFlag && move.pushing && !reducedMotion.matches;
 
       const gElem = app.svg.createG('group-elem');
 
@@ -1168,14 +1171,17 @@
             }
             this.#eyePrevInfo[sY][sX] = { dx, dy };
 
-            const eyeLeft = createEye(x + 0.3, y + 0.5, dx, dy, pdx, pdy);
-            const eyeRight = createEye(x + 0.7, y + 0.5, dx, dy, pdx, pdy);
+            const pushAngle = move.dy > 0 ? 24 : 16;
+            const leftPushAngle = move.dy < 0 ? -pushAngle : pushAngle;
+            const eyeLeft = createEye(x + 0.3, y + 0.5, dx, dy, pdx, pdy, leftPushAngle);
+            const eyeRight = createEye(x + 0.7, y + 0.5, dx, dy, pdx, pdy, -leftPushAngle);
             if (showCharsFlag) {
               eyeLeft.setAttribute('opacity', 0.2);
               eyeRight.setAttribute('opacity', 0.2);
             }
             gElem.appendChild(eyeLeft);
             gElem.appendChild(eyeRight);
+            if (showPushMotion && !showCharsFlag) gElem.appendChild(createSweatDrop());
             if (idleAnimationFlag) {
               gElem.style.setProperty('--sleep-eye-offset', `${-dx * blockSize}px ${-dy * blockSize}px`);
               eyeLeft.classList.add('player-idle-eye');
@@ -1540,7 +1546,40 @@
 
       return gElem;
 
-      function createEye(x, y, dx, dy, prevDx, prevDy) {
+      function createSweatDrop() {
+        const g = app.svg.createG('push-sweat');
+        const side = move.dx > 0 ? -1 : 1;
+        // 上を押すときは、しずくの先端が右目の中央の少し下から流れるようにします。
+        const { startX, startY, angle, driftY, startOffset } =
+          move.dy < 0
+            ? { startX: 0.82, startY: 0.48, angle: 90, driftY: 0.1, startOffset: pushSquintOffset }
+            : { startX: 0.5 + side * 0.28, startY: 0.24, angle: 0, driftY: -0.11, startOffset: 0 };
+        const cx = (x + startX) * blockSize;
+        const cy = (y + startY) * blockSize;
+        const drop = app.svg.createPath({
+          d: 'M -0.07,0.12 Q -0.08,-0.01 0,-0.11 C 0.09,-0.21 0.19,-0.08 0.12,0.01 Q 0.06,0.08 -0.07,0.12 Z',
+          fill: app.colors.pushSweat.fill,
+        });
+        drop.setAttribute('transform', `translate(${cx},${cy}) scale(${side * blockSize},${blockSize}) rotate(${angle})`);
+        drop.setAttribute('stroke', app.colors.pushSweat.stroke);
+        drop.setAttribute('stroke-width', 0.035);
+        drop.setAttribute('stroke-linejoin', 'round');
+        g.appendChild(drop);
+        g.setAttribute('aria-hidden', 'true');
+        g.setAttribute('opacity', 0);
+        g.animate(
+          [
+            { opacity: 0, transform: 'translate(0, 0)', offset: startOffset },
+            { opacity: 1, offset: startOffset + 0.12 },
+            { opacity: 1, offset: 0.65 },
+            { opacity: 0, transform: `translate(${side * blockSize * 0.14}px, ${blockSize * driftY}px)`, offset: 1 },
+          ],
+          { duration: app.common.MOVE_INTERVAL_MSEC * 1.5 }
+        );
+        return g;
+      }
+
+      function createEye(x, y, dx, dy, prevDx, prevDy, pushAngle) {
         const cx = x + dx;
         const cy = y + dy;
         const eyeElem = app.svg.createCircle(blockSize, {
@@ -1559,13 +1598,16 @@
           const ddy1 = ddy0 * (1 - mag);
           const translate0 = `translate(${ddx0}px, ${ddy0}px)`;
           const translate1 = `translate(${ddx1}px, ${ddy1}px)`;
-          const keyframes = [
-            { transform: `scale(1) ${translate0}`, offset: 0 },
-            { transform: `scale(${mag}) ${translate1}`, offset: 0.5 },
-            { transform: 'scale(1) translate(0px, 0px)', offset: 1 },
-          ];
+          const keyframes = [{ transform: `scale(1) ${translate0}`, offset: 0 }];
+          if (showPushMotion) {
+            const squint = `rotate(${pushAngle}deg) scale(1.32, 0.32)`;
+            keyframes.push({ transform: squint, offset: pushSquintOffset }, { transform: squint, offset: 0.7 });
+          } else {
+            keyframes.push({ transform: `scale(${mag}) ${translate1}`, offset: 0.5 });
+          }
+          keyframes.push({ transform: 'scale(1) translate(0px, 0px)', offset: 1 });
           const options = {
-            duration: app.common.MOVE_INTERVAL_MSEC,
+            duration: app.common.MOVE_INTERVAL_MSEC * (showPushMotion ? 1.5 : 1),
           };
 
           eyeElem.setAttribute('transform-origin', `${cx * blockSize} ${cy * blockSize}`);

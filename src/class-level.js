@@ -64,6 +64,7 @@
     #width;
     #height;
     #moveFlags;
+    #pushingUsers = new Set();
     #moveDx;
     #moveDy;
     #renderer;
@@ -720,6 +721,7 @@
     }
 
     #resetMoveFlags() {
+      this.#pushingUsers.clear();
       for (let y = 0; y < this.#height; ++y) {
         this.#moveFlags[y] = [];
         for (let x = 0; x < this.#width; ++x) {
@@ -806,8 +808,15 @@
           // 各座標に移動フラグを設定
           for (let y = this.#yMin; y < this.#yMax; ++y) {
             for (let x = this.#xMin; x < this.#xMax; ++x) {
-              if (moveState[this.#states[y][x]]) {
-                this.#moveFlags[y][x] = true;
+              const state = this.#states[y][x];
+              if (!moveState[state]) continue;
+              this.#moveFlags[y][x] = true;
+
+              if (app.states.isUser(state)) {
+                const ahead = this.#states[y + dy][x + dx];
+                if (app.states.isTarget(ahead) || app.states.isOther(ahead)) {
+                  this.#pushingUsers.add(state);
+                }
               }
             }
           }
@@ -975,7 +984,8 @@
       const dy = this.#moveDy;
       const { srcX, srcY } = this.#getSrc(x, y, dx, dy);
       const moved = this.#isInArea(srcX, srcY) && this.#moveFlags[srcY][srcX];
-      return { dx, dy, srcX, srcY, moved, mirrored: this.#mirrorFlag };
+      const pushing = moved && this.#pushingUsers.has(this.getState(x, y));
+      return { dx, dy, srcX, srcY, moved, pushing, mirrored: this.#mirrorFlag };
     }
 
     createSvgG(options) {
