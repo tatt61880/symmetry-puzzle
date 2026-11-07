@@ -26,6 +26,7 @@
   class BoardRenderer {
     #level;
     #eyePrevInfo = [];
+    #heldBumpAnimations = null;
 
     constructor(level) {
       this.#level = level;
@@ -69,12 +70,18 @@
       }
     }
 
+    releaseBumpFaces() {
+      this.#heldBumpAnimations?.forEach((animation) => animation.play());
+      this.#heldBumpAnimations = null;
+    }
+
     createSvgG({
       blockSize,
       symmetryAnimationFlag = false,
       showCharsFlag = false,
       smallJumpFlag = false,
       idleAnimationFlag = false,
+      holdBumpFace = false,
       sleepMarks = null,
       drawBackground = true,
       x0 = 0,
@@ -83,6 +90,7 @@
       height = this.#level.getHeight(),
       edgeColor = null,
     }) {
+      this.#heldBumpAnimations = holdBumpFace ? [] : null;
       const g = app.svg.createG();
       g.style.setProperty('--animation-jump-small', `translate(0, ${-0.25 * blockSize}px)`);
       g.style.setProperty('--animation-jump', `translate(0, ${-0.5 * blockSize}px)`);
@@ -1199,6 +1207,9 @@
             }
             gElem.appendChild(eyeLeft);
             gElem.appendChild(eyeRight);
+            if (move.bumpDx !== undefined && !showCharsFlag && !reducedMotion.matches) {
+              showBumpFace(eyeLeft, eyeRight, this.#heldBumpAnimations);
+            }
             if (showPushMotion && !showCharsFlag) gElem.appendChild(createSweatDrop());
             if (idleAnimationFlag) {
               const centerX = -dx * blockSize;
@@ -1593,6 +1604,34 @@
           { duration: app.common.MOVE_INTERVAL_MSEC * 1.5 }
         );
         return g;
+      }
+
+      function showBumpFace(eyeLeft, eyeRight, heldAnimations) {
+        // 片目をぎゅっと閉じます。左右にぶつかったときは、ぶつかった側の目を閉じます。
+        const face = app.svg.createPath({ d: 'M .23 .36 L .40 .49 L .22 .57 M .62 .50 Q .68 .42 .78 .46', fill: 'none' });
+        const mirror = move.bumpDx > 0;
+        const originX = (mirror ? x + 1 : x) * blockSize;
+        face.setAttribute('transform', `translate(${originX},${y * blockSize}) scale(${mirror ? -blockSize : blockSize},${blockSize})`);
+        face.setAttribute('stroke', color.stroke);
+        face.setAttribute('stroke-width', '0.075');
+        face.setAttribute('stroke-linecap', 'round');
+        face.setAttribute('stroke-linejoin', 'round');
+        face.setAttribute('opacity', 0);
+        gElem.appendChild(face);
+
+        const options = { duration: app.common.MOVE_INTERVAL_MSEC * 1.5 };
+        const openEyes = [{ opacity: 0 }, { opacity: 0, offset: 0.75 }, { opacity: 1 }];
+        const animations = [
+          eyeLeft.animate(openEyes, options),
+          eyeRight.animate(openEyes, options),
+          face.animate([{ opacity: 1 }, { opacity: 1, offset: 0.75 }, { opacity: 0 }], options),
+        ];
+        if (heldAnimations) {
+          for (const animation of animations) {
+            animation.pause();
+            heldAnimations.push(animation);
+          }
+        }
       }
 
       function createEye(x, y, dx, dy, prevDx, prevDy, pushAngle) {

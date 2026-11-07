@@ -8,6 +8,7 @@
 
   class Input {
     #buttons;
+    #onDirectionRelease;
     #enable;
 
     static DIRS = {
@@ -19,8 +20,9 @@
       AXIS: '4',
     };
 
-    constructor(buttons) {
+    constructor(buttons, onDirectionRelease) {
       this.#buttons = buttons;
+      this.#onDirectionRelease = onDirectionRelease;
       this.#enable = true;
       this.#init();
 
@@ -30,14 +32,11 @@
     }
 
     #init() {
-      document.addEventListener('pointerup', (e) => {
-        this.#pointerup(e);
-      });
-    }
-
-    #pointerup() {
-      if (!this.#enable) return;
-      this.update(Input.DIRS.NEUTRAL);
+      const release = () => {
+        if (this.#enable) this.update(Input.DIRS.NEUTRAL);
+      };
+      document.addEventListener('pointerup', release);
+      document.addEventListener('pointercancel', release);
     }
 
     isEnable() {
@@ -49,10 +48,12 @@
     }
 
     disable() {
+      this.#onDirectionRelease?.();
       this.#enable = false;
     }
 
     update(dir) {
+      if (this.inputDir !== Input.DIRS.NEUTRAL && dir !== this.inputDir) this.#onDirectionRelease?.();
       this.inputDir = dir;
       app.common.inactiveElem(this.#buttons.up);
       app.common.inactiveElem(this.#buttons.right);

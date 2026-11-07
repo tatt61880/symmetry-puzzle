@@ -65,6 +65,7 @@
     #height;
     #moveFlags;
     #pushingUsers = new Set();
+    #bumpDx = new Map();
     #moveDx;
     #moveDy;
     #renderer;
@@ -721,8 +722,9 @@
       return this.#checkMode;
     }
 
-    #resetMoveFlags() {
+    #resetMoveFlags(holdBumpFace = false) {
       this.#pushingUsers.clear();
+      if (!holdBumpFace) this.#bumpDx.clear();
       for (let y = 0; y < this.#height; ++y) {
         this.#moveFlags[y] = [];
         for (let x = 0; x < this.#width; ++x) {
@@ -732,12 +734,12 @@
     }
 
     #updateMoveFlags(dx, dy, userMax = app.states.userMax) {
+      this.#resetMoveFlags();
       if (!this.hasAxis() && dx + dy === 0) {
         return false;
       }
 
       let moveFlag = false;
-      this.#resetMoveFlags();
 
       if (this.hasAxis() && dx + dy === 0) {
         loop: for (let i = app.states.userMin; i <= userMax; ++i) {
@@ -786,6 +788,7 @@
           const moveState = []; // 移動予定の状態番号
           moveState[i] = true;
 
+          let pushingTarget = false;
           const st = new app.Stack(); // 移動可能か検証必要な状態番号
           st.push(i);
           while (!st.empty()) {
@@ -796,7 +799,10 @@
                 const dstState = this.#states[y + dy][x + dx];
                 if (dstState === app.states.none) continue;
 
+                if (state === i && app.states.isTarget(dstState)) pushingTarget = true;
                 if (dstState === app.states.wall) {
+                  // 自分が壁に当たったか、直接押したターゲットの先が詰まっているとき。
+                  if (state === i || pushingTarget) this.#bumpDx.set(i, dx);
                   continue loop;
                 } else if (!moveState[dstState]) {
                   moveState[dstState] = true;
@@ -985,14 +991,21 @@
       const dy = this.#moveDy;
       const { srcX, srcY } = this.#getSrc(x, y, dx, dy);
       const moved = this.#isInArea(srcX, srcY) && this.#moveFlags[srcY][srcX];
-      const pushing = moved && this.#pushingUsers.has(this.getState(x, y));
-      return { dx, dy, srcX, srcY, moved, pushing, mirrored: this.#reverseRotation };
+      const state = this.getState(x, y);
+      const pushing = moved && this.#pushingUsers.has(state);
+      const bumpDx = this.#bumpDx.get(state);
+      return { dx, dy, srcX, srcY, moved, pushing, bumpDx, mirrored: this.#reverseRotation };
+    }
+
+    releaseBumpFaces() {
+      this.#bumpDx.clear();
+      this.#renderer?.releaseBumpFaces();
     }
 
     createSvgG(options) {
       this.#renderer ??= new app.BoardRenderer(this);
       const g = this.#renderer.createSvgG(options);
-      this.#resetMoveFlags();
+      this.#resetMoveFlags(options.holdBumpFace);
       return g;
     }
 

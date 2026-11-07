@@ -1394,6 +1394,7 @@
     {
       document.addEventListener('keydown', keydown);
       document.addEventListener('keyup', keyup);
+      window.addEventListener('blur', releaseGameInput);
     }
 
     // タッチ入力用
@@ -1434,7 +1435,7 @@
 
       document.addEventListener('pointerup', pointerup);
 
-      input = new app.Input(elems.controller.buttons);
+      input = new app.Input(elems.controller.buttons, () => common.level?.releaseBumpFaces());
     }
 
     function menuGotoTitlePage() {
@@ -2149,6 +2150,7 @@
 
   function drawBoard(svg, level, currentStep, { isCompleted = false, highestScorePrev = null, showCharsFlag = settings.debugFlag } = {}) {
     const edit = editMode ? { normalized: level.isNormalized(), moveAxis, resizeLevel } : null;
+    const idleAnimationFlag = !showCharsFlag && !settings.autoMode && !completeFlag;
     if (edit) elems.edit.normalize.classList.toggle('hide', edit.normalized);
 
     app.BoardRenderer.drawBoard(svg, level, {
@@ -2158,7 +2160,8 @@
       symmetryAnimationFlag: isCompleted,
       showCharsFlag,
       smallJumpFlag: !editMode && !undoInfoForNormal.isUndoable() && input.inputDir === app.Input.DIRS.NEUTRAL,
-      idleAnimationFlag: !showCharsFlag && !settings.autoMode && !completeFlag,
+      idleAnimationFlag,
+      holdBumpFace: svg === elems.main.svg && idleAnimationFlag && input.inputDir !== app.Input.DIRS.NEUTRAL,
       edit,
       score: {
         currentStep,
