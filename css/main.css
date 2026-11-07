@@ -37,8 +37,8 @@ header {
   text-align: left;
   background-color: #ccccff;
 
-  .title {
-    margin-left: 10px;
+  h1 {
+    margin: 0 0 0 10px;
     font-size: 1.3rem;
     font-weight: normal;
     color: #333388;
