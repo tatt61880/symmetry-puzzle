@@ -148,8 +148,10 @@
       border-radius: 12px;
       transform: translateX(-50%);
 
-      &:hover {
-        background-color: #e1eeff;
+      @media (hover: hover) {
+        &:hover {
+          background-color: #e1eeff;
+        }
       }
     }
 

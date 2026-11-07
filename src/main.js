@@ -1352,6 +1352,8 @@
     {
       [document.body, elems.contents].forEach((elem) => {
         elem.addEventListener('mousedown', (e) => {
+          // ダイアログのボタンをタップしたときは、ブラウザーにフォーカスを移させます。
+          if (e.detail === 1 && e.target.closest('button[aria-haspopup="dialog"], dialog button')) return;
           // ダブルタップしたときの画面の拡大縮小をしないようにする。
           e.preventDefault();
         });

@@ -114,20 +114,25 @@ div.user-select-none {
   opacity: 1;
 }
 
-.active-hover:hover {
-  opacity: 0.8;
+.active-hover {
+  -webkit-tap-highlight-color: transparent;
+
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }
 
-.active-elem,
+.active-elem:hover,
 .active-hover:active {
-  &:hover {
-    opacity: 0.5;
-  }
+  opacity: 0.5;
+}
 
-  & > .button-transform {
-    opacity: 0.5;
-    transform: translateY(var(--button-translate-y));
-  }
+.active-elem > .button-transform,
+.active-hover:active > .button-transform {
+  opacity: 0.5;
+  transform: translateY(var(--button-translate-y));
 }
 
 .button-transform-parent:has(> :active) {
