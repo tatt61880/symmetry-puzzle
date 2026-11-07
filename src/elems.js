@@ -214,6 +214,12 @@
       replaySvg: 'replay-svg',
     },
 
+    hint: {
+      button: 'level-hint',
+      dialog: 'dialog-hint',
+      text: 'dialog-hint-text',
+    },
+
     // オートモード
     auto: {
       buttons: 'buttons-auto',

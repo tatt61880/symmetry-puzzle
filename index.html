@@ -1042,7 +1042,24 @@
         <svg id="main-svg" width="480" height="230">
         </svg>
         <svg id="replay-svg" class="hide"></svg>
+        <button id="level-hint" class="hide" type="button" aria-haspopup="dialog" aria-labelledby="dialog-hint-title">
+          <svg viewBox="0 0 100 60" aria-hidden="true">
+            <g transform="translate(50,30) scale(1,0.6)">
+              <path d="M -45,-31 H 8 V -45 L 46,0 8,45 V 31 H -45 Z" fill="#ddf5ec" stroke="#287560" stroke-width="4"
+                stroke-linejoin="round" />
+            </g>
+            <text x="50" y="31" dominant-baseline="middle" text-anchor="middle" font-size="19" font-weight="bold" fill="#194e40"
+              class="translatable-toggle" data-en="Hint" data-ja="ヒント"></text>
+          </svg>
+        </button>
       </div>
+      <dialog id="dialog-hint" aria-labelledby="dialog-hint-title">
+        <form method="dialog">
+          <h2 id="dialog-hint-title" class="translatable-toggle" data-en="Hint" data-ja="ヒント"></h2>
+          <p id="dialog-hint-text"></p>
+          <button type="submit" class="translatable-toggle" data-en="Close" data-ja="閉じる"></button>
+        </form>
+      </dialog>
 
       <div id="buttons-auto" class="hide">
         <svg width="80" height="60">

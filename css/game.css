@@ -51,7 +51,39 @@
     }
   }
 
-  #dialog-normalize {
+  #level-hint {
+    position: absolute;
+    padding: 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transform: translate(-50%, -50%);
+
+    svg {
+      display: block;
+      width: 100%;
+    }
+
+    path {
+      transform: rotate(var(--hint-angle));
+    }
+
+    &:focus-visible {
+      outline: none;
+
+      path {
+        fill: #287560;
+        stroke-width: 7px;
+      }
+
+      text {
+        fill: white;
+      }
+    }
+  }
+
+  #dialog-normalize,
+  #dialog-hint {
     box-sizing: border-box;
     width: min(440px, 94%);
     max-height: 90%;

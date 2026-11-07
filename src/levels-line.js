@@ -22,6 +22,15 @@
       step: 4,
       shapes: 1,
       subject: '線対称のはじまり',
+      hint: {
+        // 左上を (0, 0) としたマスに、移動手順 r と同じ向きの矢印を出します。
+        afterSteps: 10,
+        x: 2,
+        y: 2,
+        dir: 1,
+        ja: '小さいオレンジ色のブロックは、青いキャラで押せます。矢印のマスから、ブロックを角に向かって押してみましょう。',
+        en: 'The blue character can push the small orange block. Stand on the square with the arrow and push the block into the corner.',
+      },
     },
     {
       w: 5,

@@ -1046,6 +1046,8 @@
       }
       const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
       const newLevelObj = { w, h, s, r };
+      const hint = levelObj.hint;
+      if (hint) newLevelObj.hint = { ...hint, x: w - 1 - hint.x, dir: (4 - hint.dir) % 4 };
       return newLevelObj;
     }
 
@@ -1092,7 +1094,9 @@
           r = newR;
         }
         const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
+        const hint = newLevelObj.hint;
         newLevelObj = { w, h, s, r };
+        if (hint) newLevelObj.hint = { ...hint, x: w - 1 - hint.y, y: hint.x, dir: (hint.dir + 1) % 4 };
       }
       return newLevelObj;
     }
