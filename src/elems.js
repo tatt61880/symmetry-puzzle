@@ -246,6 +246,8 @@
       mirror: 'edit-mirror',
       rotate: 'edit-rotate',
       normalize: 'edit-normalize',
+      normalizeHelp: 'edit-normalize-help',
+      normalizeDialog: 'dialog-normalize',
     },
 
     // コントローラー

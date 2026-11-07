@@ -27,6 +27,72 @@
     }
   }
 
+  #edit-widget {
+    position: relative;
+
+    #edit-normalize-help {
+      position: absolute;
+      top: 182px;
+      right: 9px;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      font-size: 22px;
+      font-weight: bold;
+      color: #882288;
+      cursor: pointer;
+      background-color: #ffddff;
+      border: 3px solid #aa33aa;
+      border-radius: 50%;
+    }
+
+    &:has(#edit-normalize.hide) #edit-normalize-help {
+      visibility: hidden;
+    }
+  }
+
+  #dialog-normalize {
+    box-sizing: border-box;
+    width: min(440px, 94%);
+    max-height: 90%;
+    padding: 0;
+    color: #334466;
+    text-align: left;
+    background-color: #f1f8ff;
+    border: 2px solid #aaccee;
+    border-radius: 12px;
+
+    &::backdrop {
+      background-color: rgb(0 0 0 / 50%);
+    }
+
+    form {
+      padding: 16px 20px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    p {
+      margin: 0.75em 0;
+      line-height: 1.5;
+    }
+
+    button {
+      display: block;
+      padding: 5px 16px;
+      margin-left: auto;
+      font: inherit;
+      color: #335588;
+      cursor: pointer;
+      background-color: #ffffff;
+      border: 2px solid #99bbdd;
+      border-radius: 6px;
+    }
+  }
+
   #controller-widget {
     position: relative;
 

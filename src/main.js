@@ -23,7 +23,7 @@
   let moveIntervalCount = MOVE_INTERVAL_COUNT;
   let input;
   const moveKeys = new Set();
-  const heldKeysOutsideMenu = new Set();
+  const heldGameKeys = new Set();
 
   let settings = {
     autoMode: false,
@@ -195,6 +195,14 @@
     redoStart();
   }
 
+  function releaseGameInput() {
+    heldGameKeys.clear();
+    moveKeys.clear();
+    if (!settings.autoMode) input.update(app.Input.DIRS.NEUTRAL);
+    undoEnd();
+    redoEnd();
+  }
+
   function pointerup() {
     undoEnd();
     redoEnd();
@@ -220,12 +228,12 @@
   }
 
   async function keydown(e) {
-    if (elems.menu.dialog.open) return;
-    // メニューを開く前や表示中に押したキーのリピートで、閉じた後の盤面を操作しないようにします。
-    if (e.repeat && !heldKeysOutsideMenu.has(e.code)) return;
-    heldKeysOutsideMenu.add(e.code);
+    if (elems.menu.dialog.open || elems.edit.normalizeDialog.open) return;
+    // ダイアログを閉じた後、押したままのキーで盤面を操作しないようにします。
+    if (e.repeat && !heldGameKeys.has(e.code)) return;
+    heldGameKeys.add(e.code);
     if (e.altKey) return;
-    if (e.target === elems.controller.replay && (e.key === 'Enter' || e.key === ' ')) return;
+    if ((e.target === elems.controller.replay || e.target === elems.edit.normalizeHelp) && (e.key === 'Enter' || e.key === ' ')) return;
 
     // 記録ダイアログで有効
     if (elems.records.dialog.open) {
@@ -541,7 +549,7 @@
   }
 
   function keyup(e) {
-    heldKeysOutsideMenu.delete(e.code);
+    heldGameKeys.delete(e.code);
     if (common.isShownElem(elems.category.title)) return;
     moveKeys.delete(e.key);
     if (temporaryShowCharsFlag && e.key === ' ') {
@@ -1338,7 +1346,7 @@
         elem.addEventListener(
           pointermoveEventName,
           (e) => {
-            if (common.isShownElem(elems.console.widget)) return;
+            if (elems.edit.normalizeDialog.open || common.isShownElem(elems.console.widget)) return;
             // スワイプ操作を無効化する。
             e.preventDefault();
           },
@@ -1393,11 +1401,7 @@
 
       // メニューダイアログ
       elems.menu.button.addEventListener('click', () => {
-        heldKeysOutsideMenu.clear();
-        moveKeys.clear();
-        if (!settings.autoMode) input.update(app.Input.DIRS.NEUTRAL);
-        undoEnd();
-        redoEnd();
+        releaseGameInput();
         app.dialog.menu.show();
       });
       elems.menu.dialog.addEventListener('click', app.dialog.menu.close);
@@ -1568,6 +1572,18 @@
       addUndo(null);
       draw();
     });
+
+    const dialog = elems.edit.normalizeDialog;
+    elems.edit.normalizeHelp.addEventListener('click', () => {
+      releaseGameInput();
+      app.sound.playUiOpen();
+      elems.edit.normalizeHelp.focus({ preventScroll: true });
+      dialog.showModal();
+    });
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('close', () => app.sound.playUiClose());
 
     // 正規化ボタン
     elems.edit.normalize.addEventListener('click', () => {
