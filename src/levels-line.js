@@ -125,6 +125,64 @@
       r: '12243',
       step: 5,
       shapes: 2,
+      hint: {
+        afterSteps: 10,
+        stages: [
+          // この2か所のどちらかにブロックを押し込むと、元の位置に戻せません。
+          ...[
+            { x: 0, y: 0, block: '2' },
+            { x: 4, y: 2, block: '1' },
+          ].map((when) => ({
+            when,
+            undo: true,
+            ja: '手詰まりです。解ける配置まで「1ステップ戻す」を押してください。',
+            en: 'Stuck! Press Step Backward until the puzzle is solvable again.',
+          })),
+          // L字が初期位置から動いていても、解ける配置なら次に押すブロックを示します。
+          {
+            when: { x: 1, y: 2, block: '1' },
+            x: 0,
+            y: 0,
+            dir: 2,
+            ja: '矢印に沿って、小さいブロックをL字の隣へ押しましょう。',
+            en: 'Push the small block along the arrow so it touches the L-shaped block.',
+          },
+          ...[
+            { x: 2, y: 2, block: '1' },
+            { x: 1, y: 0, block: '1' },
+          ].map((when) => ({
+            when,
+            x: 3,
+            y: 1,
+            dir: 3,
+            ja: '矢印に沿って、L字を小さいブロックの方へ押しましょう。',
+            en: 'Follow the arrow to push the L-shaped block toward the small block.',
+          })),
+          // L字が初期位置にあるときは、回り込む前・対称軸操作を使うマス・回り込んだ後を区別します。
+          ...[3, 4].map((x) => ({
+            when: { x, y: 0, block: 's' },
+            x: 3,
+            y: 0,
+            dir: 3,
+            ja: '矢印に沿ってL字をひと押ししましょう。',
+            en: 'Push the L-shaped block one square in the direction of the arrow.',
+          })),
+          {
+            when: { x: 1, y: 2, block: 's' },
+            dir: 4,
+            ja: 'ここで方向ボタンの中央を押すと、L字の反対側へ移れます。',
+            en: 'Press the button in the middle of the arrows to reach the other side of the L-shaped block.',
+          },
+          {
+            when: { x: 2, y: 0, block: '1' },
+            x: 1,
+            y: 1,
+            dir: 2,
+            ja: '矢印の先のマスから、斜めの対称軸を使ってL字の反対側へ回り込めます。',
+            en: 'Stand on the square the arrow points to. From there, use the diagonal axis to get behind the L-shaped block.',
+          },
+        ],
+      },
     },
     {
       w: 5,

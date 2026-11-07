@@ -25,6 +25,7 @@
       app.levelsEx = require('./levels-line-ex.js');
       checkLevels();
       testLineLevel6Hints();
+      testLineLevel9Hints();
       break;
     case 'point':
       checkMode = app.Level.CHECK_MODE.POINT;
@@ -154,6 +155,28 @@
         assert.ok(level.move(0, 0));
         assert.equal(level.getHint().dir, 4);
       }
+    }
+  }
+
+  function testLineLevel9Hints() {
+    const assert = require('node:assert/strict');
+    const levelObj = app.levels[9];
+    const level = new app.Level({ levelObj, checkMode });
+    for (const [state, arrow] of [
+      [levelObj.s, [1, 1, 2]], // 対称軸操作を使うマスへ
+      ['001-2011x-0s', [undefined, undefined, 4]], // 中央ボタン
+      ['001s-2011x', [3, 0, 3]], // 回り込んだ後のひと押し
+      ['-201sx-0011', [3, 1, 3]], // L字を下に押した場合
+      ['01s-0110x-2', [3, 1, 3]], // 小さいブロックを下に押してからL字を左に押した場合
+      ['-21s0x-011', [0, 0, 2]], // 小さいブロックを押して完成させる配置
+    ]) {
+      level.applyStateStr(state);
+      const { x, y, dir } = level.getHint();
+      assert.deepEqual([x, y, dir], arrow);
+    }
+    for (const state of ['201-s011x', '-2001x-00s11']) {
+      level.applyStateStr(state);
+      assert.equal(level.getHint().undo, true);
     }
   }
 
