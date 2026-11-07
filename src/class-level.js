@@ -74,7 +74,7 @@
     #height;
     #moveFlags;
     #pushingUsers = new Set();
-    #bumpDx = new Map();
+    #bumpDirections = new Map();
     #moveDx;
     #moveDy;
     #renderer;
@@ -745,7 +745,7 @@
 
     #resetMoveFlags(holdBumpFace = false) {
       this.#pushingUsers.clear();
-      if (!holdBumpFace) this.#bumpDx.clear();
+      if (!holdBumpFace) this.#bumpDirections.clear();
       for (let y = 0; y < this.#height; ++y) {
         this.#moveFlags[y] = [];
         for (let x = 0; x < this.#width; ++x) {
@@ -823,7 +823,7 @@
                 if (state === i && app.states.isTarget(dstState)) pushingTarget = true;
                 if (dstState === app.states.wall) {
                   // 自分が壁に当たったか、直接押したターゲットの先が詰まっているとき。
-                  if (state === i || pushingTarget) this.#bumpDx.set(i, dx);
+                  if (state === i || pushingTarget) this.#bumpDirections.set(i, { dx, dy });
                   continue loop;
                 } else if (!moveState[dstState]) {
                   moveState[dstState] = true;
@@ -1014,12 +1014,12 @@
       const moved = this.#isInArea(srcX, srcY) && this.#moveFlags[srcY][srcX];
       const state = this.getState(x, y);
       const pushing = moved && this.#pushingUsers.has(state);
-      const bumpDx = this.#bumpDx.get(state);
-      return { dx, dy, srcX, srcY, moved, pushing, bumpDx, mirrored: this.#reverseRotation };
+      const bump = this.#bumpDirections.get(state);
+      return { dx, dy, srcX, srcY, moved, pushing, bump, mirrored: this.#reverseRotation };
     }
 
     releaseBumpFaces() {
-      this.#bumpDx.clear();
+      this.#bumpDirections.clear();
       this.#renderer?.releaseBumpFaces();
     }
 

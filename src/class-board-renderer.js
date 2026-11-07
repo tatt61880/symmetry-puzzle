@@ -6,6 +6,7 @@
   const { Level, common } = app;
   const frameBorderWidth = 5;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const verticalEyeOffset = 0.2;
   const pushSquintOffset = 0.15;
   const dirs = {
     u: 0,
@@ -1183,7 +1184,7 @@
 
           if (eyeFlag) {
             const dx = move.moved ? move.dx * 0.06 : 0;
-            const dy = move.moved ? move.dy * 0.2 : 0;
+            const dy = move.moved ? move.dy * verticalEyeOffset : 0;
             const px = move.moved ? move.srcX : sX;
             const py = move.moved ? move.srcY : sY;
 
@@ -1207,7 +1208,7 @@
             }
             gElem.appendChild(eyeLeft);
             gElem.appendChild(eyeRight);
-            if (move.bumpDx !== undefined && !showCharsFlag && !reducedMotion.matches) {
+            if (move.bump && !showCharsFlag && !reducedMotion.matches) {
               showBumpFace(eyeLeft, eyeRight, this.#heldBumpAnimations);
             }
             if (showPushMotion && !showCharsFlag) gElem.appendChild(createSweatDrop());
@@ -1607,11 +1608,17 @@
       }
 
       function showBumpFace(eyeLeft, eyeRight, heldAnimations) {
-        // 片目をぎゅっと閉じます。左右にぶつかったときは、ぶつかった側の目を閉じます。
-        const face = app.svg.createPath({ d: 'M .23 .36 L .40 .49 L .22 .57 M .62 .50 Q .68 .42 .78 .46', fill: 'none' });
-        const mirror = move.bumpDx > 0;
+        // 上下の衝突では両目をぎゅっと閉じ、左右ではぶつかった側の目を閉じます。
+        const { dx, dy } = move.bump;
+        const d =
+          dy !== 0
+            ? 'M .23 .42 L .37 .50 L .23 .58 M .77 .42 L .63 .50 L .77 .58'
+            : 'M .23 .36 L .40 .49 L .22 .57 M .62 .50 Q .68 .42 .78 .46';
+        const face = app.svg.createPath({ d, fill: 'none' });
+        const mirror = dx > 0;
         const originX = (mirror ? x + 1 : x) * blockSize;
-        face.setAttribute('transform', `translate(${originX},${y * blockSize}) scale(${mirror ? -blockSize : blockSize},${blockSize})`);
+        const originY = (y + dy * verticalEyeOffset) * blockSize;
+        face.setAttribute('transform', `translate(${originX},${originY}) scale(${mirror ? -blockSize : blockSize},${blockSize})`);
         face.setAttribute('stroke', color.stroke);
         face.setAttribute('stroke-width', '0.075');
         face.setAttribute('stroke-linecap', 'round');
