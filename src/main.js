@@ -616,6 +616,7 @@
   }
 
   function draw() {
+    app.dialog.shapes.finishDiscovery();
     if (common.isHiddenElem(elems.category.game)) return;
 
     updateSvg();
@@ -824,34 +825,40 @@
     }
   }
 
-  function updateShapeButton() {
-    if (common.level !== null) {
-      const shapesObj = app.savedata.getShapesObj(common.level);
+  function updateShapeButton(discoveredShape = null) {
+    const shapesObj = common.level && app.savedata.getShapesObj(common.level);
+    if (!shapesObj) {
+      common.hideElem(elems.shapes.buttonG);
+      return;
+    }
 
-      if (shapesObj) {
-        common.showElem(elems.shapes.buttonG);
-        const numerator = Object.keys(shapesObj).length;
-        const denumerator = common.level.getShapes() ?? '?';
-        elems.shapes.buttonNumerator.textContent = numerator;
-        elems.shapes.buttonDenumerator.textContent = denumerator;
-        const fontColor = (() => {
-          if (common.isSeqMode) {
-            return app.colors.shapeNumSeqMode;
-          }
-          return numerator === denumerator ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
-        })();
-        elems.shapes.buttonNumerator.setAttribute('fill', fontColor);
-        elems.shapes.buttonLine.setAttribute('fill', fontColor);
-        elems.shapes.buttonDenumerator.setAttribute('fill', fontColor);
-        const fill = common.isSeqMode ? app.colors.frameFillSeqMode : app.colors.frameFill;
-        const stroke = common.isSeqMode ? app.colors.frameStrokeSeqMode : app.colors.frameStroke;
-        elems.shapes.button.setAttribute('fill', fill);
-        elems.shapes.button.setAttribute('stroke', stroke);
+    common.showElem(elems.shapes.buttonG);
+    const count = Object.keys(shapesObj).length;
+    const denumerator = common.level.getShapes() ?? '?';
+    elems.shapes.buttonDenumerator.textContent = denumerator;
+    const fill = common.isSeqMode ? app.colors.frameFillSeqMode : app.colors.frameFill;
+    const stroke = common.isSeqMode ? app.colors.frameStrokeSeqMode : app.colors.frameStroke;
+    elems.shapes.button.setAttribute('fill', fill);
+    elems.shapes.button.setAttribute('stroke', stroke);
+
+    if (discoveredShape) {
+      const center = common.level.getCenter(app.states.isTarget);
+      const source = new DOMPoint(frameSizeW + blockSize * center.x, frameSizeH + blockSize * center.y);
+      if (app.dialog.shapes.animateDiscovery(discoveredShape, blockSize, source, () => showCount(count))) {
+        showCount(count - 1);
         return;
       }
     }
+    showCount(count);
 
-    common.hideElem(elems.shapes.buttonG);
+    function showCount(numerator) {
+      elems.shapes.buttonNumerator.textContent = numerator;
+      let fontColor = numerator === denumerator ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
+      if (common.isSeqMode) fontColor = app.colors.shapeNumSeqMode;
+      elems.shapes.buttonNumerator.setAttribute('fill', fontColor);
+      elems.shapes.buttonLine.setAttribute('fill', fontColor);
+      elems.shapes.buttonDenumerator.setAttribute('fill', fontColor);
+    }
   }
 
   function loadLevelObj(levelObj, param = {}) {
@@ -946,6 +953,7 @@
 
   // エディトモードのオンオフ
   function toggleEditLevel() {
+    app.dialog.shapes.finishDiscovery();
     cancelAutoSearch();
     settings.sharedFlag = false;
 
@@ -2180,10 +2188,9 @@
     // シルエットデータ保存
     {
       const shapeStr = common.level.getTargetShapeForSavedata();
-      const result = app.savedata.saveShape(common.level, shapeStr, replayStr);
-      if (result) {
-        updateShapeButton();
-      }
+      const isNewShape = app.savedata.getShapesObj(common.level)?.[shapeStr] === undefined;
+      app.savedata.saveShape(common.level, shapeStr, replayStr);
+      if (isNewShape) updateShapeButton(shapeStr);
     }
 
     // ログ出力
@@ -2615,6 +2622,7 @@
   }
 
   function setReplayVisible(visible) {
+    if (visible) app.dialog.shapes.finishDiscovery();
     elems.main.svg.classList.toggle('hide', visible);
     elems.main.replaySvg.classList.toggle('hide', !visible);
     elems.controller.replay.firstElementChild.classList.toggle('hide', visible);

@@ -12,6 +12,8 @@
   window.app.dialog = window.app.dialog || {};
   window.app.dialog.shapes = {
     show,
+    animateDiscovery,
+    finishDiscovery,
     update,
     prevPage,
     nextPage,
@@ -33,7 +35,10 @@
   const SELECT_WIDTH = 90;
   const SELECT_COLS = 5;
 
+  let settleDiscovery = null;
+
   function show() {
+    finishDiscovery();
     updateDialog();
     app.sound.playUiOpen();
     elems.shapes.dialog.showModal();
@@ -226,22 +231,10 @@
       }
 
       if (shapeStr !== null) {
-        const checkMode = common.checkMode;
         const { w, h } = getSizeOfShapeStr(shapeStr);
-        const level = new app.Level({
-          levelObj: { w, h, s: shapeStr },
-          checkMode,
-        });
         const yMargin = 16;
         const blockSize = Math.min((SELECT_WIDTH - 8) / w, (SELECT_HEIGHT - yMargin - 8) / h, (SELECT_HEIGHT - yMargin - 8) / 5);
-        const levelSvgG = level.createSvgG({
-          blockSize,
-          drawBackground: false,
-          x0: 1,
-          y0: 1,
-          width: w,
-          height: h,
-        });
+        const levelSvgG = createSilhouette(shapeStr, w, h, blockSize);
 
         {
           const dx = (SELECT_WIDTH - blockSize * w) / 2;
@@ -304,6 +297,67 @@
     const w = Math.max(...shapeStrLines.map((x) => x.length));
     const h = shapeStrLines.length;
     return { w, h };
+  }
+
+  function createSilhouette(shapeStr, w, h, blockSize) {
+    const level = new app.Level({ levelObj: { w, h, s: shapeStr }, checkMode: common.checkMode });
+    return level.createSvgG({ blockSize, drawBackground: false, x0: 1, y0: 1, width: w, height: h });
+  }
+
+  function finishDiscovery() {
+    settleDiscovery?.();
+    elems.shapes.buttonNumerator.classList.remove('shape-count-bounce');
+  }
+
+  function animateDiscovery(shapeStr, blockSize, boardPoint, onArrival) {
+    finishDiscovery();
+    if (elems.shapes.dialog.open) {
+      update();
+      return false;
+    }
+    const button = elems.shapes.button.getBoundingClientRect();
+    if (!button.width || !blockSize || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+
+    const boardMatrix = elems.main.svg.getScreenCTM();
+    if (!boardMatrix) return false;
+    const start = boardPoint.matrixTransform(boardMatrix);
+    const { w, h } = getSizeOfShapeStr(shapeStr);
+    const width = w * blockSize;
+    const height = h * blockSize;
+    const widget = elems.controller.widget.getBoundingClientRect();
+    const svg = app.svg.createSvg();
+    svg.classList.add('shape-discovery');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('width', width);
+    svg.setAttribute('height', height);
+    svg.style.left = `${start.x - widget.left - width / 2}px`;
+    svg.style.top = `${start.y - widget.top - height / 2}px`;
+    svg.appendChild(createSilhouette(shapeStr, w, h, blockSize));
+    elems.controller.widget.appendChild(svg);
+
+    const dx = button.left + button.width / 2 - start.x;
+    const dy = button.top + button.height / 2 - start.y;
+    const endScale = Math.min(0.26, (button.width * 0.36) / Math.max(width, height));
+    const flight = svg.animate(
+      [
+        { transform: 'none', opacity: 0 },
+        { transform: 'translateY(-16px) scale(0.82)', opacity: 1, offset: 0.25, easing: 'ease-in' },
+        { transform: `translate(${dx}px, ${dy}px) scale(${endScale})`, opacity: 0.8 },
+      ],
+      { duration: 650, fill: 'forwards' }
+    );
+    settleDiscovery = () => {
+      settleDiscovery = null;
+      flight.onfinish = null;
+      flight.cancel();
+      svg.remove();
+      onArrival();
+    };
+    flight.onfinish = () => {
+      finishDiscovery();
+      elems.shapes.buttonNumerator.classList.add('shape-count-bounce');
+    };
+    return true;
   }
 
   function close(sound = true) {

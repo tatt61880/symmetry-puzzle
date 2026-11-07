@@ -1086,6 +1086,27 @@
   }
 }
 
+.shape-discovery {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 2px #99663380);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .shape-count-bounce {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: shape-count-bounce 280ms ease-out;
+  }
+}
+
+@keyframes shape-count-bounce {
+  45% {
+    transform: translateY(-3px) scale(1.25);
+  }
+}
+
 .animation-new-record-crown {
   animation: animation-new-record-crown linear both;
   animation-duration: calc(var(--animation-duration-symmetry) * 4);
