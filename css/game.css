@@ -187,13 +187,13 @@
       color: #715324;
       cursor: pointer;
       background-color: #fff8e4;
-      border: 2px solid #b28b47;
+      border: 4px solid #b28b47;
       border-radius: 50%;
       transform: translate(-50%, -50%);
 
       &[aria-pressed='true'] {
         background-color: #ffdd85;
-        box-shadow: inset 0 0 0 2px currentColor;
+        border-color: currentColor;
       }
     }
 
