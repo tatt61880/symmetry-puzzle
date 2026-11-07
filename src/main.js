@@ -16,6 +16,7 @@
   const MOVE_INTERVAL_COUNT = 5;
   const MOVE_INTERVAL_MSEC = MOVE_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
   common.MOVE_INTERVAL_MSEC = MOVE_INTERVAL_MSEC;
+  const REPLAY_STEP_MSEC = MOVE_INTERVAL_MSEC * 2;
 
   const UNDO_INTERVAL_COUNT = 5;
   const UNDO_INTERVAL_MSEC = UNDO_INTERVAL_COUNT * INPUT_INTERVAL_MSEC;
@@ -540,6 +541,7 @@
     }
 
     draw();
+    scheduleNextAutoStep();
   }
 
   function resetUndo() {
@@ -824,6 +826,7 @@
 
     if (settings.autoMode) {
       updateAutoMode(true);
+      scheduleNextAutoStep();
     }
     updateShapeButton();
   }
@@ -2399,7 +2402,7 @@
   }
 
   function autoStepInterval() {
-    return MOVE_INTERVAL_MSEC / Number(elems.auto.speed.value);
+    return REPLAY_STEP_MSEC / Number(elems.auto.speed.value);
   }
 
   function updateAutoMode(isAutoMode) {
@@ -2414,6 +2417,7 @@
     } else {
       clearTimeout(nextLevelTimerId);
       clearTimeout(redrawTimerId);
+      clearTimeout(autoIntervalId);
       autoPaused = true;
       input.enable();
       common.hideElem(elems.auto.buttons);
@@ -2491,9 +2495,11 @@
     updateAutoStartPauseButtons();
     if (common.level.isCompleted()) {
       gotoNextLevel();
+    } else if (undoInfoForNormal.getIndex() === 0) {
+      scheduleNextAutoStep();
+    } else {
+      intervalFuncAuto();
     }
-
-    intervalFuncAuto();
   }
 
   function onButtonPause() {
@@ -2564,7 +2570,7 @@
 
     function drawStep() {
       drawBoard(svg, level, step);
-      replayTimerId = setTimeout(nextStep, MOVE_INTERVAL_MSEC * 2);
+      replayTimerId = setTimeout(nextStep, REPLAY_STEP_MSEC);
     }
 
     function nextStep() {
@@ -2624,8 +2630,7 @@
       }
     }
 
-    clearTimeout(autoIntervalId);
-    autoIntervalId = setTimeout(intervalFuncAuto, autoStepInterval());
+    scheduleNextAutoStep();
   }
 
   function consoleAdd(str, className) {
