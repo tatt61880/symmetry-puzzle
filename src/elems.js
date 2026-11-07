@@ -223,6 +223,7 @@
     // オートモード
     auto: {
       buttons: 'buttons-auto',
+      seek: 'auto-seek',
       buttonStop: 'button-stop',
       buttonStart: 'button-start',
       buttonPause: 'button-pause',

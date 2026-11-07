@@ -132,6 +132,21 @@
     }
   }
 
+  #buttons-auto:not(.hide) {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+
+    #auto-seek {
+      width: 145px;
+      height: 36px;
+      margin: 0;
+      accent-color: green;
+      touch-action: none;
+    }
+  }
+
   #buttons-auto.hide ~ #controller-widget #controller-auto-label {
     display: none;
   }

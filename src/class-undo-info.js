@@ -42,6 +42,15 @@
       }
     }
 
+    // 手動操作で別の経路を通った場合も、解答手順と一致する履歴だけを使います。
+    seekReplayPrefix(replay, target) {
+      let index = 0;
+      const end = Math.min(target, this.#undoMaxIdx);
+      while (index < end && this.undoArray[index + 1].dir === Number(replay[index])) index++;
+      this.#undoIdx = index;
+      return this.getTopData();
+    }
+
     getIndex() {
       return this.#undoIdx;
     }

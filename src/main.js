@@ -132,6 +132,12 @@
       const center = common.level.getCenter(app.states.isTarget);
       document.documentElement.style.setProperty('--animation-origin', `${blockSize * center.x}px ${blockSize * center.y}px`);
     }
+    if (settings.autoMode) {
+      const length = common.level.getBestStep() ?? 0;
+      elems.auto.seek.max = length;
+      elems.auto.seek.value = Math.min(undoInfoForNormal.getIndex(), length);
+      elems.auto.seek.disabled = length === 0;
+    }
     updateLevelHint(settings.autoMode || completeFlag ? null : common.level.getHint());
   }
 
@@ -232,6 +238,13 @@
 
   async function keydown(e) {
     if (elems.menu.dialog.open || elems.edit.normalizeDialog.open) return;
+    if (
+      e.target === elems.auto.seek &&
+      ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown'].includes(e.key)
+    ) {
+      pauseAuto();
+      return;
+    }
     // ダイアログを閉じた後、押したままのキーで盤面を操作しないようにします。
     if (e.repeat && !heldGameKeys.has(e.code)) return;
     heldGameKeys.add(e.code);
@@ -1361,6 +1374,7 @@
       [document.body, elems.contents].forEach((elem) => {
         elem.addEventListener('mousedown', (e) => {
           // ダイアログのボタンをタップしたときは、ブラウザーにフォーカスを移させます。
+          if (e.target === elems.auto.seek) return;
           if (e.detail === 1 && e.target.closest('button[aria-haspopup="dialog"], dialog button')) return;
           // ダブルタップしたときの画面の拡大縮小をしないようにする。
           e.preventDefault();
@@ -1373,7 +1387,7 @@
         elem.addEventListener(
           pointermoveEventName,
           (e) => {
-            if (elems.edit.normalizeDialog.open || common.isShownElem(elems.console.widget)) return;
+            if (e.target === elems.auto.seek || elems.edit.normalizeDialog.open || common.isShownElem(elems.console.widget)) return;
             // スワイプ操作を無効化する。
             e.preventDefault();
           },
@@ -1463,6 +1477,8 @@
 
   // Autoモード用
   function initElemsForAuto() {
+    elems.auto.seek.addEventListener('pointerdown', pauseAuto);
+    elems.auto.seek.addEventListener('input', seekAuto);
     elems.auto.buttonStop.addEventListener('click', onButtonStop);
     elems.auto.buttonStart.addEventListener('click', onButtonStart);
     elems.auto.buttonPause.addEventListener('click', onButtonPause);
@@ -2444,12 +2460,7 @@
   function addUndo(dir) {
     const undoInfo = editMode ? undoInfoForEdit : undoInfoForNormal;
 
-    const data = {
-      dir: editMode ? null : dir,
-      ...common.level.getCurrentLevelObj(),
-      r: editMode ? null : common.level.getR(),
-      checkMode: common.level.getCheckMode(),
-    };
+    const data = createUndoData(dir);
 
     if (editMode) {
       // 直前の盤面と同じ場合は無視します。
@@ -2462,6 +2473,15 @@
 
     common.level.printDebugInfo();
     updateUndoRedoButton();
+  }
+
+  function createUndoData(dir) {
+    return {
+      dir: editMode ? null : dir,
+      ...common.level.getCurrentLevelObj(),
+      r: editMode ? null : common.level.getR(),
+      checkMode: common.level.getCheckMode(),
+    };
   }
 
   function replaceUrlTitle() {
@@ -2592,6 +2612,10 @@
 
   function onButtonPause() {
     app.sound.playButton();
+    pauseAuto();
+  }
+
+  function pauseAuto() {
     settingsAuto.paused = true;
     updateAutoStartPauseButtons();
     clearTimeout(nextLevelTimerId);
@@ -2599,12 +2623,33 @@
     clearTimeout(autoIntervalId);
   }
 
+  function seekAuto() {
+    pauseAuto();
+    releaseGameInput();
+    showAutoStep(elems.auto.seek.valueAsNumber);
+  }
+
+  function showAutoStep(target) {
+    const replay = common.level.getR();
+    if (!replay) return;
+
+    const snapshot = undoInfoForNormal.seekReplayPrefix(replay, target);
+    common.level.applyObj(snapshot, false);
+    common.level.applyAxis(snapshot.axis);
+    for (let i = undoInfoForNormal.getIndex(); i < target; i++) {
+      const dir = Number(replay[i]);
+      if (!common.level.move(dxs[dir], dys[dir])) break;
+      undoInfoForNormal.pushData(createUndoData(dir));
+    }
+    // 途中の各手の移動音やアニメーションを再生せず、選んだ盤面を一度だけ描きます。
+    common.level.applyObj(undoInfoForNormal.getTopData(), false);
+    draw();
+  }
+
   function onButtonEnd() {
     if (autoSearchFrameId !== null) return;
     app.sound.playButton();
-    const levelObj = common.level.getLevelObj();
-    const r = levelObj.r;
-    retryAndExecReplayStr(r);
+    showAutoStep(common.level.getBestStep());
   }
 
   function toggleReplay() {
