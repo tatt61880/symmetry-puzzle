@@ -319,15 +319,15 @@
   }
 
   .example-valid {
-    padding: 5px;
+    --example-border-color: #55aa55;
+
     background: #eeffee;
-    border: 5px solid #55aa55;
   }
 
   .example-invalid {
-    padding: 5px;
+    --example-border-color: #ee5555;
+
     background: #ffeeee;
-    border: 5px solid #ee5555;
   }
 
   .bold {
@@ -336,37 +336,30 @@
   }
 
   .example-div {
-    width: calc(100% - 30px);
-    margin: 10px auto 5px;
+    padding: 8px;
+    margin: 10px 5px 5px;
+    border: 1px solid var(--example-border-color);
+
+    img {
+      height: 81px;
+      margin: 0 6px 6px;
+      vertical-align: top;
+      border: 1px solid var(--example-border-color);
+    }
   }
 
   .image-example-valid-1 {
     width: 69px;
-    height: 81px;
-    margin: 2px 10px;
-    border: 2px solid #55aa55;
   }
 
-  .image-example-valid-2 {
+  .image-example-valid-2,
+  .image-example-invalid-1,
+  .image-example-invalid-2 {
     width: 89px;
-    height: 81px;
-    margin: 2px 10px;
-    border: 2px solid #55aa55;
   }
 
   .image-example-valid-3 {
     width: 109px;
-    height: 81px;
-    margin: 2px 10px;
-    border: 2px solid #55aa55;
-  }
-
-  .image-example-invalid-1,
-  .image-example-invalid-2 {
-    width: 89px;
-    height: 81px;
-    margin: 2px 10px;
-    border: 2px solid #ee5555;
   }
 
   p {
