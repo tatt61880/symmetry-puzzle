@@ -38,6 +38,7 @@
       .option('-h, --h <h>', 'levelObj.h', Number)
       .option('-s, --s <s>', 'levelObj.s')
       .option('--axis <axis>', 'levelObj.axis')
+      .option('--reverse-rotation', 'use counterclockwise quarter-turn axis moves')
       .option('-p, --prefixStep <prefix-step>', 'prefixStep step')
       .option('-c, --console', 'console.info step')
       .option('-d, --draw', 'draw target shape')
@@ -202,7 +203,7 @@
       process.exitCode = 1;
       return;
     }
-    const level = new app.Level({ levelObj, checkMode });
+    const level = new app.Level({ levelObj, checkMode, reverseRotation: options.reverseRotation });
 
     const maxStep = (() => {
       let res = options.max;

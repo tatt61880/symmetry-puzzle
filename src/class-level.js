@@ -74,9 +74,9 @@
     #xMax;
     #getSymmetryType;
     #axis;
-    #mirrorFlag;
+    #reverseRotation;
 
-    constructor({ levelObj, checkMode = Level.CHECK_MODE.LINE, mirrorFlag = false, rotateNum = 0 }) {
+    constructor({ levelObj, checkMode = Level.CHECK_MODE.LINE, mirrorFlag = false, rotateNum = 0, reverseRotation = mirrorFlag }) {
       this.#checkMode = null;
       this.#levelObj = null;
       this.#width = null;
@@ -91,14 +91,13 @@
       this.#xMax = null;
       this.#getSymmetryType = null;
       this.#axis = null;
-      this.#mirrorFlag = false;
+      this.#reverseRotation = reverseRotation;
 
       this.#setCheckMode(checkMode);
       let obj = levelObj;
       this.applyAxis(obj.axis);
       if (mirrorFlag) {
         obj = this.#mirrorLevel(obj);
-        this.#mirrorFlag = true;
       }
       if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
       this.#levelObj = obj;
@@ -144,10 +143,8 @@
     }
 
     createReplayLevel(initialState) {
-      const level = new Level({ levelObj: { ...initialState }, checkMode: this.#checkMode });
       // 初期盤面はすでに鏡映・回転済みです。鏡映時の軸操作の回転方向も引き継ぎます。
-      level.#mirrorFlag = this.#mirrorFlag;
-      return level;
+      return new Level({ levelObj: { ...initialState }, checkMode: this.#checkMode, reverseRotation: this.#reverseRotation });
     }
 
     getBestStep() {
@@ -196,15 +193,19 @@
       }
     }
 
-    printSolveJsStr() {
+    getSolverCommand() {
       const w = this.getW();
       const h = this.getH();
       const s = this.getS();
 
       const checkModeStr = this.#getCheckModeStr();
       const axis = this.hasAxis() ? ` --axis ${this.getA()}` : '';
-      const solveJsStr = `node src/solve.js --mode ${checkModeStr} -w ${w} -h ${h} -s ${s} --all --console --draw${axis}`;
-      console.log(solveJsStr);
+      const rotation = this.#reverseRotation && this.getAxisType() === Level.SYMMETRY_TYPE.POINT2 ? ' --reverse-rotation' : '';
+      return `node src/solve.js --mode ${checkModeStr} -w ${w} -h ${h} --s="${s}" --all --console --draw${axis}${rotation}`;
+    }
+
+    printSolveJsStr() {
+      console.log(this.getSolverCommand());
     }
 
     #getUrlQuerySub(levelObj) {
@@ -889,7 +890,7 @@
       }
       switch (this.#axis.type) {
         case Level.SYMMETRY_TYPE.POINT2: {
-          if (!this.#mirrorFlag) {
+          if (!this.#reverseRotation) {
             if ((this.#axis.cx + this.#axis.cy) % 2 !== 0) {
               return { srcX: 0, srcY: 0 };
             }
@@ -953,7 +954,7 @@
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.POINT2: {
-          if (!this.#mirrorFlag) {
+          if (!this.#reverseRotation) {
             if ((this.#axis.cx + this.#axis.cy) % 2 !== 0) {
               return { dstX: 0, dstY: 0 };
             }
@@ -985,7 +986,7 @@
       const { srcX, srcY } = this.#getSrc(x, y, dx, dy);
       const moved = this.#isInArea(srcX, srcY) && this.#moveFlags[srcY][srcX];
       const pushing = moved && this.#pushingUsers.has(this.getState(x, y));
-      return { dx, dy, srcX, srcY, moved, pushing, mirrored: this.#mirrorFlag };
+      return { dx, dy, srcX, srcY, moved, pushing, mirrored: this.#reverseRotation };
     }
 
     createSvgG(options) {

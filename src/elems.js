@@ -290,6 +290,7 @@
     // コンソール
     console: {
       widget: 'console-widget',
+      copySolver: 'console-copy-solver',
       image: 'console-image',
       log: 'console-log',
     },

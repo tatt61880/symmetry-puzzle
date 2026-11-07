@@ -234,7 +234,10 @@
     if (e.repeat && !heldGameKeys.has(e.code)) return;
     heldGameKeys.add(e.code);
     if (e.altKey) return;
-    if ((e.key === 'Enter' || e.key === ' ') && [elems.controller.replay, elems.edit.normalizeHelp, elems.hint.button].includes(e.target)) {
+    if (
+      (e.key === 'Enter' || e.key === ' ') &&
+      [elems.controller.replay, elems.edit.normalizeHelp, elems.hint.button, elems.console.copySolver].includes(e.target)
+    ) {
       return;
     }
 
@@ -1360,6 +1363,7 @@
     }
 
     elems.top.addEventListener('click', gotoTitlePage);
+    elems.console.copySolver.addEventListener('click', () => copyTextToClipboard(common.level.getSolverCommand()));
 
     initElemsForAuto();
     initElemsForEdit();
@@ -2694,15 +2698,14 @@
     consoleAdd(str, 'warn');
   }
 
-  function copyTextToClipboard(text) {
-    navigator.clipboard.writeText(text).then(
-      () => {
-        alert('【クリップボードにコピーしました】\n' + text);
-      },
-      () => {
-        alert('クリップボードへのコピーに失敗しました。');
-      }
-    );
+  async function copyTextToClipboard(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      alert('クリップボードへのコピーに失敗しました。');
+      return;
+    }
+    alert('【クリップボードにコピーしました】\n' + text);
   }
 
   function isLocalhost() {

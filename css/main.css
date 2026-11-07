@@ -173,6 +173,14 @@ text {
     text-shadow: var(--pseudo-bold-shadow);
   }
 
+  #console-copy-solver {
+    display: block;
+    padding: 4px 10px;
+    margin: 6px auto;
+    font: inherit;
+    cursor: pointer;
+  }
+
   & ul {
     padding: 0;
     margin: 0;
