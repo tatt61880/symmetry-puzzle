@@ -4,7 +4,7 @@
 
   const app = window.app;
   const { Level, common } = app;
-  const frameBorderWidth = 5;
+  const frameBorderWidth = 1;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const verticalEyeOffset = 0.2;
   const pushSquintOffset = 0.15;
@@ -1931,7 +1931,7 @@
       common.applyLang(text, lang);
 
       const width = (level.getWidth() * blockSize + 2 * frameSizeW) / 2;
-      const height = frameBorderWidth;
+      const height = frameBorderWidth / 2;
       text.setAttribute('font-size', fontSize);
       text.setAttribute('transform', `translate(${width},${height})`);
       g.appendChild(text);
@@ -2111,7 +2111,14 @@
     // 自己最高記録
     if (highestScore !== undefined) {
       {
-        const crown = common.createCrown(frameSizeH, frameBorderWidth / frameSizeH, frameBorderWidth / frameSizeH, highestScore, bestStep);
+        const crownLeftInset = 5;
+        const crown = common.createCrown(
+          frameSizeH,
+          crownLeftInset / frameSizeH,
+          frameBorderWidth / (2 * frameSizeH),
+          highestScore,
+          bestStep
+        );
         g.appendChild(crown);
         if (isCompleted) {
           const animationNewRecordCrownClass = 'animation-new-record-crown';
