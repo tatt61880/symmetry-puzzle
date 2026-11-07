@@ -150,6 +150,7 @@
             const z = app.svg.createText(blockSize, { x: x - x0 + 0.74, y: y - y0 + 0.27, text: 'Z', fill: app.colors.sleepZ.fill });
             z.classList.add('player-sleep-z');
             z.setAttribute('stroke', app.colors.sleepZ.stroke);
+            z.setAttribute('paint-order', 'stroke');
             z.setAttribute('font-size', blockSize * 0.26);
             z.setAttribute('opacity', 0);
             z.setAttribute('aria-hidden', 'true');

@@ -68,7 +68,6 @@
   stroke-linejoin: round;
   stroke-width: 0.14em;
   animation: player-sleep-z 2.4s ease-in-out var(--player-sleep-delay) infinite;
-  paint-order: stroke;
 }
 
 @keyframes player-sleep-z {
