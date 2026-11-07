@@ -89,6 +89,11 @@
     path {
       transform: rotate(var(--hint-angle));
     }
+
+    text {
+      /* 先端の斜線との間に余白を取るため、文字を矢印の根元側に寄せます。 */
+      transform: translate(calc(-8px * cos(var(--hint-angle))), calc(-4px * sin(var(--hint-angle))));
+    }
   }
 
   #dialog-normalize {
