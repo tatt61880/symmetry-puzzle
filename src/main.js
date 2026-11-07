@@ -931,7 +931,6 @@
   function updateEditMode(isEditMode, resetFlag = true) {
     editMode = isEditMode;
     elems.level.edit.classList.toggle('editing', editMode);
-    common.isSeqMode = false;
 
     if (editMode) {
       common.showElem(elems.edit.widget);
@@ -959,9 +958,7 @@
 
     app.sound.playButton();
     editMode = !editMode;
-    common.levelId = null;
-    common.levelNum = null;
-    updateLevelVisibility();
+    switchToCustomLevel();
     updateEditMode(editMode);
 
     if (editMode) {
@@ -1332,10 +1329,15 @@
     common.hideElem(elems.auto.buttons);
     common.showElem(elems.controller.widget);
 
+    switchToCustomLevel();
+    loadLevelObj(levelObj);
+  }
+
+  function switchToCustomLevel() {
     common.levelId = null;
     common.levelNum = null;
+    if (common.isSeqMode) updateNormalSeqMode(false);
     updateLevelVisibility();
-    loadLevelObj(levelObj);
   }
 
   function initElems() {
