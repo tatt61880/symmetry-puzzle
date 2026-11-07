@@ -22,6 +22,14 @@
       step: 5,
       shapes: 1,
       subject: '点対称のはじまり',
+      hint: {
+        afterSteps: 10,
+        x: 2,
+        y: 2,
+        dir: 1,
+        ja: '矢印のマスから、小さいオレンジ色のブロックをひと押ししてみましょう。オレンジ色の形全体を半回転させると、元の形にぴったり重なりますか？',
+        en: 'Stand on the square with the arrow and push the small orange block once. If you turn the whole orange shape halfway around, does it look the same?',
+      },
     },
     {
       w: 5,
