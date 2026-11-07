@@ -1610,11 +1610,9 @@
       function showBumpFace(eyeLeft, eyeRight, heldAnimations) {
         // 上下の衝突では両目をぎゅっと閉じ、左右ではぶつかった側の目を閉じます。
         const { dx, dy } = move.bump;
-        const d =
-          dy !== 0
-            ? 'M .23 .42 L .37 .50 L .23 .58 M .77 .42 L .63 .50 L .77 .58'
-            : 'M .23 .36 L .40 .49 L .22 .57 M .62 .50 Q .68 .42 .78 .46';
-        const face = app.svg.createPath({ d, fill: 'none' });
+        const closedEye = 'M .23 .42 L .37 .50 L .23 .58';
+        const otherEye = dy !== 0 ? 'M .77 .42 L .63 .50 L .77 .58' : 'M .63 .52 Q .69 .45 .77 .49';
+        const face = app.svg.createPath({ d: `${closedEye} ${otherEye}`, fill: 'none' });
         const mirror = dx > 0;
         const originX = (mirror ? x + 1 : x) * blockSize;
         const originY = (y + dy * verticalEyeOffset) * blockSize;
