@@ -22,7 +22,9 @@ body {
 }
 
 #contents {
-  width: 500px;
+  --game-width: 500px;
+
+  width: var(--game-width);
   margin: 0 auto;
   text-align: center;
   background-color: white;
@@ -181,6 +183,11 @@ text {
     cursor: pointer;
   }
 
+  #console-image {
+    max-width: 100%;
+    height: auto;
+  }
+
   & ul {
     padding: 0;
     margin: 0;
@@ -198,6 +205,24 @@ text {
       color: #555555;
       background-color: #fffbe5;
       border: 1px solid #fff5c2;
+    }
+  }
+}
+
+@media (width >= 820px) {
+  #contents:has(#game:not(.hide) #console-widget:not(.hide)) {
+    width: min(100%, 1000px);
+
+    #game {
+      position: relative;
+      width: 100%;
+      padding-right: calc(100% - var(--game-width));
+    }
+
+    #console-widget {
+      position: absolute;
+      inset: 0 0 0 var(--game-width);
+      overflow: auto;
     }
   }
 }
