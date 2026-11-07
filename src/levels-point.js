@@ -27,8 +27,8 @@
         x: 2,
         y: 2,
         dir: 1,
-        ja: '矢印に沿って小さいブロックをひと押し。オレンジ色の形は半回転しても重なりますか？',
-        en: 'Push the small block once along the arrow. Would the orange shape match if spun 180°?',
+        ja: '青いキャラでオレンジ色のブロックを押せます。矢印に沿って角へ押しましょう。',
+        en: 'Use the blue character to push the orange block into the corner as shown.',
       },
     },
     {
