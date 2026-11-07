@@ -258,40 +258,7 @@
 
     // ヘルプダイアログで有効
     if (elems.help.dialog.open) {
-      if (e.ctrlKey) return;
-      switch (e.key) {
-        case '?':
-          app.dialog.help.close();
-          break;
-        case '+':
-          elems.help.tabApp.checked = true;
-          if (app.dialog.help.tab !== null) {
-            app.dialog.help.tab = null;
-            app.sound.playButton();
-          }
-          break;
-        case 't':
-          elems.help.tabLine.checked = true;
-          if (app.dialog.help.tab !== app.Level.CHECK_MODE.LINE) {
-            app.dialog.help.tab = app.Level.CHECK_MODE.LINE;
-            app.sound.playButton();
-          }
-          break;
-        case 'z':
-          elems.help.tabPoint.checked = true;
-          if (app.dialog.help.tab !== app.Level.CHECK_MODE.POINT) {
-            app.dialog.help.tab = app.Level.CHECK_MODE.POINT;
-            app.sound.playButton();
-          }
-          break;
-        case 'o':
-          elems.help.tabSpecial.checked = true;
-          if (app.dialog.help.tab !== app.Level.CHECK_MODE.SPECIAL) {
-            app.dialog.help.tab = app.Level.CHECK_MODE.SPECIAL;
-            app.sound.playButton();
-          }
-          break;
-      }
+      if (!e.ctrlKey) app.dialog.help.handleKey(e.key);
       return;
     }
 
@@ -1052,15 +1019,6 @@
     );
   }
 
-  function selectLang(lang) {
-    const langPrev = app.savedata.getLang();
-    if (langPrev !== lang) {
-      app.sound.playButton();
-      common.applyLangAll(lang);
-      app.savedata.saveLang(lang);
-    }
-  }
-
   function initBlock() {
     for (const elem of document.getElementsByClassName('user-block-title')) {
       initTitleCharacter(elem, true);
@@ -1169,33 +1127,6 @@
     common.applyLangAll(lang);
   }
 
-  function initSound() {
-    const toggleSound = async (e) => {
-      e.preventDefault();
-
-      if (!app.sound.isEnabled()) {
-        await app.sound.enable();
-        await app.sound.resumeIfNeeded();
-        app.sound.playStart();
-        app.sound.startBgm();
-        // app.sound.debug('enable');
-      } else {
-        app.sound.disable();
-        app.sound.stopBgm();
-        // app.sound.debug('disable');
-      }
-
-      setSoundUi(app.sound.isEnabled());
-
-      function setSoundUi(isOn) {
-        elems.help.sound.classList.toggle('active', isOn);
-        elems.help.sound.setAttribute('aria-pressed', String(isOn));
-      }
-    };
-
-    elems.help.sound.addEventListener('pointerup', toggleSound);
-  }
-
   function onloadApp() {
     elems.version.textContent = VERSION_TEXT;
     elems.help.version.textContent = VERSION_TEXT;
@@ -1216,8 +1147,6 @@
 
     const id = queryParams.id;
     const num = queryParams.num;
-
-    initSound();
 
     if (id === null && num === null && queryParams.levelObj.s === null) {
       gotoTitlePage();
@@ -1403,7 +1332,7 @@
       levelHintState = levelHintState === 'showing' ? 'available' : 'showing';
       updateLevelHint(common.level.getHint());
     });
-    initElemsForHelp();
+    app.dialog.help.init();
     initElemsForTitle();
     initElemsForRecords();
     initElemsForAchievements();
@@ -1665,37 +1594,6 @@
     updateEditAxisButton();
     addUndo(null);
     draw();
-  }
-
-  // ヘルプ画面用
-  function initElemsForHelp() {
-    elems.help.button.addEventListener('click', app.dialog.help.show);
-    elems.help.dialog.addEventListener('click', app.dialog.help.close);
-    elems.help.close.addEventListener('click', app.dialog.help.close);
-    elems.help.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
-    elems.help.langEn.addEventListener('click', () => selectLang('en'));
-    elems.help.langJa.addEventListener('click', () => selectLang('ja'));
-    elems.help.tabApp.addEventListener('click', selectTab.bind(null, null));
-    elems.help.tabLine.addEventListener('click', selectTab.bind(null, app.Level.CHECK_MODE.LINE));
-    elems.help.tabPoint.addEventListener('click', selectTab.bind(null, app.Level.CHECK_MODE.POINT));
-    elems.help.tabSpecial.addEventListener('click', selectTab.bind(null, app.Level.CHECK_MODE.SPECIAL));
-
-    for (const button of elems.help.dialog.querySelectorAll('.help-mode-animation')) {
-      const icon = button.querySelector('svg');
-      button.addEventListener('click', () => {
-        icon.style.animationName = 'none';
-        // 停止をスタイルに反映してから、表示時と同じCSSアニメーションを先頭から再生します。
-        icon.getAnimations();
-        icon.style.removeProperty('animation-name');
-      });
-    }
-
-    function selectTab(mode) {
-      if (app.dialog.help.tab !== mode) {
-        app.dialog.help.tab = mode;
-        app.sound.playButton();
-      }
-    }
   }
 
   // タイトル画面用
