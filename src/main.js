@@ -1680,6 +1680,16 @@
     elems.help.tabPoint.addEventListener('click', selectTab.bind(null, app.Level.CHECK_MODE.POINT));
     elems.help.tabSpecial.addEventListener('click', selectTab.bind(null, app.Level.CHECK_MODE.SPECIAL));
 
+    for (const button of elems.help.dialog.querySelectorAll('.help-mode-animation')) {
+      const icon = button.querySelector('svg');
+      button.addEventListener('click', () => {
+        icon.style.animationName = 'none';
+        // 停止をスタイルに反映してから、表示時と同じCSSアニメーションを先頭から再生します。
+        icon.getAnimations();
+        icon.style.removeProperty('animation-name');
+      });
+    }
+
     function selectTab(mode) {
       if (app.dialog.help.tab !== mode) {
         app.dialog.help.tab = mode;
