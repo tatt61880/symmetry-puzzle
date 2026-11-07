@@ -27,8 +27,8 @@
         x: 2,
         y: 2,
         dir: 1,
-        ja: '矢印のマスから、小さいオレンジ色のブロックをひと押ししてみましょう。オレンジ色の形全体を半回転させると、元の形にぴったり重なりますか？',
-        en: 'Stand on the square with the arrow and push the small orange block once. If you turn the whole orange shape halfway around, does it look the same?',
+        ja: '矢印のマスから小さいブロックをひと押し。オレンジ色の形は半回転しても重なりますか？',
+        en: 'From the arrow, push the small block once. Would the orange shape match if spun 180°?',
       },
     },
     {

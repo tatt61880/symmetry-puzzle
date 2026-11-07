@@ -28,8 +28,8 @@
         x: 2,
         y: 2,
         dir: 1,
-        ja: '小さいオレンジ色のブロックは、青いキャラで押せます。矢印のマスから、ブロックを角に向かって押してみましょう。',
-        en: 'The blue character can push the small orange block. Stand on the square with the arrow and push the block into the corner.',
+        ja: '青いキャラで小さいオレンジ色のブロックを押せます。矢印のマスから角へ押しましょう。',
+        en: 'Put the blue character on the arrow. Push the small orange block into the corner.',
       },
     },
     {

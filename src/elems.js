@@ -215,10 +215,9 @@
     },
 
     hint: {
-      button: 'level-hint',
+      toggle: 'level-hint-toggle',
+      arrow: 'level-hint',
       message: 'level-hint-message',
-      dialog: 'dialog-hint',
-      text: 'dialog-hint-text',
     },
 
     // オートモード

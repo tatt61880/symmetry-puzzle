@@ -77,10 +77,7 @@
 
   #level-hint {
     position: absolute;
-    padding: 0;
-    cursor: pointer;
-    background: none;
-    border: none;
+    pointer-events: none;
     transform: translate(-50%, -50%);
 
     svg {
@@ -91,23 +88,9 @@
     path {
       transform: rotate(var(--hint-angle));
     }
-
-    &:focus-visible {
-      outline: none;
-
-      path {
-        fill: #287560;
-        stroke-width: 7px;
-      }
-
-      text {
-        fill: white;
-      }
-    }
   }
 
-  #dialog-normalize,
-  #dialog-hint {
+  #dialog-normalize {
     box-sizing: border-box;
     width: min(440px, 94%);
     max-height: 90%;
@@ -155,6 +138,28 @@
 
   #controller-widget {
     position: relative;
+
+    #level-hint-toggle {
+      /* 上キーと同じ高さ、右キーと同じ列に中心をそろえます。 */
+      position: absolute;
+      top: 41px;
+      left: calc(50% + 79px);
+      width: 56px;
+      height: 56px;
+      padding: 0;
+      line-height: 0;
+      color: #715324;
+      cursor: pointer;
+      background-color: #fff8e4;
+      border: 2px solid #b28b47;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+
+      &[aria-pressed='true'] {
+        background-color: #ffdd85;
+        box-shadow: inset 0 0 0 2px currentColor;
+      }
+    }
 
     #button-replay {
       position: absolute;

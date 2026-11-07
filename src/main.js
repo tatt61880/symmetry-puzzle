@@ -68,6 +68,7 @@
   let gotoShapesPrevPageIntervalId = null;
   let gotoShapesNextPageIntervalId = null;
 
+  let levelHintState = 'locked';
   let completeFlag = false;
   let symmetryFlag = false;
 
@@ -229,14 +230,14 @@
   }
 
   async function keydown(e) {
-    if (elems.menu.dialog.open || elems.edit.normalizeDialog.open || elems.hint.dialog.open) return;
+    if (elems.menu.dialog.open || elems.edit.normalizeDialog.open) return;
     // ダイアログを閉じた後、押したままのキーで盤面を操作しないようにします。
     if (e.repeat && !heldGameKeys.has(e.code)) return;
     heldGameKeys.add(e.code);
     if (e.altKey) return;
     if (
       (e.key === 'Enter' || e.key === ' ') &&
-      [elems.controller.replay, elems.edit.normalizeHelp, elems.hint.button, elems.console.copySolver].includes(e.target)
+      [elems.controller.replay, elems.edit.normalizeHelp, elems.hint.toggle, elems.console.copySolver].includes(e.target)
     ) {
       return;
     }
@@ -577,6 +578,7 @@
   function retryLevel() {
     if (editMode) return;
 
+    levelHintState = 'locked';
     window.getSelection().removeAllRanges();
 
     clearTimeout(nextLevelTimerId);
@@ -597,6 +599,7 @@
   }
 
   function resetUndo() {
+    levelHintState = 'locked';
     undoInfoForNormal = new app.UndoInfo();
   }
 
@@ -1369,7 +1372,7 @@
         elem.addEventListener(
           pointermoveEventName,
           (e) => {
-            if (elems.edit.normalizeDialog.open || elems.hint.dialog.open || common.isShownElem(elems.console.widget)) return;
+            if (elems.edit.normalizeDialog.open || common.isShownElem(elems.console.widget)) return;
             // スワイプ操作を無効化する。
             e.preventDefault();
           },
@@ -1383,9 +1386,11 @@
 
     initElemsForAuto();
     initElemsForEdit();
-    initInfoDialog(elems.edit.normalizeHelp, elems.edit.normalizeDialog);
-    initInfoDialog(elems.hint.button, elems.hint.dialog, () => {
-      elems.hint.text.textContent = common.level.getHint()[app.savedata.getLang()];
+    elems.hint.toggle.addEventListener('click', () => {
+      releaseGameInput();
+      app.sound.playButton();
+      levelHintState = levelHintState === 'showing' ? 'available' : 'showing';
+      updateLevelHint(common.level.getHint());
     });
     initElemsForHelp();
     initElemsForTitle();
@@ -1612,19 +1617,12 @@
         draw();
       }
     });
-  }
 
-  function initInfoDialog(button, dialog, onOpen) {
-    button.addEventListener('click', (e) => {
+    const dialog = elems.edit.normalizeDialog;
+    elems.edit.normalizeHelp.addEventListener('click', () => {
       releaseGameInput();
-      onOpen?.();
       app.sound.playUiOpen();
-      if (button === elems.hint.button && e.detail > 0) {
-        // クリックやタップで開いたヒントを閉じたら、そのまま盤面操作に戻ります。
-        button.blur();
-      } else {
-        button.focus({ preventScroll: true });
-      }
+      elems.edit.normalizeHelp.focus({ preventScroll: true });
       dialog.showModal();
     });
     dialog.addEventListener('click', (e) => {
@@ -2139,13 +2137,16 @@
   }
 
   function updateLevelHint(hint) {
-    const button = elems.hint.button;
-    const visible = hint && undoInfoForNormal.getIndex() >= hint.afterSteps;
+    if (hint && levelHintState === 'locked' && undoInfoForNormal.getIndex() >= hint.afterSteps) {
+      levelHintState = 'available';
+    }
+    const visible = Boolean(hint && levelHintState === 'showing');
+    elems.hint.toggle.classList.toggle('hide', !hint || levelHintState === 'locked');
+    elems.hint.toggle.setAttribute('aria-pressed', String(visible));
     elems.controller.undo.classList.toggle('hint-undo', Boolean(visible && hint.undo));
     const message = elems.hint.message;
-    const showMessage = visible && hint.inline;
-    message.classList.toggle('hide', !showMessage);
-    if (showMessage) {
+    message.classList.toggle('hide', !visible);
+    if (visible) {
       const { ja, en } = hint;
       if (message.dataset.ja !== ja || message.dataset.en !== en) {
         message.dataset.ja = ja;
@@ -2153,17 +2154,18 @@
         common.applyLang(message, app.savedata.getLang());
       }
     }
+    const arrow = elems.hint.arrow;
     const showArrow = visible && !hint.undo;
-    button.classList.toggle('hide', !showArrow);
+    arrow.classList.toggle('hide', !showArrow);
     if (!showArrow) return;
 
     // 盤面中央を基準に、指定マスの中心座標を求めます。
     const x = (hint.x + 0.5 - common.level.getW() / 2) * blockSize;
     const y = (hint.y + 0.5 - common.level.getH() / 2) * blockSize;
-    button.style.left = `calc(50% + ${x}px)`;
-    button.style.top = `calc(50% + ${y}px)`;
-    button.style.width = `${blockSize}px`;
-    button.style.setProperty('--hint-angle', `${(hint.dir - 1) * 90}deg`);
+    arrow.style.left = `calc(50% + ${x}px)`;
+    arrow.style.top = `calc(50% + ${y}px)`;
+    arrow.style.width = `${blockSize}px`;
+    arrow.style.setProperty('--hint-angle', `${(hint.dir - 1) * 90}deg`);
   }
 
   function drawBoard(svg, level, currentStep, { isCompleted = false, highestScorePrev = null, showCharsFlag = settings.debugFlag } = {}) {

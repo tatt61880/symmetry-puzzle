@@ -159,8 +159,8 @@
       const stage = hint.stages.find(
         ({ when }) => this.getState(this.#xMin + when.x, this.#yMin + when.y) === app.states.charToState[when.block]
       );
-      if (stage) return { ...stage, inline: true, afterSteps: hint.afterSteps };
-      if (hint.stuck) return { ...hint.stuck, inline: true, undo: true, afterSteps: 0 };
+      if (stage) return { ...stage, afterSteps: hint.afterSteps };
+      if (hint.stuck) return { ...hint.stuck, undo: true, afterSteps: hint.afterSteps };
       return null;
     }
 

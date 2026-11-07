@@ -1044,8 +1044,8 @@
         <svg id="main-svg" width="480" height="230">
         </svg>
         <svg id="replay-svg" class="hide"></svg>
-        <button id="level-hint" class="hide" type="button" aria-haspopup="dialog" aria-labelledby="dialog-hint-title">
-          <svg viewBox="0 0 100 60" aria-hidden="true">
+        <div id="level-hint" class="hide" aria-hidden="true">
+          <svg viewBox="0 0 100 60">
             <g transform="translate(50,30) scale(1,0.6)">
               <path d="M -45,-31 H 8 V -45 L 46,0 8,45 V 31 H -45 Z" fill="#ddf5ec" stroke="#287560" stroke-width="4"
                 stroke-linejoin="round" />
@@ -1053,16 +1053,9 @@
             <text x="50" y="31" dominant-baseline="middle" text-anchor="middle" font-size="19" font-weight="bold" fill="#194e40"
               class="translatable-toggle" data-en="Hint" data-ja="ヒント"></text>
           </svg>
-        </button>
+        </div>
         <p id="level-hint-message" class="hide translatable-toggle" role="status" data-ja="" data-en=""></p>
       </div>
-      <dialog id="dialog-hint" aria-labelledby="dialog-hint-title">
-        <form method="dialog">
-          <h2 id="dialog-hint-title" class="translatable-toggle" data-en="Hint" data-ja="ヒント">ヒント</h2>
-          <p id="dialog-hint-text"></p>
-          <button type="submit" class="translatable-toggle" data-en="Close" data-ja="閉じる"></button>
-        </form>
-      </dialog>
 
       <div id="buttons-auto" class="hide">
         <svg width="80" height="60">
@@ -1422,6 +1415,15 @@
             </g>
           </g>
         </svg>
+        <button type="button" id="level-hint-toggle" class="hide active-hover" aria-labelledby="level-hint-label"
+          aria-controls="level-hint level-hint-message" aria-pressed="false">
+          <svg viewBox="0 0 32 32" width="38" height="38" aria-hidden="true" fill="none" stroke="currentColor"
+            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <title id="level-hint-label" class="translatable-toggle" data-en="Hint" data-ja="ヒント">ヒント</title>
+            <path d="M 12,22 C 12,18 8,17 8,12 A 8,8 0 0 1 24,12 C 24,17 20,18 20,22 Z" fill="#ffe6a1" />
+            <path d="M 14,15 16,18 18,15 M 16,18 V 22 M 12.5,25 H 19.5 M 14,28 H 18" />
+          </svg>
+        </button>
         <button type="button" id="button-replay" class="hide">
           <span class="translatable-toggle" data-en="Replay" data-ja="リプレイ"></span>
           <span class="translatable-toggle hide" data-en="Stop replay" data-ja="再生を停止"></span>
