@@ -125,6 +125,10 @@
     }
   }
 
+  #buttons-auto.hide ~ #controller-widget #controller-auto-label {
+    display: none;
+  }
+
   #controller-widget {
     position: relative;
 
