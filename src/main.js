@@ -75,6 +75,9 @@
   let drawingState = app.states.none;
   const editboxFunctions = {};
 
+  // 移動方向は上・右・下・左・軸操作の順です。
+  const dxs = [0, 1, 0, -1, 0];
+  const dys = [-1, 0, 1, 0, 0];
   let blockSize = 0;
   const defaultFrameSize = 32;
   let frameSizeW = defaultFrameSize;
@@ -100,8 +103,6 @@
   }
 
   function moveLevel(level, dir, elem) {
-    const dxs = [0, 1, 0, -1, 0];
-    const dys = [-1, 0, 1, 0, 0];
     const dx = dxs[dir];
     const dy = dys[dir];
 
@@ -1973,8 +1974,6 @@
       drawMainSvg(); // 目の向きをリセットするために、描画し直します。
 
       if (input.inputDir !== app.Input.DIRS.AXIS) {
-        const dxs = [0, 1, 0, -1];
-        const dys = [-1, 0, 1, 0];
         const dx = dxs[input.inputDir];
         const dy = dys[input.inputDir];
 
@@ -2159,9 +2158,9 @@
     arrow.classList.toggle('hide', !showArrow);
     if (!showArrow) return;
 
-    // 盤面中央を基準に、指定マスの中心座標を求めます。
-    const x = (hint.x + 0.5 - common.level.getW() / 2) * blockSize;
-    const y = (hint.y + 0.5 - common.level.getH() / 2) * blockSize;
+    // 矢印の中心を、押し始めるマスとその隣のマスの境界に置きます。
+    const x = (hint.x + 0.5 + dxs[hint.dir] / 2 - common.level.getW() / 2) * blockSize;
+    const y = (hint.y + 0.5 + dys[hint.dir] / 2 - common.level.getH() / 2) * blockSize;
     arrow.style.left = `calc(50% + ${x}px)`;
     arrow.style.top = `calc(50% + ${y}px)`;
     arrow.style.width = `${blockSize}px`;

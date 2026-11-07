@@ -27,8 +27,8 @@
         x: 2,
         y: 2,
         dir: 1,
-        ja: '矢印のマスから小さいブロックをひと押し。オレンジ色の形は半回転しても重なりますか？',
-        en: 'From the arrow, push the small block once. Would the orange shape match if spun 180°?',
+        ja: '矢印に沿って小さいブロックをひと押し。オレンジ色の形は半回転しても重なりますか？',
+        en: 'Push the small block once along the arrow. Would the orange shape match if spun 180°?',
       },
     },
     {

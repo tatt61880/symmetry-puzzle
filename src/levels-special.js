@@ -3,8 +3,8 @@
   const isBrowser = typeof window !== 'undefined';
 
   const pushLHint = {
-    ja: '矢印のマスからL字を小さいブロックの方へ押しましょう。',
-    en: 'From the arrow, push the L-shaped block toward the small block.',
+    ja: '矢印に沿ってL字を小さいブロックの方へ押しましょう。',
+    en: 'Follow the arrow to push the L-shaped block toward the small block.',
   };
 
   const levels = [
@@ -40,8 +40,8 @@
             y: 0,
             dir: 2,
             when: { x: 4, y: 1, block: '2' },
-            ja: '矢印のマスから、小さいブロックを隅に押しましょう。',
-            en: 'Stand on the arrow and push the small block into the corner.',
+            ja: '矢印に沿って小さいブロックを隅に押しましょう。',
+            en: 'Push the small block along the arrow into the corner.',
           },
           {
             x: 1,
