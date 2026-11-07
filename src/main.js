@@ -59,6 +59,7 @@
   let undoIntervalId = null;
   let redoIntervalId = null;
   let autoIntervalId = null;
+  let autoSearchFrameId = null;
 
   let gotoPrevLevelIntervalId = null;
   let gotoNextLevelIntervalId = null;
@@ -930,6 +931,7 @@
 
   // エディトモードのオンオフ
   function toggleEditLevel() {
+    cancelAutoSearch();
     settings.sharedFlag = false;
 
     app.sound.playButton();
@@ -2414,6 +2416,7 @@
   }
 
   function updateAutoMode(isAutoMode) {
+    cancelAutoSearch();
     settings.autoMode = isAutoMode;
 
     if (isAutoMode) {
@@ -2436,13 +2439,17 @@
   }
 
   function updateAutoStartPauseButtons() {
-    if (settingsAuto.paused) {
-      common.showElem(elems.auto.buttonStart);
-      common.hideElem(elems.auto.buttonPause);
-    } else {
-      common.hideElem(elems.auto.buttonStart);
-      common.showElem(elems.auto.buttonPause);
-    }
+    const searching = autoSearchFrameId !== null;
+    elems.auto.searchStatus.classList.toggle('hide', !searching);
+    elems.auto.buttonStart.classList.toggle('hide', searching || !settingsAuto.paused);
+    elems.auto.buttonPause.classList.toggle('hide', searching || settingsAuto.paused);
+  }
+
+  function cancelAutoSearch() {
+    if (autoSearchFrameId === null) return;
+    cancelAnimationFrame(autoSearchFrameId);
+    autoSearchFrameId = null;
+    updateAutoStartPauseButtons();
   }
 
   function onButtonStop() {
@@ -2453,32 +2460,40 @@
   }
 
   function onButtonStart() {
+    if (autoSearchFrameId !== null) return;
     app.sound.playButton();
-    if (common.level.getBestStep() === undefined) {
-      retryLevel();
-      const levelObj = common.level.getCurrentLevelObj();
-      common.activeElem(elems.auto.buttonStart);
+    if (common.level.getBestStep() !== undefined) {
+      onButtonStartSub();
+      return;
+    }
 
-      setTimeout(() => {
+    retryLevel();
+    const levelObj = common.level.getCurrentLevelObj();
+    // 同期的な探索を始める前に「探索中」を1フレーム描画します。
+    autoSearchFrameId = requestAnimationFrame(() => {
+      autoSearchFrameId = requestAnimationFrame(findSolution);
+    });
+    updateAutoStartPauseButtons();
+
+    function findSolution() {
+      let result;
+      try {
         const levelTemp = new app.Level({
           levelObj,
           checkMode: common.checkMode,
         });
         const maxStep = 1000; // 探索ステップ数上限値は大きな値にしておきます。時間制限もあるので、この制限にかかることはほぼないはずです。
         const timeLimit = 10;
-        const result = app.solveLevel(null, levelTemp, { maxStep, timeLimit });
-        common.inactiveElem(elems.auto.buttonStart);
-        if (result.replayStr === null) {
-          window.alert(result.errorMessage);
-          return;
-        } else {
-          resetUndo();
-          const newLevelObj = { ...levelObj, ...{ r: result.replayStr } };
-          initLevel({ levelObj: newLevelObj });
-        }
-        onButtonStartSub();
-      }, 10);
-    } else {
+        result = app.solveLevel(null, levelTemp, { maxStep, timeLimit });
+      } finally {
+        cancelAutoSearch();
+      }
+      if (result.replayStr === null) {
+        window.alert(result.errorMessage);
+        return;
+      }
+      resetUndo();
+      initLevel({ levelObj: { ...levelObj, r: result.replayStr } });
       onButtonStartSub();
     }
   }
@@ -2503,6 +2518,7 @@
   }
 
   function onButtonEnd() {
+    if (autoSearchFrameId !== null) return;
     app.sound.playButton();
     const levelObj = common.level.getLevelObj();
     const r = levelObj.r;
