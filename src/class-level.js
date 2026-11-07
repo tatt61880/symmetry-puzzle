@@ -382,9 +382,9 @@
     }
 
     // 軸の鏡映移動
-    #mirrorAxis() {
+    #mirrorAxis(width) {
       if (!this.hasAxis()) return;
-      this.#axis.cx = this.#width * 2 - this.#axis.cx;
+      this.#axis.cx = width * 2 - this.#axis.cx;
       switch (this.#axis.type) {
         case Level.SYMMETRY_TYPE.LINE3: {
           this.#axis.type = Level.SYMMETRY_TYPE.LINE4;
@@ -633,7 +633,6 @@
       };
       const newObj = this.#mirrorLevel(obj);
       this.applyObj(newObj);
-      this.#mirrorAxis();
     }
 
     // 回転 (90° × rotateNum 回転)
@@ -1044,6 +1043,7 @@
     #mirrorLevel(levelObj) {
       const w = levelObj.w;
       const h = levelObj.h;
+      this.#mirrorAxis(w + 2);
       const stateStr = levelObj.s;
       const statesTemp = [];
       for (let y = 0; y < h; ++y) {

@@ -40,6 +40,7 @@
       break;
     default:
       testsOther();
+      testMirroredAxis();
       testsSolve();
   }
 
@@ -175,6 +176,30 @@
       app.console.error('Error: Invalid states setting.');
       process.exitCode = 1;
     }
+  }
+
+  function testMirroredAxis() {
+    const assert = require('node:assert/strict');
+    const levelObj = require('./levels-line.js')[9];
+    const mirrored = new app.Level({ levelObj, mirrorFlag: true });
+    const edited = new app.Level({ levelObj });
+    edited.mirror();
+    assert.equal(mirrored.getA(), 'l4-x8');
+    assert.equal(edited.getA(), mirrored.getA());
+    edited.mirror();
+    assert.equal(edited.getA(), levelObj.axis);
+
+    // 鏡映後のレベル9は、左・下・下・対称軸操作・右の5手で解けます。
+    for (const [dx, dy] of [
+      [-1, 0],
+      [0, 1],
+      [0, 1],
+      [0, 0],
+      [1, 0],
+    ]) {
+      assert.ok(mirrored.move(dx, dy));
+    }
+    assert.ok(mirrored.isCompleted());
   }
 
   function testsSolve() {
