@@ -22,7 +22,8 @@
 
   let moveIntervalCount = MOVE_INTERVAL_COUNT;
   let input;
-  const inputKeys = {};
+  const moveKeys = new Set();
+  const heldKeysOutsideMenu = new Set();
 
   let settings = {
     autoMode: false,
@@ -218,6 +219,10 @@
   }
 
   async function keydown(e) {
+    if (elems.menu.dialog.open) return;
+    // メニューを開く前や表示中に押したキーのリピートで、閉じた後の盤面を操作しないようにします。
+    if (e.repeat && !heldKeysOutsideMenu.has(e.code)) return;
+    heldKeysOutsideMenu.add(e.code);
     if (e.altKey) return;
     if (e.target === elems.controller.replay && (e.key === 'Enter' || e.key === ' ')) return;
 
@@ -508,7 +513,7 @@
         if (dir !== null) {
           e.preventDefault();
           startMoveInput(dir, e.repeat);
-          inputKeys[e.key] = true;
+          moveKeys.add(e.key);
         }
       }
     }
@@ -535,14 +540,15 @@
   }
 
   function keyup(e) {
+    heldKeysOutsideMenu.delete(e.code);
     if (common.isShownElem(elems.category.title)) return;
-    delete inputKeys[e.key];
+    moveKeys.delete(e.key);
     if (temporaryShowCharsFlag && e.key === ' ') {
       temporaryShowCharsFlag = false;
       drawMainSvg();
     }
 
-    if (Object.keys(inputKeys).length === 0) {
+    if (moveKeys.size === 0) {
       undoEnd();
       redoEnd();
 
@@ -1383,7 +1389,14 @@
       elems.controller.replay.addEventListener('click', toggleReplay);
 
       // メニューダイアログ
-      elems.menu.button.addEventListener('click', app.dialog.menu.show);
+      elems.menu.button.addEventListener('click', () => {
+        heldKeysOutsideMenu.clear();
+        moveKeys.clear();
+        if (!settings.autoMode) input.update(app.Input.DIRS.NEUTRAL);
+        undoEnd();
+        redoEnd();
+        app.dialog.menu.show();
+      });
       elems.menu.dialog.addEventListener('click', app.dialog.menu.close);
       elems.menu.close.addEventListener('click', app.dialog.menu.close);
       elems.menu.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
