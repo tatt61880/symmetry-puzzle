@@ -51,6 +51,30 @@
     }
   }
 
+  #level-hint-message {
+    position: absolute;
+    bottom: calc(50% - var(--board-half-height));
+    box-sizing: border-box;
+    align-content: center;
+    width: max-content;
+    max-width: var(--board-width);
+    min-height: 32px;
+    padding: 1px 6px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.15;
+    color: #194e40;
+    pointer-events: none;
+    background-color: #effaf5;
+    border: 1px solid #287560;
+    border-radius: 6px;
+  }
+
+  #button-undo.hint-undo circle {
+    fill: #ddf5ec;
+    stroke: #287560;
+  }
+
   #level-hint {
     position: absolute;
     padding: 0;

@@ -36,6 +36,7 @@
       app.levels = require('./levels-special.js');
       app.levelsEx = require('./levels-special-ex.js');
       checkLevels();
+      testSpecialLevel1Hints();
       break;
     default:
       testsOther();
@@ -138,6 +139,26 @@
     function levelInfo() {
       return `[LEVEL ${levelId}] [subject: ${levelObj.subject}]`;
     }
+  }
+
+  function testSpecialLevel1Hints() {
+    const assert = require('node:assert/strict');
+    const level = new app.Level({ levelObj: app.levels[1], checkMode });
+
+    function checkArrow(x, y, dir) {
+      const hint = level.getHint();
+      assert.deepEqual([hint.x, hint.y, hint.dir], [x, y, dir]);
+    }
+
+    checkArrow(4, 0, 2);
+    for (let i = 0; i < 4; i++) assert.ok(level.move(1, 0));
+    assert.ok(level.move(0, 1)); // 小さいブロックを隅に押します。
+    checkArrow(1, 1, 1);
+
+    assert.ok(level.move(-1, 0)); // L字を左へ1マス押しても、まだ解けます。
+    checkArrow(0, 1, 1);
+    assert.ok(level.move(-1, 0)); // もう1マス押すと手詰まりです。
+    assert.equal(level.getHint().undo, true);
   }
 
   function testsOther() {

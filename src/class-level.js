@@ -29,6 +29,15 @@
     }
   }
 
+  function transformHint(hint, position, direction) {
+    const transform = (stage) => {
+      const result = { ...stage, ...position(stage), dir: direction(stage.dir) };
+      if (stage.when) result.when = { ...stage.when, ...position(stage.when) };
+      return result;
+    };
+    return hint.stages ? { ...hint, stages: hint.stages.map(transform) } : transform(hint);
+  }
+
   class Level {
     static CHECK_MODE = {
       LINE: Symbol('line'),
@@ -141,6 +150,18 @@
 
     getLevelObj() {
       return this.#levelObj;
+    }
+
+    getHint() {
+      const hint = this.#levelObj.hint;
+      if (!hint?.stages) return hint;
+
+      const stage = hint.stages.find(
+        ({ when }) => this.getState(this.#xMin + when.x, this.#yMin + when.y) === app.states.charToState[when.block]
+      );
+      if (stage) return { ...stage, inline: true, afterSteps: hint.afterSteps };
+      if (hint.stuck) return { ...hint.stuck, inline: true, undo: true, afterSteps: 0 };
+      return null;
     }
 
     createReplayLevel(initialState) {
@@ -1061,7 +1082,13 @@
       const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
       const newLevelObj = { w, h, s, r };
       const hint = levelObj.hint;
-      if (hint) newLevelObj.hint = { ...hint, x: w - 1 - hint.x, dir: (4 - hint.dir) % 4 };
+      if (hint) {
+        newLevelObj.hint = transformHint(
+          hint,
+          ({ x, y }) => ({ x: w - 1 - x, y }),
+          (dir) => (4 - dir) % 4
+        );
+      }
       return newLevelObj;
     }
 
@@ -1110,7 +1137,13 @@
         const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
         const hint = newLevelObj.hint;
         newLevelObj = { w, h, s, r };
-        if (hint) newLevelObj.hint = { ...hint, x: w - 1 - hint.y, y: hint.x, dir: (hint.dir + 1) % 4 };
+        if (hint) {
+          newLevelObj.hint = transformHint(
+            hint,
+            ({ x, y }) => ({ x: w - 1 - y, y: x }),
+            (dir) => (dir + 1) % 4
+          );
+        }
       }
       return newLevelObj;
     }

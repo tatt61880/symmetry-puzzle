@@ -2,6 +2,11 @@
   'use strict';
   const isBrowser = typeof window !== 'undefined';
 
+  const pushLHint = {
+    ja: '矢印のマスからL字を小さいブロックの方へ押しましょう。',
+    en: 'From the arrow, push the L-shaped block toward the small block.',
+  };
+
   const levels = [
     {
       w: 33,
@@ -22,6 +27,38 @@
       step: 11,
       shapes: 1,
       subject: 'はじまり',
+      hint: {
+        afterSteps: 20,
+        stuck: {
+          ja: '手詰まりです。解ける配置まで「1ステップ戻す」を押してください。',
+          en: 'Stuck! Press Step Backward until the puzzle is solvable again.',
+        },
+        // 未クリアで解けるブロック配置は3通りです。初期配置では小さいブロックのヒントを優先します。
+        stages: [
+          {
+            x: 4,
+            y: 0,
+            dir: 2,
+            when: { x: 4, y: 1, block: '2' },
+            ja: '矢印のマスから、小さいブロックを隅に押しましょう。',
+            en: 'Stand on the arrow and push the small block into the corner.',
+          },
+          {
+            x: 1,
+            y: 1,
+            dir: 1,
+            when: { x: 2, y: 2, block: '1' },
+            ...pushLHint,
+          },
+          {
+            x: 0,
+            y: 1,
+            dir: 1,
+            when: { x: 1, y: 2, block: '1' },
+            ...pushLHint,
+          },
+        ],
+      },
     },
     {
       w: 5,

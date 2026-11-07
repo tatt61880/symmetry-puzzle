@@ -130,7 +130,7 @@
       const center = common.level.getCenter(app.states.isTarget);
       document.documentElement.style.setProperty('--animation-origin', `${blockSize * center.x}px ${blockSize * center.y}px`);
     }
-    updateLevelHint();
+    updateLevelHint(settings.autoMode || completeFlag ? null : common.level.getHint());
   }
 
   function moveButtonStart(dir, e) {
@@ -661,9 +661,13 @@
       frameSizeW = (svgMinWidth - blockSize * common.level.getWidth()) / 2;
     }
 
+    const svgHeight = blockSize * common.level.getHeight() + 2 * frameSizeH;
+    const svgWidth = blockSize * common.level.getWidth() + 2 * frameSizeW;
+    elems.main.div.style.setProperty('--board-width', `${svgWidth}px`);
+    elems.main.div.style.setProperty('--board-half-height', `${svgHeight / 2}px`);
     for (const svg of [elems.main.svg, elems.main.replaySvg]) {
-      svg.setAttribute('width', blockSize * common.level.getWidth() + 2 * frameSizeW);
-      svg.setAttribute('height', blockSize * common.level.getHeight() + 2 * frameSizeH);
+      svg.setAttribute('width', svgWidth);
+      svg.setAttribute('height', svgHeight);
     }
   }
 
@@ -934,7 +938,7 @@
 
     if (editMode) {
       common.showElem(elems.edit.widget);
-      common.hideElem(elems.hint.button);
+      updateLevelHint(null);
       common.hideElem(elems.controller.widget);
       common.hideElem(elems.level.retry);
       addUndo(null);
@@ -1381,7 +1385,7 @@
     initElemsForEdit();
     initInfoDialog(elems.edit.normalizeHelp, elems.edit.normalizeDialog);
     initInfoDialog(elems.hint.button, elems.hint.dialog, () => {
-      elems.hint.text.textContent = common.level.getLevelObj().hint[app.savedata.getLang()];
+      elems.hint.text.textContent = common.level.getHint()[app.savedata.getLang()];
     });
     initElemsForHelp();
     initElemsForTitle();
@@ -2134,12 +2138,24 @@
     });
   }
 
-  function updateLevelHint() {
-    const hint = common.level.getLevelObj().hint;
+  function updateLevelHint(hint) {
     const button = elems.hint.button;
-    const visible = hint && !settings.autoMode && !completeFlag && undoInfoForNormal.getIndex() >= hint.afterSteps;
-    button.classList.toggle('hide', !visible);
-    if (!visible) return;
+    const visible = hint && undoInfoForNormal.getIndex() >= hint.afterSteps;
+    elems.controller.undo.classList.toggle('hint-undo', Boolean(visible && hint.undo));
+    const message = elems.hint.message;
+    const showMessage = visible && hint.inline;
+    message.classList.toggle('hide', !showMessage);
+    if (showMessage) {
+      const { ja, en } = hint;
+      if (message.dataset.ja !== ja || message.dataset.en !== en) {
+        message.dataset.ja = ja;
+        message.dataset.en = en;
+        common.applyLang(message, app.savedata.getLang());
+      }
+    }
+    const showArrow = visible && !hint.undo;
+    button.classList.toggle('hide', !showArrow);
+    if (!showArrow) return;
 
     // 盤面中央を基準に、指定マスの中心座標を求めます。
     const x = (hint.x + 0.5 - common.level.getW() / 2) * blockSize;
