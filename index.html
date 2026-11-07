@@ -1097,20 +1097,19 @@
           </g>
         </svg>
 
-        <svg width="60" height="60" viewBox="10 0 60 60">
-          <g id="button-speed-down" class="button active-hover" transform="translate(40,30)">
-            <circle cx="0" cy="0" r="28" fill="#ffa" stroke="darkorange" stroke-width="4" />
-            <path d="M -10,-13 l 10,15 10,-15 z" fill="darkorange" stroke="none" />
-            <path d="M -10,2 l 10,15 10,-15 z" fill="darkorange" stroke="none" />
-          </g>
-        </svg>
-        <svg width="60" height="60" viewBox="10 0 60 60">
-          <g id="button-speed-up" class="button active-hover" transform="translate(40,30)">
-            <circle cx="0" cy="0" r="28" fill="#ffa" stroke="darkorange" stroke-width="4" />
-            <path d="M -10,13 l 10,-15 10,15 z" fill="darkorange" stroke="none" />
-            <path d="M -10,-2 l 10,-15 10,15 z" fill="darkorange" stroke="none" />
-          </g>
-        </svg>
+        <label class="auto-speed-control">
+          <span class="translatable-toggle" data-ja="再生速度" data-en="Playback speed">再生速度</span>
+          <select id="auto-speed">
+            <option value="0.25">0.25×</option>
+            <option value="0.5">0.5×</option>
+            <option value="0.75">0.75×</option>
+            <option value="1" selected>1×</option>
+            <option value="1.5">1.5×</option>
+            <option value="2">2×</option>
+            <option value="3">3×</option>
+            <option value="5">5×</option>
+          </select>
+        </label>
       </div>
 
       <!-- エディト -->

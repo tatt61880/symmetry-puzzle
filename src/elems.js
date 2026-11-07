@@ -229,8 +229,7 @@
       buttonPause: 'button-pause',
       searchStatus: 'auto-search-status',
       buttonEnd: 'button-end',
-      buttonSpeedDown: 'button-speed-down',
-      buttonSpeedUp: 'button-speed-up',
+      speed: 'auto-speed',
     },
 
     // エディトモード

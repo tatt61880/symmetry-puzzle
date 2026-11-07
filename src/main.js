@@ -33,12 +33,7 @@
     rotateNum: 0,
   };
 
-  const settingsAuto = {
-    paused: true,
-    interval: MOVE_INTERVAL_COUNT,
-    INTERVAL_MIN: 1,
-    INTERVAL_MAX: MOVE_INTERVAL_COUNT * 3,
-  };
+  let autoPaused = true;
   const AUTO_NEXT_LEVEL_DELAY = 1000;
   let nextLevelTimerId = null;
 
@@ -124,7 +119,7 @@
       completeFlag || // 完成したとき。
       (undoInfoForNormal.isUndoable() && symmetryFlag && symmetryFlag !== symmetryFlagPrev); // 初手以外で、対称フラグが変わったとき。
     if (redrawFlag && autoSeekPointerId === null) {
-      const delay = settings.autoMode ? settingsAuto.interval * INPUT_INTERVAL_MSEC : MOVE_INTERVAL_MSEC;
+      const delay = settings.autoMode ? autoStepInterval() : MOVE_INTERVAL_MSEC;
       clearTimeout(redrawTimerId);
       redrawTimerId = setTimeout(drawMainSvg, delay, completeFlag);
     }
@@ -238,7 +233,7 @@
   }
 
   async function keydown(e) {
-    if (elems.menu.dialog.open || elems.edit.normalizeDialog.open) return;
+    if (elems.menu.dialog.open || elems.edit.normalizeDialog.open || e.target === elems.auto.speed) return;
     if (
       e.target === elems.auto.seek &&
       ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown'].includes(e.key)
@@ -486,7 +481,7 @@
       gotoPrevLevel();
     } else if (e.key === ' ') {
       if (settings.autoMode) {
-        if (settingsAuto.paused) {
+        if (autoPaused) {
           onButtonStart();
         } else {
           onButtonPause();
@@ -1373,8 +1368,8 @@
     {
       [document.body, elems.contents].forEach((elem) => {
         elem.addEventListener('mousedown', (e) => {
-          // ダイアログのボタンをタップしたときは、ブラウザーにフォーカスを移させます。
-          if (e.target === elems.auto.seek) return;
+          // シークバー・倍率選択・ダイアログでは、ブラウザーにフォーカスを移させます。
+          if (e.target === elems.auto.seek || e.target === elems.auto.speed || document.activeElement === elems.auto.speed) return;
           if (e.detail === 1 && e.target.closest('button[aria-haspopup="dialog"], dialog button')) return;
           // ダブルタップしたときの画面の拡大縮小をしないようにする。
           e.preventDefault();
@@ -1387,7 +1382,8 @@
         elem.addEventListener(
           pointermoveEventName,
           (e) => {
-            if (e.target === elems.auto.seek || elems.edit.normalizeDialog.open || common.isShownElem(elems.console.widget)) return;
+            if (e.target === elems.auto.seek || e.target === elems.auto.speed) return;
+            if (elems.edit.normalizeDialog.open || common.isShownElem(elems.console.widget)) return;
             // スワイプ操作を無効化する。
             e.preventDefault();
           },
@@ -1488,15 +1484,17 @@
       if (e.pointerId !== autoSeekPointerId) return;
       autoSeekPointerId = null;
       if (completeFlag) completeCheck();
-      scheduleAfterSeek();
+      scheduleNextAutoStep();
     });
     elems.auto.seek.addEventListener('input', seekAuto);
     elems.auto.buttonStop.addEventListener('click', onButtonStop);
     elems.auto.buttonStart.addEventListener('click', onButtonStart);
     elems.auto.buttonPause.addEventListener('click', onButtonPause);
     elems.auto.buttonEnd.addEventListener('click', onButtonEnd);
-    elems.auto.buttonSpeedDown.addEventListener('click', onButtonSpeedDown);
-    elems.auto.buttonSpeedUp.addEventListener('click', onButtonSpeedUp);
+    elems.auto.speed.addEventListener('change', () => {
+      app.sound.playButton();
+      if (autoSeekPointerId === null && !completeFlag) scheduleNextAutoStep();
+    });
   }
 
   function updateEditElems() {
@@ -2221,7 +2219,7 @@
   }
 
   function scheduleAutoNextLevel() {
-    if (!settings.autoMode || settingsAuto.paused || autoSeekPointerId !== null) return;
+    if (!settings.autoMode || autoPaused || autoSeekPointerId !== null) return;
     clearTimeout(nextLevelTimerId);
     nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
   }
@@ -2524,9 +2522,8 @@
     history.replaceState(null, '', url);
   }
 
-  function updateButtonSpeedDisplay() {
-    (settingsAuto.interval === settingsAuto.INTERVAL_MAX ? common.hideElem : common.showElem)(elems.auto.buttonSpeedDown);
-    (settingsAuto.interval === 1 ? common.hideElem : common.showElem)(elems.auto.buttonSpeedUp);
+  function autoStepInterval() {
+    return MOVE_INTERVAL_MSEC / Number(elems.auto.speed.value);
   }
 
   function updateAutoMode(isAutoMode) {
@@ -2541,7 +2538,7 @@
     } else {
       clearTimeout(nextLevelTimerId);
       clearTimeout(redrawTimerId);
-      settingsAuto.paused = true;
+      autoPaused = true;
       input.enable();
       common.hideElem(elems.auto.buttons);
 
@@ -2556,8 +2553,8 @@
   function updateAutoStartPauseButtons() {
     const searching = autoSearchFrameId !== null;
     elems.auto.searchStatus.classList.toggle('hide', !searching);
-    elems.auto.buttonStart.classList.toggle('hide', searching || !settingsAuto.paused);
-    elems.auto.buttonPause.classList.toggle('hide', searching || settingsAuto.paused);
+    elems.auto.buttonStart.classList.toggle('hide', searching || !autoPaused);
+    elems.auto.buttonPause.classList.toggle('hide', searching || autoPaused);
   }
 
   function cancelAutoSearch() {
@@ -2614,7 +2611,7 @@
   }
 
   function onButtonStartSub() {
-    settingsAuto.paused = false;
+    autoPaused = false;
     updateAutoStartPauseButtons();
     if (common.level.isCompleted()) {
       gotoNextLevel();
@@ -2629,7 +2626,7 @@
   }
 
   function pauseAuto() {
-    settingsAuto.paused = true;
+    autoPaused = true;
     updateAutoStartPauseButtons();
     clearTimeout(nextLevelTimerId);
     clearTimeout(redrawTimerId);
@@ -2642,13 +2639,13 @@
     releaseGameInput();
     showAutoStep(elems.auto.seek.valueAsNumber);
     // キーボード操作では、1回の入力でシークが完了します。
-    if (autoSeekPointerId === null) scheduleAfterSeek();
+    if (autoSeekPointerId === null) scheduleNextAutoStep();
   }
 
-  function scheduleAfterSeek() {
-    if (!settings.autoMode || settingsAuto.paused) return;
+  function scheduleNextAutoStep() {
+    if (!settings.autoMode || autoPaused) return;
     clearTimeout(autoIntervalId);
-    autoIntervalId = setTimeout(intervalFuncAuto, settingsAuto.interval * INPUT_INTERVAL_MSEC);
+    autoIntervalId = setTimeout(intervalFuncAuto, autoStepInterval());
   }
 
   function showAutoStep(target) {
@@ -2737,7 +2734,7 @@
   function intervalFuncAuto() {
     const r = common.level.getLevelObj()?.r;
     if (!editMode && settings.autoMode) {
-      if (!settingsAuto.paused && autoSeekPointerId === null) {
+      if (!autoPaused && autoSeekPointerId === null) {
         if (r !== undefined) {
           const stepIndex = undoInfoForNormal.getIndex();
           if (stepIndex < r.length) {
@@ -2745,32 +2742,14 @@
             inputFunc();
           }
         } else {
-          settingsAuto.paused = true;
+          autoPaused = true;
           updateAutoStartPauseButtons();
         }
       }
     }
 
     clearTimeout(autoIntervalId);
-    autoIntervalId = setTimeout(intervalFuncAuto, settingsAuto.interval * INPUT_INTERVAL_MSEC);
-  }
-
-  function onButtonSpeedDown() {
-    settingsAuto.interval += 2;
-    if (settingsAuto.interval >= settingsAuto.INTERVAL_MAX) {
-      settingsAuto.interval = settingsAuto.INTERVAL_MAX;
-    }
-    app.sound.playButton();
-    updateButtonSpeedDisplay();
-  }
-
-  function onButtonSpeedUp() {
-    settingsAuto.interval -= 2;
-    if (settingsAuto.interval <= settingsAuto.INTERVAL_MIN) {
-      settingsAuto.interval = settingsAuto.INTERVAL_MIN;
-    }
-    app.sound.playButton();
-    updateButtonSpeedDisplay();
+    autoIntervalId = setTimeout(intervalFuncAuto, autoStepInterval());
   }
 
   function consoleAdd(str, className) {

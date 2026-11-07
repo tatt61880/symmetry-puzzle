@@ -138,6 +138,27 @@
     align-items: center;
     justify-content: center;
 
+    .auto-speed-control {
+      box-sizing: border-box;
+      display: grid;
+      gap: 2px;
+      width: 126px;
+      padding-inline: 8px;
+      font-size: 14px;
+      color: #334466;
+
+      select {
+        height: 34px;
+        padding-inline: 8px;
+        font: inherit;
+        font-size: 16px;
+        color: inherit;
+        background-color: #ffffff;
+        border: 2px solid #99bbdd;
+        border-radius: 6px;
+      }
+    }
+
     #auto-seek {
       width: 145px;
       height: 36px;
