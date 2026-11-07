@@ -202,6 +202,13 @@ text {
   width: 100%;
 }
 
+#button-level-edit {
+  &:not(.editing) .play-action,
+  &.editing .edit-action {
+    display: none;
+  }
+}
+
 #button-level-prev,
 #button-level-next,
 #button-level-edit,

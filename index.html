@@ -898,8 +898,17 @@
 
           <!-- Edit -->
           <g id="button-level-edit" class="button active-hover" transform="translate(415,50)">
-            <g class="button-transform">
+            <text x="0" y="-38" fill="#7799bb" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14">
+              <tspan class="edit-action translatable-toggle" data-en="EDIT" data-ja="編集"></tspan>
+              <tspan class="play-action translatable-toggle" data-en="PLAY" data-ja="プレイ"></tspan>
+            </text>
+            <g class="button-transform" fill="#6688aa">
               <circle cx="0" cy="0" r="28" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
+              <g class="edit-action" transform="rotate(40)">
+                <rect x="-6" y="-19" width="12" height="5" rx="1.5" />
+                <path d="M -6,-12 H 6 V 9 L 0,19 -6,9 Z" />
+              </g>
+              <path class="play-action" d="M -10,-15 16,0 -10,15 Z" />
             </g>
             <text class="shortcut-key" x="0" y="42" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16"
               fill="#7799bb">@</text>

@@ -908,6 +908,7 @@
 
   function updateEditMode(isEditMode, resetFlag = true) {
     editMode = isEditMode;
+    elems.level.edit.classList.toggle('editing', editMode);
     common.isSeqMode = false;
 
     if (editMode) {
