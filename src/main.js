@@ -133,7 +133,16 @@
   function moveButtonStart(dir, e) {
     if (!input.isEnable()) return;
     e.preventDefault();
+    startMoveInput(dir);
+  }
+
+  function startMoveInput(dir, isRepeat = false) {
+    const wasNeutral = input.inputDir === app.Input.DIRS.NEUTRAL;
     input.update(dir);
+
+    if (common.level === null || settings.autoMode) return;
+    if (isRepeat || !wasNeutral || moveIntervalCount < MOVE_INTERVAL_COUNT) return;
+    inputFunc(true);
   }
 
   function undoStart() {
@@ -498,7 +507,7 @@
 
         if (dir !== null) {
           e.preventDefault();
-          input.update(dir);
+          startMoveInput(dir, e.repeat);
           inputKeys[e.key] = true;
         }
       }
@@ -1878,7 +1887,7 @@
     }
   }
 
-  function inputFunc() {
+  function inputFunc(immediate = false) {
     if (input.inputDir === app.Input.DIRS.NEUTRAL) return;
     if (undoFlag) return;
     if (redoFlag) return;
@@ -1887,7 +1896,8 @@
     if (settings.autoMode) {
       input.update(input.inputDir);
     }
-    moveIntervalCount = 0;
+    // 即時入力後の最初のタイマーでは 0 に進め、長押しの次の一手が従来より早まるのを防ぎます。
+    moveIntervalCount = immediate ? -1 : 0;
 
     const movedFlag = tryMoving(input.inputDir);
     if (movedFlag) {
