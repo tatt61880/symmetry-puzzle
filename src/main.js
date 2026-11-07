@@ -264,85 +264,13 @@
 
     // レベル一覧ダイアログで有効
     if (elems.levels.dialog.open) {
-      if (e.ctrlKey) return;
-      switch (e.key) {
-        case 'ArrowUp':
-        case 'w':
-        case 'k':
-          app.dialog.levels.selectUp();
-          break;
-        case 'ArrowRight':
-        case 'd':
-        case 'l':
-          if (e.shiftKey) {
-            app.dialog.levels.nextPage();
-          } else {
-            app.dialog.levels.selectRight();
-          }
-          break;
-        case 'ArrowDown':
-        case 's':
-        case 'j':
-          app.dialog.levels.selectDown();
-          break;
-        case 'ArrowLeft':
-        case 'a':
-        case 'h':
-          if (e.shiftKey) {
-            app.dialog.levels.prevPage();
-          } else {
-            app.dialog.levels.selectLeft();
-          }
-          break;
-        case 'Enter':
-          app.dialog.levels.selectEnter();
-          break;
-        case '#':
-          app.dialog.levels.close();
-          break;
-      }
+      handleListDialogKey(e, app.dialog.levels);
       return;
     }
 
     // 形状一覧ダイアログで有効
     if (elems.shapes.dialog.open) {
-      if (e.ctrlKey) return;
-      switch (e.key) {
-        case 'ArrowUp':
-        case 'w':
-        case 'k':
-          app.dialog.shapes.selectUp();
-          break;
-        case 'ArrowRight':
-        case 'd':
-        case 'l':
-          if (e.shiftKey) {
-            app.dialog.shapes.nextPage();
-          } else {
-            app.dialog.shapes.selectRight();
-          }
-          break;
-        case 'ArrowDown':
-        case 's':
-        case 'j':
-          app.dialog.shapes.selectDown();
-          break;
-        case 'ArrowLeft':
-        case 'a':
-        case 'h':
-          if (e.shiftKey) {
-            app.dialog.shapes.prevPage();
-          } else {
-            app.dialog.shapes.selectLeft();
-          }
-          break;
-        case 'Enter':
-          app.dialog.shapes.selectEnter();
-          break;
-        case '#':
-          app.dialog.shapes.close();
-          break;
-      }
+      handleListDialogKey(e, app.dialog.shapes);
       return;
     }
 
@@ -549,6 +477,46 @@
       }
     }
     return false;
+  }
+
+  function handleListDialogKey(e, dialog) {
+    if (e.ctrlKey) return;
+    switch (e.key) {
+      case 'ArrowUp':
+      case 'w':
+      case 'k':
+        dialog.selectUp();
+        break;
+      case 'ArrowRight':
+      case 'd':
+      case 'l':
+        if (e.shiftKey) {
+          dialog.nextPage();
+        } else {
+          dialog.selectRight();
+        }
+        break;
+      case 'ArrowDown':
+      case 's':
+      case 'j':
+        dialog.selectDown();
+        break;
+      case 'ArrowLeft':
+      case 'a':
+      case 'h':
+        if (e.shiftKey) {
+          dialog.prevPage();
+        } else {
+          dialog.selectLeft();
+        }
+        break;
+      case 'Enter':
+        dialog.selectEnter();
+        break;
+      case '#':
+        dialog.close();
+        break;
+    }
   }
 
   function retryLevel() {
