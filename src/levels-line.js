@@ -79,7 +79,7 @@
       step: 3,
       shapes: 1,
       hint: {
-        afterSteps: 3,
+        afterSteps: 10,
         stages: [
           // 壁の手前では、どの段からでも対称軸操作で向こう側に移れます。
           ...[0, 1, 2].map((y) => ({
