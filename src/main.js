@@ -59,6 +59,7 @@
   let undoIntervalId = null;
   let redoIntervalId = null;
   let autoIntervalId = null;
+  let autoSeekPointerId = null;
   let autoSearchFrameId = null;
 
   let gotoPrevLevelIntervalId = null;
@@ -122,7 +123,7 @@
     const redrawFlag =
       completeFlag || // 完成したとき。
       (undoInfoForNormal.isUndoable() && symmetryFlag && symmetryFlag !== symmetryFlagPrev); // 初手以外で、対称フラグが変わったとき。
-    if (redrawFlag) {
+    if (redrawFlag && autoSeekPointerId === null) {
       const delay = settings.autoMode ? settingsAuto.interval * INPUT_INTERVAL_MSEC : MOVE_INTERVAL_MSEC;
       clearTimeout(redrawTimerId);
       redrawTimerId = setTimeout(drawMainSvg, delay, completeFlag);
@@ -242,7 +243,6 @@
       e.target === elems.auto.seek &&
       ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown'].includes(e.key)
     ) {
-      pauseAuto();
       return;
     }
     // ダイアログを閉じた後、押したままのキーで盤面を操作しないようにします。
@@ -1477,7 +1477,19 @@
 
   // Autoモード用
   function initElemsForAuto() {
-    elems.auto.seek.addEventListener('pointerdown', pauseAuto);
+    elems.auto.seek.addEventListener('pointerdown', (e) => {
+      if (!e.isPrimary || e.button !== 0) return;
+      autoSeekPointerId = e.pointerId;
+      elems.auto.seek.setPointerCapture(e.pointerId);
+      clearTimeout(nextLevelTimerId);
+      clearTimeout(redrawTimerId);
+    });
+    elems.auto.seek.addEventListener('lostpointercapture', (e) => {
+      if (e.pointerId !== autoSeekPointerId) return;
+      autoSeekPointerId = null;
+      if (completeFlag) completeCheck();
+      scheduleAfterSeek();
+    });
     elems.auto.seek.addEventListener('input', seekAuto);
     elems.auto.buttonStop.addEventListener('click', onButtonStop);
     elems.auto.buttonStart.addEventListener('click', onButtonStart);
@@ -2209,7 +2221,7 @@
   }
 
   function scheduleAutoNextLevel() {
-    if (!settings.autoMode || settingsAuto.paused) return;
+    if (!settings.autoMode || settingsAuto.paused || autoSeekPointerId !== null) return;
     clearTimeout(nextLevelTimerId);
     nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
   }
@@ -2519,6 +2531,7 @@
 
   function updateAutoMode(isAutoMode) {
     cancelAutoSearch();
+    autoSeekPointerId = null;
     settings.autoMode = isAutoMode;
 
     if (isAutoMode) {
@@ -2624,9 +2637,18 @@
   }
 
   function seekAuto() {
-    pauseAuto();
+    clearTimeout(nextLevelTimerId);
+    clearTimeout(redrawTimerId);
     releaseGameInput();
     showAutoStep(elems.auto.seek.valueAsNumber);
+    // キーボード操作では、1回の入力でシークが完了します。
+    if (autoSeekPointerId === null) scheduleAfterSeek();
+  }
+
+  function scheduleAfterSeek() {
+    if (!settings.autoMode || settingsAuto.paused) return;
+    clearTimeout(autoIntervalId);
+    autoIntervalId = setTimeout(intervalFuncAuto, settingsAuto.interval * INPUT_INTERVAL_MSEC);
   }
 
   function showAutoStep(target) {
@@ -2715,7 +2737,7 @@
   function intervalFuncAuto() {
     const r = common.level.getLevelObj()?.r;
     if (!editMode && settings.autoMode) {
-      if (!settingsAuto.paused) {
+      if (!settingsAuto.paused && autoSeekPointerId === null) {
         if (r !== undefined) {
           const stepIndex = undoInfoForNormal.getIndex();
           if (stepIndex < r.length) {
