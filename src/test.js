@@ -24,6 +24,7 @@
       app.levels = require('./levels-line.js');
       app.levelsEx = require('./levels-line-ex.js');
       checkLevels();
+      testLineLevel6Hints();
       break;
     case 'point':
       checkMode = app.Level.CHECK_MODE.POINT;
@@ -139,6 +140,20 @@
 
     function levelInfo() {
       return `[LEVEL ${levelId}] [subject: ${levelObj.subject}]`;
+    }
+  }
+
+  function testLineLevel6Hints() {
+    const assert = require('node:assert/strict');
+    for (const mirrorFlag of [false, true]) {
+      for (let rotateNum = 0; rotateNum < 4; rotateNum++) {
+        const level = new app.Level({ levelObj: app.levels[6], checkMode, mirrorFlag, rotateNum });
+        assert.equal(level.getHint().dir, 4);
+        assert.ok(level.move(0, 0));
+        assert.equal(level.getHint().dir, ((mirrorFlag ? 3 : 1) + rotateNum) % 4);
+        assert.ok(level.move(0, 0));
+        assert.equal(level.getHint().dir, 4);
+      }
     }
   }
 

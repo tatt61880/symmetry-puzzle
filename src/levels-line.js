@@ -78,6 +78,26 @@
       r: '241',
       step: 3,
       shapes: 1,
+      hint: {
+        afterSteps: 3,
+        stages: [
+          // 壁の手前では、どの段からでも対称軸操作で向こう側に移れます。
+          ...[0, 1, 2].map((y) => ({
+            when: { x: 0, y, block: 's' },
+            dir: 4,
+            ja: '方向ボタンの中央を押してみましょう。青いキャラが線対称のマスに移り、壁を越えられます。',
+            en: 'Press the button in the middle of the arrows to cross the wall. It moves you to the mirror-image square.',
+          })),
+          {
+            when: { x: 3, y: 2, block: '2' },
+            x: 2,
+            y: 2,
+            dir: 1,
+            ja: '小さいオレンジ色のブロックを、矢印に沿って角へ押しましょう。',
+            en: 'Push the small orange block into the corner in the direction of the arrow.',
+          },
+        ],
+      },
     },
     {
       w: 5,

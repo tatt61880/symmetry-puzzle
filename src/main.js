@@ -2048,6 +2048,7 @@
     elems.hint.toggle.classList.toggle('hide', !hint || levelHintState === 'locked');
     elems.hint.toggle.setAttribute('aria-pressed', String(visible));
     elems.controller.undo.classList.toggle('hint-undo', Boolean(visible && hint.undo));
+    elems.controller.buttons.axis.classList.toggle('hint-axis', visible && hint.dir === 4);
     const message = elems.hint.message;
     message.classList.toggle('hide', !visible);
     if (visible) {
@@ -2059,7 +2060,7 @@
       }
     }
     const arrow = elems.hint.arrow;
-    const showArrow = visible && !hint.undo;
+    const showArrow = visible && hint.x !== undefined;
     arrow.classList.toggle('hide', !showArrow);
     if (!showArrow) return;
 

@@ -31,7 +31,9 @@
 
   function transformHint(hint, position, direction) {
     const transform = (stage) => {
-      const result = { ...stage, ...position(stage), dir: direction(stage.dir) };
+      const result = { ...stage };
+      // 盤上の矢印だけを鏡映・回転します。対称軸操作のボタンは常に中央です。
+      if (stage.x !== undefined) Object.assign(result, position(stage), { dir: direction(stage.dir) });
       if (stage.when) result.when = { ...stage.when, ...position(stage.when) };
       return result;
     };

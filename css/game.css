@@ -70,7 +70,8 @@
     border-radius: 6px;
   }
 
-  #button-undo.hint-undo circle {
+  #button-undo.hint-undo circle,
+  #controller-buttons-axis.hint-axis rect:first-child {
     fill: #ddf5ec;
     stroke: #287560;
   }
