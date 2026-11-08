@@ -235,6 +235,55 @@
     }
   }
 
+  function parseClipboardLevel(text) {
+    const start = text.indexOf('{');
+    if (start < 0) throw new SyntaxError('盤面のオブジェクトがありません。');
+
+    // 文字列とコメントをひとまとまりにし、説明文に含まれる括弧やカンマはそのまま扱います。
+    const tokens = text.slice(start).match(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\/\/[^\r\n]*|\/\*[\s\S]*?\*\/|[\w$]+|[^\s]/g);
+    const parts = [];
+    let depth = 0;
+    let hintStart;
+    let hintEnd;
+    for (const token of tokens) {
+      if (token.startsWith('//') || token.startsWith('/*')) continue;
+      if (token === ':') {
+        const key = parts.pop();
+        parts.push(key.startsWith('"') ? key : JSON.stringify(key), ':');
+        if (depth === 1 && parts.at(-2) === '"hint"') hintStart = parts.length;
+      } else if (token === '}' || token === ']') {
+        if (parts.at(-1) === ',') parts.pop();
+        if (depth === 1 && hintStart !== undefined && hintEnd === undefined) hintEnd = parts.length;
+        parts.push(token);
+        if (--depth === 0) break;
+      } else {
+        if (token === '{' || token === '[') ++depth;
+        if (token === ',' && depth === 1 && hintStart !== undefined && hintEnd === undefined) hintEnd = parts.length;
+        if (token.startsWith("'")) {
+          const content = token.slice(1, -1).replace(/\\.|"/g, (s) => {
+            if (s === "\\'") return "'";
+            if (s === '"') return '\\"';
+            return s;
+          });
+          parts.push('"' + content + '"');
+        } else {
+          parts.push(token);
+        }
+      }
+    }
+    try {
+      return JSON.parse(parts.join(''));
+    } catch (error) {
+      // 組み込み面のヒントには map やスプレッド構文もあるため、該当面の登録済みデータを使います。
+      if (hintEnd === undefined) throw error;
+      parts.splice(hintStart, hintEnd - hintStart, 'null');
+      const levelObj = JSON.parse(parts.join(''));
+      delete levelObj.hint;
+      if (getId(levelObj) === null) consoleWarn('ヒントを読み取れなかったため、盤面のみ貼り付けます。');
+      return levelObj;
+    }
+  }
+
   async function keydown(e) {
     if (elems.auto.resultDialog.open || elems.menu.dialog.open || elems.edit.normalizeDialog.open) return;
     if (e.target === elems.auto.speed) return;
@@ -348,14 +397,20 @@
       switch (e.key) {
         // Ctrl + V: クリップボード内のオブジェクトデータを実行
         case 'v': {
-          let clip = await navigator.clipboard.readText();
-          clip = clip.replace(/\s/g, ' ');
-          clip = clip.replace(/.*?({.*?}).*/, '$1');
-          clip = clip.replace(/,\s*}/g, '}');
-          clip = clip.replaceAll("'", '"');
-          clip = clip.replace(/(\w+):/g, '"$1":');
-          console.log(clip);
-          const levelObj = JSON.parse(clip);
+          let levelObj;
+          try {
+            levelObj = parseClipboardLevel(await navigator.clipboard.readText());
+            if (
+              !Number.isInteger(levelObj.w) || levelObj.w <= 0 ||
+              !Number.isInteger(levelObj.h) || levelObj.h <= 0 ||
+              typeof levelObj.s !== 'string'
+            ) {
+              throw new Error('盤面の w, h, s を確認してください。');
+            }
+          } catch (error) {
+            consoleWarn(`盤面を貼り付けられませんでした。 ${error.message}`);
+            return;
+          }
           onloadObj(levelObj);
           updateAutoMode(true);
           onButtonStart();
