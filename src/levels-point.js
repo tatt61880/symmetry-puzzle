@@ -129,6 +129,27 @@
       r: '1201441',
       step: 7,
       shapes: 2,
+      hint: {
+        afterSteps: 10,
+        stages: [
+          // L字を下に押した場合と、小さいブロックが左端の隅に入った場合は手詰まりです。
+          ...[
+            { x: 3, y: 2, block: '1' },
+            { x: 0, y: 0, block: '2' },
+            { x: 0, y: 2, block: '2' },
+          ].map((when) => ({
+            when,
+            undo: true,
+            ja: '手詰まりです。解ける配置まで「1手戻す」を押してください。',
+            en: 'Stuck! Press UNDO until the puzzle is solvable again.',
+          })),
+          {
+            when: { x: 3, y: 0, block: '1' },
+            ja: 'この面では、方向ボタンの中央を押すと、青い点を中心に90度回転できます。',
+            en: 'In this level, the center button rotates your character 90° around the marked point.',
+          },
+        ],
+      },
     },
     {
       w: 5,
