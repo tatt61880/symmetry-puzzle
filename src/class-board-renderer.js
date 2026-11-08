@@ -1766,6 +1766,8 @@
               g.appendChild(elem);
               child = g;
               g.classList.add('animation-move-sub');
+              const hopHeight = blockSize * (move.pushing ? 1 / 16 : 0.15);
+              g.style.setProperty('--animation-move-sub-transform', `translateY(${-hopHeight}px)`);
             }
 
             // 移動時のエフェクト（残像）

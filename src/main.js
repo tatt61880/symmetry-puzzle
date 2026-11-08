@@ -108,7 +108,6 @@
     if (!level.move(dx, dy)) return false;
     app.sound.playStep();
     elem.style.setProperty('--animation-move-transform', `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`);
-    elem.style.setProperty('--animation-move-sub-transform', `translate(0, ${-0.125 * blockSize}px)`);
     return true;
   }
 
@@ -1102,7 +1101,6 @@
       elem.textContent = '';
 
       elem.style.setProperty('--animation-move-transform', `translate(${-dx * blockSize}px, ${-dy * blockSize}px)`);
-      elem.style.setProperty('--animation-move-sub-transform', `translate(0, ${-0.125 * blockSize}px)`);
 
       const g = level.createSvgG({
         blockSize,
