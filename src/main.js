@@ -58,13 +58,6 @@
   let autoSeekPointerId = null;
   let autoSearchFrameId = null;
 
-  let gotoPrevLevelIntervalId = null;
-  let gotoNextLevelIntervalId = null;
-  let gotoLevelsPrevPageIntervalId = null;
-  let gotoLevelsNextPageIntervalId = null;
-  let gotoShapesPrevPageIntervalId = null;
-  let gotoShapesNextPageIntervalId = null;
-
   let levelHintState = 'locked';
   let hintWallPressCount = 0;
   let completeFlag = false;
@@ -210,17 +203,6 @@
     if (!settings.autoMode) input.update(app.Input.DIRS.NEUTRAL);
     undoEnd();
     redoEnd();
-  }
-
-  function pointerup() {
-    undoEnd();
-    redoEnd();
-    clearInterval(gotoPrevLevelIntervalId);
-    clearInterval(gotoNextLevelIntervalId);
-    clearInterval(gotoLevelsPrevPageIntervalId);
-    clearInterval(gotoLevelsNextPageIntervalId);
-    clearInterval(gotoShapesPrevPageIntervalId);
-    clearInterval(gotoShapesNextPageIntervalId);
   }
 
   function getCursorPos(elem, e) {
@@ -1435,6 +1417,7 @@
     initElemsForLevelWidget();
     initElemsForLevelsDialog();
     initElemsForShapesDialog();
+    initNavigationButtons();
     initLogo();
 
     // キー入力用
@@ -1484,7 +1467,8 @@
       elems.menu.title.addEventListener('click', menuGotoTitlePage);
       elems.menu.retry.addEventListener('click', menuRetryLevel);
 
-      document.addEventListener('pointerup', pointerup);
+      document.addEventListener('pointerup', undoEnd);
+      document.addEventListener('pointerup', redoEnd);
 
       input = new app.Input(elems.controller.buttons, () => common.level?.releaseBumpFaces());
     }
@@ -1828,69 +1812,16 @@
   // レベル操作用
   function initElemsForLevelWidget() {
     elems.level.retry.addEventListener('click', retryLevel);
-
-    {
-      elems.level.prev.addEventListener('pointerdown', gotoPrevLevelStart);
-      elems.level.prev.addEventListener('pointerup', gotoPrevLevelEnd);
-      elems.level.next.addEventListener('pointerdown', gotoNextLevelStart);
-      elems.level.next.addEventListener('pointerup', gotoNextLevelEnd);
-    }
     elems.level.edit.addEventListener('click', toggleEditLevel);
-    elems.levels.button.addEventListener('click', app.dialog.levels.show);
-    elems.levels.dialog.addEventListener('click', app.dialog.levels.close);
-    elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
-    elems.levels.display.checkbox.addEventListener('click', app.dialog.levels.update);
-  }
-
-  function gotoPrevLevelStart(e) {
-    if (e.button === 2) return; // 右クリックは無視
-    gotoPrevLevel();
-    gotoPrevLevelIntervalId = setInterval(gotoPrevLevel, MOVE_INTERVAL_MSEC * 1.5);
-  }
-
-  function gotoPrevLevelEnd() {
-    clearInterval(gotoPrevLevelIntervalId);
-  }
-
-  function gotoNextLevelStart(e) {
-    if (e.button === 2) return; // 右クリックは無視
-    gotoNextLevel();
-    gotoNextLevelIntervalId = setInterval(gotoNextLevel, MOVE_INTERVAL_MSEC * 1.5);
-  }
-
-  function gotoNextLevelEnd() {
-    clearInterval(gotoNextLevelIntervalId);
   }
 
   // レベル一覧ダイアログ
   function initElemsForLevelsDialog() {
+    elems.levels.button.addEventListener('click', app.dialog.levels.show);
+    elems.levels.dialog.addEventListener('click', app.dialog.levels.close);
+    elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
     elems.levels.close.addEventListener('click', app.dialog.levels.close);
-    {
-      elems.levels.prev.addEventListener('pointerdown', gotoLevelsPrevPageStart);
-      elems.levels.prev.addEventListener('pointerup', gotoLevelsPrevPageEnd);
-      elems.levels.next.addEventListener('pointerdown', gotoLevelsNextPageStart);
-      elems.levels.next.addEventListener('pointerup', gotoLevelsNextPageEnd);
-    }
-  }
-
-  function gotoLevelsPrevPageStart(e) {
-    if (e.button === 2) return; // 右クリックは無視
-    app.dialog.levels.prevPage();
-    gotoLevelsPrevPageIntervalId = setInterval(app.dialog.levels.prevPage, MOVE_INTERVAL_MSEC * 1.5);
-  }
-
-  function gotoLevelsPrevPageEnd() {
-    clearInterval(gotoLevelsPrevPageIntervalId);
-  }
-
-  function gotoLevelsNextPageStart(e) {
-    if (e.button === 2) return; // 右クリックは無視
-    app.dialog.levels.nextPage();
-    gotoLevelsNextPageIntervalId = setInterval(app.dialog.levels.nextPage, MOVE_INTERVAL_MSEC * 1.5);
-  }
-
-  function gotoLevelsNextPageEnd() {
-    clearInterval(gotoLevelsNextPageIntervalId);
+    elems.levels.display.checkbox.addEventListener('click', app.dialog.levels.update);
   }
 
   // 形状一覧ダイアログ
@@ -1899,32 +1830,48 @@
     elems.shapes.dialog.addEventListener('click', app.dialog.shapes.close);
     elems.shapes.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
     elems.shapes.close.addEventListener('click', app.dialog.shapes.close);
-    {
-      elems.shapes.prev.addEventListener('pointerdown', gotoShapesPrevPageStart);
-      elems.shapes.prev.addEventListener('pointerup', gotoShapesPrevPageEnd);
-      elems.shapes.next.addEventListener('pointerdown', gotoShapesNextPageStart);
-      elems.shapes.next.addEventListener('pointerup', gotoShapesNextPageEnd);
+  }
+
+  function initNavigationButtons() {
+    let pointerId = null;
+    let intervalId = null;
+
+    function stopRepeat() {
+      clearInterval(intervalId);
+      intervalId = null;
+      pointerId = null;
     }
-  }
 
-  function gotoShapesPrevPageStart(e) {
-    if (e.button === 2) return; // 右クリックは無視
-    app.dialog.shapes.prevPage();
-    gotoShapesPrevPageIntervalId = setInterval(app.dialog.shapes.prevPage, MOVE_INTERVAL_MSEC * 1.5);
-  }
+    function endPress(e) {
+      if (e.pointerId === pointerId) stopRepeat();
+    }
 
-  function gotoShapesPrevPageEnd() {
-    clearInterval(gotoShapesPrevPageIntervalId);
-  }
+    for (const [button, navigate] of [
+      [elems.level.prev, gotoPrevLevel],
+      [elems.level.next, gotoNextLevel],
+      [elems.levels.prev, app.dialog.levels.prevPage],
+      [elems.levels.next, app.dialog.levels.nextPage],
+      [elems.shapes.prev, app.dialog.shapes.prevPage],
+      [elems.shapes.next, app.dialog.shapes.nextPage],
+    ]) {
+      button.addEventListener('pointerdown', (e) => {
+        if (e.button === 2 || pointerId !== null) return;
+        button.setPointerCapture(e.pointerId);
+        pointerId = e.pointerId;
+        navigate();
+        intervalId = setInterval(navigate, MOVE_INTERVAL_MSEC * 1.5);
+      });
+      button.addEventListener('lostpointercapture', (e) => {
+        if (e.target === button) endPress(e);
+      });
+    }
 
-  function gotoShapesNextPageStart(e) {
-    if (e.button === 2) return; // 右クリックは無視
-    app.dialog.shapes.nextPage();
-    gotoShapesNextPageIntervalId = setInterval(app.dialog.shapes.nextPage, MOVE_INTERVAL_MSEC * 1.5);
-  }
-
-  function gotoShapesNextPageEnd() {
-    clearInterval(gotoShapesNextPageIntervalId);
+    document.addEventListener('pointerup', endPress, true);
+    document.addEventListener('pointercancel', endPress, true);
+    window.addEventListener('blur', stopRepeat);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopRepeat();
+    });
   }
 
   function initLogo() {
