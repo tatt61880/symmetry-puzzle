@@ -1133,14 +1133,14 @@
 }
 
 /* icon animation */
-#setting-sound-toggle {
+.sound-toggle {
   & > svg {
     transition: transform 250ms ease;
     transform: scaleY(1);
     transform-origin: center;
   }
 
-  &.active > svg {
+  &[aria-pressed='true'] > svg {
     transform: scaleY(-1);
   }
 }

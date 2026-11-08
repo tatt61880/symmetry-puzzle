@@ -19,6 +19,7 @@
   function show() {
     app.sound.playUiOpen();
     elems.menu.dialog.showModal();
+    elems.menu.dialog.focus({ preventScroll: true });
   }
 
   function close(sound = true) {

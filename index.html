@@ -160,6 +160,28 @@
       </svg>
     </header>
 
+    <span id="sound-toggle-label" class="translatable-toggle" data-ja="サウンド" data-en="Sound" hidden></span>
+    <template id="sound-toggle-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="35" height="35" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <!-- speaker -->
+        <path d="M3 10v4" />
+        <path d="M5 9h3l5-4v14l-5-4H5z" />
+
+        <!-- ON: waves -->
+        <g class="sound-on">
+          <path d="M16 9.5c1 .9 1.6 2 1.6 2.5S17 13.6 16 14.5" />
+          <path d="M18.5 7.5c1.8 1.6 2.9 3.5 2.9 4.5s-1.1 2.9-2.9 4.5" />
+        </g>
+
+        <!-- OFF: X -->
+        <g class="sound-off">
+          <path d="M16.5 9.5l5 5" />
+          <path d="M21.5 9.5l-5 5" />
+        </g>
+      </svg>
+    </template>
+
     <!-- ヘルプダイアログ -->
     <dialog id="dialog-help">
       <div id="dialog-help-div">
@@ -176,27 +198,8 @@
           <div id="dialog-help-title" class="toggle-text translatable-toggle" data-en="" data-ja=""></div>
           <div class="spacer"></div>
 
-          <button id="setting-sound-toggle" type="button" aria-pressed="false" title="Sound">
-            <!-- 1つのSVGで ON/OFF を切替（CSSで表示切替） -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="35" height="35" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Sound toggle" role="img">
-              <!-- speaker -->
-              <path d="M3 10v4" />
-              <path d="M5 9h3l5-4v14l-5-4H5z" />
-
-              <!-- ON: waves -->
-              <g class="sound-on">
-                <path d="M16 9.5c1 .9 1.6 2 1.6 2.5S17 13.6 16 14.5" />
-                <path d="M18.5 7.5c1.8 1.6 2.9 3.5 2.9 4.5s-1.1 2.9-2.9 4.5" />
-              </g>
-
-              <!-- OFF: X -->
-              <g class="sound-off">
-                <path d="M16.5 9.5l5 5" />
-                <path d="M21.5 9.5l-5 5" />
-              </g>
-            </svg>
-          </button>
+          <button id="setting-sound-toggle" class="sound-toggle" type="button" title="Sound" aria-pressed="false"
+            aria-labelledby="sound-toggle-label"></button>
           <button id="setting-lang-ja" class="setting-lang-button setting-lang-button-left">日本語</button>
           <button id="setting-lang-en" class="setting-lang-button setting-lang-button-right">English</button>
         </div>
@@ -1486,7 +1489,8 @@
           <div class="spacer"></div>
           <div class="caption translatable-toggle" data-en="Menu" data-ja="メニュー"></div>
           <div class="spacer"></div>
-          <svg width="48" height="48"></svg>
+          <button id="menu-sound-toggle" class="sound-toggle" type="button" title="Sound" aria-pressed="false"
+            aria-labelledby="sound-toggle-label"></button>
         </div>
 
         <svg width="400" height="160">

@@ -31,7 +31,6 @@
     help.dialog.addEventListener('click', close);
     help.close.addEventListener('click', close);
     help.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
-    help.sound.addEventListener('pointerup', toggleSound);
     help.langEn.addEventListener('click', () => selectLang('en'));
     help.langJa.addEventListener('click', () => selectLang('ja'));
 
@@ -86,23 +85,6 @@
     }
   }
 
-  async function toggleSound(e) {
-    e.preventDefault();
-    if (app.sound.isEnabled()) {
-      app.sound.disable();
-      app.sound.stopBgm();
-    } else {
-      await app.sound.enable();
-      await app.sound.resumeIfNeeded();
-      app.sound.playStart();
-      app.sound.startBgm();
-    }
-
-    const enabled = app.sound.isEnabled();
-    help.sound.classList.toggle('active', enabled);
-    help.sound.setAttribute('aria-pressed', String(enabled));
-  }
-
   function handleKey(key) {
     if (key === '?') {
       close();
@@ -130,6 +112,7 @@
       app.sound.playUiOpen();
     }
     help.dialog.showModal();
+    help.dialog.focus({ preventScroll: true });
   }
 
   function close() {

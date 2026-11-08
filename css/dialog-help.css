@@ -91,41 +91,11 @@
       }
     }
 
-    #setting-sound-toggle {
+    .sound-toggle {
       width: calc(100% / 4 - 10px);
-      height: 48px;
-      padding: 0;
-      color: #505050;
-      cursor: pointer;
-      user-select: none;
-      background-color: #f8f8f8;
-      border: 4px solid #cccccc;
-      border-radius: 15px;
-      outline: none;
-
-      .sound-on {
-        display: none;
-        border-color: #aaaaff;
-      }
-
-      &.active {
-        color: #333388;
-        background-color: #e4e4ff;
-        border-color: #aaaaff;
-        opacity: 1;
-
-        .sound-on {
-          display: inline;
-        }
-
-        .sound-off {
-          display: none;
-        }
-      }
     }
 
-    .setting-lang-button:not(.active),
-    #setting-sound-toggle {
+    .setting-lang-button:not(.active) {
       @media (hover: hover) {
         &:hover {
           opacity: 0.8;

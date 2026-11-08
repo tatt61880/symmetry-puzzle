@@ -26,6 +26,7 @@
     version: 'title-version',
 
     contents: 'contents',
+    soundIcon: 'sound-toggle-icon',
 
     // ヘルプダイアログ
     help: {
@@ -184,6 +185,7 @@
 
     // メニューダイアログ
     menu: {
+      sound: 'menu-sound-toggle',
       button: 'controller-buttons-menu',
       dialog: 'dialog-menu',
       dialogDiv: 'dialog-menu-div',

@@ -1350,6 +1350,33 @@
     updateLevelVisibility();
   }
 
+  function initSoundButtons() {
+    const buttons = [elems.help.sound, elems.menu.sound];
+    for (const button of buttons) {
+      button.appendChild(elems.soundIcon.content.cloneNode(true));
+      button.addEventListener('click', toggleSound);
+    }
+
+    async function toggleSound() {
+      const enable = !app.sound.isEnabled();
+      for (const button of buttons) {
+        button.setAttribute('aria-pressed', String(enable));
+      }
+
+      if (!enable) {
+        app.sound.disable();
+        app.sound.stopBgm();
+      } else {
+        await app.sound.enable();
+        await app.sound.resumeIfNeeded();
+        if (app.sound.isEnabled() && !app.sound.isBgmPlaying()) {
+          app.sound.playStart();
+          app.sound.startBgm();
+        }
+      }
+    }
+  }
+
   function initElems() {
     let setTimeoutIdOnWindowResize = null;
     window.addEventListener('resize', () => {
@@ -1398,6 +1425,7 @@
       levelHintState = levelHintState === 'showing' ? 'available' : 'showing';
       updateLevelHint(common.level.getHint());
     });
+    initSoundButtons();
     app.dialog.help.init();
     initElemsForTitle();
     initElemsForRecords();
