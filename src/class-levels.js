@@ -62,6 +62,10 @@
       return res;
     }
 
+    getListedLevels() {
+      return this.getAllLevels().filter(({ levelId }) => levelId !== 0 && levelId !== 'NaN');
+    }
+
     prevable(levelId) {
       if (levelId === null) return false;
       if (levelId === 0) return false;

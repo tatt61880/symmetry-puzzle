@@ -22,92 +22,37 @@
     elems.achievements.dialog.showModal();
   }
 
+  function countSolvedLevels(checkMode, levelsList, levelsListEx) {
+    const levels = new app.Levels({ levelsList, levelsListEx });
+    let count = 0;
+    for (const { levelObj } of levels.getListedLevels()) {
+      const level = new app.Level({ levelObj, checkMode });
+      if (app.savedata.getHighestScore(level) !== null) count++;
+    }
+    return count;
+  }
+
   function updateTable() {
-    let numLineSolved = 0;
-
-    {
-      const levelsList = app.levelsLine;
-      const levelsListEx = app.levelsLineEx;
-      const levels = new app.Levels({ levelsList, levelsListEx });
-      const allLevels = levels.getAllLevels();
-      for (const { levelId, levelObj } of allLevels) {
-        if (levelId === 0) continue;
-        if (levelId === 'NaN') continue;
-
-        const level = new app.Level({
-          levelObj,
-          checkMode: app.Level.CHECK_MODE.LINE,
-        });
-        const playerScore = app.savedata.getHighestScore(level);
-        if (playerScore !== null) {
-          ++numLineSolved;
-        }
-      }
-    }
-
-    let numPointSolved = 0;
-
-    {
-      const levelsList = app.levelsPoint;
-      const levelsListEx = app.levelsPointEx;
-      const levels = new app.Levels({ levelsList, levelsListEx });
-      const allLevels = levels.getAllLevels();
-      for (const { levelId, levelObj } of allLevels) {
-        if (levelId === 0) continue;
-        if (levelId === 'NaN') continue;
-
-        const level = new app.Level({
-          levelObj,
-          checkMode: app.Level.CHECK_MODE.POINT,
-        });
-        const playerScore = app.savedata.getHighestScore(level);
-        if (playerScore !== null) {
-          ++numPointSolved;
-        }
-      }
-    }
-
-    let numSpecialSolved = 0;
-
-    {
-      const levelsList = app.levelsSpecial;
-      const levelsListEx = app.levelsSpecialEx;
-      const levels = new app.Levels({ levelsList, levelsListEx });
-      const allLevels = levels.getAllLevels();
-      for (const { levelId, levelObj } of allLevels) {
-        if (levelId === 0) continue;
-        if (levelId === 'NaN') continue;
-
-        const level = new app.Level({
-          levelObj,
-          checkMode: app.Level.CHECK_MODE.SPECIAL,
-        });
-        const playerScore = app.savedata.getHighestScore(level);
-        if (playerScore !== null) {
-          ++numSpecialSolved;
-        }
-      }
-    }
-
+    const { LINE, POINT, SPECIAL } = app.Level.CHECK_MODE;
     const lang = app.savedata.getLang();
     const array = [
       {
         elem: elems.achievements.line.solved,
         ja: '線',
         en: 'Line:',
-        num: numLineSolved,
+        num: countSolvedLevels(LINE, app.levelsLine, app.levelsLineEx),
       },
       {
         elem: elems.achievements.point.solved,
         ja: '点',
         en: 'Point:',
-        num: numPointSolved,
+        num: countSolvedLevels(POINT, app.levelsPoint, app.levelsPointEx),
       },
       {
         elem: elems.achievements.special.solved,
         ja: '線点',
         en: 'Line & Point:',
-        num: numSpecialSolved,
+        num: countSolvedLevels(SPECIAL, app.levelsSpecial, app.levelsSpecialEx),
       },
     ];
 

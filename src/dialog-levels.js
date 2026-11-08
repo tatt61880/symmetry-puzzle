@@ -132,7 +132,8 @@
 
     elems.levels.dialogSvg.innerHTML = '';
 
-    let totalNum = 0;
+    const listedLevels = app.common.isSeqMode ? [] : app.common.levels.getListedLevels();
+    const totalNum = listedLevels.length;
 
     if (app.common.isSeqMode) {
       if (page === null) {
@@ -140,16 +141,11 @@
         page = Math.floor((num - 1) / LEVEL_SELECT_NUM_PER_PAGE);
         elems.levels.dialog.dataset.selectCount = num - 1;
       }
-    } else {
-      const levels = app.common.levels.getAllLevels();
-      for (const { levelId } of levels) {
-        if (levelId === 0) continue;
-        if (levelId === 'NaN') continue;
-        if (page === null && String(levelId) === String(app.common.levelId)) {
-          page = Math.floor(totalNum / LEVEL_SELECT_NUM_PER_PAGE);
-          elems.levels.dialog.dataset.selectCount = totalNum;
-        }
-        totalNum++;
+    } else if (page === null) {
+      const index = listedLevels.findIndex(({ levelId }) => String(levelId) === String(app.common.levelId));
+      if (index !== -1) {
+        page = Math.floor(index / LEVEL_SELECT_NUM_PER_PAGE);
+        elems.levels.dialog.dataset.selectCount = index;
       }
     }
     elems.levels.dialog.dataset.maxCount = totalNum - 1;
@@ -181,24 +177,17 @@
       app.common.showElem(elems.levels.next);
     }
 
-    let count = 0;
-
     if (app.common.isSeqMode) {
       for (let num = page * LEVEL_SELECT_NUM_PER_PAGE + 1; num <= (page + 1) * LEVEL_SELECT_NUM_PER_PAGE; num++) {
         appendLevelForSeqMode(num);
       }
     } else {
       const selectIds = {};
-      const levels = app.common.levels.getAllLevels();
-      for (const { levelId, levelObj } of levels) {
-        if (levelId === 0) continue;
-        if (levelId === 'NaN') continue;
-        if (page * LEVEL_SELECT_NUM_PER_PAGE <= count && count < (page + 1) * LEVEL_SELECT_NUM_PER_PAGE) {
-          appendLevel(levelObj, levelId);
-          selectIds[count] = levelId;
-        }
-        count++;
-      }
+      const start = page * LEVEL_SELECT_NUM_PER_PAGE;
+      listedLevels.slice(start, start + LEVEL_SELECT_NUM_PER_PAGE).forEach(({ levelId, levelObj }, indexOnPage) => {
+        appendLevel(levelObj, levelId, indexOnPage);
+        selectIds[start + indexOnPage] = levelId;
+      });
       elems.levels.dialog.dataset.selectIds = JSON.stringify(selectIds);
     }
 
@@ -317,7 +306,7 @@
       }
     }
 
-    function appendLevel(levelObj, id) {
+    function appendLevel(levelObj, id, indexOnPage) {
       const level = new app.Level({
         levelObj,
         checkMode: app.common.checkMode,
@@ -427,8 +416,8 @@
       }
 
       {
-        const x = (count % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH + 1;
-        const y = Math.floor((count % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT + 1;
+        const x = (indexOnPage % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH + 1;
+        const y = Math.floor(indexOnPage / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT + 1;
         g.setAttribute('transform', `translate(${x},${y})`);
       }
 

@@ -49,9 +49,7 @@
   function countModeRecords(checkMode, levelsList, levelsListEx) {
     const counts = { shortest: 0, cleared: 0, uncleared: 0, shapes: 0, knownShapeTotal: 0, hasUnknownShapes: false };
     const levels = new app.Levels({ levelsList, levelsListEx });
-    for (const { levelId, levelObj } of levels.getAllLevels()) {
-      if (levelId === 0 || levelId === 'NaN') continue;
-
+    for (const { levelObj } of levels.getListedLevels()) {
       const level = new app.Level({ levelObj, checkMode });
       const playerScore = app.savedata.getHighestScore(level);
       if (playerScore === null) {
