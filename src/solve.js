@@ -225,7 +225,12 @@
     solveLevel(levelId, level, { maxStep, timeLimit, prefixStep });
   }
 
-  function solveLevel(levelId, level, { maxStep = 1000, timeLimit, prefixStep = '' }) {
+  function solveLevel(levelId, level, params) {
+    // 時間分割を指定しない同期呼び出しでは、最初の next() で探索が完了します。
+    return searchLevel(levelId, level, params).next().value;
+  }
+
+  function* searchLevel(levelId, level, { maxStep = 1000, timeLimit, prefixStep = '' }, sliceMs) {
     if (prefixStep !== '') {
       for (const c of prefixStep) {
         if (c === '0') continue;
@@ -244,7 +249,7 @@
       if (prefixStepInfo !== '') app.console.warn(`${prefixStepInfo}`);
     }
 
-    const result = solve(levelId, level);
+    const result = yield* solve(levelId, level);
 
     if (!isBrowser) {
       if (result.replayStr === null) {
@@ -267,7 +272,7 @@
 
     return result;
 
-    function solve(levelId, level) {
+    function* solve(levelId, level) {
       const dxs = [0, 1, 0, -1, 0];
       const dys = [-1, 0, 1, 0, 0];
 
@@ -329,14 +334,25 @@
       let solutionStepSecond;
       const shapeStrInfoArray = [];
       const maxDir = level.hasAxis() ? 5 : 4;
+      let sliceStart = startTime;
+      let suspendedMs = 0;
       for (; step < maxStep; ) {
         const currentStateStrSet = nextStateStrSet;
         nextStateStrSet = new Set();
         for (const currentStateStr of currentStateStrSet) {
+          if (sliceMs !== undefined) {
+            const now = performance.now();
+            if (now - sliceStart >= sliceMs) {
+              yield;
+              sliceStart = performance.now();
+              // 次のフレームを待つ時間は探索時間に含めません。
+              suspendedMs += sliceStart - now;
+            }
+          }
           if (timeLimit !== undefined && ++stateCount % 1000 === 0) {
-            const time = performance.now();
-            if (time - startTime > timeLimit * 1000) {
-              const errorMessage = `Time limit over. [Time: ${msToSecStr(time - startTime)}] [Time limit: ${msToSecStr(
+            const elapsedMs = performance.now() - startTime - suspendedMs;
+            if (elapsedMs > timeLimit * 1000) {
+              const errorMessage = `Time limit over. [Time: ${msToSecStr(elapsedMs)}] [Time limit: ${msToSecStr(
                 Number(timeLimit) * 1000
               )}] [map.size: ${stateStrMap.size}] [step: ${step}]`;
               return { replayStr: null, errorMessage };
@@ -503,6 +519,7 @@
   if (isBrowser) {
     window.app = window.app || {};
     window.app.solveLevel = solveLevel;
+    window.app.searchLevel = searchLevel;
   } else {
     module.exports = solveLevel;
   }

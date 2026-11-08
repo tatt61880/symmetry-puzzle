@@ -235,6 +235,7 @@
 
   async function keydown(e) {
     if (elems.menu.dialog.open || elems.edit.normalizeDialog.open || e.target === elems.auto.speed) return;
+    if (e.target === elems.auto.searchCancel && (e.key === 'Enter' || e.key === ' ')) return;
     if (
       e.target === elems.auto.seek &&
       ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown'].includes(e.key)
@@ -525,6 +526,7 @@
 
   function retryLevel() {
     if (editMode) return;
+    cancelAutoSearch();
 
     levelHintState = 'locked';
     window.getSelection().removeAllRanges();
@@ -1273,6 +1275,7 @@
         elem.addEventListener('mousedown', (e) => {
           // シークバー・倍率選択・ダイアログでは、ブラウザーにフォーカスを移させます。
           if (e.target === elems.auto.seek || e.target === elems.auto.speed || document.activeElement === elems.auto.speed) return;
+          if (e.target === elems.auto.searchCancel) return;
           if (e.detail === 1 && e.target.closest('button[aria-haspopup="dialog"], dialog button')) return;
           // ダブルタップしたときの画面の拡大縮小をしないようにする。
           e.preventDefault();
@@ -1392,6 +1395,10 @@
     elems.auto.seek.addEventListener('input', seekAuto);
     elems.auto.buttonStop.addEventListener('click', onButtonStop);
     elems.auto.buttonStart.addEventListener('click', onButtonStart);
+    elems.auto.searchCancel.addEventListener('click', () => {
+      app.sound.playButton();
+      cancelAutoSearch();
+    });
     elems.auto.buttonPause.addEventListener('click', onButtonPause);
     elems.auto.buttonEnd.addEventListener('click', onButtonEnd);
     elems.auto.speed.addEventListener('change', () => {
@@ -2438,7 +2445,9 @@
 
   function updateAutoStartPauseButtons() {
     const searching = autoSearchFrameId !== null;
-    elems.auto.searchStatus.classList.toggle('hide', !searching);
+    elems.auto.searchControls.classList.toggle('hide', !searching);
+    elems.auto.searchIcon.classList.toggle('hide', !searching);
+    elems.auto.seek.classList.toggle('hide', searching);
     elems.auto.buttonStart.classList.toggle('hide', searching || !autoPaused);
     elems.auto.buttonPause.classList.toggle('hide', searching || autoPaused);
   }
@@ -2467,25 +2476,28 @@
 
     retryLevel();
     const levelObj = common.level.getCurrentLevelObj();
-    // 同期的な探索を始める前に「探索中」を1フレーム描画します。
+    const levelTemp = new app.Level({ levelObj, checkMode: common.checkMode });
+    const search = app.searchLevel(null, levelTemp, { maxStep: 1000, timeLimit: 10 }, 8);
     autoSearchFrameId = requestAnimationFrame(() => {
+      // 短い探索でも、開始前に「探索中」を一度描画します。
       autoSearchFrameId = requestAnimationFrame(findSolution);
     });
     updateAutoStartPauseButtons();
 
     function findSolution() {
-      let result;
+      let next;
       try {
-        const levelTemp = new app.Level({
-          levelObj,
-          checkMode: common.checkMode,
-        });
-        const maxStep = 1000; // 探索ステップ数上限値は大きな値にしておきます。時間制限もあるので、この制限にかかることはほぼないはずです。
-        const timeLimit = 10;
-        result = app.solveLevel(null, levelTemp, { maxStep, timeLimit });
-      } finally {
+        next = search.next();
+      } catch (error) {
         cancelAutoSearch();
+        throw error;
       }
+      if (!next.done) {
+        autoSearchFrameId = requestAnimationFrame(findSolution);
+        return;
+      }
+      cancelAutoSearch();
+      const result = next.value;
       if (result.replayStr === null) {
         window.alert(result.errorMessage);
         return;

@@ -1088,20 +1088,20 @@
             <rect x="-11" y="-13" rx="3" width="6" height="26" fill="green" />
             <rect x="5" y="-13" rx="3" width="6" height="26" fill="green" />
           </g>
-          <g id="auto-search-status" class="hide" role="status">
-            <g transform="translate(40,21)" aria-hidden="true">
-              <path d="M -11,-14 H 11 M -11,14 H 11 M -8,-14 Q -8,-5 -2,0 Q -8,5 -8,14
-                M 8,-14 Q 8,-5 2,0 Q 8,5 8,14" fill="none" stroke="green" stroke-width="3" stroke-linecap="round" />
-              <path d="M -5,-9 H 5 L 0,-3 Z M -6,11 L 0,5 6,11 Z" fill="green" />
-            </g>
-            <text x="40" y="54" text-anchor="middle" font-size="13" font-weight="bold" fill="#205d30" class="translatable-toggle"
-              data-en="Searching…" data-ja="解を探索中…"></text>
+          <g id="auto-search-icon" class="hide" transform="translate(40,30)" aria-hidden="true">
+            <path d="M -11,-14 H 11 M -11,14 H 11 M -8,-14 Q -8,-5 -2,0 Q -8,5 -8,14
+              M 8,-14 Q 8,-5 2,0 Q 8,5 8,14" fill="none" stroke="green" stroke-width="3" stroke-linecap="round" />
+            <path d="M -5,-9 H 5 L 0,-3 Z M -6,11 L 0,5 6,11 Z" fill="green" />
           </g>
         </svg>
 
         <label for="auto-seek" id="auto-seek-label" class="translatable-toggle" data-ja="再生位置" data-en="Playback position"
           hidden>再生位置</label>
         <input id="auto-seek" aria-labelledby="auto-seek-label" type="range" min="0" max="0" value="0" disabled>
+        <div id="auto-search-controls" class="hide">
+          <span role="status" class="translatable-toggle" data-ja="解を探索中…" data-en="Searching…">解を探索中…</span>
+          <button type="button" id="auto-search-cancel" class="translatable-toggle" data-ja="中断" data-en="Cancel">中断</button>
+        </div>
 
         <svg width="60" height="60" viewBox="10 0 60 60">
           <g id="button-end" class="button active-hover" transform="translate(40,30)">

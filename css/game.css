@@ -165,8 +165,33 @@
       }
     }
 
+    #auto-search-controls,
     #auto-seek {
       width: 145px;
+    }
+
+    #auto-search-controls:not(.hide) {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: bold;
+      color: #205d30;
+
+      button {
+        min-height: 36px;
+        padding-inline: 6px;
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+        background: white;
+        border: 2px solid green;
+        border-radius: 6px;
+      }
+    }
+
+    #auto-seek {
       height: 36px;
       margin: 0;
       accent-color: green;
