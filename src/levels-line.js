@@ -127,7 +127,7 @@
       step: 5,
       shapes: 2,
       hint: {
-        afterSteps: 10,
+        afterSteps: 15,
         stages: [
           // この2か所のどちらかにブロックを押し込むと、元の位置に戻せません。
           ...[
