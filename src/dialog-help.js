@@ -38,8 +38,8 @@
       input.addEventListener('change', () => app.sound.playButton());
     }
 
-    for (const button of help.dialog.querySelectorAll('.help-mode-animation')) {
-      const icon = button.querySelector('svg');
+    for (const button of help.dialog.querySelectorAll('.help-icon-animation')) {
+      const icon = button.firstElementChild;
       button.addEventListener('click', () => {
         icon.style.animationName = 'none';
         // 停止をスタイルに反映してから、表示時と同じCSSアニメーションを先頭から再生します。

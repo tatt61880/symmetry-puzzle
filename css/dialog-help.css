@@ -177,10 +177,10 @@
       }
     }
 
-    .help-mode-animation {
+    .help-icon-animation {
       display: grid;
       justify-items: end;
-      width: 45px;
+      min-width: 45px;
       padding: 0;
       cursor: pointer;
       background: transparent;

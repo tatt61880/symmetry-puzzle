@@ -216,7 +216,7 @@
                 <span id="help-animation-label" class="translatable-toggle" data-ja="アニメーションを再生" data-en="Play animation" hidden></span>
                 <p>
                   <span class="flex">
-                    <button class="help-mode-animation" type="button" aria-labelledby="help-line-name help-animation-label">
+                    <button class="help-icon-animation" type="button" aria-labelledby="help-line-name help-animation-label">
                       <svg class="logo-image logo-line animation-icon-line" data-block-size="15" width="45" height="30"
                         aria-hidden="true"></svg>
                     </button>
@@ -228,7 +228,7 @@
                   <span class="help-mode-plus">+</span>
 
                   <span class="flex">
-                    <button class="help-mode-animation" type="button" aria-labelledby="help-point-name help-animation-label">
+                    <button class="help-icon-animation" type="button" aria-labelledby="help-point-name help-animation-label">
                       <svg class="logo-image logo-point animation-icon-point" data-block-size="15" width="45" height="30"
                         aria-hidden="true"></svg>
                     </button>
@@ -240,7 +240,7 @@
                   <span class="help-mode-plus">+</span>
 
                   <span class="flex">
-                    <button class="help-mode-animation" type="button" aria-labelledby="help-special-name help-animation-label">
+                    <button class="help-icon-animation" type="button" aria-labelledby="help-special-name help-animation-label">
                       <svg class="logo-image logo-special animation-icon-special" data-block-size="15" width="30" height="30"
                         aria-hidden="true"></svg>
                     </button>
@@ -337,11 +337,13 @@
               <hr>
               <div id="help-credits">
                 <div class="flex">
-                  <div class="tatt61880-icon">
-                    <img class="front" alt="icon: tatt61880" src="./images/tatt61880.png?2026.01.31">
-                    <img class="back" alt="icon: tatt61880-back" src="./images/tatt61880-back.png?2026.01.31">
-                  </div>
-                  <span class="translatable-toggle help-mode-creator" data-en="Created by Tatt" data-ja="作者: Tatt">
+                  <button class="help-icon-animation" type="button" aria-labelledby="help-creator-name help-animation-label">
+                    <span class="tatt61880-icon">
+                      <img class="front" alt="" src="./images/tatt61880.png?2026.01.31">
+                      <img class="back" alt="" src="./images/tatt61880-back.png?2026.01.31">
+                    </span>
+                  </button>
+                  <span id="help-creator-name" class="translatable-toggle help-mode-creator" data-en="Created by Tatt" data-ja="作者: Tatt">
                   </span>
                   <span>&nbsp;(<a href="https://twitter.com/tatt61880">@tatt61880</a>)</span>
                 </div>
