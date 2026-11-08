@@ -174,12 +174,22 @@
     }
   }
 
-  #buttons-auto.hide ~ #controller-widget #controller-auto-label {
-    display: none;
-  }
-
   #controller-widget {
     position: relative;
+
+    #controller-auto-label {
+      position: absolute;
+      inset: 0;
+      display: none;
+      place-items: center;
+      font: bold 68px/1 system-ui, sans-serif;
+      color: #365471;
+      background-color: rgb(221 238 255 / 65%);
+    }
+
+    &[inert] #controller-auto-label {
+      display: grid;
+    }
 
     #level-hint-toggle {
       /* 上キーと同じ高さ、右キーと同じ列に中心をそろえます。 */

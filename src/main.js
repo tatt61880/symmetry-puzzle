@@ -329,6 +329,9 @@
       return;
     }
 
+    // 下段コントローラーが操作できない間は、対応するショートカットも受け付けません。
+    if (settings.autoMode && !editMode && ['z', 'Z', 'y', 'Enter'].includes(e.key)) return;
+
     if (e.key === '#') {
       if (e.ctrlKey) return;
       if (common.isShownElem(elems.levels.button)) {
@@ -2410,8 +2413,10 @@
     cancelAutoSearch();
     autoSeekPointerId = null;
     settings.autoMode = isAutoMode;
+    elems.controller.widget.inert = isAutoMode;
 
     if (isAutoMode) {
+      releaseGameInput();
       input.disable();
       common.showElem(elems.auto.buttons);
       updateEditMode(false, false);

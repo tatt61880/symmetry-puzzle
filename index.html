@@ -1070,7 +1070,7 @@
         <p id="level-hint-message" class="hide translatable-toggle" role="status" data-ja="" data-en=""></p>
       </div>
 
-      <div id="buttons-auto" class="hide">
+      <div id="buttons-auto" class="hide" role="group" aria-labelledby="controller-auto-label">
         <svg width="60" height="60" viewBox="10 0 60 60">
           <g id="button-stop" class="button active-hover" transform="translate(40,30)">
             <circle cx="0" cy="0" r="28" fill="lightgreen" stroke="green" stroke-width="4" />
@@ -1373,11 +1373,6 @@
                     <rect class="hide" x="-35" y="-35" rx="12" width="70" height="70" fill="#aaccff" stroke="#0000f8" stroke-width="4" />
                   </g>
                 </g>
-                <text id="controller-auto-label" text-anchor="middle" font-family="system-ui, sans-serif" font-size="72" font-weight="bold"
-                  fill="#365471" fill-opacity="0.6">
-                  <tspan x="0" y="-9">AUTO</tspan>
-                  <tspan x="0" y="62">MODE</tspan>
-                </text>
               </g>
 
               <!-- 次のレベルへ -->
@@ -1445,6 +1440,7 @@
           <span class="translatable-toggle" data-en="Replay" data-ja="リプレイ"></span>
           <span class="translatable-toggle hide" data-en="Stop replay" data-ja="再生を停止"></span>
         </button>
+        <span id="controller-auto-label">AUTO MODE</span>
       </div>
 
       <div id="console-widget" class="hide">
