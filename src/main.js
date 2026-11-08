@@ -268,7 +268,7 @@
   }
 
   async function keydown(e) {
-    if (elems.auto.resultDialog.open || elems.menu.dialog.open || elems.edit.normalizeDialog.open) return;
+    if (elems.achievements.dialog.open || elems.auto.resultDialog.open || elems.menu.dialog.open || elems.edit.normalizeDialog.open) return;
     if (e.target === elems.auto.speed) return;
     if (e.target === elems.auto.searchCancel && (e.key === 'Enter' || e.key === ' ')) return;
     if (
