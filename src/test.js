@@ -42,6 +42,7 @@
       break;
     default:
       testsOther();
+      testLongReplayRecords();
       testMirroredAxis();
       testsSolve();
   }
@@ -214,6 +215,32 @@
       app.console.error('Error: Invalid states setting.');
       process.exitCode = 1;
     }
+  }
+
+  function testLongReplayRecords() {
+    const assert = require('node:assert/strict');
+    const Savedata = require('./class-savedata.js');
+    const savedata = new Savedata();
+    const level = new app.Level({ levelObj: require('./levels-line.js')[1] });
+    const shape = '##-##';
+    const replay = '1'.repeat(9999);
+    const longReplay = replay + '2';
+
+    savedata.saveShape(level, shape, longReplay + '3');
+    assert.equal(savedata.getHighestScore(level), 10001); // 形状別の記録だけがある場合
+    savedata.saveShape(level, shape, longReplay);
+    savedata.saveSteps(level, longReplay);
+    const restored = new Savedata();
+    restored.restoreBackupData(JSON.parse(JSON.stringify(savedata.getBackupData())));
+    assert.deepEqual(restored.getShapeRecords(level), [{ shapeStr: shape, steps: 10000, replay: undefined }]);
+    assert.equal(restored.getHighestScore(level), 10000);
+
+    restored.saveSteps(level, replay);
+    restored.saveShape(level, shape, replay);
+    restored.saveSteps(level, longReplay);
+    assert.equal(restored.saveShape(level, shape, longReplay), false);
+    assert.equal(restored.getHighestScore(level), 9999);
+    assert.deepEqual(restored.getShapeRecords(level), [{ shapeStr: shape, steps: 9999, replay }]);
   }
 
   function testMirroredAxis() {

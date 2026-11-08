@@ -14,7 +14,12 @@
 
   const LOCAL_STORAGE_KEY = 'tatt61880-symmetry-puzzle';
 
-  const maxStep = 9999;
+  const maxReplaySteps = 9999;
+
+  // 上限以内の記録は従来どおり手順の文字列、上限を超えた記録は手数のみ保存します。
+  function getRecordSteps(record) {
+    return typeof record === 'string' ? record.length : record;
+  }
 
   class Savedata {
     constructor() {
@@ -64,41 +69,29 @@
       return this.data.lang;
     }
 
-    saveSteps(level, r_) {
-      let r = r_;
-      const step = r.length;
-      if (step > maxStep) {
-        r = r.substring(0, maxStep);
-      }
+    #saveBest(records, key, replay) {
+      const steps = replay.length;
+      const previous = records[key];
+      if (previous !== undefined && steps >= getRecordSteps(previous)) return false;
 
-      const key = this.#getLevelKey(level);
-      const highestScoreR = this.data.steps[key];
-      if (highestScoreR === undefined || step < highestScoreR.length) {
-        this.data.steps[key] = r;
-        this.#save();
+      if (steps > maxReplaySteps) {
+        records[key] = steps;
+        this.data.version = Math.max(this.data.version ?? 1, 2);
+      } else {
+        records[key] = replay;
       }
+      this.#save();
+      return true;
     }
 
-    saveShape(level, targetShape, r_) {
-      let r = r_;
-      const step = r.length;
-      if (step > maxStep) {
-        r = r.substring(0, maxStep);
-      }
+    saveSteps(level, replay) {
+      this.#saveBest(this.data.steps, this.#getLevelKey(level), replay);
+    }
 
+    saveShape(level, targetShape, replay) {
       const key = this.#getLevelKey(level);
-      if (this.data.shapes[key] === undefined) {
-        this.data.shapes[key] = {};
-      }
-
-      const highestScoreR = this.data.shapes[key][targetShape];
-      if (highestScoreR === undefined || step < highestScoreR.length) {
-        this.data.shapes[key][targetShape] = r;
-        this.#save();
-        return true;
-      } else {
-        return false;
-      }
+      this.data.shapes[key] ??= {};
+      return this.#saveBest(this.data.shapes[key], targetShape, replay);
     }
 
     getShapesObj(level) {
@@ -106,14 +99,17 @@
       return this.data.shapes[key];
     }
 
+    getShapeRecords(level) {
+      return Object.entries(this.getShapesObj(level) ?? {}).map(([shapeStr, record]) => ({
+        shapeStr,
+        steps: getRecordSteps(record),
+        replay: typeof record === 'string' ? record : undefined,
+      }));
+    }
+
     getHighestScore(level) {
       const key = this.#getLevelKey(level);
-      const r = this.data.steps[key];
-      if (r) {
-        return r.length;
-      }
-
-      return this.#getMinStepsinShapes(key);
+      return getRecordSteps(this.data.steps[key]) ?? this.#getMinStepsinShapes(key);
     }
 
     getHighestScoreForSeqMode(num, checkMode) {
@@ -144,16 +140,12 @@
     }
 
     #getMinStepsinShapes(key) {
-      const shapeInfos = this.data.shapes[key];
-      if (shapeInfos) {
-        let score = maxStep + 1;
-        for (const shapeStr in shapeInfos) {
-          score = Math.min(score, shapeInfos[shapeStr].length);
-        }
-        return score;
+      let best = null;
+      for (const record of Object.values(this.data.shapes[key] ?? {})) {
+        const steps = getRecordSteps(record);
+        if (best === null || steps < best) best = steps;
       }
-
-      return null;
+      return best;
     }
   }
 
