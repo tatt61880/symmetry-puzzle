@@ -110,6 +110,20 @@
     }
   }
 
+  .tab-mode {
+    position: relative;
+
+    > .check-mode {
+      position: absolute;
+      right: 0;
+      bottom: calc(100% + 6px);
+      left: 0;
+      font-size: 0.8125rem;
+      line-height: 1.15;
+      white-space: nowrap;
+    }
+  }
+
   #help-credits {
     margin-bottom: 5px;
   }
@@ -207,6 +221,10 @@
 
     > hr {
       grid-column: 1 / -1;
+    }
+
+    &:has(> .tab-mode > .check-mode:not(.hide-mode)) > hr {
+      margin-bottom: 0.875rem;
     }
 
     &:has(input#help-tab-app:checked) .tab-app-content,
