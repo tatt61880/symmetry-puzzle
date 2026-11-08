@@ -227,13 +227,7 @@
         }
 
         if (showCharsFlag) {
-          const circle = app.svg.createCircle(blockSize, {
-            cx: center.x,
-            cy: center.y,
-            r: 0.1,
-            fill: app.colors.levelSymmetryAxisCenter,
-          });
-          gg.appendChild(circle);
+          gg.appendChild(createAxisCenterDot(blockSize, center.x, center.y));
         }
       }
 
@@ -1926,6 +1920,10 @@
     g.appendChild(rectLb);
   }
 
+  function createAxisCenterDot(blockSize, cx, cy) {
+    return app.svg.createCircle(blockSize, { cx, cy, r: 0.1, fill: app.colors.levelSymmetryAxisCenter });
+  }
+
   function drawEditControls(g, level, { blockSize, frameSizeW, frameSizeH }, { normalized, moveAxis, resizeLevel }, lang) {
     if (!normalized) {
       const fontSize = `${frameSizeH * 0.7}px`;
@@ -2004,6 +2002,9 @@
         if (button.dy === 1 && !level.axisCyIncAble()) return;
 
         addEditButton(button, moveAxis.bind(null, button.dx, button.dy), app.colors[app.states.userMin]);
+        const dot = createAxisCenterDot(blockSize, button.cx, button.cy);
+        dot.setAttribute('pointer-events', 'none');
+        g.appendChild(dot);
       });
     }
 
@@ -2030,6 +2031,15 @@
         if (button.dy === 1 && level.getH() >= common.maxEditH) return;
 
         addEditButton(button, resizeLevel.bind(null, button.dx, button.dy, button.flag), app.colors.editButton);
+        const char = button.dx + button.dy > 0 ? '+' : '-';
+        const text = app.svg.createText(blockSize, {
+          x: button.cx,
+          y: button.cy,
+          text: char,
+          fill: app.colors.editButton.stroke,
+        });
+        text.setAttribute('font-size', `${blockSize * 0.7}px`);
+        g.appendChild(text);
       });
     }
 
@@ -2048,16 +2058,6 @@
       polygon.classList.add('button', 'active-hover');
       polygon.addEventListener('click', onClick);
       g.appendChild(polygon);
-
-      const char = button.dx + button.dy > 0 ? '+' : '-';
-      const text = app.svg.createText(blockSize, {
-        x: button.cx,
-        y: button.cy,
-        text: char,
-        fill: color.stroke,
-      });
-      text.setAttribute('font-size', `${blockSize * 0.7}px`);
-      g.appendChild(text);
     }
   }
 
