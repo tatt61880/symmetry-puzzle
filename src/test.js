@@ -349,5 +349,12 @@
         process.exitCode = 1;
       }
     }
+    {
+      const assert = require('node:assert/strict');
+      const levelObj = require('./levels-line.js')[6];
+      const level = new app.Level({ levelObj, checkMode: app.Level.CHECK_MODE.LINE });
+      const result = app.solveLevel('Line-6', level, { prefixStep: '24' });
+      assert.equal(result?.replayStr, '241');
+    }
   }
 })();

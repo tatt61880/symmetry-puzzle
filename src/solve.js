@@ -45,7 +45,7 @@
       .option('-s, --s <s>', 'levelObj.s')
       .option('--axis <axis>', 'levelObj.axis')
       .option('--reverse-rotation', 'use counterclockwise quarter-turn axis moves')
-      .option('-p, --prefixStep <prefix-step>', 'prefixStep step')
+      .option('-p, --prefixStep <prefix-step>', 'start with these moves (0-3, or 4 for an axis move)')
       .option('-c, --console', 'console.info step')
       .option('-d, --draw', 'draw target shape')
       .option('-n, --normalize', 'normalize state')
@@ -243,13 +243,10 @@
   }
 
   function* searchLevel(levelId, level, { maxStep = 1000, timeLimit, prefixStep = '' }, sliceMs) {
-    if (prefixStep !== '') {
-      for (const c of prefixStep) {
-        if (c === '0') continue;
-        if (c === '1') continue;
-        if (c === '2') continue;
-        if (c === '3') continue;
-        app.console.error('Error: invalid step. chars in step should be 0-3.');
+    const validDirs = level.hasAxis() ? '01234' : '0123';
+    for (const c of prefixStep) {
+      if (!validDirs.includes(c)) {
+        app.console.error(`Error: invalid prefix step '${c}'. Use digits 0-${validDirs.length - 1}.`);
         process.exitCode = 1;
         return;
       }
@@ -345,7 +342,6 @@
       let solutionStepFirst;
       let solutionStepSecond;
       const shapeStrInfoArray = [];
-      const maxDir = level.hasAxis() ? 5 : 4;
       let sliceStart = startTime;
       let suspendedMs = 0;
       for (; step < maxStep; ) {
@@ -372,7 +368,7 @@
           }
 
           const currentReplyStr = stateStrMap.get(currentStateStr);
-          for (let dir = 0; dir < maxDir; ++dir) {
+          for (let dir = 0; dir < validDirs.length; ++dir) {
             level.applyStateStr(currentStateStr);
 
             const dx = dxs[dir];
