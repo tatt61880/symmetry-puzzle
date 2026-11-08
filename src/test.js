@@ -46,6 +46,8 @@
       testAxisNormalization();
       testLongReplayRecords();
       testLevelRecordSelection();
+      testRestoreBackup();
+      testRestoreStorageFailure();
       testMirroredAxis();
       testsSolve();
       testInvalidSolverModePreservesBackup();
@@ -240,6 +242,51 @@
       app.console.error('Error: Invalid states setting.');
       process.exitCode = 1;
     }
+  }
+
+  function testRestoreBackup() {
+    const assert = require('node:assert/strict');
+    const Savedata = require('./class-savedata.js');
+    const savedata = new Savedata();
+    savedata.saveLang('ja');
+    const key = 'mode=line&num=1';
+    const backup = { version: 2, lang: 'en', steps: { [key]: '4' }, shapes: { [key]: { '#-#': 10000 } } };
+    assert.equal(savedata.restoreBackupData(backup), true);
+    for (const invalid of [
+      null,
+      { version: 1, steps: {} },
+      { shapes: {} },
+      { ...backup, version: 3 },
+      { ...backup, lang: 'unknown' },
+      { ...backup, steps: [] },
+      { ...backup, steps: { [key]: '4x' } },
+      { ...backup, shapes: { [key]: null } },
+      { ...backup, shapes: { [key]: { '#': -1 } } },
+    ]) {
+      assert.equal(savedata.restoreBackupData(invalid), false);
+      assert.deepEqual(savedata.getBackupData(), backup);
+    }
+    const records = { steps: { [key]: '' }, shapes: { [key]: { '#': '' } } };
+    assert.equal(savedata.restoreBackupData(records), true);
+    assert.deepEqual(savedata.getBackupData(), { version: 1, lang: 'en', ...records });
+  }
+
+  function testRestoreStorageFailure() {
+    const assert = require('node:assert/strict');
+    const fs = require('node:fs');
+    const vm = require('node:vm');
+    const original = { version: 1, lang: 'ja', steps: { 'mode=line&num=1': '1121' }, shapes: {} };
+    const localStorage = {
+      getItem: () => JSON.stringify(original),
+      setItem() {
+        throw new Error('Storage full');
+      },
+    };
+    const window = { app: { Level: app.Level } };
+    vm.runInNewContext(fs.readFileSync(require.resolve('./class-savedata.js'), 'utf8'), { window, localStorage });
+    const savedata = window.app.savedata;
+    assert.throws(() => savedata.restoreBackupData({ version: 1, steps: {}, shapes: {} }), /Storage full/);
+    assert.deepEqual(JSON.parse(JSON.stringify(savedata.getBackupData())), original);
   }
 
   function testLevelRecordSelection() {

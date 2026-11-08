@@ -18,6 +18,13 @@
   };
 
   const elems = app.elems;
+  const restoreInput = document.createElement('input');
+  restoreInput.type = 'file';
+  restoreInput.accept = '.json';
+  restoreInput.hidden = true;
+  restoreInput.addEventListener('change', restoreSelectedFile);
+  document.body.appendChild(restoreInput);
+  let restoreRequest = 0;
 
   function show() {
     updateTable();
@@ -156,63 +163,42 @@
     }
   }
 
-  async function restore() {
-    const hiddenFileInput = document.createElement('input');
-    hiddenFileInput.type = 'file';
-    hiddenFileInput.accept = '.json';
-    hiddenFileInput.style.display = 'none';
+  function restore() {
     app.sound.playButton();
+    restoreInput.value = ''; // 同じファイルも選び直せるようにします。
+    restoreInput.click();
+  }
 
-    function readLocalFile(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(reader.error);
-        reader.readAsText(file);
-      });
+  async function restoreSelectedFile() {
+    const file = restoreInput.files[0];
+    if (!file) return;
+    const request = ++restoreRequest;
+    const ja = app.savedata.getLang() === 'ja';
+    const invalidFile = ja ? 'バックアップの形式が正しくありません。' : 'Invalid backup format.';
+    try {
+      const text = await file.text();
+      if (request !== restoreRequest) return;
+      const backup = JSON.parse(text);
+      if (typeof backup?.yyyymmdd !== 'string' || !app.savedata.restoreBackupData(backup.backupData)) {
+        customAlert(invalidFile);
+        return;
+      }
+    } catch (error) {
+      if (request !== restoreRequest) return;
+      const message = ja ? '復元できませんでした。元の記録はそのままです。' : 'Restore failed. Your records are unchanged.';
+      customAlert(error instanceof SyntaxError ? invalidFile : message);
+      return;
     }
 
-    hiddenFileInput.addEventListener('change', async (event) => {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      try {
-        const jsonText = await readLocalFile(file);
-
-        const obj = JSON.parse(jsonText);
-        if (obj?.yyyymmdd !== undefined && obj?.backupData !== undefined) {
-          const langPrev = app.savedata.getLang();
-          app.savedata.restoreBackupData(obj.backupData);
-          const lang = app.savedata.getLang();
-          app.common.applyLangAll(lang);
-          app.common.updateTitleSeqModeButton();
-          updateTable();
-
-          setTimeout(() => {
-            if (langPrev === 'ja') {
-              customAlert('リストアを実行しました。');
-            } else {
-              customAlert('Data restored.');
-            }
-          }, 10);
-        } else {
-          const lang = app.savedata.getLang();
-          if (lang === 'ja') {
-            await customAlert('データ形式が想定外です。');
-          } else {
-            await customAlert('The data format is invalid.');
-          }
-        }
-      } catch (error) {
-        await customAlert(`Error: ${error}`);
-      } finally {
-        // 同じファイルを再度選択しても change イベントが発火するようにするために初期化します。
-        hiddenFileInput.value = '';
-      }
-    });
-
-    document.body.appendChild(hiddenFileInput);
-    hiddenFileInput.click();
+    try {
+      app.common.applyLangAll(app.savedata.getLang());
+      app.common.updateTitleSeqModeButton();
+      updateTable();
+    } catch {
+      customAlert(ja ? '記録を復元しました。画面を再読み込みしてください。' : 'Records restored. Please reload the page.');
+      return;
+    }
+    customAlert(ja ? 'リストアを実行しました。' : 'Data restored.');
   }
 
   function customAlert(message) {

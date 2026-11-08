@@ -21,6 +21,30 @@
     return typeof record === 'string' ? record.length : record;
   }
 
+  function isObject(value) {
+    return value !== null && typeof value === 'object' && !Array.isArray(value);
+  }
+
+  function isValidBackup(data) {
+    if (!isObject(data) || !isObject(data.steps) || !isObject(data.shapes)) return false;
+    if (data.version !== undefined && data.version !== 1 && data.version !== 2) return false;
+    if (data.lang !== undefined && data.lang !== 'ja' && data.lang !== 'en') return false;
+
+    function isRecord(record) {
+      if (typeof record === 'string') return !/[^0-4]/.test(record);
+      return data.version === 2 && Number.isSafeInteger(record) && record >= 0;
+    }
+
+    if (!Object.values(data.steps).every(isRecord)) return false;
+    for (const shapes of Object.values(data.shapes)) {
+      if (!isObject(shapes)) return false;
+      for (const [shape, record] of Object.entries(shapes)) {
+        if (!shape.includes('#') || !/^[#0]+(?:-[#0]+)*$/.test(shape) || !isRecord(record)) return false;
+      }
+    }
+    return true;
+  }
+
   class Savedata {
     constructor() {
       this.data = null;
@@ -32,8 +56,13 @@
     }
 
     restoreBackupData(data) {
-      this.data = data;
-      this.#save();
+      if (!isValidBackup(data)) return false;
+      const restored = { ...data, version: data.version ?? 1 };
+      if (restored.lang === undefined && this.data.lang !== undefined) restored.lang = this.data.lang;
+      // 保存に失敗したときは、プレイ中の記録も元のままにします。
+      this.#save(restored);
+      this.data = restored;
+      return true;
     }
 
     #load() {
@@ -55,9 +84,9 @@
       }
     }
 
-    #save() {
+    #save(data = this.data) {
       if (!isBrowser) return;
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.data));
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
     }
 
     saveLang(lang) {
