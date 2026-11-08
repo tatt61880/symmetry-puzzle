@@ -77,6 +77,40 @@
       r: '40041',
       step: 5,
       shapes: 1,
+      hint: {
+        afterSteps: 10,
+        stages: [
+          {
+            when: { x: 2, y: 0, block: 's' },
+            dir: 4,
+            wallDirs: [0, 1, 2, 3],
+            ja: '方向ボタンの中央を押すと、対称の中心をはさんで反対側のマスに移れます。',
+            en: 'Press the button between the arrows to rotate 180° around the marked point.',
+          },
+          ...[2, 1].map((y) => ({
+            when: { x: 0, y, block: 's' },
+            x: 0,
+            y,
+            dir: 0,
+            ja: '矢印に沿って、通路の奥まで進みましょう。',
+            en: 'Follow the arrow to the far end of the passage.',
+          })),
+          {
+            when: { x: 0, y: 0, block: 's' },
+            dir: 4,
+            ja: 'ここでもう一度、方向ボタンの中央を押しましょう。小さいブロックの隣に移れます。',
+            en: 'Press the center button again to reach the square next to the small block.',
+          },
+          {
+            when: { x: 2, y: 2, block: 's' },
+            x: 2,
+            y: 2,
+            dir: 1,
+            ja: '矢印に沿って、小さいブロックを角へ押しましょう。',
+            en: 'Follow the arrow to push the small block into the corner.',
+          },
+        ],
+      },
     },
     {
       w: 5,

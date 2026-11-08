@@ -2093,7 +2093,7 @@
   function countHintWallPress(dir) {
     if (levelHintState !== 'locked' || editMode || completeFlag || undoFlag || redoFlag) return;
     const hint = common.level.getHint();
-    if (hint?.wallDir !== Number(dir)) return;
+    if (!hint?.wallDirs?.includes(Number(dir))) return;
 
     hintWallPressCount++;
     if (hintWallPressCount === 3) {

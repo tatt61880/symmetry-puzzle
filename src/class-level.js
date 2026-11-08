@@ -35,7 +35,7 @@
       // 盤上の矢印だけを鏡映・回転します。対称軸操作のボタンは常に中央です。
       if (stage.x !== undefined) Object.assign(result, position(stage), { dir: direction(stage.dir) });
       if (stage.when) result.when = { ...stage.when, ...position(stage.when) };
-      if (stage.wallDir !== undefined) result.wallDir = direction(stage.wallDir);
+      if (stage.wallDirs) result.wallDirs = stage.wallDirs.map(direction);
       return result;
     };
     return hint.stages ? { ...hint, stages: hint.stages.map(transform) } : transform(hint);

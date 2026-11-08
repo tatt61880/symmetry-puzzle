@@ -32,6 +32,7 @@
       app.levels = require('./levels-point.js');
       app.levelsEx = require('./levels-point-ex.js');
       checkLevels();
+      testPointLevel6Hints();
       break;
     case 'special':
       checkMode = app.Level.CHECK_MODE.SPECIAL;
@@ -152,10 +153,10 @@
         const level = new app.Level({ levelObj: app.levels[6], checkMode, mirrorFlag, rotateNum });
         const rightDir = ((mirrorFlag ? 3 : 1) + rotateNum) % 4;
         assert.equal(level.getHint().dir, 4);
-        assert.equal(level.getHint().wallDir, rightDir);
+        assert.deepEqual(level.getHint().wallDirs, [rightDir]);
         assert.ok(level.move(0, 0));
         assert.equal(level.getHint().dir, rightDir);
-        assert.equal(level.getHint().wallDir, undefined);
+        assert.equal(level.getHint().wallDirs, undefined);
         assert.ok(level.move(0, 0));
         assert.equal(level.getHint().dir, 4);
       }
@@ -181,6 +182,24 @@
     for (const state of ['201-s011x', '-2001x-00s11']) {
       level.applyStateStr(state);
       assert.equal(level.getHint().undo, true);
+    }
+  }
+
+  function testPointLevel6Hints() {
+    const assert = require('node:assert/strict');
+    const moves = [[0, -1], [1, 0], [0, 1], [-1, 0], [0, 0]];
+    for (const mirrorFlag of [false, true]) {
+      for (let rotateNum = 0; rotateNum < 4; rotateNum++) {
+        const level = new app.Level({ levelObj: app.levels[6], checkMode, mirrorFlag, rotateNum });
+        assert.deepEqual(new Set(level.getHint().wallDirs), new Set([0, 1, 2, 3]));
+        for (const step of level.getR()) {
+          const hint = level.getHint();
+          assert.equal(hint.dir, Number(step));
+          if (hint.dir !== 4) assert.deepEqual([hint.x, hint.y], [hint.when.x, hint.when.y]);
+          assert.ok(level.move(...moves[hint.dir]));
+        }
+        assert.ok(level.isCompleted());
+      }
     }
   }
 
