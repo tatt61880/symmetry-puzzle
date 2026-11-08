@@ -2086,8 +2086,9 @@
         fill: app.colors.congratulations,
       });
       text.classList.add('translatable-toggle');
-      text.dataset.ja = currentStep === bestStep ? 'お見事！' : 'クリア！';
-      text.dataset.en = currentStep === bestStep ? 'Well done!' : 'Cleared!';
+      const meetsBestStep = bestStep !== undefined && currentStep <= bestStep;
+      text.dataset.ja = meetsBestStep ? 'お見事！' : 'クリア！';
+      text.dataset.en = meetsBestStep ? 'Well done!' : 'Cleared!';
       common.applyLang(text, lang);
       text.setAttribute('font-size', fontSize2);
 
