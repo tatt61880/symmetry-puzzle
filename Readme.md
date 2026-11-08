@@ -10,7 +10,7 @@
 
 | [線対称パズル](https://tatt61880.github.io/symmetry-puzzle/?mode=line&id=1) | [点対称パズル](https://tatt61880.github.io/symmetry-puzzle/?mode=point&id=1) | [線点対称パズル](https://tatt61880.github.io/symmetry-puzzle/?mode=special&id=1) |
 | :---: | :---: | :---: |
-| ![横向きのT字形](images/example-valid-1-line.png) | ![180度回すと重なる階段形](images/example-valid-1-point.png) | ![線対称かつ点対称な正方形](images/example-valid-1-special.png) |
+| <img src="images/example-valid-1-line.png" alt="横向きのT字形" width="55"> | <img src="images/example-valid-1-point.png" alt="180度回すと重なる階段形" width="55"> | <img src="images/example-valid-1-special.png" alt="線対称かつ点対称な正方形" width="55"> |
 | ある直線で折るとぴったり重なる | ある点を中心に180度回すとぴったり重なる | 線対称と点対称の両方を満たす |
 
 ## 操作
