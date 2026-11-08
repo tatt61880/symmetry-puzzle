@@ -293,50 +293,36 @@
         return { replayStr: '' };
       }
 
-      const shapeStrMap = new Map();
-      const stateStrMap = new Map();
-      let replayStr = '';
-
-      {
-        const stateStr = level.getS();
-        stateStrMap.set(stateStr, replayStr);
-      }
-
       let step = 0;
+      if (prefixStep !== '') {
+        const prefixStates = new Set([level.getS()]);
+        for (const dirChar of prefixStep) {
+          step++;
+          const dir = Number(dirChar);
+          if (!level.move(dxs[dir], dys[dir], userMax)) {
+            const errorMessage = 'Error: moveFlag failed on prefix-step.';
+            return { replayStr: null, errorMessage };
+          }
 
-      for (const dirChar of prefixStep) {
-        step++;
-        const dir = Number(dirChar);
-        const dx = dxs[dir];
-        const dy = dys[dir];
+          const stateStr = level.getS();
+          if (prefixStates.has(stateStr)) {
+            app.console.warn('Warning: Same state exists.');
+          }
+          prefixStates.add(stateStr);
 
-        const moveFlag = level.move(dx, dy, userMax);
-        if (!moveFlag) {
-          const errorMessage = 'Error: moveFlag failed on prefix-step.';
-          return { replayStr: null, errorMessage };
+          if (level.isCompleted()) {
+            const errorMessage = `Error: Completed on prefix-step. (${step} steps)`;
+            return { replayStr: null, errorMessage };
+          }
         }
-
-        const stateStr = level.getS();
-        if (stateStrMap.has(stateStr)) {
-          app.console.warn('Warning: Same state exists.');
-        }
-
-        const completedFlag = level.isCompleted();
-        if (completedFlag) {
-          const errorMessage = `Error: Completed on prefix-step. (${step} steps)`;
-          return { replayStr: null, errorMessage };
-        }
-        replayStr += dirChar;
-        stateStrMap.set(stateStr, replayStr);
       }
 
+      // 先頭手順の途中で通った盤面にも、探索開始後は戻れるようにします。
+      const startStateStr = level.getS();
+      const stateStrMap = new Map([[startStateStr, prefixStep]]);
+      let nextStateStrSet = new Set([startStateStr]);
+      const shapeStrMap = new Map();
       let stateCount = 0;
-
-      let nextStateStrSet = new Set();
-      {
-        const stateStr = level.getS();
-        nextStateStrSet.add(stateStr);
-      }
 
       let solutionNum = 0;
       let solutionStepFirst;

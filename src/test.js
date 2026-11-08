@@ -356,5 +356,13 @@
       const result = app.solveLevel('Line-6', level, { prefixStep: '24' });
       assert.equal(result?.replayStr, '241');
     }
+    {
+      const assert = require('node:assert/strict');
+      const levelObj = require('./levels-line.js')[1];
+      const level = new app.Level({ levelObj, checkMode: app.Level.CHECK_MODE.LINE });
+      // 4手目で先頭手順の2手目と同じ盤面に戻ると、8手でクリアできます。
+      const result = app.solveLevel('Line-1', level, { prefixStep: '103', maxStep: 8 });
+      assert.equal(result.replayStr, '10311221');
+    }
   }
 })();
