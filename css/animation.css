@@ -19,6 +19,18 @@
   --player-sleep-delay: 12s;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .title-character-blink .player-eye {
+    animation: title-character-blink 160ms ease-in-out 70ms;
+  }
+}
+
+@keyframes title-character-blink {
+  50% {
+    scale: 1 0.15;
+  }
+}
+
 /* 操作を休むとまばたきをし、左右を一度見回してから眠ります。 */
 .player-idle-eye {
   animation: player-fall-asleep var(--player-sleep-delay) ease-in-out forwards;

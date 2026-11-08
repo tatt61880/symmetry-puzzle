@@ -1652,6 +1652,7 @@
           r: 0.1,
           fill: color.stroke,
         });
+        eyeElem.classList.add('player-eye');
 
         // 目の移動アニメーション
         {

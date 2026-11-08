@@ -1124,30 +1124,18 @@
     const dx = 1;
     const dy = 0;
 
-    let stopFlag = false;
-
-    const ON_POINTER_UP = Symbol('onPointerUp');
-
-    if (elem[ON_POINTER_UP]) {
-      elem.removeEventListener('pointerup', elem[ON_POINTER_UP]);
-    }
-
-    const onPointerUp = () => {
-      stopFlag = true;
-    };
-
-    elem[ON_POINTER_UP] = onPointerUp;
+    let blinkRequested = false;
     // pointerdown だと、スワイプ操作の無効化との相性が悪いので、 pointerup にします。
-    elem.addEventListener('pointerup', onPointerUp);
+    elem.onpointerup = () => {
+      blinkRequested = true;
+    };
 
     const intervalId = setInterval(() => {
       if (!common.isShownElem(elems.category.title)) {
         return;
       }
 
-      if (stopFlag) {
-        stopFlag = false;
-      } else if (getRand(1, 15) !== 1) {
+      if (!blinkRequested && getRand(1, 15) !== 1) {
         const moveFlag = level.move(dx, 0);
         if (!moveFlag) {
           clearInterval(intervalId);
@@ -1169,6 +1157,10 @@
         width: widthNum,
         height: 1,
       });
+      if (blinkRequested) {
+        g.classList.add('title-character-blink');
+        blinkRequested = false;
+      }
 
       elem.setAttribute('width', blockSize * widthNum);
       elem.setAttribute('height', blockSize * 1.4);
