@@ -3,14 +3,13 @@
   const isBrowser = typeof window !== 'undefined';
 
   let app = {};
-  let options;
+  let options = {};
 
   if (isBrowser) {
     app = window.app;
     app.console = console;
     console.assert(app?.states !== undefined);
     console.assert(app?.Level !== undefined);
-    options = {};
     window.process = {
       exitCode: 0,
     };
@@ -27,11 +26,18 @@
     app.levelsPointEx = require('./levels-point-ex.js');
     app.levelsSpecial = require('./levels-special.js');
     app.levelsSpecialEx = require('./levels-special-ex.js');
+  }
 
-    const program = require('commander');
+  if (!isBrowser && require.main === module) {
+    const { Command, Option } = require('commander');
+    const program = new Command();
     program
       .version('4.0.0')
-      .option('--mode <check-mode>', 'symmetry mode')
+      .addOption(
+        new Option('--mode <check-mode>', 'symmetry mode')
+          .choices(['line', 'point', 'special', 'all'])
+          .makeOptionMandatory()
+      )
       .option('-i, --id <id>', 'id of level')
       .option('--all', 'list up all solutions')
       .option('-w, --w <w>', 'levelObj.w', Number)
@@ -49,6 +55,12 @@
 
     program.parse();
     options = program.opts();
+    if (options.mode === 'all' && options.id === undefined) {
+      program.error("error: '--mode all' requires '--id <id>'.");
+    }
+    if (options.backup && options.id === undefined && options.w === undefined) {
+      program.error("error: '--backup' requires a level ID or a board.");
+    }
   }
 
   let savedata;

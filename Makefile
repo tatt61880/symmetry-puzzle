@@ -35,7 +35,7 @@ special:
 	npm run solve -- --mode special --id all --all --max 1000 --time 10 > all-special.txt
 
 solveall:
-	npm run solve -- --id all --time 10
+	npm run solve -- --mode all --id all --time 10
 
 backup:
 	npm run solve -- --mode all --id all --all --max 1000 --time 10 --backup

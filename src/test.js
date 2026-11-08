@@ -46,6 +46,7 @@
       testLongReplayRecords();
       testMirroredAxis();
       testsSolve();
+      testInvalidSolverModePreservesBackup();
   }
 
   return;
@@ -287,6 +288,30 @@
       assert.ok(mirrored.move(dx, dy));
     }
     assert.ok(mirrored.isCompleted());
+  }
+
+  function testInvalidSolverModePreservesBackup() {
+    const assert = require('node:assert/strict');
+    const { execFileSync, spawnSync } = require('node:child_process');
+    const fs = require('node:fs');
+    const os = require('node:os');
+    const path = require('node:path');
+    const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'symmetry-puzzle-solver-'));
+    const args = [require.resolve('./solve.js'), '--id', '1', '--backup', '--mode'];
+    try {
+      execFileSync(process.execPath, [...args, 'line'], { cwd });
+      const [filename] = fs.readdirSync(cwd);
+      const backup = fs.readFileSync(path.join(cwd, filename), 'utf8');
+      assert.equal(Object.keys(JSON.parse(backup).backupData.steps).length, 1);
+
+      const result = spawnSync(process.execPath, [...args, 'lnie'], { cwd, encoding: 'utf8' });
+      assert.equal(result.status, 1);
+      assert.match(result.stderr, /lnie/);
+      assert.deepEqual(fs.readdirSync(cwd), [filename]);
+      assert.equal(fs.readFileSync(path.join(cwd, filename), 'utf8'), backup);
+    } finally {
+      fs.rmSync(cwd, { recursive: true, force: true });
+    }
   }
 
   function testsSolve() {
