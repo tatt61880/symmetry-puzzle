@@ -27,6 +27,7 @@
   class BoardRenderer {
     #level;
     #eyePrevInfo = [];
+    #extraIdleBlink;
     #heldBumpAnimations = null;
 
     constructor(level) {
@@ -71,6 +72,10 @@
       }
     }
 
+    resetIdleBlink() {
+      this.#extraIdleBlink = undefined;
+    }
+
     releaseBumpFaces() {
       this.#heldBumpAnimations?.forEach((animation) => animation.play());
       this.#heldBumpAnimations = null;
@@ -93,6 +98,11 @@
     }) {
       this.#heldBumpAnimations = holdBumpFace ? [] : null;
       const g = app.svg.createG();
+      if (idleAnimationFlag && !reducedMotion.matches) {
+        // 同じ停止中は、盤面を描き直しても抽選し直しません。
+        this.#extraIdleBlink ??= Math.random() < 1 / 3;
+        if (this.#extraIdleBlink) g.style.setProperty('--idle-blink-scale', '0.2');
+      }
       g.style.setProperty('--animation-jump-small', `translate(0, ${-0.25 * blockSize}px)`);
       g.style.setProperty('--animation-jump', `translate(0, ${-0.5 * blockSize}px)`);
 

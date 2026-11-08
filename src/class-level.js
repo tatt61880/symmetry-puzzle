@@ -1001,6 +1001,7 @@
     }
 
     move(dx, dy) {
+      this.#renderer?.resetIdleBlink();
       const moveFlag = this.#updateMoveFlags(dx, dy);
       if (moveFlag) {
         this.#execMoveFlags();

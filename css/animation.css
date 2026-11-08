@@ -54,8 +54,14 @@
     translate: var(--idle-eye-center);
   }
 
+  79%,
+  85%,
   95% {
     scale: 1;
+  }
+
+  82% {
+    scale: 1 var(--idle-blink-scale, 1);
   }
 
   100% {
