@@ -34,27 +34,8 @@
     display: flex;
     align-items: center;
 
-    .spacer {
-      flex-grow: 1;
-    }
-
-    #dialog-help-title {
-      font-size: 1.1rem;
-      font-weight: normal;
-      color: #333388;
-      text-shadow: var(--pseudo-bold-shadow);
-    }
-
-    & .button-transform-parent {
+    > * {
       margin: 5px;
-    }
-
-    button {
-      margin: 5px;
-    }
-
-    > button:nth-of-type(1) {
-      margin-left: auto;
     }
 
     .setting-lang-button {
@@ -73,11 +54,13 @@
 
       &.setting-lang-button-left {
         margin-right: 0;
+        margin-left: auto;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
       }
 
       &.setting-lang-button-right {
+        margin-right: auto;
         margin-left: 0;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
@@ -89,10 +72,6 @@
         border-color: #aaaaff;
         opacity: 1;
       }
-    }
-
-    .sound-toggle {
-      width: calc(100% / 4 - 10px);
     }
 
     .setting-lang-button:not(.active) {
