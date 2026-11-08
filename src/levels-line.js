@@ -136,8 +136,8 @@
           ].map((when) => ({
             when,
             undo: true,
-            ja: '手詰まりです。解ける配置まで「1ステップ戻す」を押してください。',
-            en: 'Stuck! Press Step Backward until the puzzle is solvable again.',
+            ja: '手詰まりです。解ける配置まで「1手戻す」を押してください。',
+            en: 'Stuck! Press UNDO until the puzzle is solvable again.',
           })),
           // L字が初期位置から動いていても、解ける配置なら次に押すブロックを示します。
           {

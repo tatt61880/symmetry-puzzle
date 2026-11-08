@@ -357,16 +357,15 @@
                 <div class="translatable en" lang="en">
                   <p>
                     <span class="flex">
-                      <span>Move</span>
-                      <svg class="user-block-line tab-mode-content-line"></svg>
-                      <svg class="user-block-point tab-mode-content-point"></svg>
-                      <svg class="user-block-special tab-mode-content-special"></svg>
-                      <span>to position</span>
+                      <span>Use</span>
+                      <svg class="user-block-line tab-mode-content-line" role="img" aria-label="the blue character"></svg>
+                      <svg class="user-block-point tab-mode-content-point" role="img" aria-label="the blue character"></svg>
+                      <svg class="user-block-special tab-mode-content-special" role="img" aria-label="the blue character"></svg>
+                      <span>to push the</span>
+                      <svg class="target-block" role="img" aria-label="orange"></svg>
+                      <span>blocks.</span>
                     </span>
-                    <span class="flex">
-                      <svg class="target-block"></svg>
-                      <span>into <span class="bold">a shape that satisfies the condition</span>.</span>
-                    </span>
+                    <span class="bold">Make a shape with the symmetry shown below.</span>
                   </p>
 
                   <div class="help-mode-condition tab-mode-content-line">
@@ -383,15 +382,14 @@
                 <div class="translatable ja" lang="ja">
                   <p>
                     <span class="flex">
-                      <svg class="user-block-line tab-mode-content-line"></svg>
-                      <svg class="user-block-point tab-mode-content-point"></svg>
-                      <svg class="user-block-special tab-mode-content-special"></svg>
-                      <span>を操作し、</span>
+                      <svg class="user-block-line tab-mode-content-line" role="img" aria-label="青いキャラ"></svg>
+                      <svg class="user-block-point tab-mode-content-point" role="img" aria-label="青いキャラ"></svg>
+                      <svg class="user-block-special tab-mode-content-special" role="img" aria-label="青いキャラ"></svg>
+                      <span>で</span>
+                      <svg class="target-block" role="img" aria-label="オレンジ色のブロック"></svg>
+                      <span>を押して、</span>
                     </span>
-                    <span class="flex">
-                      <svg class="target-block"></svg>
-                      <span>を<span class="bold">下記条件を満たす図形</span>にしてください。</span>
-                    </span>
+                    <span class="bold">下の条件に合う形を作りましょう。</span>
                   </p>
 
                   <div class="help-mode-condition tab-mode-content-line">
@@ -431,7 +429,7 @@
                       <path d="M 2,12 8,18 18,4" fill="none" stroke="#55aa55" stroke-width="4" stroke-linecap="round" />
                     </g>
                   </svg>
-                  <span class="bold translatable-toggle help-example-caption-valid-text" data-en="Examples of valid shape"
+                  <span class="bold translatable-toggle help-example-caption-valid-text" data-en="Valid shapes"
                     data-ja="有効な図形の例"></span>
                 </span>
               </div>
@@ -460,7 +458,7 @@
                     </g>
                   </svg>
                   <span class="bold translatable-toggle help-example-caption-invalid-text" data-en="Disconnected shapes are invalid."
-                    data-ja="連続していない図形は無効。"></span>
+                    data-ja="辺でつながっていない図形は無効です。"></span>
                 </span>
               </div>
             </div>
@@ -766,9 +764,9 @@
               <rect x="-80" y="-40" rx="15" width="160" height="100" fill="#e4e4ff" stroke="#aaaaff" stroke-width="4" />
 
               <text x="0" y="-20" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="20" fill="#333388"
-                class="translatable-toggle" data-en="Backup" data-ja="ファイルへの"></text>
+                class="translatable-toggle" data-en="Back up" data-ja="ファイルへの"></text>
               <text x="0" y="4" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="20" fill="#333388"
-                class="translatable-toggle" data-en="to file" data-ja="バックアップ"></text>
+                class="translatable-toggle" data-en="to a file" data-ja="バックアップ"></text>
 
               <!-- icon (no nested svg) -->
               <g transform="translate(-18,15) scale(1.5)" fill="none" stroke="#333388" stroke-width="1.8" stroke-linecap="round"
@@ -788,7 +786,7 @@
               <text x="0" y="-20" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="20" fill="#333388"
                 class="translatable-toggle" data-en="Restore" data-ja="ファイルからの"></text>
               <text x="0" y="4" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="20" fill="#333388"
-                class="translatable-toggle" data-en="from file" data-ja="リストア"></text>
+                class="translatable-toggle" data-en="from a file" data-ja="リストア"></text>
 
               <!-- icon (no nested svg) -->
               <g transform="translate(-18,15) scale(1.5)" fill="none" stroke="#333388" stroke-width="1.8" stroke-linecap="round"
@@ -1318,7 +1316,7 @@
             <!-- Undoボタン -->
             <g id="button-undo" class="button active-hover" transform="translate(-185,60)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#7799bb"
-                class="translatable-toggle" data-en="STEP BACKWARD" data-ja="1ステップ戻す"></text>
+                class="translatable-toggle" data-en="UNDO" data-ja="1手戻す"></text>
               <g class="button-transform">
                 <g transform="scale(1.25,1.25)">
                   <circle cx="0" cy="0" r="28" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
@@ -1333,7 +1331,7 @@
             <!-- Redoボタン -->
             <g id="button-redo" class="button active-hover" transform="translate(185,60)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#7799bb"
-                class="translatable-toggle" data-en="STEP FORWARD" data-ja="1ステップ進める"></text>
+                class="translatable-toggle" data-en="REDO" data-ja="1手進める"></text>
               <g class="button-transform">
                 <g transform="scale(-1.25,1.25)">
                   <circle cx="0" cy="0" r="28" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />

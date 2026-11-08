@@ -30,8 +30,8 @@
       hint: {
         afterSteps: 20,
         stuck: {
-          ja: '手詰まりです。解ける配置まで「1ステップ戻す」を押してください。',
-          en: 'Stuck! Press Step Backward until the puzzle is solvable again.',
+          ja: '手詰まりです。解ける配置まで「1手戻す」を押してください。',
+          en: 'Stuck! Press UNDO until the puzzle is solvable again.',
         },
         // 未クリアで解けるブロック配置は3通りです。初期配置では小さいブロックのヒントを優先します。
         stages: [

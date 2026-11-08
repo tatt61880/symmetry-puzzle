@@ -368,6 +368,12 @@
     margin: 10px;
   }
 
+  .help-mode-description p {
+    display: grid;
+    row-gap: 8px;
+    margin-bottom: 12px;
+  }
+
   & hr {
     height: 0;
     padding: 0;
