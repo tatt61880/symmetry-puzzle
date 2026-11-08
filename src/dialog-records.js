@@ -26,298 +26,81 @@
   }
 
   function updateTable() {
-    let numLineNotSolved = 0;
-    let numLineSolvedNormal = 0;
-    let numLineSolvedBest = 0;
-    let numLineShapes = 0;
-    let numLineShapesTotal = 0;
-    let numLineShapesUnknownFlag = false;
+    const { shortest, cleared, uncleared } = elems.records.icon;
+    drawCrown(shortest, 1, 1);
+    drawCrown(cleared, 1, 0);
+    drawCrown(uncleared, null, 1);
 
-    {
-      const levelsList = app.levelsLine;
-      const levelsListEx = app.levelsLineEx;
-      const levels = new app.Levels({ levelsList, levelsListEx });
-      const allLevels = levels.getAllLevels();
-      for (const { levelId, levelObj } of allLevels) {
-        if (levelId === 0) continue;
-        if (levelId === 'NaN') continue;
+    const { LINE, POINT, SPECIAL } = app.Level.CHECK_MODE;
+    updateModeColumn(LINE, app.levelsLine, app.levelsLineEx);
+    updateModeColumn(POINT, app.levelsPoint, app.levelsPointEx);
+    updateModeColumn(SPECIAL, app.levelsSpecial, app.levelsSpecialEx);
+  }
 
-        const level = new app.Level({
-          levelObj,
-          checkMode: app.Level.CHECK_MODE.LINE,
-        });
-        const playerScore = app.savedata.getHighestScore(level);
-        const shapesObj = app.savedata.getShapesObj(level);
-        if (shapesObj) {
-          numLineShapes += Object.keys(shapesObj).length;
-          numLineShapesTotal += levelObj.shapes;
-        } else {
-          numLineShapesUnknownFlag = true;
-        }
-        const appScore = levelObj.step;
-        if (playerScore === null) {
-          ++numLineNotSolved;
-        } else if (playerScore > appScore) {
-          ++numLineSolvedNormal;
-        } else {
-          ++numLineSolvedBest;
-        }
+  function drawCrown(th, step, bestStep) {
+    const size = Number(th.dataset.crownSize);
+    const svg = app.svg.createSvg();
+    svg.setAttribute('width', size);
+    svg.setAttribute('height', size);
+    svg.appendChild(app.common.createCrown(size, 0, 0, step, bestStep));
+    th.replaceChildren(svg);
+  }
+
+  function countModeRecords(checkMode, levelsList, levelsListEx) {
+    const counts = { shortest: 0, cleared: 0, uncleared: 0, shapes: 0, knownShapeTotal: 0, hasUnknownShapes: false };
+    const levels = new app.Levels({ levelsList, levelsListEx });
+    for (const { levelId, levelObj } of levels.getAllLevels()) {
+      if (levelId === 0 || levelId === 'NaN') continue;
+
+      const level = new app.Level({ levelObj, checkMode });
+      const playerScore = app.savedata.getHighestScore(level);
+      if (playerScore === null) {
+        counts.uncleared++;
+      } else if (playerScore > levelObj.step) {
+        counts.cleared++;
+      } else {
+        counts.shortest++;
+      }
+
+      const shapes = app.savedata.getShapesObj(level);
+      if (shapes) {
+        counts.shapes += Object.keys(shapes).length;
+        counts.knownShapeTotal += levelObj.shapes;
+      } else {
+        counts.hasUnknownShapes = true;
       }
     }
+    return counts;
+  }
 
-    let numPointNotSolved = 0;
-    let numPointSolvedNormal = 0;
-    let numPointSolvedBest = 0;
-    let numPointShapes = 0;
-    let numPointShapesTotal = 0;
-    let numPointShapesUnknownFlag = false;
+  function updateModeColumn(checkMode, levelsList, levelsListEx) {
+    const cells = elems.records[app.Level.getCheckModeStr(checkMode)];
+    const counts = countModeRecords(checkMode, levelsList, levelsListEx);
+    const total = counts.shortest + counts.cleared + counts.uncleared;
+    updateCountCell(cells.shortest, counts.shortest, total);
+    updateCountCell(cells.cleared, counts.cleared, total);
+    updateCountCell(cells.uncleared, counts.uncleared, total, 'rgb(230, 230, 230)');
 
-    {
-      const levelsList = app.levelsPoint;
-      const levelsListEx = app.levelsPointEx;
-      const levels = new app.Levels({ levelsList, levelsListEx });
-      const allLevels = levels.getAllLevels();
-      for (const { levelId, levelObj } of allLevels) {
-        if (levelId === 0) continue;
-        if (levelId === 'NaN') continue;
-
-        const level = new app.Level({
-          levelObj,
-          checkMode: app.Level.CHECK_MODE.POINT,
-        });
-        const playerScore = app.savedata.getHighestScore(level);
-        const shapesObj = app.savedata.getShapesObj(level);
-        if (shapesObj) {
-          numPointShapes += Object.keys(shapesObj).length;
-          numPointShapesTotal += levelObj.shapes;
-        } else {
-          numPointShapesUnknownFlag = true;
-        }
-        const appScore = levelObj.step;
-        if (playerScore === null) {
-          ++numPointNotSolved;
-        } else if (playerScore > appScore) {
-          ++numPointSolvedNormal;
-        } else {
-          ++numPointSolvedBest;
-        }
-      }
+    let denominator = counts.knownShapeTotal;
+    if (counts.hasUnknownShapes) {
+      denominator = counts.knownShapeTotal ? `${counts.knownShapeTotal}+?` : '?';
+    }
+    const { numerator, line, denumerator: denominatorText } = cells.shapes;
+    numerator.textContent = counts.shapes;
+    denominatorText.textContent = denominator;
+    const allShapesFound = !counts.hasUnknownShapes && counts.shapes === counts.knownShapeTotal;
+    const fill = allShapesFound ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
+    for (const elem of [numerator, line, denominatorText]) {
+      elem.setAttribute('fill', fill);
     }
 
-    let numSpecialNotSolved = 0;
-    let numSpecialSolvedNormal = 0;
-    let numSpecialSolvedBest = 0;
-    let numSpecialShapes = 0;
-    let numSpecialShapesTotal = 0;
-    let numSpecialShapesUnknownFlag = false;
+    cells.num.textContent = app.savedata.getUnsolvedMinNum(checkMode) - 1;
+  }
 
-    {
-      const levelsList = app.levelsSpecial;
-      const levelsListEx = app.levelsSpecialEx;
-      const levels = new app.Levels({ levelsList, levelsListEx });
-      const allLevels = levels.getAllLevels();
-      for (const { levelId, levelObj } of allLevels) {
-        if (levelId === 0) continue;
-        if (levelId === 'NaN') continue;
-
-        const level = new app.Level({
-          levelObj,
-          checkMode: app.Level.CHECK_MODE.SPECIAL,
-        });
-        const playerScore = app.savedata.getHighestScore(level);
-        const shapesObj = app.savedata.getShapesObj(level);
-        if (shapesObj) {
-          numSpecialShapes += Object.keys(shapesObj).length;
-          numSpecialShapesTotal += levelObj.shapes;
-        } else {
-          numSpecialShapesUnknownFlag = true;
-        }
-        const appScore = levelObj.step;
-        if (playerScore === null) {
-          ++numSpecialNotSolved;
-        } else if (playerScore > appScore) {
-          ++numSpecialSolvedNormal;
-        } else {
-          ++numSpecialSolvedBest;
-        }
-      }
-    }
-
-    const numLineTotal = numLineSolvedBest + numLineSolvedNormal + numLineNotSolved;
-
-    const numPointTotal = numPointSolvedBest + numPointSolvedNormal + numPointNotSolved;
-
-    const numSpecialTotal = numSpecialSolvedBest + numSpecialSolvedNormal + numSpecialNotSolved;
-
-    const setBackgroundBar = (td, ratio, color = 'rgb(250, 250, 150)') => {
-      const percent = ratio * 100;
-      const style = `width: 80px; background: linear-gradient(to right, ${color} ${percent}%, transparent ${percent}%);`;
-      td.setAttribute('style', style);
-    };
-
-    {
-      // 最短記録達成
-      {
-        const crownSize = Number(elems.records.icon.shortest.dataset.crownSize);
-        const th = elems.records.icon.shortest;
-        th.innerText = '';
-        const svg = app.svg.createSvg();
-        svg.setAttribute('width', crownSize);
-        svg.setAttribute('height', crownSize);
-        const crown = app.common.createCrown(crownSize, 0, 0, 1, 1);
-        th.appendChild(svg);
-        svg.appendChild(crown);
-      }
-      {
-        const td = elems.records.line.shortest;
-        td.innerText = numLineSolvedBest;
-        setBackgroundBar(td, numLineSolvedBest / numLineTotal);
-      }
-      {
-        const td = elems.records.point.shortest;
-        td.innerText = numPointSolvedBest;
-        setBackgroundBar(td, numPointSolvedBest / numPointTotal);
-      }
-      {
-        const td = elems.records.special.shortest;
-        td.innerText = numSpecialSolvedBest;
-        setBackgroundBar(td, numSpecialSolvedBest / numSpecialTotal);
-      }
-    }
-
-    // クリア済み
-    {
-      {
-        const crownSize = Number(elems.records.icon.cleared.dataset.crownSize);
-        const th = elems.records.icon.cleared;
-        th.innerText = '';
-        const svg = app.svg.createSvg();
-        svg.setAttribute('width', crownSize);
-        svg.setAttribute('height', crownSize);
-        const crown = app.common.createCrown(crownSize, 0, 0, 1, 0);
-        th.appendChild(svg);
-        svg.appendChild(crown);
-      }
-      {
-        const td = elems.records.line.cleared;
-        td.innerText = numLineSolvedNormal;
-        setBackgroundBar(td, numLineSolvedNormal / numLineTotal);
-      }
-      {
-        const td = elems.records.point.cleared;
-        td.innerText = numPointSolvedNormal;
-        setBackgroundBar(td, numPointSolvedNormal / numPointTotal);
-      }
-      {
-        const td = elems.records.special.cleared;
-        td.innerText = numSpecialSolvedNormal;
-        setBackgroundBar(td, numSpecialSolvedNormal / numSpecialTotal);
-      }
-    }
-
-    // 未クリア
-    {
-      {
-        const crownSize = Number(elems.records.icon.uncleared.dataset.crownSize);
-        const th = elems.records.icon.uncleared;
-        th.innerText = '';
-        const svg = app.svg.createSvg();
-        svg.setAttribute('width', crownSize);
-        svg.setAttribute('height', crownSize);
-        const crown = app.common.createCrown(crownSize, 0, 0, null, 1);
-        th.appendChild(svg);
-        svg.appendChild(crown);
-      }
-      {
-        const td = elems.records.line.uncleared;
-        td.innerText = numLineNotSolved;
-        setBackgroundBar(td, numLineNotSolved / numLineTotal, 'rgb(230, 230, 230)');
-      }
-      {
-        const td = elems.records.point.uncleared;
-        td.innerText = numPointNotSolved;
-        setBackgroundBar(td, numPointNotSolved / numPointTotal, 'rgb(230, 230, 230)');
-      }
-      {
-        const td = elems.records.special.uncleared;
-        td.innerText = numSpecialNotSolved;
-        setBackgroundBar(td, numSpecialNotSolved / numSpecialTotal, 'rgb(230, 230, 230)');
-      }
-    }
-
-    // 形状数
-    {
-      {
-        elems.records.line.shapes.numerator.textContent = numLineShapes;
-        let denumerator = numLineShapesTotal;
-        if (numLineShapesUnknownFlag) {
-          if (numLineShapesTotal) {
-            denumerator += '+?';
-          } else {
-            denumerator = '?';
-          }
-        }
-        elems.records.line.shapes.denumerator.textContent = denumerator;
-
-        const fill = numLineShapes === denumerator ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
-        elems.records.line.shapes.numerator.setAttribute('fill', fill);
-        elems.records.line.shapes.line.setAttribute('fill', fill);
-        elems.records.line.shapes.denumerator.setAttribute('fill', fill);
-      }
-      {
-        elems.records.point.shapes.numerator.textContent = numPointShapes;
-        let denumerator = numPointShapesTotal;
-        if (numPointShapesUnknownFlag) {
-          if (numPointShapesTotal) {
-            denumerator += '+?';
-          } else {
-            denumerator = '?';
-          }
-        }
-        elems.records.point.shapes.denumerator.textContent = denumerator;
-
-        const fill = numPointShapes === denumerator ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
-        elems.records.point.shapes.numerator.setAttribute('fill', fill);
-        elems.records.point.shapes.line.setAttribute('fill', fill);
-        elems.records.point.shapes.denumerator.setAttribute('fill', fill);
-      }
-      {
-        elems.records.special.shapes.numerator.textContent = numSpecialShapes;
-        let denumerator = numSpecialShapesTotal;
-        if (numSpecialShapesUnknownFlag) {
-          if (numSpecialShapesTotal) {
-            denumerator += '+?';
-          } else {
-            denumerator = '?';
-          }
-        }
-        elems.records.special.shapes.denumerator.textContent = denumerator;
-
-        const fill = numSpecialShapes === denumerator ? app.colors.shapeNumPerfect : app.colors.shapeNumNormal;
-        elems.records.special.shapes.numerator.setAttribute('fill', fill);
-        elems.records.special.shapes.line.setAttribute('fill', fill);
-        elems.records.special.shapes.denumerator.setAttribute('fill', fill);
-      }
-    }
-
-    // 連番モード
-    {
-      {
-        const td = elems.records.line.num;
-        const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.LINE) - 1;
-        td.innerText = num;
-      }
-      {
-        const td = elems.records.point.num;
-        const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.POINT) - 1;
-        td.innerText = num;
-      }
-      {
-        const td = elems.records.special.num;
-        const num = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.SPECIAL) - 1;
-        td.innerText = num;
-      }
-    }
+  function updateCountCell(td, count, total, color = 'rgb(250, 250, 150)') {
+    td.textContent = count;
+    const percent = (count / total) * 100;
+    td.setAttribute('style', `width: 80px; background: linear-gradient(to right, ${color} ${percent}%, transparent ${percent}%);`);
   }
 
   function close() {
