@@ -156,7 +156,7 @@
   }
 
   function undoStart() {
-    if (undoFlag) return;
+    if (undoFlag || replayTimerId !== null) return;
     undoFlag = true;
     clearTimeout(nextLevelTimerId);
     clearTimeout(redrawTimerId);
@@ -454,7 +454,7 @@
     } else if (e.key === 'r') {
       retryLevel();
     } else if (e.key === 'z') {
-      undoStart();
+      if (!e.repeat) undoStart();
     } else if (e.key === 'y') {
       redoStart();
     } else {
@@ -717,7 +717,7 @@
 
   function updateUndoRedoButton() {
     if (undoInfoForNormal !== undefined) {
-      if (undoInfoForNormal.isUndoable()) {
+      if (common.isHiddenElem(elems.main.replaySvg) && undoInfoForNormal.isUndoable()) {
         common.showElem(elems.controller.undo);
       } else {
         common.hideElem(elems.controller.undo);
@@ -2723,6 +2723,7 @@
     if (!moves) return;
     const level = common.level.createReplayLevel(undoInfoForNormal.undoArray[0]);
     const svg = elems.main.replaySvg;
+    undoEnd();
     setReplayVisible(true);
     let step = 0;
     drawStep();
@@ -2754,6 +2755,7 @@
     if (visible) app.dialog.shapes.finishDiscovery();
     elems.main.svg.classList.toggle('hide', visible);
     elems.main.replaySvg.classList.toggle('hide', !visible);
+    updateUndoRedoButton();
     elems.controller.replay.firstElementChild.classList.toggle('hide', visible);
     elems.controller.replay.lastElementChild.classList.toggle('hide', !visible);
   }
