@@ -44,7 +44,7 @@
   let editMode = false;
   let temporaryShowCharsFlag = false;
   let secretSequence = '';
-  let isDrawing = false;
+  let drawingPointerId = null;
   let isRemoving = false;
   let touchStart = false;
 
@@ -204,6 +204,7 @@
   }
 
   function releaseGameInput() {
+    drawingPointerId = null;
     heldGameKeys.clear();
     moveKeys.clear();
     if (!settings.autoMode) input.update(app.Input.DIRS.NEUTRAL);
@@ -985,6 +986,7 @@
   }
 
   function updateEditMode(isEditMode, resetFlag = true) {
+    drawingPointerId = null;
     editMode = isEditMode;
     elems.level.edit.classList.toggle('editing', editMode);
 
@@ -1446,7 +1448,8 @@
     {
       elems.main.svg.addEventListener('pointerdown', pointerDown);
       elems.main.svg.addEventListener('pointermove', pointerMove);
-      elems.main.svg.addEventListener('pointerup', pointerUp);
+      document.addEventListener('pointerup', endEditDrag, true);
+      document.addEventListener('pointercancel', endEditDrag, true);
       elems.main.svg.oncontextmenu = function () {
         return !editMode;
       };
@@ -2381,26 +2384,27 @@
   }
 
   function pointerDown(e) {
-    isDrawing = true;
-    if (e.button === undefined) {
-      touchStart = true;
-    } else {
-      if (e.button !== 0) {
-        isRemoving = true;
-      }
+    if (editMode) {
+      if (drawingPointerId !== null && drawingPointerId !== e.pointerId) return;
+      drawingPointerId = e.pointerId;
+      touchStart = e.button === undefined;
+      isRemoving = !touchStart && e.button !== 0;
     }
     editSvg(e, true);
   }
 
   function pointerMove(e) {
-    if (isDrawing) {
-      editSvg(e, false);
+    if (e.pointerId !== drawingPointerId) return;
+    if (e.buttons === 0) {
+      // ウィンドウの外でボタンを離すと、pointerup が届かない場合があります。
+      drawingPointerId = null;
+      return;
     }
+    editSvg(e, false);
   }
 
-  function pointerUp() {
-    isDrawing = false;
-    isRemoving = false;
+  function endEditDrag(e) {
+    if (e.pointerId === drawingPointerId) drawingPointerId = null;
   }
 
   function editSvg(e, isPointerDown) {
