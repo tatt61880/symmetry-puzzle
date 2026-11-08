@@ -70,7 +70,7 @@
   colors.symmetryAxis = '#ffdd33';
   colors.symmetryAxisInvalid = '#f85555';
   colors.levelSymmetryAxis = '#3333f8';
-  colors.levelSymmetryAxisCenter = '#5555f8';
+  colors.levelSymmetryAxisCenter = { fill: '#ffdd33', stroke: '#3333cc' };
 
   // フレーム
   colors.frameFill = '#ffeedd';

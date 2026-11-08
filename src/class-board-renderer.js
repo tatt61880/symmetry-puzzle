@@ -1921,7 +1921,14 @@
   }
 
   function createAxisCenterDot(blockSize, cx, cy) {
-    return app.svg.createCircle(blockSize, { cx, cy, r: 0.1, fill: app.colors.levelSymmetryAxisCenter });
+    return app.svg.createCircle(blockSize, {
+      cx,
+      cy,
+      r: 0.14,
+      fill: app.colors.levelSymmetryAxisCenter.fill,
+      stroke: app.colors.levelSymmetryAxisCenter.stroke,
+      strokeWidth: 0.05,
+    });
   }
 
   function drawEditControls(g, level, { blockSize, frameSizeW, frameSizeH }, { normalized, moveAxis, resizeLevel }, lang) {
