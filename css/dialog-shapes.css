@@ -6,7 +6,6 @@
   left: 0;
   box-sizing: border-box;
   width: 460px;
-  max-height: 450px;
   padding: 0;
   margin: auto;
   border: none;
@@ -36,6 +35,17 @@
       color: #ff7700;
       text-shadow: var(--pseudo-bold-shadow);
     }
+  }
+
+  .shape-selection-note {
+    margin: 0 5px 8px;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    color: #663300;
+  }
+
+  &:not(:has(.shape-select)) .shape-selection-note {
+    display: none;
   }
 
   #dialog-shapes-svg {
