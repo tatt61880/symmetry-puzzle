@@ -1128,6 +1128,25 @@
       </div>
 
       <!-- エディト -->
+      <dialog id="dialog-auto-search" aria-labelledby="auto-result-title" aria-describedby="auto-result-message">
+        <form method="dialog">
+          <h2 id="auto-result-title">
+            <span class="translatable-toggle" data-reason="time-limit" data-ja="探索時間の上限に達しました" data-en="Search time limit reached"></span>
+            <span class="translatable-toggle" data-reason="step-limit" data-ja="探索手数の上限に達しました" data-en="Search step limit reached"></span>
+            <span class="translatable-toggle" data-reason="no-solution" data-ja="探索結果" data-en="Search result"></span>
+          </h2>
+          <p id="auto-result-message">
+            <span class="translatable-toggle" data-reason="time-limit" data-ja="制限時間内に解を見つけられませんでした。"
+              data-en="No solution was found within the time limit."></span>
+            <span class="translatable-toggle" data-reason="step-limit" data-ja="上限の手数までに解を見つけられませんでした。"
+              data-en="No solution was found within the step limit."></span>
+            <span class="translatable-toggle" data-reason="no-solution" data-ja="この盤面には解がありません。"
+              data-en="This puzzle has no solution."></span>
+          </p>
+          <button type="submit" class="translatable-toggle" data-en="Close" data-ja="閉じる"></button>
+        </form>
+      </dialog>
+
       <div id="edit-widget">
         <svg width="490" height="238">
           <rect x="2" y="2" width="486" height="234" fill="#def" stroke="skyblue" stroke-width="4" />

@@ -234,7 +234,8 @@
   }
 
   async function keydown(e) {
-    if (elems.menu.dialog.open || elems.edit.normalizeDialog.open || e.target === elems.auto.speed) return;
+    if (elems.auto.resultDialog.open || elems.menu.dialog.open || elems.edit.normalizeDialog.open) return;
+    if (e.target === elems.auto.speed) return;
     if (e.target === elems.auto.searchCancel && (e.key === 'Enter' || e.key === ' ')) return;
     if (
       e.target === elems.auto.seek &&
@@ -1394,6 +1395,7 @@
     });
     elems.auto.seek.addEventListener('input', seekAuto);
     elems.auto.buttonStop.addEventListener('click', onButtonStop);
+    elems.auto.resultDialog.addEventListener('close', () => app.sound.playUiClose());
     elems.auto.buttonStart.addEventListener('click', onButtonStart);
     elems.auto.searchCancel.addEventListener('click', () => {
       app.sound.playButton();
@@ -2499,7 +2501,13 @@
       cancelAutoSearch();
       const result = next.value;
       if (result.replayStr === null) {
-        window.alert(result.errorMessage);
+        const dialog = elems.auto.resultDialog;
+        for (const elem of dialog.querySelectorAll('[data-reason]')) {
+          elem.hidden = elem.dataset.reason !== result.reason;
+        }
+        releaseGameInput();
+        app.sound.playUiOpen();
+        dialog.showModal();
         return;
       }
       resetUndo();

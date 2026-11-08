@@ -96,6 +96,7 @@
     }
   }
 
+  #dialog-auto-search,
   #dialog-normalize {
     box-sizing: border-box;
     width: min(440px, 94%);

@@ -229,6 +229,7 @@
       buttonPause: 'button-pause',
       searchControls: 'auto-search-controls',
       searchIcon: 'auto-search-icon',
+      resultDialog: 'dialog-auto-search',
       searchCancel: 'auto-search-cancel',
       buttonEnd: 'button-end',
       speed: 'auto-speed',

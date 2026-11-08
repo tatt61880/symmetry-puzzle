@@ -355,7 +355,7 @@
               const errorMessage = `Time limit over. [Time: ${msToSecStr(elapsedMs)}] [Time limit: ${msToSecStr(
                 Number(timeLimit) * 1000
               )}] [map.size: ${stateStrMap.size}] [step: ${step}]`;
-              return { replayStr: null, errorMessage };
+              return { replayStr: null, reason: 'time-limit', errorMessage };
             }
           }
 
@@ -475,7 +475,7 @@
             return { replayStr: null, errorMessage };
           }
           const errorMessage = `No solution. [Step: ${step}]`;
-          return { replayStr: null, errorMessage };
+          return { replayStr: null, reason: 'no-solution', errorMessage };
         }
         step++;
         if (options.console) {
@@ -490,7 +490,7 @@
       }
 
       const errorMessage = `Step limit over. [Step limit: ${maxStep}]`;
-      return { replayStr: null, errorMessage };
+      return { replayStr: null, reason: 'step-limit', errorMessage };
     }
 
     function getCompletedLevelObj(r) {
