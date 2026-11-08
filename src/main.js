@@ -77,6 +77,7 @@
   const dxs = [0, 1, 0, -1, 0];
   const dys = [-1, 0, 1, 0, 0];
   let blockSize = 0;
+  let desktopViewport = null;
   const defaultFrameSize = 32;
   let frameSizeW = defaultFrameSize;
   const frameSizeH = defaultFrameSize;
@@ -583,10 +584,42 @@
     drawMainSvg();
   }
 
+  function getGameHeight() {
+    const { innerWidth, innerHeight, outerWidth, outerHeight, devicePixelRatio } = window;
+    if (!window.matchMedia('(pointer: fine)').matches || !innerWidth || !outerWidth || !outerHeight) return innerHeight;
+
+    // ページ拡大や右側の開発者ツールの開閉では、表示領域の物理的な高さは変わりません。
+    const deviceHeight = innerHeight * devicePixelRatio;
+    if (
+      desktopViewport &&
+      outerHeight === desktopViewport.outerHeight &&
+      Math.abs(deviceHeight - desktopViewport.deviceHeight) <= devicePixelRatio
+    ) {
+      return Math.round(deviceHeight / desktopViewport.displayScale);
+    }
+
+    // 拡大済みで開いた場合はウィンドウ幅から倍率を推定します。左右の窓枠分は等倍とみなします。
+    let zoom = devicePixelRatio / (desktopViewport?.displayScale ?? devicePixelRatio);
+    const frameTolerance = 16;
+    if (Math.abs(outerWidth - innerWidth) <= frameTolerance) {
+      zoom = 1;
+    } else if (Math.abs(outerWidth - innerWidth * zoom) > frameTolerance) {
+      const widthRatio = outerWidth / innerWidth;
+      if (innerHeight * widthRatio > outerHeight + 1) {
+        // 横に開いた開発者ツールなどの幅は不明です。幅を使えるようになるまで推定を保留します。
+        desktopViewport ??= { displayScale: devicePixelRatio };
+        return Math.round(innerHeight * zoom);
+      }
+      zoom = widthRatio;
+    }
+    desktopViewport = { outerHeight, deviceHeight, displayScale: devicePixelRatio / zoom };
+    return Math.round(innerHeight * zoom);
+  }
+
   function updateSvg() {
     const divMainHeight = Math.max(
       frameSizeH * 3,
-      window.innerHeight -
+      getGameHeight() -
         10 -
         [
           //
