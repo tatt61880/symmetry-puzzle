@@ -458,6 +458,27 @@
       }
     }
 
+    #getAxisNormalization() {
+      const { type, cx, cy } = this.#axis;
+      const center = this.#getNormalizedAxisCenter();
+
+      // 盤面を縮めたり鏡映したりすると、基準点が盤面の外に残ることがあります。
+      // 文字列には軸上の代表点を使いますが、正規化ボタンは従来の移動方向と停止位置に従います。
+      if (type === Level.SYMMETRY_TYPE.LINE3 && (cx < axisOffset || cy < axisOffset)) {
+        return { center: { cx, cy }, isNormalized: cx === axisOffset || cy === axisOffset };
+      }
+      if (type === Level.SYMMETRY_TYPE.LINE4) {
+        if (cx < axisOffset || cy < axisOffset) return { center: { cx, cy }, isNormalized: false };
+        if (cx > center.cx || center.cy > this.#yMax * 2) {
+          // 右上に進んでも上辺・右辺に届かないときは、上辺の半マス先で止まります。
+          const distance = cy - axisOffset + 1;
+          return { center: { cx: cx + distance, cy: axisOffset - 1 }, isNormalized: false };
+        }
+      }
+
+      return { center, isNormalized: cx === center.cx && cy === center.cy };
+    }
+
     applyAxis(axisStr) {
       this.#axis = {
         type: Level.SYMMETRY_TYPE.NONE,
@@ -556,47 +577,8 @@
         }
       }
 
-      // 対称軸座標の正規化
       if (this.hasAxis()) {
-        switch (this.#axis.type) {
-          case Level.SYMMETRY_TYPE.LINE1: {
-            // 軸座標を上の壁沿いに移動。
-            this.#axis.cy = this.#yMin * 2;
-            break;
-          }
-          case Level.SYMMETRY_TYPE.LINE2: {
-            // 軸座標を左の壁沿いに移動。
-            this.#axis.cx = this.#xMin * 2;
-            break;
-          }
-          case Level.SYMMETRY_TYPE.LINE3: {
-            while (this.#axis.cy > this.#yMin * 2 && this.#axis.cx > this.#xMin * 2) {
-              // 軸座標が上あるいは左の壁沿いに来るまで左上に移動。
-              this.#axis.cx--;
-              this.#axis.cy--;
-            }
-            break;
-          }
-          case Level.SYMMETRY_TYPE.LINE4: {
-            while (true) {
-              if (this.#xMin * 2 <= this.#axis.cx && this.#axis.cx <= this.#xMax * 2 && this.#axis.cy === this.#yMin * 2) {
-                // 軸座標が上の壁沿いにある。
-                break;
-              } else if (this.#axis.cx === this.#xMax * 2 && this.#yMin * 2 <= this.#axis.cy && this.#axis.cy <= this.#yMax * 2) {
-                // 軸座標が右の壁沿いにある。
-                break;
-              } else if (this.#axis.cx < this.#xMin * 2 || this.#axis.cy < this.#yMin * 2) {
-                // 軸座標が異常な位置にあります。
-                break;
-              } else {
-                this.#axis.cx++;
-                this.#axis.cy--;
-                // 軸座標を左上に移動。
-              }
-            }
-            break;
-          }
-        }
+        Object.assign(this.#axis, this.#getAxisNormalization().center);
       }
     }
 
@@ -685,49 +667,7 @@
         }
       }
 
-      // 対称軸座標の正規化チェック
-      if (this.hasAxis()) {
-        switch (this.#axis.type) {
-          case Level.SYMMETRY_TYPE.LINE1: {
-            if (this.#axis.cy === this.#yMin * 2) {
-              // 軸座標が上の壁沿いにある。
-            } else {
-              return false;
-            }
-            break;
-          }
-          case Level.SYMMETRY_TYPE.LINE2: {
-            if (this.#axis.cx === this.#xMin * 2) {
-              // 軸座標が左の壁沿いにある。
-            } else {
-              return false;
-            }
-            break;
-          }
-          case Level.SYMMETRY_TYPE.LINE3: {
-            if (this.#axis.cy === this.#yMin * 2) {
-              // 軸座標が上の壁沿いにある。
-            } else if (this.#axis.cx === this.#xMin * 2) {
-              // 軸座標が左の壁沿いにある。
-            } else {
-              return false;
-            }
-            break;
-          }
-          case Level.SYMMETRY_TYPE.LINE4: {
-            if (this.#xMin * 2 <= this.#axis.cx && this.#axis.cx <= this.#xMax * 2 && this.#axis.cy === this.#yMin * 2) {
-              // 軸座標が上の壁沿いにある。
-            } else if (this.#axis.cx === this.#xMax * 2 && this.#yMin * 2 <= this.#axis.cy && this.#axis.cy <= this.#yMax * 2) {
-              // 軸座標が右の壁沿いにある。
-            } else {
-              return false;
-            }
-            break;
-          }
-        }
-      }
-
-      return true;
+      return !this.hasAxis() || this.#getAxisNormalization().isNormalized;
     }
 
     isSymmetry(isX) {

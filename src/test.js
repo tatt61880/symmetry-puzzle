@@ -43,6 +43,7 @@
       break;
     default:
       testsOther();
+      testAxisNormalization();
       testLongReplayRecords();
       testMirroredAxis();
       testsSolve();
@@ -264,6 +265,32 @@
     assert.equal(restored.saveShape(level, shape, longReplay), false);
     assert.equal(restored.getHighestScore(level), 9999);
     assert.deepEqual(restored.getShapeRecords(level), [{ shapeStr: shape, steps: 9999, replay }]);
+  }
+
+  function testAxisNormalization() {
+    const assert = require('node:assert/strict');
+    const makeLevel = (axis) => new app.Level({ levelObj: { w: 5, h: 3, s: 's', axis } });
+    for (const [axis, expected] of [
+      ['l1-x3-y5', 'l1-x3'],
+      ['l2-x3-y5', 'l2-y5'],
+      ['l3-x3-y5', 'l3-y2'],
+      ['l3-x5-y3', 'l3-x2'],
+      ['l4-x3-y5', 'l4-x8'],
+      ['l4-x9-y5', 'l4-x10-y4'],
+      ['l4-x10', 'l4-x10'],
+      ['p1-x3-y5', 'p1-x3-y5'],
+      ['p2-x3-y5', 'p2-x3-y5'],
+      [undefined, undefined],
+    ]) {
+      const level = makeLevel(axis);
+      const before = level.getAxisCenter();
+      assert.equal(level.getA(), expected);
+      assert.equal(level.isNormalized(), axis === expected);
+      assert.deepEqual(level.getAxisCenter(), before);
+      level.normalize();
+      assert.deepEqual(level.getAxisCenter(), makeLevel(expected).getAxisCenter());
+      assert.equal(level.isNormalized(), true);
+    }
   }
 
   function testMirroredAxis() {
