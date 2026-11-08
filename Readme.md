@@ -8,7 +8,7 @@
 
 オレンジ色のマスをすべて、辺と辺でつながったひとつの図形にします。その形が選んだパズルの条件を満たせばクリアです。各パズル名からレベル1を遊べます。
 
-| [線対称](https://tatt61880.github.io/symmetry-puzzle/?mode=line&id=1) | [点対称](https://tatt61880.github.io/symmetry-puzzle/?mode=point&id=1) | [線点対称](https://tatt61880.github.io/symmetry-puzzle/?mode=special&id=1) |
+| [線対称<br>パズル](https://tatt61880.github.io/symmetry-puzzle/?mode=line&id=1) | [点対称<br>パズル](https://tatt61880.github.io/symmetry-puzzle/?mode=point&id=1) | [線点対称<br>パズル](https://tatt61880.github.io/symmetry-puzzle/?mode=special&id=1) |
 | :---: | :---: | :---: |
 | <img src="images/example-valid-1-line.png" alt="横向きのT字形" width="55"> | <img src="images/example-valid-1-point.png" alt="180度回すと重なる階段形" width="55"> | <img src="images/example-valid-1-special.png" alt="線対称かつ点対称な正方形" width="55"> |
 | 直線で折ると重なる | 180度回すと重なる | 線対称と点対称の両方 |
