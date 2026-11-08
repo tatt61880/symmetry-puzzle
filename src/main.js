@@ -894,7 +894,11 @@
     if (discoveredShape) {
       const center = common.level.getCenter(app.states.isTarget);
       const source = new DOMPoint(frameSizeW + blockSize * center.x, frameSizeH + blockSize * center.y);
-      if (app.dialog.shapes.animateDiscovery(discoveredShape, blockSize, source, () => showCount(count))) {
+      const symmetry = common.level.getSymmetryType(app.states.isTarget);
+      const { POINT2, SPECIAL3 } = app.Level.SYMMETRY_TYPE;
+      // 完成演出で最初の90度回転、または反転・180度回転がちょうど終わる時刻に合わせます。
+      const delay = ROTATION_MSEC * (symmetry === POINT2 || symmetry === SPECIAL3 ? 0.4 : 0.6);
+      if (app.dialog.shapes.animateDiscovery(discoveredShape, blockSize, source, delay, () => showCount(count))) {
         showCount(count - 1);
         return;
       }

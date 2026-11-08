@@ -302,7 +302,7 @@
     elems.shapes.buttonNumerator.classList.remove('shape-count-bounce');
   }
 
-  function animateDiscovery(shapeStr, blockSize, boardPoint, onArrival) {
+  function animateDiscovery(shapeStr, blockSize, boardPoint, delay, onArrival) {
     finishDiscovery();
     if (elems.shapes.dialog.open) {
       update();
@@ -337,7 +337,7 @@
         { transform: 'translateY(-16px) scale(0.82)', opacity: 1, offset: 0.25, easing: 'ease-in' },
         { transform: `translate(${dx}px, ${dy}px) scale(${endScale})`, opacity: 0.8 },
       ],
-      { duration: 650, fill: 'forwards' }
+      { delay, duration: 650, fill: 'both' }
     );
     settleDiscovery = () => {
       settleDiscovery = null;
