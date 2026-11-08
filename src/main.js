@@ -300,7 +300,8 @@
     if (e.altKey) return;
     if (
       (e.key === 'Enter' || e.key === ' ') &&
-      [elems.controller.replay, elems.edit.normalizeHelp, elems.hint.toggle, elems.console.copySolver].includes(e.target)
+      (elems.controller.shareLevel.contains(e.target) ||
+        [elems.controller.replay, elems.edit.normalizeHelp, elems.hint.toggle, elems.console.copySolver].includes(e.target))
     ) {
       return;
     }
@@ -587,6 +588,7 @@
     cancelAutoSearch();
 
     resetLevelHint();
+    elems.controller.shareLevel.open = false;
     window.getSelection().removeAllRanges();
 
     clearTimeout(nextLevelTimerId);
@@ -911,6 +913,7 @@
 
   function loadLevelObj(levelObj, param = {}) {
     resetUndo();
+    elems.controller.shareLevel.open = false;
 
     const mirrorFlag = !param.reset ? settings.mirrorFlag : false;
     const rotateNum = !param.reset ? settings.rotateNum : 0;
@@ -1466,6 +1469,9 @@
       elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
       elems.controller.prevLevel.addEventListener('click', gotoPrevLevelButton);
       elems.controller.replay.addEventListener('click', toggleReplay);
+      elems.controller.shareLevel.addEventListener('click', (e) => {
+        if (window.getComputedStyle(elems.controller.shareLevel).opacity <= 0.5) e.preventDefault();
+      });
 
       // メニューダイアログ
       elems.menu.button.addEventListener('click', () => {
@@ -2092,7 +2098,9 @@
     common.hideElem(elems.controller.nextLevel);
     common.hideElem(elems.controller.prevLevel);
     common.hideElem(elems.controller.replay);
-    common.hideElem(elems.controller.shareLevel);
+    const showShareLevel = completeFlag && !editMode && !common.isShownElem(elems.level.prev) && !common.isShownElem(elems.level.next);
+    elems.controller.shareLevel.classList.toggle('hide', !showShareLevel);
+    if (!showShareLevel) elems.controller.shareLevel.open = false;
 
     if (completeFlag) {
       common.hideElem(elems.controller.buttons.base);
@@ -2100,40 +2108,36 @@
         common.showElem(elems.controller.replay);
       }
 
-      if (!common.isShownElem(elems.level.prev) && !common.isShownElem(elems.level.next)) {
-        common.showElem(elems.controller.shareLevel);
+      if (showShareLevel) {
+        const textJaCreated = '"対称パズルのレベルを共有！"\n#対称パズル';
+        const textJaShared = '"共有されたレベルをクリア！"\n#対称パズル';
+        const textJa = settings.sharedFlag ? textJaShared : textJaCreated;
 
+        const textEnCreated = '"Share a level from Symmetry Puzzle!"\n#SymmetryPuzzle';
+        const textEnShared = '"Cleared shared level!"\n#SymmetryPuzzle';
+        const textEn = settings.sharedFlag ? textEnShared : textEnCreated;
+
+        const urlBase = 'https://tatt61880.github.io/symmetry-puzzle/?';
+        const url = urlBase + location.href.split('?')[1] + (settings.sharedFlag ? '' : '&shared');
+
+        // Twitter
         {
-          const textJaCreated = '"対称パズルのレベルを共有！"\n#対称パズル';
-          const textJaShared = '"共有されたレベルをクリア！"\n#対称パズル';
-          const textJa = settings.sharedFlag ? textJaShared : textJaCreated;
+          const base = 'https://twitter.com/intent/tweet';
+          const elem = elems.controller.shareLevelX;
+          elem.classList.add('translatable-toggle');
+          elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}%0A${encodeURIComponent(url)}`;
+          elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}%0A${encodeURIComponent(url)}`;
+          common.applyLang(elem, app.savedata.getLang());
+        }
 
-          const textEnCreated = '"Share a level from Symmetry Puzzle!"\n#SymmetryPuzzle';
-          const textEnShared = '"Cleared shared level!"\n#SymmetryPuzzle';
-          const textEn = settings.sharedFlag ? textEnShared : textEnCreated;
-
-          const urlBase = 'https://tatt61880.github.io/symmetry-puzzle/?';
-          const url = urlBase + location.href.split('?')[1] + (settings.sharedFlag ? '' : '&shared');
-
-          // Twitter
-          {
-            const base = 'https://twitter.com/intent/tweet';
-            const elem = elems.controller.shareLevelX;
-            elem.classList.add('translatable-toggle');
-            elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}%0A${encodeURIComponent(url)}`;
-            elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}%0A${encodeURIComponent(url)}`;
-            common.applyLang(elem, app.savedata.getLang());
-          }
-
-          // Bluesky
-          {
-            const base = 'https://bsky.app/intent/compose';
-            const elem = elems.controller.shareLevelBluesky;
-            elem.classList.add('translatable-toggle');
-            elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}%0A${encodeURIComponent(url)}`;
-            elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}%0A${encodeURIComponent(url)}`;
-            common.applyLang(elem, app.savedata.getLang());
-          }
+        // Bluesky
+        {
+          const base = 'https://bsky.app/intent/compose';
+          const elem = elems.controller.shareLevelBluesky;
+          elem.classList.add('translatable-toggle');
+          elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}%0A${encodeURIComponent(url)}`;
+          elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}%0A${encodeURIComponent(url)}`;
+          common.applyLang(elem, app.savedata.getLang());
         }
       } else if (!common.isSeqMode) {
         if (common.isShownElem(elems.level.next)) {

@@ -239,10 +239,9 @@
       }
     }
 
-    #button-replay {
-      position: absolute;
-      bottom: 9px;
-      left: 50%;
+    #button-replay,
+    #share-level > summary {
+      box-sizing: border-box;
       width: 186px;
       height: 52px;
       font: inherit;
@@ -253,7 +252,6 @@
       background-color: #f1f8ff;
       border: 3px solid #7799bb;
       border-radius: 12px;
-      transform: translateX(-50%);
 
       @media (hover: hover) {
         &:hover {
@@ -262,8 +260,30 @@
       }
     }
 
-    &:has(#button-replay:not(.hide)) #share-level {
-      transform: translateY(-15px) scale(0.87);
+    #button-replay {
+      position: absolute;
+      bottom: 9px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    #share-level {
+      position: absolute;
+      top: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+
+      summary {
+        margin: 0 auto;
+        line-height: 46px;
+        list-style-position: inside;
+        user-select: none;
+      }
+
+      svg {
+        display: block;
+        margin: 10px auto 0;
+      }
     }
   }
 }
