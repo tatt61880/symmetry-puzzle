@@ -85,6 +85,7 @@
           ...[0, 1, 2].map((y) => ({
             when: { x: 0, y, block: 's' },
             dir: 4,
+            wallDir: 1,
             ja: '方向ボタンの中央を押してみましょう。青いキャラが線対称のマスに移り、壁を越えられます。',
             en: 'Press the button in the middle of the arrows to cross the wall. It moves you to the mirror-image square.',
           })),

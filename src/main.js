@@ -66,6 +66,7 @@
   let gotoShapesNextPageIntervalId = null;
 
   let levelHintState = 'locked';
+  let hintWallPressCount = 0;
   let completeFlag = false;
   let symmetryFlag = false;
 
@@ -145,11 +146,12 @@
   }
 
   function startMoveInput(dir, isRepeat = false) {
-    const wasNeutral = input.inputDir === app.Input.DIRS.NEUTRAL;
+    const previousDir = input.inputDir;
     input.update(dir);
 
-    if (common.level === null || settings.autoMode) return;
-    if (isRepeat || !wasNeutral || moveIntervalCount < MOVE_INTERVAL_COUNT) return;
+    if (common.level === null || settings.autoMode || isRepeat) return;
+    if (dir !== previousDir) countHintWallPress(dir);
+    if (previousDir !== app.Input.DIRS.NEUTRAL || moveIntervalCount < MOVE_INTERVAL_COUNT) return;
     inputFunc(true);
   }
 
@@ -529,7 +531,7 @@
     if (editMode) return;
     cancelAutoSearch();
 
-    levelHintState = 'locked';
+    resetLevelHint();
     window.getSelection().removeAllRanges();
 
     clearTimeout(nextLevelTimerId);
@@ -551,7 +553,7 @@
   }
 
   function resetUndo() {
-    levelHintState = 'locked';
+    resetLevelHint();
     undoInfoForNormal = new app.UndoInfo();
   }
 
@@ -2050,6 +2052,23 @@
       highestScorePrev,
       showCharsFlag: editMode || settings.debugFlag || temporaryShowCharsFlag,
     });
+  }
+
+  function resetLevelHint() {
+    levelHintState = 'locked';
+    hintWallPressCount = 0;
+  }
+
+  function countHintWallPress(dir) {
+    if (levelHintState !== 'locked' || editMode || completeFlag || undoFlag || redoFlag) return;
+    const hint = common.level.getHint();
+    if (hint?.wallDir !== Number(dir)) return;
+
+    hintWallPressCount++;
+    if (hintWallPressCount === 3) {
+      levelHintState = 'available';
+      updateLevelHint(hint);
+    }
   }
 
   function updateLevelHint(hint) {

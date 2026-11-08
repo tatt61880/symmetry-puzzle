@@ -150,9 +150,12 @@
     for (const mirrorFlag of [false, true]) {
       for (let rotateNum = 0; rotateNum < 4; rotateNum++) {
         const level = new app.Level({ levelObj: app.levels[6], checkMode, mirrorFlag, rotateNum });
+        const rightDir = ((mirrorFlag ? 3 : 1) + rotateNum) % 4;
         assert.equal(level.getHint().dir, 4);
+        assert.equal(level.getHint().wallDir, rightDir);
         assert.ok(level.move(0, 0));
-        assert.equal(level.getHint().dir, ((mirrorFlag ? 3 : 1) + rotateNum) % 4);
+        assert.equal(level.getHint().dir, rightDir);
+        assert.equal(level.getHint().wallDir, undefined);
         assert.ok(level.move(0, 0));
         assert.equal(level.getHint().dir, 4);
       }
