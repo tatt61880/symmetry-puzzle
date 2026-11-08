@@ -1378,7 +1378,7 @@
           pointermoveEventName,
           (e) => {
             if (e.target === elems.auto.seek || e.target === elems.auto.speed) return;
-            if (elems.edit.normalizeDialog.open || common.isShownElem(elems.console.widget)) return;
+            if (elems.help.dialogDiv.contains(e.target) || elems.edit.normalizeDialog.open || common.isShownElem(elems.console.widget)) return;
             // スワイプ操作を無効化する。
             e.preventDefault();
           },
