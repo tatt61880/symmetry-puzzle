@@ -124,7 +124,7 @@
 
     elems.shapes.dialogSvg.innerHTML = '';
 
-    const records = app.savedata.getShapeRecords(common.level).sort((a, b) => a.steps - b.steps);
+    const records = app.savedata.getShapeRecords(common.level, common.levelNum).sort((a, b) => a.steps - b.steps);
     const totalNum = records.length;
     elems.shapes.dialog.dataset.maxCount = totalNum - 1;
     if (page === null) {

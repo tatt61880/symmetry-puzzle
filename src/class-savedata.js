@@ -84,59 +84,55 @@
       return true;
     }
 
-    saveSteps(level, replay) {
-      this.#saveBest(this.data.steps, this.#getLevelKey(level), replay);
+    saveSteps(level, replay, seqNum = null) {
+      this.#saveBest(this.data.steps, this.#getLevelKey(level, seqNum), replay);
     }
 
-    saveShape(level, targetShape, replay) {
-      const key = this.#getLevelKey(level);
+    saveShape(level, targetShape, replay, seqNum = null) {
+      const key = this.#getLevelKey(level, seqNum);
       this.data.shapes[key] ??= {};
       return this.#saveBest(this.data.shapes[key], targetShape, replay);
     }
 
-    getShapesObj(level) {
-      const key = this.#getLevelKey(level);
+    getShapesObj(level, seqNum = null) {
+      const key = this.#getLevelKey(level, seqNum);
       return this.data.shapes[key];
     }
 
-    getShapeRecords(level) {
-      return Object.entries(this.getShapesObj(level) ?? {}).map(([shapeStr, record]) => ({
+    getShapeRecords(level, seqNum = null) {
+      return Object.entries(this.getShapesObj(level, seqNum) ?? {}).map(([shapeStr, record]) => ({
         shapeStr,
         steps: getRecordSteps(record),
         replay: typeof record === 'string' ? record : undefined,
       }));
     }
 
-    getHighestScore(level) {
-      const key = this.#getLevelKey(level);
+    getHighestScore(level, seqNum = null) {
+      const key = this.#getLevelKey(level, seqNum);
       return getRecordSteps(this.data.steps[key]) ?? this.#getMinStepsinShapes(key);
     }
 
-    getHighestScoreForSeqMode(num, checkMode) {
-      const key = this.#getSeqModeKey(num, checkMode);
+    getHighestScoreForSeqMode(num, mode) {
+      const key = this.#getSeqModeKey(num, mode);
       return this.#getMinStepsinShapes(key);
     }
 
     getUnsolvedMinNum(checkMode) {
       let num = 1;
       const mode = app.Level.getCheckModeStr(checkMode);
-      while (this.data.shapes[`mode=${mode}&num=${num}`] !== undefined) {
+      while (this.data.shapes[this.#getSeqModeKey(num, mode)] !== undefined) {
         num++;
       }
       return num;
     }
 
-    #getLevelKey(level) {
-      if (!isBrowser || app.common.levelNum === null || app.common.level === null) {
-        return level.getUrlQuery();
-      } else {
-        const mode = app.Level.getCheckModeStr(app.common.level.getCheckMode());
-        return this.#getSeqModeKey(app.common.levelNum, mode);
-      }
+    #getLevelKey(level, seqNum) {
+      if (seqNum === null) return level.getUrlQuery();
+      return this.#getSeqModeKey(seqNum, app.Level.getCheckModeStr(level.getCheckMode()));
     }
 
-    #getSeqModeKey(num, checkMode) {
-      return `mode=${checkMode}&num=${num}`;
+    #getSeqModeKey(num, mode) {
+      return `mode=${mode}&num=${num}`;
     }
 
     #getMinStepsinShapes(key) {

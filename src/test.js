@@ -45,6 +45,7 @@
       testsOther();
       testAxisNormalization();
       testLongReplayRecords();
+      testLevelRecordSelection();
       testMirroredAxis();
       testsSolve();
       testInvalidSolverModePreservesBackup();
@@ -239,6 +240,36 @@
       app.console.error('Error: Invalid states setting.');
       process.exitCode = 1;
     }
+  }
+
+  function testLevelRecordSelection() {
+    const assert = require('node:assert/strict');
+    const Savedata = require('./class-savedata.js');
+    const savedata = new Savedata();
+    const levelObj = require('./levels-line.js')[1];
+    const line = new app.Level({ levelObj, checkMode: app.Level.CHECK_MODE.LINE });
+    const point = new app.Level({ levelObj, checkMode: app.Level.CHECK_MODE.POINT });
+    const shape = '##';
+    const boardKey = line.getUrlQuery();
+    savedata.restoreBackupData({
+      version: 1,
+      steps: { [boardKey]: '1121' },
+      shapes: { [boardKey]: { [shape]: '1121' }, 'mode=line&num=1': { [shape]: '21' } },
+    });
+
+    assert.equal(savedata.getHighestScore(line), 4);
+    assert.equal(savedata.getHighestScore(line, 1), 2);
+    savedata.saveSteps(point, '123', 1);
+    savedata.saveShape(point, shape, '123', 1);
+    assert.equal(savedata.getHighestScore(point, 1), 3);
+    assert.deepEqual(savedata.getShapeRecords(point, 1), [{ shapeStr: shape, steps: 3, replay: '123' }]);
+    assert.deepEqual(savedata.getShapesObj(line, 1), { [shape]: '21' });
+    assert.equal(savedata.getHighestScore(point), null);
+    assert.equal(savedata.getHighestScore(point, 2), null);
+    assert.equal(savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.POINT), 2);
+    const { steps, shapes } = savedata.getBackupData();
+    assert.deepEqual(steps, { [boardKey]: '1121', 'mode=point&num=1': '123' });
+    assert.deepEqual(shapes['mode=point&num=1'], { [shape]: '123' });
   }
 
   function testLongReplayRecords() {

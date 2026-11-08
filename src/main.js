@@ -876,7 +876,7 @@
   }
 
   function updateShapeButton(discoveredShape = null) {
-    const shapesObj = common.level && app.savedata.getShapesObj(common.level);
+    const shapesObj = common.level && app.savedata.getShapesObj(common.level, common.levelNum);
     if (!shapesObj) {
       common.hideElem(elems.shapes.buttonG);
       return;
@@ -2237,7 +2237,7 @@
       score: {
         currentStep,
         bestStep: common.level.getBestStep(),
-        highestScore: !editMode && common.levelId !== null ? app.savedata.getHighestScore(common.level) : undefined,
+        highestScore: !editMode && common.levelId !== null ? app.savedata.getHighestScore(common.level, common.levelNum) : undefined,
         highestScorePrev,
         onClearMessageDrawn: scheduleAutoNextLevel,
       },
@@ -2254,24 +2254,25 @@
     const replayStr = undoInfoForNormal.getReplayStr();
     if (replayStr === null) return null;
 
-    const bestStep = common.level.getBestStep();
+    const { level, levelNum } = common;
+    const bestStep = level.getBestStep();
     // 記録保存
-    const highestScorePrev = app.savedata.getHighestScore(common.level);
+    const highestScorePrev = app.savedata.getHighestScore(level, levelNum);
     if (bestStep !== undefined) {
-      app.savedata.saveSteps(common.level, replayStr);
+      app.savedata.saveSteps(level, replayStr, levelNum);
     }
 
     // シルエットデータ保存
     {
-      const shapeStr = common.level.getTargetShapeForSavedata();
-      const isNewShape = app.savedata.getShapesObj(common.level)?.[shapeStr] === undefined;
-      app.savedata.saveShape(common.level, shapeStr, replayStr);
+      const shapeStr = level.getTargetShapeForSavedata();
+      const isNewShape = app.savedata.getShapesObj(level, levelNum)?.[shapeStr] === undefined;
+      app.savedata.saveShape(level, shapeStr, replayStr, levelNum);
       if (isNewShape) updateShapeButton(shapeStr);
     }
 
     // ログ出力
     {
-      const levelObj = common.level.getLevelObj();
+      const levelObj = level.getLevelObj();
       const w = levelObj.w;
       const h = levelObj.h;
       const s = levelObj.s;
