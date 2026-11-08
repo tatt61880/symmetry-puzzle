@@ -23,11 +23,23 @@
   .title-character-blink .player-eye {
     animation: title-character-blink 160ms ease-in-out 70ms;
   }
+
+  .title-character-wink .player-eye + .player-eye {
+    animation: title-character-wink 210ms ease-in-out 35ms;
+  }
 }
 
 @keyframes title-character-blink {
   50% {
     scale: 1 0.15;
+  }
+}
+
+@keyframes title-character-wink {
+  35%,
+  65% {
+    rotate: -8deg;
+    scale: 1.12 0.18;
   }
 }
 

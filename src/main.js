@@ -1139,7 +1139,8 @@
         return;
       }
 
-      if (!blinkRequested && getRand(1, 15) !== 1) {
+      const paused = blinkRequested || getRand(1, 15) === 1;
+      if (!paused) {
         const moveFlag = level.move(dx, 0);
         if (!moveFlag) {
           clearInterval(intervalId);
@@ -1161,8 +1162,8 @@
         width: widthNum,
         height: 1,
       });
-      if (blinkRequested) {
-        g.classList.add('title-character-blink');
+      if (paused) {
+        g.classList.add(blinkRequested ? 'title-character-blink' : 'title-character-wink');
         blinkRequested = false;
       }
 
