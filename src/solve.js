@@ -31,9 +31,12 @@
   if (!isBrowser && require.main === module) {
     const { Command, Option } = require('commander');
     const program = new Command();
+    const modeOption = new Option('--mode <check-mode>', 'symmetry mode');
+    modeOption.choices(['line', 'point', 'special', 'all']).makeOptionMandatory();
+
     program
       .version('4.0.0')
-      .addOption(new Option('--mode <check-mode>', 'symmetry mode').choices(['line', 'point', 'special', 'all']).makeOptionMandatory())
+      .addOption(modeOption)
       .option('-i, --id <id>', 'id of level')
       .option('--all', 'list up all solutions')
       .option('-w, --w <w>', 'levelObj.w', Number)
