@@ -441,8 +441,7 @@
    * A → A' → B → A''。音符は「音名:拍数」、R は休符です。
    */
   function createBgm(audioCtx, destination, opts = {}) {
-    const numberInRange = (value, fallback, min, max) =>
-      Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : fallback;
+    const numberInRange = (value, fallback, min, max) => (Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : fallback);
     const tempo = numberInRange(opts.tempo, 92, 40, 180);
     const tickMs = numberInRange(opts.tickMs, 25, 10, 100);
     const lookAheadSec = numberInRange(opts.lookAheadSec, 0.18, tickMs / 1000 + 0.06, 0.6);
@@ -543,8 +542,7 @@
     const wrap = (step) => ((Math.floor(step) % length) + length) % length;
 
     // 1音ごとに多数の倍音用発振器を作らず、波形を共有します。
-    const makeWave = (harmonics) =>
-      audioCtx.createPeriodicWave(new Float32Array(harmonics.length), new Float32Array(harmonics));
+    const makeWave = (harmonics) => audioCtx.createPeriodicWave(new Float32Array(harmonics.length), new Float32Array(harmonics));
     const keyWave = makeWave([0, 1, 0.16, 0.055, 0.018]);
     const bassWave = makeWave([0, 1, 0.2, 0.07, 0.018]);
 
@@ -647,7 +645,10 @@
       feedbackL.connect(right);
       right.connect(feedbackR);
       feedbackR.connect(left);
-      for (const [delay, pan] of [[left, -0.42], [right, 0.42]]) {
+      for (const [delay, pan] of [
+        [left, -0.42],
+        [right, 0.42],
+      ]) {
         if (typeof audioCtx.createStereoPanner === 'function') {
           const panner = keep(audioCtx.createStereoPanner());
           panner.pan.value = pan;

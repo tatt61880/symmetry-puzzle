@@ -33,11 +33,7 @@
     const program = new Command();
     program
       .version('4.0.0')
-      .addOption(
-        new Option('--mode <check-mode>', 'symmetry mode')
-          .choices(['line', 'point', 'special', 'all'])
-          .makeOptionMandatory()
-      )
+      .addOption(new Option('--mode <check-mode>', 'symmetry mode').choices(['line', 'point', 'special', 'all']).makeOptionMandatory())
       .option('-i, --id <id>', 'id of level')
       .option('--all', 'list up all solutions')
       .option('-w, --w <w>', 'levelObj.w', Number)
