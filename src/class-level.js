@@ -305,8 +305,9 @@
     }
 
     getCenter(isX) {
-      if (!this.#exist(isX)) return null;
-      return this.#getCenter(isX);
+      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
+      if (minX > maxX) return null;
+      return { x: (minX + maxX + 1) * 0.5, y: (minY + maxY + 1) * 0.5 };
     }
 
     getSymmetryType(isX) {
@@ -712,14 +713,13 @@
     }
 
     isSymmetry(isX) {
-      return this.#getSymmetryType(isX) !== null;
+      return this.#hasSymmetry(isX, this.#getMinMaxXY(isX));
     }
 
     isCompleted() {
-      if (!this.#exist(app.states.isTarget)) return false;
-      if (!this.isSymmetry(app.states.isTarget)) return false;
-      if (!this.isConnected(app.states.isTarget)) return false;
-      return true;
+      const isTarget = app.states.isTarget;
+      const bounds = this.#getMinMaxXY(isTarget);
+      return bounds.minX <= bounds.maxX && this.#hasSymmetry(isTarget, bounds) && this.isConnected(isTarget);
     }
 
     getCheckMode() {
@@ -1156,177 +1156,131 @@
       let minY = this.#height;
       let maxY = 0;
       for (let y = this.#yMin; y < this.#yMax; ++y) {
-        for (let x = this.#xMin; x < this.#xMax; ++x) {
-          if (isX(this.#states[y][x])) {
-            minX = Math.min(minX, x);
-            maxX = Math.max(maxX, x);
-            minY = Math.min(minY, y);
-            maxY = Math.max(maxY, y);
-          }
-        }
+        const row = this.#states[y];
+        let left = this.#xMin;
+        while (left < this.#xMax && !isX(row[left])) ++left;
+        if (left === this.#xMax) continue;
+
+        let right = this.#xMax - 1;
+        while (right > left && !isX(row[right])) --right;
+        minX = Math.min(minX, left);
+        maxX = Math.max(maxX, right);
+        minY = Math.min(minY, y);
+        maxY = y;
       }
       return { minX, maxX, minY, maxY };
     }
 
-    // 図形の中心を得る。
-    #getCenter(isX) {
-      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
-      return { x: (minX + maxX + 1) * 0.5, y: (minY + maxY + 1) * 0.5 };
-    }
-
     // 左右対称か否か。(｜)
-    #isLine1(isX, minX, maxX, minY, maxY) {
+    #isLine1(isX, { minX, maxX, minY, maxY }) {
       for (let y = minY; y <= maxY; ++y) {
-        for (let x = minX; x <= maxX; ++x) {
-          if (!isX(this.#states[y][x])) continue;
-          if (!isX(this.#states[y][minX + maxX - x])) {
-            return false;
-          }
+        const row = this.#states[y];
+        for (let x = minX, mirrorX = maxX; x < mirrorX; ++x, --mirrorX) {
+          if (Boolean(isX(row[x])) !== Boolean(isX(row[mirrorX]))) return false;
         }
       }
       return true;
     }
 
     // 上下対称か否か。(―)
-    #isLine2(isX, minX, maxX, minY, maxY) {
-      for (let y = minY; y <= maxY; ++y) {
+    #isLine2(isX, { minX, maxX, minY, maxY }) {
+      for (let y = minY, mirrorY = maxY; y < mirrorY; ++y, --mirrorY) {
+        const row = this.#states[y];
+        const other = this.#states[mirrorY];
         for (let x = minX; x <= maxX; ++x) {
-          if (!isX(this.#states[y][x])) continue;
-          if (!isX(this.#states[minY + maxY - y][x])) {
-            return false;
-          }
+          if (Boolean(isX(row[x])) !== Boolean(isX(other[x]))) return false;
         }
       }
       return true;
     }
 
     // 斜めに対称軸があるか否か。(＼)
-    #isLine3(isX, minX, maxX, minY, maxY) {
+    #isLine3(isX, { minX, maxX, minY, maxY }) {
       if (maxX - minX !== maxY - minY) return false;
       for (let y = minY; y <= maxY; ++y) {
-        for (let x = minX; x <= maxX; ++x) {
-          if (!isX(this.#states[y][x])) continue;
-          if (!isX(this.#states[minY + x - minX][minX + y - minY])) {
-            return false;
-          }
+        const axisX = minX + y - minY;
+        for (let x = minX; x < axisX; ++x) {
+          if (Boolean(isX(this.#states[y][x])) !== Boolean(isX(this.#states[minY + x - minX][axisX]))) return false;
         }
       }
       return true;
     }
 
     // 斜めに対称軸があるか否か。(／)
-    #isLine4(isX, minX, maxX, minY, maxY) {
+    #isLine4(isX, { minX, maxX, minY, maxY }) {
       if (maxX - minX !== maxY - minY) return false;
       for (let y = minY; y <= maxY; ++y) {
-        for (let x = minX; x <= maxX; ++x) {
-          if (!isX(this.#states[y][x])) continue;
-          if (!isX(this.#states[minY + maxX - x][minX + maxY - y])) {
-            return false;
-          }
+        const axisX = minX + maxY - y;
+        for (let x = minX; x < axisX; ++x) {
+          if (Boolean(isX(this.#states[y][x])) !== Boolean(isX(this.#states[minY + maxX - x][axisX]))) return false;
         }
       }
       return true;
+    }
+
+    #isPoint1(isX, { minX, maxX, minY, maxY }) {
+      for (let y = minY, oppositeY = maxY; y <= oppositeY; ++y, --oppositeY) {
+        const row = this.#states[y];
+        const other = this.#states[oppositeY];
+        const endX = y === oppositeY ? (minX + maxX) / 2 : maxX + 1;
+        for (let x = minX; x < endX; ++x) {
+          if (Boolean(isX(row[x])) !== Boolean(isX(other[minX + maxX - x]))) return false;
+        }
+      }
+      return true;
+    }
+
+    // 180度対称を確認済みなので、左上の領域とその90度回転先を比べればよい。
+    #isPoint2(isX, { minX, maxX, minY, maxY }) {
+      if (maxX - minX !== maxY - minY) return false;
+      const centerX = (minX + maxX) / 2;
+      const centerY = (minY + maxY) / 2;
+      for (let y = minY; y <= centerY; ++y) {
+        const rotatedX = minX + y - minY;
+        for (let x = minX; x < centerX; ++x) {
+          const rotatedY = maxY - (x - minX);
+          if (Boolean(isX(this.#states[y][x])) !== Boolean(isX(this.#states[rotatedY][rotatedX]))) return false;
+        }
+      }
+      return true;
+    }
+
+    // 完成判定など、対称性の種類まで必要のない場合。
+    #hasSymmetry(isX, bounds) {
+      if (this.#checkMode === Level.CHECK_MODE.LINE) {
+        return this.#isLine1(isX, bounds) || this.#isLine2(isX, bounds) || this.#isLine3(isX, bounds) || this.#isLine4(isX, bounds);
+      }
+      if (!this.#isPoint1(isX, bounds)) return false;
+      // 点対称なら、縦軸と横軸、2本の斜め軸はそれぞれ対になる。
+      return this.#checkMode === Level.CHECK_MODE.POINT || this.#isLine1(isX, bounds) || this.#isLine3(isX, bounds);
     }
 
     #getSymmetryTypeLine(isX) {
-      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
-
-      const isLine1 = this.#isLine1(isX, minX, maxX, minY, maxY);
-      const isLine2 = this.#isLine2(isX, minX, maxX, minY, maxY);
-      const isLine3 = this.#isLine3(isX, minX, maxX, minY, maxY);
-      const isLine4 = this.#isLine4(isX, minX, maxX, minY, maxY);
-
-      if (isLine1) {
-        if (isLine2) {
-          if (isLine3) {
-            return Level.SYMMETRY_TYPE.PLUS3;
-          }
-          return Level.SYMMETRY_TYPE.PLUS1;
-        }
-        return Level.SYMMETRY_TYPE.LINE1;
+      const bounds = this.#getMinMaxXY(isX);
+      if (this.#isLine1(isX, bounds)) {
+        if (!this.#isLine2(isX, bounds)) return Level.SYMMETRY_TYPE.LINE1;
+        return this.#isLine3(isX, bounds) ? Level.SYMMETRY_TYPE.PLUS3 : Level.SYMMETRY_TYPE.PLUS1;
       }
-      if (isLine2) {
-        return Level.SYMMETRY_TYPE.LINE2;
+      if (this.#isLine2(isX, bounds)) return Level.SYMMETRY_TYPE.LINE2;
+      if (this.#isLine3(isX, bounds)) {
+        return this.#isLine4(isX, bounds) ? Level.SYMMETRY_TYPE.PLUS2 : Level.SYMMETRY_TYPE.LINE3;
       }
-      if (isLine3) {
-        if (isLine4) {
-          return Level.SYMMETRY_TYPE.PLUS2;
-        }
-        return Level.SYMMETRY_TYPE.LINE3;
-      }
-      if (isLine4) {
-        return Level.SYMMETRY_TYPE.LINE4;
-      }
-
-      return null;
-    }
-
-    #isPoint1(isX, minX, maxX, minY, maxY) {
-      for (let y = minY; y <= maxY; ++y) {
-        for (let x = minX; x <= maxX; ++x) {
-          if (!isX(this.#states[y][x])) continue;
-          if (!isX(this.#states[minY + maxY - y][minX + maxX - x])) {
-            return false;
-          }
-        }
-      }
-      return true;
-    }
-
-    #isPoint2(isX, minX, maxX, minY, maxY) {
-      if (maxX - minX !== maxY - minY) return false;
-
-      for (let y = minY; y <= maxY; ++y) {
-        for (let x = minX; x <= maxX; ++x) {
-          if (!isX(this.#states[y][x])) continue;
-          const xx = x - minX;
-          const yy = y - minY;
-          if (!isX(this.#states[maxY - xx][minX + yy])) {
-            return false;
-          }
-        }
-      }
-      return true;
+      return this.#isLine4(isX, bounds) ? Level.SYMMETRY_TYPE.LINE4 : null;
     }
 
     #getSymmetryTypePoint(isX) {
-      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
-
-      const isPoint1 = this.#isPoint1(isX, minX, maxX, minY, maxY);
-
-      if (!isPoint1) return null;
-
-      const isPoint2 = this.#isPoint2(isX, minX, maxX, minY, maxY);
-
-      if (isPoint2) {
-        return Level.SYMMETRY_TYPE.POINT2;
-      } else {
-        return Level.SYMMETRY_TYPE.POINT1;
-      }
+      const bounds = this.#getMinMaxXY(isX);
+      if (!this.#isPoint1(isX, bounds)) return null;
+      return this.#isPoint2(isX, bounds) ? Level.SYMMETRY_TYPE.POINT2 : Level.SYMMETRY_TYPE.POINT1;
     }
 
     #getSymmetryTypeSpecial(isX) {
-      const { minX, maxX, minY, maxY } = this.#getMinMaxXY(isX);
-
-      const isPoint1 = this.#isPoint1(isX, minX, maxX, minY, maxY);
-      if (!isPoint1) return null;
-
-      const isPoint2 = this.#isPoint2(isX, minX, maxX, minY, maxY);
-      const isLine1 = this.#isLine1(isX, minX, maxX, minY, maxY);
-      if (isPoint2) {
-        if (isLine1) {
-          return Level.SYMMETRY_TYPE.SPECIAL3;
-        }
-      } else {
-        if (isLine1) {
-          return Level.SYMMETRY_TYPE.SPECIAL1;
-        }
-        const isLine3 = this.#isLine3(isX, minX, maxX, minY, maxY);
-        if (isLine3) {
-          return Level.SYMMETRY_TYPE.SPECIAL2;
-        }
+      const bounds = this.#getMinMaxXY(isX);
+      if (!this.#isPoint1(isX, bounds)) return null;
+      if (this.#isLine1(isX, bounds)) {
+        return this.#isLine3(isX, bounds) ? Level.SYMMETRY_TYPE.SPECIAL3 : Level.SYMMETRY_TYPE.SPECIAL1;
       }
-      return null;
+      return this.#isLine3(isX, bounds) ? Level.SYMMETRY_TYPE.SPECIAL2 : null;
     }
 
     #initStates() {

@@ -43,6 +43,7 @@
       break;
     default:
       testsOther();
+      testSymmetryTypes();
       testAxisNormalization();
       testLongReplayRecords();
       testLevelRecordSelection();
@@ -149,6 +150,36 @@
 
     function levelInfo() {
       return `[LEVEL ${levelId}] [subject: ${levelObj.subject}]`;
+    }
+  }
+
+  function testSymmetryTypes() {
+    const assert = require('node:assert/strict');
+    const { LINE, POINT, SPECIAL } = app.Level.CHECK_MODE;
+    const types = app.Level.SYMMETRY_TYPE;
+    for (const [s, line, point, special, connected] of [
+      ['111-01', types.LINE1, null, null, true],
+      ['1-11-1', types.LINE2, null, null, true],
+      ['11-1', types.LINE3, null, null, true],
+      ['11-01', types.LINE4, null, null, true],
+      ['111-01-111', types.PLUS1, types.POINT1, types.SPECIAL1, true],
+      ['11-111-011', types.PLUS2, types.POINT1, types.SPECIAL2, true],
+      ['12-21', types.PLUS3, types.POINT2, types.SPECIAL3, true],
+      ['11-01-011', null, types.POINT1, null, true],
+      ['01-0111-111-001', null, types.POINT2, null, true],
+      ['1-01', types.PLUS2, types.POINT1, types.SPECIAL2, false],
+    ]) {
+      const level = new app.Level({ levelObj: { w: 4, h: 4, s } });
+      for (const [mode, expected] of [
+        [LINE, line],
+        [POINT, point],
+        [SPECIAL, special],
+      ]) {
+        level.setCheckMode(mode);
+        assert.equal(level.getSymmetryType(app.states.isTarget), expected, s);
+        assert.equal(level.isSymmetry(app.states.isTarget), expected !== null, s);
+        assert.equal(level.isCompleted(), connected && expected !== null, s);
+      }
     }
   }
 
