@@ -95,7 +95,6 @@
       this.#width = null;
       this.#height = null;
       this.#states = [];
-      this.#moveFlags = [];
       this.#moveDx = null;
       this.#moveDy = null;
       this.#yMin = 1;
@@ -182,6 +181,48 @@
 
     getS() {
       return this.#getStateStrSub(this.#states, this.#xMin, this.#xMax, this.#yMin, this.#yMax);
+    }
+
+    // 同じ壁配置の探索内で使うキー。占有マスの位置とブロックの識別番号を1文字ずつ格納します。
+    createSearchStateCodec() {
+      const cells = [];
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        const row = this.#states[y];
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
+          if (row[x] !== app.states.wall) cells.push({ row, x });
+        }
+      }
+
+      const codes = new Map();
+      const states = [];
+      const entries = [];
+      return {
+        encode() {
+          let offset = 0;
+          for (let i = 0; i < cells.length; ++i) {
+            const { row, x } = cells[i];
+            const state = row[x];
+            if (state === app.states.none) continue;
+            let code = codes.get(state);
+            if (code === undefined) {
+              code = states.length;
+              states.push(state);
+              codes.set(state, code);
+            }
+            entries[offset++] = i;
+            entries[offset++] = code;
+          }
+          entries.length = offset;
+          return String.fromCharCode(...entries);
+        },
+        restore(key) {
+          for (const { row, x } of cells) row[x] = app.states.none;
+          for (let i = 0; i < key.length; i += 2) {
+            const { row, x } = cells[key.charCodeAt(i)];
+            row[x] = states[key.charCodeAt(i + 1)];
+          }
+        },
+      };
     }
 
     getA() {
@@ -688,15 +729,10 @@
     #resetMoveFlags(holdBumpFace = false) {
       this.#pushingUsers.clear();
       if (!holdBumpFace) this.#bumpDirections.clear();
-      for (let y = 0; y < this.#height; ++y) {
-        this.#moveFlags[y] = [];
-        for (let x = 0; x < this.#width; ++x) {
-          this.#moveFlags[y][x] = false;
-        }
-      }
+      for (const row of this.#moveFlags) row.fill(false);
     }
 
-    #updateMoveFlags(dx, dy, userMax = app.states.userMax) {
+    #updateMoveFlags(dx, dy, userMax) {
       this.#resetMoveFlags();
       if (!this.hasAxis() && dx + dy === 0) {
         return false;
@@ -708,8 +744,7 @@
         loop: for (let i = app.states.userMin; i <= userMax; ++i) {
           if (!this.#exist((x) => x === i)) continue;
 
-          const moveState = []; // 移動予定の状態番号
-          moveState[i] = true;
+          const moveState = new Set([i]); // 移動予定の状態番号
 
           const st = new app.Stack(); // 移動可能か検証必要な状態番号
           st.push(i);
@@ -726,8 +761,8 @@
 
                 if (dstState < app.states.userMin || userMax < dstState) {
                   continue loop;
-                } else if (!moveState[dstState]) {
-                  moveState[dstState] = true;
+                } else if (!moveState.has(dstState)) {
+                  moveState.add(dstState);
                   st.push(dstState);
                 }
               }
@@ -737,7 +772,7 @@
           // 各座標に移動フラグを設定
           for (let y = this.#yMin; y < this.#yMax; ++y) {
             for (let x = this.#xMin; x < this.#xMax; ++x) {
-              if (moveState[this.#states[y][x]]) {
+              if (moveState.has(this.#states[y][x])) {
                 this.#moveFlags[y][x] = true;
               }
             }
@@ -748,8 +783,7 @@
         loop: for (let i = app.states.userMin; i <= userMax; ++i) {
           if (!this.#exist((x) => x === i)) continue;
 
-          const moveState = []; // 移動予定の状態番号
-          moveState[i] = true;
+          const moveState = new Set([i]); // 移動予定の状態番号
 
           let pushingTarget = false;
           const st = new app.Stack(); // 移動可能か検証必要な状態番号
@@ -767,8 +801,8 @@
                   // 自分が壁に当たったか、直接押したターゲットの先が詰まっているとき。
                   if (state === i || pushingTarget) this.#bumpDirections.set(i, { dx, dy });
                   continue loop;
-                } else if (!moveState[dstState]) {
-                  moveState[dstState] = true;
+                } else if (!moveState.has(dstState)) {
+                  moveState.add(dstState);
                   st.push(dstState);
                 }
               }
@@ -779,7 +813,7 @@
           for (let y = this.#yMin; y < this.#yMax; ++y) {
             for (let x = this.#xMin; x < this.#xMax; ++x) {
               const state = this.#states[y][x];
-              if (!moveState[state]) continue;
+              if (!moveState.has(state)) continue;
               this.#moveFlags[y][x] = true;
 
               if (app.states.isUser(state)) {
@@ -940,9 +974,9 @@
       }
     }
 
-    move(dx, dy) {
+    move(dx, dy, userMax = app.states.userMax) {
       this.#renderer?.resetIdleBlink();
-      const moveFlag = this.#updateMoveFlags(dx, dy);
+      const moveFlag = this.#updateMoveFlags(dx, dy, userMax);
       if (moveFlag) {
         this.#execMoveFlags();
       }
@@ -1302,6 +1336,7 @@
       this.#yMax = this.#height - 1;
 
       // 初期化
+      this.#moveFlags = Array.from({ length: this.#height }, () => new Array(this.#width).fill(false));
       for (let y = 0; y < this.#height; ++y) {
         this.#states[y] = [];
         for (let x = 0; x < this.#width; ++x) {

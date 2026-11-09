@@ -314,9 +314,14 @@
       }
 
       // 先頭手順の途中で通った盤面にも、探索開始後は戻れるようにします。
-      const startStateStr = level.getS();
-      const stateStrMap = new Map([[startStateStr, prefixStep]]);
-      let nextStateStrSet = new Set([startStateStr]);
+      const board = level.createSearchStateCodec();
+      const startKey = board.encode();
+      const visited = new Set([startKey]);
+      // 未完成の局面に発見順で番号を振り、完成したときだけ親をたどって手順を復元します。
+      const parents = [-1];
+      const moves = [0];
+      let frontier = [startKey];
+      let firstNode = 0;
       const shapeStrMap = new Map();
       let stateCount = 0;
 
@@ -327,9 +332,10 @@
       let sliceStart = startTime;
       let suspendedMs = 0;
       for (; step < maxStep; ) {
-        const currentStateStrSet = nextStateStrSet;
-        nextStateStrSet = new Set();
-        for (const currentStateStr of currentStateStrSet) {
+        const nextFrontier = [];
+        for (let i = 0; i < frontier.length; ++i) {
+          const key = frontier[i];
+          const parent = firstNode + i;
           if (sliceMs !== undefined) {
             const now = performance.now();
             if (now - sliceStart >= sliceMs) {
@@ -344,14 +350,13 @@
             if (elapsedMs > timeLimit * 1000) {
               const errorMessage = `Time limit over. [Time: ${msToSecStr(elapsedMs)}] [Time limit: ${msToSecStr(
                 Number(timeLimit) * 1000
-              )}] [map.size: ${stateStrMap.size}] [step: ${step}]`;
+              )}] [map.size: ${visited.size}] [step: ${step}]`;
               return { replayStr: null, reason: 'time-limit', errorMessage };
             }
           }
 
-          const currentReplyStr = stateStrMap.get(currentStateStr);
           for (let dir = 0; dir < validDirs.length; ++dir) {
-            level.applyStateStr(currentStateStr);
+            board.restore(key);
 
             const dx = dxs[dir];
             const dy = dys[dir];
@@ -359,14 +364,15 @@
             if (!moveFlag) continue;
 
             if (options.normalize) level.normalize();
-            const stateStr = level.getS();
-            if (stateStrMap.has(stateStr)) continue;
-
-            const replayStr = currentReplyStr + dir;
-            stateStrMap.set(stateStr, replayStr);
+            const nextKey = board.encode();
+            if (visited.has(nextKey)) continue;
+            visited.add(nextKey);
 
             const completedFlag = level.isCompleted();
             if (completedFlag) {
+              const steps = [dir];
+              for (let node = parent; node !== 0; node = parents[node]) steps.push(moves[node]);
+              const replayStr = prefixStep + steps.reverse().join('');
               if (options.all) {
                 solutionNum++;
                 switch (solutionNum) {
@@ -381,7 +387,7 @@
                 const prefixStepInfo = prefixStep === '' ? '' : ` [prefix-step: ${prefixStep.length} steps ('${prefixStep}')]`;
                 const completedLevelObj = getCompletedLevelObj(r);
                 const completedLevelObjStr = levelObjToStr(completedLevelObj);
-                app.console.log(`/* [LEVEL ${levelId}][map.size: ${stateStrMap.size}] */ ${completedLevelObjStr}${prefixStepInfo}`);
+                app.console.log(`/* [LEVEL ${levelId}][map.size: ${visited.size}] */ ${completedLevelObjStr}${prefixStepInfo}`);
                 const shapeStr = level.getShapeStr(app.states.isTarget).replace(/\n$/, '');
                 if (!shapeStrMap.has(shapeStr)) {
                   shapeStrInfoArray.push({
@@ -425,12 +431,14 @@
                 return { replayStr };
               }
             } else {
-              nextStateStrSet.add(stateStr);
+              parents.push(parent);
+              moves.push(dir);
+              nextFrontier.push(nextKey);
             }
           }
         }
 
-        if (nextStateStrSet.size === 0) {
+        if (nextFrontier.length === 0) {
           if (options.all) {
             app.console.log('----------------------------------------');
             if (solutionNum > 0) {
@@ -461,18 +469,20 @@
             }
 
             // エラーではないですが、目立つようにエラー扱いします。
-            const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Shapes: ${shapes}] [map.size: ${stateStrMap.size}]`;
+            const errorMessage = `${solutionNum} solutions found. [Step: ${step}] [Shapes: ${shapes}] [map.size: ${visited.size}]`;
             return { replayStr: null, errorMessage };
           }
           const errorMessage = `No solution. [Step: ${step}]`;
           return { replayStr: null, reason: 'no-solution', errorMessage };
         }
+        firstNode += frontier.length;
+        frontier = nextFrontier;
         step++;
         if (options.console) {
           const time = performance.now();
           app.console.info(
             `// ${step} steps completed. [Time: ${msToSecStr(time - startTime)}] (+${msToSecStr(time - prevTime)}) [map.size: ${
-              stateStrMap.size
+              visited.size
             }]`
           );
           prevTime = time;

@@ -49,6 +49,7 @@
       testRestoreBackup();
       testRestoreStorageFailure();
       testMirroredAxis();
+      testSearchStateCodec();
       testsSolve();
       testInvalidSolverModePreservesBackup();
   }
@@ -416,6 +417,31 @@
       assert.equal(fs.readFileSync(path.join(cwd, filename), 'utf8'), backup);
     } finally {
       fs.rmSync(cwd, { recursive: true, force: true });
+    }
+  }
+
+  function testSearchStateCodec() {
+    const assert = require('node:assert/strict');
+    // 内壁・飛び番のブロック・255を超えるマス番号を含む盤面で、複数の局面を行き来します。
+    const s = 'sx(256)h-w------(17)';
+    const level = new app.Level({ levelObj: { w: 50, h: 8, s } });
+    const board = level.createSearchStateCodec();
+    const original = board.encode();
+    assert.ok(level.move(0, 1));
+    const movedState = level.getS();
+    const moved = board.encode();
+    level.normalize();
+    const normalizedState = level.getS();
+    const normalized = board.encode();
+    assert.equal(new Set([original, moved, normalized]).size, 3);
+    for (const [key, expected] of [
+      [moved, movedState],
+      [original, s],
+      [normalized, normalizedState],
+    ]) {
+      board.restore(key);
+      assert.equal(level.getS(), expected);
+      assert.equal(board.encode(), key);
     }
   }
 
