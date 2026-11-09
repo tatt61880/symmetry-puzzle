@@ -264,6 +264,7 @@
     // コントローラー
     controller: {
       widget: 'controller-widget',
+      autoLabel: 'controller-auto-label',
       undo: 'button-undo',
       redo: 'button-redo',
       nextLevel: 'next-level',

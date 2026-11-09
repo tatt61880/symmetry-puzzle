@@ -2508,6 +2508,9 @@
     cancelAutoSearch();
     autoSeekPointerId = null;
     settings.autoMode = isAutoMode;
+    if (isAutoMode && !elems.controller.widget.inert && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+      elems.controller.autoLabel.animate([{ color: 'transparent', offset: 0 }], { duration: 150, easing: 'ease-out' });
+    }
     elems.controller.widget.inert = isAutoMode;
 
     if (isAutoMode) {
