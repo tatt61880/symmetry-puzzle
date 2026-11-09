@@ -139,7 +139,16 @@
     }
   }
 
-  #buttons-auto:not(.hide) {
+  #auto-widget {
+    height: 0;
+    overflow: clip;
+
+    &[inert] {
+      visibility: hidden;
+    }
+  }
+
+  #buttons-auto {
     display: flex;
     gap: 6px;
     align-items: center;

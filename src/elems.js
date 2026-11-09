@@ -224,6 +224,7 @@
 
     // オートモード
     auto: {
+      widget: 'auto-widget',
       buttons: 'buttons-auto',
       seek: 'auto-seek',
       buttonStop: 'button-stop',

@@ -56,6 +56,7 @@
   let redoIntervalId = null;
   let autoIntervalId = null;
   let autoSeekPointerId = null;
+  let autoLayoutAnimations = [];
   let autoSearchFrameId = null;
 
   let levelHintState = 'locked';
@@ -206,16 +207,8 @@
   }
 
   function getCursorPos(elem, e) {
-    const bcRect = elem.getBoundingClientRect();
-    if (e.touches !== undefined) {
-      const x = e.touches[0].clientX - bcRect.left;
-      const y = e.touches[0].clientY - bcRect.top;
-      return { x, y };
-    } else {
-      const x = e.clientX - bcRect.left;
-      const y = e.clientY - bcRect.top;
-      return { x, y };
-    }
+    const point = e.touches === undefined ? e : e.touches[0];
+    return new DOMPoint(point.clientX, point.clientY).matrixTransform(elem.getScreenCTM().inverse());
   }
 
   function parseClipboardLevel(text) {
@@ -658,15 +651,18 @@
   }
 
   function updateSvg() {
+    // 開閉の途中でも、盤面は操作欄の最終的な高さに合わせて描画します。
+    const autoHeight = elems.auto.widget.inert ? 0 : elems.auto.buttons.getBoundingClientRect().height;
+    elems.auto.widget.style.height = `${autoHeight}px`;
     const divMainHeight = Math.max(
       frameSizeH * 3,
       getGameHeight() -
         10 -
+        autoHeight -
         [
           //
           elems.header,
           elems.level.widget,
-          elems.auto.buttons,
           elems.controller.widget,
           elems.edit.widget,
           elems.footer,
@@ -699,6 +695,7 @@
     for (const svg of [elems.main.svg, elems.main.replaySvg]) {
       svg.setAttribute('width', svgWidth);
       svg.setAttribute('height', svgHeight);
+      svg.setAttribute('viewBox', `0 0 ${svgWidth} ${svgHeight}`);
     }
   }
 
@@ -1322,7 +1319,6 @@
     common.showElem(elems.main.svg);
     common.showElem(elems.level.widget);
     common.showElem(elems.svgDiv);
-    common.hideElem(elems.auto.buttons);
     common.showElem(elems.controller.widget);
 
     switchToCustomLevel();
@@ -2514,7 +2510,19 @@
     cancelAutoSearch();
     autoSeekPointerId = null;
     settings.autoMode = isAutoMode;
-    if (isAutoMode && !elems.controller.widget.inert && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    const modeChanged = elems.controller.widget.inert !== isAutoMode;
+    const animate = modeChanged && window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+    const board = common.isShownElem(elems.main.replaySvg) ? elems.main.replaySvg : elems.main.svg;
+    const layout =
+      animate && common.isShownElem(elems.category.game)
+        ? [elems.auto.widget, elems.main.div, board].map((elem) => ({ elem, bounds: elem.getBoundingClientRect() }))
+        : [];
+    if (modeChanged) {
+      for (const animation of autoLayoutAnimations) animation.cancel();
+      autoLayoutAnimations = [];
+    }
+    elems.auto.widget.inert = !isAutoMode;
+    if (isAutoMode && animate) {
       elems.controller.autoLabel.animate([{ color: 'transparent', offset: 0 }], { duration: 150, easing: 'ease-out' });
     }
     elems.controller.widget.inert = isAutoMode;
@@ -2522,7 +2530,6 @@
     if (isAutoMode) {
       releaseGameInput();
       input.disable();
-      common.showElem(elems.auto.buttons);
       updateEditMode(false, false);
     } else {
       clearTimeout(nextLevelTimerId);
@@ -2530,13 +2537,21 @@
       clearTimeout(autoIntervalId);
       autoPaused = true;
       input.enable();
-      common.hideElem(elems.auto.buttons);
 
       input.update(app.Input.DIRS.NEUTRAL);
     }
     updateAutoStartPauseButtons();
     updateController();
     draw();
+    if (layout.length) {
+      // 再描画は一度だけ行い、切り替え直前の表示寸法から補間します。
+      autoLayoutAnimations = layout.map(({ elem, bounds }) => {
+        const from = { height: `${bounds.height}px`, offset: 0 };
+        if (elem === board) from.width = `${bounds.width}px`;
+        if (elem === elems.auto.widget) from.visibility = 'visible';
+        return elem.animate([from], { duration: 180, easing: 'ease-out' });
+      });
+    }
     replaceUrl();
   }
 
