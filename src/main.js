@@ -385,8 +385,10 @@
           try {
             levelObj = parseClipboardLevel(await navigator.clipboard.readText());
             if (
-              !Number.isInteger(levelObj.w) || levelObj.w <= 0 ||
-              !Number.isInteger(levelObj.h) || levelObj.h <= 0 ||
+              !Number.isInteger(levelObj.w) ||
+              levelObj.w <= 0 ||
+              !Number.isInteger(levelObj.h) ||
+              levelObj.h <= 0 ||
               typeof levelObj.s !== 'string'
             ) {
               throw new Error('盤面の w, h, s を確認してください。');
@@ -1388,8 +1390,12 @@
         elem.addEventListener(
           pointermoveEventName,
           (e) => {
-            if (e.target === elems.auto.seek || e.target === elems.auto.speed) return;
-            if (elems.help.dialogDiv.contains(e.target) || elems.edit.normalizeDialog.open || common.isShownElem(elems.console.widget)) return;
+            if (e.target === elems.auto.seek || e.target === elems.auto.speed) {
+              return;
+            }
+            if (elems.help.dialogDiv.contains(e.target) || elems.edit.normalizeDialog.open || common.isShownElem(elems.console.widget)) {
+              return;
+            }
             // スワイプ操作を無効化する。
             e.preventDefault();
           },
