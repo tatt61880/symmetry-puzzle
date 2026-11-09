@@ -171,6 +171,10 @@
       width: 145px;
     }
 
+    &:has(#auto-seek:disabled) #button-end {
+      display: none;
+    }
+
     #auto-search-controls:not(.hide) {
       display: flex;
       gap: 4px;
