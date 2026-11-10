@@ -821,12 +821,37 @@
     return { w, h, s };
   }
 
-  function loadLevelById(id_) {
+  function capturePreviousBoard() {
+    const board = common.isShownElem(elems.main.replaySvg) ? elems.main.replaySvg : elems.main.svg;
+    const snapshot = app.svg.createSvg();
+    snapshot.setAttribute('viewBox', board.getAttribute('viewBox'));
+    const style = window.getComputedStyle(board);
+    snapshot.style.width = style.width;
+    snapshot.style.height = style.height;
+    snapshot.style.transform = style.transform;
+    snapshot.style.transformOrigin = style.transformOrigin;
+
+    // SVGを移すとCSSアニメーションが最初から始まるため、切り替えた瞬間の姿勢を残します。
+    for (const animation of board.getAnimations({ subtree: true })) {
+      const { target } = animation.effect;
+      if (target === board) continue;
+      if (animation.effect.getComputedTiming().progress !== null && target.getClientRects().length) {
+        animation.commitStyles();
+      }
+      animation.cancel();
+    }
+    snapshot.append(...board.children);
+    return snapshot;
+  }
+
+  function loadLevelById(id_, fade = true) {
     window.getSelection().removeAllRanges();
 
     clearTimeout(nextLevelTimerId);
     clearTimeout(redrawTimerId);
     const id = Number(id_);
+    const animate = fade && id !== common.levelId && window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+    const previous = animate ? capturePreviousBoard() : null;
     common.levelId = id;
     common.levelNum = null;
 
@@ -847,6 +872,15 @@
     updateLevelVisibility();
     elems.level.id.textContent = common.levelId;
     replaceUrl();
+
+    if (previous) {
+      const layer = document.createElement('div');
+      layer.id = 'previous-board';
+      layer.inert = true;
+      layer.appendChild(previous);
+      elems.main.div.appendChild(layer);
+      layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 120, fill: 'forwards' }).onfinish = () => layer.remove();
+    }
 
     if (id_ === 1 && common.levelNum === null) {
       // 通常モードのレベル1をロード時、レベル1を未クリアのときはヘルプ画面を表示する。
@@ -1303,7 +1337,7 @@
 
     let id = id_;
     if (id === null) id = 1;
-    loadLevelById(id);
+    loadLevelById(id, false);
   }
 
   function onloadObj(levelObj) {
@@ -2104,6 +2138,7 @@
 
   // 描画
   function drawMainSvg(isCompleted = false) {
+    document.getElementById('previous-board')?.remove();
     if (!completeFlag || editMode || settings.autoMode) stopReplay();
     updateController();
 

@@ -19,11 +19,26 @@
     height: 330px;
     padding: 0;
     margin: 5px;
+    background-color: inherit;
 
-    & > svg {
+    & > svg,
+    :where(#previous-board) > svg {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
+    }
+
+    #previous-board {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+      background-color: inherit;
+
+      * {
+        animation: none;
+      }
     }
   }
 
