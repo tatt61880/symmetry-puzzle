@@ -1017,17 +1017,17 @@
   }
 
   function gotoNextLevelButton() {
-    const style = window.getComputedStyle(elems.controller.nextLevel);
-    if (style.opacity > 0.5) {
-      gotoNextLevel();
-    }
+    if (isCompletionButtonEnabled(elems.controller.nextLevel)) gotoNextLevel();
   }
 
   function gotoPrevLevelButton() {
-    const style = window.getComputedStyle(elems.controller.prevLevel);
-    if (style.opacity > 0.5) {
-      gotoPrevLevel();
-    }
+    if (isCompletionButtonEnabled(elems.controller.prevLevel)) gotoPrevLevel();
+  }
+
+  function isCompletionButtonEnabled(button) {
+    if (elems.controller.widget.inert || button.getClientRects().length === 0) return false;
+    const style = window.getComputedStyle(button);
+    return style.visibility === 'visible' && style.opacity > 0.5;
   }
 
   function updateEditMode(isEditMode, resetFlag = true) {
@@ -1515,8 +1515,38 @@
       elems.controller.buttons.left.addEventListener('pointerdown', moveButtonStart.bind(null, app.Input.DIRS.LEFT));
       elems.controller.buttons.axis.addEventListener('pointerdown', moveButtonStart.bind(null, app.Input.DIRS.AXIS));
 
-      elems.controller.nextLevel.addEventListener('click', gotoNextLevelButton);
-      elems.controller.prevLevel.addEventListener('click', gotoPrevLevelButton);
+      for (const [button, activate] of [
+        [elems.controller.nextLevel, gotoNextLevelButton],
+        [elems.controller.prevLevel, gotoPrevLevelButton],
+      ]) {
+        let spacePressed = false;
+        const clearPress = () => {
+          spacePressed = false;
+          common.inactiveElem(button);
+        };
+        button.addEventListener('click', activate);
+        button.addEventListener('keydown', (e) => {
+          if ((e.key !== 'Enter' && e.key !== ' ') || e.ctrlKey || e.altKey || e.metaKey) return;
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.repeat) return;
+          if (e.key === 'Enter') {
+            activate();
+          } else {
+            spacePressed = true;
+            common.activeElem(button);
+          }
+        });
+        button.addEventListener('keyup', (e) => {
+          if (e.key !== ' ' || !spacePressed) return;
+          e.preventDefault();
+          e.stopPropagation();
+          clearPress();
+          activate();
+        });
+        button.addEventListener('blur', clearPress);
+        window.addEventListener('blur', clearPress);
+      }
       elems.controller.replay.addEventListener('click', toggleReplay);
       elems.controller.shareLevel.addEventListener('click', (e) => {
         if (window.getComputedStyle(elems.controller.shareLevel).opacity <= 0.5) e.preventDefault();
