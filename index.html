@@ -27,6 +27,7 @@
   <link rel="canonical" href="https://tatt61880.github.io/symmetry-puzzle/">
 
   <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/buttons.css">
   <link rel="stylesheet" href="./css/title.css">
   <link rel="stylesheet" href="./css/game.css">
   <link rel="stylesheet" href="./css/dialog-help.css">
@@ -205,7 +206,7 @@
 
           <button id="setting-lang-ja" class="setting-lang-button setting-lang-button-left" tabindex="-1">日本語</button>
           <button id="setting-lang-en" class="setting-lang-button setting-lang-button-right" tabindex="-1">English</button>
-          <button id="setting-sound-toggle" class="sound-toggle" type="button" title="Sound" aria-pressed="false"
+          <button id="setting-sound-toggle" class="sound-toggle focus-ring" type="button" title="Sound" aria-pressed="false"
             aria-labelledby="sound-toggle-label"></button>
         </div>
 
@@ -262,7 +263,7 @@
                 <div class="translatable-toggle bold" data-en="Share on social media" data-ja="SNSに投稿"></div>
                 <div class="flex">
                   <!-- X -->
-                  <a class="share-button share-button-x translatable-toggle" href="./"
+                  <a class="share-button share-button-x focus-ring translatable-toggle" href="./"
                     data-en="https://twitter.com/intent/tweet?text=I%27m%20playing%20Symmetry%20Puzzle%2C%20a%20game%20where%20you%20push%20blocks%20to%20create%20symmetric%20shapes.%0A%23SymmetryPuzzle%0Ahttps%3A%2F%2Ftatt61880.github.io%2Fsymmetry-puzzle%2F"
                     data-ja="https://twitter.com/intent/tweet?text=%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF%E3%82%92%E6%8A%BC%E3%81%97%E3%81%A6%E5%AF%BE%E7%A7%B0%E3%81%AA%E5%9B%B3%E5%BD%A2%E3%82%92%E4%BD%9C%E3%82%8B%E3%80%8C%E5%AF%BE%E7%A7%B0%E3%83%91%E3%82%BA%E3%83%AB%E3%80%8D%E3%81%A7%E9%81%8A%E3%82%93%E3%81%A7%E3%81%84%E3%81%BE%E3%81%99%E3%80%82%0A%23%E5%AF%BE%E7%A7%B0%E3%83%91%E3%82%BA%E3%83%AB%0Ahttps%3A%2F%2Ftatt61880.github.io%2Fsymmetry-puzzle%2F"
                     data-en-title="Share on X" data-ja-title="Xでシェア" target="_blank" title="Xでシェア" rel="nofollow noopener noreferrer"
@@ -275,7 +276,7 @@
                   </a>
 
                   <!-- Bluesky -->
-                  <a class="share-button share-button-bluesky translatable-toggle" href="./"
+                  <a class="share-button share-button-bluesky focus-ring translatable-toggle" href="./"
                     data-en="https://bsky.app/intent/compose?text=I%27m%20playing%20Symmetry%20Puzzle%2C%20a%20game%20where%20you%20push%20blocks%20to%20create%20symmetric%20shapes.%0A%23SymmetryPuzzle%0Ahttps%3A%2F%2Ftatt61880.github.io%2Fsymmetry-puzzle%2F"
                     data-ja="https://bsky.app/intent/compose?text=%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF%E3%82%92%E6%8A%BC%E3%81%97%E3%81%A6%E5%AF%BE%E7%A7%B0%E3%81%AA%E5%9B%B3%E5%BD%A2%E3%82%92%E4%BD%9C%E3%82%8B%E3%80%8C%E5%AF%BE%E7%A7%B0%E3%83%91%E3%82%BA%E3%83%AB%E3%80%8D%E3%81%A7%E9%81%8A%E3%82%93%E3%81%A7%E3%81%84%E3%81%BE%E3%81%99%E3%80%82%0A%23%E5%AF%BE%E7%A7%B0%E3%83%91%E3%82%BA%E3%83%AB%0Ahttps%3A%2F%2Ftatt61880.github.io%2Fsymmetry-puzzle%2F"
                     data-en-title="Share on Bluesky" data-ja-title="Blueskyでシェア" target="_blank" title="Blueskyでシェア"
@@ -650,11 +651,11 @@
             <p id="dialog-records-alert-message" tabindex="-1"></p>
             <div id="dialog-records-alert-buttons">
               <div class="button-transform-parent" hidden>
-                <button type="button" id="dialog-records-alert-cancel" class="button active-hover translatable-toggle"
+                <button type="button" id="dialog-records-alert-cancel" class="button active-hover focus-ring translatable-toggle"
                   data-ja="キャンセル" data-en="Cancel">キャンセル</button>
               </div>
               <div class="button-transform-parent">
-                <button type="button" id="dialog-records-alert-button" class="button active-hover">OK</button>
+                <button type="button" id="dialog-records-alert-button" class="button active-hover focus-ring">OK</button>
               </div>
             </div>
           </div>
@@ -1446,12 +1447,12 @@
             <path d="M 14,15 16,18 18,15 M 16,18 V 22 M 12.5,25 H 19.5 M 14,28 H 18" />
           </svg>
         </button>
-        <button type="button" id="button-replay" class="hide">
+        <button type="button" id="button-replay" class="button-press focus-ring hide">
           <span class="translatable-toggle" data-en="Replay" data-ja="リプレイ"></span>
           <span class="translatable-toggle hide" data-en="Stop replay" data-ja="再生を停止"></span>
         </button>
         <details id="share-level" class="hide">
-          <summary class="translatable-toggle active-hover" data-en="Share level" data-ja="SNSにシェア">SNSにシェア</summary>
+          <summary class="translatable-toggle active-hover focus-ring" data-en="Share level" data-ja="SNSにシェア">SNSにシェア</summary>
           <svg width="208" height="62" viewBox="0 0 208 62">
             <a id="share-level-x" class="button active-hover svg-button" transform="translate(52,31)" target="_blank" aria-label="X"
               data-en-title="Share on X" data-ja-title="Xでシェア">
@@ -1500,7 +1501,7 @@
           <div class="spacer"></div>
           <div class="caption translatable-toggle" data-en="Menu" data-ja="メニュー"></div>
           <div class="spacer"></div>
-          <button id="menu-sound-toggle" class="sound-toggle" type="button" title="Sound" aria-pressed="false"
+          <button id="menu-sound-toggle" class="sound-toggle focus-ring" type="button" title="Sound" aria-pressed="false"
             aria-labelledby="sound-toggle-label"></button>
         </div>
 

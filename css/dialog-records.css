@@ -149,6 +149,9 @@
         margin-top: 10px;
 
         button {
+          --button-focus-color: #555599;
+          --button-focus-offset: 3px;
+
           box-sizing: border-box;
           display: grid;
           place-items: center;
@@ -161,11 +164,6 @@
           background-color: #aaccff;
           border: 4px solid #0000f8;
           border-radius: 15px;
-
-          &:focus-visible {
-            outline: 2px solid #555599;
-            outline-offset: 3px;
-          }
         }
 
         #dialog-records-alert-cancel {

@@ -1,0 +1,132 @@
+@charset "UTF-8";
+
+:root {
+  --button-press-filter: url('#button-press-offset');
+  --button-hover-brightness: 0.95;
+  --button-active-brightness: 0.9;
+  --button-focus-color: #505098;
+  --button-focus-width: 2px;
+  --button-focus-offset: 2px;
+}
+
+/* HTMLのボタン・リンクのフォーカス枠。画面固有の違いは変数で指定します。 */
+.focus-ring:focus-visible {
+  outline: var(--button-focus-width) solid var(--button-focus-color);
+  outline-offset: var(--button-focus-offset);
+}
+
+.sound-toggle {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  color: #505050;
+  cursor: pointer;
+  user-select: none;
+  background-color: #f8f8f8;
+  border: 4px solid #cccccc;
+  border-radius: 15px;
+  -webkit-tap-highlight-color: transparent;
+
+  .sound-on {
+    display: none;
+  }
+
+  &[aria-pressed='true'] {
+    color: #333388;
+    background-color: #e4e4ff;
+    border-color: #aaaaff;
+
+    .sound-on {
+      display: inline;
+    }
+
+    .sound-off {
+      display: none;
+    }
+  }
+}
+
+.button {
+  cursor: pointer;
+  user-select: none;
+  opacity: 1;
+}
+
+.svg-button {
+  --svg-button-radius: 12px;
+  --svg-button-border-width: 4px;
+
+  outline: none;
+
+  /* ボタンとフォーカス枠の寸法を共有し、サイズ変更にも枠を追従させます。 */
+  .svg-button-face,
+  .svg-button-focus {
+    --frame-outset: 0px;
+
+    width: calc(var(--svg-button-width) + var(--frame-outset) * 2);
+    height: calc(var(--svg-button-height) + var(--frame-outset) * 2);
+    rx: calc(var(--svg-button-radius) + var(--frame-outset));
+    x: calc(var(--svg-button-width) / -2 - var(--frame-outset));
+    y: calc(var(--svg-button-height) / -2 - var(--frame-outset));
+  }
+
+  .svg-button-face {
+    stroke-width: var(--svg-button-border-width);
+  }
+
+  .svg-button-focus {
+    --frame-outset: calc((var(--svg-button-border-width) + var(--button-focus-width)) / 2 + var(--button-focus-offset));
+
+    display: none;
+    pointer-events: none;
+    fill: none;
+    stroke: var(--button-focus-color);
+    stroke-width: var(--button-focus-width);
+  }
+
+  &:focus-visible .svg-button-focus {
+    display: inline;
+  }
+}
+
+/* クリック可能なSVGや既存のボタンで使う押下表示です。 */
+.active-hover {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) {
+  .active-hover:hover,
+  .sound-toggle:hover,
+  .setting-lang-button:not(.active):hover,
+  .tab:hover {
+    filter: brightness(var(--button-hover-brightness));
+  }
+}
+
+.active-elem,
+.active-elem:hover,
+.active-hover:active {
+  filter: brightness(var(--button-active-brightness));
+}
+
+/* SVGは子の描画だけを動かし、クリック判定は固定します。 */
+.active-elem > .button-transform,
+.active-hover:active > .button-transform {
+  filter: var(--button-press-filter);
+}
+
+svg.button-transform-parent {
+  overflow: visible;
+}
+
+/* 要素全体を描画だけ下げるボタン。選択済みの言語・タブは対象外です。 */
+.button-press:active,
+.sound-toggle:active,
+.setting-lang-button:not(.active):active,
+input:not(:checked):active + .tab,
+input:not(:checked) + .tab:active,
+.button-transform-parent > .active-hover:active {
+  filter: brightness(var(--button-active-brightness)) var(--button-press-filter);
+}

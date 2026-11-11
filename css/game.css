@@ -300,11 +300,6 @@
       border: 3px solid #7799bb;
       border-radius: 12px;
 
-      &:focus-visible {
-        outline: var(--button-focus-width) solid var(--button-focus-color);
-        outline-offset: var(--button-focus-offset);
-      }
-
       @media (hover: hover) {
         &:hover {
           background-color: #e1eeff;
@@ -317,10 +312,6 @@
       bottom: 14px;
       left: 50%;
       transform: translateX(-50%);
-
-      &:active {
-        filter: brightness(var(--button-active-brightness)) var(--button-press-filter);
-      }
     }
 
     #share-level {
