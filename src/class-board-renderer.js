@@ -2009,10 +2009,10 @@
         if (button.dx === 1 && !level.axisCxIncAble()) return;
         if (button.dy === 1 && !level.axisCyIncAble()) return;
 
-        addEditButton(button, moveAxis.bind(null, button.dx, button.dy), app.colors[app.states.userMin]);
+        const content = addEditButton(button, moveAxis.bind(null, button.dx, button.dy), app.colors[app.states.userMin]);
         const dot = createAxisCenterDot(blockSize, button.cx, button.cy);
         dot.setAttribute('pointer-events', 'none');
-        g.appendChild(dot);
+        content.appendChild(dot);
       });
     }
 
@@ -2038,7 +2038,7 @@
         if (button.dx === 1 && level.getW() >= common.maxEditW) return;
         if (button.dy === 1 && level.getH() >= common.maxEditH) return;
 
-        addEditButton(button, resizeLevel.bind(null, button.dx, button.dy, button.flag), app.colors.editButton);
+        const content = addEditButton(button, resizeLevel.bind(null, button.dx, button.dy, button.flag), app.colors.editButton);
         const char = button.dx + button.dy > 0 ? '+' : '-';
         const text = app.svg.createText(blockSize, {
           x: button.cx,
@@ -2047,7 +2047,7 @@
           fill: app.colors.editButton.stroke,
         });
         text.setAttribute('font-size', `${blockSize * 0.7}px`);
-        g.appendChild(text);
+        content.appendChild(text);
       });
     }
 
@@ -2063,9 +2063,15 @@
         stroke: color.stroke,
         strokeWidth: 0.1,
       });
-      polygon.classList.add('button', 'active-hover');
-      polygon.addEventListener('click', onClick);
-      g.appendChild(polygon);
+      const content = app.svg.createG('button-transform');
+      content.appendChild(polygon);
+
+      const buttonG = app.svg.createG();
+      buttonG.classList.add('button', 'active-hover');
+      buttonG.addEventListener('click', onClick);
+      buttonG.appendChild(content);
+      g.appendChild(buttonG);
+      return content;
     }
   }
 

@@ -168,6 +168,7 @@
     gap: 6px;
     align-items: center;
     justify-content: center;
+    padding-bottom: 1px; /* 押下時に沈むボタンの下端が切れないようにします。 */
 
     .auto-speed-control {
       box-sizing: border-box;
@@ -298,6 +299,10 @@
       bottom: 9px;
       left: 50%;
       transform: translateX(-50%);
+
+      &:active {
+        filter: brightness(var(--button-active-brightness)) var(--button-press-filter);
+      }
     }
 
     #share-level {
