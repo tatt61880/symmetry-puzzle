@@ -2152,7 +2152,9 @@
             special: { ja: '線点対称パズル', en: 'Line & Point Symmetry Puzzle' },
           }[mode];
           textJa = `「${modeName.ja}」のレベル${common.levelId}を${completedStep}手でクリア！\n#対称パズル`;
-          textEn = `Cleared level ${common.levelId} of ${modeName.en} in ${completedStep} ${completedStep === 1 ? 'move' : 'moves'}!\n#SymmetryPuzzle`;
+          textEn = `Cleared level ${common.levelId} of ${modeName.en} in ${completedStep} ${
+            completedStep === 1 ? 'move' : 'moves'
+          }!\n#SymmetryPuzzle`;
           url = `${urlBase}mode=${mode}&id=${common.levelId}`;
           if (settings.mirrorFlag) url += '&mirror';
           if (settings.rotateNum !== 0) url += `&rotate=${settings.rotateNum}`;
