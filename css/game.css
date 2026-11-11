@@ -317,6 +317,18 @@
         display: block;
         margin: 10px auto 0;
       }
+
+      .share-level-icon {
+        transform-box: fill-box;
+
+        @media (prefers-reduced-motion: reduce) {
+          animation: none;
+        }
+      }
+
+      &:not([open]) .share-level-icon {
+        animation: none;
+      }
     }
   }
 }

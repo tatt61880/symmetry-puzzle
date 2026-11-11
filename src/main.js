@@ -1491,6 +1491,15 @@
       elems.controller.shareLevel.addEventListener('click', (e) => {
         if (window.getComputedStyle(elems.controller.shareLevel).opacity <= 0.5) e.preventDefault();
       });
+      elems.controller.shareLevel.addEventListener('toggle', () => {
+        if (!elems.controller.shareLevel.open) return;
+        for (const icon of elems.controller.shareLevel.querySelectorAll('.share-level-icon')) {
+          icon.style.animationName = 'none';
+          // 閉じている間のスタイル更新に頼らず、表示後にアニメーションをリセットします。
+          icon.getAnimations();
+          icon.style.removeProperty('animation-name');
+        }
+      });
 
       // メニューダイアログ
       elems.menu.button.addEventListener('click', () => {
