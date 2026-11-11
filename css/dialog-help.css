@@ -81,8 +81,7 @@
       }
 
       &:active {
-        filter: brightness(var(--button-active-brightness));
-        transform: translateY(var(--button-translate-y));
+        filter: brightness(var(--button-active-brightness)) var(--button-press-filter);
       }
     }
   }
@@ -277,8 +276,7 @@
 
     &:not(:checked):active + .tab,
     &:not(:checked) + .tab:active {
-      filter: brightness(var(--button-active-brightness));
-      transform: translateY(var(--button-translate-y));
+      filter: brightness(var(--button-active-brightness)) var(--button-press-filter);
     }
   }
 

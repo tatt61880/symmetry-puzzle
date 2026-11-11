@@ -81,6 +81,15 @@
 </head>
 
 <body>
+  <svg class="svg-defs" width="0" height="0" aria-hidden="true">
+    <defs>
+      <!-- 押下時はクリック判定を動かさず、描画だけを1px下げます。 -->
+      <filter id="button-press-offset" color-interpolation-filters="sRGB">
+        <feoffset dy="1" />
+      </filter>
+    </defs>
+  </svg>
+
   <div id="contents" class="user-select-none">
     <header id="header">
       <div id="top" class="flex">

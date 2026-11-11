@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 :root {
-  --button-translate-y: 1px;
+  --button-press-filter: url('#button-press-offset');
   --button-hover-brightness: 0.95;
   --button-active-brightness: 0.9;
   --pseudo-bold-shadow: 0.015rem 0 currentColor, -0.015rem 0 currentColor, 0 0.015rem currentColor, 0 -0.015rem currentColor,
@@ -21,6 +21,11 @@ button {
 body {
   margin: 0;
   background-color: #ccffff;
+}
+
+.svg-defs {
+  position: absolute;
+  pointer-events: none;
 }
 
 #contents {
@@ -154,8 +159,7 @@ div.user-select-none {
   }
 
   &:active {
-    filter: brightness(var(--button-active-brightness));
-    transform: translateY(var(--button-translate-y));
+    filter: brightness(var(--button-active-brightness)) var(--button-press-filter);
   }
 }
 
@@ -183,11 +187,15 @@ div.user-select-none {
 
 .active-elem > .button-transform,
 .active-hover:active > .button-transform {
-  transform: translateY(var(--button-translate-y));
+  filter: var(--button-press-filter);
 }
 
-.button-transform-parent:has(> :active) {
-  transform: translateY(var(--button-translate-y));
+svg.button-transform-parent {
+  overflow: visible;
+}
+
+.button-transform-parent > .active-hover:active {
+  filter: brightness(var(--button-active-brightness)) var(--button-press-filter);
 }
 
 svg {
