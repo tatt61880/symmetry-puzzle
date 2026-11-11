@@ -273,7 +273,9 @@
 
     const targets = [...scope.querySelectorAll('a[href], button, input, select, textarea, summary, [tabindex]')].filter((elem) => {
       if (elem.tabIndex < 0 || elem.matches(':disabled') || elem.closest('[inert]')) return false;
-      if (elem.getClientRects().length === 0 || getComputedStyle(elem).visibility !== 'visible') return false;
+      // WebKitでは非表示のSVGにも矩形が返るため、実際の幅と高さを確認します。
+      const rect = elem.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0 || getComputedStyle(elem).visibility !== 'visible') return false;
       const closedDetails = elem.closest('details:not([open])');
       return closedDetails === null || (elem.matches('summary') && elem.parentElement === closedDetails);
     });
