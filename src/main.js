@@ -262,7 +262,35 @@
     }
   }
 
+  function handleTabKey(e) {
+    if (e.ctrlKey || e.altKey || e.metaKey || e.defaultPrevented) return;
+
+    const active = document.activeElement;
+    let scope = active.closest('dialog[open]') ?? document.querySelector('dialog[open]') ?? elems.contents;
+    if (scope === elems.records.dialog && elems.records.alert.backdrop.getClientRects().length > 0) {
+      scope = elems.records.alert.backdrop;
+    }
+
+    const targets = [...scope.querySelectorAll('a[href], button, input, select, textarea, summary, [tabindex]')].filter((elem) => {
+      if (elem.tabIndex < 0 || elem.matches(':disabled') || elem.closest('[inert]')) return false;
+      if (elem.getClientRects().length === 0 || getComputedStyle(elem).visibility !== 'visible') return false;
+      const closedDetails = elem.closest('details:not([open])');
+      return closedDetails === null || (elem.matches('summary') && elem.parentElement === closedDetails);
+    });
+
+    // 対象がない画面でも、Tabでブラウザーのアドレスバーへ移動させません。
+    e.preventDefault();
+    if (targets.length === 0) return;
+    const current = targets.indexOf(active);
+    const next = current < 0 ? (e.shiftKey ? targets.length - 1 : 0) : (current + (e.shiftKey ? -1 : 1) + targets.length) % targets.length;
+    targets[next].focus();
+  }
+
   async function keydown(e) {
+    if (e.key === 'Tab') {
+      handleTabKey(e);
+      return;
+    }
     if (elems.achievements.dialog.open || elems.auto.resultDialog.open || elems.menu.dialog.open || elems.edit.normalizeDialog.open) return;
     if (e.target === elems.auto.speed) return;
     if (e.target === elems.auto.searchCancel && (e.key === 'Enter' || e.key === ' ')) return;
