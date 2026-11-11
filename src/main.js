@@ -442,9 +442,9 @@
           redoStart();
           break;
       }
-    } else if (e.key === 'Enter' && common.isShownElem(elems.controller.nextLevel)) {
+    } else if (e.key === 'Enter' && !elems.controller.shareLevel.open && common.isShownElem(elems.controller.nextLevel)) {
       gotoNextLevel();
-    } else if (e.key === 'Enter' && common.isShownElem(elems.controller.prevLevel)) {
+    } else if (e.key === 'Enter' && !elems.controller.shareLevel.open && common.isShownElem(elems.controller.prevLevel)) {
       gotoPrevLevel();
     } else if (e.key === ' ') {
       if (settings.autoMode) {
@@ -2120,7 +2120,9 @@
     common.hideElem(elems.controller.nextLevel);
     common.hideElem(elems.controller.prevLevel);
     common.hideElem(elems.controller.replay);
-    const showShareLevel = completeFlag && !editMode && !common.isShownElem(elems.level.prev) && !common.isShownElem(elems.level.next);
+    const isOfficialLevel = !common.isSeqMode && Number.isFinite(common.levelId) && common.levelNum === null;
+    const showShareLevel =
+      completeFlag && !editMode && (isOfficialLevel || (!common.isShownElem(elems.level.prev) && !common.isShownElem(elems.level.next)));
     elems.controller.shareLevel.classList.toggle('hide', !showShareLevel);
     if (!showShareLevel) elems.controller.shareLevel.open = false;
 
@@ -2134,14 +2136,29 @@
         const completedStep = undoInfoForNormal.getIndex();
         const textJaCreated = '"対称パズルのレベルを共有！"\n#対称パズル';
         const textJaShared = `"共有されたレベルを${completedStep}手でクリア！"\n#対称パズル`;
-        const textJa = settings.sharedFlag ? textJaShared : textJaCreated;
+        let textJa = settings.sharedFlag ? textJaShared : textJaCreated;
 
         const textEnCreated = '"Share a level from Symmetry Puzzle!"\n#SymmetryPuzzle';
         const textEnShared = `"Cleared a shared level in ${completedStep} ${completedStep === 1 ? 'move' : 'moves'}!"\n#SymmetryPuzzle`;
-        const textEn = settings.sharedFlag ? textEnShared : textEnCreated;
+        let textEn = settings.sharedFlag ? textEnShared : textEnCreated;
 
         const urlBase = 'https://tatt61880.github.io/symmetry-puzzle/?';
-        const url = urlBase + location.href.split('?')[1] + (settings.sharedFlag ? '' : '&shared');
+        let url;
+        if (isOfficialLevel) {
+          const mode = app.Level.getCheckModeStr(common.checkMode);
+          const modeName = {
+            line: { ja: '線対称パズル', en: 'Line Symmetry Puzzle' },
+            point: { ja: '点対称パズル', en: 'Point Symmetry Puzzle' },
+            special: { ja: '線点対称パズル', en: 'Line & Point Symmetry Puzzle' },
+          }[mode];
+          textJa = `「${modeName.ja}」のレベル${common.levelId}を${completedStep}手でクリア！\n#対称パズル`;
+          textEn = `Cleared level ${common.levelId} of ${modeName.en} in ${completedStep} ${completedStep === 1 ? 'move' : 'moves'}!\n#SymmetryPuzzle`;
+          url = `${urlBase}mode=${mode}&id=${common.levelId}`;
+          if (settings.mirrorFlag) url += '&mirror';
+          if (settings.rotateNum !== 0) url += `&rotate=${settings.rotateNum}`;
+        } else {
+          url = urlBase + location.href.split('?')[1] + (settings.sharedFlag ? '' : '&shared');
+        }
 
         // Twitter
         {
@@ -2162,11 +2179,13 @@
           elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}%0A${encodeURIComponent(url)}`;
           common.applyLang(elem, app.savedata.getLang());
         }
-      } else if (!common.isSeqMode) {
+      }
+
+      if (!common.isSeqMode) {
         if (common.isShownElem(elems.level.next)) {
           common.showElem(elems.controller.nextLevel);
         }
-      } else if (common.isSeqMode) {
+      } else if (!showShareLevel) {
         if (common.levelNum > 0) {
           common.showElem(elems.controller.nextLevel);
         } else {

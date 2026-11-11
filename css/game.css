@@ -237,6 +237,13 @@
   #controller-widget {
     position: relative;
 
+    &:has(#share-level[open]) {
+      #next-level,
+      #prev-level {
+        visibility: hidden;
+      }
+    }
+
     #controller-auto-label {
       position: absolute;
       inset: 0;
