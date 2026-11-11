@@ -70,19 +70,18 @@
         color: #333388;
         background-color: #e4e4ff;
         border-color: #aaaaff;
-        opacity: 1;
       }
     }
 
     .setting-lang-button:not(.active) {
       @media (hover: hover) {
         &:hover {
-          opacity: 0.8;
+          filter: brightness(var(--button-hover-brightness));
         }
       }
 
       &:active {
-        opacity: 0.5;
+        filter: brightness(var(--button-active-brightness));
         transform: translateY(var(--button-translate-y));
       }
     }
@@ -105,7 +104,7 @@
 
     @media (hover: hover) {
       &:hover {
-        opacity: 0.8;
+        filter: brightness(var(--button-hover-brightness));
       }
     }
   }
@@ -272,16 +271,14 @@
 
     &:checked + .tab {
       background-color: #ffeedd;
+      filter: none;
       border: 4px solid #ffbb77;
-      opacity: 1;
     }
 
-    &:not(:checked):active + .tab {
+    &:not(:checked):active + .tab,
+    &:not(:checked) + .tab:active {
+      filter: brightness(var(--button-active-brightness));
       transform: translateY(var(--button-translate-y));
-    }
-
-    &:not(:checked):active:hover + .tab {
-      opacity: 0.5;
     }
   }
 

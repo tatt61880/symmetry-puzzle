@@ -2,6 +2,8 @@
 
 :root {
   --button-translate-y: 1px;
+  --button-hover-brightness: 0.95;
+  --button-active-brightness: 0.9;
   --pseudo-bold-shadow: 0.015rem 0 currentColor, -0.015rem 0 currentColor, 0 0.015rem currentColor, 0 -0.015rem currentColor,
     0.01rem 0.01rem currentColor, -0.01rem 0.01rem currentColor, 0.01rem -0.01rem currentColor, -0.01rem -0.01rem currentColor;
 }
@@ -147,12 +149,12 @@ div.user-select-none {
 
   @media (hover: hover) {
     &:hover {
-      opacity: 0.8;
+      filter: brightness(var(--button-hover-brightness));
     }
   }
 
   &:active {
-    opacity: 0.5;
+    filter: brightness(var(--button-active-brightness));
     transform: translateY(var(--button-translate-y));
   }
 }
@@ -168,19 +170,19 @@ div.user-select-none {
 
   @media (hover: hover) {
     &:hover {
-      opacity: 0.8;
+      filter: brightness(var(--button-hover-brightness));
     }
   }
 }
 
+.active-elem,
 .active-elem:hover,
 .active-hover:active {
-  opacity: 0.5;
+  filter: brightness(var(--button-active-brightness));
 }
 
 .active-elem > .button-transform,
 .active-hover:active > .button-transform {
-  opacity: 0.5;
   transform: translateY(var(--button-translate-y));
 }
 
