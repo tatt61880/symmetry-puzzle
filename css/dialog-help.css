@@ -176,6 +176,7 @@
       cursor: pointer;
       background: transparent;
       border: 0;
+      outline: none;
     }
 
     .help-mode-plus {
