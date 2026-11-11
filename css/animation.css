@@ -1169,6 +1169,94 @@
   }
 }
 
+.auto-search-sand-top,
+.auto-search-sand-bottom {
+  clip-path: inset(50% 0 0);
+}
+
+.auto-search-sand-stream {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #auto-search-icon:not(.hide) {
+    --auto-search-cycle: 2.4s;
+
+    .auto-search-hourglass {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: auto-search-hourglass var(--auto-search-cycle) ease-in-out infinite;
+    }
+
+    .auto-search-sand-top {
+      animation: auto-search-sand-top var(--auto-search-cycle) linear infinite;
+    }
+
+    .auto-search-sand-bottom {
+      animation: auto-search-sand-bottom var(--auto-search-cycle) linear infinite;
+    }
+
+    .auto-search-sand-stream {
+      animation: auto-search-sand-stream var(--auto-search-cycle) linear infinite;
+    }
+  }
+}
+
+/* 砂が落ち切ってから半回転。反転後の砂と次の周期の開始形状を一致させます。 */
+@keyframes auto-search-hourglass {
+  0%,
+  75% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes auto-search-sand-top {
+  0% {
+    clip-path: inset(0 0 0);
+  }
+
+  70%,
+  100% {
+    clip-path: inset(100% 0 0);
+  }
+}
+
+@keyframes auto-search-sand-bottom {
+  0% {
+    clip-path: inset(100% 0 0);
+  }
+
+  70%,
+  100% {
+    clip-path: inset(0 0 0);
+  }
+}
+
+@keyframes auto-search-sand-stream {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+
+  5%,
+  65% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
+    stroke-dashoffset: -24;
+  }
+}
+
 #help-tab-app:checked + .tab > svg,
 #help-tab-special:checked + .tab > svg,
 .animation-icon-title,
