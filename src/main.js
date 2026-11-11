@@ -2092,12 +2092,13 @@
       }
 
       if (showShareLevel) {
+        const completedStep = undoInfoForNormal.getIndex();
         const textJaCreated = '"対称パズルのレベルを共有！"\n#対称パズル';
-        const textJaShared = '"共有されたレベルをクリア！"\n#対称パズル';
+        const textJaShared = `"共有されたレベルを${completedStep}手でクリア！"\n#対称パズル`;
         const textJa = settings.sharedFlag ? textJaShared : textJaCreated;
 
         const textEnCreated = '"Share a level from Symmetry Puzzle!"\n#SymmetryPuzzle';
-        const textEnShared = '"Cleared shared level!"\n#SymmetryPuzzle';
+        const textEnShared = `"Cleared a shared level in ${completedStep} ${completedStep === 1 ? 'move' : 'moves'}!"\n#SymmetryPuzzle`;
         const textEn = settings.sharedFlag ? textEnShared : textEnCreated;
 
         const urlBase = 'https://tatt61880.github.io/symmetry-puzzle/?';
