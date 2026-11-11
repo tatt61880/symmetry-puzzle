@@ -394,6 +394,11 @@
     height: 48px;
     margin: 5px;
 
+    &:focus-visible {
+      outline: var(--button-focus-width) solid var(--button-focus-color);
+      outline-offset: var(--button-focus-offset);
+    }
+
     /* X */
     &.share-button-x {
       background-color: #000000;

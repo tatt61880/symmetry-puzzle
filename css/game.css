@@ -339,6 +339,13 @@
       svg {
         display: block;
         margin: 10px auto 0;
+        overflow: visible;
+      }
+
+      .svg-button {
+        --svg-button-width: 92px;
+        --svg-button-height: 54px;
+        --svg-button-radius: 10px;
       }
 
       .share-level-icon {
