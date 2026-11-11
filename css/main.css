@@ -4,6 +4,9 @@
   --button-press-filter: url('#button-press-offset');
   --button-hover-brightness: 0.95;
   --button-active-brightness: 0.9;
+  --button-focus-color: #505098;
+  --button-focus-width: 2px;
+  --button-focus-offset: 2px;
   --pseudo-bold-shadow: 0.015rem 0 currentColor, -0.015rem 0 currentColor, 0 0.015rem currentColor, 0 -0.015rem currentColor,
     0.01rem 0.01rem currentColor, -0.01rem 0.01rem currentColor, 0.01rem -0.01rem currentColor, -0.01rem -0.01rem currentColor;
 }
@@ -130,8 +133,8 @@ div.user-select-none {
   -webkit-tap-highlight-color: transparent;
 
   &:focus-visible {
-    outline: 2px solid #505098;
-    outline-offset: 2px;
+    outline: var(--button-focus-width) solid var(--button-focus-color);
+    outline-offset: var(--button-focus-offset);
   }
 
   .sound-on {
