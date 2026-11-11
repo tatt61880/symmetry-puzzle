@@ -25,6 +25,7 @@
   restoreInput.addEventListener('change', restoreSelectedFile);
   document.body.appendChild(restoreInput);
   let restoreRequest = 0;
+  let dismissAlert = null;
 
   function show() {
     updateTable();
@@ -109,14 +110,16 @@
   }
 
   function close() {
+    dismissAlert?.();
     app.sound.playUiClose();
     elems.records.dialog.close();
   }
 
-  function cancel() {
-    if (elems.records.alert.backdrop.style.display !== 'none') {
-      elems.records.alert.backdrop.style.display = 'none';
-    }
+  function cancel(event) {
+    if (dismissAlert === null) return;
+    event?.preventDefault();
+    app.sound.playButton();
+    dismissAlert();
   }
 
   function getYyyymmdd() {
@@ -142,11 +145,11 @@
 
     const filename = `symmetry-puzzle-backup-${yyyymmdd}.json`;
     const lang = app.savedata.getLang();
-    if (lang === 'ja') {
-      await customAlert(`バックアップファイルを作成します。\n${filename}`);
-    } else {
-      await customAlert(`Backup file will be created.\n${filename}`);
-    }
+    const confirmed = await customAlert(
+      lang === 'ja' ? `バックアップファイルを作成します。\n${filename}` : `Backup file will be created.\n${filename}`,
+      { cancelable: true }
+    );
+    if (!confirmed) return;
     downloadJsonAsFile(filename, backupJsonText);
 
     function downloadJsonAsFile(fileName, fileContent) {
@@ -201,18 +204,30 @@
     customAlert(ja ? 'リストアを実行しました。' : 'Data restored.');
   }
 
-  function customAlert(message) {
+  function customAlert(message, { cancelable = false } = {}) {
+    dismissAlert?.();
+    const previousFocus = document.activeElement;
     elems.records.alert.message.innerText = message;
+    elems.records.alert.cancel.parentElement.hidden = !cancelable;
     elems.records.alert.backdrop.style.display = 'flex';
 
     return new Promise((resolve) => {
       const handler = () => {
+        app.sound.playButton();
+        finish(true);
+      };
+      function finish(confirmed) {
         elems.records.alert.backdrop.style.display = 'none';
         elems.records.alert.button.removeEventListener('click', handler);
-        app.sound.playButton();
-        resolve();
-      };
+        elems.records.alert.cancel.removeEventListener('click', cancel);
+        dismissAlert = null;
+        if (elems.records.alert.backdrop.contains(document.activeElement)) previousFocus?.focus({ preventScroll: true });
+        resolve(confirmed);
+      }
+      dismissAlert = () => finish(false);
       elems.records.alert.button.addEventListener('click', handler);
+      elems.records.alert.cancel.addEventListener('click', cancel);
+      elems.records.alert.button.focus({ preventScroll: true });
     });
   }
 })();

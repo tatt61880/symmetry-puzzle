@@ -108,6 +108,7 @@
         backdrop: 'dialog-records-alert-backdrop',
         message: 'dialog-records-alert-message',
         button: 'dialog-records-alert-button',
+        cancel: 'dialog-records-alert-cancel',
       },
     },
 
