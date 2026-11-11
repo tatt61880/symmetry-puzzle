@@ -2098,7 +2098,6 @@
 
       gg.appendChild(text);
       g.appendChild(gg);
-      score.onClearMessageDrawn?.();
     }
 
     // 今回の手数

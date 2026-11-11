@@ -35,8 +35,9 @@
   };
 
   let autoPaused = true;
-  const AUTO_NEXT_LEVEL_DELAY = 1000;
+  const AUTO_NEXT_LEVEL_DELAY = 500;
   let nextLevelTimerId = null;
+  let autoNextLevelWait = null;
 
   let redrawTimerId = null;
   let replayTimerId = null;
@@ -62,6 +63,7 @@
   let levelHintState = 'locked';
   let hintWallPressCount = 0;
   let completeFlag = false;
+  let completedBoardShown = false;
   let symmetryFlag = false;
 
   let drawingState = app.states.none;
@@ -152,7 +154,7 @@
   function undoStart() {
     if (undoFlag || replayTimerId !== null) return;
     undoFlag = true;
-    clearTimeout(nextLevelTimerId);
+    cancelAutoNextLevel();
     clearTimeout(redrawTimerId);
     common.activeElem(elems.controller.undo);
     common.activeElem(elems.edit.undo);
@@ -569,7 +571,7 @@
     elems.controller.shareLevel.open = false;
     window.getSelection().removeAllRanges();
 
-    clearTimeout(nextLevelTimerId);
+    cancelAutoNextLevel();
     clearTimeout(redrawTimerId);
 
     animateIcons();
@@ -847,7 +849,7 @@
   function loadLevelById(id_, fade = true) {
     window.getSelection().removeAllRanges();
 
-    clearTimeout(nextLevelTimerId);
+    cancelAutoNextLevel();
     clearTimeout(redrawTimerId);
     const id = Number(id_);
     const animate = fade && id !== common.levelId && window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
@@ -1535,7 +1537,7 @@
       if (!e.isPrimary || e.button !== 0) return;
       autoSeekPointerId = e.pointerId;
       elems.auto.seek.setPointerCapture(e.pointerId);
-      clearTimeout(nextLevelTimerId);
+      cancelAutoNextLevel();
       clearTimeout(redrawTimerId);
     });
     elems.auto.seek.addEventListener('lostpointercapture', (e) => {
@@ -2148,6 +2150,8 @@
 
   // 描画
   function drawMainSvg(isCompleted = false) {
+    cancelAutoNextLevel();
+    completedBoardShown = isCompleted;
     document.getElementById('previous-board')?.remove();
     if (!completeFlag || editMode || settings.autoMode) stopReplay();
     updateController();
@@ -2164,6 +2168,7 @@
       highestScorePrev,
       showCharsFlag: editMode || settings.debugFlag || temporaryShowCharsFlag,
     });
+    if (isCompleted) scheduleAutoNextLevel();
   }
 
   function resetLevelHint() {
@@ -2236,15 +2241,32 @@
         bestStep: common.level.getBestStep(),
         highestScore: !editMode && common.levelId !== null ? app.savedata.getHighestScore(common.level, common.levelNum) : undefined,
         highestScorePrev,
-        onClearMessageDrawn: scheduleAutoNextLevel,
       },
     });
   }
 
   function scheduleAutoNextLevel() {
-    if (!settings.autoMode || autoPaused || autoSeekPointerId !== null) return;
+    cancelAutoNextLevel();
+    if (!settings.autoMode || autoPaused || autoSeekPointerId !== null || !completeFlag) return;
+
+    // 遅延や繰り返しを含め、描画済みの完成演出がすべて終わってから待ち時間を設けます。
+    const animations = elems.main.svg
+      .getAnimations({ subtree: true })
+      .filter((animation) => Number.isFinite(animation.effect.getComputedTiming().endTime));
+    const wait = Promise.allSettled(animations.map((animation) => animation.finished));
+    autoNextLevelWait = wait;
+    wait.then((results) => {
+      // 再描画などで取り消された演出や、一時停止前の予約からは遷移しません。
+      if (autoNextLevelWait !== wait || results.some((result) => result.status === 'rejected')) return;
+      autoNextLevelWait = null;
+      nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
+    });
+  }
+
+  function cancelAutoNextLevel() {
+    autoNextLevelWait = null;
     clearTimeout(nextLevelTimerId);
-    nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
+    nextLevelTimerId = null;
   }
 
   function recordCompletion() {
@@ -2577,7 +2599,7 @@
       input.disable();
       updateEditMode(false, false);
     } else {
-      clearTimeout(nextLevelTimerId);
+      cancelAutoNextLevel();
       clearTimeout(redrawTimerId);
       clearTimeout(autoIntervalId);
       autoPaused = true;
@@ -2618,7 +2640,7 @@
 
   function onButtonStop() {
     updateAutoMode(false);
-    clearTimeout(nextLevelTimerId);
+    cancelAutoNextLevel();
     clearTimeout(redrawTimerId);
     app.sound.playButton();
   }
@@ -2675,7 +2697,8 @@
     autoPaused = false;
     updateAutoStartPauseButtons();
     if (common.level.isCompleted()) {
-      gotoNextLevel();
+      if (completedBoardShown) scheduleAutoNextLevel();
+      else completeCheck();
     } else if (undoInfoForNormal.getIndex() === 0) {
       scheduleNextAutoStep();
     } else {
@@ -2691,13 +2714,13 @@
   function pauseAuto() {
     autoPaused = true;
     updateAutoStartPauseButtons();
-    clearTimeout(nextLevelTimerId);
+    cancelAutoNextLevel();
     clearTimeout(redrawTimerId);
     clearTimeout(autoIntervalId);
   }
 
   function seekAuto() {
-    clearTimeout(nextLevelTimerId);
+    cancelAutoNextLevel();
     clearTimeout(redrawTimerId);
     releaseGameInput();
     showAutoStep(elems.auto.seek.valueAsNumber);
