@@ -309,7 +309,7 @@
 
     #button-replay {
       position: absolute;
-      bottom: 9px;
+      bottom: 14px;
       left: 50%;
       transform: translateX(-50%);
 
@@ -320,7 +320,7 @@
 
     #share-level {
       position: absolute;
-      top: 26px;
+      top: 14px;
       left: 50%;
       transform: translateX(-50%);
 
