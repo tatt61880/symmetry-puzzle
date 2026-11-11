@@ -140,6 +140,12 @@
       margin: -5px 7px 0;
     }
 
+    .user-block-line,
+    .user-block-point,
+    .user-block-special {
+      cursor: pointer;
+    }
+
     .help-mode-title {
       padding: 7px 0;
       margin: 5px;
