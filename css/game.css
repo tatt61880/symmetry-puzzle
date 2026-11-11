@@ -242,7 +242,7 @@
       display: none;
       place-items: center;
       font: bold 68px/1 system-ui, sans-serif;
-      color: #365471;
+      color: rgb(54 84 113 / 75%);
       background-color: rgb(221 238 255 / 65%);
     }
 
