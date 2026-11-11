@@ -227,7 +227,7 @@
       dismissAlert = () => finish(false);
       elems.records.alert.button.addEventListener('click', handler);
       elems.records.alert.cancel.addEventListener('click', cancel);
-      elems.records.alert.button.focus({ preventScroll: true });
+      elems.records.alert.message.focus({ preventScroll: true });
     });
   }
 })();
