@@ -38,6 +38,11 @@
     }
   }
 
+  .svg-button {
+    --svg-button-width: 240px;
+    --svg-button-height: 60px;
+  }
+
   &::backdrop {
     cursor: pointer;
     background-color: rgb(0 0 0 / 50%);

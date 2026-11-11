@@ -1520,6 +1520,8 @@
       for (const [button, activate] of [
         [elems.controller.nextLevel, gotoNextLevelButton],
         [elems.controller.prevLevel, gotoPrevLevelButton],
+        [elems.menu.title, menuGotoTitlePage],
+        [elems.menu.retry, menuRetryLevel],
       ]) {
         let spacePressed = false;
         const clearPress = () => {
@@ -1571,8 +1573,6 @@
       elems.menu.dialog.addEventListener('click', app.dialog.menu.close);
       elems.menu.close.addEventListener('click', app.dialog.menu.close);
       elems.menu.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
-      elems.menu.title.addEventListener('click', menuGotoTitlePage);
-      elems.menu.retry.addEventListener('click', menuRetryLevel);
 
       document.addEventListener('pointerup', undoEnd);
       document.addEventListener('pointerup', redoEnd);

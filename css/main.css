@@ -172,6 +172,43 @@ div.user-select-none {
   opacity: 1;
 }
 
+.svg-button {
+  --svg-button-radius: 12px;
+  --svg-button-border-width: 4px;
+
+  outline: none;
+
+  /* ボタンとフォーカス枠の寸法を共有し、サイズ変更にも枠を追従させます。 */
+  .svg-button-face,
+  .svg-button-focus {
+    --frame-outset: 0px;
+
+    width: calc(var(--svg-button-width) + var(--frame-outset) * 2);
+    height: calc(var(--svg-button-height) + var(--frame-outset) * 2);
+    rx: calc(var(--svg-button-radius) + var(--frame-outset));
+    x: calc(var(--svg-button-width) / -2 - var(--frame-outset));
+    y: calc(var(--svg-button-height) / -2 - var(--frame-outset));
+  }
+
+  .svg-button-face {
+    stroke-width: var(--svg-button-border-width);
+  }
+
+  .svg-button-focus {
+    --frame-outset: calc((var(--svg-button-border-width) + var(--button-focus-width)) / 2 + var(--button-focus-offset));
+
+    display: none;
+    pointer-events: none;
+    fill: none;
+    stroke: var(--button-focus-color);
+    stroke-width: var(--button-focus-width);
+  }
+
+  &:focus-visible .svg-button-focus {
+    display: inline;
+  }
+}
+
 .active-hover {
   -webkit-tap-highlight-color: transparent;
 

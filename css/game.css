@@ -239,42 +239,8 @@
 
     #next-level,
     #prev-level {
-      --level-button-width: 230px;
-      --level-button-height: 70px;
-      --level-button-radius: 12px;
-      --level-button-border-width: 4px;
-
-      outline: none;
-
-      /* ボタンとフォーカス枠の寸法を共有し、サイズ変更にも枠を追従させます。 */
-      .level-button-face,
-      .level-button-focus {
-        --frame-outset: 0px;
-
-        width: calc(var(--level-button-width) + var(--frame-outset) * 2);
-        height: calc(var(--level-button-height) + var(--frame-outset) * 2);
-        rx: calc(var(--level-button-radius) + var(--frame-outset));
-        x: calc(var(--level-button-width) / -2 - var(--frame-outset));
-        y: calc(var(--level-button-height) / -2 - var(--frame-outset));
-      }
-
-      .level-button-face {
-        stroke-width: var(--level-button-border-width);
-      }
-
-      .level-button-focus {
-        --frame-outset: calc((var(--level-button-border-width) + var(--button-focus-width)) / 2 + var(--button-focus-offset));
-
-        display: none;
-        pointer-events: none;
-        fill: none;
-        stroke: var(--button-focus-color);
-        stroke-width: var(--button-focus-width);
-      }
-
-      &:focus-visible .level-button-focus {
-        display: inline;
-      }
+      --svg-button-width: 230px;
+      --svg-button-height: 70px;
     }
 
     &:has(#share-level[open]) {
