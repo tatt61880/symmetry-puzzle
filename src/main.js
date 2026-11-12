@@ -2601,8 +2601,13 @@
     const data = createUndoData(dir);
 
     if (editMode) {
-      // 直前の盤面と同じ場合は無視します。
-      if (undoInfo.getIndex() < 0 || JSON.stringify(data) !== JSON.stringify(undoInfo.getTopData())) {
+      const prevData = undoInfo.getTopData();
+      // 判定モード（Symbol）はJSON.stringifyで省略されるため、別に比較します。
+      if (
+        prevData === undefined ||
+        data.checkMode !== prevData.checkMode ||
+        JSON.stringify(data) !== JSON.stringify(prevData)
+      ) {
         undoInfo.pushData(data);
       }
     } else {
