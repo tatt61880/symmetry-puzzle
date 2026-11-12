@@ -2484,7 +2484,7 @@
     if (editMode) {
       if (drawingPointerId !== null && drawingPointerId !== e.pointerId) return;
       drawingPointerId = e.pointerId;
-      touchStart = e.button === undefined;
+      touchStart = e.pointerType === 'touch';
       isRemoving = !touchStart && e.button !== 0;
     }
     editSvg(e, true);
@@ -2539,6 +2539,7 @@
 
     e.preventDefault();
 
+    // タッチでは、選択中と同じ種類のブロックから触り始めた場合は消去します。
     if (touchStart && common.level.getState(x, y) === drawingState) {
       isRemoving = true;
     }
@@ -2557,9 +2558,7 @@
 
     // タッチ環境かつ画面左端付近か否か。
     function isTouchScreenAndNearLeftEdge(e) {
-      if (e.touches === undefined) return false;
-      const x = e.touches[0].clientX;
-      return x < 30; // 画面の左端付近ならtrue
+      return e.pointerType === 'touch' && e.clientX < 30;
     }
 
     // カーソル位置の座標を得る
