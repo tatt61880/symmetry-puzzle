@@ -785,7 +785,7 @@
 
           const moveState = new Set([i]); // 移動予定の状態番号
 
-          let pushingTarget = false;
+          let pushingBlock = false;
           const st = new app.Stack(); // 移動可能か検証必要な状態番号
           st.push(i);
           while (!st.empty()) {
@@ -796,10 +796,12 @@
                 const dstState = this.#states[y + dy][x + dx];
                 if (dstState === app.states.none) continue;
 
-                if (state === i && app.states.isTarget(dstState)) pushingTarget = true;
+                if (state === i && (app.states.isTarget(dstState) || (app.states.isUser(dstState) && dstState !== i))) {
+                  pushingBlock = true;
+                }
                 if (dstState === app.states.wall) {
-                  // 自分が壁に当たったか、直接押したターゲットの先が詰まっているとき。
-                  if (state === i || pushingTarget) this.#bumpDirections.set(i, { dx, dy });
+                  // 自分が壁に当たったか、直接押したターゲットや別のキャラの先が詰まっているとき。
+                  if (state === i || pushingBlock) this.#bumpDirections.set(i, { dx, dy });
                   continue loop;
                 } else if (!moveState.has(dstState)) {
                   moveState.add(dstState);
