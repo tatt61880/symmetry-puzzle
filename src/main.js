@@ -2602,12 +2602,9 @@
 
     if (editMode) {
       const prevData = undoInfo.getTopData();
-      // 判定モード（Symbol）はJSON.stringifyで省略されるため、別に比較します。
-      if (
-        prevData === undefined ||
-        data.checkMode !== prevData.checkMode ||
-        JSON.stringify(data) !== JSON.stringify(prevData)
-      ) {
+      // 判定モード（Symbol）も比較できるよう、JSON化するときだけ文字列に変換します。
+      const replacer = (key, value) => (key === 'checkMode' ? app.Level.getCheckModeStr(value) : value);
+      if (prevData === undefined || JSON.stringify(data, replacer) !== JSON.stringify(prevData, replacer)) {
         undoInfo.pushData(data);
       }
     } else {
