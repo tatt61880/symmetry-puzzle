@@ -1,9 +1,10 @@
 @charset "UTF-8";
 
 :root {
+  --button-hover-filter: url('#button-hover');
+  --button-active-filter: url('#button-active');
   --button-press-filter: url('#button-press-offset');
-  --button-hover-brightness: 0.95;
-  --button-active-brightness: 0.9;
+  --button-active-press-filter: url('#button-active-press');
   --button-focus-color: #505098;
   --button-focus-width: 2px;
   --button-focus-offset: 2px;
@@ -101,14 +102,14 @@
   .sound-toggle:hover,
   .setting-lang-button:not(.active):hover,
   .tab:hover {
-    filter: brightness(var(--button-hover-brightness));
+    filter: var(--button-hover-filter);
   }
 }
 
 .active-elem,
 .active-elem:hover,
 .active-hover:active {
-  filter: brightness(var(--button-active-brightness));
+  filter: var(--button-active-filter);
 }
 
 /* SVGは子の描画だけを動かし、クリック判定は固定します。 */
@@ -128,5 +129,5 @@ svg.button-transform-parent {
 input:not(:checked):active + .tab,
 input:not(:checked) + .tab:active,
 .button-transform-parent > .active-hover:active {
-  filter: brightness(var(--button-active-brightness)) var(--button-press-filter);
+  filter: var(--button-active-press-filter);
 }

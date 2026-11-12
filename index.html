@@ -84,8 +84,19 @@
 <body>
   <svg class="svg-defs" width="0" height="0" aria-hidden="true">
     <defs>
+      <!-- SafariでもSVG内のボタンを暗くできるよう、明るさ調整もSVGフィルターで行います。 -->
+      <filter id="button-hover" color-interpolation-filters="sRGB">
+        <fecolormatrix type="matrix" values="0.95 0 0 0 0  0 0.95 0 0 0  0 0 0.95 0 0  0 0 0 1 0" />
+      </filter>
+      <filter id="button-active" color-interpolation-filters="sRGB">
+        <fecolormatrix type="matrix" values="0.9 0 0 0 0  0 0.9 0 0 0  0 0 0.9 0 0  0 0 0 1 0" />
+      </filter>
       <!-- 押下時はクリック判定を動かさず、描画だけを1px下げます。 -->
       <filter id="button-press-offset" color-interpolation-filters="sRGB">
+        <feoffset dy="1" />
+      </filter>
+      <filter id="button-active-press" color-interpolation-filters="sRGB">
+        <fecolormatrix type="matrix" values="0.9 0 0 0 0  0 0.9 0 0 0  0 0 0.9 0 0  0 0 0 1 0" />
         <feoffset dy="1" />
       </filter>
     </defs>
