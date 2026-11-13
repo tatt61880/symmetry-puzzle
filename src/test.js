@@ -50,6 +50,7 @@
       testRestoreBackup();
       testRestoreStorageFailure();
       testMirroredAxis();
+      testReplayPrefix();
       testSearchStateCodec();
       testsSolve();
       testInvalidSolverModePreservesBackup();
@@ -57,6 +58,30 @@
 
   return;
   // -------------------------------------------------------------------------
+
+  function testReplayPrefix() {
+    const assert = require('node:assert/strict');
+    const UndoInfo = require('./class-undo-info.js');
+    for (const [directions, replay, target, expected] of [
+      [['1', '1', '2', '1'], '1121', 4, 4], // 手動操作
+      [[1, 1, 2, 1], '1121', 4, 4], // オート再生
+      [['1', 1, '2', 1], '1121', 3, 3], // 両方が混在し、Undo で途中に戻った場合
+      [['1', '2'], '1121', 2, 1], // 途中から異なる手順
+      [['2'], '1121', 1, 0], // 最初から異なる手順
+      [['1', 1, '2', 1, '3'], '1121', 5, 4], // 解答手順より長い履歴
+      [['0', 0], '00', 2, 2], // 上方向も文字列・数値の両方で一致
+      [[null], '0', 1, 0], // 移動ではない履歴を上方向と誤認しない
+    ]) {
+      const history = new UndoInfo();
+      history.pushData({ dir: null });
+      for (const dir of directions) history.pushData({ dir });
+      while (history.getIndex() > target) history.undo();
+      const snapshot = history.seekReplayPrefix(replay, target);
+      assert.equal(history.getIndex(), expected);
+      assert.equal(snapshot, history.undoArray[expected]);
+      assert.equal(history.isRedoable(), expected < directions.length);
+    }
+  }
 
   function checkLevels() {
     const levelSet = new Set();

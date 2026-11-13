@@ -2700,6 +2700,14 @@
       releaseGameInput();
       input.disable();
       updateEditMode(false, false);
+      const replay = common.level.getR();
+      if (replay !== undefined && replay !== null) {
+        // 現在の手数までで解答手順と一致する最後の盤面にそろえます。
+        const snapshot = undoInfoForNormal.seekReplayPrefix(replay, undoInfoForNormal.getIndex());
+        clearTimeout(redrawTimerId);
+        common.level.applyObj(snapshot, false);
+        common.level.applyAxis(snapshot.axis);
+      }
     } else {
       cancelAutoNextLevel();
       clearTimeout(redrawTimerId);

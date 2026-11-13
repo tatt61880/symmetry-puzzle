@@ -46,7 +46,8 @@
     seekReplayPrefix(replay, target) {
       let index = 0;
       const end = Math.min(target, this.#undoMaxIdx);
-      while (index < end && this.undoArray[index + 1].dir === Number(replay[index])) index++;
+      // 手動入力の文字列とオート再生の数値を、同じ移動方向として比較します。
+      while (index < end && String(this.undoArray[index + 1].dir) === replay[index]) index++;
       this.#undoIdx = index;
       return this.getTopData();
     }
