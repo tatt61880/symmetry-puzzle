@@ -24,6 +24,8 @@
   let moveIntervalCount = MOVE_INTERVAL_COUNT;
   let input;
   const moveKeys = new Set();
+  const undoKeys = new Set();
+  const redoKeys = new Map(); // キーコードごとに、Shift が必要かを記録します。
   const heldGameKeys = new Set();
 
   let settings = {
@@ -165,6 +167,7 @@
   }
 
   function undoEnd() {
+    undoKeys.clear();
     clearInterval(undoIntervalId);
     if (!undoFlag) return;
     undoFlag = false;
@@ -187,6 +190,7 @@
   }
 
   function redoEnd() {
+    redoKeys.clear();
     clearInterval(redoIntervalId);
     if (!redoFlag) return;
     redoFlag = false;
@@ -441,7 +445,10 @@
           break;
         case 'Z':
           // Shift + Z
-          redoStart();
+          if (!e.repeat) {
+            redoKeys.set(e.code, true);
+            redoStart();
+          }
           break;
       }
     } else if (e.key === 'Enter' && !elems.controller.shareLevel.open && common.isShownElem(elems.controller.nextLevel)) {
@@ -465,9 +472,15 @@
     } else if (e.key === 'r') {
       retryLevel();
     } else if (e.key === 'z') {
-      if (!e.repeat) undoStart();
+      if (!e.repeat) {
+        undoKeys.add(e.code);
+        undoStart();
+      }
     } else if (e.key === 'y') {
-      redoStart();
+      if (!e.repeat) {
+        redoKeys.set(e.code, false);
+        redoStart();
+      }
     } else {
       if (!settings.autoMode) {
         const dir = (() => {
@@ -507,7 +520,7 @@
         if (dir !== null) {
           e.preventDefault();
           startMoveInput(dir, e.repeat);
-          moveKeys.add(e.key);
+          moveKeys.add(e.code);
         }
       }
     }
@@ -536,19 +549,26 @@
   function keyup(e) {
     heldGameKeys.delete(e.code);
     if (common.isShownElem(elems.category.title)) return;
-    moveKeys.delete(e.key);
+    // Shift などで文字が変わっても、押したときと同じ物理キーとして扱います。
+    const releasedMove = moveKeys.delete(e.code);
+    const releasedUndo = undoKeys.delete(e.code);
+    let releasedRedo = redoKeys.delete(e.code);
+    if (!e.shiftKey) {
+      for (const [code, shiftRequired] of redoKeys) {
+        if (!shiftRequired) continue;
+        redoKeys.delete(code);
+        releasedRedo = true;
+      }
+    }
+    if (releasedUndo && undoKeys.size === 0) undoEnd();
+    if (releasedRedo && redoKeys.size === 0) redoEnd();
     if (temporaryShowCharsFlag && e.key === ' ') {
       temporaryShowCharsFlag = false;
       drawMainSvg();
     }
 
-    if (moveKeys.size === 0) {
-      undoEnd();
-      redoEnd();
-
-      if (!settings.autoMode) {
-        input.update(app.Input.DIRS.NEUTRAL);
-      }
+    if (releasedMove && moveKeys.size === 0 && !settings.autoMode) {
+      input.update(app.Input.DIRS.NEUTRAL);
     }
     return false;
   }
