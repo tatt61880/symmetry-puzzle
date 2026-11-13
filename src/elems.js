@@ -204,6 +204,7 @@
       buttonDenumerator: 'button-shapes-denumerator',
       dialog: 'dialog-shapes',
       dialogDiv: 'dialog-shapes-div',
+      unknownTotalNote: 'shapes-unknown-total-note',
       close: 'dialog-shapes-close',
       dialogSvg: 'dialog-shapes-svg',
       buttonSvg: 'button-shapes-svg',

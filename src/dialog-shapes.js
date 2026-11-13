@@ -136,6 +136,11 @@
     let count = 0;
     const selectR = {};
     const levelShapes = common.level.getLevelObj().shapes;
+    if (levelShapes === undefined || levelShapes === null) {
+      common.showElem(elems.shapes.unknownTotalNote);
+    } else {
+      common.hideElem(elems.shapes.unknownTotalNote);
+    }
     const iEnd = levelShapes ?? totalNum;
     elems.shapes.dialogSvg.style.width = `${Math.min(iEnd, SELECT_COLS) * SELECT_WIDTH + 2}px`;
     elems.shapes.dialogSvg.style.height = `${Math.min(Math.floor((iEnd + SELECT_COLS - 1) / SELECT_COLS), 2) * SELECT_HEIGHT + 2}px`;

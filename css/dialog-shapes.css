@@ -37,7 +37,8 @@
     }
   }
 
-  .shape-selection-note {
+  .shape-selection-note,
+  .shape-count-note {
     margin: 0 5px 8px;
     font-size: 0.9375rem;
     line-height: 1.4;
