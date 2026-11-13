@@ -150,6 +150,24 @@
       return levelObj;
     }
 
+    // 履歴の盤面から、各キャラの顔がある一番左上のマスの中心を取得します。
+    static getUserPositions(stateStr) {
+      const positions = new Map();
+      let x = 1;
+      let y = 1;
+      for (const char of stateCharGenerator(stateStr)) {
+        if (char === '-') {
+          x = 1;
+          y++;
+          continue;
+        }
+        const state = app.states.charToState[char];
+        if (app.states.isUser(state) && !positions.has(state)) positions.set(state, { x: x + 0.5, y: y + 0.5 });
+        x++;
+      }
+      return positions;
+    }
+
     getLevelObj() {
       return this.#levelObj;
     }

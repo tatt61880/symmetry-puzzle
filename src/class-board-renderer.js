@@ -72,6 +72,13 @@
       }
     }
 
+    // 完成演出やスコアを描き直さず、軌跡だけを更新します。
+    static updateMoveTrail(svg, { blockSize, moveTrail }) {
+      const blocks = svg.querySelector('.group-level-main');
+      blocks.querySelector('.group-move-trail')?.remove();
+      if (moveTrail) blocks.insertBefore(createMoveTrail(blockSize, moveTrail, 0, 0), blocks.querySelector('.group-shadow'));
+    }
+
     resetIdleBlink() {
       this.#extraIdleBlink = undefined;
     }
@@ -89,6 +96,7 @@
       idleAnimationFlag = false,
       holdBumpFace = false,
       sleepMarks = null,
+      moveTrail = null,
       drawBackground = true,
       x0 = 0,
       y0 = 0,
@@ -119,6 +127,9 @@
         rect.setAttribute('fill', 'white');
         g.appendChild(rect);
       }
+
+      // 軌跡は背景の上、壁やブロック・影の下に描きます。
+      if (moveTrail) g.appendChild(createMoveTrail(blockSize, moveTrail, x0, y0));
 
       const gShadows = app.svg.createG('group-shadow');
       const gElemsOther = app.svg.createG('group-elems-other');
@@ -1817,6 +1828,43 @@
 
       gElems.appendChild(child);
     }
+  }
+
+  function createMoveTrail(blockSize, { history, step }, x0, y0) {
+    const g = app.svg.createG('group-move-trail');
+    g.setAttribute('aria-hidden', 'true');
+    g.setAttribute('pointer-events', 'none');
+    if (step === 0) return g;
+
+    const trailSteps = 10;
+    const start = Math.max(0, step - trailSteps);
+    let positions = Level.getUserPositions(history[start].s);
+    for (let i = start + 1; i <= step; i++) {
+      const snapshot = history[i];
+      const nextPositions = Level.getUserPositions(snapshot.s);
+      if (snapshot.dir !== null) {
+        for (const [state, from] of positions) {
+          const to = nextPositions.get(state);
+          if (!to || (from.x === to.x && from.y === to.y)) continue;
+
+          const line = app.svg.createLine(blockSize, {
+            x1: from.x - x0,
+            y1: from.y - y0,
+            x2: to.x - x0,
+            y2: to.y - y0,
+            stroke: app.colors.moveTrail,
+            strokeWidth: 0.045,
+            strokeOpacity: 0.1 + 0.45 * (1 - (step - i) / trailSteps),
+          });
+          line.setAttribute('stroke-linecap', 'round');
+          // 軸操作は、途中のマスを通る通常移動と区別します。
+          if (String(snapshot.dir) === '4') line.setAttribute('stroke-dasharray', `${blockSize * 0.2} ${blockSize * 0.12}`);
+          g.appendChild(line);
+        }
+      }
+      positions = nextPositions;
+    }
+    return g;
   }
 
   function drawDotLines(mainSvgG, level, { blockSize, frameSizeW, frameSizeH }) {

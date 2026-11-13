@@ -43,6 +43,7 @@
 
   let redrawTimerId = null;
   let replayTimerId = null;
+  let completedReplayData = null;
 
   let editMode = false;
   let temporaryShowCharsFlag = false;
@@ -2255,6 +2256,8 @@
     completedBoardShown = isCompleted;
     document.getElementById('previous-board')?.remove();
     if (!completeFlag || editMode || settings.autoMode) stopReplay();
+    // リサイズでは残し、Undo などで別の履歴に移ったら消します。
+    if (completedReplayData !== undoInfoForNormal?.getTopData()) completedReplayData = null;
     updateController();
 
     let highestScorePrev = null;
@@ -2336,6 +2339,10 @@
       smallJumpFlag: !editMode && !undoInfoForNormal.isUndoable() && input.inputDir === app.Input.DIRS.NEUTRAL,
       idleAnimationFlag,
       holdBumpFace: svg === elems.main.svg && idleAnimationFlag && input.inputDir !== app.Input.DIRS.NEUTRAL,
+      moveTrail:
+        !editMode && (settings.autoMode || svg === elems.main.replaySvg || completedReplayData !== null)
+          ? { history: undoInfoForNormal.undoArray, step: currentStep }
+          : null,
       edit,
       score: {
         currentStep,
@@ -2890,7 +2897,7 @@
 
     function nextStep() {
       if (step === moves.length || !moveLevel(level, moves[step], svg)) {
-        stopReplay();
+        stopReplay({ keepTrail: step === moves.length });
         return;
       }
       step++;
@@ -2898,7 +2905,14 @@
     }
   }
 
-  function stopReplay() {
+  function stopReplay({ keepTrail = false } = {}) {
+    if (keepTrail || completedReplayData !== null) {
+      completedReplayData = keepTrail ? undoInfoForNormal.getTopData() : null;
+      app.BoardRenderer.updateMoveTrail(elems.main.svg, {
+        blockSize,
+        moveTrail: keepTrail ? { history: undoInfoForNormal.undoArray, step: undoInfoForNormal.getIndex() } : null,
+      });
+    }
     if (replayTimerId === null) return;
     clearTimeout(replayTimerId);
     replayTimerId = null;
