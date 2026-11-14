@@ -36,6 +36,7 @@
   const SELECT_COLS = 5;
 
   let settleDiscovery = null;
+  let records = [];
 
   function show() {
     finishDiscovery();
@@ -71,6 +72,7 @@
     if (common.isTouchDevice()) {
       return;
     }
+    common.hideElem(elems.shapes.undiscoveredNote);
     const currentPage = Number(elems.shapes.dialog.dataset.page);
     const page = Math.floor(selectCount / SELECT_NUM_PER_PAGE);
     if (page !== currentPage) {
@@ -114,8 +116,7 @@
 
   function selectEnter() {
     const selectCount = Number(elems.shapes.dialog.dataset.selectCount);
-    const r = JSON.parse(elems.shapes.dialog.dataset.selectR)[selectCount];
-    if (r !== undefined) selectShape(r);
+    if (selectCount <= Number(elems.shapes.dialog.dataset.maxCount)) selectShape(records[selectCount]);
   }
 
   function updateDialog(page_ = null) {
@@ -123,25 +124,23 @@
     window.getSelection().removeAllRanges();
 
     elems.shapes.dialogSvg.innerHTML = '';
+    common.hideElem(elems.shapes.undiscoveredNote);
 
-    const records = app.savedata.getShapeRecords(common.level, common.levelNum).sort((a, b) => a.steps - b.steps);
-    const totalNum = records.length;
-    elems.shapes.dialog.dataset.maxCount = totalNum - 1;
+    records = app.savedata.getShapeRecords(common.level, common.levelNum).sort((a, b) => a.steps - b.steps);
     if (page === null) {
       page = 0;
       elems.shapes.dialog.dataset.selectCount = 0;
     }
     elems.shapes.dialog.dataset.page = page;
 
-    let count = 0;
-    const selectR = {};
     const levelShapes = common.level.getLevelObj().shapes;
     if (levelShapes === undefined || levelShapes === null) {
       common.showElem(elems.shapes.unknownTotalNote);
     } else {
       common.hideElem(elems.shapes.unknownTotalNote);
     }
-    const iEnd = levelShapes ?? totalNum;
+    const iEnd = levelShapes ?? records.length;
+    elems.shapes.dialog.dataset.maxCount = iEnd - 1;
     elems.shapes.dialogSvg.style.width = `${Math.min(iEnd, SELECT_COLS) * SELECT_WIDTH + 2}px`;
     elems.shapes.dialogSvg.style.height = `${Math.min(Math.floor((iEnd + SELECT_COLS - 1) / SELECT_COLS), 2) * SELECT_HEIGHT + 2}px`;
 
@@ -158,7 +157,7 @@
     common.showElem(elems.shapes.buttonSvg);
 
     // →
-    if (page + 1 === Math.floor((iEnd + SELECT_NUM_PER_PAGE - 1) / SELECT_NUM_PER_PAGE)) {
+    if ((page + 1) * SELECT_NUM_PER_PAGE >= iEnd) {
       common.hideElem(elems.shapes.next);
       if (prevHide) {
         common.hideElem(elems.shapes.buttonSvg);
@@ -167,19 +166,15 @@
       common.showElem(elems.shapes.next);
     }
 
-    for (let i = 0; i < iEnd; ++i) {
-      if (page * SELECT_NUM_PER_PAGE <= count && count < (page + 1) * SELECT_NUM_PER_PAGE) {
-        const record = records[i];
-        appendShape(record);
-        if (record?.replay !== undefined) selectR[count] = record.replay;
-      }
-      count++;
+    const firstIndex = page * SELECT_NUM_PER_PAGE;
+    const pageEnd = Math.min(firstIndex + SELECT_NUM_PER_PAGE, iEnd);
+    for (let i = firstIndex; i < pageEnd; ++i) {
+      appendShape(i);
     }
-    elems.shapes.dialog.dataset.selectR = JSON.stringify(selectR);
 
     // 選択枠
-    if (!common.isTouchDevice()) {
-      const selectCount = Math.max(page * SELECT_NUM_PER_PAGE, Math.min(Number(elems.shapes.dialog.dataset.selectCount), totalNum - 1));
+    if (!common.isTouchDevice() && iEnd > 0) {
+      const selectCount = Math.max(firstIndex, Math.min(Number(elems.shapes.dialog.dataset.selectCount), iEnd - 1));
       elems.shapes.dialog.dataset.selectCount = selectCount;
       const rect = app.svg.createRect(1, {
         x: 1,
@@ -194,6 +189,7 @@
       rect.setAttribute('ry', '5');
 
       const g = app.svg.createG();
+      g.setAttribute('pointer-events', 'none');
       g.appendChild(rect);
       elems.shapes.dialogSvg.appendChild(g);
 
@@ -203,7 +199,8 @@
       g.setAttribute('transform', `translate(${x},${y})`);
     }
 
-    function appendShape({ shapeStr = null, steps, replay } = {}) {
+    function appendShape(index) {
+      const record = records[index];
       const g = app.svg.createG();
       elems.shapes.dialogSvg.appendChild(g);
 
@@ -224,7 +221,8 @@
         g.appendChild(rect);
       }
 
-      if (shapeStr !== null) {
+      if (record !== undefined) {
+        const { shapeStr, steps, replay } = record;
         const { w, h } = getSizeOfShapeStr(shapeStr);
         const yMargin = 16;
         const shapeHeight = SELECT_HEIGHT - yMargin - (replay === undefined ? 20 : 0);
@@ -263,8 +261,7 @@
           common.applyLang(note, app.savedata.getLang());
           g.appendChild(note);
         } else {
-          g.classList.add('shape-select', 'button', 'active-hover', 'button-press');
-          g.addEventListener('click', () => selectShape(replay));
+          g.classList.add('shape-select');
         }
       } else {
         const text = app.svg.createText(1, {
@@ -277,17 +274,29 @@
         g.appendChild(text);
       }
 
+      if (record === undefined || record.replay !== undefined) {
+        g.classList.add('button', 'active-hover', 'button-press');
+        g.addEventListener('click', () => {
+          selectUpdate(index);
+          selectShape(record);
+        });
+      }
+
       {
-        const x = (count % SELECT_COLS) * SELECT_WIDTH + 1;
-        const y = Math.floor((count % SELECT_NUM_PER_PAGE) / SELECT_COLS) * SELECT_HEIGHT + 1;
+        const x = (index % SELECT_COLS) * SELECT_WIDTH + 1;
+        const y = Math.floor((index % SELECT_NUM_PER_PAGE) / SELECT_COLS) * SELECT_HEIGHT + 1;
         g.setAttribute('transform', `translate(${x},${y})`);
       }
     }
   }
 
-  function selectShape(r) {
-    window.retryAndExecReplayStr(r);
-    close(false);
+  function selectShape(record) {
+    if (record === undefined) {
+      common.showElem(elems.shapes.undiscoveredNote);
+    } else if (record.replay !== undefined) {
+      window.retryAndExecReplayStr(record.replay);
+      close(false);
+    }
   }
 
   function getSizeOfShapeStr(shapeStr) {

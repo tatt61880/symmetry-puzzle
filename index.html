@@ -1063,6 +1063,10 @@
             data-en="Select a shape with a saved replay to restore its final board."></p>
           <svg id="dialog-shapes-svg">
           </svg>
+          <div role="status">
+            <p id="shapes-undiscovered-note" class="shape-count-note translatable-toggle hide" data-ja="「？」は未発見の形状を表します。"
+              data-en="Each question mark (?) represents a shape you haven't discovered yet."></p>
+          </div>
 
           <svg width="450" height="95" id="button-shapes-svg">
             <g id="button-shapes-prev" class="button active-hover" transform="translate(95,10)">
@@ -1478,10 +1482,11 @@
           <span class="translatable-toggle hide" data-en="Stop replay" data-ja="再生を停止"></span>
         </button>
         <details id="share-level" class="hide">
-          <summary class="translatable-toggle active-hover button-press focus-ring" data-en="Share level" data-ja="SNSにシェア">SNSにシェア</summary>
+          <summary class="translatable-toggle active-hover button-press focus-ring" data-en="Share level" data-ja="SNSにシェア">SNSにシェア
+          </summary>
           <svg width="208" height="62" viewBox="0 0 208 62">
-            <a id="share-level-x" class="button active-hover button-press svg-button" transform="translate(52,31)" target="_blank" aria-label="X"
-              data-en-title="Share on X" data-ja-title="Xでシェア">
+            <a id="share-level-x" class="button active-hover button-press svg-button" transform="translate(52,31)" target="_blank"
+              aria-label="X" data-en-title="Share on X" data-ja-title="Xでシェア">
               <rect class="svg-button-face" fill="#000000" stroke="#4d4d4d" />
               <rect class="svg-button-focus" aria-hidden="true" />
               <g class="share-level-icon animation-icon-point">
