@@ -12,6 +12,7 @@
     const res = {
       id: null,
       num: null,
+      replayStr: null,
       levelObj: {
         w: 6,
         h: 6,
@@ -29,10 +30,12 @@
     const queryStrs = location.href.split('?')[1];
     if (queryStrs === undefined) return res;
 
-    for (const queryStr of queryStrs.split('&')) {
-      const paramArray = queryStr.split('=');
-      const paramName = paramArray[0];
-      const paramVal = paramArray[1];
+    const params = new URLSearchParams(location.search);
+    res.replayStr = params.getAll('r').at(-1) ?? null;
+    res.settings.autoMode = res.replayStr !== null;
+    // r のない既存URLでは、エスケープやフラグメントも含めて従来の読み方を保ちます。
+    const entries = res.replayStr !== null ? params : queryStrs.split('&').map((query) => query.split('='));
+    for (const [paramName, paramVal] of entries) {
       switch (paramName) {
         case 'num':
           res.num = Number(paramVal);

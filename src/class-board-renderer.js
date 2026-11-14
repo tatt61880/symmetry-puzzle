@@ -2136,7 +2136,7 @@
   }
 
   function drawScore(g, level, { blockSize, frameSizeW, frameSizeH }, score, isCompleted, isSeqMode, lang) {
-    const { currentStep, bestStep, highestScore, highestScorePrev } = score;
+    const { currentStep, bestStep, highestScore, highestScorePrev, recordingEnabled = true } = score;
     const wallStrShift = app.colors[app.states.wall].fill === app.colors[app.states.wall].stroke ? 0 : 0.05;
     const fontSize = `${frameSizeH * 0.7}px`;
     const fontSize2 = `${blockSize * 0.65}px`;
@@ -2204,7 +2204,7 @@
           bestStep
         );
         g.appendChild(crown);
-        if (isCompleted) {
+        if (isCompleted && recordingEnabled) {
           const animationNewRecordCrownClass = 'animation-new-record-crown';
           if (highestScorePrev === null) {
             console.log('初回クリア');

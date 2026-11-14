@@ -37,6 +37,7 @@
   };
 
   let autoPaused = true;
+  let urlReplay = null;
   const AUTO_NEXT_LEVEL_DELAY = 500;
   let nextLevelTimerId = null;
   let autoNextLevelWait = null;
@@ -129,13 +130,7 @@
       const center = common.level.getCenter(app.states.isTarget);
       document.documentElement.style.setProperty('--animation-origin', `${blockSize * center.x}px ${blockSize * center.y}px`);
     }
-    if (settings.autoMode) {
-      const length = common.level.getBestStep() ?? 0;
-      elems.auto.seek.max = length;
-      elems.auto.seek.value = Math.min(undoInfoForNormal.getIndex(), length);
-      elems.auto.seek.disabled = length === 0;
-      elems.auto.seek.style.setProperty('--seek-progress', length > 0 ? elems.auto.seek.valueAsNumber / length : 0);
-    }
+    if (settings.autoMode) updateAutoSeek();
     updateLevelHint(settings.autoMode || completeFlag ? null : common.level.getHint());
   }
 
@@ -914,7 +909,7 @@
     return snapshot;
   }
 
-  function loadLevelById(id_, fade = true) {
+  function loadLevelById(id_, fade = true, replayStr = null) {
     window.getSelection().removeAllRanges();
 
     cancelAutoNextLevel();
@@ -934,7 +929,7 @@
 
     consoleLog(`[LEVEL ${id}]${levelObj?.subject ?? ''}`);
 
-    loadLevelObj(levelObj);
+    loadLevelObj(levelObj, replayStr);
     if (isLocalhost()) {
       common.level.printSolveJsStr();
     }
@@ -1001,22 +996,34 @@
     }
   }
 
-  function loadLevelObj(levelObj, param = {}) {
+  function loadLevelObj(levelObj, replayStr = null) {
     resetUndo();
     elems.controller.shareLevel.open = false;
 
-    const mirrorFlag = !param.reset ? settings.mirrorFlag : false;
-    const rotateNum = !param.reset ? settings.rotateNum : 0;
+    const { mirrorFlag, rotateNum } = settings;
+    const leavingUrlReplay = urlReplay !== null && replayStr === null;
+    urlReplay = replayStr;
+    if (replayStr !== null) {
+      if (/[^0-4]/.test(replayStr)) {
+        consoleWarn('URLの再生手順には0〜4だけを指定してください。');
+        urlReplay = '';
+      } else {
+        urlReplay = app.Level.transformReplay(replayStr, mirrorFlag, rotateNum);
+      }
+    }
     initLevel({ levelObj, mirrorFlag, rotateNum });
 
     input.update(app.Input.DIRS.NEUTRAL);
     moveIntervalCount = MOVE_INTERVAL_COUNT;
 
-    if (settings.autoMode) {
+    if (leavingUrlReplay) {
+      updateAutoMode(false);
+    } else if (settings.autoMode) {
       updateAutoMode(true);
       scheduleNextAutoStep();
     }
     updateShapeButton();
+    if (common.levelId === null && (urlReplay !== null || leavingUrlReplay)) updateLevelVisibility();
   }
 
   function getPrevLevelId() {
@@ -1045,7 +1052,7 @@
       common.hideElem(elems.level.id);
       common.hideElem(elems.levels.button);
 
-      if (!settings.sharedFlag) {
+      if (!settings.sharedFlag && urlReplay === null) {
         common.showElem(elems.level.edit);
       }
     }
@@ -1105,6 +1112,7 @@
 
   // エディトモードのオンオフ
   function toggleEditLevel() {
+    if (urlReplay !== null) return;
     app.dialog.shapes.finishDiscovery();
     cancelAutoSearch();
     settings.sharedFlag = false;
@@ -1320,16 +1328,11 @@
     initLang();
 
     if (id !== null) {
-      onloadId(id);
+      onloadId(id, true, queryParams.replayStr);
     } else if (num !== null) {
-      onloadId(num, false);
+      onloadId(num, false, queryParams.replayStr);
     } else {
-      const id = getId(queryParams.levelObj);
-      if (id === null) {
-        onloadObj(queryParams.levelObj);
-      } else {
-        onloadId(id);
-      }
+      onloadObj(queryParams.levelObj, queryParams.replayStr);
     }
   }
 
@@ -1358,6 +1361,7 @@
 
   function gotoTitlePage() {
     stopReplay();
+    urlReplay = null;
     settings.sharedFlag = false;
 
     completeFlag = false;
@@ -1375,7 +1379,7 @@
     common.updateTitleSeqModeButton();
   }
 
-  function onloadId(id_, idFlag = true) {
+  function onloadId(id_, idFlag = true, replayStr = null) {
     window.getSelection().removeAllRanges();
 
     if (editMode) {
@@ -1417,13 +1421,13 @@
 
     let id = id_;
     if (id === null) id = 1;
-    loadLevelById(id, false);
+    loadLevelById(id, false, replayStr);
   }
 
-  function onloadObj(levelObj) {
+  function onloadObj(levelObj, replayStr = null) {
     const id = getId(levelObj);
     if (id !== null) {
-      onloadId(id);
+      onloadId(id, true, replayStr);
       return;
     }
     window.getSelection().removeAllRanges();
@@ -1436,7 +1440,7 @@
     common.showElem(elems.controller.widget);
 
     switchToCustomLevel();
-    loadLevelObj(levelObj);
+    loadLevelObj(levelObj, replayStr);
   }
 
   function switchToCustomLevel() {
@@ -2397,6 +2401,7 @@
           : null,
       edit,
       score: {
+        recordingEnabled: urlReplay === null,
         currentStep,
         bestStep: common.level.getBestStep(),
         highestScore: !editMode && common.levelId !== null ? app.savedata.getHighestScore(common.level, common.levelNum) : undefined,
@@ -2407,7 +2412,7 @@
 
   function scheduleAutoNextLevel() {
     cancelAutoNextLevel();
-    if (!settings.autoMode || autoPaused || autoSeekPointerId !== null || !completeFlag) return;
+    if (urlReplay !== null || !settings.autoMode || autoPaused || autoSeekPointerId !== null || !completeFlag) return;
 
     // 遅延や繰り返しを含め、描画済みの完成演出がすべて終わってから待ち時間を設けます。
     const animations = elems.main.svg
@@ -2430,6 +2435,7 @@
   }
 
   function recordCompletion() {
+    if (urlReplay !== null) return app.savedata.getHighestScore(common.level, common.levelNum);
     const replayStr = undoInfoForNormal.getReplayStr();
     if (replayStr === null) return null;
 
@@ -2695,6 +2701,8 @@
   }
 
   function replaceUrl() {
+    // 再生中は元のURLを保ち、再読み込みで盤面や手順に鏡映・回転が二重にかかるのを防ぎます。
+    if (urlReplay !== null) return;
     if (common.isShownElem(elems.category.title)) {
       replaceUrlTitle();
       return;
@@ -2718,6 +2726,18 @@
 
   function autoStepInterval() {
     return REPLAY_STEP_MSEC / Number(elems.auto.speed.value);
+  }
+
+  function updateAutoSeek() {
+    const length = getAutoReplay()?.length ?? 0;
+    elems.auto.seek.max = length;
+    elems.auto.seek.value = Math.min(undoInfoForNormal.getIndex(), length);
+    elems.auto.seek.disabled = length === 0;
+    elems.auto.seek.style.setProperty('--seek-progress', length > 0 ? elems.auto.seek.valueAsNumber / length : 0);
+  }
+
+  function getAutoReplay() {
+    return urlReplay ?? common.level.getR();
   }
 
   function updateAutoMode(isAutoMode) {
@@ -2745,7 +2765,7 @@
       releaseGameInput();
       input.disable();
       updateEditMode(false, false);
-      const replay = common.level.getR();
+      const replay = getAutoReplay();
       if (replay !== undefined && replay !== null) {
         // 現在の手数までで解答手順と一致する最後の盤面にそろえます。
         const snapshot = undoInfoForNormal.seekReplayPrefix(replay, undoInfoForNormal.getIndex());
@@ -2779,6 +2799,7 @@
 
   function updateAutoStartPauseButtons() {
     const searching = autoSearchFrameId !== null;
+    elems.auto.buttonStop.ownerSVGElement.classList.toggle('hide', urlReplay !== null);
     elems.auto.searchControls.classList.toggle('hide', !searching);
     elems.auto.searchIcon.classList.toggle('hide', !searching);
     elems.auto.seek.classList.toggle('hide', searching);
@@ -2794,6 +2815,7 @@
   }
 
   function onButtonStop() {
+    if (urlReplay !== null) return;
     updateAutoMode(false);
     cancelAutoNextLevel();
     clearTimeout(redrawTimerId);
@@ -2803,7 +2825,12 @@
   function onButtonStart() {
     if (autoSearchFrameId !== null) return;
     app.sound.playButton();
-    if (common.level.getBestStep() !== undefined) {
+    const replay = getAutoReplay();
+    if (replay?.length !== undefined) {
+      if (urlReplay !== null) {
+        if (replay.length === 0 || (completeFlag && undoInfoForNormal.getIndex() === 0)) return;
+        if (completeFlag || undoInfoForNormal.getIndex() >= replay.length) retryLevel();
+      }
       onButtonStartSub();
       return;
     }
@@ -2890,16 +2917,21 @@
   }
 
   function showAutoStep(target) {
-    const replay = common.level.getR();
+    const replay = getAutoReplay();
     if (!replay) return;
 
     const snapshot = undoInfoForNormal.seekReplayPrefix(replay, target);
     common.level.applyObj(snapshot, false);
     common.level.applyAxis(snapshot.axis);
     for (let i = undoInfoForNormal.getIndex(); i < target; i++) {
+      if (urlReplay !== null && common.level.isCompleted()) break;
       const dir = Number(replay[i]);
       if (!common.level.move(dxs[dir], dys[dir])) break;
       undoInfoForNormal.pushData(createUndoData(dir));
+    }
+    if (urlReplay !== null) {
+      const step = undoInfoForNormal.getIndex();
+      if (step < target || step === replay.length || common.level.isCompleted()) finishUrlReplay(step);
     }
     // 途中の各手の移動音やアニメーションを再生せず、選んだ盤面を一度だけ描きます。
     common.level.applyObj(undoInfoForNormal.getTopData(), false);
@@ -2909,7 +2941,7 @@
   function onButtonEnd() {
     if (autoSearchFrameId !== null) return;
     app.sound.playButton();
-    showAutoStep(common.level.getBestStep());
+    showAutoStep(getAutoReplay()?.length);
   }
 
   function toggleReplay() {
@@ -2976,20 +3008,44 @@
   }
 
   function retryAndExecReplayStr(r) {
-    const levelObj = common.level.getLevelObj();
-    loadLevelObj(levelObj);
+    if (urlReplay !== null) {
+      // 形状一覧の手順は変換済みの盤面に対するものなので、元の履歴まで戻します。
+      pauseAuto();
+      retryLevel();
+    } else {
+      const levelObj = common.level.getLevelObj();
+      loadLevelObj(levelObj);
+    }
     execReplayStr(r);
   }
 
+  function finishUrlReplay(step) {
+    // 到達できた手数をシーク上限にします。完成演出の描画予約は残します。
+    urlReplay = urlReplay.slice(0, step);
+    // ドラッグの途中で末尾に触れても、手前に戻して離せば再生を続けます。
+    if (autoSeekPointerId !== null) return;
+    clearTimeout(autoIntervalId);
+    autoPaused = true;
+    updateAutoStartPauseButtons();
+  }
+
   function intervalFuncAuto() {
-    const r = common.level.getLevelObj()?.r;
+    const r = getAutoReplay();
     if (!editMode && settings.autoMode) {
       if (!autoPaused && autoSeekPointerId === null) {
-        if (r !== undefined) {
+        if (r?.length !== undefined) {
           const stepIndex = undoInfoForNormal.getIndex();
           if (stepIndex < r.length) {
             input.inputDir = Number(r[stepIndex]);
             inputFunc();
+          }
+          if (urlReplay !== null) {
+            const step = undoInfoForNormal.getIndex();
+            if (completeFlag || step === r.length || step === stepIndex) {
+              finishUrlReplay(step);
+              updateAutoSeek();
+              return;
+            }
           }
         } else {
           autoPaused = true;

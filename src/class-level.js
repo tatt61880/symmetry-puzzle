@@ -189,6 +189,24 @@
       return new Level({ levelObj: { ...initialState }, checkMode: this.#checkMode, reverseRotation: this.#reverseRotation });
     }
 
+    // 盤面と手順に同じ左右反転・時計回りの回転を適用します。軸操作 (4) は向きを変えません。
+    static transformReplay(replay, mirrorFlag, rotateNum) {
+      if (replay === undefined) return undefined;
+      let result = replay;
+      if (mirrorFlag) result = mapDirections(result, (dir) => (4 - dir) % 4);
+      for (let i = 0; i < rotateNum; i++) result = mapDirections(result, (dir) => (dir + 1) % 4);
+      return result;
+
+      function mapDirections(steps, transform) {
+        let transformed = '';
+        for (const step of steps) {
+          const dir = Number(step);
+          transformed += dir === 4 ? '4' : transform(dir);
+        }
+        return transformed;
+      }
+    }
+
     getBestStep() {
       return this.#levelObj?.r?.length;
     }
@@ -1064,19 +1082,7 @@
           x--;
         }
       }
-      let r = levelObj.r;
-      if (r !== undefined) {
-        let newR = '';
-        for (const c of r) {
-          const dirIndex = Number(c);
-          if (dirIndex === 4) {
-            newR += '4';
-          } else {
-            newR += (4 - dirIndex) % 4;
-          }
-        }
-        r = newR;
-      }
+      const r = Level.transformReplay(levelObj.r, true, 0);
       const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
       const newLevelObj = { w, h, s, r };
       const hint = levelObj.hint;
@@ -1119,19 +1125,7 @@
             y++;
           }
         }
-        let r = newLevelObj.r;
-        if (r !== undefined) {
-          let newR = '';
-          for (const c of r) {
-            const dirIndex = Number(c);
-            if (dirIndex === 4) {
-              newR += '4';
-            } else {
-              newR += (dirIndex + 1) % 4;
-            }
-          }
-          r = newR;
-        }
+        const r = Level.transformReplay(newLevelObj.r, false, 1);
         const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
         const hint = newLevelObj.hint;
         newLevelObj = { w, h, s, r };
