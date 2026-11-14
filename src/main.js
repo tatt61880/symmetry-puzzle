@@ -134,6 +134,7 @@
       elems.auto.seek.max = length;
       elems.auto.seek.value = Math.min(undoInfoForNormal.getIndex(), length);
       elems.auto.seek.disabled = length === 0;
+      elems.auto.seek.style.setProperty('--seek-progress', length > 0 ? elems.auto.seek.valueAsNumber / length : 0);
     }
     updateLevelHint(settings.autoMode || completeFlag ? null : common.level.getHint());
   }

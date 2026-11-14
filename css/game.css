@@ -222,14 +222,86 @@
     }
 
     #auto-seek {
+      --seek-color: green;
+      --seek-track-color: #cbd9cf;
+
+      /* 色の境界を、両端から半径分だけ内側を動くつまみの中心に合わせます。 */
+      --seek-position: calc(10px + (100% - 20px) * var(--seek-progress, 0));
+      --seek-background: linear-gradient(
+        to right,
+        var(--seek-color) var(--seek-position),
+        var(--seek-track-color) var(--seek-position)
+      );
+
       height: 36px;
+      padding: 0;
       margin: 0;
-      accent-color: green;
+      appearance: none;
       touch-action: none;
+      cursor: pointer;
+      background: transparent;
+      border: 0;
+      border-radius: 4px;
 
       &:enabled {
-        background-color: transparent;
         filter: drop-shadow(0 1px 1px #205d30);
+      }
+
+      &:disabled {
+        cursor: default;
+        opacity: 0.4;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--seek-color);
+        outline-offset: 2px;
+      }
+
+      /* 未対応の疑似要素を含むと無効になるため、ブラウザ別に指定します。 */
+      &::-webkit-slider-runnable-track {
+        height: 6px;
+        background: var(--seek-background);
+        border: 0;
+        border-radius: 3px;
+      }
+
+      &::-webkit-slider-thumb {
+        box-sizing: border-box;
+        width: 20px;
+        height: 20px;
+        margin-top: -7px;
+        appearance: none;
+        background: var(--seek-color);
+        border: 0;
+        border-radius: 50%;
+      }
+
+      &::-moz-range-track {
+        height: 6px;
+        background: var(--seek-background);
+        border: 0;
+        border-radius: 3px;
+      }
+
+      &::-moz-range-thumb {
+        box-sizing: border-box;
+        width: 20px;
+        height: 20px;
+        background: var(--seek-color);
+        border: 0;
+        border-radius: 50%;
+      }
+
+      &::-moz-range-progress {
+        background: transparent;
+        border: 0;
+      }
+
+      @media (forced-colors: active) {
+        --seek-color: ButtonText;
+        --seek-track-color: GrayText;
+
+        forced-color-adjust: none;
       }
     }
   }
