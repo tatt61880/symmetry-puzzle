@@ -300,6 +300,12 @@
       return;
     }
     if (elems.achievements.dialog.open || elems.auto.resultDialog.open || elems.menu.dialog.open || elems.edit.normalizeDialog.open) return;
+    if (
+      elems.console.log.contains(e.target) &&
+      ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', ' '].includes(e.key)
+    ) {
+      return;
+    }
     if (e.target === elems.auto.speed && e.key !== 'Escape') return;
     if (e.target === elems.auto.searchCancel && (e.key === 'Enter' || e.key === ' ')) return;
     if (
@@ -2481,7 +2487,9 @@
     } else if (secretSequence === '1414') {
       updateAutoMode(true);
     } else if (secretSequence === '4343') {
+      const wasHidden = common.isHiddenElem(elems.console.widget);
       common.showElem(elems.console.widget);
+      if (wasHidden) elems.console.log.scrollTop = elems.console.log.scrollHeight;
       {
         const input = elems.main.svg;
         const output = elems.console.image;
@@ -2988,6 +2996,8 @@
 
   function consoleAdd(str, className) {
     const elem = elems.console.log;
+    const scrollTop = elem.scrollTop;
+    const followLatest = elem.scrollHeight - elem.clientHeight - scrollTop <= 1;
     const li = document.createElement('li');
     li.classList.add(className);
 
@@ -3029,10 +3039,14 @@
 
     elem.appendChild(li);
 
-    const MAX_LOG_NUM = 10;
+    const MAX_LOG_NUM = 100;
+    let removedHeight = 0;
     while (elem.childElementCount > MAX_LOG_NUM) {
+      removedHeight += elem.firstElementChild.getBoundingClientRect().height;
       elem.removeChild(elem.firstChild);
     }
+    // 最下部を見ている場合だけ追従し、過去ログを読んでいる間は表示位置を保ちます。
+    elem.scrollTop = followLatest ? elem.scrollHeight : Math.max(0, scrollTop - removedHeight);
   }
 
   function consoleLog(str) {
