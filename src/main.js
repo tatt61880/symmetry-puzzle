@@ -1800,16 +1800,27 @@
     });
 
     const dialog = elems.edit.normalizeDialog;
-    elems.edit.normalizeHelp.addEventListener('click', () => {
+    let returnFocusToHelp = false;
+    elems.edit.normalizeHelp.addEventListener('click', (e) => {
+      returnFocusToHelp = e.detail === 0;
       releaseGameInput();
       app.sound.playUiOpen();
       elems.edit.normalizeHelp.focus({ preventScroll: true });
       dialog.showModal();
+      // ポインター操作では閉じるボタンを強調せず、説明全体にフォーカスします。
+      if (!returnFocusToHelp) dialog.focus({ preventScroll: true });
     });
+    dialog.addEventListener('keydown', () => (returnFocusToHelp = true));
+    dialog.addEventListener('pointerdown', () => (returnFocusToHelp = false));
+    dialog.addEventListener('cancel', () => (returnFocusToHelp = false));
     dialog.addEventListener('click', (e) => {
       if (e.target === dialog) dialog.close();
     });
-    dialog.addEventListener('close', () => app.sound.playUiClose());
+    dialog.addEventListener('close', () => {
+      app.sound.playUiClose();
+      // マウス・タッチやEscで閉じたときは、復元された説明ボタンの枠を残しません。
+      if (!returnFocusToHelp) elems.edit.normalizeHelp.blur();
+    });
   }
 
   function changeAxis() {

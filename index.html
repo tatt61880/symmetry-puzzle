@@ -1273,28 +1273,28 @@
           </g>
 
           <!-- モード変更ボタン -->
-          <g transform="translate(116,200)" class="button active-hover">
+          <g transform="translate(116,200)" class="button active-hover button-press">
             <rect id="edit-switch-mode" x="-60" y="-15" width="120" height="30" fill="#ffddff" stroke="#aa33aa" stroke-width="4" />
             <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18" fill="#aa33aa"
               class="translatable-toggle" data-en="Switch mode" data-ja="モード変更"></text>
           </g>
 
           <!-- 鏡映ボタン -->
-          <g transform="translate(224,200)" class="button active-hover">
+          <g transform="translate(224,200)" class="button active-hover button-press">
             <rect id="edit-mirror" x="-40" y="-15" width="80" height="30" fill="#ffddff" stroke="#aa33aa" stroke-width="4" />
             <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18" fill="#aa33aa"
               class="translatable-toggle" data-en="Mirror" data-ja="鏡映"></text>
           </g>
 
           <!-- 回転ボタン -->
-          <g transform="translate(312,200)" class="button active-hover">
+          <g transform="translate(312,200)" class="button active-hover button-press">
             <rect id="edit-rotate" x="-40" y="-15" width="80" height="30" fill="#ffddff" stroke="#aa33aa" stroke-width="4" />
             <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="18" fill="#aa33aa"
               class="translatable-toggle" data-en="Rotate" data-ja="回転"></text>
           </g>
 
           <!-- 正規化ボタン -->
-          <g transform="translate(403,200)" class="button active-hover">
+          <g transform="translate(403,200)" class="button active-hover button-press">
             <g id="edit-normalize">
               <rect x="-43" y="-15" width="86" height="30" fill="#ffddff" stroke="#aa33aa" stroke-width="4" />
               <text x="0" y="2" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="17" fill="#aa33aa"
@@ -1302,7 +1302,8 @@
             </g>
           </g>
         </svg>
-        <button id="edit-normalize-help" type="button" aria-haspopup="dialog" aria-labelledby="dialog-normalize-title">?</button>
+        <button id="edit-normalize-help" type="button" class="active-hover button-press focus-ring" aria-haspopup="dialog"
+          aria-labelledby="dialog-normalize-title">!</button>
         <dialog id="dialog-normalize" aria-labelledby="dialog-normalize-title">
           <form method="dialog">
             <h2 id="dialog-normalize-title" class="translatable-toggle" data-en="What does Normalize do?" data-ja="正規化とは？">正規化とは？</h2>
@@ -1319,7 +1320,7 @@
                 Normalization moves this dot along the axis to the edge of the board.
                 It moves to the top edge for a vertical line and to the left edge for a horizontal line.</p>
             </div>
-            <button type="submit" class="translatable-toggle" data-en="Close" data-ja="閉じる"></button>
+            <button type="submit" class="translatable-toggle active-hover button-press focus-ring" data-en="Close" data-ja="閉じる"></button>
           </form>
         </dialog>
       </div>
