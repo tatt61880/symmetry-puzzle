@@ -189,7 +189,7 @@
       width: 126px;
       padding-inline: 8px;
       font-size: 14px;
-      color: #334466;
+      color: #205d30;
 
       select {
         height: 34px;
@@ -200,7 +200,7 @@
         text-align: center;
         text-align-last: center;
         background-color: #ffffff;
-        border: 2px solid #99bbdd;
+        border: 2px solid green;
         border-radius: 6px;
 
         option {
