@@ -197,9 +197,16 @@
         font: inherit;
         font-size: 16px;
         color: inherit;
+        text-align: center;
+        text-align-last: center;
         background-color: #ffffff;
         border: 2px solid #99bbdd;
         border-radius: 6px;
+
+        option {
+          text-align: start;
+          text-align-last: auto;
+        }
       }
     }
 
