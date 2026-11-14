@@ -83,7 +83,7 @@
       elem.setAttribute('href', elem.dataset[lang]);
       const title = elem.dataset[lang + 'Title']; // 例: data-ja-title
       elem.setAttribute('title', title);
-      elem.setAttribute('area-label', title);
+      elem.setAttribute('aria-label', title);
     } else if (elem instanceof SVGTextElement) {
       elem.textContent = elem.dataset[lang];
     } else {
