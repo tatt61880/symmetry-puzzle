@@ -16,6 +16,36 @@
   outline-offset: var(--button-focus-offset);
 }
 
+/* SNS シェアボタン */
+.share-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 48px;
+  margin: 5px;
+
+  svg {
+    width: 40px;
+    height: 40px;
+    pointer-events: none;
+  }
+
+  /* X */
+  &.share-button-x {
+    background-color: #000000;
+    border: 4px solid #4d4d4d;
+    border-radius: 10px 20px;
+  }
+
+  /* Bluesky */
+  &.share-button-bluesky {
+    background-color: #0085ff;
+    border: 4px solid #4da9ff;
+    border-radius: 10px 10px 20px 20px;
+  }
+}
+
 .sound-toggle {
   display: grid;
   place-items: center;

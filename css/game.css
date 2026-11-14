@@ -407,21 +407,14 @@
         user-select: none;
       }
 
-      svg {
-        display: block;
-        margin: 10px auto 0;
-        overflow: visible;
-      }
-
-      .svg-button {
-        --svg-button-width: 92px;
-        --svg-button-height: 54px;
-        --svg-button-radius: 10px;
+      .share-level-links {
+        display: flex;
+        justify-content: center;
+        width: max-content;
+        margin: 5px auto 0;
       }
 
       .share-level-icon {
-        transform-box: fill-box;
-
         @media (prefers-reduced-motion: reduce) {
           animation: none;
         }
