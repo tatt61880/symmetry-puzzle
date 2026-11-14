@@ -75,6 +75,8 @@
     // 完成演出やスコアを描き直さず、軌跡だけを更新します。
     static updateMoveTrail(svg, { blockSize, moveTrail }) {
       const blocks = svg.querySelector('.group-level-main');
+      // 画面切替中は盤面がフェード用SVGへ移され、元のSVGが空になることがあります。
+      if (blocks === null) return;
       blocks.querySelector('.group-move-trail')?.remove();
       if (moveTrail) blocks.insertBefore(createMoveTrail(blockSize, moveTrail, 0, 0), blocks.querySelector('.group-shadow'));
     }
