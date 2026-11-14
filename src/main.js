@@ -315,6 +315,7 @@
     if (
       (e.key === 'Enter' || e.key === ' ') &&
       (elems.controller.shareLevel.contains(e.target) ||
+        elems.console.log.contains(e.target) ||
         [elems.controller.replay, elems.edit.normalizeHelp, elems.hint.toggle, elems.console.copySolver].includes(e.target))
     ) {
       return;
@@ -1469,6 +1470,8 @@
           // シークバー・倍率選択・ダイアログでは、ブラウザーにフォーカスを移させます。
           if (e.target === elems.auto.seek || e.target === elems.auto.speed || document.activeElement === elems.auto.speed) return;
           if (e.target === elems.auto.searchCancel) return;
+          // ログの文字選択とコピーボタンへのフォーカス移動を妨げません。
+          if (elems.console.log.contains(e.target)) return;
           if (e.detail === 1 && e.target.closest('button[aria-haspopup="dialog"], dialog button')) return;
           // ダブルタップしたときの画面の拡大縮小をしないようにする。
           e.preventDefault();
@@ -2987,9 +2990,44 @@
     const elem = elems.console.log;
     const li = document.createElement('li');
     li.classList.add(className);
-    li.textContent = str;
+
+    const text = document.createElement('span');
+    text.classList.add('console-log-text');
+    text.textContent = str;
+    li.appendChild(text);
+
+    const copyButton = document.createElement('button');
+    copyButton.type = 'button';
+    copyButton.classList.add('console-log-copy', 'active-hover', 'button-press', 'focus-ring');
+
+    const label = document.createElement('span');
+    label.classList.add('console-log-copy-label', 'translatable-toggle');
+    label.dataset.ja = 'コピー';
+    label.dataset.en = 'Copy';
+    common.applyLang(label, app.savedata.getLang());
+    copyButton.appendChild(label);
+
+    const icon = app.svg.createSvg();
+    icon.setAttribute('viewBox', '0 0 24 24');
+    icon.setAttribute('width', '20');
+    icon.setAttribute('height', '20');
+    icon.setAttribute('aria-hidden', 'true');
+    icon.setAttribute('focusable', 'false');
+    icon.setAttribute('stroke', 'currentColor');
+    icon.setAttribute('stroke-width', '1.8');
+    icon.setAttribute('stroke-linejoin', 'round');
+    icon.setAttribute('stroke-linecap', 'round');
+    icon.appendChild(
+      app.svg.createPath({
+        d: 'M 16,8 V 5 A 2,2 0 0,0 14,3 H 5 A 2,2 0 0,0 3,5 V 14 A 2,2 0 0,0 5,16 H 8 M 10,8 H 19 A 2,2 0 0,1 21,10 V 19 A 2,2 0 0,1 19,21 H 10 A 2,2 0 0,1 8,19 V 10 A 2,2 0 0,1 10,8 Z',
+        fill: 'none',
+      })
+    );
+    copyButton.appendChild(icon);
+    copyButton.addEventListener('click', () => copyTextToClipboard(str));
+    li.appendChild(copyButton);
+
     elem.appendChild(li);
-    li.addEventListener('click', copyTextToClipboard.bind(null, str));
 
     const MAX_LOG_NUM = 10;
     while (elem.childElementCount > MAX_LOG_NUM) {

@@ -173,6 +173,9 @@ text {
 
   & li {
     box-sizing: border-box;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
     padding: 3px 10px;
     text-align: left;
     word-break: break-all;
@@ -184,6 +187,40 @@ text {
       background-color: #fffbe5;
       border: 1px solid #fff5c2;
     }
+  }
+
+  .console-log-text {
+    flex: 1;
+    min-width: 0;
+    white-space: pre-wrap;
+    cursor: text;
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  .console-log-copy {
+    position: relative;
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 4px;
+    font: inherit;
+    color: #335588;
+    white-space: nowrap;
+    cursor: pointer;
+    background-color: #ffffff;
+    border: 2px solid #99bbdd;
+    border-radius: 6px;
+  }
+
+  .console-log-copy-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
   }
 }
 
