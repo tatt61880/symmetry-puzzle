@@ -54,6 +54,7 @@
     width: 452px;
     height: 127px;
     margin: 0;
+    overflow: visible; /* 押下時に下がる選択枠の下端が切れないようにします。 */
 
     .shape-select {
       cursor: pointer;

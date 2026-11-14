@@ -263,7 +263,7 @@
           common.applyLang(note, app.savedata.getLang());
           g.appendChild(note);
         } else {
-          g.classList.add('shape-select', 'button', 'active-hover');
+          g.classList.add('shape-select', 'button', 'active-hover', 'button-press');
           g.addEventListener('click', () => selectShape(replay));
         }
       } else {

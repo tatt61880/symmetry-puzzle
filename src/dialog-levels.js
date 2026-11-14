@@ -267,7 +267,7 @@
       }
 
       g.dataset.id = num;
-      g.classList.add('button', 'active-hover');
+      g.classList.add('button', 'active-hover', 'button-press');
       g.addEventListener('click', function () {
         const id = Number(g.dataset.id);
         app.common.loadLevelById(id);
@@ -422,7 +422,7 @@
       }
 
       g.dataset.id = id;
-      g.classList.add('button', 'active-hover');
+      g.classList.add('button', 'active-hover', 'button-press');
       g.addEventListener('click', function () {
         const id = Number(g.dataset.id);
         app.common.loadLevelById(id);
