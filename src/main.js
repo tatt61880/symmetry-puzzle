@@ -300,7 +300,7 @@
       return;
     }
     if (elems.achievements.dialog.open || elems.auto.resultDialog.open || elems.menu.dialog.open || elems.edit.normalizeDialog.open) return;
-    if (e.target === elems.auto.speed) return;
+    if (e.target === elems.auto.speed && e.key !== 'Escape') return;
     if (e.target === elems.auto.searchCancel && (e.key === 'Enter' || e.key === ' ')) return;
     if (
       e.target === elems.auto.seek &&
@@ -340,6 +340,13 @@
     // 形状一覧ダイアログで有効
     if (elems.shapes.dialog.open) {
       handleListDialogKey(e, app.dialog.shapes);
+      return;
+    }
+
+    // ダイアログを閉じるEscを優先し、通常時は停止ボタンと同じ処理で抜けます。
+    if (e.key === 'Escape' && !e.repeat && !e.ctrlKey && !e.metaKey && !e.defaultPrevented && settings.autoMode) {
+      e.preventDefault();
+      onButtonStop();
       return;
     }
 
