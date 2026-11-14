@@ -1497,6 +1497,23 @@
 
     elems.top.addEventListener('click', gotoTitlePage);
     elems.console.copySolver.addEventListener('click', () => copyTextToClipboard(common.level.getSolverCommand()));
+    // コンソールを再表示しても重複しないよう、画像のクリック処理は初期化時に一度だけ登録します。
+    elems.console.image.addEventListener('click', () => {
+      const image = elems.console.image;
+      const canvas = document.createElement('canvas');
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(image, 0, 0);
+
+      canvas.toBlob(async (blob) => {
+        const item = new ClipboardItem({
+          'image/png': blob,
+        });
+        await navigator.clipboard.write([item]);
+        window.alert('画像をクリップボードにコピーしました。');
+      });
+    });
 
     initElemsForAuto();
     initElemsForEdit();
@@ -2495,22 +2512,6 @@
         });
 
         image.src = svgDataUrl;
-
-        output.addEventListener('click', () => {
-          const canvas = document.createElement('canvas');
-          canvas.width = output.naturalWidth;
-          canvas.height = output.naturalHeight;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(output, 0, 0);
-
-          canvas.toBlob(async (blob) => {
-            const item = new ClipboardItem({
-              'image/png': blob,
-            });
-            await navigator.clipboard.write([item]);
-            window.alert('画像をクリップボードにコピーしました。');
-          });
-        });
       }
     } else if (secretSequence === '3434') {
       common.hideElem(elems.console.widget);
