@@ -467,10 +467,12 @@
           }
           break;
       }
-    } else if (e.key === 'Enter' && !elems.controller.shareLevel.open && common.isShownElem(elems.controller.nextLevel)) {
-      gotoNextLevel();
-    } else if (e.key === 'Enter' && !elems.controller.shareLevel.open && common.isShownElem(elems.controller.prevLevel)) {
-      gotoPrevLevel();
+    } else if (
+      e.key === 'Enter' &&
+      !elems.controller.shareLevel.open &&
+      (common.isShownElem(elems.controller.nextLevel) || common.isShownElem(elems.controller.prevLevel))
+    ) {
+      gotoLevelAfterCompletion();
     } else if (e.key === ' ') {
       if (settings.autoMode) {
         if (autoPaused) {
@@ -1017,17 +1019,22 @@
     updateShapeButton();
   }
 
-  function showLevelPrev() {
-    return common.levels.prevable(common.levelId);
+  function getPrevLevelId() {
+    return common.levels.prevable(common.levelId) ? common.levelId - 1 : null;
   }
 
-  function showLevelNext() {
-    return common.levels.nextable(common.levelId);
+  function getNextLevelId() {
+    return common.levels.nextable(common.levelId) ? common.levelId + 1 : null;
+  }
+
+  function getLevelIdAfterCompletion() {
+    // 連番モードの負の盤面は、クリアすると番号が小さくなる方向へ進みます。
+    return common.isSeqMode && common.levelNum < 0 ? getPrevLevelId() : getNextLevelId();
   }
 
   function updateLevelVisibility() {
-    (showLevelPrev() ? common.showElem : common.hideElem)(elems.level.prev);
-    (showLevelNext() ? common.showElem : common.hideElem)(elems.level.next);
+    (getPrevLevelId() !== null ? common.showElem : common.hideElem)(elems.level.prev);
+    (getNextLevelId() !== null ? common.showElem : common.hideElem)(elems.level.next);
 
     common.hideElem(elems.level.edit);
 
@@ -1045,21 +1052,26 @@
   }
 
   function gotoPrevLevel() {
-    if (!showLevelPrev()) return;
-    loadLevelById(common.levelId - 1);
+    const levelId = getPrevLevelId();
+    if (levelId !== null) loadLevelById(levelId);
   }
 
   function gotoNextLevel() {
-    if (!showLevelNext()) return;
-    loadLevelById(common.levelId + 1);
+    const levelId = getNextLevelId();
+    if (levelId !== null) loadLevelById(levelId);
+  }
+
+  function gotoLevelAfterCompletion() {
+    const levelId = getLevelIdAfterCompletion();
+    if (levelId !== null) loadLevelById(levelId);
   }
 
   function gotoNextLevelButton() {
-    if (isCompletionButtonEnabled(elems.controller.nextLevel)) gotoNextLevel();
+    if (isCompletionButtonEnabled(elems.controller.nextLevel)) gotoLevelAfterCompletion();
   }
 
   function gotoPrevLevelButton() {
-    if (isCompletionButtonEnabled(elems.controller.prevLevel)) gotoPrevLevel();
+    if (isCompletionButtonEnabled(elems.controller.prevLevel)) gotoLevelAfterCompletion();
   }
 
   function isCompletionButtonEnabled(button) {
@@ -2281,15 +2293,10 @@
         }
       }
 
-      if (!common.isSeqMode) {
-        if (common.isShownElem(elems.level.next)) {
-          common.showElem(elems.controller.nextLevel);
-        }
-      } else if (!showShareLevel) {
-        if (common.levelNum > 0) {
-          common.showElem(elems.controller.nextLevel);
-        } else {
-          common.showElem(elems.controller.prevLevel);
+      if (!common.isSeqMode || !showShareLevel) {
+        const levelId = getLevelIdAfterCompletion();
+        if (levelId !== null) {
+          common.showElem(levelId < common.levelId ? elems.controller.prevLevel : elems.controller.nextLevel);
         }
       }
     }
@@ -2412,7 +2419,7 @@
       // 再描画などで取り消された演出や、一時停止前の予約からは遷移しません。
       if (autoNextLevelWait !== wait || results.some((result) => result.status === 'rejected')) return;
       autoNextLevelWait = null;
-      nextLevelTimerId = setTimeout(gotoNextLevel, AUTO_NEXT_LEVEL_DELAY);
+      nextLevelTimerId = setTimeout(gotoLevelAfterCompletion, AUTO_NEXT_LEVEL_DELAY);
     });
   }
 
