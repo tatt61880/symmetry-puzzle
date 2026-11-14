@@ -239,11 +239,7 @@
 
       /* 色の境界を、両端から半径分だけ内側を動くつまみの中心に合わせます。 */
       --seek-position: calc(10px + (100% - 20px) * var(--seek-progress, 0));
-      --seek-background: linear-gradient(
-        to right,
-        var(--seek-color) var(--seek-position),
-        var(--seek-track-color) var(--seek-position)
-      );
+      --seek-background: linear-gradient(to right, var(--seek-color) var(--seek-position), var(--seek-track-color) var(--seek-position));
 
       height: 36px;
       padding: 0;
