@@ -154,9 +154,34 @@
 }
 
 .animation-jump {
+  --jump-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-1));
+
   animation: animation-jump cubic-bezier(0, 0.5, 1, 0.5) forwards;
-  animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-1));
+  animation-duration: var(--jump-duration);
   animation-iteration-count: var(--animation-jump-count);
+}
+
+/* 最後のジャンプと回転・反転が終わったら、一度だけ笑います。 */
+.player-jump-face > .player-eye,
+.player-smiling-eyes {
+  animation: player-completion-smile 300ms calc(var(--jump-duration) * var(--animation-jump-count));
+}
+
+.player-jump-face > .player-eye {
+  --smile-opacity: 0;
+}
+
+.player-smiling-eyes {
+  --smile-opacity: 1;
+
+  opacity: 0;
+}
+
+@keyframes player-completion-smile {
+  0%,
+  100% {
+    opacity: var(--smile-opacity);
+  }
 }
 
 @keyframes animation-jump {
