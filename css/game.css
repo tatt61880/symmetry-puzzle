@@ -408,10 +408,27 @@
       transform: translateX(-50%);
 
       summary {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        justify-content: center;
         margin: 0 auto;
-        line-height: 46px;
-        list-style-position: inside;
+        list-style: none;
         user-select: none;
+
+        &::-webkit-details-marker {
+          display: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        summary > svg {
+          transition: transform 150ms ease;
+        }
+      }
+
+      &[open] > summary > svg {
+        transform: rotate(90deg);
       }
 
       .share-level-links {
