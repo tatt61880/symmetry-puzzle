@@ -61,6 +61,7 @@
   let redoIntervalId = null;
   let autoIntervalId = null;
   let autoSeekPointerId = null;
+  let autoStepRepeat = null;
   let autoLayoutAnimations = [];
   let autoSearchFrameId = null;
 
@@ -202,6 +203,7 @@
 
   function releaseGameInput() {
     drawingPointerId = null;
+    stopAutoStepRepeat();
     heldGameKeys.clear();
     moveKeys.clear();
     if (!settings.autoMode) input.update(app.Input.DIRS.NEUTRAL);
@@ -290,6 +292,7 @@
   }
 
   async function keydown(e) {
+    if (!e.repeat) stopAutoStepRepeat();
     if (e.key === 'Tab') {
       handleTabKey(e);
       return;
@@ -301,7 +304,9 @@
     ) {
       return;
     }
-    if (e.target === elems.auto.speed && e.key !== 'Escape') return;
+    const key = e.key.toLowerCase();
+    const autoStepKey = settings.autoMode && !editMode && (key === 'z' || (key === 'y' && !e.shiftKey));
+    if (e.target === elems.auto.speed && e.key !== 'Escape' && !autoStepKey) return;
     if (e.target === elems.auto.searchCancel && (e.key === 'Enter' || e.key === ' ')) return;
     if (
       e.target === elems.auto.seek &&
@@ -406,8 +411,14 @@
       return;
     }
 
-    // 下段コントローラーが操作できない間は、対応するショートカットも受け付けません。
-    if (settings.autoMode && !editMode && ['z', 'Z', 'y', 'Enter'].includes(e.key)) return;
+    if (autoStepKey) {
+      if (!e.ctrlKey && !e.metaKey && !e.defaultPrevented && !e.repeat) {
+        e.preventDefault();
+        startAutoStepRepeat(e.code, key === 'z' && !e.shiftKey ? -1 : 1);
+      }
+      return;
+    }
+    if (settings.autoMode && !editMode && e.key === 'Enter') return;
 
     if (e.key === '#') {
       if (e.ctrlKey) return;
@@ -560,6 +571,7 @@
   }
 
   function keyup(e) {
+    if (autoStepRepeat && (e.code === autoStepRepeat.code || (e.key === 'Shift' && !e.shiftKey))) stopAutoStepRepeat();
     heldGameKeys.delete(e.code);
     if (common.isShownElem(elems.category.title)) return;
     // Shift などで文字が変わっても、押したときと同じ物理キーとして扱います。
@@ -1664,6 +1676,11 @@
 
   // Autoモード用
   function initElemsForAuto() {
+    document.addEventListener('pointerdown', stopAutoStepRepeat, true);
+    document.addEventListener('focusin', stopAutoStepRepeat);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopAutoStepRepeat();
+    });
     elems.auto.seek.addEventListener('pointerdown', (e) => {
       if (!e.isPrimary || e.button !== 0) return;
       autoSeekPointerId = e.pointerId;
@@ -2741,6 +2758,7 @@
   }
 
   function updateAutoMode(isAutoMode) {
+    stopAutoStepRepeat();
     cancelAutoSearch();
     autoSeekPointerId = null;
     settings.autoMode = isAutoMode;
@@ -2890,6 +2908,7 @@
 
   function onButtonPause() {
     app.sound.playButton();
+    clearTimeout(redrawTimerId);
     pauseAuto();
   }
 
@@ -2897,7 +2916,6 @@
     autoPaused = true;
     updateAutoStartPauseButtons();
     cancelAutoNextLevel();
-    clearTimeout(redrawTimerId);
     clearTimeout(autoIntervalId);
   }
 
@@ -2908,6 +2926,30 @@
     showAutoStep(elems.auto.seek.valueAsNumber);
     // キーボード操作では、1回の入力でシークが完了します。
     if (autoSeekPointerId === null) scheduleNextAutoStep();
+  }
+
+  function startAutoStepRepeat(code, delta) {
+    if (!getAutoReplay() || autoSearchFrameId !== null) return;
+    pauseAuto();
+    autoStepRepeat = { code, timerId: setInterval(step, UNDO_INTERVAL_MSEC) };
+    step();
+
+    function step() {
+      const target = undoInfoForNormal.getIndex() + delta;
+      if (target < 0 || target > getAutoReplay().length) {
+        stopAutoStepRepeat();
+        return;
+      }
+      clearTimeout(redrawTimerId);
+      showAutoStep(target);
+    }
+  }
+
+  function stopAutoStepRepeat() {
+    if (autoStepRepeat === null) return;
+    clearInterval(autoStepRepeat.timerId);
+    heldGameKeys.delete(autoStepRepeat.code);
+    autoStepRepeat = null;
   }
 
   function scheduleNextAutoStep() {
