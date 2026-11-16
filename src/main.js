@@ -132,7 +132,7 @@
       document.documentElement.style.setProperty('--animation-origin', `${blockSize * center.x}px ${blockSize * center.y}px`);
     }
     if (settings.autoMode) updateAutoSeek();
-    updateLevelHint(settings.autoMode || completeFlag ? null : common.level.getHint());
+    updateLevelHint();
   }
 
   function moveButtonStart(dir, e) {
@@ -973,13 +973,13 @@
 
   function updateShapeButton(discoveredShape = null) {
     const shapesObj = common.level && app.savedata.getShapesObj(common.level, common.levelNum);
-    if (!shapesObj) {
+    const count = Object.keys(shapesObj ?? {}).length;
+    if (count === 0) {
       common.hideElem(elems.shapes.buttonG);
       return;
     }
 
     common.showElem(elems.shapes.buttonG);
-    const count = Object.keys(shapesObj).length;
     const denumerator = common.level.getShapes() ?? '?';
     elems.shapes.buttonDenumerator.textContent = denumerator;
     const fill = common.isSeqMode ? app.colors.frameFillSeqMode : app.colors.frameFill;
@@ -1561,7 +1561,7 @@
       releaseGameInput();
       app.sound.playButton();
       levelHintState = levelHintState === 'showing' ? 'available' : 'showing';
-      updateLevelHint(common.level.getHint());
+      updateLevelHint();
     });
     initSoundButtons();
     app.dialog.help.init();
@@ -2358,9 +2358,16 @@
     hintWallPressCount = 0;
   }
 
-  function countHintWallPress(dir) {
-    if (levelHintState !== 'locked' || editMode || completeFlag || undoFlag || redoFlag) return;
+  function getLevelHint() {
+    if (editMode || settings.autoMode || completeFlag) return null;
     const hint = common.level.getHint();
+    if (hint && app.savedata.getHighestScore(common.level, common.levelNum) !== null) return null;
+    return hint;
+  }
+
+  function countHintWallPress(dir) {
+    if (levelHintState !== 'locked' || undoFlag || redoFlag) return;
+    const hint = getLevelHint();
     if (!hint?.wallDirs?.includes(Number(dir))) return;
 
     hintWallPressCount++;
@@ -2370,7 +2377,7 @@
     }
   }
 
-  function updateLevelHint(hint) {
+  function updateLevelHint(hint = getLevelHint()) {
     if (hint && levelHintState === 'locked' && undoInfoForNormal.getIndex() >= hint.afterSteps) {
       levelHintState = 'available';
     }

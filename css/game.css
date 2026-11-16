@@ -363,10 +363,9 @@
     }
 
     #level-hint-toggle {
-      /* 上キーと同じ高さ、右キーと同じ列に中心をそろえます。 */
       position: absolute;
-      top: 41px;
-      left: calc(50% + 79px);
+      top: 70px;
+      left: calc(50% + 185px);
       width: 68px;
       height: 68px;
       padding: 0 0 6px;
