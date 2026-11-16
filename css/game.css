@@ -342,13 +342,24 @@
       inset: 0;
       display: none;
       place-items: center;
-      font: bold 68px/1 system-ui, sans-serif;
+      font: bold 48px/1 system-ui, sans-serif;
       color: rgb(54 84 113 / 75%);
       background-color: rgb(221 238 255 / 65%);
     }
 
-    &[inert] #controller-auto-label {
+    #controller-play-controls[inert] + #controller-auto-label {
       display: grid;
+    }
+
+    #controller-history-buttons {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+
+      .button:not(.hide) {
+        pointer-events: auto;
+        touch-action: none;
+      }
     }
 
     #level-hint-toggle {

@@ -1338,8 +1338,8 @@
 
       <!-- コントローラー -->
       <div id="controller-widget" class="inner">
-        <svg width="500" height="240">
-          <g transform="translate(250,120)">
+        <div id="controller-play-controls">
+          <svg width="500" height="240" viewBox="-250 -120 500 240">
             <rect x="-250" y="-125" width="500" height="250" fill="#ddeeff" stroke="none" />
 
             <!-- メニューボタン -->
@@ -1365,36 +1365,6 @@
                 <rect id="button-shapes-line" x="-23" y="-2" rx="2" width="46" height="4" fill="#ff7700" />
                 <text id="button-shapes-denumerator" x="0" y="20" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
                   font-size="30" fill="#ff7700" stroke="none">?</text>
-              </g>
-            </g>
-
-            <!-- Undoボタン -->
-            <g id="button-undo" class="button active-hover" transform="translate(-185,60)">
-              <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#6688aa"
-                class="translatable-toggle" data-en="UNDO" data-ja="1手戻す"></text>
-              <g class="button-transform">
-                <g transform="scale(1.25,1.25)">
-                  <circle cx="0" cy="0" r="28" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
-                  <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#99ccff" stroke-width="4" />
-                  <path d="M 1,-20.5 l -13,9 14.5,5.2 z" fill="#99ccff" stroke="none" />
-                  <text class="shortcut-key" x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
-                    fill="#6688aa">Z</text>
-                </g>
-              </g>
-            </g>
-
-            <!-- Redoボタン -->
-            <g id="button-redo" class="button active-hover" transform="translate(185,60)">
-              <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#6688aa"
-                class="translatable-toggle" data-en="REDO" data-ja="1手進める"></text>
-              <g class="button-transform">
-                <g transform="scale(-1.25,1.25)">
-                  <circle cx="0" cy="0" r="28" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
-                  <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#99ccff" stroke-width="4" />
-                  <path d="M 1,-20.5 l -13,9 14.5,5.2 z" fill="#99ccff" stroke="none" />
-                  <text class="shortcut-key" x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
-                    fill="#6688aa">Y</text>
-                </g>
               </g>
             </g>
 
@@ -1469,44 +1439,75 @@
                 </g>
               </g>
             </g>
+          </svg>
+          <button type="button" id="level-hint-toggle" class="hide active-hover button-press" aria-labelledby="level-hint-label"
+            aria-controls="level-hint level-hint-message" aria-pressed="false">
+            <svg viewBox="0 0 32 32" width="52" height="52" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <title id="level-hint-label" class="translatable-toggle" data-en="Hint" data-ja="ヒント">ヒント</title>
+              <path d="M 12,22 C 12,18 8,17 8,12 A 8,8 0 0 1 24,12 C 24,17 20,18 20,22 Z" fill="#ffe6a1" />
+              <path d="M 14,15 16,18 18,15 M 16,18 V 22 M 12.5,25 H 19.5 M 14,28 H 18" />
+            </svg>
+          </button>
+          <button type="button" id="button-replay" class="button-press focus-ring hide">
+            <span class="translatable-toggle" data-en="Replay" data-ja="リプレイ"></span>
+            <span class="translatable-toggle hide" data-en="Stop replay" data-ja="再生を停止"></span>
+          </button>
+          <details id="share-level" class="hide">
+            <summary class="active-hover button-press focus-ring">
+              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M 2,1 15,8 2,15 Z" fill="currentColor" />
+              </svg>
+              <span class="translatable-toggle" data-en="Share level" data-ja="SNSにシェア">SNSにシェア</span>
+            </summary>
+            <div class="share-level-links">
+              <a id="share-level-x" class="share-button share-button-x active-hover button-press focus-ring" target="_blank"
+                rel="nofollow noopener noreferrer" aria-label="Xでシェア" data-en-title="Share on X" data-ja-title="Xでシェア">
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="share-level-icon animation-icon-point">
+                  <use href="#share-icon-x" />
+                </svg>
+              </a>
+              <a id="share-level-bluesky" class="share-button share-button-bluesky active-hover button-press focus-ring" target="_blank"
+                rel="nofollow noopener noreferrer" aria-label="Blueskyでシェア" data-en-title="Share on Bluesky" data-ja-title="Blueskyでシェア">
+                <svg viewBox="0 0 256 256" aria-hidden="true" class="share-level-icon animation-icon-line">
+                  <use href="#share-icon-bluesky" />
+                </svg>
+              </a>
+            </div>
+          </details>
+        </div>
+        <span id="controller-auto-label">AUTO MODE</span>
+        <svg id="controller-history-buttons" width="500" height="240" viewBox="-250 -120 500 240">
+          <!-- Undoボタン -->
+          <g id="button-undo" class="button active-hover" transform="translate(-185,60)">
+            <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#6688aa"
+              class="translatable-toggle" data-en="UNDO" data-ja="1手戻す"></text>
+            <g class="button-transform">
+              <g transform="scale(1.25,1.25)">
+                <circle cx="0" cy="0" r="28" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
+                <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#99ccff" stroke-width="4" />
+                <path d="M 1,-20.5 l -13,9 14.5,5.2 z" fill="#99ccff" stroke="none" />
+                <text class="shortcut-key" x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
+                  fill="#6688aa">Z</text>
+              </g>
+            </g>
+          </g>
+
+          <!-- Redoボタン -->
+          <g id="button-redo" class="button active-hover" transform="translate(185,60)">
+            <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#6688aa"
+              class="translatable-toggle" data-en="REDO" data-ja="1手進める"></text>
+            <g class="button-transform">
+              <g transform="scale(-1.25,1.25)">
+                <circle cx="0" cy="0" r="28" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
+                <path d="M -14,0 a 14,14 0 1 0 14,-14" fill="none" stroke="#99ccff" stroke-width="4" />
+                <path d="M 1,-20.5 l -13,9 14.5,5.2 z" fill="#99ccff" stroke="none" />
+                <text class="shortcut-key" x="0" y="3" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="14"
+                  fill="#6688aa">Y</text>
+              </g>
+            </g>
           </g>
         </svg>
-        <button type="button" id="level-hint-toggle" class="hide active-hover button-press" aria-labelledby="level-hint-label"
-          aria-controls="level-hint level-hint-message" aria-pressed="false">
-          <svg viewBox="0 0 32 32" width="52" height="52" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"
-            stroke-linecap="round" stroke-linejoin="round">
-            <title id="level-hint-label" class="translatable-toggle" data-en="Hint" data-ja="ヒント">ヒント</title>
-            <path d="M 12,22 C 12,18 8,17 8,12 A 8,8 0 0 1 24,12 C 24,17 20,18 20,22 Z" fill="#ffe6a1" />
-            <path d="M 14,15 16,18 18,15 M 16,18 V 22 M 12.5,25 H 19.5 M 14,28 H 18" />
-          </svg>
-        </button>
-        <button type="button" id="button-replay" class="button-press focus-ring hide">
-          <span class="translatable-toggle" data-en="Replay" data-ja="リプレイ"></span>
-          <span class="translatable-toggle hide" data-en="Stop replay" data-ja="再生を停止"></span>
-        </button>
-        <details id="share-level" class="hide">
-          <summary class="active-hover button-press focus-ring">
-            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-              <path d="M 2,1 15,8 2,15 Z" fill="currentColor" />
-            </svg>
-            <span class="translatable-toggle" data-en="Share level" data-ja="SNSにシェア">SNSにシェア</span>
-          </summary>
-          <div class="share-level-links">
-            <a id="share-level-x" class="share-button share-button-x active-hover button-press focus-ring" target="_blank"
-              rel="nofollow noopener noreferrer" aria-label="Xでシェア" data-en-title="Share on X" data-ja-title="Xでシェア">
-              <svg viewBox="0 0 24 24" aria-hidden="true" class="share-level-icon animation-icon-point">
-                <use href="#share-icon-x" />
-              </svg>
-            </a>
-            <a id="share-level-bluesky" class="share-button share-button-bluesky active-hover button-press focus-ring" target="_blank"
-              rel="nofollow noopener noreferrer" aria-label="Blueskyでシェア" data-en-title="Share on Bluesky" data-ja-title="Blueskyでシェア">
-              <svg viewBox="0 0 256 256" aria-hidden="true" class="share-level-icon animation-icon-line">
-                <use href="#share-icon-bluesky" />
-              </svg>
-            </a>
-          </div>
-        </details>
-        <span id="controller-auto-label">AUTO MODE</span>
       </div>
 
       <div id="console-widget" class="hide">

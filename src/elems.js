@@ -268,6 +268,7 @@
     // コントローラー
     controller: {
       widget: 'controller-widget',
+      playControls: 'controller-play-controls',
       autoLabel: 'controller-auto-label',
       undo: 'button-undo',
       redo: 'button-redo',

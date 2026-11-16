@@ -173,11 +173,6 @@
     common.inactiveElem(elems.edit.undo);
   }
 
-  function undodown(e) {
-    e.preventDefault();
-    undoStart();
-  }
-
   function redoStart() {
     if (redoFlag) return;
     redoFlag = true;
@@ -196,9 +191,17 @@
     common.inactiveElem(elems.edit.redo);
   }
 
-  function redodown(e) {
+  function historyButtonDown(delta, e) {
     e.preventDefault();
-    redoStart();
+    if (settings.autoMode && !editMode) {
+      if (!e.isPrimary || e.button !== 0) return;
+      e.currentTarget.setPointerCapture(e.pointerId);
+      startAutoStepRepeat(delta, e);
+    } else if (delta < 0) {
+      undoStart();
+    } else {
+      redoStart();
+    }
   }
 
   function releaseGameInput() {
@@ -414,7 +417,7 @@
     if (autoStepKey) {
       if (!e.ctrlKey && !e.metaKey && !e.defaultPrevented && !e.repeat) {
         e.preventDefault();
-        startAutoStepRepeat(e.code, key === 'z' && !e.shiftKey ? -1 : 1);
+        startAutoStepRepeat(key === 'z' && !e.shiftKey ? -1 : 1, e);
       }
       return;
     }
@@ -571,7 +574,7 @@
   }
 
   function keyup(e) {
-    if (autoStepRepeat && (e.code === autoStepRepeat.code || (e.key === 'Shift' && !e.shiftKey))) stopAutoStepRepeat();
+    if (autoStepRepeat?.code !== undefined && (e.code === autoStepRepeat.code || (e.key === 'Shift' && !e.shiftKey))) stopAutoStepRepeat();
     heldGameKeys.delete(e.code);
     if (common.isShownElem(elems.category.title)) return;
     // Shift などで文字が変わっても、押したときと同じ物理キーとして扱います。
@@ -777,7 +780,7 @@
   }
 
   function updateUndoRedoButton() {
-    if (undoInfoForNormal !== undefined) {
+    if (!settings.autoMode && undoInfoForNormal !== undefined) {
       if (common.isHiddenElem(elems.main.replaySvg) && undoInfoForNormal.isUndoable()) {
         common.showElem(elems.controller.undo);
       } else {
@@ -1094,7 +1097,7 @@
   }
 
   function isCompletionButtonEnabled(button) {
-    if (elems.controller.widget.inert || button.getClientRects().length === 0) return false;
+    if (elems.controller.playControls.inert || button.getClientRects().length === 0) return false;
     const style = window.getComputedStyle(button);
     return style.visibility === 'visible' && style.opacity > 0.5;
   }
@@ -1588,11 +1591,10 @@
         return !editMode;
       };
 
-      elems.controller.undo.addEventListener('pointerdown', undodown);
-      elems.edit.undo.addEventListener('pointerdown', undodown);
-
-      elems.controller.redo.addEventListener('pointerdown', redodown);
-      elems.edit.redo.addEventListener('pointerdown', redodown);
+      for (const controls of [elems.controller, elems.edit]) {
+        controls.undo.addEventListener('pointerdown', historyButtonDown.bind(null, -1));
+        controls.redo.addEventListener('pointerdown', historyButtonDown.bind(null, 1));
+      }
 
       elems.controller.buttons.up.addEventListener('pointerdown', moveButtonStart.bind(null, app.Input.DIRS.UP));
       elems.controller.buttons.right.addEventListener('pointerdown', moveButtonStart.bind(null, app.Input.DIRS.RIGHT));
@@ -1677,6 +1679,9 @@
   // Autoモード用
   function initElemsForAuto() {
     document.addEventListener('pointerdown', stopAutoStepRepeat, true);
+    document.addEventListener('lostpointercapture', (e) => {
+      if (e.pointerId === autoStepRepeat?.pointerId) stopAutoStepRepeat();
+    });
     document.addEventListener('focusin', stopAutoStepRepeat);
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) stopAutoStepRepeat();
@@ -2747,10 +2752,13 @@
 
   function updateAutoSeek() {
     const length = getAutoReplay()?.length ?? 0;
+    const step = Math.min(undoInfoForNormal.getIndex(), length);
     elems.auto.seek.max = length;
-    elems.auto.seek.value = Math.min(undoInfoForNormal.getIndex(), length);
+    elems.auto.seek.value = step;
     elems.auto.seek.disabled = length === 0;
-    elems.auto.seek.style.setProperty('--seek-progress', length > 0 ? elems.auto.seek.valueAsNumber / length : 0);
+    elems.auto.seek.style.setProperty('--seek-progress', length > 0 ? step / length : 0);
+    elems.controller.undo.classList.toggle('hide', step === 0);
+    elems.controller.redo.classList.toggle('hide', step === length);
   }
 
   function getAutoReplay() {
@@ -2762,7 +2770,7 @@
     cancelAutoSearch();
     autoSeekPointerId = null;
     settings.autoMode = isAutoMode;
-    const modeChanged = elems.controller.widget.inert !== isAutoMode;
+    const modeChanged = elems.controller.playControls.inert !== isAutoMode;
     const animate = modeChanged && window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
     const board = common.isShownElem(elems.main.replaySvg) ? elems.main.replaySvg : elems.main.svg;
     const layout =
@@ -2777,7 +2785,7 @@
     if (isAutoMode && animate) {
       elems.controller.autoLabel.animate([{ color: 'transparent', offset: 0 }], { duration: 150, easing: 'ease-out' });
     }
-    elems.controller.widget.inert = isAutoMode;
+    elems.controller.playControls.inert = isAutoMode;
 
     if (isAutoMode) {
       releaseGameInput();
@@ -2928,10 +2936,12 @@
     if (autoSeekPointerId === null) scheduleNextAutoStep();
   }
 
-  function startAutoStepRepeat(code, delta) {
+  function startAutoStepRepeat(delta, { code, pointerId }) {
     if (!getAutoReplay() || autoSearchFrameId !== null) return;
     pauseAuto();
-    autoStepRepeat = { code, timerId: setInterval(step, UNDO_INTERVAL_MSEC) };
+    const button = delta < 0 ? elems.controller.undo : elems.controller.redo;
+    common.activeElem(button);
+    autoStepRepeat = { code, pointerId, button, timerId: setInterval(step, UNDO_INTERVAL_MSEC) };
     step();
 
     function step() {
@@ -2948,7 +2958,8 @@
   function stopAutoStepRepeat() {
     if (autoStepRepeat === null) return;
     clearInterval(autoStepRepeat.timerId);
-    heldGameKeys.delete(autoStepRepeat.code);
+    if (autoStepRepeat.code !== undefined) heldGameKeys.delete(autoStepRepeat.code);
+    common.inactiveElem(autoStepRepeat.button);
     autoStepRepeat = null;
   }
 
