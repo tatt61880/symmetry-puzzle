@@ -351,13 +351,17 @@
       display: grid;
     }
 
-    #controller-history-buttons {
+    #controller-shared-buttons {
       position: absolute;
       inset: 0;
       pointer-events: none;
 
       .button:not(.hide) {
         pointer-events: auto;
+      }
+
+      #button-undo,
+      #button-redo {
         touch-action: none;
       }
     }

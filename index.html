@@ -1342,18 +1342,6 @@
           <svg width="500" height="240" viewBox="-250 -120 500 240">
             <rect x="-250" y="-125" width="500" height="250" fill="#ddeeff" stroke="none" />
 
-            <!-- メニューボタン -->
-            <g id="controller-buttons-menu" class="button active-hover" transform="translate(-185,-50)">
-              <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#6688aa"
-                class="translatable-toggle" data-en="MENU" data-ja="メニュー"></text>
-              <g class="button-transform">
-                <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
-                <rect x="-23" y="-23" rx="5" width="46" height="10" fill="#99ccff" />
-                <rect x="-23" y="-5" rx="5" width="46" height="10" fill="#99ccff" />
-                <rect x="-23" y="13" rx="5" width="46" height="10" fill="#99ccff" />
-              </g>
-            </g>
-
             <!-- 形状ダイアログボタン -->
             <g id="button-shapes-g" class="button active-hover" transform="translate(185,-50)">
               <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#6688aa"
@@ -1477,7 +1465,20 @@
           </details>
         </div>
         <span id="controller-auto-label">AUTO MODE</span>
-        <svg id="controller-history-buttons" width="500" height="240" viewBox="-250 -120 500 240">
+        <svg id="controller-shared-buttons" width="500" height="240" viewBox="-250 -120 500 240">
+          <!-- メニューボタン -->
+          <g id="controller-buttons-menu" class="button active-hover" transform="translate(-185,-50)" role="button" tabindex="0"
+            aria-haspopup="dialog" aria-controls="dialog-menu">
+            <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#6688aa"
+              class="translatable-toggle" data-en="MENU" data-ja="メニュー"></text>
+            <g class="button-transform">
+              <rect x="-36" y="-36" rx="12" width="72" height="72" fill="#f1f8ff" stroke="#99ccff" stroke-width="4" />
+              <rect x="-23" y="-23" rx="5" width="46" height="10" fill="#99ccff" />
+              <rect x="-23" y="-5" rx="5" width="46" height="10" fill="#99ccff" />
+              <rect x="-23" y="13" rx="5" width="46" height="10" fill="#99ccff" />
+            </g>
+          </g>
+
           <!-- Undoボタン -->
           <g id="button-undo" class="button active-hover" transform="translate(-185,60)">
             <text x="0" y="-48" dominant-baseline="middle" text-anchor="middle" font-weight="bold" font-size="16" fill="#6688aa"

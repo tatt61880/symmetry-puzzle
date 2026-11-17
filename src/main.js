@@ -1605,6 +1605,7 @@
       for (const [button, activate] of [
         [elems.controller.nextLevel, gotoNextLevelButton],
         [elems.controller.prevLevel, gotoPrevLevelButton],
+        [elems.menu.button, openMenu],
         [elems.menu.title, menuGotoTitlePage],
         [elems.menu.retry, menuRetryLevel],
       ]) {
@@ -1651,10 +1652,7 @@
       });
 
       // メニューダイアログ
-      elems.menu.button.addEventListener('click', () => {
-        releaseGameInput();
-        app.dialog.menu.show();
-      });
+      elems.menu.dialog.addEventListener('close', updateAutoForMenu);
       elems.menu.dialog.addEventListener('click', app.dialog.menu.close);
       elems.menu.close.addEventListener('click', app.dialog.menu.close);
       elems.menu.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
@@ -1663,6 +1661,24 @@
       document.addEventListener('pointerup', redoEnd);
 
       input = new app.Input(elems.controller.buttons, () => common.level?.releaseBumpFaces());
+    }
+
+    function openMenu() {
+      releaseGameInput();
+      app.dialog.menu.show();
+      updateAutoForMenu();
+    }
+
+    function updateAutoForMenu() {
+      if (!settings.autoMode) return;
+      updateAutoStartPauseButtons();
+      if (elems.menu.dialog.open) {
+        cancelAutoPlaybackTimers();
+      } else if (completedBoardShown) {
+        scheduleAutoNextLevel();
+      } else {
+        scheduleNextAutoStep();
+      }
     }
 
     function menuGotoTitlePage() {
@@ -2441,7 +2457,7 @@
 
   function scheduleAutoNextLevel() {
     cancelAutoNextLevel();
-    if (urlReplay !== null || !settings.autoMode || autoPaused || autoSeekPointerId !== null || !completeFlag) return;
+    if (urlReplay !== null || !isAutoPlaying() || autoSeekPointerId !== null || !completeFlag) return;
 
     // 遅延や繰り返しを含め、描画済みの完成演出がすべて終わってから待ち時間を設けます。
     const animations = elems.main.svg
@@ -2807,9 +2823,8 @@
         common.level.applyAxis(snapshot.axis);
       }
     } else {
-      cancelAutoNextLevel();
+      cancelAutoPlaybackTimers();
       clearTimeout(redrawTimerId);
-      clearTimeout(autoIntervalId);
       autoPaused = true;
       input.enable();
 
@@ -2830,14 +2845,19 @@
     replaceUrl();
   }
 
+  function isAutoPlaying() {
+    return settings.autoMode && !autoPaused && !elems.menu.dialog.open;
+  }
+
   function updateAutoStartPauseButtons() {
     const searching = autoSearchFrameId !== null;
+    const playing = isAutoPlaying();
     elems.auto.buttonStop.ownerSVGElement.classList.toggle('hide', urlReplay !== null);
     elems.auto.searchControls.classList.toggle('hide', !searching);
     elems.auto.searchIcon.classList.toggle('hide', !searching);
     elems.auto.seek.classList.toggle('hide', searching);
-    elems.auto.buttonStart.classList.toggle('hide', searching || !autoPaused);
-    elems.auto.buttonPause.classList.toggle('hide', searching || autoPaused);
+    elems.auto.buttonStart.classList.toggle('hide', searching || playing);
+    elems.auto.buttonPause.classList.toggle('hide', searching || !playing);
   }
 
   function cancelAutoSearch() {
@@ -2879,6 +2899,14 @@
     updateAutoStartPauseButtons();
 
     function findSolution() {
+      if (elems.menu.dialog.open) {
+        const waitingFrameId = autoSearchFrameId;
+        const resumeSearch = () => {
+          if (autoSearchFrameId === waitingFrameId) autoSearchFrameId = requestAnimationFrame(findSolution);
+        };
+        elems.menu.dialog.addEventListener('close', resumeSearch, { once: true });
+        return;
+      }
       let next;
       try {
         next = search.next();
@@ -2930,6 +2958,10 @@
   function pauseAuto() {
     autoPaused = true;
     updateAutoStartPauseButtons();
+    cancelAutoPlaybackTimers();
+  }
+
+  function cancelAutoPlaybackTimers() {
     cancelAutoNextLevel();
     clearTimeout(autoIntervalId);
   }
@@ -2971,7 +3003,7 @@
   }
 
   function scheduleNextAutoStep() {
-    if (!settings.autoMode || autoPaused) return;
+    if (!isAutoPlaying()) return;
     clearTimeout(autoIntervalId);
     autoIntervalId = setTimeout(intervalFuncAuto, autoStepInterval());
   }
@@ -3091,8 +3123,8 @@
 
   function intervalFuncAuto() {
     const r = getAutoReplay();
-    if (!editMode && settings.autoMode) {
-      if (!autoPaused && autoSeekPointerId === null) {
+    if (!editMode && isAutoPlaying()) {
+      if (autoSeekPointerId === null) {
         if (r?.length !== undefined) {
           const stepIndex = undoInfoForNormal.getIndex();
           if (stepIndex < r.length) {
