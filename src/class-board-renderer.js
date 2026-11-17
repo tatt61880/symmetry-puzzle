@@ -1226,7 +1226,10 @@
             gElem.appendChild(eyeLeft);
             gElem.appendChild(eyeRight);
             if (isCompleted && !showCharsFlag && !reducedMotion.matches) {
-              const smile = app.svg.createPath({ d: 'M .195 .5425 Q .30 .3425 .405 .5425 M .595 .5425 Q .70 .3425 .805 .5425', fill: 'none' });
+              const smile = app.svg.createPath({
+                d: 'M .195 .5425 Q .30 .3425 .405 .5425 M .595 .5425 Q .70 .3425 .805 .5425',
+                fill: 'none',
+              });
               smile.setAttribute('transform', `translate(${(x + dx) * blockSize},${(y + dy) * blockSize}) scale(${blockSize})`);
               smile.setAttribute('stroke', color.stroke);
               smile.setAttribute('stroke-width', '0.075');
@@ -1729,7 +1732,19 @@
 
       const flags = this.#getNeighborFlags(sX, sY, state);
       const move = this.#level.getMoveInfo(sX, sY);
-      const elem = this.#createOneBlock(x, y, sX, sY, blockSize, showCharsFlag, eyeFlag, idleAnimationFlag, flags, move, symmetryType !== null);
+      const elem = this.#createOneBlock(
+        x,
+        y,
+        sX,
+        sY,
+        blockSize,
+        showCharsFlag,
+        eyeFlag,
+        idleAnimationFlag,
+        flags,
+        move,
+        symmetryType !== null
+      );
 
       let child = elem;
 
