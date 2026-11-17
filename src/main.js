@@ -1128,6 +1128,22 @@
   // エディトモードのオンオフ
   function toggleEditLevel() {
     if (urlReplay !== null) return;
+    if (editMode && common.level.hasSplitBlock()) {
+      app.sound.playBump();
+      const warning = elems.main.svg.querySelector('.split-block-warning');
+      if (warning) {
+        for (const animation of warning.getAnimations()) animation.cancel();
+        const fill = app.colors[app.states.shape].error;
+        warning.animate(
+          [
+            { fill, offset: 0 },
+            { fill, offset: 0.6 },
+          ],
+          { duration: 800, easing: 'ease-out' }
+        );
+      }
+      return;
+    }
     app.dialog.shapes.finishDiscovery();
     cancelAutoSearch();
     settings.sharedFlag = false;
@@ -1398,7 +1414,7 @@
     window.getSelection().removeAllRanges();
 
     if (editMode) {
-      toggleEditLevel();
+      updateEditMode(false);
     }
 
     {

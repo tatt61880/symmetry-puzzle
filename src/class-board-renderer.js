@@ -2017,6 +2017,7 @@
         fill: '#663300',
       });
       text.classList.add('translatable-toggle');
+      if (splitBlock) text.classList.add('split-block-warning');
       text.dataset.ja = splitBlock ? 'ブロックが分かれています。' : '正規化されていません。';
       text.dataset.en = splitBlock ? 'Split block found.' : 'Not normalized.';
       common.applyLang(text, lang);
