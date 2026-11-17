@@ -1992,8 +1992,8 @@
     });
   }
 
-  function drawEditControls(g, level, { blockSize, frameSizeW, frameSizeH }, { normalized, moveAxis, resizeLevel }, lang) {
-    if (!normalized) {
+  function drawEditControls(g, level, { blockSize, frameSizeW, frameSizeH }, { normalized, splitBlock, moveAxis, resizeLevel }, lang) {
+    if (splitBlock || !normalized) {
       const fontSize = `${frameSizeH * 0.7}px`;
       const text = app.svg.createText(frameSizeH, {
         x: 0,
@@ -2002,8 +2002,8 @@
         fill: '#663300',
       });
       text.classList.add('translatable-toggle');
-      text.dataset.ja = '正規化されていません。';
-      text.dataset.en = 'Not normalized.';
+      text.dataset.ja = splitBlock ? 'ブロックが分かれています。' : '正規化されていません。';
+      text.dataset.en = splitBlock ? 'Split block found.' : 'Not normalized.';
       common.applyLang(text, lang);
 
       const width = (level.getWidth() * blockSize + 2 * frameSizeW) / 2;

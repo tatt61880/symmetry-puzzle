@@ -2427,7 +2427,7 @@
   }
 
   function drawBoard(svg, level, currentStep, { isCompleted = false, highestScorePrev = null, showCharsFlag = settings.debugFlag } = {}) {
-    const edit = editMode ? { normalized: level.isNormalized(), moveAxis, resizeLevel } : null;
+    const edit = editMode ? { normalized: level.isNormalized(), splitBlock: level.hasSplitBlock(), moveAxis, resizeLevel } : null;
     const idleAnimationFlag = !showCharsFlag && !settings.autoMode && !completeFlag;
     if (edit) elems.edit.normalize.classList.toggle('hide', edit.normalized);
 

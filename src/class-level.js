@@ -748,6 +748,20 @@
       return !this.hasAxis() || this.#getAxisNormalization().isNormalized;
     }
 
+    // 同じ番号のブロックが2つ以上に分かれているか。
+    hasSplitBlock() {
+      const checked = new Set([app.states.none, app.states.wall]);
+      for (let y = this.#yMin; y < this.#yMax; ++y) {
+        for (let x = this.#xMin; x < this.#xMax; ++x) {
+          const state = this.#states[y][x];
+          if (checked.has(state)) continue;
+          checked.add(state);
+          if (!this.isConnected((s) => s === state)) return true;
+        }
+      }
+      return false;
+    }
+
     isSymmetry(isX) {
       return this.#hasSymmetry(isX, this.#getMinMaxXY(isX));
     }
