@@ -614,9 +614,6 @@
     #createEdge(blockSize, edgeColor) {
       const g = app.svg.createG();
 
-      const eps = 1; // 隙間を埋めます。
-      const fill = edgeColor;
-
       const radiuses = {
         [Level.CHECK_MODE.LINE]: {
           ul: 0.5,
@@ -637,61 +634,42 @@
           dl: 0.75,
         },
       };
-      const radius = radiuses[common.checkMode];
-
-      // 左上
-      {
-        const sx = -eps;
-        const sy = -eps;
-        const r = blockSize * radius.ul;
-        const vdy = r + eps;
-        const dx = r;
-        const dy = -r;
-        const d = `M ${sx},${sy} v ${vdy} h ${eps} a ${r},${r} 0 0 1 ${dx},${dy} v ${-eps} z`;
-        const path = app.svg.createPath({ d, fill });
-        g.appendChild(path);
-      }
-
-      // 右上
-      {
-        const sx = this.#level.getWidth() * blockSize + eps;
-        const sy = -eps;
-        const r = blockSize * radius.ur;
-        const hdx = -r - eps;
-        const dx = r;
-        const dy = r;
-        const d = `M ${sx},${sy} h ${hdx} v ${eps} a ${r},${r} 0 0 1 ${dx},${dy} h ${eps} z`;
-        const path = app.svg.createPath({ d, fill });
-        g.appendChild(path);
-      }
-
-      // 右下
-      {
-        const sx = this.#level.getWidth() * blockSize + eps;
-        const sy = this.#level.getHeight() * blockSize + eps;
-        const r = blockSize * radius.dr;
-        const vdy = -r - eps;
-        const dx = -r;
-        const dy = r;
-        const d = `M ${sx},${sy} v ${vdy} h ${-eps} a ${r},${r} 0 0 1 ${dx},${dy} v ${eps} z`;
-        const path = app.svg.createPath({ d, fill });
-        g.appendChild(path);
-      }
-
-      // 左下
-      {
-        const sx = -eps;
-        const sy = this.#level.getHeight() * blockSize + eps;
-        const r = blockSize * radius.dl;
-        const hdx = r + eps;
-        const dx = -r;
-        const dy = -r;
-        const d = `M ${sx},${sy} h ${hdx} v ${-eps} a ${r},${r} 0 0 1 ${dx},${dy} h ${-eps} z`;
-        const path = app.svg.createPath({ d, fill });
-        g.appendChild(path);
-      }
-
+      const radius = radiuses[this.#level.getCheckMode()];
+      const width = this.#level.getWidth() * blockSize;
+      const height = this.#level.getHeight() * blockSize;
+      addCorner(0, 0, 0, radius.ul);
+      addCorner(width, 0, 90, radius.ur);
+      addCorner(width, height, 180, radius.dr);
+      addCorner(0, height, 270, radius.dl);
       return g;
+
+      function addCorner(x, y, rotation, cellRadius) {
+        const corner = app.svg.createG();
+        corner.setAttribute('transform', `translate(${x},${y}) rotate(${rotation})`);
+        g.appendChild(corner);
+
+        const r = blockSize * cellRadius;
+        const eps = 1; // 隙間を埋めます。
+        const mask = app.svg.createPath({
+          d: `M ${-eps},${-eps} V ${r} H 0 A ${r},${r} 0 0 1 ${r},0 V ${-eps} Z`,
+          fill: edgeColor,
+        });
+        corner.appendChild(mask);
+
+        // 外周と同心の弧を描き、両端は格子線の手前で止めます。
+        const innerRadius = r - blockSize * 0.14;
+        const endAngle = Math.PI / 18;
+        const near = r - innerRadius * Math.cos(endAngle);
+        const far = r - innerRadius * Math.sin(endAngle);
+        const highlight = app.svg.createPath({
+          d: `M ${near},${far} A ${innerRadius},${innerRadius} 0 0 1 ${far},${near}`,
+          fill: 'none',
+        });
+        highlight.setAttribute('stroke', app.colors[app.states.wall].highlight);
+        highlight.setAttribute('stroke-width', blockSize * 0.08);
+        highlight.setAttribute('stroke-linecap', 'round');
+        corner.appendChild(highlight);
+      }
     }
 
     #getNeighborFlags(x, y, state) {

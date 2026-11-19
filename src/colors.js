@@ -25,6 +25,7 @@
     fill: '#222244',
     stroke: '#222244',
     text: '#bbbbbb',
+    highlight: '#bbbbbb',
   };
 
   // None
