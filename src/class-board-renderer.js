@@ -74,14 +74,16 @@
 
     static drawCornerGlow(svg, mode, startTime) {
       if (startTime === null || reducedMotion.matches) return;
-      const duration = 700;
+      const fromCenter = mode === Level.CHECK_MODE.SPECIAL;
+      const sweepDuration = fromCenter ? 700 : 420;
+      const secondPairDelay = fromCenter ? 0 : sweepDuration + 120;
       const elapsed = (document.timeline.currentTime ?? performance.now()) - startTime;
-      if (elapsed >= duration) return;
+      if (elapsed >= secondPairDelay + sweepDuration) return;
 
       for (const arc of svg.querySelectorAll('[data-wall-corner]')) {
-        if (mode === Level.CHECK_MODE.SPECIAL) {
-          sweep(arc, 50, 0, 0, duration);
-          sweep(arc, 50, 100, 0, duration);
+        if (fromCenter) {
+          sweep(arc, 50, 0, 0);
+          sweep(arc, 50, 100, 0);
         } else {
           const [vertical, horizontal] = arc.dataset.wallCorner;
           const left = horizontal === 'l';
@@ -89,11 +91,11 @@
           const first = (vertical === 'u') === down;
           // 元の弧は左側では下から上、右側では上から下に描いています。
           const reverse = left === down;
-          sweep(arc, reverse ? 100 : 0, reverse ? 0 : 100, first ? 0 : duration * 0.4, duration * 0.6);
+          sweep(arc, reverse ? 100 : 0, reverse ? 0 : 100, first ? 0 : secondPairDelay);
         }
       }
 
-      function sweep(arc, from, to, delay, sweepDuration) {
+      function sweep(arc, from, to, delay) {
         if (elapsed >= delay + sweepDuration) return;
         const dashLength = 24;
         const light = arc.cloneNode(false);
