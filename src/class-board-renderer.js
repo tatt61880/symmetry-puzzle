@@ -101,7 +101,7 @@
         const light = arc.cloneNode(false);
         light.removeAttribute('data-wall-corner');
         light.setAttribute('pathLength', 100);
-        light.setAttribute('stroke', 'white');
+        light.setAttribute('stroke', app.colors[app.states.wall].glow);
         light.setAttribute('stroke-dasharray', `${dashLength} 200`);
         light.setAttribute('opacity', 0);
         arc.after(light);

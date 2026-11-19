@@ -25,7 +25,8 @@
     fill: '#222244',
     stroke: '#222244',
     text: '#bbbbbb',
-    highlight: '#bbbbbb',
+    highlight: '#bbbbcc',
+    glow: '#f5f5ff',
   };
 
   // None
