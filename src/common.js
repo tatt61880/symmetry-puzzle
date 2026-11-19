@@ -145,8 +145,7 @@
   }
 
   function createCrown(size, x, y, step, bestStep) {
-    const color = getStepColor(step, bestStep);
-    if (color === app.colors.stepUnknown) {
+    if (step === null) {
       const g = app.svg.createG();
       const crown = app.svg.createCrown(size, {
         x,
@@ -161,7 +160,7 @@
       return app.svg.createCrown(size, {
         x,
         y,
-        fill: color,
+        fill: getStepColor(step, bestStep),
       });
     }
   }
