@@ -683,10 +683,6 @@
     draw();
   }
 
-  function onWindowResize() {
-    setTimeout(draw, 500);
-  }
-
   function draw() {
     app.dialog.shapes.finishDiscovery();
     if (common.isHiddenElem(elems.category.game)) return;
@@ -699,11 +695,12 @@
   }
 
   function getGameHeight() {
-    const { innerWidth, innerHeight, outerWidth, outerHeight, devicePixelRatio } = window;
-    if (!window.matchMedia('(pointer: fine)').matches || !innerWidth || !outerWidth || !outerHeight) return innerHeight;
+    const viewportHeight = document.documentElement.offsetHeight;
+    const { innerWidth, outerWidth, outerHeight, devicePixelRatio } = window;
+    if (!window.matchMedia('(pointer: fine)').matches || !innerWidth || !outerWidth || !outerHeight) return viewportHeight;
 
     // ページ拡大や右側の開発者ツールの開閉では、表示領域の物理的な高さは変わりません。
-    const deviceHeight = innerHeight * devicePixelRatio;
+    const deviceHeight = viewportHeight * devicePixelRatio;
     if (
       desktopViewport &&
       outerHeight === desktopViewport.outerHeight &&
@@ -719,15 +716,15 @@
       zoom = 1;
     } else if (Math.abs(outerWidth - innerWidth * zoom) > frameTolerance) {
       const widthRatio = outerWidth / innerWidth;
-      if (innerHeight * widthRatio > outerHeight + 1) {
+      if (viewportHeight * widthRatio > outerHeight + 1) {
         // 横に開いた開発者ツールなどの幅は不明です。幅を使えるようになるまで推定を保留します。
         desktopViewport ??= { displayScale: devicePixelRatio };
-        return Math.round(innerHeight * zoom);
+        return Math.round(viewportHeight * zoom);
       }
       zoom = widthRatio;
     }
     desktopViewport = { outerHeight, deviceHeight, displayScale: devicePixelRatio / zoom };
-    return Math.round(innerHeight * zoom);
+    return Math.round(viewportHeight * zoom);
   }
 
   function updateSvg() {
@@ -1338,8 +1335,7 @@
     initBlock();
     updateEditMode(false);
 
-    window.onresize = resizeWindow;
-    resizeWindow();
+    initViewport();
 
     const queryParams = app.analyzeUrl();
     settings = queryParams.settings;
@@ -1509,14 +1505,6 @@
   }
 
   function initElems() {
-    let setTimeoutIdOnWindowResize = null;
-    window.addEventListener('resize', () => {
-      if (setTimeoutIdOnWindowResize !== null) {
-        clearTimeout(setTimeoutIdOnWindowResize);
-      }
-      setTimeoutIdOnWindowResize = setTimeout(onWindowResize, 100);
-    });
-
     {
       [document.body, elems.contents].forEach((elem) => {
         elem.addEventListener('mousedown', (e) => {
@@ -3247,14 +3235,38 @@
     return false;
   }
 
-  function resizeWindow() {
+  function initViewport() {
     const WINDOW_WIDTH = 500;
     const WINDOW_HEIGHT = 688;
-    if (window.innerHeight * WINDOW_WIDTH >= window.innerWidth * WINDOW_HEIGHT) {
-      elems.viewport.setAttribute('content', 'width=500');
-    } else {
-      const width = (WINDOW_HEIGHT * window.innerWidth) / window.innerHeight;
-      elems.viewport.setAttribute('content', `width=${width}`);
+    const root = document.documentElement;
+    let previousWidth;
+    let previousHeight;
+    let resizeTimer;
+
+    function resize() {
+      const { offsetWidth: width, offsetHeight: height } = root;
+      if (width === previousWidth && height === previousHeight) return;
+      previousWidth = width;
+      previousHeight = height;
+      if (!width || !height) return;
+
+      // 横長画面では、丸め誤差で viewport 幅が行き来しないよう、高さの差が1px以内なら調整を終えます。
+      if (width < WINDOW_WIDTH || Math.abs(height - WINDOW_HEIGHT) > 1) {
+        const viewportWidth = Math.max(WINDOW_WIDTH, Math.round((WINDOW_HEIGHT * width) / height));
+        const content = `width=${viewportWidth}`;
+        if (elems.viewport.content !== content) elems.viewport.content = content;
+      }
+
+      if (common.isHiddenElem(elems.category.game)) return;
+      if (window.matchMedia('(pointer: fine)').matches) {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(draw, 100);
+      } else {
+        draw();
+      }
     }
+
+    resize();
+    new ResizeObserver(() => requestAnimationFrame(resize)).observe(root);
   }
 })();
