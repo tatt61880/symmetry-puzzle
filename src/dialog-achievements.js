@@ -80,13 +80,8 @@
         const svg = app.svg.createSvg();
         svg.setAttribute('width', size);
         svg.setAttribute('height', size);
-        if (i < starNum) {
-          const g = app.svg.createStar(size, { x: 0, y: 0, fill: '#ffd54a', stroke: '#c08a00' });
-          svg.appendChild(g);
-        } else {
-          const g = app.svg.createStar(size, { x: 0, y: 0, fill: '#ffffff', stroke: '#c08a0060' });
-          svg.appendChild(g);
-        }
+        const colors = i < starNum ? app.colors.achievementStar : app.colors.achievementStarEmpty;
+        svg.appendChild(app.svg.createStar(size, { x: 0, y: 0, ...colors }));
         elem.appendChild(svg);
       }
       elem.appendChild(document.createElement('br'));

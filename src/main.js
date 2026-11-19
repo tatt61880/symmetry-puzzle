@@ -2046,7 +2046,7 @@
   // 実績画面用
   function initElemsForAchievements() {
     const size = Number(elems.achievements.buttonSvg.dataset.starSize);
-    const star = app.svg.createStar(size, { x: 0, y: 0, fill: '#ffd54a', stroke: '#c08a00' });
+    const star = app.svg.createStar(size, { x: 0, y: 0, ...app.colors.achievementStar });
     elems.achievements.buttonSvg.appendChild(star);
     elems.achievements.button.addEventListener('click', app.dialog.achievements.show);
     elems.achievements.dialog.addEventListener('click', app.dialog.achievements.close);

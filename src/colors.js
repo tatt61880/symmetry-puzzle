@@ -84,6 +84,8 @@
 
   colors.congratulations = '#ffdd33';
   colors.newRecords = '#ffdd33';
+  colors.achievementStar = { fill: '#ffd54a', stroke: '#c08a00' };
+  colors.achievementStarEmpty = { fill: '#ffffff', stroke: '#c08a0060' };
 
   // 手数
   colors.stepWin = '#ff5555';
