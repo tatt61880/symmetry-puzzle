@@ -33,7 +33,6 @@
     line.setAttribute('y1', blockSize * y1);
     line.setAttribute('x2', blockSize * x2);
     line.setAttribute('y2', blockSize * y2);
-    line.setAttribute('stroke-width', `${blockSize / 50}`);
     if (stroke) line.setAttribute('stroke', stroke);
     if (strokeWidth) line.setAttribute('stroke-width', blockSize * strokeWidth);
     if (strokeOpacity !== undefined) line.setAttribute('stroke-opacity', strokeOpacity);

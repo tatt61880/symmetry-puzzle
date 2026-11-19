@@ -1924,6 +1924,7 @@
 
   function drawDotLines(mainSvgG, level, { blockSize, frameSizeW, frameSizeH }) {
     const dotRatio = 1 / 40;
+    const strokeWidth = 0.02;
     const size = blockSize * dotRatio;
     const strokeDasharray = `${size} ${4 * size}`;
     const g = app.svg.createG('group-dot-lines');
@@ -1936,6 +1937,7 @@
         x2: level.getWidth(),
         y2: y,
         stroke: app.colors.line,
+        strokeWidth,
       });
       line.setAttribute('stroke-dasharray', strokeDasharray);
       g.appendChild(line);
@@ -1948,6 +1950,7 @@
         x2: x,
         y2: level.getHeight(),
         stroke: app.colors.line,
+        strokeWidth,
       });
       line.setAttribute('stroke-dasharray', strokeDasharray);
       g.appendChild(line);
