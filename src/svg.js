@@ -34,7 +34,9 @@
     line.setAttribute('x2', blockSize * x2);
     line.setAttribute('y2', blockSize * y2);
     if (stroke) line.setAttribute('stroke', stroke);
-    if (strokeWidth) line.setAttribute('stroke-width', blockSize * strokeWidth);
+    if (strokeWidth !== undefined && strokeWidth !== null) {
+      line.setAttribute('stroke-width', blockSize * strokeWidth);
+    }
     if (strokeOpacity !== undefined) line.setAttribute('stroke-opacity', strokeOpacity);
     return line;
   };
@@ -46,7 +48,9 @@
     circle.setAttribute('r', blockSize * r);
     if (fill) circle.setAttribute('fill', fill);
     if (stroke) circle.setAttribute('stroke', stroke);
-    if (strokeWidth) circle.setAttribute('stroke-width', blockSize * strokeWidth);
+    if (strokeWidth !== undefined && strokeWidth !== null) {
+      circle.setAttribute('stroke-width', blockSize * strokeWidth);
+    }
     return circle;
   };
 
@@ -58,7 +62,9 @@
     ellipse.setAttribute('ry', blockSize * ry);
     if (fill) ellipse.setAttribute('fill', fill);
     if (stroke) ellipse.setAttribute('stroke', stroke);
-    if (strokeWidth) ellipse.setAttribute('stroke-width', blockSize * strokeWidth);
+    if (strokeWidth !== undefined && strokeWidth !== null) {
+      ellipse.setAttribute('stroke-width', blockSize * strokeWidth);
+    }
     if (strokeOpacity !== undefined) ellipse.setAttribute('stroke-opacity', strokeOpacity);
     return ellipse;
   };
@@ -71,7 +77,9 @@
     rect.setAttribute('height', blockSize * height);
     if (fill) rect.setAttribute('fill', fill);
     if (stroke) rect.setAttribute('stroke', stroke);
-    if (strokeWidth) rect.setAttribute('stroke-width', blockSize * strokeWidth);
+    if (strokeWidth !== undefined && strokeWidth !== null) {
+      rect.setAttribute('stroke-width', blockSize * strokeWidth);
+    }
     return rect;
   };
 
@@ -85,7 +93,9 @@
     polygon.setAttribute('points', pointsStr);
     if (fill) polygon.setAttribute('fill', fill);
     if (stroke) polygon.setAttribute('stroke', stroke);
-    if (strokeWidth) polygon.setAttribute('stroke-width', blockSize * strokeWidth);
+    if (strokeWidth !== undefined && strokeWidth !== null) {
+      polygon.setAttribute('stroke-width', blockSize * strokeWidth);
+    }
     if (strokeOpacity !== undefined) polygon.setAttribute('stroke-opacity', strokeOpacity);
     return polygon;
   };
@@ -105,7 +115,9 @@
     });
     crown.setAttribute('transform', `translate(${x * blockSize},${y * blockSize}) scale(${blockSize / 100})`);
     if (stroke) crown.setAttribute('stroke', stroke);
-    if (strokeWidth) crown.setAttribute('stroke-width', strokeWidth * 100);
+    if (strokeWidth !== undefined && strokeWidth !== null) {
+      crown.setAttribute('stroke-width', strokeWidth * 100);
+    }
     g.appendChild(crown);
     return g;
   };
