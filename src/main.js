@@ -2995,6 +2995,10 @@
       }
       clearTimeout(redrawTimerId);
       showAutoStep(target);
+      if (undoInfoForNormal.getIndex() === target) {
+        if (delta < 0) app.sound.playUndo();
+        else app.sound.playRedo();
+      }
     }
   }
 
