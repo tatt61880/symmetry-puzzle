@@ -30,6 +30,7 @@
     level: undefined,
     levels: undefined,
     levelId: undefined,
+    levelNum: null,
     isSeqMode: false,
     checkMode: undefined,
     loadLevelById: undefined,
