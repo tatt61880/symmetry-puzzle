@@ -72,6 +72,53 @@
       }
     }
 
+    static drawCornerGlow(svg, mode, startTime) {
+      if (startTime === null || reducedMotion.matches) return;
+      const duration = 700;
+      const elapsed = (document.timeline.currentTime ?? performance.now()) - startTime;
+      if (elapsed >= duration) return;
+
+      for (const arc of svg.querySelectorAll('[data-wall-corner]')) {
+        if (mode === Level.CHECK_MODE.SPECIAL) {
+          sweep(arc, 50, 0, 0, duration);
+          sweep(arc, 50, 100, 0, duration);
+        } else {
+          const [vertical, horizontal] = arc.dataset.wallCorner;
+          const left = horizontal === 'l';
+          const down = mode === Level.CHECK_MODE.LINE || left;
+          const first = (vertical === 'u') === down;
+          // 元の弧は左側では下から上、右側では上から下に描いています。
+          const reverse = left === down;
+          sweep(arc, reverse ? 100 : 0, reverse ? 0 : 100, first ? 0 : duration * 0.4, duration * 0.6);
+        }
+      }
+
+      function sweep(arc, from, to, delay, sweepDuration) {
+        if (elapsed >= delay + sweepDuration) return;
+        const dashLength = 24;
+        const light = arc.cloneNode(false);
+        light.removeAttribute('data-wall-corner');
+        light.setAttribute('pathLength', 100);
+        light.setAttribute('stroke', 'white');
+        light.setAttribute('stroke-dasharray', `${dashLength} 200`);
+        light.setAttribute('opacity', 0);
+        arc.after(light);
+
+        const animation = light.animate(
+          [
+            { strokeDashoffset: `${dashLength / 2 - from}px`, opacity: 0 },
+            { offset: 0.16, opacity: 1 },
+            { offset: 0.8, opacity: 1 },
+            { strokeDashoffset: `${dashLength / 2 - to}px`, opacity: 0 },
+          ],
+          { duration: sweepDuration, delay }
+        );
+        // 盤面を描き直したときも、光は最初の開始時刻から進みます。
+        animation.startTime = startTime;
+        animation.onfinish = () => light.remove();
+      }
+    }
+
     // 完成演出やスコアを描き直さず、軌跡だけを更新します。
     static updateMoveTrail(svg, { blockSize, moveTrail }) {
       const blocks = svg.querySelector('.group-level-main');
@@ -637,18 +684,18 @@
       const radius = radiuses[this.#level.getCheckMode()];
       const width = this.#level.getWidth() * blockSize;
       const height = this.#level.getHeight() * blockSize;
-      addCorner(0, 0, 0, radius.ul);
-      addCorner(width, 0, 90, radius.ur);
-      addCorner(width, height, 180, radius.dr);
-      addCorner(0, height, 270, radius.dl);
+      addCorner(0, 0, 0, 'ul');
+      addCorner(width, 0, 90, 'ur');
+      addCorner(width, height, 180, 'dr');
+      addCorner(0, height, 270, 'dl');
       return g;
 
-      function addCorner(x, y, rotation, cellRadius) {
+      function addCorner(x, y, rotation, name) {
         const corner = app.svg.createG();
         corner.setAttribute('transform', `translate(${x},${y}) rotate(${rotation})`);
         g.appendChild(corner);
 
-        const r = blockSize * cellRadius;
+        const r = blockSize * radius[name];
         const eps = 1; // 隙間を埋めます。
         const mask = app.svg.createPath({
           d: `M ${-eps},${-eps} V ${r} H 0 A ${r},${r} 0 0 1 ${r},0 V ${-eps} Z`,
@@ -665,6 +712,7 @@
           d: `M ${near},${far} A ${innerRadius},${innerRadius} 0 0 1 ${far},${near}`,
           fill: 'none',
         });
+        highlight.dataset.wallCorner = name;
         highlight.setAttribute('stroke', app.colors[app.states.wall].highlight);
         highlight.setAttribute('stroke-width', blockSize * 0.08);
         highlight.setAttribute('stroke-linecap', 'round');

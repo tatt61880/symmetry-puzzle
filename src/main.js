@@ -45,6 +45,7 @@
   let redrawTimerId = null;
   let replayTimerId = null;
   let completedReplayData = null;
+  let cornerGlowStart = null;
 
   let editMode = false;
   let temporaryShowCharsFlag = false;
@@ -966,6 +967,16 @@
         app.dialog.help.show(false);
       }
     }
+    playCornerGlow();
+  }
+
+  function playCornerGlow() {
+    if (elems.help.dialog.open) {
+      elems.help.dialog.addEventListener('close', playCornerGlow, { once: true });
+      return;
+    }
+    cornerGlowStart = document.timeline.currentTime ?? performance.now();
+    app.BoardRenderer.drawCornerGlow(elems.main.svg, common.checkMode, cornerGlowStart);
   }
 
   function updateShapeButton(discoveredShape = null) {
@@ -1009,6 +1020,7 @@
   }
 
   function loadLevelObj(levelObj, replayStr = null) {
+    cornerGlowStart = null;
     resetUndo();
     elems.controller.shareLevel.open = false;
 
@@ -1172,6 +1184,9 @@
   }
 
   function updateCheckMode(mode) {
+    if (editMode && mode !== null && mode !== common.checkMode) {
+      cornerGlowStart = document.timeline.currentTime ?? performance.now();
+    }
     common.checkMode = mode;
     const className = (() => {
       switch (mode) {
@@ -1468,6 +1483,7 @@
 
     switchToCustomLevel();
     loadLevelObj(levelObj, replayStr);
+    playCornerGlow();
   }
 
   function switchToCustomLevel() {
@@ -2370,6 +2386,7 @@
       highestScorePrev,
       showCharsFlag: editMode || settings.debugFlag || temporaryShowCharsFlag,
     });
+    app.BoardRenderer.drawCornerGlow(elems.main.svg, common.checkMode, cornerGlowStart);
     if (isCompleted) scheduleAutoNextLevel();
   }
 
