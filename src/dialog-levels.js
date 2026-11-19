@@ -10,6 +10,7 @@
   window.app = window.app || {};
   window.app.dialog = window.app.dialog || {};
   window.app.dialog.levels = {
+    init,
     show,
     update,
     prevPage,
@@ -30,6 +31,12 @@
   const LEVEL_SELECT_HEIGHT = 125;
   const LEVEL_SELECT_WIDTH = 90;
   const LEVEL_SELECT_COLS = 5;
+
+  let onSelectLevel;
+
+  function init(onSelect) {
+    onSelectLevel = onSelect;
+  }
 
   function show() {
     updateLevelsDialog();
@@ -112,10 +119,10 @@
     const selectCount = Number(elems.levels.dialog.dataset.selectCount);
     const maxCount = Number(elems.levels.dialog.dataset.maxCount);
     if (maxCount === -1) {
-      app.common.loadLevelById(selectCount + 1);
+      onSelectLevel(selectCount + 1);
     } else {
       const id = JSON.parse(elems.levels.dialog.dataset.selectIds)[selectCount];
-      app.common.loadLevelById(id);
+      onSelectLevel(id);
     }
     elems.levels.dialog.close();
   }
@@ -270,7 +277,7 @@
       g.classList.add('button', 'active-hover', 'button-press');
       g.addEventListener('click', function () {
         const id = Number(g.dataset.id);
-        app.common.loadLevelById(id);
+        onSelectLevel(id);
         close(false);
       });
 
@@ -425,7 +432,7 @@
       g.classList.add('button', 'active-hover', 'button-press');
       g.addEventListener('click', function () {
         const id = Number(g.dataset.id);
-        app.common.loadLevelById(id);
+        onSelectLevel(id);
         close(false);
       });
     }

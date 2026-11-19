@@ -33,7 +33,6 @@
     levelNum: null,
     isSeqMode: false,
     checkMode: undefined,
-    loadLevelById: undefined,
 
     // 関数
     applyLang,

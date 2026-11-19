@@ -11,6 +11,7 @@
   window.app = window.app || {};
   window.app.dialog = window.app.dialog || {};
   window.app.dialog.shapes = {
+    init,
     show,
     animateDiscovery,
     finishDiscovery,
@@ -37,6 +38,11 @@
 
   let settleDiscovery = null;
   let records = [];
+  let onSelectReplay;
+
+  function init(onSelect) {
+    onSelectReplay = onSelect;
+  }
 
   function show() {
     finishDiscovery();
@@ -294,7 +300,7 @@
     if (record === undefined) {
       common.showElem(elems.shapes.undiscoveredNote);
     } else if (record.replay !== undefined) {
-      window.retryAndExecReplayStr(record.replay);
+      onSelectReplay(record.replay);
       close(false);
     }
   }

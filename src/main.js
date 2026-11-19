@@ -7,7 +7,6 @@
 
   const elems = app.elems;
   const common = app.common;
-  common.loadLevelById = loadLevelById;
 
   // この値を変更するときは、iOSの省電力モード時の setInterval の動作を確認した上で変更してください。
   // 詳細: https://github.com/tatt61880/symmetry-puzzle/issues/38
@@ -85,7 +84,6 @@
   const frameSizeH = defaultFrameSize;
 
   common.level = null;
-  window.retryAndExecReplayStr = retryAndExecReplayStr;
 
   const SHADOW_MSEC = MOVE_INTERVAL_MSEC * 2;
   const ROTATION_MSEC = MOVE_INTERVAL_MSEC * 3;
@@ -2064,6 +2062,7 @@
 
   // レベル一覧ダイアログ
   function initElemsForLevelsDialog() {
+    app.dialog.levels.init(loadLevelById);
     elems.levels.button.addEventListener('click', app.dialog.levels.show);
     elems.levels.dialog.addEventListener('click', app.dialog.levels.close);
     elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
@@ -2073,6 +2072,7 @@
 
   // 形状一覧ダイアログ
   function initElemsForShapesDialog() {
+    app.dialog.shapes.init(retryAndExecReplayStr);
     elems.shapes.buttonG.addEventListener('click', app.dialog.shapes.show);
     elems.shapes.dialog.addEventListener('click', app.dialog.shapes.close);
     elems.shapes.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
