@@ -186,6 +186,7 @@
       const gElemsOther = app.svg.createG('group-elems-other');
       const gElemsAnimation1 = app.svg.createG('group-elems-animation1');
       const gElemsAnimation2 = app.svg.createG('group-elems-animation2');
+      const pushingFaces = document.createDocumentFragment();
       g.appendChild(gShadows);
       g.appendChild(gElemsOther);
       g.appendChild(gElemsAnimation1); // 最後に追加。アニメーション中の図形が静止中の図形に隠されないようにするためです。
@@ -225,7 +226,8 @@
             gShadows,
             gElemsOther,
             gElemsAnimation1,
-            gElemsAnimation2
+            gElemsAnimation2,
+            pushingFaces
           );
           if (eyeFlag && idleAnimationFlag) {
             const z = app.svg.createText(blockSize, { x: x - x0 + 0.78, y: y - y0 + 0.2, text: 'Z', fill: app.colors.sleepZ.fill });
@@ -239,6 +241,8 @@
           }
         }
       }
+
+      gElemsAnimation2.appendChild(pushingFaces);
 
       if (this.#level.hasAxis()) {
         const { cx, cy } = this.#level.getAxisCenter();
@@ -732,10 +736,9 @@
       });
     }
 
-    #createOneBlock(x, y, sX, sY, blockSize, showCharsFlag, eyeFlag, idleAnimationFlag, flags, move, isCompleted) {
+    #createOneBlock(x, y, sX, sY, blockSize, showCharsFlag, eyeFlag, idleAnimationFlag, flags, move, showPushMotion, isCompleted) {
       const state = this.#level.getState(sX, sY);
       const color = app.colors[state];
-      const showPushMotion = eyeFlag && move.pushing && !reducedMotion.matches;
 
       const gElem = app.svg.createG('group-elem');
 
@@ -1639,14 +1642,15 @@
         const { startX, startY, angle, driftY, startOffset } =
           move.dy < 0
             ? { startX: 0.85, startY: 0.65, angle: 90, driftY: 0.1, startOffset: pushSquintOffset }
-            : { startX: 0.5 + side * 0.28, startY: 0.24, angle: 0, driftY: -0.11, startOffset: 0 };
+            : { startX: 0.5 + side * 0.32, startY: 0.24, angle: 0, driftY: -0.11, startOffset: 0 };
         const cx = (x + startX) * blockSize;
         const cy = (y + startY) * blockSize;
         const drop = app.svg.createPath({
           d: 'M -0.07,0.12 Q -0.08,-0.01 0,-0.11 C 0.09,-0.21 0.19,-0.08 0.12,0.01 Q 0.06,0.08 -0.07,0.12 Z',
           fill: app.colors.pushSweat.fill,
         });
-        drop.setAttribute('transform', `translate(${cx},${cy}) scale(${side * blockSize},${blockSize}) rotate(${angle})`);
+        const dropSize = blockSize * 1.25;
+        drop.setAttribute('transform', `translate(${cx},${cy}) scale(${side * dropSize},${dropSize}) rotate(${angle})`);
         drop.setAttribute('stroke', app.colors.pushSweat.stroke);
         drop.setAttribute('stroke-width', 0.035);
         drop.setAttribute('stroke-linejoin', 'round');
@@ -1752,7 +1756,8 @@
       gShadows,
       gElemsOther,
       gElemsAnimation1,
-      gElemsAnimation2
+      gElemsAnimation2,
+      pushingFaces
     ) {
       let gElems = gElemsOther;
       const state = this.#level.getState(sX, sY);
@@ -1760,6 +1765,7 @@
 
       const flags = this.#getNeighborFlags(sX, sY, state);
       const move = this.#level.getMoveInfo(sX, sY);
+      const showPushMotion = eyeFlag && move.pushing && !reducedMotion.matches;
       const elem = this.#createOneBlock(
         x,
         y,
@@ -1771,6 +1777,7 @@
         idleAnimationFlag,
         flags,
         move,
+        showPushMotion,
         symmetryType !== null
       );
 
@@ -1837,6 +1844,7 @@
               g.appendChild(elem);
               child = g;
               g.classList.add('animation-move-sub');
+              if (showPushMotion && !showCharsFlag) gElems = pushingFaces;
               const hopHeight = blockSize * (move.pushing ? 1 / 16 : 0.15);
               g.style.setProperty('--animation-move-sub-transform', `translateY(${-hopHeight}px)`);
             }
