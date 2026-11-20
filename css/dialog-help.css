@@ -415,6 +415,7 @@
   background-color: #f8f8ff;
   border: 2px solid #aaaaff;
   border-radius: 12px;
+  outline: none;
 
   &[open] {
     display: flex;

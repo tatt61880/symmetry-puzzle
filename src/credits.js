@@ -10,18 +10,22 @@
   app.dialog.credits = { init };
 
   function init() {
-    elems.button.addEventListener('click', () => {
+    elems.button.addEventListener('click', (event) => {
       app.sound.playUiOpen();
       elems.button.focus({ preventScroll: true });
       elems.dialog.showModal();
-      play();
+      play(event.detail > 0);
     });
-    elems.replay.addEventListener('click', () => {
+    elems.replay.addEventListener('click', (event) => {
       app.sound.playButton();
-      play();
+      play(event.detail > 0);
     });
     elems.dialog.addEventListener('click', (event) => {
-      if (event.target === elems.dialog) elems.dialog.close();
+      if (event.target !== elems.dialog && event.target !== elems.close) return;
+      if (event.target === elems.close && event.detail === 0) return;
+      event.preventDefault();
+      elems.dialog.close();
+      if (event.detail > 0) app.elems.help.dialog.focus({ preventScroll: true });
     });
     elems.dialog.addEventListener('close', () => {
       if (elems.dialog.open) return;
@@ -34,11 +38,15 @@
     });
   }
 
-  function play() {
+  function play(fromPointer = false) {
     clearTimeout(timer);
     elems.board.replaceChildren();
     showCaption();
-    if (document.activeElement === elems.replay) elems.close.focus();
+    if (fromPointer) {
+      elems.dialog.focus({ preventScroll: true });
+    } else if (document.activeElement === elems.replay) {
+      elems.close.focus();
+    }
     elems.replay.hidden = true;
     elems.byline.hidden = !reducedMotion.matches;
     if (reducedMotion.matches) return;
