@@ -76,31 +76,42 @@
       if (startTime === null || reducedMotion.matches) return;
       const fromCenter = mode === Level.CHECK_MODE.SPECIAL;
       const sweepDuration = fromCenter ? 700 : 420;
-      const secondPairDelay = fromCenter ? 0 : sweepDuration + 120;
+      const fadeOutOffset = 0.8;
+      const secondPairDelay = fromCenter ? 0 : sweepDuration * fadeOutOffset;
       const elapsed = (document.timeline.currentTime ?? performance.now()) - startTime;
       if (elapsed >= secondPairDelay + sweepDuration) return;
 
       for (const arc of svg.querySelectorAll('[data-wall-corner]')) {
-        if (fromCenter) {
-          sweep(arc, 50, 0, 0);
-          sweep(arc, 50, 100, 0);
-        } else {
+        let from = 50;
+        let delay = 0;
+        if (!fromCenter) {
           const [vertical, horizontal] = arc.dataset.wallCorner;
           const left = horizontal === 'l';
           const down = mode === Level.CHECK_MODE.LINE || left;
           const first = (vertical === 'u') === down;
           // 元の弧は左側では下から上、右側では上から下に描いています。
-          const reverse = left === down;
-          sweep(arc, reverse ? 100 : 0, reverse ? 0 : 100, first ? 0 : secondPairDelay);
+          from = left === down ? 100 : 0;
+          delay = first ? 0 : secondPairDelay;
         }
+        if (elapsed >= delay + sweepDuration) continue;
+
+        arc.setAttribute('pathLength', 100);
+        arc.animate(
+          [
+            { strokeDasharray: '0px 200px', strokeDashoffset: `${-from}px`, opacity: 0 },
+            { offset: 0.08, opacity: 1 },
+            { strokeDasharray: '100px 200px', strokeDashoffset: '0px', opacity: 1 },
+          ],
+          { duration: sweepDuration, delay, fill: 'backwards' }
+        ).startTime = startTime;
+
+        for (const to of fromCenter ? [0, 100] : [100 - from]) sweep(arc, from, to, delay);
       }
 
       function sweep(arc, from, to, delay) {
-        if (elapsed >= delay + sweepDuration) return;
         const dashLength = 24;
         const light = arc.cloneNode(false);
         light.removeAttribute('data-wall-corner');
-        light.setAttribute('pathLength', 100);
         light.setAttribute('stroke', app.colors[app.states.wall].glow);
         light.setAttribute('stroke-dasharray', `${dashLength} 200`);
         light.setAttribute('opacity', 0);
@@ -110,7 +121,7 @@
           [
             { strokeDashoffset: `${dashLength / 2 - from}px`, opacity: 0 },
             { offset: 0.16, opacity: 1 },
-            { offset: 0.8, opacity: 1 },
+            { offset: fadeOutOffset, opacity: 1 },
             { strokeDashoffset: `${dashLength / 2 - to}px`, opacity: 0 },
           ],
           { duration: sweepDuration, delay }

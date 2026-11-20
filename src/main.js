@@ -965,6 +965,7 @@
   }
 
   function playCornerGlow() {
+    elems.main.svg.classList.toggle('corner-glow-pending', elems.help.dialog.open);
     if (elems.help.dialog.open) {
       elems.help.dialog.addEventListener('close', playCornerGlow, { once: true });
       return;

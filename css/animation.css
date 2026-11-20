@@ -20,6 +20,10 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .corner-glow-pending [data-wall-corner] {
+    visibility: hidden;
+  }
+
   .title-character-blink .player-eye {
     animation: title-character-blink 160ms ease-in-out 70ms;
   }
