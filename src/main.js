@@ -295,7 +295,14 @@
       handleTabKey(e);
       return;
     }
-    if (elems.achievements.dialog.open || elems.auto.resultDialog.open || elems.menu.dialog.open || elems.edit.normalizeDialog.open) return;
+    if (
+      elems.achievements.dialog.open ||
+      elems.auto.resultDialog.open ||
+      elems.menu.dialog.open ||
+      elems.edit.normalizeDialog.open ||
+      elems.credits.dialog.open
+    )
+      return;
     if (
       elems.console.log.contains(e.target) &&
       ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', ' '].includes(e.key)
@@ -1580,6 +1587,7 @@
     });
     initSoundButtons();
     app.dialog.help.init();
+    app.dialog.credits.init();
     initElemsForTitle();
     initElemsForRecords();
     initElemsForAchievements();

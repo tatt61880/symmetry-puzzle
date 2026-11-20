@@ -47,6 +47,16 @@
       version: 'dialog-help-version',
     },
 
+    credits: {
+      button: 'help-show-credits',
+      dialog: 'dialog-credits',
+      board: 'credits-board',
+      caption: 'credits-caption',
+      byline: 'credits-byline',
+      replay: 'credits-replay',
+      close: 'credits-close',
+    },
+
     // 記録ダイアログ
     records: {
       version: 'record-dialog-version',

@@ -71,6 +71,7 @@
   <script src="./src/solve.js" defer></script>
 
   <script src="./src/dialog-help.js" defer></script>
+  <script src="./src/credits.js" defer></script>
   <script src="./src/dialog-levels.js" defer></script>
   <script src="./src/dialog-menu.js" defer></script>
   <script src="./src/dialog-shapes.js" defer></script>
@@ -369,9 +370,12 @@
                       <img class="back" alt="" src="./images/tatt61880-back.png?2026.01.31">
                     </span>
                   </button>
-                  <span id="help-creator-name" class="translatable-toggle help-mode-creator" data-en="Created by Tatt" data-ja="作者: Tatt">
-                  </span>
-                  <span>&nbsp;(<a href="https://twitter.com/tatt61880">@tatt61880</a>)</span>
+                  <div>
+                    <span id="help-creator-name" class="translatable-toggle help-mode-creator" data-en="Creator: Tatt" data-ja="作者: Tatt"></span>
+                    (<a href="https://twitter.com/tatt61880">@tatt61880</a>)
+                  </div>
+                  <button id="help-show-credits" class="credits-button active-hover button-press focus-ring translatable-toggle" type="button"
+                    aria-haspopup="dialog" aria-controls="dialog-credits" data-ja="クレジットを見る" data-en="View credits">クレジットを見る</button>
                 </div>
                 <div class="translatable-toggle help-mode-tester" data-en="Tester: Hatsuki" data-ja="テスター: Hatsuki"></div>
               </div>
@@ -523,6 +527,41 @@
             </label>
           </div>
         </div>
+      </div>
+    </dialog>
+
+    <dialog id="dialog-credits" aria-labelledby="credits-title">
+      <div>
+        <h2 id="credits-title" class="translatable-toggle" data-ja="クレジット" data-en="Credits">クレジット</h2>
+        <svg id="credits-board" aria-hidden="true"></svg>
+        <ul class="credits-logos">
+          <li>
+            <svg class="logo-line" data-block-size="20" width="60" height="40" aria-hidden="true"></svg>
+            <span class="translatable-toggle" data-ja="線対称" data-en="Line symmetry">線対称</span>
+          </li>
+          <li>
+            <svg class="logo-point" data-block-size="20" width="60" height="40" aria-hidden="true"></svg>
+            <span class="translatable-toggle" data-ja="点対称" data-en="Point symmetry">点対称</span>
+          </li>
+          <li>
+            <svg class="logo-special" data-block-size="20" width="40" height="40" aria-hidden="true"></svg>
+            <span class="translatable-toggle" data-ja="線点対称" data-en="Line &amp; point symmetry">線点対称</span>
+          </li>
+        </ul>
+        <div class="credits-caption-area" role="status">
+          <p id="credits-caption">
+            <span class="translatable-toggle" data-mode="line" data-ja="線対称パズル" data-en="Line Symmetry Puzzle" hidden>線対称パズル</span>
+            <span class="translatable-toggle" data-mode="point" data-ja="点対称パズル" data-en="Point Symmetry Puzzle" hidden>点対称パズル</span>
+            <span class="translatable-toggle" data-mode="special" data-ja="線点対称パズル" data-en="Line &amp; Point Symmetry Puzzle" hidden>線点対称パズル</span>
+          </p>
+          <p id="credits-byline" class="translatable-toggle" data-ja="制作　tatt61880" data-en="Created by tatt61880" hidden>制作　tatt61880</p>
+        </div>
+        <form method="dialog">
+          <button id="credits-replay" class="credits-button active-hover button-press focus-ring translatable-toggle" type="button"
+            data-ja="もう一度見る" data-en="Watch again" hidden>もう一度見る</button>
+          <button id="credits-close" class="credits-button active-hover button-press focus-ring translatable-toggle" type="submit" autofocus
+            data-ja="閉じる" data-en="Close">閉じる</button>
+        </form>
       </div>
     </dialog>
 
