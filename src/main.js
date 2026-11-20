@@ -68,7 +68,7 @@
   let levelHintState = 'locked';
   let hintWallPressCount = 0;
   let completeFlag = false;
-  let completedBoardShown = false;
+  let displayedCompletion = null;
   let symmetryFlag = false;
 
   let drawingState = app.states.none;
@@ -123,13 +123,9 @@
     if (redrawFlag && autoSeekPointerId === null) {
       const delay = settings.autoMode ? autoStepInterval() : MOVE_INTERVAL_MSEC;
       clearTimeout(redrawTimerId);
-      redrawTimerId = setTimeout(drawMainSvg, delay, completeFlag);
+      redrawTimerId = setTimeout(completeFlag ? showCompletedBoard : drawMainSvg, delay);
     }
 
-    if (completeFlag) {
-      const center = common.level.getCenter(app.states.isTarget);
-      document.documentElement.style.setProperty('--animation-origin', `${blockSize * center.x}px ${blockSize * center.y}px`);
-    }
     if (settings.autoMode) updateAutoSeek();
     updateLevelHint();
   }
@@ -1692,7 +1688,7 @@
       updateAutoStartPauseButtons();
       if (elems.menu.dialog.open) {
         cancelAutoPlaybackTimers();
-      } else if (completedBoardShown) {
+      } else if (displayedCompletion !== null) {
         scheduleAutoNextLevel();
       } else {
         scheduleNextAutoStep();
@@ -2364,30 +2360,34 @@
     }
   }
 
-  // 描画
-  function drawMainSvg(isCompleted = false) {
+  function showCompletedBoard() {
+    if (!completeFlag || editMode) return;
+    const center = common.level.getCenter(app.states.isTarget);
+    document.documentElement.style.setProperty('--animation-origin', `${blockSize * center.x}px ${blockSize * center.y}px`);
+    app.sound.playClear();
+    const highestScorePrev = recordCompletion();
+    drawMainSvg({ highestScorePrev });
+    scheduleAutoNextLevel();
+  }
+
+  function drawMainSvg(completion = null) {
     cancelAutoNextLevel();
-    completedBoardShown = isCompleted;
+    displayedCompletion = completion;
     document.getElementById('previous-board')?.remove();
     if (!completeFlag || editMode || settings.autoMode) stopReplay();
     // リサイズでは残し、Undo などで別の履歴に移ったら消します。
     if (completedReplayData !== undoInfoForNormal?.getTopData()) completedReplayData = null;
     updateController();
+    renderMainBoard();
+  }
 
-    let highestScorePrev = null;
-    if (isCompleted) {
-      app.sound.playClear();
-      if (!editMode) {
-        highestScorePrev = recordCompletion();
-      }
-    }
+  function renderMainBoard(animateCompletion = true) {
     drawBoard(elems.main.svg, common.level, undoInfoForNormal?.getIndex(), {
-      isCompleted,
-      highestScorePrev,
+      completion: displayedCompletion,
+      animateCompletion,
       showCharsFlag: editMode || settings.debugFlag || temporaryShowCharsFlag,
     });
     app.BoardRenderer.drawCornerGlow(elems.main.svg, common.checkMode, cornerGlowStart);
-    if (isCompleted) scheduleAutoNextLevel();
   }
 
   function resetLevelHint() {
@@ -2447,7 +2447,7 @@
     arrow.style.setProperty('--hint-angle', `${(hint.dir - 1) * 90}deg`);
   }
 
-  function drawBoard(svg, level, currentStep, { isCompleted = false, highestScorePrev = null, showCharsFlag = settings.debugFlag } = {}) {
+  function drawBoard(svg, level, currentStep, { completion = null, animateCompletion = true, showCharsFlag = settings.debugFlag } = {}) {
     const edit = editMode ? { normalized: level.isNormalized(), splitBlock: level.hasSplitBlock(), moveAxis, resizeLevel } : null;
     const idleAnimationFlag = !showCharsFlag && !settings.autoMode && !completeFlag;
     if (edit) elems.edit.normalize.classList.toggle('hide', edit.normalized);
@@ -2456,7 +2456,8 @@
       layout: { blockSize, frameSizeW, frameSizeH },
       isSeqMode: common.isSeqMode,
       lang: app.savedata.getLang(),
-      symmetryAnimationFlag: isCompleted,
+      symmetryAnimationFlag: completion !== null,
+      animateCompletion,
       showCharsFlag,
       smallJumpFlag: !editMode && !undoInfoForNormal.isUndoable() && input.inputDir === app.Input.DIRS.NEUTRAL,
       idleAnimationFlag,
@@ -2471,7 +2472,7 @@
         currentStep,
         bestStep: common.level.getBestStep(),
         highestScore: !editMode && common.levelId !== null ? app.savedata.getHighestScore(common.level, common.levelNum) : undefined,
-        highestScorePrev,
+        highestScorePrev: completion?.highestScorePrev ?? null,
       },
     });
   }
@@ -2961,7 +2962,7 @@
     autoPaused = false;
     updateAutoStartPauseButtons();
     if (common.level.isCompleted()) {
-      if (completedBoardShown) scheduleAutoNextLevel();
+      if (displayedCompletion !== null) scheduleAutoNextLevel();
       else completeCheck();
     } else if (undoInfoForNormal.getIndex() === 0) {
       scheduleNextAutoStep();
@@ -3264,6 +3265,18 @@
     let previousHeight;
     let resizeTimer;
 
+    function resizeBoard() {
+      if (!common.level || common.isHiddenElem(elems.category.game)) return;
+      const previousBlockSize = blockSize;
+      updateSvg();
+      if (blockSize === previousBlockSize) return;
+
+      app.dialog.shapes.finishDiscovery();
+      updateLevelHint();
+      renderMainBoard(false);
+      if (autoNextLevelWait !== null) scheduleAutoNextLevel();
+    }
+
     function resize() {
       const { offsetWidth: width, offsetHeight: height } = root;
       if (width === previousWidth && height === previousHeight) return;
@@ -3281,9 +3294,9 @@
       if (common.isHiddenElem(elems.category.game)) return;
       if (window.matchMedia('(pointer: fine)').matches) {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(draw, 100);
+        resizeTimer = setTimeout(resizeBoard, 100);
       } else {
-        draw();
+        resizeBoard();
       }
     }
 

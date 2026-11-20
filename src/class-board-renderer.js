@@ -35,11 +35,11 @@
     }
 
     // 通常プレイとリプレイは、同じ順序で盤面・格子・外枠を描きます。
-    static drawBoard(svg, level, { layout, isSeqMode, lang, edit, score, ...blockOptions }) {
+    static drawBoard(svg, level, { layout, isSeqMode, lang, edit, score, animateCompletion = true, ...blockOptions }) {
       const { blockSize, frameSizeW, frameSizeH } = layout;
       const isCompleted = blockOptions.symmetryAnimationFlag;
       const frameColor = isSeqMode ? app.colors.frameFillSeqMode : app.colors.frameFill;
-      const g = app.svg.createG();
+      const g = app.svg.createG(isCompleted && !animateCompletion ? 'completed-board-still' : null);
       svg.replaceChildren(g);
 
       const sleepMarks = blockOptions.idleAnimationFlag ? app.svg.createG('group-sleep-marks') : null;
@@ -62,10 +62,10 @@
       if (edit) {
         drawEditControls(frame, level, layout, edit, lang);
       } else {
-        drawScore(frame, level, layout, score, isCompleted, isSeqMode, lang);
+        drawScore(frame, level, layout, score, isCompleted, isSeqMode, lang, animateCompletion);
       }
 
-      if (isCompleted) {
+      if (isCompleted && animateCompletion) {
         const confetti = app.svg.createG();
         svg.appendChild(confetti);
         app.playSvgConfetti(confetti, blockSize * level.getWidth() + 2 * frameSizeW, blockSize * level.getHeight() + 2 * frameSizeH);
@@ -2182,7 +2182,7 @@
     }
   }
 
-  function drawScore(g, level, { blockSize, frameSizeW, frameSizeH }, score, isCompleted, isSeqMode, lang) {
+  function drawScore(g, level, { blockSize, frameSizeW, frameSizeH }, score, isCompleted, isSeqMode, lang, animateCompletion) {
     const { currentStep, bestStep, highestScore, highestScorePrev, recordingEnabled = true } = score;
     const wallStrShift = app.colors[app.states.wall].fill === app.colors[app.states.wall].stroke ? 0 : 0.05;
     const fontSize = `${frameSizeH * 0.7}px`;
@@ -2251,7 +2251,7 @@
           bestStep
         );
         g.appendChild(crown);
-        if (isCompleted && recordingEnabled) {
+        if (isCompleted && animateCompletion && recordingEnabled) {
           const animationNewRecordCrownClass = 'animation-new-record-crown';
           if (highestScorePrev === null) {
             console.log('初回クリア');

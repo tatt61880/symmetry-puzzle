@@ -784,6 +784,14 @@
   }
 }
 
+.completed-board-still .group-symmetry-axis > * {
+  opacity: 0.4;
+}
+
+#main-svg .completed-board-still * {
+  animation: none;
+}
+
 .animation-symmetry-axis {
   animation: animation-symmetry-axis linear both;
   animation-duration: calc(var(--animation-duration-symmetry) * var(--animation-axis-2));
