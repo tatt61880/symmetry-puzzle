@@ -65,7 +65,7 @@
         drawScore(frame, level, layout, score, isCompleted, isSeqMode, lang, animateCompletion);
       }
 
-      if (isCompleted && animateCompletion) {
+      if (isCompleted && animateCompletion && !reducedMotion.matches) {
         const confetti = app.svg.createG();
         svg.appendChild(confetti);
         app.playSvgConfetti(confetti, blockSize * level.getWidth() + 2 * frameSizeW, blockSize * level.getHeight() + 2 * frameSizeH);
