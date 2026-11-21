@@ -44,16 +44,24 @@ function processHtml(filePath, mapping) {
   fs.writeFileSync(filePath, html, 'utf8');
 }
 
-function main() {
-  const files = walk(distDir);
+function rewriteFontUrls(cssFile, mapping) {
+  const dir = '/' + path.posix.dirname(toWebPath(cssFile));
+  const css = fs.readFileSync(cssFile, 'utf8');
+  const updated = css.replace(/url\(\s*(["']?)([^"')]+?)\1\s*\)/gi, (match, _quote, url) => {
+    const [pathname] = url.split(/[?#]/, 1);
+    if (!pathname.toLowerCase().endsWith('.woff2') || /^(?:[a-z][\w+.-]*:|\/\/)/i.test(pathname)) return match;
 
-  // 1) 対象アセットをハッシュ名にリネームし、旧->新の対応表を作る
-  // mapping: "path/in/html.js" -> "path/in/html.<hash>.js"
-  const mapping = new Map();
+    const hashed = mapping.get(path.posix.resolve(dir, pathname));
+    if (!hashed) return match;
+    const newUrl = pathname.startsWith('/') ? hashed : path.posix.relative(dir, hashed);
+    return match.replace(pathname, () => newUrl);
+  });
+  if (updated !== css) fs.writeFileSync(cssFile, updated, 'utf8');
+}
 
+function hashFiles(files, mapping) {
   for (const abs of files) {
     const ext = path.extname(abs).toLowerCase();
-    if (!extsToHash.has(ext)) continue;
 
     const dir = path.dirname(abs);
     const base = path.basename(abs, ext);
@@ -75,9 +83,17 @@ function main() {
     mapping.set('./' + oldWeb, './' + newWeb);
     mapping.set('/' + oldWeb, '/' + newWeb);
   }
+}
 
-  // 2) dist内の全HTMLの参照を書き換える
-  for (const abs of walk(distDir)) {
+function main() {
+  const files = walk(distDir);
+  const mapping = new Map();
+  hashFiles(files.filter((abs) => path.extname(abs).toLowerCase() === '.woff2'), mapping);
+  for (const abs of files) {
+    if (abs.toLowerCase().endsWith('.css')) rewriteFontUrls(abs, mapping);
+  }
+  hashFiles(files.filter((abs) => extsToHash.has(path.extname(abs).toLowerCase())), mapping);
+  for (const abs of files) {
     if (abs.toLowerCase().endsWith('.html')) {
       processHtml(abs, mapping);
     }

@@ -1,14 +1,19 @@
-all: node_modules
+all: node_modules/.package-lock.json
 	npm run eslint
 	npm run htmlhint
 	npm run stylelint
+	$(MAKE) font
 	npm run test
 	npm run test-line
 	npm run test-point
 	npm run test-special
 
-node_modules:
-	npm install
+.PHONY: all font
+font: node_modules/.package-lock.json
+	npm run font
+
+node_modules/.package-lock.json: package.json package-lock.json
+	npm ci
 
 test:
 	npm run test

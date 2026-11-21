@@ -1343,6 +1343,13 @@
   }
 
   function onloadApp() {
+    document.fonts.load('16px "Kosugi Maru UI"').catch(() => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap';
+      document.head.appendChild(link);
+    });
+
     elems.version.textContent = VERSION_TEXT;
     elems.help.version.textContent = VERSION_TEXT;
     elems.records.version.textContent = VERSION_TEXT;

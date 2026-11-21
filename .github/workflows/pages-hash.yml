@@ -30,6 +30,9 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Generate UI font
+        run: make font
+
       # 配信用に dist を作る（ソースはそのまま）
       - name: Prepare dist
         run: |
@@ -38,11 +41,13 @@ jobs:
           rsync -a --delete \
             --exclude ".git" \
             --exclude ".github" \
+            --exclude "/node_modules/" \
+            --exclude "/.cache/fonts/" \
+            --exclude "/fonts/kosugi-maru/subset.mjs" \
             --exclude "dist" \
             ./ dist/
 
-      # dist内の .js/.css を name.<hash>.ext にリネームし、HTML参照を更新
-      - name: Hash filenames and rewrite HTML
+      - name: Hash filenames and update CSS and HTML references
         run: |
           node .github/scripts/hashfilenames.mjs dist
 
