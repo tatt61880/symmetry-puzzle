@@ -79,7 +79,7 @@
     const dxs = [0, 1, 0, -1];
     const dys = [-1, 0, 1, 0];
 
-    board.setAttribute('viewBox', `0 ${-blockSize} ${level.getW() * blockSize} ${(level.getH() + 1) * blockSize}`);
+    board.setAttribute('viewBox', `0 ${-blockSize} ${level.getW() * blockSize} ${level.getH() * blockSize}`);
     draw();
     yield 450;
     for (const { mode, moves } of scenes) {

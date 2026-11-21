@@ -446,9 +446,12 @@
 
     display: block;
     width: calc(100% - 2rem);
-    min-height: 6rem;
-    max-height: 45dvh;
+    min-height: 5rem;
+    max-height: 37.5dvh;
     margin: 12px auto 0;
+
+    /* 文字と共用する最下段に入ったキャラも描画します。 */
+    overflow: visible;
   }
 
   .credits-logos {
@@ -457,7 +460,6 @@
     gap: 8px;
     padding: 0;
     margin: 24px 12px 12px;
-    font-size: 0.875rem;
     list-style: none;
 
     li {
@@ -465,6 +467,15 @@
       gap: 8px;
       align-content: start;
       justify-items: center;
+    }
+  }
+
+  #credits-caption {
+    display: grid;
+    font-size: 1.125rem;
+
+    span {
+      grid-area: 1 / 1;
     }
   }
 
@@ -480,12 +491,16 @@
   }
 
   .credits-caption-area {
-    min-height: 2.8em;
     margin: 8px;
     line-height: 1.4;
 
     p {
       margin: 0;
+    }
+
+    [hidden] {
+      display: block;
+      visibility: hidden;
     }
   }
 
