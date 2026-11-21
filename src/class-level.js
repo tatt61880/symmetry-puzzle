@@ -118,6 +118,10 @@
       this.applyStateStr(obj.s);
     }
 
+    hasIndependentTargets() {
+      return this.#levelObj.independent === true;
+    }
+
     getW() {
       return this.#width - 2;
     }
@@ -145,6 +149,7 @@
         s,
         axis,
       };
+      if (this.hasIndependentTargets()) levelObj.independent = true;
       return levelObj;
     }
 
@@ -159,7 +164,7 @@
           y++;
           continue;
         }
-        const state = app.states.fromChar(char);
+        const state = app.states.charToState[char];
         if (app.states.isUser(state) && !positions.has(state)) positions.set(state, { x: x + 0.5, y: y + 0.5 });
         x++;
       }
@@ -175,7 +180,7 @@
       if (!hint?.stages) return hint;
 
       const stage = hint.stages.find(
-        ({ when }) => this.getState(this.#xMin + when.x, this.#yMin + when.y) === app.states.fromChar(when.block)
+        ({ when }) => this.getState(this.#xMin + when.x, this.#yMin + when.y) === app.states.charToState[when.block]
       );
       if (stage) return { ...stage, afterSteps: hint.afterSteps };
       if (hint.stuck) return { ...hint.stuck, undo: true, afterSteps: hint.afterSteps };
@@ -307,7 +312,8 @@
       const checkModeStr = this.#getCheckModeStr();
       const axis = this.hasAxis() ? ` --axis ${this.getA()}` : '';
       const rotation = this.#reverseRotation && this.getAxisType() === Level.SYMMETRY_TYPE.POINT2 ? ' --reverse-rotation' : '';
-      return `node src/solve.js --mode ${checkModeStr} -w ${w} -h ${h} --s="${s}" --all --console --draw${axis}${rotation}`;
+      const independent = this.hasIndependentTargets() ? ' --independent' : '';
+      return `node src/solve.js --mode ${checkModeStr} -w ${w} -h ${h} --s="${s}" --all --console --draw${axis}${rotation}${independent}`;
     }
 
     printSolveJsStr() {
@@ -321,7 +327,8 @@
       const s = levelObj.s;
       const a = levelObj.axis !== undefined ? `&axis=${levelObj.axis}` : '';
       const checkModeStr = Level.getCheckModeStr(checkMode);
-      return `mode=${checkModeStr}&w=${w}&h=${h}&s=${s}${a}`;
+      const independent = levelObj.independent === true ? '&independent=target' : '';
+      return `mode=${checkModeStr}&w=${w}&h=${h}&s=${s}${a}${independent}`;
     }
 
     getUrlQuery() {
@@ -340,7 +347,8 @@
       const s = this.getS();
       const axis = this.hasAxis() ? `, axis: '${this.getA()}'` : '';
 
-      console.log(`{ w: ${w}, h: ${h}, s: '${s}'${axis} },`); // コピペ用
+      const independent = this.hasIndependentTargets() ? ', independent: true' : '';
+      console.log(`{ w: ${w}, h: ${h}, s: '${s}'${axis}${independent} },`); // コピペ用
       this.printSolveJsStr();
     }
 
@@ -601,12 +609,15 @@
         this.#initStates();
         this.#removeR();
       }
+      if (this.hasIndependentTargets() !== (obj.independent === true)) {
+        this.#levelObj = Object.freeze({ ...this.#levelObj, independent: obj.independent === true });
+      }
       this.applyStateStr(obj.s);
       this.#renderer = null; // 盤面を戻したら、目の向きも初期化します。
     }
 
     applyState(x, y, state) {
-      this.#setState(x, y, state);
+      this.#setState(x, y, this.#targetState(state));
       this.#removeR();
     }
 
@@ -625,11 +636,15 @@
           x = this.#xMin;
         } else {
           if (x >= this.#xMax) continue;
-          this.#states[y][x] = app.states.fromChar(c);
+          this.#states[y][x] = this.#targetState(app.states.charToState[c]);
           x++;
         }
       }
       this.#resetMoveFlags();
+    }
+
+    #targetState(state) {
+      return this.hasIndependentTargets() && app.states.isTarget(state) ? app.states.targetMin : state;
     }
 
     // 正規化
@@ -644,7 +659,7 @@
           const state = this.#states[y][x];
           if (map[state] === undefined) {
             if (app.states.isTarget(state)) {
-              map[state] = app.states.getTargetState(nextTarget++);
+              map[state] = nextTarget++;
             } else if (app.states.otherMin <= state && state <= app.states.otherMax) {
               map[state] = nextOther++;
             } else if (app.states.userMin <= state && state <= app.states.userMax) {
@@ -679,12 +694,12 @@
         this.rotate(2);
       }
       const s = this.getS();
-      const obj = { w, h, s };
+      const obj = { ...this.getCurrentLevelObj(), w, h, s };
       this.applyObj(obj, true);
       if (flag) {
         this.rotate(2);
         const s = this.getS();
-        const obj = { w, h, s };
+        const obj = { ...this.getCurrentLevelObj(), w, h, s };
         this.applyObj(obj, false);
         this.#axis.cx = Math.max(axisOffset, acx + 2 * dx);
         this.#axis.cy = Math.max(axisOffset, acy + 2 * dy);
@@ -693,22 +708,14 @@
 
     // 鏡映 (左右反転)
     mirror() {
-      const obj = {
-        w: this.getW(),
-        h: this.getH(),
-        s: this.getS(),
-      };
+      const obj = this.getCurrentLevelObj();
       const newObj = this.#mirrorLevel(obj);
       this.applyObj(newObj);
     }
 
     // 回転 (90° × rotateNum 回転)
     rotate(rotateNum) {
-      const obj = {
-        w: this.getW(),
-        h: this.getH(),
-        s: this.getS(),
-      };
+      const obj = this.getCurrentLevelObj();
       const newObj = this.#rotateLevel(obj, rotateNum);
       this.#levelObj = newObj;
       this.#initStates();
@@ -732,7 +739,7 @@
           const state = this.#states[y][x];
           exists[state] = true;
           if (app.states.isTarget(state)) {
-            if (state !== app.states.targetMin && !exists[app.states.getTargetState(app.states.getTargetNumber(state) - 1)]) {
+            if (state !== app.states.targetMin && !exists[state - 1]) {
               return false;
             }
           } else if (app.states.isOther(state)) {
@@ -758,7 +765,7 @@
       for (let y = this.#yMin; y < this.#yMax; ++y) {
         for (let x = this.#xMin; x < this.#xMax; ++x) {
           const state = this.#states[y][x];
-          if (checked.has(state)) continue;
+          if (checked.has(state) || (this.hasIndependentTargets() && app.states.isTarget(state))) continue;
           checked.add(state);
           if (!this.isConnected((s) => s === state)) return true;
         }
@@ -834,50 +841,54 @@
           moveFlag = true;
         }
       } else {
+        // 通常のブロックは番号ごと、独立したターゲットは1マスごとに移動対象を集めます。
+        const groups = new Map();
+        for (let y = this.#yMin; y < this.#yMax; ++y) {
+          for (let x = this.#xMin; x < this.#xMax; ++x) {
+            const state = this.#states[y][x];
+            if (state === app.states.none || state === app.states.wall) continue;
+            if (this.hasIndependentTargets() && app.states.isTarget(state)) continue;
+            if (!groups.has(state)) groups.set(state, []);
+            groups.get(state).push({ x, y });
+          }
+        }
+
         loop: for (let i = app.states.userMin; i <= userMax; ++i) {
-          if (!this.#exist((x) => x === i)) continue;
-
-          const moveState = new Set([i]); // 移動予定の状態番号
-
+          if (!groups.has(i)) continue;
+          const moving = new Map();
+          const pending = [];
+          const addBlock = (x, y) => {
+            if (moving.has(y * this.#width + x)) return;
+            const state = this.#states[y][x];
+            const cells = groups.get(state) ?? [{ x, y }];
+            for (const cell of cells) moving.set(cell.y * this.#width + cell.x, cell);
+            pending.push(cells);
+          };
+          const first = groups.get(i)[0];
+          addBlock(first.x, first.y);
           let pushingBlock = false;
-          const st = new app.Stack(); // 移動可能か検証必要な状態番号
-          st.push(i);
-          while (!st.empty()) {
-            const state = st.pop();
-            for (let y = this.#yMin; y < this.#yMax; ++y) {
-              for (let x = this.#xMin; x < this.#xMax; ++x) {
-                if (this.#states[y][x] !== state) continue;
-                const dstState = this.#states[y + dy][x + dx];
-                if (dstState === app.states.none) continue;
-
-                if (state === i && (app.states.isTarget(dstState) || (app.states.isUser(dstState) && dstState !== i))) {
-                  pushingBlock = true;
-                }
-                if (dstState === app.states.wall) {
-                  // 自分が壁に当たったか、直接押したターゲットや別のキャラの先が詰まっているとき。
-                  if (state === i || pushingBlock) this.#bumpDirections.set(i, { dx, dy });
-                  continue loop;
-                } else if (!moveState.has(dstState)) {
-                  moveState.add(dstState);
-                  st.push(dstState);
-                }
+          while (pending.length) {
+            for (const { x, y } of pending.pop()) {
+              const state = this.#states[y][x];
+              const dstState = this.#states[y + dy][x + dx];
+              if (dstState === app.states.none) continue;
+              if (state === i && (app.states.isTarget(dstState) || (app.states.isUser(dstState) && dstState !== i))) {
+                pushingBlock = true;
               }
+              if (dstState === app.states.wall) {
+                if (state === i || pushingBlock) this.#bumpDirections.set(i, { dx, dy });
+                continue loop;
+              }
+              addBlock(x + dx, y + dy);
             }
           }
 
-          // 各座標に移動フラグを設定
-          for (let y = this.#yMin; y < this.#yMax; ++y) {
-            for (let x = this.#xMin; x < this.#xMax; ++x) {
-              const state = this.#states[y][x];
-              if (!moveState.has(state)) continue;
-              this.#moveFlags[y][x] = true;
-
-              if (app.states.isUser(state)) {
-                const ahead = this.#states[y + dy][x + dx];
-                if (app.states.isTarget(ahead) || app.states.isOther(ahead)) {
-                  this.#pushingUsers.add(state);
-                }
-              }
+          for (const { x, y } of moving.values()) {
+            const state = this.#states[y][x];
+            this.#moveFlags[y][x] = true;
+            if (app.states.isUser(state)) {
+              const ahead = this.#states[y + dy][x + dx];
+              if (app.states.isTarget(ahead) || app.states.isOther(ahead)) this.#pushingUsers.add(state);
             }
           }
           moveFlag = true;
@@ -1096,13 +1107,14 @@
           x = w - 1;
         } else {
           if (x === -1) continue;
-          statesTemp[y][x] = app.states.fromChar(c);
+          statesTemp[y][x] = app.states.charToState[c];
           x--;
         }
       }
       const r = Level.transformReplay(levelObj.r, true, 0);
       const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
       const newLevelObj = { w, h, s, r };
+      if (levelObj.independent === true) newLevelObj.independent = true;
       const hint = levelObj.hint;
       if (hint) {
         newLevelObj.hint = transformHint(
@@ -1139,14 +1151,16 @@
             y = 0;
           } else {
             if (y === h) continue;
-            statesTemp[y][x] = app.states.fromChar(c);
+            statesTemp[y][x] = app.states.charToState[c];
             y++;
           }
         }
         const r = Level.transformReplay(newLevelObj.r, false, 1);
         const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
         const hint = newLevelObj.hint;
+        const independent = newLevelObj.independent;
         newLevelObj = { w, h, s, r };
+        if (independent === true) newLevelObj.independent = true;
         if (hint) {
           newLevelObj.hint = transformHint(
             hint,
@@ -1172,7 +1186,7 @@
       for (let y = yMin; y < yMax; ++y) {
         let line = '';
         for (let x = xMin; x < xMax; ++x) {
-          let c = app.states.toChar(states[y][x]);
+          let c = app.states.stateToChar[states[y][x]];
           if (c.length > 1) c = `(${c})`;
           line += c;
         }

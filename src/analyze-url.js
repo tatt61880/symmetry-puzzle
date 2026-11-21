@@ -52,6 +52,10 @@
         case 's':
           res.levelObj.s = paramVal;
           break;
+        case 'independent':
+          if (paramVal !== 'target') throw new RangeError('Invalid independent value. Use independent=target.');
+          res.levelObj.independent = true;
+          break;
         case 'axis':
           res.levelObj.axis = paramVal;
           break;

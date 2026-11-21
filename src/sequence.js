@@ -18,24 +18,15 @@
     const num = parseNumber(value);
     if (typeof num !== 'bigint' || num === 0n) throw new RangeError('Expected a nonzero sequence number.');
     const digits = String(num);
-    let nextBlock = 1;
     const rows = digitRows.map((row) => {
       let result = '0';
       for (const char of digits) {
         const start = char === '-' ? 0 : (Number(char) + 1) * 3;
-        for (const cell of row.slice(start, start + 3)) {
-          if (cell === '0') {
-            result += '0';
-          } else {
-            const block = nextBlock++;
-            result += block < 10 ? String(block) : `(${block})`;
-          }
-        }
-        result += '0';
+        result += `${row.slice(start, start + 3)}0`;
       }
       return result;
     });
-    return { w: digits.length * 4 + 1, h: 7, s: `s-${rows.join('-')}-` };
+    return { w: digits.length * 4 + 1, h: 7, s: `s-${rows.join('-')}-`, independent: true };
   }
 
   const sequence = Object.freeze({ parseNumber, createLevel });

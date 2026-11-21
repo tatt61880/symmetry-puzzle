@@ -749,6 +749,7 @@
     }
 
     #getNeighborFlags(x, y, state) {
+      if (this.#level.hasIndependentTargets() && app.states.isTarget(state)) return dxs.map(() => false);
       const width = this.#level.getWidth();
       const height = this.#level.getHeight();
       return dxs.map((dx, dir) => {
@@ -760,7 +761,7 @@
 
     #createOneBlock(x, y, sX, sY, blockSize, showCharsFlag, eyeFlag, idleAnimationFlag, flags, move, showPushMotion, isCompleted) {
       const state = this.#level.getState(sX, sY);
-      const color = app.colors.getBlock(state);
+      const color = app.colors[state];
 
       const gElem = app.svg.createG('group-elem');
 
@@ -1624,13 +1625,18 @@
         const text = app.svg.createText(blockSize, {
           x: x + 0.5,
           y: y + 0.5,
-          text: app.states.toChar(state),
+          text: app.states.stateToChar[state],
         });
         gElem.appendChild(text);
-        if (state === app.states.none || state === app.states.wall || this.#level.isConnected((s) => s === state)) {
-          text.setAttribute('fill', app.colors.getBlock(state).text);
+        if (
+          state === app.states.none ||
+          state === app.states.wall ||
+          (this.#level.hasIndependentTargets() && app.states.isTarget(state)) ||
+          this.#level.isConnected((s) => s === state)
+        ) {
+          text.setAttribute('fill', app.colors[state].text);
         } else {
-          text.setAttribute('fill', app.colors.getBlock(state).error);
+          text.setAttribute('fill', app.colors[state].error);
           const rect = app.svg.createRect(blockSize, {
             x,
             y,
@@ -1773,7 +1779,7 @@
     ) {
       let gElems = gElemsOther;
       const state = this.#level.getState(sX, sY);
-      const color = app.colors.getBlock(state);
+      const color = app.colors[state];
 
       const flags = this.#getNeighborFlags(sX, sY, state);
       const move = this.#level.getMoveInfo(sX, sY);

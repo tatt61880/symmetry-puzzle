@@ -19,7 +19,8 @@
           levelObj.h === queryObj.h &&
           levelObj.s === queryObj.s &&
           (queryObj.r === undefined || levelObj.r === queryObj.r) &&
-          levelObj.axis === queryObj.axis
+          levelObj.axis === queryObj.axis &&
+          (levelObj.independent === true) === (queryObj.independent === true)
         ) {
           return id;
         }
@@ -32,7 +33,8 @@
           levelObj.h === queryObj.h &&
           levelObj.s === queryObj.s &&
           (queryObj.r === undefined || levelObj.r === queryObj.r) &&
-          levelObj.axis === queryObj.axis
+          levelObj.axis === queryObj.axis &&
+          (levelObj.independent === true) === (queryObj.independent === true)
         ) {
           return id;
         }

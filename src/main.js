@@ -816,6 +816,7 @@
 
     if (undoInfo.isUndoable()) {
       app.sound.playUndo();
+      const independent = common.level.hasIndependentTargets();
       const levelObj = undoInfo.undo();
       const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
@@ -824,6 +825,7 @@
         common.level.setCheckMode(levelObj.checkMode);
         updateCheckMode(levelObj.checkMode);
       }
+      if (editMode && independent !== common.level.hasIndependentTargets()) updateEditElems();
       draw();
     }
   }
@@ -835,6 +837,7 @@
 
     if (undoInfo.isRedoable()) {
       app.sound.playRedo();
+      const independent = common.level.hasIndependentTargets();
       const levelObj = undoInfo.redo();
       const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
       common.level.applyObj(levelObj, resizeFlag);
@@ -843,6 +846,7 @@
         common.level.setCheckMode(levelObj.checkMode);
         updateCheckMode(levelObj.checkMode);
       }
+      if (editMode && independent !== common.level.hasIndependentTargets()) updateEditElems();
       draw();
     }
   }
@@ -1724,6 +1728,12 @@
     for (const char in app.states.charToState) {
       const elem = document.getElementById(`edit_${char}`);
       if (elem === null) continue;
+      const state = app.states.charToState[char];
+      if (!canSelectEditState(state)) {
+        common.hideElem(elem);
+        continue;
+      }
+      common.showElem(elem);
       elem.textContent = '';
 
       {
@@ -1752,10 +1762,10 @@
         }
 
         const func = () => {
+          if (!canSelectEditState(state)) return;
           app.sound.playButton();
           const transform = elem.getAttribute('transform');
           elems.edit.drawing.setAttribute('transform', `${transform} translate(-4,-4)`);
-          const state = app.states.charToState[char];
           drawingState = state;
         };
 
@@ -1768,6 +1778,11 @@
         }
       }
     }
+    if (!canSelectEditState(drawingState)) editboxFunctions['1']();
+  }
+
+  function canSelectEditState(state) {
+    return !common.level?.hasIndependentTargets() || !app.states.isTarget(state) || state === app.states.targetMin;
   }
 
   function updateEditAxisButton() {
@@ -2505,7 +2520,8 @@
       const s = levelObj.s;
       const r = levelObj.r;
       const axis = levelObj.axis !== undefined ? ` axis: '${levelObj.axis}',` : '';
-      const levelParams = `w: ${w}, h: ${h}, s: '${s}',${axis} r: '${replayStr}', step: ${replayStr.length}, subject: '${
+      const independent = levelObj.independent === true ? ' independent: true,' : '';
+      const levelParams = `w: ${w}, h: ${h}, s: '${s}',${axis}${independent} r: '${replayStr}', step: ${replayStr.length}, subject: '${
         levelObj.subject ?? ''
       }'`;
 

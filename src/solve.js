@@ -43,6 +43,7 @@
       .option('-h, --h <h>', 'levelObj.h', Number)
       .option('-s, --s <s>', 'levelObj.s')
       .option('--axis <axis>', 'levelObj.axis')
+      .option('--independent', 'move each target cell independently')
       .option('--reverse-rotation', 'use counterclockwise quarter-turn axis moves')
       .option('-p, --prefixStep <prefix-step>', 'start with these moves (0-3, or 4 for an axis move)')
       .option('-c, --console', 'console.info step')
@@ -157,6 +158,7 @@
       return;
     }
     const levelObj = { w, h, s, axis };
+    if (options.independent) levelObj.independent = true;
 
     let checkMode = null;
 
@@ -508,9 +510,10 @@
       const s = levelObj.s;
       const r = levelObj.r;
       const axis = level.hasAxis() ? ` axis: '${level.getA()}',` : '';
+      const independent = levelObj.independent ? ' independent: true,' : '';
       const subject = levelObj.subject !== undefined ? `, subject: '${levelObj.subject}'` : '';
       const shapes = levelObj.shapes ? `, shapes: ${levelObj.shapes}` : '';
-      const res = `{ w: ${w}, h: ${h}, s: '${s}',${axis} r: '${r}', step: ${r.length}${subject}${shapes} },`;
+      const res = `{ w: ${w}, h: ${h}, s: '${s}',${axis}${independent} r: '${r}', step: ${r.length}${subject}${shapes} },`;
       return res;
     }
   }

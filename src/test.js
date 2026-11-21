@@ -53,6 +53,8 @@
       testReplayPrefix();
       testSearchStateCodec();
       testUnboundedSequence();
+      testIndependentTargets();
+      testIndependentUrlParameter();
       testsSolve();
       testInvalidSolverModePreservesBackup();
   }
@@ -65,7 +67,6 @@
     const sequence = require('./sequence.js');
     const Levels = require('./class-levels.js');
     const Savedata = require('./class-savedata.js');
-    const colors = require('./colors.js');
     const number = '9007199254740993';
     assert.equal(sequence.parseNumber(number), 9007199254740993n);
     assert.equal(sequence.parseNumber('+00012'), 12n);
@@ -77,16 +78,6 @@
     assert.equal(levels.nextable(sequence.parseNumber(number)), true);
     assert.equal(levels.prevable(-sequence.parseNumber(number)), true);
 
-    for (const block of [1, 256, 257, 1001, 10000, 10005, 100000]) {
-      const state = app.states.fromChar(String(block));
-      assert.ok(app.states.isTarget(state));
-      assert.ok(!app.states.isUser(state) && !app.states.isOther(state));
-      assert.equal(app.states.toChar(state), String(block));
-      assert.equal(colors.getBlock(state).fill, colors[app.states.shape].fill);
-    }
-    assert.equal(app.states.fromChar('a'), app.states.otherMin);
-    assert.equal(app.states.fromChar('s'), app.states.userMin);
-
     for (const num of [1n, -1n, 777n, 61880n, BigInt('8'.repeat(24)), -BigInt('8'.repeat(80))]) {
       const obj = sequence.createLevel(num);
       const digits = String(num);
@@ -95,16 +86,21 @@
       assert.equal(obj.w, 4 * digits.length + 1);
       const level = new app.Level({ levelObj: obj });
       assert.equal(level.getW(), obj.w);
-      const targets = new Set();
+      let targetCount = 0;
+      assert.ok(level.hasIndependentTargets());
+      assert.match(obj.s, /^[01s-]+$/);
       for (let y = 1; y <= 7; y++) {
         assert.equal(level.getState(obj.w, y), app.states.none);
         for (let x = 1; x <= obj.w; x++) {
           const state = level.getState(x, y);
           assert.notEqual(state, undefined);
-          if (app.states.isTarget(state)) targets.add(state);
+          if (app.states.isTarget(state)) {
+            assert.equal(state, app.states.targetMin);
+            targetCount++;
+          }
         }
       }
-      assert.equal(targets.size, expected);
+      assert.equal(targetCount, expected);
       assert.ok(level.isNormalized());
       const initial = level.getS();
       const codec = level.createSearchStateCodec();
@@ -115,30 +111,24 @@
       level.normalize();
       assert.equal(level.getS(), initial);
       const replayLevel = level.createReplayLevel(level.getCurrentLevelObj());
+      assert.ok(replayLevel.hasIndependentTargets());
       assert.equal(replayLevel.getW(), obj.w);
       assert.equal(replayLevel.getS(), initial);
       const rotated = new app.Level({ levelObj: obj, rotateNum: 1 });
       assert.equal(rotated.getH(), obj.w);
       rotated.rotate(3);
       assert.equal(rotated.getS(), initial);
+      assert.ok(rotated.hasIndependentTargets());
     }
 
-    const extended = new app.Level({ levelObj: { w: 5, h: 3, s: 's(257)-(1001)-(10000)' } });
-    const state257 = app.states.fromChar('257');
-    assert.ok(extended.move(1, 0));
-    assert.equal(extended.getState(3, 1), state257);
-    assert.equal(extended.getState(1, 2), app.states.fromChar('1001'));
-    assert.equal(extended.getState(1, 3), app.states.fromChar('10000'));
-    const mirrored = new app.Level({ levelObj: extended.getCurrentLevelObj(), mirrorFlag: true });
-    mirrored.mirror();
-    assert.equal(mirrored.getS(), extended.getS());
-
-    const wide = new app.Level({ levelObj: { w: 10000, h: 7, s: 's------' + '0'.repeat(9999) + '(257)' } });
+    const wide = new app.Level({
+      levelObj: { w: 10000, h: 7, s: 's------' + '0'.repeat(9999) + '1', independent: true },
+    });
     const codec = wide.createSearchStateCodec();
     const key = codec.encode();
     assert.ok(wide.move(1, 0));
     codec.restore(key);
-    assert.equal(wide.getState(10000, 7), state257);
+    assert.equal(wide.getState(10000, 7), app.states.targetMin);
     assert.equal(wide.getState(1, 1), app.states.userMin);
 
     const savedata = new Savedata();
@@ -152,6 +142,145 @@
     assert.ok(restored.restoreBackupData(backup));
     assert.equal(restored.getHighestScore(level, num), 3);
     assert.equal(restored.getHighestScoreForSeqMode(num, 'line'), 3);
+  }
+
+  function testIndependentTargets() {
+    const assert = require('node:assert/strict');
+    const sequence = require('./sequence.js');
+    const Savedata = require('./class-savedata.js');
+    const UndoInfo = require('./class-undo-info.js');
+    const modes = Object.values(app.Level.CHECK_MODE);
+    const directions = [[0, -1], [1, 0], [0, 1], [-1, 0]];
+
+    // 旧形式の連番盤面を作り、番号だけが違う同じゲームとして比較します。
+    function numbered(obj) {
+      let id = 0;
+      return { ...obj, independent: false, s: obj.s.replace(/1/g, () => (++id < 10 ? String(id) : `(${id})`)) };
+    }
+    function compare(a, b) {
+      assert.equal(a.getShapeStr(app.states.isTarget), b.getShapeStr(app.states.isTarget));
+      assert.equal(a.isCompleted(), b.isCompleted());
+      for (let y = 1; y <= a.getH(); y++) {
+        for (let x = 1; x <= a.getW(); x++) {
+          const state = b.getState(x, y);
+          assert.equal(a.getState(x, y), app.states.isTarget(state) ? app.states.targetMin : state);
+          assert.deepEqual(a.getMoveInfo(x, y), b.getMoveInfo(x, y));
+        }
+      }
+    }
+    function step(a, b, dir) {
+      const [dx, dy] = directions[dir];
+      assert.equal(a.move(dx, dy), b.move(dx, dy));
+      compare(a, b);
+    }
+
+    for (const checkMode of modes) {
+      for (const num of [2n, -1n, 47n, -777n, 61880n]) {
+        const obj = sequence.createLevel(num);
+        const independent = new app.Level({ levelObj: obj, checkMode });
+        const original = new app.Level({ levelObj: numbered(obj), checkMode });
+        let seed = 12345;
+        for (let i = 0; i < 200; i++) {
+          seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+          step(independent, original, seed >>> 30);
+        }
+      }
+      const solutions = ['', '21232132113321', '2123212321', '1111222231232300', '21321133212321', '111203321012', '112200322321', '', '1201123032'];
+      for (let digit = 1; digit <= 9; digit++) {
+        const obj = sequence.createLevel(digit);
+        const independent = new app.Level({ levelObj: obj, checkMode });
+        const original = new app.Level({ levelObj: numbered(obj), checkMode });
+        const replay = solutions[digit - 1];
+        for (const dir of replay) step(independent, original, Number(dir));
+        assert.ok(independent.isCompleted());
+        const savedata = new Savedata();
+        savedata.saveSteps(original, replay, digit);
+        savedata.saveShape(original, original.getTargetShapeForSavedata(), replay, digit);
+        const restored = new Savedata();
+        assert.ok(restored.restoreBackupData(JSON.parse(JSON.stringify(savedata.getBackupData()))));
+        assert.equal(restored.getHighestScore(independent, BigInt(digit)), replay.length);
+        assert.equal(restored.getShapeRecords(independent, BigInt(digit))[0].replay, replay);
+      }
+    }
+
+    for (const checkMode of modes) {
+      const level = new app.Level({ levelObj: { w: 5, h: 3, s: 's1-001', independent: true }, checkMode });
+      assert.equal(app.solveLevel('Independent', level, { maxStep: 1 }).replayStr, '1');
+    }
+
+    const obj = { w: 5, h: 3, s: 's1-01', independent: true };
+    const level = new app.Level({ levelObj: obj });
+    const normal = new app.Level({ levelObj: { ...obj, independent: false } });
+    assert.ok(level.move(1, 0));
+    assert.equal(level.getS(), '0s1-01');
+    assert.ok(normal.move(1, 0));
+    assert.equal(normal.getS(), '0s1-001');
+    assert.notEqual(level.getCurrentUrlQuery(), normal.getCurrentUrlQuery());
+    assert.match(level.getCurrentUrlQuery(), /&independent=target(?:&|$)/);
+    const customKey = 'mode=line&w=5&h=3&s=s1-01&independent=target';
+    const savedCustom = new Savedata();
+    assert.ok(savedCustom.restoreBackupData({ steps: { [customKey]: '1' }, shapes: {} }));
+    assert.equal(savedCustom.getHighestScore(level), 1);
+    savedCustom.saveShape(level, '#', '1');
+    assert.equal(savedCustom.getBackupData().shapes[customKey]['#'], '1');
+
+    const blocked = new app.Level({ levelObj: { w: 5, h: 3, s: 's111x', independent: true } });
+    assert.equal(blocked.move(1, 0), false);
+    assert.equal(blocked.getS(), 's111x');
+    assert.deepEqual(blocked.getMoveInfo(1, 1).bump, { dx: 1, dy: 0 });
+    const chain = new app.Level({ levelObj: { w: 5, h: 3, s: 's11-01', independent: true } });
+    assert.ok(chain.move(1, 0));
+    assert.equal(chain.getS(), '0s11-01');
+
+    // 番号付きの灰色ブロックや複数マスのキャラは、独立モードでも従来どおり一体で動きます。
+    const mixed = { w: 6, h: 3, s: 'ss1-001-00aa', independent: true };
+    const mixedLevel = new app.Level({ levelObj: mixed });
+    const mixedOriginal = new app.Level({ levelObj: numbered(mixed) });
+    for (const dir of '11223300112233') step(mixedLevel, mixedOriginal, Number(dir));
+
+    const history = new UndoInfo();
+    history.pushData(level.getCurrentLevelObj());
+    level.resize(1, 1, false);
+    assert.equal(level.getW(), 6);
+    assert.equal(level.getH(), 4);
+    assert.ok(level.hasIndependentTargets());
+    history.pushData(level.getCurrentLevelObj());
+    level.applyObj(history.undo(), true);
+    assert.equal(level.getW(), 5);
+    assert.ok(level.hasIndependentTargets());
+    level.applyObj(history.redo(), true);
+    assert.equal(level.getW(), 6);
+    assert.ok(level.hasIndependentTargets());
+    const state = level.getS();
+    level.mirror();
+    assert.ok(level.hasIndependentTargets());
+    level.mirror();
+    level.rotate(1);
+    assert.ok(level.hasIndependentTargets());
+    level.rotate(3);
+    level.normalize();
+    assert.equal(level.getS(), state);
+    assert.ok(level.hasIndependentTargets());
+    const replayLevel = level.createReplayLevel(level.getCurrentLevelObj());
+    assert.ok(replayLevel.hasIndependentTargets());
+    assert.equal(replayLevel.getS(), state);
+  }
+
+  function testIndependentUrlParameter() {
+    const assert = require('node:assert/strict');
+    const source = require('node:fs').readFileSync(require('node:path').join(__dirname, 'analyze-url.js'), 'utf8');
+    const context = { window: { app: { Level: app.Level } }, URLSearchParams };
+    require('node:vm').runInNewContext(source, context);
+    for (const replay of ['', '&r=1']) {
+      for (const flag of ['', '&independent=target', '&independent', '&independent=', '&independent=user', '&independent=target,user']) {
+        context.location = new URL(`https://example.com/?mode=line&w=5&h=3&s=s1-01${flag}${replay}`);
+        if (flag === '' || flag === '&independent=target') {
+          assert.equal(context.window.app.analyzeUrl().levelObj.independent === true, flag !== '');
+        } else {
+          assert.throws(context.window.app.analyzeUrl, (error) => error.name === 'RangeError' && error.message.includes('independent=target'));
+        }
+      }
+    }
   }
 
   function testReplayPrefix() {
