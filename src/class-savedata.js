@@ -147,7 +147,7 @@
     }
 
     getUnsolvedMinNum(checkMode) {
-      let num = 1;
+      let num = 1n;
       const mode = app.Level.getCheckModeStr(checkMode);
       while (this.data.shapes[this.#getSeqModeKey(num, mode)] !== undefined) {
         num++;

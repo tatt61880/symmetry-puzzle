@@ -52,12 +52,107 @@
       testMirroredAxis();
       testReplayPrefix();
       testSearchStateCodec();
+      testUnboundedSequence();
       testsSolve();
       testInvalidSolverModePreservesBackup();
   }
 
   return;
   // -------------------------------------------------------------------------
+
+  function testUnboundedSequence() {
+    const assert = require('node:assert/strict');
+    const sequence = require('./sequence.js');
+    const Levels = require('./class-levels.js');
+    const Savedata = require('./class-savedata.js');
+    const colors = require('./colors.js');
+    const number = '9007199254740993';
+    assert.equal(sequence.parseNumber(number), 9007199254740993n);
+    assert.equal(sequence.parseNumber('+00012'), 12n);
+    assert.ok(Number.isNaN(sequence.parseNumber('Infinity')));
+    assert.equal(String(sequence.parseNumber('1' + '0'.repeat(400))), '1' + '0'.repeat(400));
+    const levels = new Levels({ levelsList: [], levelsListEx: {} });
+    assert.equal(levels.prevable(1n), false);
+    assert.equal(levels.nextable(-1n), false);
+    assert.equal(levels.nextable(sequence.parseNumber(number)), true);
+    assert.equal(levels.prevable(-sequence.parseNumber(number)), true);
+
+    for (const block of [1, 256, 257, 1001, 10000, 10005, 100000]) {
+      const state = app.states.fromChar(String(block));
+      assert.ok(app.states.isTarget(state));
+      assert.ok(!app.states.isUser(state) && !app.states.isOther(state));
+      assert.equal(app.states.toChar(state), String(block));
+      assert.equal(colors.getBlock(state).fill, colors[app.states.shape].fill);
+    }
+    assert.equal(app.states.fromChar('a'), app.states.otherMin);
+    assert.equal(app.states.fromChar('s'), app.states.userMin);
+
+    for (const num of [1n, -1n, 777n, 61880n, BigInt('8'.repeat(24)), -BigInt('8'.repeat(80))]) {
+      const obj = sequence.createLevel(num);
+      const digits = String(num);
+      const counts = [12, 5, 11, 11, 9, 11, 12, 7, 13, 12];
+      const expected = [...digits].reduce((n, char) => n + (char === '-' ? 3 : counts[Number(char)]), 0);
+      assert.equal(obj.w, 4 * digits.length + 1);
+      const level = new app.Level({ levelObj: obj });
+      assert.equal(level.getW(), obj.w);
+      const targets = new Set();
+      for (let y = 1; y <= 7; y++) {
+        assert.equal(level.getState(obj.w, y), app.states.none);
+        for (let x = 1; x <= obj.w; x++) {
+          const state = level.getState(x, y);
+          assert.notEqual(state, undefined);
+          if (app.states.isTarget(state)) targets.add(state);
+        }
+      }
+      assert.equal(targets.size, expected);
+      assert.ok(level.isNormalized());
+      const initial = level.getS();
+      const codec = level.createSearchStateCodec();
+      const key = codec.encode();
+      assert.ok(level.move(1, 0));
+      codec.restore(key);
+      assert.equal(level.getS(), initial);
+      level.normalize();
+      assert.equal(level.getS(), initial);
+      const replayLevel = level.createReplayLevel(level.getCurrentLevelObj());
+      assert.equal(replayLevel.getW(), obj.w);
+      assert.equal(replayLevel.getS(), initial);
+      const rotated = new app.Level({ levelObj: obj, rotateNum: 1 });
+      assert.equal(rotated.getH(), obj.w);
+      rotated.rotate(3);
+      assert.equal(rotated.getS(), initial);
+    }
+
+    const extended = new app.Level({ levelObj: { w: 5, h: 3, s: 's(257)-(1001)-(10000)' } });
+    const state257 = app.states.fromChar('257');
+    assert.ok(extended.move(1, 0));
+    assert.equal(extended.getState(3, 1), state257);
+    assert.equal(extended.getState(1, 2), app.states.fromChar('1001'));
+    assert.equal(extended.getState(1, 3), app.states.fromChar('10000'));
+    const mirrored = new app.Level({ levelObj: extended.getCurrentLevelObj(), mirrorFlag: true });
+    mirrored.mirror();
+    assert.equal(mirrored.getS(), extended.getS());
+
+    const wide = new app.Level({ levelObj: { w: 10000, h: 7, s: 's------' + '0'.repeat(9999) + '(257)' } });
+    const codec = wide.createSearchStateCodec();
+    const key = codec.encode();
+    assert.ok(wide.move(1, 0));
+    codec.restore(key);
+    assert.equal(wide.getState(10000, 7), state257);
+    assert.equal(wide.getState(1, 1), app.states.userMin);
+
+    const savedata = new Savedata();
+    const num = sequence.parseNumber(number);
+    const level = new app.Level({ levelObj: sequence.createLevel(num) });
+    savedata.saveSteps(level, '123', num);
+    savedata.saveShape(level, '#', '123', num);
+    const backup = JSON.parse(JSON.stringify(savedata.getBackupData()));
+    assert.equal(backup.steps[`mode=line&num=${number}`], '123');
+    const restored = new Savedata();
+    assert.ok(restored.restoreBackupData(backup));
+    assert.equal(restored.getHighestScore(level, num), 3);
+    assert.equal(restored.getHighestScoreForSeqMode(num, 'line'), 3);
+  }
 
   function testReplayPrefix() {
     const assert = require('node:assert/strict');
@@ -370,7 +465,7 @@
     assert.deepEqual(savedata.getShapesObj(line, 1), { [shape]: '21' });
     assert.equal(savedata.getHighestScore(point), null);
     assert.equal(savedata.getHighestScore(point, 2), null);
-    assert.equal(savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.POINT), 2);
+    assert.equal(savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.POINT), 2n);
     const { steps, shapes } = savedata.getBackupData();
     assert.deepEqual(steps, { [boardKey]: '1121', 'mode=point&num=1': '123' });
     assert.deepEqual(shapes['mode=point&num=1'], { [shape]: '123' });

@@ -13,6 +13,8 @@
   states.otherMax = 1008;
   states.userMin = 10000;
   states.userMax = 10004; // 探索時はこの値が小さい方が有利。
+  // 257番以降は、灰色ブロックとキャラの内部番号を避けます。
+  const extendedTargetMin = states.userMax + 1;
 
   const stateToChar = {};
   const charToState = {};
@@ -39,9 +41,19 @@
   Object.freeze(charToState);
   states.stateToChar = stateToChar;
   states.charToState = charToState;
-  states.isTarget = (state) => states.targetMin <= state && state <= states.targetMax;
+  states.isTarget = (state) =>
+    Number.isSafeInteger(state) && ((states.targetMin <= state && state <= states.targetMax) || state >= extendedTargetMin);
   states.isOther = (state) => states.otherMin <= state && state <= states.otherMax;
   states.isUser = (state) => states.userMin <= state && state <= states.userMax;
+  states.getTargetState = (number) => (number <= states.targetMax ? number : extendedTargetMin + number - states.targetMax - 1);
+  states.getTargetNumber = (state) => (state < extendedTargetMin ? state : state - extendedTargetMin + states.targetMax + 1);
+  states.fromChar = (char) => {
+    if (charToState[char] !== undefined) return charToState[char];
+    if (!/^[1-9]\d*$/.test(char)) return undefined;
+    const state = states.getTargetState(Number(char));
+    return states.isTarget(state) ? state : undefined;
+  };
+  states.toChar = (state) => stateToChar[state] ?? (states.isTarget(state) ? String(states.getTargetNumber(state)) : undefined);
   Object.freeze(states);
 
   if (isBrowser) {

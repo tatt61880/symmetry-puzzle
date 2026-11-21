@@ -34,6 +34,22 @@
 
   let onSelectLevel;
 
+  function readIndex(name) {
+    return BigInt(elems.levels.dialog.dataset[name] ?? '0');
+  }
+
+  function sequenceSign() {
+    return app.common.levelId < 0 ? -1n : 1n;
+  }
+
+  function selectionPosition(count) {
+    const index = Number(count % BigInt(LEVEL_SELECT_NUM_PER_PAGE));
+    return {
+      x: (index % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH,
+      y: Math.floor(index / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT,
+    };
+  }
+
   function init(onSelect) {
     onSelectLevel = onSelect;
   }
@@ -46,15 +62,15 @@
 
   function update() {
     app.sound.playButton();
-    const page = Number(elems.levels.dialog.dataset.page);
+    const page = readIndex('page');
     updateLevelsDialog(page);
   }
 
   function prevPage() {
     if (app.common.isShownElem(elems.levels.prev)) {
       app.sound.playButton();
-      elems.levels.dialog.dataset.selectCount = Number(elems.levels.dialog.dataset.selectCount) - LEVEL_SELECT_NUM_PER_PAGE;
-      const page = Number(elems.levels.dialog.dataset.page) - 1;
+      elems.levels.dialog.dataset.selectCount = readIndex('selectCount') - BigInt(LEVEL_SELECT_NUM_PER_PAGE);
+      const page = readIndex('page') - 1n;
       updateLevelsDialog(page);
     }
   }
@@ -62,8 +78,8 @@
   function nextPage() {
     if (app.common.isShownElem(elems.levels.next)) {
       app.sound.playButton();
-      elems.levels.dialog.dataset.selectCount = Number(elems.levels.dialog.dataset.selectCount) + LEVEL_SELECT_NUM_PER_PAGE;
-      const page = Number(elems.levels.dialog.dataset.page) + 1;
+      elems.levels.dialog.dataset.selectCount = readIndex('selectCount') + BigInt(LEVEL_SELECT_NUM_PER_PAGE);
+      const page = readIndex('page') + 1n;
       updateLevelsDialog(page);
     }
   }
@@ -72,28 +88,27 @@
     if (app.common.isTouchDevice()) {
       return;
     }
-    const currentPage = Number(elems.levels.dialog.dataset.page);
-    const page = Math.floor(selectCount / LEVEL_SELECT_NUM_PER_PAGE);
+    const currentPage = readIndex('page');
+    const page = selectCount / BigInt(LEVEL_SELECT_NUM_PER_PAGE);
     if (page !== currentPage) {
       updateLevelsDialog(page);
     }
 
     elems.levels.dialog.dataset.selectCount = selectCount;
     const g = document.getElementById(levelSelectId);
-    const x = (selectCount % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH;
-    const y = Math.floor((selectCount % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT;
+    const { x, y } = selectionPosition(selectCount);
     g.setAttribute('transform', `translate(${x},${y})`);
   }
 
   function selectUp() {
-    const selectCount = Number(elems.levels.dialog.dataset.selectCount) - LEVEL_SELECT_COLS;
+    const selectCount = readIndex('selectCount') - BigInt(LEVEL_SELECT_COLS);
     if (selectCount >= 0) {
       levelSelectUpdate(selectCount);
     }
   }
 
   function selectRight() {
-    const selectCount = Number(elems.levels.dialog.dataset.selectCount) + 1;
+    const selectCount = readIndex('selectCount') + 1n;
     const maxCount = Number(elems.levels.dialog.dataset.maxCount);
     if (maxCount === -1 || selectCount <= maxCount) {
       levelSelectUpdate(selectCount);
@@ -101,7 +116,7 @@
   }
 
   function selectDown() {
-    const selectCount = Number(elems.levels.dialog.dataset.selectCount) + LEVEL_SELECT_COLS;
+    const selectCount = readIndex('selectCount') + BigInt(LEVEL_SELECT_COLS);
     const maxCount = Number(elems.levels.dialog.dataset.maxCount);
     if (maxCount === -1 || selectCount <= maxCount) {
       levelSelectUpdate(selectCount);
@@ -109,17 +124,17 @@
   }
 
   function selectLeft() {
-    const selectCount = Number(elems.levels.dialog.dataset.selectCount) - 1;
+    const selectCount = readIndex('selectCount') - 1n;
     if (selectCount >= 0) {
       levelSelectUpdate(selectCount);
     }
   }
 
   function selectEnter() {
-    const selectCount = Number(elems.levels.dialog.dataset.selectCount);
+    const selectCount = readIndex('selectCount');
     const maxCount = Number(elems.levels.dialog.dataset.maxCount);
     if (maxCount === -1) {
-      onSelectLevel(selectCount + 1);
+      onSelectLevel(sequenceSign() * (selectCount + 1n));
     } else {
       const id = JSON.parse(elems.levels.dialog.dataset.selectIds)[selectCount];
       onSelectLevel(id);
@@ -144,28 +159,29 @@
 
     if (app.common.isSeqMode) {
       if (page === null) {
-        const num = app.common.levelId;
-        page = Math.floor((num - 1) / LEVEL_SELECT_NUM_PER_PAGE);
-        elems.levels.dialog.dataset.selectCount = num - 1;
+        const num = typeof app.common.levelId === 'bigint' ? app.common.levelId * sequenceSign() : 1n;
+        const index = num > 0n ? num - 1n : 0n;
+        page = index / BigInt(LEVEL_SELECT_NUM_PER_PAGE);
+        elems.levels.dialog.dataset.selectCount = index;
       }
     } else if (page === null) {
       const index = listedLevels.findIndex(({ levelId }) => String(levelId) === String(app.common.levelId));
       if (index !== -1) {
-        page = Math.floor(index / LEVEL_SELECT_NUM_PER_PAGE);
+        page = BigInt(Math.floor(index / LEVEL_SELECT_NUM_PER_PAGE));
         elems.levels.dialog.dataset.selectCount = index;
       }
     }
     elems.levels.dialog.dataset.maxCount = totalNum - 1;
 
     if (page === null) {
-      page = 0;
+      page = 0n;
     }
     elems.levels.dialog.dataset.page = page;
 
     let prevHide = false;
 
     // ←
-    if (page === 0) {
+    if (page === 0n) {
       app.common.hideElem(elems.levels.prev);
       prevHide = true;
     } else {
@@ -175,7 +191,7 @@
     app.common.showElem(elems.levels.buttonSvg);
 
     // →
-    if (page + 1 === Math.floor((totalNum + LEVEL_SELECT_NUM_PER_PAGE - 1) / LEVEL_SELECT_NUM_PER_PAGE)) {
+    if (page + 1n === BigInt(Math.ceil(totalNum / LEVEL_SELECT_NUM_PER_PAGE))) {
       app.common.hideElem(elems.levels.next);
       if (prevHide) {
         app.common.hideElem(elems.levels.buttonSvg);
@@ -185,12 +201,13 @@
     }
 
     if (app.common.isSeqMode) {
-      for (let num = page * LEVEL_SELECT_NUM_PER_PAGE + 1; num <= (page + 1) * LEVEL_SELECT_NUM_PER_PAGE; num++) {
-        appendLevelForSeqMode(num);
+      const start = page * BigInt(LEVEL_SELECT_NUM_PER_PAGE);
+      for (let i = 0; i < LEVEL_SELECT_NUM_PER_PAGE; i++) {
+        appendLevelForSeqMode(sequenceSign() * (start + BigInt(i) + 1n), i);
       }
     } else {
       const selectIds = {};
-      const start = page * LEVEL_SELECT_NUM_PER_PAGE;
+      const start = Number(page) * LEVEL_SELECT_NUM_PER_PAGE;
       listedLevels.slice(start, start + LEVEL_SELECT_NUM_PER_PAGE).forEach(({ levelId, levelObj }, indexOnPage) => {
         appendLevel(levelObj, levelId, indexOnPage);
         selectIds[start + indexOnPage] = levelId;
@@ -201,11 +218,11 @@
     // 選択枠
     if (!app.common.isTouchDevice()) {
       const maxCount = Number(elems.levels.dialog.dataset.maxCount);
-      if (maxCount !== -1 && Number(elems.levels.dialog.dataset.selectCount) > maxCount) {
+      if (maxCount !== -1 && readIndex('selectCount') > maxCount) {
         elems.levels.dialog.dataset.selectCount = maxCount;
       }
 
-      const selectCount = Number(elems.levels.dialog.dataset.selectCount);
+      const selectCount = readIndex('selectCount');
       const rect = app.svg.createRect(1, {
         x: 1,
         y: 1,
@@ -222,13 +239,12 @@
       g.appendChild(rect);
       elems.levels.dialogSvg.appendChild(g);
 
-      const x = (selectCount % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH;
-      const y = Math.floor((selectCount % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT;
+      const { x, y } = selectionPosition(selectCount);
       g.setAttribute('id', levelSelectId);
       g.setAttribute('transform', `translate(${x},${y})`);
     }
 
-    function appendLevelForSeqMode(num) {
+    function appendLevelForSeqMode(num, indexOnPage) {
       const g = app.svg.createG();
       g.classList.add('level-select');
       elems.levels.dialogSvg.appendChild(g);
@@ -265,18 +281,22 @@
         });
         text.setAttribute('font-size', '20px');
         g.appendChild(text);
+        if (String(num).length > 6) {
+          text.setAttribute('textLength', String(LEVEL_SELECT_WIDTH - 10));
+          text.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+        }
       }
 
       {
-        const x = ((num - 1) % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH + 1;
-        const y = Math.floor(((num - 1) % LEVEL_SELECT_NUM_PER_PAGE) / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT + 1;
+        const x = (indexOnPage % LEVEL_SELECT_COLS) * LEVEL_SELECT_WIDTH + 1;
+        const y = Math.floor(indexOnPage / LEVEL_SELECT_COLS) * LEVEL_SELECT_HEIGHT + 1;
         g.setAttribute('transform', `translate(${x},${y})`);
       }
 
       g.dataset.id = num;
       g.classList.add('button', 'active-hover', 'button-press');
       g.addEventListener('click', function () {
-        const id = Number(g.dataset.id);
+        const id = app.sequence.parseNumber(g.dataset.id);
         onSelectLevel(id);
         close(false);
       });

@@ -851,53 +851,7 @@
     common.levelId = num_;
     common.levelNum = num_;
 
-    const digitStates = {
-      //   -, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-      0: '000111001111111101111111111111111',
-      1: '000101001001001101100100001101101',
-      2: '111101001111111111111111001111111',
-      3: '000101001100001001001101001101001',
-      4: '000111001111111001111111001111111',
-    };
-
-    let isMinus = false;
-
-    let num = num_;
-    if (num < 0) {
-      num = -num;
-      isMinus = true;
-    }
-
-    const digits = [];
-
-    while (num) {
-      digits.unshift(num % 10);
-      num = Math.floor(num / 10);
-    }
-
-    if (isMinus) {
-      digits.unshift(-1);
-    }
-
-    let s = 's-';
-    let x = 1;
-    for (let row = 0; row < 5; ++row) {
-      s += '0';
-      for (let i = 0; i < digits.length; ++i) {
-        const digit = digits[i] + 1;
-        for (let j = digit * 3; j < (digit + 1) * 3; ++j) {
-          const val = digitStates[row].charAt(j) * x;
-          if (val) x++;
-          s += val < 10 ? val : `(${val})`;
-        }
-        s += '0';
-      }
-      s += '-';
-    }
-
-    const w = digits.length * 4 + 1;
-    const h = 7;
-    return { w, h, s };
+    return app.sequence.createLevel(num_);
   }
 
   function capturePreviousBoard() {
@@ -928,7 +882,7 @@
 
     cancelAutoNextLevel();
     clearTimeout(redrawTimerId);
-    const id = Number(id_);
+    const id = common.isSeqMode ? app.sequence.parseNumber(id_) : Number(id_);
     const animate = fade && id !== common.levelId && window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
     const previous = animate ? capturePreviousBoard() : null;
     common.levelId = id;
@@ -937,7 +891,7 @@
     let levelObj = common.levels.getLevelObj(common.levelId);
 
     if (levelObj === null) {
-      const num = Math.floor(id);
+      const num = typeof id === 'bigint' ? id : Math.floor(id);
       levelObj = createObjByNum(num);
     }
 
@@ -950,6 +904,11 @@
 
     updateLevelVisibility();
     elems.level.id.textContent = common.levelId;
+    elems.level.id.removeAttribute('textLength');
+    if (elems.level.id.getComputedTextLength() > 90) {
+      elems.level.id.setAttribute('textLength', '90');
+      elems.level.id.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+    }
     replaceUrl();
 
     if (previous) {
@@ -1053,11 +1012,11 @@
   }
 
   function getPrevLevelId() {
-    return common.levels.prevable(common.levelId) ? common.levelId - 1 : null;
+    return common.levels.prevable(common.levelId) ? common.levelId - (typeof common.levelId === 'bigint' ? 1n : 1) : null;
   }
 
   function getNextLevelId() {
-    return common.levels.nextable(common.levelId) ? common.levelId + 1 : null;
+    return common.levels.nextable(common.levelId) ? common.levelId + (typeof common.levelId === 'bigint' ? 1n : 1) : null;
   }
 
   function getLevelIdAfterCompletion() {

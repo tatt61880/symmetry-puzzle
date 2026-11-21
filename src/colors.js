@@ -109,6 +109,8 @@
   colors.levelsDialogCurrentLevelSeqMode = colors.frameFillSeqMode;
   colors.levelsDialogSelect = '#ee0000';
 
+  colors.getBlock = (state) => colors[state] ?? (app.states.isTarget(state) ? colors[app.states.shape] : undefined);
+
   Object.freeze(colors);
 
   if (isBrowser) {

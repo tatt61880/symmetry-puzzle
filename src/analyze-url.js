@@ -38,7 +38,7 @@
     for (const [paramName, paramVal] of entries) {
       switch (paramName) {
         case 'num':
-          res.num = Number(paramVal);
+          res.num = app.sequence.parseNumber(paramVal);
           break;
         case 'id':
           res.id = Number(paramVal);

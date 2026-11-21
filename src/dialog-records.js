@@ -100,7 +100,7 @@
       elem.setAttribute('fill', fill);
     }
 
-    cells.num.textContent = app.savedata.getUnsolvedMinNum(checkMode) - 1;
+    cells.num.textContent = app.savedata.getUnsolvedMinNum(checkMode) - 1n;
   }
 
   function updateCountCell(td, count, total, color = 'rgb(250, 250, 150)') {

@@ -67,6 +67,7 @@
     }
 
     prevable(levelId) {
+      if (typeof levelId === 'bigint') return levelId !== 0n && levelId !== 1n;
       if (levelId === null) return false;
       if (levelId === 0) return false;
       if (levelId === 1) return false;
@@ -77,6 +78,7 @@
     }
 
     nextable(levelId) {
+      if (typeof levelId === 'bigint') return levelId !== 0n && levelId !== -1n;
       if (levelId === null) return false;
       if (levelId === -1) return false;
       if (levelId === 0) return false;

@@ -113,8 +113,6 @@
       }
       if (rotateNum !== 0) obj = this.#rotateLevel(obj, rotateNum);
       this.#levelObj = obj;
-      if (this.#levelObj.w > app.common.maxW) this.#levelObj.w = app.common.maxW;
-      if (this.#levelObj.h > app.common.maxH) this.#levelObj.h = app.common.maxH;
       Object.freeze(this.#levelObj);
       this.#initStates();
       this.applyStateStr(obj.s);
@@ -161,7 +159,7 @@
           y++;
           continue;
         }
-        const state = app.states.charToState[char];
+        const state = app.states.fromChar(char);
         if (app.states.isUser(state) && !positions.has(state)) positions.set(state, { x: x + 0.5, y: y + 0.5 });
         x++;
       }
@@ -177,7 +175,7 @@
       if (!hint?.stages) return hint;
 
       const stage = hint.stages.find(
-        ({ when }) => this.getState(this.#xMin + when.x, this.#yMin + when.y) === app.states.charToState[when.block]
+        ({ when }) => this.getState(this.#xMin + when.x, this.#yMin + when.y) === app.states.fromChar(when.block)
       );
       if (stage) return { ...stage, afterSteps: hint.afterSteps };
       if (hint.stuck) return { ...hint.stuck, undo: true, afterSteps: hint.afterSteps };
@@ -229,6 +227,7 @@
         }
       }
 
+      const wide = cells.length > 0x10000;
       const codes = new Map();
       const states = [];
       const entries = [];
@@ -249,13 +248,18 @@
             entries[offset++] = code;
           }
           entries.length = offset;
-          return String.fromCharCode(...entries);
+          if (wide) return JSON.stringify(entries);
+          let key = '';
+          for (let i = 0; i < entries.length; i += 4096) key += String.fromCharCode(...entries.slice(i, i + 4096));
+          return key;
         },
         restore(key) {
           for (const { row, x } of cells) row[x] = app.states.none;
-          for (let i = 0; i < key.length; i += 2) {
-            const { row, x } = cells[key.charCodeAt(i)];
-            row[x] = states[key.charCodeAt(i + 1)];
+          const values = wide ? JSON.parse(key) : null;
+          const length = wide ? values.length : key.length;
+          for (let i = 0; i < length; i += 2) {
+            const { row, x } = cells[wide ? values[i] : key.charCodeAt(i)];
+            row[x] = states[wide ? values[i + 1] : key.charCodeAt(i + 1)];
           }
         },
       };
@@ -621,7 +625,7 @@
           x = this.#xMin;
         } else {
           if (x >= this.#xMax) continue;
-          this.#states[y][x] = app.states.charToState[c];
+          this.#states[y][x] = app.states.fromChar(c);
           x++;
         }
       }
@@ -639,8 +643,8 @@
         for (let x = this.#xMin; x < this.#xMax; ++x) {
           const state = this.#states[y][x];
           if (map[state] === undefined) {
-            if (app.states.targetMin <= state && state <= app.states.targetMax) {
-              map[state] = nextTarget++;
+            if (app.states.isTarget(state)) {
+              map[state] = app.states.getTargetState(nextTarget++);
             } else if (app.states.otherMin <= state && state <= app.states.otherMax) {
               map[state] = nextOther++;
             } else if (app.states.userMin <= state && state <= app.states.userMax) {
@@ -728,7 +732,7 @@
           const state = this.#states[y][x];
           exists[state] = true;
           if (app.states.isTarget(state)) {
-            if (state !== app.states.targetMin && !exists[state - 1]) {
+            if (state !== app.states.targetMin && !exists[app.states.getTargetState(app.states.getTargetNumber(state) - 1)]) {
               return false;
             }
           } else if (app.states.isOther(state)) {
@@ -1092,7 +1096,7 @@
           x = w - 1;
         } else {
           if (x === -1) continue;
-          statesTemp[y][x] = app.states.charToState[c];
+          statesTemp[y][x] = app.states.fromChar(c);
           x--;
         }
       }
@@ -1135,7 +1139,7 @@
             y = 0;
           } else {
             if (y === h) continue;
-            statesTemp[y][x] = app.states.charToState[c];
+            statesTemp[y][x] = app.states.fromChar(c);
             y++;
           }
         }
@@ -1168,7 +1172,7 @@
       for (let y = yMin; y < yMax; ++y) {
         let line = '';
         for (let x = xMin; x < xMax; ++x) {
-          let c = app.states.stateToChar[states[y][x]];
+          let c = app.states.toChar(states[y][x]);
           if (c.length > 1) c = `(${c})`;
           line += c;
         }
