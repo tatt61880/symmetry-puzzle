@@ -1950,7 +1950,7 @@
     // 点対称-通常モード
     elems.title.buttonNormalPoint.addEventListener('click', gotoNormalPointMode);
 
-    // 線点対称-通常モード
+    // 線対称＆点対称-通常モード
     elems.title.buttonNormalSpecial.addEventListener('click', gotoNormalSpecialMode);
 
     // 線対称-連番モード
@@ -1959,7 +1959,7 @@
     // 点対称-連番モード
     elems.title.buttonSeqPoint.addEventListener('click', gotoNumPointMode);
 
-    // 線点対称-連番モード
+    // 線対称＆点対称-連番モード
     elems.title.buttonSeqSpecial.addEventListener('click', gotoNumSpecialMode);
 
     elems.title.buttonToggleToNormal.addEventListener('click', toggleNormalSeqMode);
@@ -2333,7 +2333,7 @@
           const modeName = {
             line: { ja: '線対称パズル', en: 'Line Symmetry Puzzle' },
             point: { ja: '点対称パズル', en: 'Point Symmetry Puzzle' },
-            special: { ja: '線点対称パズル', en: 'Line & Point Symmetry Puzzle' },
+            special: { ja: '線対称＆点対称パズル', en: 'Line & Point Symmetry Puzzle' },
           }[mode];
           textJa = `「${modeName.ja}」のレベル${common.levelId}を${completedStep}手でクリア！\n#対称パズル`;
           textEn = `Cleared level ${common.levelId} of ${modeName.en} in ${completedStep} ${

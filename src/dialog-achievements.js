@@ -50,7 +50,7 @@
       },
       {
         elem: elems.achievements.special.solved,
-        ja: '線点',
+        ja: '線対称＆点',
         en: 'Line & Point:',
         num: countSolvedLevels(SPECIAL, app.levelsSpecial, app.levelsSpecialEx),
       },
