@@ -27,6 +27,7 @@
   class BoardRenderer {
     #level;
     #eyePrevInfo = [];
+    #eyeNextInfo = [];
     #extraIdleBlink;
     #heldBumpAnimations = null;
 
@@ -177,6 +178,8 @@
       height = this.#level.getHeight(),
       edgeColor = null,
     }) {
+      this.#eyePrevInfo = this.#eyeNextInfo;
+      this.#eyeNextInfo = [];
       this.#heldBumpAnimations = holdBumpFace ? [] : null;
       const g = app.svg.createG();
       if (idleAnimationFlag && !reducedMotion.matches) {
@@ -759,7 +762,21 @@
       });
     }
 
-    #createOneBlock(x, y, sX, sY, blockSize, showCharsFlag, eyeFlag, idleAnimationFlag, flags, move, showPushMotion, isCompleted) {
+    #createOneBlock(
+      x,
+      y,
+      sX,
+      sY,
+      blockSize,
+      showCharsFlag,
+      eyeFlag,
+      isSoloUser,
+      idleAnimationFlag,
+      flags,
+      move,
+      showPushMotion,
+      isCompleted
+    ) {
       const state = this.#level.getState(sX, sY);
       const color = app.colors[state];
 
@@ -795,461 +812,494 @@
           const radius = radiuses[this.#level.getCheckMode()];
           const blockBorderWidth = 0.1;
 
-          // 左上
-          if (!flags[dirs.u] && !flags[dirs.l]) {
-            const createD = (r1, r0 = r1) => {
-              const r = r1 * blockSize;
-              const sx = x * blockSize + r + epsB;
-              const sy = y * blockSize + r + epsB;
-              const ar = r0 * blockSize;
-              const hdx = -(ar + epsB);
-              const dx = ar;
-              const dy = -ar;
-              const d = `M ${sx},${sy} h ${hdx} v ${-epsB} a ${ar},${ar} 0 0 1 ${dx},${dy} h ${epsB} z`;
-              return d;
-            };
-            const pathStroke = app.svg.createPath({
-              d: createD(radius.ul),
-              fill: color.stroke,
-            });
-            gElem.appendChild(pathStroke);
-            const pathFill = app.svg.createPath({
-              d: createD(radius.ul, radius.ul - blockBorderWidth),
-              fill: color.fill,
-            });
-            gElem.appendChild(pathFill);
-          } else {
-            {
+          const axisType = this.#level.getAxisType();
+          const isRotating =
+            isSoloUser &&
+            move.moved &&
+            move.dx === 0 &&
+            move.dy === 0 &&
+            (axisType === Level.SYMMETRY_TYPE.POINT1 || axisType === Level.SYMMETRY_TYPE.POINT2);
+          if (isSoloUser) {
+            const radii = [radius.ul, radius.ur, radius.dr, radius.dl];
+            const turn = axisType === Level.SYMMETRY_TYPE.POINT1 ? 2 : move.mirrored ? 3 : 1;
+            const startRadii = isRotating ? radii.map((_, i) => radii[(i + 4 - turn) % 4]) : radii;
+            // 外側と内側を別々に丸め、変形中も枠線の太さを保ちます。
+            for (const inset of [0, blockBorderWidth]) {
               const rect = app.svg.createRect(blockSize, {
                 x,
                 y,
-                width: radius.ul + eps,
-                height: radius.ul + eps,
+                width: 1,
+                height: 1,
+                fill: inset === 0 ? color.stroke : color.fill,
+              });
+              const clipPath = (radii) =>
+                `inset(${inset * blockSize}px round ${radii.map((r) => `${(r - inset) * blockSize}px`).join(' ')})`;
+              const endClip = clipPath(radii);
+              rect.style.clipPath = endClip;
+              if (startRadii.some((r, i) => r !== radii[i])) {
+                rect.animate([{ clipPath: clipPath(startRadii) }, { clipPath: endClip }], {
+                  duration: app.common.MOVE_INTERVAL_MSEC,
+                });
+              }
+              gElem.appendChild(rect);
+            }
+          } else {
+            // 左上
+            if (!flags[dirs.u] && !flags[dirs.l]) {
+              const createD = (r1, r0 = r1) => {
+                const r = r1 * blockSize;
+                const sx = x * blockSize + r + epsB;
+                const sy = y * blockSize + r + epsB;
+                const ar = r0 * blockSize;
+                const hdx = -(ar + epsB);
+                const dx = ar;
+                const dy = -ar;
+                const d = `M ${sx},${sy} h ${hdx} v ${-epsB} a ${ar},${ar} 0 0 1 ${dx},${dy} h ${epsB} z`;
+                return d;
+              };
+              const pathStroke = app.svg.createPath({
+                d: createD(radius.ul),
+                fill: color.stroke,
+              });
+              gElem.appendChild(pathStroke);
+              const pathFill = app.svg.createPath({
+                d: createD(radius.ul, radius.ul - blockBorderWidth),
+                fill: color.fill,
+              });
+              gElem.appendChild(pathFill);
+            } else {
+              {
+                const rect = app.svg.createRect(blockSize, {
+                  x,
+                  y,
+                  width: radius.ul + eps,
+                  height: radius.ul + eps,
+                  fill: color.fill,
+                });
+                gElem.appendChild(rect);
+              }
+
+              if (!flags[dirs.u]) {
+                const rect = app.svg.createRect(blockSize, {
+                  x: x - eps,
+                  y,
+                  width: radius.ul + eps2,
+                  height: blockBorderWidth,
+                  fill: color.stroke,
+                });
+                gElem.appendChild(rect);
+              } else if (!flags[dirs.l]) {
+                const rect = app.svg.createRect(blockSize, {
+                  x,
+                  y: y - eps,
+                  width: blockBorderWidth,
+                  height: radius.ul + eps2,
+                  fill: color.stroke,
+                });
+                gElem.appendChild(rect);
+              } else if (!flags[dirs.ul]) {
+                const rect1 = app.svg.createRect(blockSize, {
+                  x: x - eps,
+                  y,
+                  width: blockBorderWidth + eps,
+                  height: blockBorderWidth,
+                  fill: color.stroke,
+                });
+                const rect2 = app.svg.createRect(blockSize, {
+                  x,
+                  y: y - eps,
+                  width: blockBorderWidth,
+                  height: blockBorderWidth + eps,
+                  fill: color.stroke,
+                });
+                gElem.appendChild(rect1);
+                gElem.appendChild(rect2);
+              }
+            }
+
+            // 右上
+            if (!flags[dirs.u] && !flags[dirs.r]) {
+              const createD = (r1, r0 = r1) => {
+                const r = r1 * blockSize;
+                const sx = (x + 1) * blockSize - r - epsB;
+                const sy = y * blockSize + r + epsB;
+                const ar = r0 * blockSize;
+                const vdy = -(ar + epsB);
+                const dx = ar;
+                const dy = ar;
+                const d = `M ${sx},${sy} v ${vdy} h ${epsB} a ${ar},${ar} 0 0 1 ${dx},${dy} v ${epsB} z`;
+                return d;
+              };
+              const pathStroke = app.svg.createPath({
+                d: createD(radius.ur),
+                fill: color.stroke,
+              });
+              gElem.appendChild(pathStroke);
+              const pathFill = app.svg.createPath({
+                d: createD(radius.ur, radius.ur - blockBorderWidth),
+                fill: color.fill,
+              });
+              gElem.appendChild(pathFill);
+            } else {
+              {
+                const rect = app.svg.createRect(blockSize, {
+                  x: x + 1 - radius.ur - eps,
+                  y,
+                  width: radius.ur + eps,
+                  height: radius.ur + eps,
+                  fill: color.fill,
+                });
+                gElem.appendChild(rect);
+              }
+
+              if (!flags[dirs.u]) {
+                const rect = app.svg.createRect(blockSize, {
+                  x: x + 1 - radius.ur - eps,
+                  y,
+                  width: radius.ur + eps2,
+                  height: blockBorderWidth,
+                  fill: color.stroke,
+                });
+                gElem.appendChild(rect);
+              } else if (!flags[dirs.r]) {
+                const rect = app.svg.createRect(blockSize, {
+                  x: x + 1 - blockBorderWidth,
+                  y: y - eps,
+                  width: blockBorderWidth,
+                  height: radius.ur + eps2,
+                  fill: color.stroke,
+                });
+                gElem.appendChild(rect);
+              } else if (!flags[dirs.ur]) {
+                const rect1 = app.svg.createRect(blockSize, {
+                  x: x + 1 - blockBorderWidth,
+                  y,
+                  width: blockBorderWidth + eps,
+                  height: blockBorderWidth,
+                  fill: color.stroke,
+                });
+                const rect2 = app.svg.createRect(blockSize, {
+                  x: x + 1 - blockBorderWidth,
+                  y: y - eps,
+                  width: blockBorderWidth,
+                  height: blockBorderWidth + eps,
+                  fill: color.stroke,
+                });
+                gElem.appendChild(rect1);
+                gElem.appendChild(rect2);
+              }
+            }
+
+            // 右下
+            if (!flags[dirs.d] && !flags[dirs.r]) {
+              const createD = (r1, r0 = r1) => {
+                const r = r1 * blockSize;
+                const sx = (x + 1) * blockSize - r - epsB;
+                const sy = (y + 1) * blockSize - r - epsB;
+                const ar = r0 * blockSize;
+                const hdx = ar + epsB;
+                const dx = -ar;
+                const dy = ar;
+                const d = `M ${sx},${sy} h ${hdx} v ${epsB} a ${ar},${ar} 0 0 1 ${dx},${dy} h ${-epsB} z`;
+                return d;
+              };
+              const pathStroke = app.svg.createPath({
+                d: createD(radius.dr),
+                fill: color.stroke,
+              });
+              gElem.appendChild(pathStroke);
+              const pathFill = app.svg.createPath({
+                d: createD(radius.dr, radius.dr - blockBorderWidth),
+                fill: color.fill,
+              });
+              gElem.appendChild(pathFill);
+            } else {
+              {
+                const rect = app.svg.createRect(blockSize, {
+                  x: x + 1 - radius.dr - eps,
+                  y: y + 1 - radius.dr - eps,
+                  width: radius.dr + eps,
+                  height: radius.dr + eps,
+                  fill: color.fill,
+                });
+                gElem.appendChild(rect);
+              }
+
+              if (!flags[dirs.d]) {
+                const rect = app.svg.createRect(blockSize, {
+                  x: x + 1 - radius.dr - eps,
+                  y: y + 1 - blockBorderWidth,
+                  width: radius.dr + eps2,
+                  height: blockBorderWidth,
+                  fill: color.stroke,
+                });
+                gElem.appendChild(rect);
+              } else if (!flags[dirs.r]) {
+                const rect = app.svg.createRect(blockSize, {
+                  x: x + 1 - blockBorderWidth,
+                  y: y + 1 - radius.dr - eps,
+                  width: blockBorderWidth,
+                  height: radius.dr + eps2,
+                  fill: color.stroke,
+                });
+                gElem.appendChild(rect);
+              } else if (!flags[dirs.dr]) {
+                const rect1 = app.svg.createRect(blockSize, {
+                  x: x + 1 - blockBorderWidth,
+                  y: y + 1 - blockBorderWidth,
+                  width: blockBorderWidth + eps,
+                  height: blockBorderWidth,
+                  fill: color.stroke,
+                });
+                const rect2 = app.svg.createRect(blockSize, {
+                  x: x + 1 - blockBorderWidth,
+                  y: y + 1 - blockBorderWidth,
+                  width: blockBorderWidth,
+                  height: blockBorderWidth + eps,
+                  fill: color.stroke,
+                });
+                gElem.appendChild(rect1);
+                gElem.appendChild(rect2);
+              }
+            }
+
+            // 左下
+            if (!flags[dirs.d] && !flags[dirs.l]) {
+              const createD = (r1, r0 = r1) => {
+                const r = r1 * blockSize;
+                const sx = x * blockSize + r + epsB;
+                const sy = (y + 1) * blockSize - r - epsB;
+                const ar = r0 * blockSize;
+                const vdy = ar + epsB;
+                const dx = -ar;
+                const dy = -ar;
+                const d = `M ${sx},${sy} v ${vdy} h ${-epsB} a ${ar},${ar} 0 0 1 ${dx},${dy} v ${-epsB} z`;
+                return d;
+              };
+              const pathStroke = app.svg.createPath({
+                d: createD(radius.dl),
+                fill: color.stroke,
+              });
+              gElem.appendChild(pathStroke);
+              const pathFill = app.svg.createPath({
+                d: createD(radius.dl, radius.dl - blockBorderWidth),
+                fill: color.fill,
+              });
+              gElem.appendChild(pathFill);
+            } else {
+              {
+                const rect = app.svg.createRect(blockSize, {
+                  x,
+                  y: y + 1 - radius.dl - eps,
+                  width: radius.dl + eps,
+                  height: radius.dl + eps,
+                  fill: color.fill,
+                });
+                gElem.appendChild(rect);
+              }
+
+              if (!flags[dirs.d]) {
+                const rect = app.svg.createRect(blockSize, {
+                  x: x - eps,
+                  y: y + 1 - blockBorderWidth,
+                  width: radius.dl + eps2,
+                  height: blockBorderWidth,
+                  fill: color.stroke,
+                });
+                gElem.appendChild(rect);
+              } else if (!flags[dirs.l]) {
+                const rect = app.svg.createRect(blockSize, {
+                  x,
+                  y: y + 1 - radius.dl - eps,
+                  width: blockBorderWidth,
+                  height: radius.dl + eps2,
+                  fill: color.stroke,
+                });
+                gElem.appendChild(rect);
+              } else if (!flags[dirs.dl]) {
+                const rect1 = app.svg.createRect(blockSize, {
+                  x: x - eps,
+                  y: y + 1 - blockBorderWidth,
+                  width: blockBorderWidth + eps,
+                  height: blockBorderWidth,
+                  fill: color.stroke,
+                });
+                const rect2 = app.svg.createRect(blockSize, {
+                  x,
+                  y: y + 1 - blockBorderWidth,
+                  width: blockBorderWidth,
+                  height: blockBorderWidth + eps,
+                  fill: color.stroke,
+                });
+                gElem.appendChild(rect1);
+                gElem.appendChild(rect2);
+              }
+            }
+
+            // 上側
+            {
+              const rect = app.svg.createRect(blockSize, {
+                x: x + radius.ul,
+                y,
+                width: 1 - radius.ul - radius.ur,
+                height: 0.5 + eps,
                 fill: color.fill,
               });
               gElem.appendChild(rect);
             }
-
             if (!flags[dirs.u]) {
-              const rect = app.svg.createRect(blockSize, {
-                x: x - eps,
+              const line = app.svg.createRect(blockSize, {
+                x: x + radius.ul - eps,
                 y,
-                width: radius.ul + eps2,
+                width: 1 - radius.ul - radius.ur + eps2,
                 height: blockBorderWidth,
                 fill: color.stroke,
               });
-              gElem.appendChild(rect);
-            } else if (!flags[dirs.l]) {
-              const rect = app.svg.createRect(blockSize, {
-                x,
-                y: y - eps,
-                width: blockBorderWidth,
-                height: radius.ul + eps2,
-                fill: color.stroke,
-              });
-              gElem.appendChild(rect);
-            } else if (!flags[dirs.ul]) {
-              const rect1 = app.svg.createRect(blockSize, {
-                x: x - eps,
-                y,
-                width: blockBorderWidth + eps,
-                height: blockBorderWidth,
-                fill: color.stroke,
-              });
-              const rect2 = app.svg.createRect(blockSize, {
-                x,
-                y: y - eps,
-                width: blockBorderWidth,
-                height: blockBorderWidth + eps,
-                fill: color.stroke,
-              });
-              gElem.appendChild(rect1);
-              gElem.appendChild(rect2);
+              gElem.appendChild(line);
             }
-          }
 
-          // 右上
-          if (!flags[dirs.u] && !flags[dirs.r]) {
-            const createD = (r1, r0 = r1) => {
-              const r = r1 * blockSize;
-              const sx = (x + 1) * blockSize - r - epsB;
-              const sy = y * blockSize + r + epsB;
-              const ar = r0 * blockSize;
-              const vdy = -(ar + epsB);
-              const dx = ar;
-              const dy = ar;
-              const d = `M ${sx},${sy} v ${vdy} h ${epsB} a ${ar},${ar} 0 0 1 ${dx},${dy} v ${epsB} z`;
-              return d;
-            };
-            const pathStroke = app.svg.createPath({
-              d: createD(radius.ur),
-              fill: color.stroke,
-            });
-            gElem.appendChild(pathStroke);
-            const pathFill = app.svg.createPath({
-              d: createD(radius.ur, radius.ur - blockBorderWidth),
-              fill: color.fill,
-            });
-            gElem.appendChild(pathFill);
-          } else {
+            // 右側
             {
               const rect = app.svg.createRect(blockSize, {
-                x: x + 1 - radius.ur - eps,
-                y,
-                width: radius.ur + eps,
-                height: radius.ur + eps,
+                x: x + 0.5 - eps,
+                y: y + radius.ur,
+                width: 0.5 + eps,
+                height: 1 - radius.ur - radius.dr,
                 fill: color.fill,
               });
               gElem.appendChild(rect);
             }
-
-            if (!flags[dirs.u]) {
-              const rect = app.svg.createRect(blockSize, {
-                x: x + 1 - radius.ur - eps,
-                y,
-                width: radius.ur + eps2,
-                height: blockBorderWidth,
-                fill: color.stroke,
-              });
-              gElem.appendChild(rect);
-            } else if (!flags[dirs.r]) {
-              const rect = app.svg.createRect(blockSize, {
+            if (!flags[dirs.r]) {
+              const line = app.svg.createRect(blockSize, {
                 x: x + 1 - blockBorderWidth,
-                y: y - eps,
+                y: y + radius.ur - eps,
                 width: blockBorderWidth,
-                height: radius.ur + eps2,
+                height: 1 - radius.ur - radius.dr + eps2,
                 fill: color.stroke,
               });
-              gElem.appendChild(rect);
-            } else if (!flags[dirs.ur]) {
-              const rect1 = app.svg.createRect(blockSize, {
-                x: x + 1 - blockBorderWidth,
-                y,
-                width: blockBorderWidth + eps,
-                height: blockBorderWidth,
-                fill: color.stroke,
-              });
-              const rect2 = app.svg.createRect(blockSize, {
-                x: x + 1 - blockBorderWidth,
-                y: y - eps,
-                width: blockBorderWidth,
-                height: blockBorderWidth + eps,
-                fill: color.stroke,
-              });
-              gElem.appendChild(rect1);
-              gElem.appendChild(rect2);
+              gElem.appendChild(line);
             }
-          }
 
-          // 右下
-          if (!flags[dirs.d] && !flags[dirs.r]) {
-            const createD = (r1, r0 = r1) => {
-              const r = r1 * blockSize;
-              const sx = (x + 1) * blockSize - r - epsB;
-              const sy = (y + 1) * blockSize - r - epsB;
-              const ar = r0 * blockSize;
-              const hdx = ar + epsB;
-              const dx = -ar;
-              const dy = ar;
-              const d = `M ${sx},${sy} h ${hdx} v ${epsB} a ${ar},${ar} 0 0 1 ${dx},${dy} h ${-epsB} z`;
-              return d;
-            };
-            const pathStroke = app.svg.createPath({
-              d: createD(radius.dr),
-              fill: color.stroke,
-            });
-            gElem.appendChild(pathStroke);
-            const pathFill = app.svg.createPath({
-              d: createD(radius.dr, radius.dr - blockBorderWidth),
-              fill: color.fill,
-            });
-            gElem.appendChild(pathFill);
-          } else {
+            // 下側
             {
               const rect = app.svg.createRect(blockSize, {
-                x: x + 1 - radius.dr - eps,
-                y: y + 1 - radius.dr - eps,
-                width: radius.dr + eps,
-                height: radius.dr + eps,
+                x: x + radius.dl,
+                y: y + 0.5 - eps,
+                width: 1 - radius.dl - radius.dr,
+                height: 0.5 + eps,
                 fill: color.fill,
               });
               gElem.appendChild(rect);
             }
-
             if (!flags[dirs.d]) {
-              const rect = app.svg.createRect(blockSize, {
-                x: x + 1 - radius.dr - eps,
+              const line = app.svg.createRect(blockSize, {
+                x: x + radius.dl - eps,
                 y: y + 1 - blockBorderWidth,
-                width: radius.dr + eps2,
+                width: 1 - radius.dl - radius.dr + eps2,
                 height: blockBorderWidth,
                 fill: color.stroke,
               });
-              gElem.appendChild(rect);
-            } else if (!flags[dirs.r]) {
-              const rect = app.svg.createRect(blockSize, {
-                x: x + 1 - blockBorderWidth,
-                y: y + 1 - radius.dr - eps,
-                width: blockBorderWidth,
-                height: radius.dr + eps2,
-                fill: color.stroke,
-              });
-              gElem.appendChild(rect);
-            } else if (!flags[dirs.dr]) {
-              const rect1 = app.svg.createRect(blockSize, {
-                x: x + 1 - blockBorderWidth,
-                y: y + 1 - blockBorderWidth,
-                width: blockBorderWidth + eps,
-                height: blockBorderWidth,
-                fill: color.stroke,
-              });
-              const rect2 = app.svg.createRect(blockSize, {
-                x: x + 1 - blockBorderWidth,
-                y: y + 1 - blockBorderWidth,
-                width: blockBorderWidth,
-                height: blockBorderWidth + eps,
-                fill: color.stroke,
-              });
-              gElem.appendChild(rect1);
-              gElem.appendChild(rect2);
+              gElem.appendChild(line);
             }
-          }
 
-          // 左下
-          if (!flags[dirs.d] && !flags[dirs.l]) {
-            const createD = (r1, r0 = r1) => {
-              const r = r1 * blockSize;
-              const sx = x * blockSize + r + epsB;
-              const sy = (y + 1) * blockSize - r - epsB;
-              const ar = r0 * blockSize;
-              const vdy = ar + epsB;
-              const dx = -ar;
-              const dy = -ar;
-              const d = `M ${sx},${sy} v ${vdy} h ${-epsB} a ${ar},${ar} 0 0 1 ${dx},${dy} v ${-epsB} z`;
-              return d;
-            };
-            const pathStroke = app.svg.createPath({
-              d: createD(radius.dl),
-              fill: color.stroke,
-            });
-            gElem.appendChild(pathStroke);
-            const pathFill = app.svg.createPath({
-              d: createD(radius.dl, radius.dl - blockBorderWidth),
-              fill: color.fill,
-            });
-            gElem.appendChild(pathFill);
-          } else {
+            // 左側
             {
               const rect = app.svg.createRect(blockSize, {
                 x,
-                y: y + 1 - radius.dl - eps,
-                width: radius.dl + eps,
-                height: radius.dl + eps,
+                y: y + radius.ul,
+                width: 0.5 + eps,
+                height: 1 - radius.ul - radius.dl,
                 fill: color.fill,
               });
               gElem.appendChild(rect);
             }
-
-            if (!flags[dirs.d]) {
-              const rect = app.svg.createRect(blockSize, {
-                x: x - eps,
-                y: y + 1 - blockBorderWidth,
-                width: radius.dl + eps2,
-                height: blockBorderWidth,
-                fill: color.stroke,
-              });
-              gElem.appendChild(rect);
-            } else if (!flags[dirs.l]) {
-              const rect = app.svg.createRect(blockSize, {
+            if (!flags[dirs.l]) {
+              const line = app.svg.createRect(blockSize, {
                 x,
-                y: y + 1 - radius.dl - eps,
+                y: y + radius.ul - eps,
                 width: blockBorderWidth,
-                height: radius.dl + eps2,
+                height: 1 - radius.ul - radius.dl + eps2,
                 fill: color.stroke,
               });
-              gElem.appendChild(rect);
-            } else if (!flags[dirs.dl]) {
-              const rect1 = app.svg.createRect(blockSize, {
-                x: x - eps,
-                y: y + 1 - blockBorderWidth,
-                width: blockBorderWidth + eps,
-                height: blockBorderWidth,
-                fill: color.stroke,
-              });
-              const rect2 = app.svg.createRect(blockSize, {
-                x,
-                y: y + 1 - blockBorderWidth,
-                width: blockBorderWidth,
-                height: blockBorderWidth + eps,
-                fill: color.stroke,
-              });
-              gElem.appendChild(rect1);
-              gElem.appendChild(rect2);
-            }
-          }
-
-          // 上側
-          {
-            const rect = app.svg.createRect(blockSize, {
-              x: x + radius.ul,
-              y,
-              width: 1 - radius.ul - radius.ur,
-              height: 0.5 + eps,
-              fill: color.fill,
-            });
-            gElem.appendChild(rect);
-          }
-          if (!flags[dirs.u]) {
-            const line = app.svg.createRect(blockSize, {
-              x: x + radius.ul - eps,
-              y,
-              width: 1 - radius.ul - radius.ur + eps2,
-              height: blockBorderWidth,
-              fill: color.stroke,
-            });
-            gElem.appendChild(line);
-          }
-
-          // 右側
-          {
-            const rect = app.svg.createRect(blockSize, {
-              x: x + 0.5 - eps,
-              y: y + radius.ur,
-              width: 0.5 + eps,
-              height: 1 - radius.ur - radius.dr,
-              fill: color.fill,
-            });
-            gElem.appendChild(rect);
-          }
-          if (!flags[dirs.r]) {
-            const line = app.svg.createRect(blockSize, {
-              x: x + 1 - blockBorderWidth,
-              y: y + radius.ur - eps,
-              width: blockBorderWidth,
-              height: 1 - radius.ur - radius.dr + eps2,
-              fill: color.stroke,
-            });
-            gElem.appendChild(line);
-          }
-
-          // 下側
-          {
-            const rect = app.svg.createRect(blockSize, {
-              x: x + radius.dl,
-              y: y + 0.5 - eps,
-              width: 1 - radius.dl - radius.dr,
-              height: 0.5 + eps,
-              fill: color.fill,
-            });
-            gElem.appendChild(rect);
-          }
-          if (!flags[dirs.d]) {
-            const line = app.svg.createRect(blockSize, {
-              x: x + radius.dl - eps,
-              y: y + 1 - blockBorderWidth,
-              width: 1 - radius.dl - radius.dr + eps2,
-              height: blockBorderWidth,
-              fill: color.stroke,
-            });
-            gElem.appendChild(line);
-          }
-
-          // 左側
-          {
-            const rect = app.svg.createRect(blockSize, {
-              x,
-              y: y + radius.ul,
-              width: 0.5 + eps,
-              height: 1 - radius.ul - radius.dl,
-              fill: color.fill,
-            });
-            gElem.appendChild(rect);
-          }
-          if (!flags[dirs.l]) {
-            const line = app.svg.createRect(blockSize, {
-              x,
-              y: y + radius.ul - eps,
-              width: blockBorderWidth,
-              height: 1 - radius.ul - radius.dl + eps2,
-              fill: color.stroke,
-            });
-            gElem.appendChild(line);
-          }
-
-          // 左側の境界線上
-          if (flags[dirs.l]) {
-            if (flags[dirs.u] && flags[dirs.ul]) {
-              // eps 左 上 fill
-              const rect = app.svg.createRect(blockSize, {
-                x: x - eps,
-                y,
-                width: eps2,
-                height: blockBorderWidth,
-                fill: color.fill,
-              });
-              gElem.appendChild(rect);
+              gElem.appendChild(line);
             }
 
-            {
-              // eps 左 中 fill
-              const rect = app.svg.createRect(blockSize, {
-                x: x - eps,
-                y: y + blockBorderWidth,
-                width: eps2,
-                height: 1 - blockBorderWidth * 2,
-                fill: color.fill,
-              });
-              gElem.appendChild(rect);
+            // 左側の境界線上
+            if (flags[dirs.l]) {
+              if (flags[dirs.u] && flags[dirs.ul]) {
+                // eps 左 上 fill
+                const rect = app.svg.createRect(blockSize, {
+                  x: x - eps,
+                  y,
+                  width: eps2,
+                  height: blockBorderWidth,
+                  fill: color.fill,
+                });
+                gElem.appendChild(rect);
+              }
+
+              {
+                // eps 左 中 fill
+                const rect = app.svg.createRect(blockSize, {
+                  x: x - eps,
+                  y: y + blockBorderWidth,
+                  width: eps2,
+                  height: 1 - blockBorderWidth * 2,
+                  fill: color.fill,
+                });
+                gElem.appendChild(rect);
+              }
+
+              if (flags[dirs.d] && flags[dirs.dl]) {
+                // eps 左 下 fill
+                const rect = app.svg.createRect(blockSize, {
+                  x: x - eps,
+                  y: y + 1 - blockBorderWidth,
+                  width: eps2,
+                  height: blockBorderWidth,
+                  fill: color.fill,
+                });
+                gElem.appendChild(rect);
+              }
             }
 
-            if (flags[dirs.d] && flags[dirs.dl]) {
-              // eps 左 下 fill
-              const rect = app.svg.createRect(blockSize, {
-                x: x - eps,
-                y: y + 1 - blockBorderWidth,
-                width: eps2,
-                height: blockBorderWidth,
-                fill: color.fill,
-              });
-              gElem.appendChild(rect);
-            }
-          }
+            // 上側の境界線上
+            if (flags[dirs.u]) {
+              if (flags[dirs.l] && flags[dirs.ul]) {
+                // eps 上 左 fill
+                const rect = app.svg.createRect(blockSize, {
+                  x,
+                  y: y - eps,
+                  width: blockBorderWidth,
+                  height: eps2,
+                  fill: color.fill,
+                });
+                gElem.appendChild(rect);
+              }
 
-          // 上側の境界線上
-          if (flags[dirs.u]) {
-            if (flags[dirs.l] && flags[dirs.ul]) {
-              // eps 上 左 fill
-              const rect = app.svg.createRect(blockSize, {
-                x,
-                y: y - eps,
-                width: blockBorderWidth,
-                height: eps2,
-                fill: color.fill,
-              });
-              gElem.appendChild(rect);
-            }
+              {
+                // eps 上 中 fill
+                const rect = app.svg.createRect(blockSize, {
+                  x: x + blockBorderWidth,
+                  y: y - eps,
+                  width: 1 - blockBorderWidth * 2,
+                  height: eps2,
+                  fill: color.fill,
+                });
+                gElem.appendChild(rect);
+              }
 
-            {
-              // eps 上 中 fill
-              const rect = app.svg.createRect(blockSize, {
-                x: x + blockBorderWidth,
-                y: y - eps,
-                width: 1 - blockBorderWidth * 2,
-                height: eps2,
-                fill: color.fill,
-              });
-              gElem.appendChild(rect);
-            }
-
-            if (flags[dirs.r] && flags[dirs.ur]) {
-              // eps 上 右 fill
-              const rect = app.svg.createRect(blockSize, {
-                x: x + 1 - blockBorderWidth,
-                y: y - eps,
-                width: blockBorderWidth,
-                height: eps2,
-                fill: color.fill,
-              });
-              gElem.appendChild(rect);
+              if (flags[dirs.r] && flags[dirs.ur]) {
+                // eps 上 右 fill
+                const rect = app.svg.createRect(blockSize, {
+                  x: x + 1 - blockBorderWidth,
+                  y: y - eps,
+                  width: blockBorderWidth,
+                  height: eps2,
+                  fill: color.fill,
+                });
+                gElem.appendChild(rect);
+              }
             }
           }
 
@@ -1261,13 +1311,15 @@
 
             const prevInfo =
               this.#eyePrevInfo[py] === undefined || this.#eyePrevInfo[py][px] === undefined ? { dx: 0, dy: 0 } : this.#eyePrevInfo[py][px];
-            const pdx = prevInfo.dx;
-            const pdy = prevInfo.dy;
+            // 半回転では目も輪郭と一緒に回るため、移動前の視線を逆向きに置きます。
+            const eyeDirection = isRotating && axisType === Level.SYMMETRY_TYPE.POINT1 ? -1 : 1;
+            const pdx = prevInfo.dx * eyeDirection;
+            const pdy = prevInfo.dy * eyeDirection;
 
-            if (this.#eyePrevInfo[sY] === undefined) {
-              this.#eyePrevInfo[sY] = [];
+            if (this.#eyeNextInfo[sY] === undefined) {
+              this.#eyeNextInfo[sY] = [];
             }
-            this.#eyePrevInfo[sY][sX] = { dx, dy };
+            this.#eyeNextInfo[sY][sX] = { dx, dy };
 
             const pushAngle = move.dy > 0 ? 24 : 16;
             const leftPushAngle = move.dy < 0 ? -pushAngle : pushAngle;
@@ -1277,8 +1329,13 @@
               eyeLeft.setAttribute('opacity', 0.2);
               eyeRight.setAttribute('opacity', 0.2);
             }
-            gElem.appendChild(eyeLeft);
-            gElem.appendChild(eyeRight);
+            const eyes =
+              isRotating && axisType === Level.SYMMETRY_TYPE.POINT2
+                ? createUserOrientation(blockSize, x, y, axisType, move.mirrored)
+                : gElem;
+            if (eyes !== gElem) gElem.appendChild(eyes);
+            eyes.appendChild(eyeLeft);
+            eyes.appendChild(eyeRight);
             if (isCompleted && !showCharsFlag && !reducedMotion.matches) {
               BoardRenderer.addPlayerSmile(eyeLeft, blockSize);
             }
@@ -1792,6 +1849,7 @@
         blockSize,
         showCharsFlag,
         eyeFlag,
+        isSoloUser,
         idleAnimationFlag,
         flags,
         move,
@@ -1852,9 +1910,22 @@
             const { cx, cy } = this.#level.getAxisCenter();
             gElems.style.setProperty('--animation-origin', `${(blockSize * cx) / 2}px ${(blockSize * cy) / 2}px`);
 
-            const animationClass = animationMovingClasses[this.#level.getAxisType()];
-            const additionalInfo = this.#level.getAxisType() === Level.SYMMETRY_TYPE.POINT2 && move.mirrored ? '-reversed' : '';
-            elem.classList.add(animationClass + additionalInfo);
+            const axisType = this.#level.getAxisType();
+            const animationClass = animationMovingClasses[axisType];
+            const additionalInfo = axisType === Level.SYMMETRY_TYPE.POINT2 && move.mirrored ? '-reversed' : '';
+            if (isSoloUser) {
+              if (axisType !== Level.SYMMETRY_TYPE.POINT1 && axisType !== Level.SYMMETRY_TYPE.POINT2) {
+                // 鏡映では輪郭と目をまとめて補正し、移動前後の形をつなげます。
+                const orientation = createUserOrientation(blockSize, x, y, axisType, move.mirrored);
+                orientation.appendChild(child);
+                child = orientation;
+              }
+              const movement = app.svg.createG(animationClass + additionalInfo);
+              movement.appendChild(child);
+              child = movement;
+            } else {
+              elem.classList.add(animationClass + additionalInfo);
+            }
           } else {
             elem.classList.add('animation-move');
             if (app.states.isUser(state)) {
@@ -2344,6 +2415,26 @@
     [Level.SYMMETRY_TYPE.POINT1]: 'animation-move-point1',
     [Level.SYMMETRY_TYPE.POINT2]: 'animation-move-point2',
   };
+
+  const userOrientationCorrections = {
+    [Level.SYMMETRY_TYPE.LINE1]: { axis: '0, 1, 0', angle: -180 },
+    [Level.SYMMETRY_TYPE.LINE2]: { axis: '1, 0, 0', angle: -180 },
+    [Level.SYMMETRY_TYPE.LINE3]: { axis: '1, 1, 0', angle: -180 },
+    [Level.SYMMETRY_TYPE.LINE4]: { axis: '1, -1, 0', angle: -180 },
+    [Level.SYMMETRY_TYPE.POINT2]: { axis: '0, 0, 1', angle: 90 },
+  };
+
+  function createUserOrientation(blockSize, x, y, axisType, mirrored) {
+    const orientation = app.svg.createG('animation-move-user-orientation');
+    const { axis, angle } = userOrientationCorrections[axisType];
+    orientation.style.transformOrigin = `${blockSize * (x + 0.5)}px ${blockSize * (y + 0.5)}px`;
+    orientation.style.setProperty('--animation-user-turn-axis', axis);
+    orientation.style.setProperty(
+      '--animation-user-turn-angle',
+      `${mirrored && axisType === Level.SYMMETRY_TYPE.POINT2 ? -angle : angle}deg`
+    );
+    return orientation;
+  }
 
   const animationClasses = {
     [Level.SYMMETRY_TYPE.LINE1]: 'animation-axis-line1',

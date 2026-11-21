@@ -347,6 +347,21 @@
   }
 }
 
+.animation-move-user-orientation {
+  animation: animation-move-user-orientation linear forwards;
+  animation-duration: var(--animation-duration);
+}
+
+@keyframes animation-move-user-orientation {
+  0% {
+    transform: rotate3d(var(--animation-user-turn-axis), var(--animation-user-turn-angle));
+  }
+
+  100% {
+    transform: rotate3d(var(--animation-user-turn-axis), 0deg);
+  }
+}
+
 .animation-shadow {
   animation: animation-shadow linear forwards;
   animation-duration: var(--animation-duration-shadow);
