@@ -2387,9 +2387,7 @@
 
   function getLevelHint() {
     if (editMode || settings.autoMode || completeFlag) return null;
-    const hint = common.level.getHint();
-    if (hint && app.savedata.getHighestScore(common.level, common.levelNum) !== null) return null;
-    return hint;
+    return common.level.getHint();
   }
 
   function countHintWallPress(dir) {

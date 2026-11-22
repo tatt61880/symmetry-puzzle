@@ -366,6 +366,11 @@
       }
     }
 
+    /* 同じ位置を使う形状ボタンより、利用可能なヒントを優先します。 */
+    &:has(#level-hint-toggle:not(.hide)) #button-shapes-g {
+      display: none;
+    }
+
     #level-hint-toggle {
       position: absolute;
       top: 70px;
