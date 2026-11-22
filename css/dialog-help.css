@@ -504,7 +504,8 @@
     }
   }
 
-  #credits-byline {
+  #credits-caption,
+  .credits-logos {
     text-shadow: var(--pseudo-bold-shadow);
   }
 
