@@ -824,24 +824,38 @@
             const turn = axisType === Level.SYMMETRY_TYPE.POINT1 ? 2 : move.mirrored ? 3 : 1;
             const startRadii = isRotating ? radii.map((_, i) => radii[(i + 4 - turn) % 4]) : radii;
             // 外側と内側を別々に丸め、変形中も枠線の太さを保ちます。
-            for (const inset of [0, blockBorderWidth]) {
-              const rect = app.svg.createRect(blockSize, {
-                x,
-                y,
-                width: 1,
-                height: 1,
+            const outlines = [0, blockBorderWidth].map((inset) => {
+              const createD = (radii) => {
+                const [ul, ur, dr, dl] = radii.map((r) => (r - inset) * blockSize);
+                const left = (x + inset) * blockSize;
+                const top = (y + inset) * blockSize;
+                const right = (x + 1 - inset) * blockSize;
+                const bottom = (y + 1 - inset) * blockSize;
+                return [
+                  `M ${left + ul},${top} H ${right - ur} A ${ur},${ur} 0 0 1 ${right},${top + ur}`,
+                  `V ${bottom - dr} A ${dr},${dr} 0 0 1 ${right - dr},${bottom}`,
+                  `H ${left + dl} A ${dl},${dl} 0 0 1 ${left},${bottom - dl}`,
+                  `V ${top + ul} A ${ul},${ul} 0 0 1 ${left + ul},${top} Z`,
+                ].join(' ');
+              };
+              const path = app.svg.createPath({
+                d: createD(radii),
                 fill: inset === 0 ? color.stroke : color.fill,
               });
-              const clipPath = (radii) =>
-                `inset(${inset * blockSize}px round ${radii.map((r) => `${(r - inset) * blockSize}px`).join(' ')})`;
-              const endClip = clipPath(radii);
-              rect.style.clipPath = endClip;
-              if (startRadii.some((r, i) => r !== radii[i])) {
-                rect.animate([{ clipPath: clipPath(startRadii) }, { clipPath: endClip }], {
-                  duration: app.common.MOVE_INTERVAL_MSEC,
-                });
-              }
-              gElem.appendChild(rect);
+              gElem.appendChild(path);
+              return { path, createD };
+            });
+            if (startRadii.some((r, i) => r !== radii[i])) {
+              let startTime;
+              requestAnimationFrame(function updateOutline(now) {
+                // 盤面を描き直した後は、取り外された輪郭の更新を続けません。
+                if (!gElem.isConnected) return;
+                startTime ??= now;
+                const progress = Math.min(1, (now - startTime) / app.common.MOVE_INTERVAL_MSEC);
+                const currentRadii = radii.map((r, i) => startRadii[i] + (r - startRadii[i]) * progress);
+                for (const { path, createD } of outlines) path.setAttribute('d', createD(currentRadii));
+                if (progress < 1) requestAnimationFrame(updateOutline);
+              });
             }
           } else {
             // 左上
