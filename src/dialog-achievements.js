@@ -138,7 +138,12 @@
 
     elems.achievements.characters.replaceChildren(...characters);
     const breakdown = crowns === total ? '' : ` (${modeCounts.join(', ')})`;
-    elems.achievements.crownCount.textContent = `👑${crowns}/${total}${breakdown}`;
+    const crownIcon = app.svg.createSvg();
+    crownIcon.setAttribute('viewBox', '0 0 100 100');
+    crownIcon.setAttribute('role', 'img');
+    crownIcon.setAttribute('aria-label', lang === 'ja' ? '金の王冠' : 'Gold crowns');
+    crownIcon.appendChild(app.common.createCrown(100, 0, 0, 1, 1));
+    elems.achievements.crownCount.replaceChildren(crownIcon, `${crowns}/${total}${breakdown}`);
     elems.achievements.completeTitle.classList.toggle('hide', !allStarsLit);
     elems.achievements.complete.classList.toggle('hide', !allStarsLit);
   }

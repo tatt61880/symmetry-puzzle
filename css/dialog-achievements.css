@@ -168,6 +168,13 @@
       }
     }
 
+    #achievements-crown-count > svg {
+      width: 1.2em;
+      height: 1.2em;
+      margin-right: 0.15em;
+      vertical-align: -0.2em;
+    }
+
     #achievements-complete-title {
       font-size: 1.3rem;
       text-shadow: var(--pseudo-bold-shadow);
