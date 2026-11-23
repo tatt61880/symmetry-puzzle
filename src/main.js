@@ -2316,7 +2316,7 @@
         let textJa = settings.sharedFlag ? textJaShared : textJaCreated;
 
         const textEnCreated = '"Share a level from Symmetry Puzzle!"\n#SymmetryPuzzle';
-        const textEnShared = `"Cleared a shared level in ${completedStep} ${completedStep === 1 ? 'move' : 'moves'}!"\n#SymmetryPuzzle`;
+        const textEnShared = `"Cleared a shared level in ${completedStep} ${completedStep === 1 ? 'step' : 'steps'}!"\n#SymmetryPuzzle`;
         let textEn = settings.sharedFlag ? textEnShared : textEnCreated;
 
         const urlBase = 'https://tatt61880.github.io/symmetry-puzzle/?';
@@ -2330,7 +2330,7 @@
           }[mode];
           textJa = `「${modeName.ja}」のレベル${common.levelId}を${completedStep}手でクリア！\n#対称パズル`;
           textEn = `Cleared level ${common.levelId} of ${modeName.en} in ${completedStep} ${
-            completedStep === 1 ? 'move' : 'moves'
+            completedStep === 1 ? 'step' : 'steps'
           }!\n#SymmetryPuzzle`;
           url = `${urlBase}mode=${mode}&id=${common.levelId}`;
           if (settings.mirrorFlag) url += '&mirror';
