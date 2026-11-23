@@ -13,7 +13,6 @@
     show,
     close,
     getCrownedModes,
-    unlockedAllCrowns,
   };
 
   const elems = app.elems;
@@ -55,19 +54,6 @@
   function getCrownedModes() {
     const crowned = getModes().filter((mode) => getModeProgress(mode).crowned);
     return new Set(crowned.map((mode) => mode.checkMode));
-  }
-
-  function unlockedAllCrowns(level, previousScore, steps) {
-    if (previousScore !== null && previousScore <= steps) return false;
-    // 保存キーと同じ初期盤面を照合し、連番・追加面・別盤面の記録は数えません。
-    const modes = getModes();
-    const mode = modes.find(({ checkMode }) => checkMode === level.getCheckMode());
-    const levels = new app.Levels(mode);
-    const id = levels.levelObjToId({ ...level.getLevelObj(), r: undefined });
-    if (!Number.isInteger(id) || id < 1) return false;
-    const target = levels.getLevelObj(id).step;
-    if (steps > target || (previousScore !== null && previousScore <= target)) return false;
-    return modes.every((entry) => getModeProgress(entry).crowned);
   }
 
   function updateTable() {

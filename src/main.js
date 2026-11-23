@@ -2475,7 +2475,6 @@
       edit,
       score: {
         recordingEnabled: urlReplay === null,
-        allCrownsUnlocked: completion?.allCrownsUnlocked,
         currentStep,
         bestStep: common.level.getBestStep(),
         highestScore: !editMode && common.levelId !== null ? app.savedata.getHighestScore(common.level, common.levelNum) : undefined,
@@ -2563,8 +2562,7 @@
         }
       }
     }
-    const allCrownsUnlocked = levelNum === null && app.dialog.achievements.unlockedAllCrowns(level, highestScorePrev, replayStr.length);
-    return { highestScorePrev, allCrownsUnlocked };
+    return { highestScorePrev };
   }
 
   function secretSequenceAdd(c) {
