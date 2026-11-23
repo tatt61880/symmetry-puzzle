@@ -70,10 +70,10 @@
     const board = elems.board;
     const blockSize = 32;
     const crownedModes = app.dialog.achievements.getCrownedModes();
-    const level = new app.Level({ levelObj: { w: 6, h: 5, s: '-s1102-001' } });
+    const level = new app.Level({ levelObj: { w: 6, h: 5, s: '-01102-001-0s' } });
     const { LINE, POINT, SPECIAL } = app.Level.CHECK_MODE;
     const scenes = [
-      { mode: LINE, moves: '1' },
+      { mode: LINE, moves: '3001' },
       { mode: POINT, moves: '01112' },
       { mode: SPECIAL, moves: '21233230' },
     ];
