@@ -90,13 +90,17 @@
       starRow.className = 'achievement-star-row';
       const stars = document.createElement('span');
       const starNum = Math.floor(num / levelsPerStar);
+      const remainder = num % levelsPerStar;
       if (starNum < starsPerMode) allStarsLit = false;
       for (let i = 0; i < starsPerMode; i++) {
         const size = 30;
         const svg = app.svg.createSvg();
         svg.setAttribute('width', size);
         svg.setAttribute('height', size);
-        const colors = i < starNum ? app.colors.achievementStar : app.colors.achievementStarEmpty;
+        let colors = i < starNum ? app.colors.achievementStar : app.colors.achievementStarEmpty;
+        if (i === starNum && remainder > 0) {
+          colors = createPartialStarColors(svg, elem.id, remainder / levelsPerStar);
+        }
         svg.appendChild(app.svg.createStar(size, { x: 0, y: 0, ...colors }));
         stars.appendChild(svg);
       }
@@ -152,6 +156,24 @@
     elems.achievements.crownCount.replaceChildren(crownIcon, `${crowns}/${total}${breakdown}`);
     elems.achievements.completeTitle.classList.toggle('hide', !allStarsLit);
     elems.achievements.complete.classList.toggle('hide', !allStarsLit);
+  }
+
+  function createPartialStarColors(svg, rowId, fraction) {
+    const colors = {};
+    for (const paint of ['fill', 'stroke']) {
+      const gradient = document.createElementNS(svg.namespaceURI, 'linearGradient');
+      gradient.id = `${rowId}-star-${paint}`;
+      // 2色を同じ位置で切り替え、塗りと枠で境界を揃える。
+      for (const palette of [app.colors.achievementStar, app.colors.achievementStarEmpty]) {
+        const stop = document.createElementNS(svg.namespaceURI, 'stop');
+        stop.setAttribute('offset', fraction);
+        stop.setAttribute('stop-color', palette[paint]);
+        gradient.appendChild(stop);
+      }
+      svg.appendChild(gradient);
+      colors[paint] = `url(#${gradient.id})`;
+    }
+    return colors;
   }
 
   function createCharacterButton(checkMode, crowned, lang) {
