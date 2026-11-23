@@ -95,9 +95,46 @@
     .achievements-info {
       width: 330px;
       height: 68px;
+      padding: 5px 10px;
 
       & > div {
         margin: 4px 0;
+      }
+    }
+
+    .achievement-star-row {
+      position: relative;
+      display: inline-grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      container-type: inline-size;
+      width: calc(100% + 20px);
+      margin-inline: -10px;
+
+      & > :first-child {
+        display: flex;
+        grid-column: 2;
+      }
+    }
+
+    .achievement-solved-count {
+      position: absolute;
+      display: flex;
+      grid-column: 3 / 4;
+      align-items: center;
+      justify-self: start;
+      margin-inline-start: 4%;
+      font-size: clamp(0.625rem, 5cqi, 1rem);
+      line-height: 1;
+
+      /* 星の輪郭の中心に、括弧と王冠の見た目の中心を合わせる。 */
+      transform: translateY(-0.25px);
+
+      & svg {
+        flex: none;
+        width: 1.2em;
+        height: 1.2em;
+        margin-right: 0.15em;
       }
     }
   }
@@ -187,6 +224,24 @@
     font-weight: normal;
     color: #7777cc;
     text-shadow: var(--pseudo-bold-shadow);
+  }
+
+  /* 狭い画面では表を広げ、称号と下部の説明は元の幅で折り返す。 */
+  @media (width <= 370px) {
+    max-width: 100%;
+
+    #achievements-summary {
+      margin-inline: 24px;
+    }
+
+    #achievements-table-div .achievements-info > div {
+      margin-inline: 19px;
+    }
+
+    #achievements-table-div .achievement-solved-count {
+      margin-inline-start: 0;
+      font-size: 0.625rem;
+    }
   }
 
   &::backdrop {

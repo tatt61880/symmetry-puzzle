@@ -85,16 +85,10 @@
 
       elem.innerText = '';
 
-      // 背景
-      {
-        const percent = (num % 10) * 10;
-        elem.setAttribute(
-          'style',
-          `padding: 5px 10px; background: linear-gradient(to right, rgb(250, 250, 150) ${percent}%, transparent ${percent}%);`
-        );
-      }
-
       // ★
+      const starRow = document.createElement('span');
+      starRow.className = 'achievement-star-row';
+      const stars = document.createElement('span');
       const starNum = Math.floor(num / levelsPerStar);
       if (starNum < starsPerMode) allStarsLit = false;
       for (let i = 0; i < starsPerMode; i++) {
@@ -104,9 +98,21 @@
         svg.setAttribute('height', size);
         const colors = i < starNum ? app.colors.achievementStar : app.colors.achievementStarEmpty;
         svg.appendChild(app.svg.createStar(size, { x: 0, y: 0, ...colors }));
-        elem.appendChild(svg);
+        stars.appendChild(svg);
       }
-      elem.appendChild(document.createElement('br'));
+      const count = document.createElement('span');
+      count.className = 'achievement-solved-count';
+      count.title = lang === 'ja' ? 'クリア数（最短クリアを含む）' : 'Levels cleared (including shortest clears)';
+      const silverCrown = app.svg.createSvg();
+      silverCrown.setAttribute('viewBox', '0 0 100 100');
+      silverCrown.setAttribute('role', 'img');
+      silverCrown.setAttribute('aria-label', count.title);
+      silverCrown.appendChild(app.common.createCrown(100, 0, 0, 1, 0));
+      const fraction = document.createElement('span');
+      fraction.append(`${num}/`, document.createElement('wbr'), String(progress.total));
+      count.append('(', silverCrown, fraction, ')');
+      starRow.append(stars, count);
+      elem.append(starRow, document.createElement('br'));
 
       // テキスト
       const div = document.createElement('div');
