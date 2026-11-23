@@ -122,26 +122,21 @@
     return g;
   };
 
-  svg.createStar = (blockSize, { x, y, fill, stroke, strokeWidth = 0.05 }) => {
+  svg.createStar = (blockSize, { x, y, fill, stroke, strokeWidth = 0.05, fraction = 1 }) => {
     const g = svg.createG();
-
-    const polygon = svg.createPolygon(blockSize, {
-      points: [
-        [x + 0.5, y + 0.05],
-        [x + 0.61, y + 0.38],
-        [x + 0.95, y + 0.38],
-        [x + 0.67, y + 0.58],
-        [x + 0.78, y + 0.91],
-        [x + 0.5, y + 0.72],
-        [x + 0.22, y + 0.91],
-        [x + 0.33, y + 0.58],
-        [x + 0.05, y + 0.38],
-        [x + 0.39, y + 0.38],
-      ],
-      fill,
-      stroke,
-      strokeWidth,
+    const cx = x + 0.5;
+    const cy = y + 0.525;
+    // 真上の先端から反時計回りに外側・内側の頂点を交互に置く。36°の各区画は合同。
+    const points = Array.from({ length: 10 }, (_, i) => {
+      const angle = (i * Math.PI) / 5;
+      const radius = i % 2 === 0 ? 0.475 : 0.183;
+      return [cx - radius * Math.sin(angle), cy - radius * Math.cos(angle)];
     });
+    const polygon = svg.createPolygon(blockSize, { points, fill, stroke, strokeWidth });
+    if (fraction < 1) {
+      const center = `${cx * blockSize}px ${cy * blockSize}px`;
+      g.style.mask = `conic-gradient(at ${center}, transparent ${1 - fraction}turn, black 0) view-box`;
+    }
     polygon.setAttribute('stroke-linejoin', 'round');
 
     g.appendChild(polygon);
