@@ -2313,6 +2313,10 @@
       const meetsBestStep = bestStep !== undefined && currentStep <= bestStep;
       text.dataset.ja = meetsBestStep ? 'お見事！' : 'クリア！';
       text.dataset.en = meetsBestStep ? 'Well done!' : 'Cleared!';
+      if (score.allCrownsUnlocked) {
+        text.dataset.ja = '全👑 達成！';
+        text.dataset.en = 'All 👑 earned!';
+      }
       common.applyLang(text, lang);
       text.setAttribute('font-size', fontSize2);
 

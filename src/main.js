@@ -2375,8 +2375,7 @@
     const center = common.level.getCenter(app.states.isTarget);
     document.documentElement.style.setProperty('--animation-origin', `${blockSize * center.x}px ${blockSize * center.y}px`);
     app.sound.playClear();
-    const highestScorePrev = recordCompletion();
-    drawMainSvg({ highestScorePrev });
+    drawMainSvg(recordCompletion());
     scheduleAutoNextLevel();
   }
 
@@ -2477,6 +2476,7 @@
       edit,
       score: {
         recordingEnabled: urlReplay === null,
+        allCrownsUnlocked: completion?.allCrownsUnlocked,
         currentStep,
         bestStep: common.level.getBestStep(),
         highestScore: !editMode && common.levelId !== null ? app.savedata.getHighestScore(common.level, common.levelNum) : undefined,
@@ -2510,9 +2510,9 @@
   }
 
   function recordCompletion() {
-    if (urlReplay !== null) return app.savedata.getHighestScore(common.level, common.levelNum);
+    if (urlReplay !== null) return { highestScorePrev: app.savedata.getHighestScore(common.level, common.levelNum) };
     const replayStr = undoInfoForNormal.getReplayStr();
-    if (replayStr === null) return null;
+    if (replayStr === null) return { highestScorePrev: null };
 
     const { level, levelNum } = common;
     const bestStep = level.getBestStep();
@@ -2564,7 +2564,8 @@
         }
       }
     }
-    return highestScorePrev;
+    const allCrownsUnlocked = levelNum === null && app.dialog.achievements.unlockedAllCrowns(level, highestScorePrev, replayStr.length);
+    return { highestScorePrev, allCrownsUnlocked };
   }
 
   function secretSequenceAdd(c) {

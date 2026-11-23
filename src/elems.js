@@ -133,6 +133,7 @@
       tableDiv: 'achievements-table-div',
       complete: 'achievements-complete',
       completeCharacter: 'achievements-complete-character',
+      crownCount: 'achievements-crown-count',
       line: {
         solved: 'achievements-line-solved',
       },

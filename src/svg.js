@@ -100,7 +100,7 @@
     return polygon;
   };
 
-  svg.createCrown = (blockSize, { x, y, fill, stroke, strokeWidth }) => {
+  svg.createCrown = (blockSize, { x, y, fill, stroke, strokeWidth, withBand = true }) => {
     const g = svg.createG();
 
     // 100 × 100 の座標で、先端の丸と本体をひと続きの輪郭として描きます。
@@ -109,7 +109,7 @@
         'M 20 70 L 11.70 36.79 A 7 7 0 1 1 15.28 34.59',
         'L 33 50 L 46.94 21.30 A 7 7 0 1 1 53.06 21.30',
         'L 67 50 L 84.72 34.59 A 7 7 0 1 1 88.30 36.79 L 80 70 Z',
-        'M 20 75 H 80 V 90 H 20 Z',
+        withBand ? 'M 20 75 H 80 V 90 H 20 Z' : '',
       ].join(' '),
       fill,
     });

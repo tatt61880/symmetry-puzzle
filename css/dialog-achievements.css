@@ -58,7 +58,7 @@
 
     & th,
     & td {
-      height: 40px;
+      height: 34px;
       padding: 5px 15px;
       font-size: 1.3rem;
       font-weight: normal;
@@ -94,7 +94,11 @@
 
     .achievements-info {
       width: 330px;
-      height: 80px;
+      height: 68px;
+
+      & > div {
+        margin: 4px 0;
+      }
     }
   }
 
@@ -129,9 +133,6 @@
     #achievements-complete-character {
       flex-shrink: 0;
       padding: 0;
-
-      /* SVGの上余白をレイアウトから除き、キャラ本体の中心を文字に揃えます。 */
-      margin: -10px 0 0;
       cursor: pointer;
       background: none;
       border: none;
