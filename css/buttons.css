@@ -16,6 +16,16 @@
   outline-offset: var(--button-focus-offset);
 }
 
+.icon-animation-button {
+  display: inline-grid;
+  padding: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+
 /* SNS シェアボタン */
 .share-button {
   display: flex;

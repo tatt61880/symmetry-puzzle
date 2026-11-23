@@ -1556,6 +1556,7 @@
       updateLevelHint();
     });
     initSoundButtons();
+    initIconAnimationButtons();
     app.dialog.help.init();
     app.dialog.credits.init();
     initElemsForTitle();
@@ -2015,6 +2016,18 @@
     }
   }
 
+  function initIconAnimationButtons() {
+    for (const button of document.querySelectorAll('.icon-animation-button')) {
+      const icon = button.firstElementChild;
+      button.addEventListener('click', () => {
+        icon.style.animationName = 'none';
+        // 停止をスタイルに反映してから、表示時と同じCSSアニメーションを先頭から再生します。
+        icon.getAnimations();
+        icon.style.removeProperty('animation-name');
+      });
+    }
+  }
+
   // 記録画面用
   function initElemsForRecords() {
     const size = Number(elems.records.buttonSvg.dataset.crownSize);
@@ -2038,7 +2051,7 @@
     elems.achievements.completeCharacter.addEventListener('click', app.dialog.achievements.smileCompleteCharacter);
     // クリックやタップでも、フォーカスは称号ダイアログ本体に置きます。
     elems.achievements.dialog.addEventListener('focusin', (event) => {
-      if (event.target === elems.achievements.close || event.target === elems.achievements.completeCharacter) {
+      if (event.target.matches('button[tabindex="-1"]')) {
         elems.achievements.dialog.focus({ preventScroll: true });
       }
     });

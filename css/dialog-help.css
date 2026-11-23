@@ -161,15 +161,9 @@
       }
     }
 
-    .help-icon-animation {
-      display: grid;
+    .icon-animation-button {
       justify-items: end;
       min-width: 45px;
-      padding: 0;
-      cursor: pointer;
-      background: transparent;
-      border: 0;
-      outline: none;
     }
 
     .help-mode-plus {
