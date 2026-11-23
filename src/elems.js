@@ -131,6 +131,8 @@
       dialogDiv: 'dialog-achievements-div',
       close: 'dialog-achievements-close',
       tableDiv: 'achievements-table-div',
+      complete: 'achievements-complete',
+      completeCharacter: 'achievements-complete-character',
       line: {
         solved: 'achievements-line-solved',
       },

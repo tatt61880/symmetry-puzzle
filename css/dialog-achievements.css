@@ -6,9 +6,10 @@
   left: 0;
   box-sizing: border-box;
   width: 460px;
-  max-height: 618px;
+  max-height: min(618px, calc(100dvh - 20px));
   padding: 0;
   margin: auto;
+  overflow-y: auto;
   background-color: #f8f8ff;
   border: none;
   outline: none;
@@ -22,8 +23,16 @@
     display: flex;
     align-items: center;
 
-    & * {
+    & > * {
       margin: 5px;
+    }
+
+    #dialog-achievements-close {
+      display: grid;
+      padding: 0;
+      background: none;
+      border: 0;
+      border-radius: 50%;
     }
 
     .spacer {
@@ -94,6 +103,68 @@
     font-weight: normal;
     color: #333388;
     text-shadow: var(--pseudo-bold-shadow);
+  }
+
+  #achievements-complete {
+    padding: 10px;
+    margin: 15px 5px 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333388;
+    text-align: center;
+    background-color: #fff8dc;
+    border-radius: 10px;
+
+    & p {
+      margin: 5px 0;
+    }
+
+    .achievements-complete-heading {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #achievements-complete-character {
+      flex-shrink: 0;
+      padding: 0;
+
+      /* SVGの上余白をレイアウトから除き、キャラ本体の中心を文字に揃えます。 */
+      margin: -10px 0 0;
+      cursor: pointer;
+      background: none;
+      border: none;
+      border-radius: 8px;
+
+      & svg {
+        display: block;
+      }
+
+      .player-jump-face > .player-eye,
+      .player-smiling-eyes {
+        animation: none;
+      }
+
+      &.smiling .player-eye {
+        opacity: 0;
+      }
+
+      &.smiling .player-smiling-eyes {
+        opacity: 1;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .animation-jump-small {
+          animation: none;
+        }
+      }
+    }
+
+    .achievements-complete-title {
+      font-size: 1.3rem;
+      text-shadow: var(--pseudo-bold-shadow);
+    }
   }
 
   #achievements-dialog-version {

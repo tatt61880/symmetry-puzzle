@@ -2035,6 +2035,13 @@
     const star = app.svg.createStar(size, { x: 0, y: 0, ...app.colors.achievementStar });
     elems.achievements.buttonSvg.appendChild(star);
     elems.achievements.button.addEventListener('click', app.dialog.achievements.show);
+    elems.achievements.completeCharacter.addEventListener('click', app.dialog.achievements.smileCompleteCharacter);
+    // クリックやタップでも、フォーカスは称号ダイアログ本体に置きます。
+    elems.achievements.dialog.addEventListener('focusin', (event) => {
+      if (event.target === elems.achievements.close || event.target === elems.achievements.completeCharacter) {
+        elems.achievements.dialog.focus({ preventScroll: true });
+      }
+    });
     elems.achievements.dialog.addEventListener('click', app.dialog.achievements.close);
     elems.achievements.close.addEventListener('click', app.dialog.achievements.close);
     elems.achievements.dialogDiv.addEventListener('click', (e) => e.stopPropagation());

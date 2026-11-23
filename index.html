@@ -875,16 +875,18 @@
     </dialog>
 
     <!-- 実績ダイアログ -->
-    <dialog id="dialog-achievements">
+    <dialog id="dialog-achievements" aria-labelledby="achievements-table-title" autofocus>
       <div id="dialog-achievements-div">
         <div id="achievements-top">
-          <svg width="48" height="48" class="button-transform-parent">
-            <g id="dialog-achievements-close" class="button active-hover" transform="translate(24,24)">
+          <button id="dialog-achievements-close" class="button active-hover button-press" type="button" tabindex="-1"
+            aria-labelledby="achievements-close-label">
+            <svg width="48" height="48" viewBox="-24 -24 48 48" aria-hidden="true">
               <circle cx="0" cy="0" r="22" fill="#f4f4ff" stroke="#aaaaff" stroke-width="4" />
               <path d="M -10,-10 10,10" fill="none" stroke="#aaaaff" stroke-width="4.5" stroke-linecap="round" />
               <path d="M -10,10 10,-10" fill="none" stroke="#aaaaff" stroke-width="4.5" stroke-linecap="round" />
-            </g>
-          </svg>
+            </svg>
+            <span id="achievements-close-label" class="translatable-toggle" data-ja="閉じる" data-en="Close" hidden></span>
+          </button>
           <div class="spacer"></div>
           <!-- <div class="caption translatable-toggle" data-en="Achievements" data-ja="実績"></div> -->
           <div class="spacer"></div>
@@ -902,7 +904,7 @@
               <tr>
                 <th class="border-right-bold border-bottom-bold">
                 </th>
-                <th class="border-bottom-bold translatable-toggle" data-en="Title" data-ja="称号">
+                <th id="achievements-table-title" class="border-bottom-bold translatable-toggle" data-en="Title" data-ja="称号">
                 </th>
               </tr>
             </thead>
@@ -929,6 +931,16 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div id="achievements-complete" class="hide">
+          <div class="achievements-complete-heading">
+            <button id="achievements-complete-character" type="button" tabindex="-1"></button>
+            <p class="achievements-complete-title translatable-toggle" data-en="All levels cleared!" data-ja="全レベルクリア！"></p>
+          </div>
+          <p>
+            <span class="translatable-toggle" data-en="Congratulations!" data-ja="おめでとうございます！"></span><br>
+            <span class="translatable-toggle" data-en="Thank you for playing!" data-ja="遊んでいただき、ありがとうございます。"></span>
+          </p>
         </div>
       </div>
     </dialog>
