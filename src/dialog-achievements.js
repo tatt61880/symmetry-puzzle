@@ -12,6 +12,7 @@
   window.app.dialog.achievements = {
     show,
     close,
+    getCrownedModes,
     unlockedAllCrowns,
   };
 
@@ -38,7 +39,8 @@
       solved++;
       if (levelsList[levelId] && score <= levelObj.step) crowns++;
     }
-    return { solved, crowns, total: levelsList.length - 1 };
+    const total = levelsList.length - 1;
+    return { solved, crowns, total, crowned: crowns === total };
   }
 
   function getModes() {
@@ -48,6 +50,11 @@
       { checkMode: POINT, levelsList: app.levelsPoint, levelsListEx: app.levelsPointEx, ja: '点', en: 'Point:' },
       { checkMode: SPECIAL, levelsList: app.levelsSpecial, levelsListEx: app.levelsSpecialEx, ja: '線対称＆点', en: 'Line & Point:' },
     ];
+  }
+
+  function getCrownedModes() {
+    const crowned = getModes().filter((mode) => getModeProgress(mode).crowned);
+    return new Set(crowned.map((mode) => mode.checkMode));
   }
 
   function unlockedAllCrowns(level, previousScore, steps) {
@@ -60,10 +67,7 @@
     if (!Number.isInteger(id) || id < 1) return false;
     const target = levels.getLevelObj(id).step;
     if (steps > target || (previousScore !== null && previousScore <= target)) return false;
-    return modes.every((entry) => {
-      const { crowns, total } = getModeProgress(entry);
-      return crowns === total;
-    });
+    return modes.every((entry) => getModeProgress(entry).crowned);
   }
 
   function updateTable() {
@@ -81,7 +85,7 @@
       crowns += progress.crowns;
       total += progress.total;
       modeCounts.push(`${progress.crowns}/${progress.total}`);
-      characters.push(createCharacterButton(checkMode, progress.crowns === progress.total, lang));
+      characters.push(createCharacterButton(checkMode, progress.crowned, lang));
 
       elem.innerText = '';
 
@@ -167,17 +171,7 @@
     let marginTop = blockSize / 4; // ジャンプ用の余白
     if (crowned) {
       app.BoardRenderer.addPlayerSmile(g.querySelector('.player-eye'), blockSize);
-      const crownSize = 32;
-      const crownLeft = (blockSize - crownSize) / 2;
-      const crownTop = -crownSize / 2 - 1;
-      const crown = app.svg.createCrown(crownSize, {
-        x: crownLeft / crownSize,
-        y: crownTop / crownSize,
-        fill: app.colors.stepDraw,
-        withBand: false,
-      });
-      jumpingCharacter.appendChild(crown);
-      marginTop += Math.ceil(-crownTop);
+      marginTop += Math.ceil(app.BoardRenderer.addPlayerCrown(jumpingCharacter, blockSize));
     }
     const height = blockSize + marginTop;
     g.setAttribute('transform', `translate(0, ${marginTop})`);

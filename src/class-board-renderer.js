@@ -142,6 +142,19 @@
       if (moveTrail) blocks.insertBefore(createMoveTrail(blockSize, moveTrail, 0, 0), blocks.querySelector('.group-shadow'));
     }
 
+    static addPlayerCrown(group, blockSize, x = 0, y = 0) {
+      const crownSize = blockSize * 0.8;
+      const rise = blockSize * 0.425;
+      const crown = app.svg.createCrown(crownSize, {
+        x: (x * blockSize + (blockSize - crownSize) / 2) / crownSize,
+        y: (y * blockSize - rise) / crownSize,
+        fill: app.colors.stepDraw,
+        withBand: false,
+      });
+      group.appendChild(crown);
+      return rise;
+    }
+
     static addPlayerSmile(leftEye, blockSize) {
       const smile = app.svg.createPath({ d: 'M -.105 .0425 q .105 -.2 .21 0 m .19 0 q .105 -.2 .21 0', fill: 'none' });
       smile.setAttribute('transform', `translate(${leftEye.getAttribute('cx')},${leftEye.getAttribute('cy')}) scale(${blockSize})`);
@@ -167,6 +180,7 @@
       symmetryAnimationFlag = false,
       showCharsFlag = false,
       smallJumpFlag = false,
+      playerCrowned = false,
       idleAnimationFlag = false,
       holdBumpFace = false,
       sleepMarks = null,
@@ -236,7 +250,7 @@
             if (this.#level.getState(x, y + 1) === state) return false;
             return true;
           })();
-          this.#addOneBlock(
+          const block = this.#addOneBlock(
             x - x0,
             y - y0,
             x,
@@ -254,6 +268,7 @@
             gElemsAnimation2,
             pushingFaces
           );
+          if (playerCrowned && eyeFlag) BoardRenderer.addPlayerCrown(block, blockSize, x - x0, y - y0);
           if (eyeFlag && idleAnimationFlag) {
             const z = app.svg.createText(blockSize, { x: x - x0 + 0.78, y: y - y0 + 0.2, text: 'Z', fill: app.colors.sleepZ.fill });
             z.classList.add('player-sleep-z');
@@ -1993,6 +2008,7 @@
       }
 
       gElems.appendChild(child);
+      return elem;
     }
   }
 

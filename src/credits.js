@@ -69,6 +69,7 @@
   function* choreography() {
     const board = elems.board;
     const blockSize = 32;
+    const crownedModes = app.dialog.achievements.getCrownedModes();
     const level = new app.Level({ levelObj: { w: 6, h: 5, s: '-s1102-001' } });
     const { LINE, POINT, SPECIAL } = app.Level.CHECK_MODE;
     const scenes = [
@@ -98,7 +99,15 @@
 
     function draw() {
       board.replaceChildren(
-        level.createSvgG({ blockSize, x0: 1, y0: 1, width: level.getW(), height: level.getH(), drawBackground: false })
+        level.createSvgG({
+          blockSize,
+          x0: 1,
+          y0: 1,
+          width: level.getW(),
+          height: level.getH(),
+          drawBackground: false,
+          playerCrowned: crownedModes.has(level.getCheckMode()),
+        })
       );
     }
 
