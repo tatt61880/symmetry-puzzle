@@ -2048,7 +2048,6 @@
     const star = app.svg.createStar(size, { x: 0, y: 0, ...app.colors.achievementStar });
     elems.achievements.buttonSvg.appendChild(star);
     elems.achievements.button.addEventListener('click', app.dialog.achievements.show);
-    elems.achievements.completeCharacter.addEventListener('click', app.dialog.achievements.smileCompleteCharacter);
     // クリックやタップでも、フォーカスは称号ダイアログ本体に置きます。
     elems.achievements.dialog.addEventListener('mousedown', (event) => {
       if (event.target.closest('button[tabindex="-1"]')) {

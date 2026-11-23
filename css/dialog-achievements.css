@@ -109,7 +109,7 @@
     text-shadow: var(--pseudo-bold-shadow);
   }
 
-  #achievements-complete {
+  #achievements-summary {
     padding: 10px;
     margin: 15px 5px 0;
     font-size: 1rem;
@@ -130,7 +130,13 @@
       justify-content: center;
     }
 
-    #achievements-complete-character {
+    #achievements-characters {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .achievement-character {
       flex-shrink: 0;
       padding: 0;
       cursor: pointer;
@@ -162,7 +168,7 @@
       }
     }
 
-    .achievements-complete-title {
+    #achievements-complete-title {
       font-size: 1.3rem;
       text-shadow: var(--pseudo-bold-shadow);
     }

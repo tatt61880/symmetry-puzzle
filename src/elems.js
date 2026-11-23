@@ -132,7 +132,8 @@
       close: 'dialog-achievements-close',
       tableDiv: 'achievements-table-div',
       complete: 'achievements-complete',
-      completeCharacter: 'achievements-complete-character',
+      completeTitle: 'achievements-complete-title',
+      characters: 'achievements-characters',
       crownCount: 'achievements-crown-count',
       line: {
         solved: 'achievements-line-solved',

@@ -12,14 +12,12 @@
   window.app.dialog.achievements = {
     show,
     close,
-    smileCompleteCharacter,
     unlockedAllCrowns,
   };
 
   const elems = app.elems;
   const levelsPerStar = 10;
   const starsPerMode = 5;
-  let smileTimeout;
 
   function show() {
     updateTable();
@@ -73,6 +71,8 @@
     let allStarsLit = true;
     let crowns = 0;
     let total = 0;
+    const modeCounts = [];
+    const characters = [];
     getModes().forEach((mode) => {
       const { ja, en, checkMode } = mode;
       const elem = elems.achievements[app.Level.getCheckModeStr(checkMode)].solved;
@@ -80,6 +80,8 @@
       const num = progress.solved;
       crowns += progress.crowns;
       total += progress.total;
+      modeCounts.push(`${progress.crowns}/${progress.total}`);
+      characters.push(createCharacterButton(checkMode, progress.crowns === progress.total, lang));
 
       elem.innerText = '';
 
@@ -134,15 +136,15 @@
       elem.appendChild(div);
     });
 
-    (allStarsLit ? app.common.showElem : app.common.hideElem)(elems.achievements.complete);
-    if (allStarsLit) {
-      elems.achievements.crownCount.textContent = `${crowns} / ${total}`;
-      drawCompleteCharacter(crowns === total);
-    }
+    elems.achievements.characters.replaceChildren(...characters);
+    const breakdown = crowns === total ? '' : ` (${modeCounts.join(', ')})`;
+    elems.achievements.crownCount.textContent = `👑${crowns}/${total}${breakdown}`;
+    elems.achievements.completeTitle.classList.toggle('hide', !allStarsLit);
+    elems.achievements.complete.classList.toggle('hide', !allStarsLit);
   }
 
-  function drawCompleteCharacter(crowned) {
-    const level = new app.Level({ levelObj: { w: 1, h: 1, s: 's' }, checkMode: app.Level.CHECK_MODE.SPECIAL });
+  function createCharacterButton(checkMode, crowned, lang) {
+    const level = new app.Level({ levelObj: { w: 1, h: 1, s: 's' }, checkMode });
     const blockSize = 40;
     const g = level.createSvgG({ blockSize, smallJumpFlag: true, drawBackground: false, x0: 1, y0: 1, width: 1, height: 1 });
     app.BoardRenderer.addPlayerSmile(g.querySelector('.player-eye'), blockSize);
@@ -168,20 +170,22 @@
     svg.setAttribute('viewBox', `0 0 ${blockSize} ${height}`);
     svg.setAttribute('aria-hidden', 'true');
     svg.appendChild(g);
-    const button = elems.achievements.completeCharacter;
-    // 上余白を相殺し、王冠の有無によらずキャラ本体の中心を見出しに揃えます。
+    const button = document.createElement('button');
+    // 上余白を相殺し、王冠の有無によらず3体の高さを揃えます。
     button.style.marginTop = `-${marginTop}px`;
-    clearTimeout(smileTimeout);
-    button.classList.remove('smiling');
-    button.setAttribute('aria-label', app.savedata.getLang() === 'ja' ? '青キャラを笑顔にする' : 'Make the blue character smile');
-    button.replaceChildren(svg);
-  }
-
-  function smileCompleteCharacter() {
-    const button = elems.achievements.completeCharacter;
-    clearTimeout(smileTimeout);
-    button.classList.add('smiling');
-    smileTimeout = setTimeout(() => button.classList.remove('smiling'), 500);
+    button.type = 'button';
+    button.tabIndex = -1;
+    button.classList.add('achievement-character', 'active-hover', 'button-press');
+    button.setAttribute('aria-label', lang === 'ja' ? '青キャラを笑顔にする' : 'Make the blue character smile');
+    button.setAttribute('aria-describedby', `help-${app.Level.getCheckModeStr(checkMode)}-name`);
+    button.appendChild(svg);
+    let smileTimeout;
+    button.addEventListener('click', () => {
+      clearTimeout(smileTimeout);
+      button.classList.add('smiling');
+      smileTimeout = setTimeout(() => button.classList.remove('smiling'), 500);
+    });
+    return button;
   }
 
   function close() {
