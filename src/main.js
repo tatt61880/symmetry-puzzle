@@ -2050,9 +2050,9 @@
     elems.achievements.button.addEventListener('click', app.dialog.achievements.show);
     elems.achievements.completeCharacter.addEventListener('click', app.dialog.achievements.smileCompleteCharacter);
     // クリックやタップでも、フォーカスは称号ダイアログ本体に置きます。
-    elems.achievements.dialog.addEventListener('focusin', (event) => {
-      if (event.target.matches('button[tabindex="-1"]')) {
-        elems.achievements.dialog.focus({ preventScroll: true });
+    elems.achievements.dialog.addEventListener('mousedown', (event) => {
+      if (event.target.closest('button[tabindex="-1"]')) {
+        event.preventDefault();
       }
     });
     elems.achievements.dialog.addEventListener('click', app.dialog.achievements.close);

@@ -24,6 +24,7 @@
     updateTable();
     app.sound.playUiOpen();
     elems.achievements.dialog.showModal();
+    elems.achievements.dialog.focus({ preventScroll: true });
     elems.achievements.dialog.scrollTop = 0;
   }
 
