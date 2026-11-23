@@ -147,9 +147,10 @@
     const level = new app.Level({ levelObj: { w: 1, h: 1, s: 's' }, checkMode });
     const blockSize = 40;
     const g = level.createSvgG({ blockSize, smallJumpFlag: true, drawBackground: false, x0: 1, y0: 1, width: 1, height: 1 });
-    app.BoardRenderer.addPlayerSmile(g.querySelector('.player-eye'), blockSize);
+    const jumpingCharacter = g.querySelector('.animation-jump-small');
     let marginTop = blockSize / 4; // ジャンプ用の余白
     if (crowned) {
+      app.BoardRenderer.addPlayerSmile(g.querySelector('.player-eye'), blockSize);
       const crownSize = 32;
       const crownLeft = (blockSize - crownSize) / 2;
       const crownTop = -crownSize / 2 - 1;
@@ -159,7 +160,7 @@
         fill: app.colors.stepDraw,
         withBand: false,
       });
-      g.querySelector('.animation-jump-small').appendChild(crown);
+      jumpingCharacter.appendChild(crown);
       marginTop += Math.ceil(-crownTop);
     }
     const height = blockSize + marginTop;
@@ -176,15 +177,25 @@
     button.type = 'button';
     button.tabIndex = -1;
     button.classList.add('achievement-character', 'active-hover', 'button-press');
-    button.setAttribute('aria-label', lang === 'ja' ? '青キャラを笑顔にする' : 'Make the blue character smile');
     button.setAttribute('aria-describedby', `help-${app.Level.getCheckModeStr(checkMode)}-name`);
     button.appendChild(svg);
-    let smileTimeout;
-    button.addEventListener('click', () => {
-      clearTimeout(smileTimeout);
-      button.classList.add('smiling');
-      smileTimeout = setTimeout(() => button.classList.remove('smiling'), 500);
-    });
+    if (crowned) {
+      button.setAttribute('aria-label', lang === 'ja' ? '青キャラを笑顔にする' : 'Make the blue character smile');
+      let smileTimeout;
+      button.addEventListener('click', () => {
+        clearTimeout(smileTimeout);
+        button.classList.add('smiling');
+        smileTimeout = setTimeout(() => button.classList.remove('smiling'), 500);
+      });
+    } else {
+      button.setAttribute('aria-label', lang === 'ja' ? '青キャラをジャンプさせる' : 'Make the blue character jump');
+      button.addEventListener('click', () => {
+        for (const jump of jumpingCharacter.getAnimations()) {
+          jump.currentTime = 0;
+          jump.play();
+        }
+      });
+    }
     return button;
   }
 
