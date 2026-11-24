@@ -1473,9 +1473,17 @@
                       transform="rotate(-45 0 0)" />
                     <rect id="controller-buttons-axis-line4" class="hide" x="-2" y="-25" width="4" height="50" fill="#0000f8"
                       transform="rotate(45 0 0)" />
-                    <ellipse id="controller-buttons-axis-point1" class="hide" cx="0" cy="0" rx="6" ry="18" fill="#0000f8" />
-                    <rect id="controller-buttons-axis-point2" class="hide" x="-10" y="-10" width="20" height="20" fill="#0000f8"
-                      transform="rotate(45 0 0)" />
+                    <!-- 180度は時計回りの半周、90度はその後半。90度の逆回転時は左右反転します。 -->
+                    <g id="controller-buttons-axis-point1" class="hide" fill="#0000f8">
+                      <path d="M -25,0 A 25,25 0 0 1 23.3,-9.1" fill="none" stroke="#0000f8" stroke-width="3" />
+                      <polygon points="17.1,-8.6 25,0 28.9,-11" />
+                      <ellipse cx="0" cy="0" rx="6" ry="18" />
+                    </g>
+                    <g id="controller-buttons-axis-point2" class="hide" fill="#0000f8">
+                      <path d="M 0,-25 A 25,25 0 0 1 23.3,-9.1" fill="none" stroke="#0000f8" stroke-width="3" />
+                      <polygon points="17.1,-8.6 25,0 28.9,-11" />
+                      <rect x="-10" y="-10" width="20" height="20" transform="rotate(45 0 0)" />
+                    </g>
 
                     <!-- エラー時などに全部の軸が表示されてしまう可能性を減らす目的 -->
                     <rect class="hide" x="-35" y="-35" rx="12" width="70" height="70" fill="#aaccff" stroke="#0000f8" stroke-width="4" />

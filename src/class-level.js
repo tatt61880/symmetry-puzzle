@@ -401,6 +401,10 @@
       return this.#axis?.type;
     }
 
+    isReverseRotation() {
+      return this.#reverseRotation;
+    }
+
     hasAxis() {
       return this.#axis.type !== Level.SYMMETRY_TYPE.NONE;
     }

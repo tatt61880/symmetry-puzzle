@@ -2284,6 +2284,7 @@
           break;
         }
         case app.Level.SYMMETRY_TYPE.POINT2: {
+          elems.controller.buttons.axisP2.setAttribute('transform', common.level.isReverseRotation() ? 'scale(-1,1)' : 'scale(1)');
           common.showElem(elems.controller.buttons.axisP2);
           break;
         }
