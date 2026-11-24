@@ -201,7 +201,7 @@
       customAlert(ja ? '記録を復元しました。画面を再読み込みしてください。' : 'Records restored. Please reload the page.');
       return;
     }
-    customAlert(ja ? 'リストアを実行しました。' : 'Data restored.');
+    customAlert(ja ? '記録を復元しました。' : 'Data restored.');
   }
 
   function customAlert(message, { cancelable = false } = {}) {
