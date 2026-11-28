@@ -64,13 +64,7 @@ header {
     margin-left: 7px;
     font-size: 0.9rem;
     font-weight: normal;
-    color: #7777cc;
-    text-shadow: var(--pseudo-bold-shadow);
-  }
-
-  #title-version {
     color: #333388;
-    text-shadow: none;
   }
 
   & > *:last-child {
