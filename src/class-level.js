@@ -41,6 +41,19 @@
     return hint.stages ? { ...hint, stages: hint.stages.map(transform) } : transform(hint);
   }
 
+  function transformShape(shapeStr, mirrorFlag, rotateNum) {
+    if (!shapeStr || (!mirrorFlag && rotateNum === 0)) return shapeStr;
+    let rows = shapeStr.split('-');
+    const width = rows.reduce((max, row) => Math.max(max, row.length), 0);
+    rows = rows.map((row) => row.padEnd(width, '0'));
+    if (mirrorFlag) rows = rows.map((row) => [...row].reverse().join(''));
+    for (let i = 0; i < rotateNum; i++) {
+      rows.reverse();
+      rows = Array.from({ length: rows[0].length }, (_, x) => rows.map((row) => row[x]).join(''));
+    }
+    return rows.map((row) => row.replace(/0+$/, '')).join('-');
+  }
+
   class Level {
     static CHECK_MODE = {
       LINE: Symbol('line'),
@@ -72,6 +85,7 @@
 
     #checkMode;
     #levelObj;
+    #recordSource;
     #states;
     #width;
     #height;
@@ -104,6 +118,7 @@
       this.#getSymmetryType = null;
       this.#axis = null;
       this.#reverseRotation = reverseRotation;
+      this.#recordSource = { levelObj, mirrorFlag, rotateNum };
 
       this.#setCheckMode(checkMode);
       let obj = levelObj;
@@ -188,6 +203,34 @@
 
     getLevelObj() {
       return this.#levelObj;
+    }
+
+    getRecordKey() {
+      return this.getUrlQuery(this.#recordSource.levelObj);
+    }
+
+    #getInverseRecordRotation() {
+      const { mirrorFlag, rotateNum } = this.#recordSource;
+      // 鏡映した後の回転は合わせて一つの鏡映になるので、同じ変換で元に戻ります。
+      return mirrorFlag ? rotateNum : Level.getInverseRotateNum(rotateNum);
+    }
+
+    toSourceReplay(replay) {
+      return Level.transformReplay(replay, this.#recordSource.mirrorFlag, this.#getInverseRecordRotation());
+    }
+
+    fromSourceReplay(replay) {
+      const { mirrorFlag, rotateNum } = this.#recordSource;
+      return Level.transformReplay(replay, mirrorFlag, rotateNum);
+    }
+
+    toSourceShape(shapeStr) {
+      return transformShape(shapeStr, this.#recordSource.mirrorFlag, this.#getInverseRecordRotation());
+    }
+
+    fromSourceShape(shapeStr) {
+      const { mirrorFlag, rotateNum } = this.#recordSource;
+      return transformShape(shapeStr, mirrorFlag, rotateNum);
     }
 
     getHint() {

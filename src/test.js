@@ -45,6 +45,7 @@
       testsOther();
       testSymmetryTypes();
       testAxisNormalization();
+      testOrientedRecords();
       testLongReplayRecords();
       testLevelRecordSelection();
       testRestoreBackup();
@@ -582,7 +583,7 @@
     const vm = require('node:vm');
     const original = { version: 1, lang: 'ja', steps: { 'mode=line&num=1': '1121' }, shapes: {} };
     const localStorage = {
-      getItem: () => JSON.stringify(original),
+      getItem: (key) => (key === 'tatt61880-symmetry-puzzle' ? JSON.stringify(original) : null),
       setItem() {
         throw new Error('Storage full');
       },
@@ -622,6 +623,54 @@
     const { steps, shapes } = savedata.getBackupData();
     assert.deepEqual(steps, { [boardKey]: '1121', 'mode=point&num=1': '123' });
     assert.deepEqual(shapes['mode=point&num=1'], { [shape]: '123' });
+  }
+
+  function testOrientedRecords() {
+    const assert = require('node:assert/strict');
+    const Savedata = require('./class-savedata.js');
+    const checkMode = app.Level.CHECK_MODE.POINT;
+    const custom = { w: 5, h: 3, s: 's001-x211x', axis: 'p2-x3-y3' };
+    const sequence = require('./sequence.js');
+    const dx = [0, 1, 0, -1, 0];
+    const dy = [-1, 0, 1, 0, 0];
+    for (const [levelObj, seqNum, solution] of [
+      [custom, null, '1201441'],
+      [sequence.createLevel(3), 3n, '2123212321'],
+    ]) {
+      const views = [];
+      for (const mirrorFlag of [false, true]) {
+        for (let rotateNum = 0; rotateNum < 4; rotateNum++) {
+          const level = new app.Level({ levelObj, checkMode, mirrorFlag, rotateNum });
+          const replay = app.Level.transformReplay(solution, mirrorFlag, rotateNum);
+          for (const dir of replay) assert.ok(level.move(dx[dir], dy[dir]));
+          assert.ok(level.isCompleted());
+          views.push({ level, replay, shapeStr: level.getTargetShapeForSavedata() });
+        }
+      }
+
+      for (const saved of views) {
+        const savedata = new Savedata();
+        savedata.saveSteps(saved.level, saved.replay, seqNum);
+        savedata.saveShape(saved.level, saved.shapeStr, saved.replay, seqNum);
+        for (const { level, replay, shapeStr } of views) {
+          assert.equal(savedata.getHighestScore(level, seqNum), replay.length);
+          assert.deepEqual(savedata.getShapeRecords(level, seqNum), [{ shapeStr, steps: replay.length, replay }]);
+          assert.equal(savedata.saveShape(level, shapeStr, replay, seqNum), false);
+        }
+      }
+    }
+
+    const savedata = new Savedata();
+    const normal = new app.Level({ levelObj: custom, checkMode });
+    const mirrored = new app.Level({ levelObj: custom, checkMode, mirrorFlag: true });
+    const otherAxis = new app.Level({ levelObj: { ...custom, axis: 'p2-x5-y3' }, checkMode, mirrorFlag: true });
+    const longReplay = '31'.repeat(5000) + '3203443';
+    savedata.saveShape(mirrored, '#-##-0#', longReplay);
+    assert.deepEqual(savedata.getShapeRecords(normal), [{ shapeStr: '0#-##-#', steps: longReplay.length, replay: undefined }]);
+    assert.equal(savedata.saveShape(normal, '0#-##-#', '1201441'), true);
+    assert.equal(savedata.saveShape(mirrored, '#-##-0#', longReplay), false);
+    assert.deepEqual(savedata.getShapeRecords(mirrored), [{ shapeStr: '#-##-0#', steps: 7, replay: '3203443' }]);
+    assert.equal(savedata.getHighestScore(otherAxis), null);
   }
 
   function testLongReplayRecords() {

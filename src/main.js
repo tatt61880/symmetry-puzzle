@@ -2410,7 +2410,7 @@
     // シルエットデータ保存
     {
       const shapeStr = level.getTargetShapeForSavedata();
-      const isNewShape = app.savedata.getShapesObj(level, levelNum)?.[shapeStr] === undefined;
+      const isNewShape = app.savedata.getShapesObj(level, levelNum)?.[level.toSourceShape(shapeStr)] === undefined;
       app.savedata.saveShape(level, shapeStr, replayStr, levelNum);
       if (isNewShape) updateShapeButton(shapeStr);
     }
@@ -2850,8 +2850,7 @@
       resetUndo();
       // 探索結果は表示中の盤面に対する手順なので、元の座標に戻して初期盤面と一緒に保持します。
       const { mirrorFlag, rotateNum } = settings;
-      const unrotated = app.Level.transformReplay(result.replayStr, false, app.Level.getInverseRotateNum(rotateNum));
-      const r = app.Level.transformReplay(unrotated, mirrorFlag, 0);
+      const r = common.level.toSourceReplay(result.replayStr);
       sourceLevelObj = { ...sourceLevelObj, r };
       initLevel({ levelObj: sourceLevelObj, mirrorFlag, rotateNum });
       onButtonStartSub();

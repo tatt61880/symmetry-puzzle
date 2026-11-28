@@ -238,6 +238,12 @@
       const dxs = [0, 1, 0, -1, 0];
       const dys = [-1, 0, 1, 0, 0];
 
+      // --reverse-rotation の入力は鏡映後の盤面なので、バックアップの基準には鏡映前の盤面を使います。
+      let recordLevel = level;
+      if (options.backup && options.reverseRotation && level.getAxisType() === app.Level.SYMMETRY_TYPE.POINT2) {
+        recordLevel = new app.Level({ levelObj: level.getSourceLevelObj(true, 0), checkMode: level.getCheckMode(), mirrorFlag: true });
+      }
+
       const userMax = level.getMaxValue(app.states.isUser);
 
       const completedFlag = level.isCompleted();
@@ -363,12 +369,12 @@
                   if (options.backup) {
                     if (shapeStrMap.size === 1) {
                       // ステップデータを記録
-                      savedata.saveSteps(level, replayStr);
+                      savedata.saveSteps(recordLevel, replayStr);
                     }
 
                     // 形状データを記録
                     const shape = level.getTargetShapeForSavedata();
-                    savedata.saveShape(level, shape, replayStr);
+                    savedata.saveShape(recordLevel, shape, replayStr);
                   }
                 } else {
                   if (options.draw) {
@@ -379,11 +385,11 @@
               } else {
                 if (options.backup) {
                   // ステップデータを記録
-                  savedata.saveSteps(level, replayStr);
+                  savedata.saveSteps(recordLevel, replayStr);
 
                   // 形状データを記録
                   const shape = level.getTargetShapeForSavedata();
-                  savedata.saveShape(level, shape, replayStr);
+                  savedata.saveShape(recordLevel, shape, replayStr);
                 }
                 return { replayStr };
               }

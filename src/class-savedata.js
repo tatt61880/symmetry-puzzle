@@ -106,7 +106,7 @@
       return this.data.lang;
     }
 
-    #saveBest(records, key, replay) {
+    #saveBest(records, key, level, replay) {
       const steps = replay.length;
       const previous = records[key];
       if (previous !== undefined && steps >= getRecordSteps(previous)) return false;
@@ -115,22 +115,23 @@
         records[key] = steps;
         this.data.version = Math.max(this.data.version ?? 1, 2);
       } else {
-        records[key] = replay;
+        records[key] = level.toSourceReplay(replay);
       }
       this.#save();
       return true;
     }
 
     saveSteps(level, replay, seqNum = null) {
-      this.#saveBest(this.data.steps, this.#getLevelKey(level, seqNum), replay);
+      this.#saveBest(this.data.steps, this.#getLevelKey(level, seqNum), level, replay);
     }
 
     saveShape(level, targetShape, replay, seqNum = null) {
       const key = this.#getLevelKey(level, seqNum);
       this.data.shapes[key] ??= {};
-      return this.#saveBest(this.data.shapes[key], targetShape, replay);
+      return this.#saveBest(this.data.shapes[key], level.toSourceShape(targetShape), level, replay);
     }
 
+    // 形状と手順は元の盤面の向きで保存し、形状一覧では表示中の向きに戻します。
     getShapesObj(level, seqNum = null) {
       const key = this.#getLevelKey(level, seqNum);
       return this.data.shapes[key];
@@ -138,9 +139,9 @@
 
     getShapeRecords(level, seqNum = null) {
       return Object.entries(this.getShapesObj(level, seqNum) ?? {}).map(([shapeStr, record]) => ({
-        shapeStr,
+        shapeStr: level.fromSourceShape(shapeStr),
         steps: getRecordSteps(record),
-        replay: typeof record === 'string' ? record : undefined,
+        replay: typeof record === 'string' ? level.fromSourceReplay(record) : undefined,
       }));
     }
 
@@ -164,7 +165,7 @@
     }
 
     #getLevelKey(level, seqNum) {
-      if (seqNum === null) return level.getUrlQuery();
+      if (seqNum === null) return level.getRecordKey();
       return this.#getSeqModeKey(seqNum, app.Level.getCheckModeStr(level.getCheckMode()));
     }
 
