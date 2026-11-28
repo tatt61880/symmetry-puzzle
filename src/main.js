@@ -2323,24 +2323,19 @@
           url = urlBase + location.href.split('?')[1] + (settings.sharedFlag ? '' : '&shared');
         }
 
-        // Twitter
-        {
-          const base = 'https://twitter.com/intent/tweet';
-          const elem = elems.controller.shareLevelX;
+        const encodedJa = encodeURIComponent(`${textJa}\n${url}`);
+        const encodedEn = encodeURIComponent(`${textEn}\n${url}`);
+        const lang = app.savedata.getLang();
+        for (const [elem, base] of [
+          // Twitter
+          [elems.controller.shareLevelX, 'https://twitter.com/intent/tweet'],
+          // Bluesky
+          [elems.controller.shareLevelBluesky, 'https://bsky.app/intent/compose'],
+        ]) {
           elem.classList.add('translatable-toggle');
-          elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}%0A${encodeURIComponent(url)}`;
-          elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}%0A${encodeURIComponent(url)}`;
-          common.applyLang(elem, app.savedata.getLang());
-        }
-
-        // Bluesky
-        {
-          const base = 'https://bsky.app/intent/compose';
-          const elem = elems.controller.shareLevelBluesky;
-          elem.classList.add('translatable-toggle');
-          elem.dataset.ja = `${base}?text=${encodeURIComponent(textJa)}%0A${encodeURIComponent(url)}`;
-          elem.dataset.en = `${base}?text=${encodeURIComponent(textEn)}%0A${encodeURIComponent(url)}`;
-          common.applyLang(elem, app.savedata.getLang());
+          elem.dataset.ja = `${base}?text=${encodedJa}`;
+          elem.dataset.en = `${base}?text=${encodedEn}`;
+          common.applyLang(elem, lang);
         }
       }
 
