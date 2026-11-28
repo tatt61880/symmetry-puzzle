@@ -340,6 +340,10 @@
     line-height: 1.49;
     color: #402000;
     background: #ffddbb;
+
+    .icon-animation-button {
+      min-width: 0;
+    }
   }
 
   .help-warn-svg {
