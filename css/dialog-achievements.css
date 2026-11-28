@@ -126,6 +126,7 @@
       margin-inline-start: 4%;
       font-size: clamp(0.625rem, 5cqi, 1rem);
       line-height: 1;
+      text-shadow: none;
 
       /* 星の輪郭の中心に、括弧と王冠の見た目の中心を合わせる。 */
       transform: translateY(-0.25px);
