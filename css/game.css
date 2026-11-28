@@ -118,7 +118,7 @@
   #dialog-auto-search,
   #dialog-normalize {
     box-sizing: border-box;
-    width: min(440px, 94%);
+    width: 440px;
     max-height: 90%;
     padding: 0;
     color: #334466;
