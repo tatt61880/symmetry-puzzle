@@ -69,6 +69,7 @@
   let levelHintState = 'locked';
   let hintWallPressCount = 0;
   let completeFlag = false;
+  let recordedCompletion = null;
   let displayedCompletion = null;
   let symmetryFlag = false;
 
@@ -115,6 +116,13 @@
   function completeCheck() {
     if (editMode) return;
 
+    const snapshot = undoInfoForNormal.getTopData();
+    if (recordedCompletion && recordedCompletion.snapshot !== snapshot) {
+      // 演出前にリトライや Undo をした場合も、発見済みの形状数を反映します。
+      if (recordedCompletion.discoveredShape) updateShapeButton();
+      recordedCompletion = null;
+    }
+
     const symmetryFlagPrev = symmetryFlag;
     completeFlag = common.level.isCompleted(); // 連結した対称図形であるとき
     symmetryFlag = common.level.isSymmetry(app.states.isTarget); // 連結しているか否かに関わらず対称図形であるとき
@@ -122,6 +130,7 @@
       completeFlag || // 完成したとき。
       (undoInfoForNormal.isUndoable() && symmetryFlag && symmetryFlag !== symmetryFlagPrev); // 初手以外で、対称フラグが変わったとき。
     if (redrawFlag && autoSeekPointerId === null) {
+      if (completeFlag && !recordedCompletion) recordedCompletion = { snapshot, ...recordCompletion() };
       const delay = settings.autoMode ? autoStepInterval() : MOVE_INTERVAL_MSEC;
       clearTimeout(redrawTimerId);
       redrawTimerId = setTimeout(completeFlag ? showCompletedBoard : drawMainSvg, delay);
@@ -2265,7 +2274,11 @@
     const center = common.level.getCenter(app.states.isTarget);
     document.documentElement.style.setProperty('--animation-origin', `${blockSize * center.x}px ${blockSize * center.y}px`);
     app.sound.playClear();
-    drawMainSvg(recordCompletion());
+    if (recordedCompletion.discoveredShape) {
+      updateShapeButton(recordedCompletion.discoveredShape);
+      recordedCompletion.discoveredShape = null;
+    }
+    drawMainSvg(recordedCompletion);
     scheduleAutoNextLevel();
   }
 
@@ -2412,12 +2425,9 @@
     }
 
     // シルエットデータ保存
-    {
-      const shapeStr = level.getTargetShapeForSavedata();
-      const isNewShape = app.savedata.getShapesObj(level, levelNum)?.[level.toSourceShape(shapeStr)] === undefined;
-      app.savedata.saveShape(level, shapeStr, replayStr, levelNum);
-      if (isNewShape) updateShapeButton(shapeStr);
-    }
+    const shapeStr = level.getTargetShapeForSavedata();
+    const isNewShape = app.savedata.getShapesObj(level, levelNum)?.[level.toSourceShape(shapeStr)] === undefined;
+    app.savedata.saveShape(level, shapeStr, replayStr, levelNum);
 
     // ログ出力
     {
@@ -2453,7 +2463,7 @@
         }
       }
     }
-    return { highestScorePrev };
+    return { highestScorePrev, discoveredShape: isNewShape ? shapeStr : null };
   }
 
   function secretSequenceAdd(c) {
