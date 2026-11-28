@@ -341,7 +341,6 @@
     font-weight: normal;
     line-height: 1.49;
     color: #402000;
-    text-shadow: var(--pseudo-bold-shadow);
     background: #ffddbb;
   }
 
