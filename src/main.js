@@ -1343,26 +1343,23 @@
     }
   }
 
-  function getId(queryObj) {
-    let levelsList;
-    let levelsListEx;
-    switch (common.checkMode) {
+  function getLevelLists(checkMode) {
+    switch (checkMode) {
       case app.Level.CHECK_MODE.LINE:
-        levelsList = app.levelsLine;
-        levelsListEx = app.levelsLineEx;
-        break;
+        return { levelsList: app.levelsLine, levelsListEx: app.levelsLineEx };
       case app.Level.CHECK_MODE.POINT:
-        levelsList = app.levelsPoint;
-        levelsListEx = app.levelsPointEx;
-        break;
+        return { levelsList: app.levelsPoint, levelsListEx: app.levelsPointEx };
       case app.Level.CHECK_MODE.SPECIAL:
-        levelsList = app.levelsSpecial;
-        levelsListEx = app.levelsSpecialEx;
-        break;
+        return { levelsList: app.levelsSpecial, levelsListEx: app.levelsSpecialEx };
       default:
         return null;
     }
-    common.levels = new app.Levels({ levelsList, levelsListEx });
+  }
+
+  function getId(queryObj) {
+    const lists = getLevelLists(common.checkMode);
+    if (lists === null) return null;
+    common.levels = new app.Levels(lists);
     return common.levels.levelObjToId(queryObj);
   }
 
@@ -1394,29 +1391,11 @@
     }
 
     {
-      let levelsList = {};
-      let levelsListEx = {};
-      switch (common.checkMode) {
-        case app.Level.CHECK_MODE.LINE:
-          levelsList = app.levelsLine;
-          levelsListEx = app.levelsLineEx;
-          break;
-        case app.Level.CHECK_MODE.POINT:
-          levelsList = app.levelsPoint;
-          levelsListEx = app.levelsPointEx;
-          break;
-        case app.Level.CHECK_MODE.SPECIAL:
-          levelsList = app.levelsSpecial;
-          levelsListEx = app.levelsSpecialEx;
-          break;
-        default:
-          console.assert(false);
-      }
+      const lists = getLevelLists(common.checkMode);
+      console.assert(lists !== null);
+      const { levelsList, levelsListEx } = lists ?? { levelsList: {}, levelsListEx: {} };
       updateNormalSeqMode(!idFlag);
-      if (common.isSeqMode) {
-        levelsList = [levelsList[0]];
-      }
-      common.levels = new app.Levels({ levelsList, levelsListEx });
+      common.levels = new app.Levels({ levelsList: common.isSeqMode ? [levelsList[0]] : levelsList, levelsListEx });
     }
 
     common.hideElem(elems.category.title);
