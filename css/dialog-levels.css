@@ -44,6 +44,7 @@
 
     #display-text {
       color: #6688aa;
+      cursor: pointer;
     }
 
     #toggle-div {
