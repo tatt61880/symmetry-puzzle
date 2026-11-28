@@ -2073,6 +2073,13 @@
     elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
     elems.levels.close.addEventListener('click', app.dialog.levels.close);
     elems.levels.display.checkbox.addEventListener('click', app.dialog.levels.update);
+    const toggle = elems.levels.toggleDiv;
+    for (const type of ['pointerdown', 'pointerup', 'pointercancel']) {
+      toggle.addEventListener(type, (event) => {
+        if (event.pointerType === 'mouse' || !event.isPrimary) return;
+        toggle.classList.toggle('pressed', type === 'pointerdown' && event.target.closest('label, input') !== null);
+      });
+    }
   }
 
   // 形状一覧ダイアログ

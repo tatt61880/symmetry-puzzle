@@ -52,6 +52,14 @@
       align-items: center;
       margin-right: 10px;
 
+      &.pressed,
+      &:has(label:active, .toggle-input:active) {
+        #display-text,
+        .button-transform {
+          filter: var(--button-press-filter);
+        }
+      }
+
       .toggle-text {
         font-size: 1.1rem;
         font-weight: normal;
