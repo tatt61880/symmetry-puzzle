@@ -231,8 +231,10 @@
         const { shapeStr, steps, replay } = record;
         const { w, h } = getSizeOfShapeStr(shapeStr);
         const yMargin = 16;
+        const verticalPadding = 6;
         const shapeHeight = SELECT_HEIGHT - yMargin - (replay === undefined ? 20 : 0);
-        const blockSize = Math.min((SELECT_WIDTH - 8) / w, (shapeHeight - 8) / h, (SELECT_HEIGHT - yMargin - 8) / 5);
+        const maxBlockSize = (SELECT_HEIGHT - yMargin - 2 * verticalPadding) / 5;
+        const blockSize = Math.min((SELECT_WIDTH - 8) / w, (shapeHeight - 2 * verticalPadding) / h, maxBlockSize);
         const levelSvgG = createSilhouette(shapeStr, w, h, blockSize);
 
         {
