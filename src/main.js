@@ -37,6 +37,7 @@
 
   let autoPaused = true;
   let urlReplay = null;
+  let sourceLevelObj; // URL の鏡映・回転を適用する前の初期盤面。
   const AUTO_NEXT_LEVEL_DELAY = 500;
   let nextLevelTimerId = null;
   let autoNextLevelWait = null;
@@ -970,6 +971,7 @@
     resetUndo();
     elems.controller.shareLevel.open = false;
 
+    sourceLevelObj = levelObj;
     const { mirrorFlag, rotateNum } = settings;
     const leavingUrlReplay = urlReplay !== null && replayStr === null;
     urlReplay = replayStr;
@@ -1104,24 +1106,18 @@
     settings.sharedFlag = false;
 
     app.sound.playButton();
-    editMode = !editMode;
     switchToCustomLevel();
-    updateEditMode(editMode);
-
-    if (editMode) {
+    if (!editMode) {
+      updateEditMode(true);
       updateEditAxisButton();
       updateEditElems();
     } else {
-      // 正規化します。
       common.level.normalize();
-
-      // 現在の盤面を初期値とするレベルに更新しておかないと、クリア時のセーブ情報がバグります。
-      common.level = new app.Level({ levelObj: common.level.getCurrentLevelObj(), checkMode: common.checkMode });
-      const base = location.href.split('?')[0];
-      const urlQuery = common.level.getCurrentUrlQuery();
-      const url = `${base}?${urlQuery}`;
-      history.replaceState(null, '', url);
-
+      const { mirrorFlag, rotateNum } = settings;
+      sourceLevelObj = common.level.getSourceLevelObj(mirrorFlag, rotateNum);
+      common.level = new app.Level({ levelObj: sourceLevelObj, checkMode: common.checkMode, mirrorFlag, rotateNum });
+      updateEditMode(false);
+      replaceUrl();
       updateShapeButton();
       completeCheck();
     }
@@ -1786,7 +1782,7 @@
       }
 
       const levelObj = common.level.getCurrentLevelObj();
-      common.level = new app.Level({ levelObj, checkMode: common.checkMode });
+      common.level = new app.Level({ levelObj, checkMode: common.checkMode, reverseRotation: common.level.isReverseRotation() });
       updateEditElems();
       completeCheck();
       addUndo(null);
@@ -2670,9 +2666,7 @@
       const mode = app.Level.getCheckModeStr(common.checkMode);
       return `mode=${mode}&num=${common.levelId}`;
     }
-    if (common.levelId === null) return common.level.getUrlQuery();
-    // 公式面の鏡映・回転はURL引数で指定するため、変換前の初期盤面を使います。
-    return common.level.getUrlQuery(common.levels.getLevelObj(common.levelId));
+    return common.level.getUrlQuery(sourceLevelObj);
   }
 
   function replaceUrl() {
@@ -2813,7 +2807,7 @@
 
     retryLevel();
     const levelObj = common.level.getCurrentLevelObj();
-    const levelTemp = new app.Level({ levelObj, checkMode: common.checkMode });
+    const levelTemp = common.level.createReplayLevel(levelObj);
     const search = app.searchLevel(null, levelTemp, { maxStep: 1000, timeLimit: 10 }, 8);
     autoSearchFrameId = requestAnimationFrame(() => {
       // 短い探索でも、開始前に「探索中」を一度描画します。
@@ -2854,7 +2848,12 @@
         return;
       }
       resetUndo();
-      initLevel({ levelObj: { ...levelObj, r: result.replayStr } });
+      // 探索結果は表示中の盤面に対する手順なので、元の座標に戻して初期盤面と一緒に保持します。
+      const { mirrorFlag, rotateNum } = settings;
+      const unrotated = app.Level.transformReplay(result.replayStr, false, app.Level.getInverseRotateNum(rotateNum));
+      const r = app.Level.transformReplay(unrotated, mirrorFlag, 0);
+      sourceLevelObj = { ...sourceLevelObj, r };
+      initLevel({ levelObj: sourceLevelObj, mirrorFlag, rotateNum });
       onButtonStartSub();
     }
   }
@@ -3032,8 +3031,7 @@
       pauseAuto();
       retryLevel();
     } else {
-      const levelObj = common.level.getLevelObj();
-      loadLevelObj(levelObj);
+      loadLevelObj(sourceLevelObj);
     }
     execReplayStr(r);
   }

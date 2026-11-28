@@ -56,6 +56,7 @@
       testUnboundedSequence();
       testIndependentTargets();
       testIndependentUrlParameter();
+      testEditedLevelTransforms();
       testsSolve();
       testInvalidSolverModePreservesBackup();
   }
@@ -265,6 +266,28 @@
     const replayLevel = level.createReplayLevel(level.getCurrentLevelObj());
     assert.ok(replayLevel.hasIndependentTargets());
     assert.equal(replayLevel.getS(), state);
+  }
+
+  function testEditedLevelTransforms() {
+    const assert = require('node:assert/strict');
+    const levelObj = { w: 5, h: 3, s: 's001-x211x', axis: 'p2-x3-y3' };
+    const checkMode = app.Level.CHECK_MODE.POINT;
+    for (const mirrorFlag of [false, true]) {
+      for (const rotateNum of [0, 1, 2, 3]) {
+        const level = new app.Level({ levelObj, checkMode, mirrorFlag, rotateNum });
+        level.applyState(level.getW(), level.getH(), app.states.wall);
+        level.normalize();
+        const source = level.getSourceLevelObj(mirrorFlag, rotateNum);
+        const restored = new app.Level({ levelObj: source, checkMode, mirrorFlag, rotateNum });
+        assert.deepEqual(restored.getCurrentLevelObj(), level.getCurrentLevelObj());
+        assert.equal(restored.isReverseRotation(), level.isReverseRotation());
+      }
+    }
+
+    const mirrored = new app.Level({ levelObj, checkMode, mirrorFlag: true });
+    const replay = mirrored.createReplayLevel(mirrored.getCurrentLevelObj());
+    assert.equal(replay.move(0, 0), true);
+    assert.equal(replay.getS(), '01s-x112x');
   }
 
   function testIndependentUrlParameter() {

@@ -171,6 +171,21 @@
       return positions;
     }
 
+    // 読み込み時の90度回転の回数を打ち消します。
+    static getInverseRotateNum(rotateNum) {
+      return rotateNum > 0 ? (4 - (Math.ceil(rotateNum) % 4)) % 4 : 0;
+    }
+
+    // URL 読み込み時とは逆の順に、回転、鏡映を戻します。
+    getSourceLevelObj(mirrorFlag, rotateNum) {
+      const levelObj = this.getCurrentLevelObj();
+      const inverseRotateNum = Level.getInverseRotateNum(rotateNum);
+      if (!mirrorFlag && inverseRotateNum === 0) return levelObj;
+      const source = new Level({ levelObj, rotateNum: inverseRotateNum });
+      if (mirrorFlag) source.mirror();
+      return source.getCurrentLevelObj();
+    }
+
     getLevelObj() {
       return this.#levelObj;
     }
