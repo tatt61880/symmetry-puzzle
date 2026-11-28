@@ -68,6 +68,11 @@ header {
     text-shadow: var(--pseudo-bold-shadow);
   }
 
+  #title-version {
+    color: #333388;
+    text-shadow: none;
+  }
+
   & > *:last-child {
     margin-left: auto;
   }

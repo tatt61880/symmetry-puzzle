@@ -222,8 +222,7 @@
     margin-left: 10px;
     font-size: 0.9rem;
     font-weight: normal;
-    color: #7777cc;
-    text-shadow: var(--pseudo-bold-shadow);
+    color: #333388;
   }
 
   /* 狭い画面では表を広げ、称号と下部の説明は元の幅で折り返す。 */
