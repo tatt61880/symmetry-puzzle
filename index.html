@@ -1066,20 +1066,18 @@
             <div id="dialog-levels-title" class="toggle-text translatable-toggle" data-en="Level List" data-ja="レベル一覧"></div>
             <div class="spacer"></div>
 
-            <div id="toggle-div">
-              <label id="display-text" class="toggle-text" for="display-checkbox">
+            <label id="toggle-div" for="display-checkbox">
+              <span id="display-text" class="toggle-text">
                 <span class="normal-mode"><span class="translatable-toggle" data-en="Cleared" data-ja="クリア済み"></span><br></span>
                 <span class="translatable-toggle" data-en="Crown view" data-ja="王冠表示"></span>
-              </label>
-              <div id="display-button" class="toggle-button active-hover">
-                <div class="button-transform">
-                  <input id="display-checkbox" type="checkbox" class="toggle-input">
-                  <label class="toggle-label" for="display-checkbox">
-                    <svg id="display-crown"></svg>
-                  </label>
-                </div>
-              </div>
-            </div>
+              </span>
+              <span id="display-button" class="toggle-button active-hover">
+                <input id="display-checkbox" type="checkbox" class="toggle-input">
+                <span class="toggle-label">
+                  <svg id="display-crown"></svg>
+                </span>
+              </span>
+            </label>
           </div>
 
           <svg id="dialog-levels-svg">

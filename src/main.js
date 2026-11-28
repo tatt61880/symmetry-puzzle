@@ -2077,7 +2077,7 @@
     for (const type of ['pointerdown', 'pointerup', 'pointercancel']) {
       toggle.addEventListener(type, (event) => {
         if (event.pointerType === 'mouse' || !event.isPrimary) return;
-        toggle.classList.toggle('pressed', type === 'pointerdown' && event.target.closest('label, input') !== null);
+        toggle.classList.toggle('pressed', type === 'pointerdown');
       });
     }
   }
