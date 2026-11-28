@@ -384,27 +384,15 @@
       switch (e.key) {
         case 't':
           if (e.shiftKey) return;
-          if (common.isSeqMode) {
-            gotoNumLineMode();
-          } else {
-            gotoNormalLineMode();
-          }
+          startTitleLevel(app.Level.CHECK_MODE.LINE, common.isSeqMode);
           break;
         case 'z':
           if (e.shiftKey) return;
-          if (common.isSeqMode) {
-            gotoNumPointMode();
-          } else {
-            gotoNormalPointMode();
-          }
+          startTitleLevel(app.Level.CHECK_MODE.POINT, common.isSeqMode);
           break;
         case 'o':
           if (e.shiftKey) return;
-          if (common.isSeqMode) {
-            gotoNumSpecialMode();
-          } else {
-            gotoNormalSpecialMode();
-          }
+          startTitleLevel(app.Level.CHECK_MODE.SPECIAL, common.isSeqMode);
           break;
         case '+':
         case '#':
@@ -1891,59 +1879,37 @@
 
   // タイトル画面用
   function initElemsForTitle() {
+    const { LINE, POINT, SPECIAL } = app.Level.CHECK_MODE;
+
     // 線対称-通常モード
-    elems.title.buttonNormalLine.addEventListener('click', gotoNormalLineMode);
+    elems.title.buttonNormalLine.addEventListener('click', () => startTitleLevel(LINE, false));
 
     // 点対称-通常モード
-    elems.title.buttonNormalPoint.addEventListener('click', gotoNormalPointMode);
+    elems.title.buttonNormalPoint.addEventListener('click', () => startTitleLevel(POINT, false));
 
     // 線対称＆点対称-通常モード
-    elems.title.buttonNormalSpecial.addEventListener('click', gotoNormalSpecialMode);
+    elems.title.buttonNormalSpecial.addEventListener('click', () => startTitleLevel(SPECIAL, false));
 
     // 線対称-連番モード
-    elems.title.buttonSeqLine.addEventListener('click', gotoNumLineMode);
+    elems.title.buttonSeqLine.addEventListener('click', () => startTitleLevel(LINE, true));
 
     // 点対称-連番モード
-    elems.title.buttonSeqPoint.addEventListener('click', gotoNumPointMode);
+    elems.title.buttonSeqPoint.addEventListener('click', () => startTitleLevel(POINT, true));
 
     // 線対称＆点対称-連番モード
-    elems.title.buttonSeqSpecial.addEventListener('click', gotoNumSpecialMode);
+    elems.title.buttonSeqSpecial.addEventListener('click', () => startTitleLevel(SPECIAL, true));
 
     elems.title.buttonToggleToNormal.addEventListener('click', toggleNormalSeqMode);
     elems.title.buttonToggleToSeq.addEventListener('click', toggleNormalSeqMode);
   }
 
-  function gotoNormalLineMode() {
-    updateCheckMode(app.Level.CHECK_MODE.LINE);
-    onloadId(1);
-  }
-
-  function gotoNormalPointMode() {
-    updateCheckMode(app.Level.CHECK_MODE.POINT);
-    onloadId(1);
-  }
-
-  function gotoNormalSpecialMode() {
-    updateCheckMode(app.Level.CHECK_MODE.SPECIAL);
-    onloadId(1);
-  }
-
-  function gotoNumLineMode() {
-    updateCheckMode(app.Level.CHECK_MODE.LINE);
-    const minNum = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.LINE);
-    onloadId(minNum, false);
-  }
-
-  function gotoNumPointMode() {
-    updateCheckMode(app.Level.CHECK_MODE.POINT);
-    const minNum = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.POINT);
-    onloadId(minNum, false);
-  }
-
-  function gotoNumSpecialMode() {
-    updateCheckMode(app.Level.CHECK_MODE.SPECIAL);
-    const minNum = app.savedata.getUnsolvedMinNum(app.Level.CHECK_MODE.SPECIAL);
-    onloadId(minNum, false);
+  function startTitleLevel(checkMode, isSeqMode) {
+    updateCheckMode(checkMode);
+    if (isSeqMode) {
+      onloadId(app.savedata.getUnsolvedMinNum(checkMode), false);
+    } else {
+      onloadId(1);
+    }
   }
 
   function updateNormalSeqMode(isSeqMode) {
