@@ -401,7 +401,7 @@
 
 #dialog-credits {
   box-sizing: border-box;
-  width: min(380px, calc(100% - 2rem));
+  width: 380px;
   max-height: calc(100dvh - 2rem);
   padding: 0;
   color: #333388;
