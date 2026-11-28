@@ -225,24 +225,6 @@
     color: #333388;
   }
 
-  /* 狭い画面では表を広げ、称号と下部の説明は元の幅で折り返す。 */
-  @media (width <= 370px) {
-    max-width: 100%;
-
-    #achievements-summary {
-      margin-inline: 24px;
-    }
-
-    #achievements-table-div .achievements-info > div {
-      margin-inline: 19px;
-    }
-
-    #achievements-table-div .achievement-solved-count {
-      margin-inline-start: 0;
-      font-size: 0.625rem;
-    }
-  }
-
   &::backdrop {
     cursor: pointer;
     background-color: rgb(0 0 0 / 50%);

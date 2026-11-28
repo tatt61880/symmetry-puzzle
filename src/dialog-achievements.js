@@ -103,9 +103,7 @@
       silverCrown.setAttribute('role', 'img');
       silverCrown.setAttribute('aria-label', count.title);
       silverCrown.appendChild(app.common.createCrown(100, 0, 0, 1, 0));
-      const fraction = document.createElement('span');
-      fraction.append(`${num}/`, document.createElement('wbr'), String(progress.total));
-      count.append('(', silverCrown, fraction, ')');
+      count.append('(', silverCrown, `${num}/${progress.total})`);
       starRow.append(stars, count);
       elem.append(starRow, document.createElement('br'));
 
