@@ -32,7 +32,8 @@
     const { Command, Option } = require('commander');
     const program = new Command();
     const modeOption = new Option('--mode <check-mode>', 'symmetry mode');
-    modeOption.choices(['line', 'point', 'special', 'all']).makeOptionMandatory();
+    const modeNames = Object.values(app.Level.CHECK_MODE).map(app.Level.getCheckModeStr);
+    modeOption.choices([...modeNames, 'all']).makeOptionMandatory();
 
     program
       .version('4.0.0')
@@ -72,25 +73,7 @@
   if (isBrowser) {
     1;
   } else if (levelId !== undefined) {
-    const checkModes = [];
-
-    switch (options.mode) {
-      case 'line':
-        checkModes.push(app.Level.CHECK_MODE.LINE);
-        break;
-      case 'point':
-        checkModes.push(app.Level.CHECK_MODE.POINT);
-        break;
-      case 'special':
-        checkModes.push(app.Level.CHECK_MODE.SPECIAL);
-        break;
-      case 'all':
-        checkModes.push(app.Level.CHECK_MODE.LINE);
-        checkModes.push(app.Level.CHECK_MODE.POINT);
-        checkModes.push(app.Level.CHECK_MODE.SPECIAL);
-        break;
-    }
-
+    const checkModes = options.mode === 'all' ? Object.values(app.Level.CHECK_MODE) : [app.Level.parseCheckMode(options.mode)];
     for (const checkMode of checkModes) {
       let levelsList;
       let levelsListEx;
@@ -160,21 +143,7 @@
     const levelObj = { w, h, s, axis };
     if (options.independent) levelObj.independent = true;
 
-    let checkMode = null;
-
-    switch (options.mode) {
-      case 'line':
-        checkMode = app.Level.CHECK_MODE.LINE;
-        break;
-      case 'point':
-        checkMode = app.Level.CHECK_MODE.POINT;
-        break;
-      case 'special':
-        checkMode = app.Level.CHECK_MODE.SPECIAL;
-        break;
-    }
-
-    solveLevelObj(null, levelObj, checkMode);
+    solveLevelObj(null, levelObj, app.Level.parseCheckMode(options.mode));
   }
 
   if (!isBrowser) {

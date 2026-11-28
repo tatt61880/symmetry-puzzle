@@ -59,19 +59,11 @@
         case 'axis':
           res.levelObj.axis = paramVal;
           break;
-        case 'mode':
-          switch (paramVal) {
-            case 'line':
-              res.settings.mode = app.Level.CHECK_MODE.LINE;
-              break;
-            case 'point':
-              res.settings.mode = app.Level.CHECK_MODE.POINT;
-              break;
-            case 'special':
-              res.settings.mode = app.Level.CHECK_MODE.SPECIAL;
-              break;
-          }
+        case 'mode': {
+          const mode = app.Level.parseCheckMode(paramVal);
+          if (mode !== undefined) res.settings.mode = mode;
           break;
+        }
         case 'auto':
           res.settings.autoMode = true;
           break;

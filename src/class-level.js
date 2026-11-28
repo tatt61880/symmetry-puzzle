@@ -304,6 +304,10 @@
       }
     }
 
+    static parseCheckMode(name) {
+      return Object.values(Level.CHECK_MODE).find((mode) => Level.getCheckModeStr(mode) === name);
+    }
+
     getSolverCommand() {
       const w = this.getW();
       const h = this.getH();
