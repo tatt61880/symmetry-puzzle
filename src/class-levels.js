@@ -12,32 +12,23 @@
     }
 
     levelObjToId(queryObj) {
-      for (let id = 0; id < this.#levelsList.length; ++id) {
-        const levelObj = this.#levelsList[id];
-        if (
+      function matchesLevel(levelObj) {
+        return (
           levelObj.w === queryObj.w &&
           levelObj.h === queryObj.h &&
           levelObj.s === queryObj.s &&
           (queryObj.r === undefined || levelObj.r === queryObj.r) &&
           levelObj.axis === queryObj.axis &&
           (levelObj.independent === true) === (queryObj.independent === true)
-        ) {
-          return id;
-        }
+        );
+      }
+
+      for (let id = 0; id < this.#levelsList.length; ++id) {
+        if (matchesLevel(this.#levelsList[id])) return id;
       }
       for (const id of Object.keys(this.#levelsListEx).sort()) {
         if (String(id) === 'NaN') continue;
-        const levelObj = this.#levelsListEx[id];
-        if (
-          levelObj.w === queryObj.w &&
-          levelObj.h === queryObj.h &&
-          levelObj.s === queryObj.s &&
-          (queryObj.r === undefined || levelObj.r === queryObj.r) &&
-          levelObj.axis === queryObj.axis &&
-          (levelObj.independent === true) === (queryObj.independent === true)
-        ) {
-          return id;
-        }
+        if (matchesLevel(this.#levelsListEx[id])) return id;
       }
       return null;
     }
