@@ -320,7 +320,7 @@
       console.log(this.getSolverCommand());
     }
 
-    #getUrlQuerySub(levelObj) {
+    getUrlQuery(levelObj = this.getLevelObj()) {
       const checkMode = this.getCheckMode();
       const w = levelObj.w;
       const h = levelObj.h;
@@ -331,14 +331,8 @@
       return `mode=${checkModeStr}&w=${w}&h=${h}&s=${s}${a}${independent}`;
     }
 
-    getUrlQuery() {
-      const levelObj = this.getLevelObj();
-      return this.#getUrlQuerySub(levelObj);
-    }
-
     getCurrentUrlQuery() {
-      const levelObj = this.getCurrentLevelObj();
-      return this.#getUrlQuerySub(levelObj);
+      return this.getUrlQuery(this.getCurrentLevelObj());
     }
 
     printDebugInfo() {

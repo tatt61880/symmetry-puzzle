@@ -2333,7 +2333,7 @@
           textEn = `Cleared level ${common.levelId} of ${modeName.en} in ${completedStep} ${
             completedStep === 1 ? 'step' : 'steps'
           }!\n#SymmetryPuzzle`;
-          url = `${urlBase}mode=${mode}&id=${common.levelId}`;
+          url = urlBase + getBoardUrlQuery();
           if (settings.mirrorFlag) url += '&mirror';
           if (settings.rotateNum !== 0) url += `&rotate=${settings.rotateNum}`;
         } else {
@@ -2775,6 +2775,12 @@
     history.replaceState(null, '', url);
   }
 
+  function getBoardUrlQuery() {
+    if (common.levelId === null) return common.level.getUrlQuery();
+    // 公式面の鏡映・回転はURL引数で指定するため、変換前の初期盤面を使います。
+    return common.level.getUrlQuery(common.levels.getLevelObj(common.levelId));
+  }
+
   function replaceUrl() {
     // 再生中は元のURLを保ち、再読み込みで盤面や手順に鏡映・回転が二重にかかるのを防ぎます。
     if (urlReplay !== null) return;
@@ -2785,7 +2791,7 @@
     const base = location.href.split('?')[0];
     let urlQuery;
     if (common.levelNum === null) {
-      urlQuery = common.level.getUrlQuery();
+      urlQuery = getBoardUrlQuery();
     } else {
       const mode = app.Level.getCheckModeStr(common.level.getCheckMode());
       urlQuery = `mode=${mode}&num=${common.levelNum}`;
