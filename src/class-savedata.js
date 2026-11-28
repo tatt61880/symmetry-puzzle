@@ -32,7 +32,7 @@
 
     function isRecord(record) {
       if (typeof record === 'string') return !/[^0-4]/.test(record);
-      return data.version === 2 && Number.isSafeInteger(record) && record >= 0;
+      return Number.isSafeInteger(record) && record >= 0;
     }
 
     if (!Object.values(data.steps).every(isRecord)) return false;
@@ -65,7 +65,7 @@
 
     restoreBackupData(data) {
       if (!isValidBackup(data)) return false;
-      const restored = { ...data, version: data.version ?? 1 };
+      const restored = { ...data, version: 1 };
       if (restored.lang === undefined && this.data.lang !== undefined) restored.lang = this.data.lang;
       // 保存に失敗したときは、プレイ中の記録も元のままにします。
       this.#save(restored);
@@ -81,7 +81,7 @@
       if (this.data === null) {
         this.data = {};
       }
-      if (this.data.version === undefined) {
+      if (this.data.version === undefined || this.data.version === 2) {
         this.data.version = 1;
       }
       if (this.data.steps === undefined) {
@@ -111,12 +111,7 @@
       const previous = records[key];
       if (previous !== undefined && steps >= getRecordSteps(previous)) return false;
 
-      if (steps > maxReplaySteps) {
-        records[key] = steps;
-        this.data.version = Math.max(this.data.version ?? 1, 2);
-      } else {
-        records[key] = level.toSourceReplay(replay);
-      }
+      records[key] = steps > maxReplaySteps ? steps : level.toSourceReplay(replay);
       this.#save();
       return true;
     }

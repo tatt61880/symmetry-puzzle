@@ -556,8 +556,11 @@
     const savedata = new Savedata();
     savedata.saveLang('ja');
     const key = 'mode=line&num=1';
-    const backup = { version: 2, lang: 'en', steps: { [key]: '4' }, shapes: { [key]: { '#-#': 10000 } } };
-    assert.equal(savedata.restoreBackupData(backup), true);
+    const backup = { version: 1, lang: 'en', steps: { [key]: '4' }, shapes: { [key]: { '#-#': 10000 } } };
+    for (const version of [1, 2]) {
+      assert.equal(savedata.restoreBackupData({ ...backup, version }), true);
+      assert.deepEqual(savedata.getBackupData(), backup);
+    }
     for (const invalid of [
       null,
       { version: 1, steps: {} },
@@ -686,8 +689,11 @@
     assert.equal(savedata.getHighestScore(level), 10001); // 形状別の記録だけがある場合
     savedata.saveShape(level, shape, longReplay);
     savedata.saveSteps(level, longReplay);
+    const { backupData } = savedata.createBackup();
+    assert.equal(backupData.version, 1);
+    assert.equal(backupData.steps[level.getRecordKey()], 10000);
     const restored = new Savedata();
-    restored.restoreBackupData(JSON.parse(JSON.stringify(savedata.getBackupData())));
+    assert.ok(restored.restoreBackupData(JSON.parse(JSON.stringify(backupData))));
     assert.deepEqual(restored.getShapeRecords(level), [{ shapeStr: shape, steps: 10000, replay: undefined }]);
     assert.equal(restored.getHighestScore(level), 10000);
 
