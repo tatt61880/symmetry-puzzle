@@ -18,6 +18,14 @@
   const elems = app.elems;
   const levelsPerStar = 10;
   const starsPerMode = 5;
+  const titlesByStarCount = [
+    { ja: '初心者', en: 'Beginner' },
+    { ja: '挑戦者', en: 'Challenger' },
+    { ja: '探究者', en: 'Seeker' },
+    { ja: '熟練者', en: 'Adept' },
+    { ja: '名手', en: 'Expert' },
+    { ja: '達人', en: 'Master' },
+  ];
 
   function show() {
     updateTable();
@@ -109,27 +117,9 @@
 
       // テキスト
       const div = document.createElement('div');
-
-      if (num < 10) {
-        div.dataset.ja = `${ja}対称の初心者`;
-        div.dataset.en = `${en} Beginner`;
-      } else if (num < 20) {
-        div.dataset.ja = `${ja}対称の挑戦者`;
-        div.dataset.en = `${en} Challenger`;
-      } else if (num < 30) {
-        div.dataset.ja = `${ja}対称の探究者`;
-        div.dataset.en = `${en} Seeker`;
-      } else if (num < 40) {
-        div.dataset.ja = `${ja}対称の熟練者`;
-        div.dataset.en = `${en} Adept`;
-      } else if (num < 50) {
-        div.dataset.ja = `${ja}対称の名手`;
-        div.dataset.en = `${en} Expert`;
-      } else {
-        div.dataset.ja = `${ja}対称の達人`;
-        div.dataset.en = `${en} Master`;
-      }
-
+      const title = titlesByStarCount[Math.min(starNum, titlesByStarCount.length - 1)];
+      div.dataset.ja = `${ja}対称の${title.ja}`;
+      div.dataset.en = `${en} ${title.en}`;
       app.common.applyLang(div, lang);
 
       elem.appendChild(div);
