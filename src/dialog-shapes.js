@@ -257,6 +257,7 @@
           text.dataset.en = `${steps} step${steps === 1 ? '' : 's'}`; // 0 steps, 1 step, 2 steps, ......
           common.applyLang(text, app.savedata.getLang());
           text.setAttribute('font-size', '14px');
+          text.setAttribute('font-weight', 'normal');
           g.appendChild(text);
         }
 
