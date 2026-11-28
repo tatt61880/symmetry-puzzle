@@ -33,6 +33,7 @@
   const LEVEL_SELECT_COLS = 5;
 
   let onSelectLevel;
+  let createPreviewLevel;
 
   function readIndex(name) {
     return BigInt(elems.levels.dialog.dataset[name] ?? '0');
@@ -50,8 +51,9 @@
     };
   }
 
-  function init(onSelect) {
+  function init(onSelect, createLevel) {
     onSelectLevel = onSelect;
+    createPreviewLevel = createLevel;
   }
 
   function show() {
@@ -334,10 +336,7 @@
     }
 
     function appendLevel(levelObj, id, indexOnPage) {
-      const level = new app.Level({
-        levelObj,
-        checkMode: app.common.checkMode,
-      });
+      const level = createPreviewLevel(levelObj);
       const bestStep = level.getBestStep();
       const highestScore = app.savedata.getHighestScore(level);
 

@@ -663,10 +663,14 @@
     undoInfoForNormal = new app.UndoInfo();
   }
 
-  function initLevel(paramObj) {
+  function createLevel(levelObj) {
+    const { mirrorFlag, rotateNum } = settings;
+    return new app.Level({ levelObj, checkMode: common.checkMode, mirrorFlag, rotateNum });
+  }
+
+  function initLevel(levelObj) {
     stopReplay();
-    paramObj.checkMode = common.checkMode;
-    common.level = new app.Level(paramObj);
+    common.level = createLevel(levelObj);
 
     app.sound.playStart();
 
@@ -983,7 +987,7 @@
         urlReplay = app.Level.transformReplay(replayStr, mirrorFlag, rotateNum);
       }
     }
-    initLevel({ levelObj, mirrorFlag, rotateNum });
+    initLevel(levelObj);
 
     input.update(app.Input.DIRS.NEUTRAL);
     moveIntervalCount = MOVE_INTERVAL_COUNT;
@@ -1115,7 +1119,7 @@
       common.level.normalize();
       const { mirrorFlag, rotateNum } = settings;
       sourceLevelObj = common.level.getSourceLevelObj(mirrorFlag, rotateNum);
-      common.level = new app.Level({ levelObj: sourceLevelObj, checkMode: common.checkMode, mirrorFlag, rotateNum });
+      common.level = createLevel(sourceLevelObj);
       updateEditMode(false);
       replaceUrl();
       updateShapeButton();
@@ -1977,7 +1981,7 @@
 
   // レベル一覧ダイアログ
   function initElemsForLevelsDialog() {
-    app.dialog.levels.init(loadLevelById);
+    app.dialog.levels.init(loadLevelById, createLevel);
     elems.levels.button.addEventListener('click', app.dialog.levels.show);
     elems.levels.dialog.addEventListener('click', app.dialog.levels.close);
     elems.levels.dialogDiv.addEventListener('click', (e) => e.stopPropagation());
@@ -2849,10 +2853,9 @@
       }
       resetUndo();
       // 探索結果は表示中の盤面に対する手順なので、元の座標に戻して初期盤面と一緒に保持します。
-      const { mirrorFlag, rotateNum } = settings;
       const r = common.level.toSourceReplay(result.replayStr);
       sourceLevelObj = { ...sourceLevelObj, r };
-      initLevel({ levelObj: sourceLevelObj, mirrorFlag, rotateNum });
+      initLevel(sourceLevelObj);
       onButtonStartSub();
     }
   }
