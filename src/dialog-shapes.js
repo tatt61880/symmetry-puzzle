@@ -74,6 +74,14 @@
     }
   }
 
+  function getShapePosition(index) {
+    const indexOnPage = index % SELECT_NUM_PER_PAGE;
+    return {
+      x: (indexOnPage % SELECT_COLS) * SELECT_WIDTH,
+      y: Math.floor(indexOnPage / SELECT_COLS) * SELECT_HEIGHT,
+    };
+  }
+
   function selectUpdate(selectCount) {
     if (common.isTouchDevice()) {
       return;
@@ -87,8 +95,7 @@
 
     elems.shapes.dialog.dataset.selectCount = selectCount;
     const g = document.getElementById(shapeSelectId);
-    const x = (selectCount % SELECT_COLS) * SELECT_WIDTH;
-    const y = Math.floor((selectCount % SELECT_NUM_PER_PAGE) / SELECT_COLS) * SELECT_HEIGHT;
+    const { x, y } = getShapePosition(selectCount);
     g.setAttribute('transform', `translate(${x},${y})`);
   }
 
@@ -199,8 +206,7 @@
       g.appendChild(rect);
       elems.shapes.dialogSvg.appendChild(g);
 
-      const x = (selectCount % SELECT_COLS) * SELECT_WIDTH;
-      const y = Math.floor((selectCount % SELECT_NUM_PER_PAGE) / SELECT_COLS) * SELECT_HEIGHT;
+      const { x, y } = getShapePosition(selectCount);
       g.setAttribute('id', shapeSelectId);
       g.setAttribute('transform', `translate(${x},${y})`);
     }
@@ -291,11 +297,8 @@
         });
       }
 
-      {
-        const x = (index % SELECT_COLS) * SELECT_WIDTH + 1;
-        const y = Math.floor((index % SELECT_NUM_PER_PAGE) / SELECT_COLS) * SELECT_HEIGHT + 1;
-        g.setAttribute('transform', `translate(${x},${y})`);
-      }
+      const { x, y } = getShapePosition(index);
+      g.setAttribute('transform', `translate(${x + 1},${y + 1})`);
     }
   }
 
