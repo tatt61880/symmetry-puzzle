@@ -238,6 +238,7 @@
       rect.setAttribute('ry', '5');
 
       const g = app.svg.createG();
+      g.setAttribute('pointer-events', 'none');
       g.appendChild(rect);
       elems.levels.dialogSvg.appendChild(g);
 
