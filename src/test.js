@@ -50,6 +50,7 @@
       testRestoreBackup();
       testRestoreStorageFailure();
       testMirroredAxis();
+      testInvalidQuarterTurnAxis();
       testReplayPrefix();
       testSearchStateCodec();
       testUnboundedSequence();
@@ -674,6 +675,17 @@
       assert.ok(mirrored.move(dx, dy));
     }
     assert.ok(mirrored.isCompleted());
+  }
+
+  function testInvalidQuarterTurnAxis() {
+    const assert = require('node:assert/strict');
+    const levelObj = { w: 5, h: 5, s: '1-1-00s1', axis: 'p2-x4-y5' };
+    for (const mirrorFlag of [false, true]) {
+      const level = new app.Level({ levelObj, mirrorFlag });
+      const before = level.getS();
+      assert.equal(level.move(0, 0), false);
+      assert.equal(level.getS(), before);
+    }
   }
 
   function testInvalidSolverModePreservesBackup() {

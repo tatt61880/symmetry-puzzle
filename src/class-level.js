@@ -1026,10 +1026,10 @@
           return { dstX, dstY };
         }
         case Level.SYMMETRY_TYPE.POINT2: {
+          if ((this.#axis.cx + this.#axis.cy) % 2 !== 0) {
+            return { dstX: 0, dstY: 0 };
+          }
           if (!this.#reverseRotation) {
-            if ((this.#axis.cx + this.#axis.cy) % 2 !== 0) {
-              return { dstX: 0, dstY: 0 };
-            }
             const dstX = (this.#axis.cy + this.#axis.cx) / 2 - y - 1;
             const dstY = (this.#axis.cy - this.#axis.cx) / 2 + x;
             return { dstX, dstY };
