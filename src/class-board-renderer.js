@@ -481,85 +481,19 @@
 
       // 対称軸
       function createAxisLine1({ center, height, stroke = app.colors.symmetryAxis }) {
-        const g = app.svg.createG();
-        {
-          const line = app.svg.createLine(blockSize, {
-            x1: center.x,
-            y1: 0,
-            x2: center.x,
-            y2: height,
-            stroke,
-            strokeWidth: 0.125,
-          });
-          g.appendChild(line);
-        }
-        {
-          const line = app.svg.createLine(blockSize, {
-            x1: center.x - 0.05,
-            y1: 0,
-            x2: center.x - 0.05,
-            y2: height,
-            stroke: 'white',
-            strokeWidth: 0.025,
-            strokeOpacity: 0.5,
-          });
-          g.appendChild(line);
-        }
-        {
-          const line = app.svg.createLine(blockSize, {
-            x1: center.x + 0.05,
-            y1: 0,
-            x2: center.x + 0.05,
-            y2: height,
-            stroke: 'white',
-            strokeWidth: 0.025,
-            strokeOpacity: 0.5,
-          });
-          g.appendChild(line);
-        }
-        g.classList.add('symmetry-axis');
-        return g;
+        const line = { x1: center.x, y1: 0, x2: center.x, y2: height };
+        return createAxisLineGroup(stroke, line, [
+          { ...line, x1: line.x1 - 0.05, x2: line.x2 - 0.05 },
+          { ...line, x1: line.x1 + 0.05, x2: line.x2 + 0.05 },
+        ]);
       }
 
       function createAxisLine2({ center, width, stroke = app.colors.symmetryAxis }) {
-        const g = app.svg.createG();
-        {
-          const line = app.svg.createLine(blockSize, {
-            x1: 0,
-            y1: center.y,
-            x2: width,
-            y2: center.y,
-            stroke,
-            strokeWidth: 0.125,
-          });
-          g.appendChild(line);
-        }
-        {
-          const line = app.svg.createLine(blockSize, {
-            x1: 0,
-            y1: center.y - 0.05,
-            x2: width,
-            y2: center.y - 0.05,
-            stroke: 'white',
-            strokeWidth: 0.025,
-            strokeOpacity: 0.5,
-          });
-          g.appendChild(line);
-        }
-        {
-          const line = app.svg.createLine(blockSize, {
-            x1: 0,
-            y1: center.y + 0.05,
-            x2: width,
-            y2: center.y + 0.05,
-            stroke: 'white',
-            strokeWidth: 0.025,
-            strokeOpacity: 0.5,
-          });
-          g.appendChild(line);
-        }
-        g.classList.add('symmetry-axis');
-        return g;
+        const line = { x1: 0, y1: center.y, x2: width, y2: center.y };
+        return createAxisLineGroup(stroke, line, [
+          { ...line, y1: line.y1 - 0.05, y2: line.y2 - 0.05 },
+          { ...line, y1: line.y1 + 0.05, y2: line.y2 + 0.05 },
+        ]);
       }
 
       function createAxisLine3({ center, height, stroke = app.colors.symmetryAxis }) {
@@ -575,44 +509,11 @@
 
         const stroke2 = (center.x + center.y) % 1 === 0 ? stroke : app.colors.symmetryAxisInvalid;
 
-        const g = app.svg.createG();
-        {
-          const line = app.svg.createLine(blockSize, {
-            x1: x1 - dd,
-            y1: y1 - dd,
-            x2: x2 + dd,
-            y2: y2 + dd,
-            stroke: stroke2,
-            strokeWidth: 0.125,
-          });
-          g.appendChild(line);
-        }
-        {
-          const line = app.svg.createLine(blockSize, {
-            x1: x1 - dd - 0.07,
-            y1: y1 - dd,
-            x2: x2 + dd,
-            y2: y2 + dd + 0.07,
-            stroke: 'white',
-            strokeWidth: 0.025,
-            strokeOpacity: 0.5,
-          });
-          g.appendChild(line);
-        }
-        {
-          const line = app.svg.createLine(blockSize, {
-            x1: x1 - dd,
-            y1: y1 - dd - 0.07,
-            x2: x2 + dd + 0.07,
-            y2: y2 + dd,
-            stroke: 'white',
-            strokeWidth: 0.025,
-            strokeOpacity: 0.5,
-          });
-          g.appendChild(line);
-        }
-        g.classList.add('symmetry-axis');
-        return g;
+        const line = { x1: x1 - dd, y1: y1 - dd, x2: x2 + dd, y2: y2 + dd };
+        return createAxisLineGroup(stroke2, line, [
+          { ...line, x1: line.x1 - 0.07, y2: line.y2 + 0.07 },
+          { ...line, y1: line.y1 - 0.07, x2: line.x2 + 0.07 },
+        ]);
       }
 
       function createAxisLine4({ center, height, stroke = app.colors.symmetryAxis }) {
@@ -628,43 +529,19 @@
 
         const stroke2 = (center.x + center.y) % 1 === 0 ? stroke : app.colors.symmetryAxisInvalid;
 
-        const g = app.svg.createG();
-        {
-          const line = app.svg.createLine(blockSize, {
-            x1: x1 + dd,
-            y1: y1 - dd,
-            x2: x2 - dd,
-            y2: y2 + dd,
-            stroke: stroke2,
-            strokeWidth: 0.125,
-          });
-          g.appendChild(line);
+        const line = { x1: x1 + dd, y1: y1 - dd, x2: x2 - dd, y2: y2 + dd };
+        return createAxisLineGroup(stroke2, line, [
+          { ...line, y1: line.y1 - 0.07, x2: line.x2 - 0.07 },
+          { ...line, x1: line.x1 + 0.07, y2: line.y2 + 0.07 },
+        ]);
+      }
+
+      function createAxisLineGroup(stroke, line, highlights) {
+        const g = app.svg.createG('symmetry-axis');
+        g.appendChild(app.svg.createLine(blockSize, { ...line, stroke, strokeWidth: 0.125 }));
+        for (const highlight of highlights) {
+          g.appendChild(app.svg.createLine(blockSize, { ...highlight, stroke: 'white', strokeWidth: 0.025, strokeOpacity: 0.5 }));
         }
-        {
-          const line = app.svg.createLine(blockSize, {
-            x1: x1 + dd,
-            y1: y1 - dd - 0.07,
-            x2: x2 - dd - 0.07,
-            y2: y2 + dd,
-            stroke: 'white',
-            strokeWidth: 0.025,
-            strokeOpacity: 0.5,
-          });
-          g.appendChild(line);
-        }
-        {
-          const line = app.svg.createLine(blockSize, {
-            x1: x1 + dd + 0.07,
-            y1: y1 - dd,
-            x2: x2 - dd,
-            y2: y2 + dd + 0.07,
-            stroke: 'white',
-            strokeWidth: 0.025,
-            strokeOpacity: 0.5,
-          });
-          g.appendChild(line);
-        }
-        g.classList.add('symmetry-axis');
         return g;
       }
 
