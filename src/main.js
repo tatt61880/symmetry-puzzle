@@ -816,17 +816,7 @@
 
     if (undoInfo.isUndoable()) {
       app.sound.playUndo();
-      const independent = common.level.hasIndependentTargets();
-      const levelObj = undoInfo.undo();
-      const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
-      common.level.applyObj(levelObj, resizeFlag);
-      common.level.applyAxis(levelObj.axis);
-      if (common.checkMode !== levelObj.checkMode) {
-        common.level.setCheckMode(levelObj.checkMode);
-        updateCheckMode(levelObj.checkMode);
-      }
-      if (editMode && independent !== common.level.hasIndependentTargets()) updateEditElems();
-      draw();
+      restoreHistoryBoard(undoInfo.undo());
     }
   }
 
@@ -837,18 +827,21 @@
 
     if (undoInfo.isRedoable()) {
       app.sound.playRedo();
-      const independent = common.level.hasIndependentTargets();
-      const levelObj = undoInfo.redo();
-      const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
-      common.level.applyObj(levelObj, resizeFlag);
-      common.level.applyAxis(levelObj.axis);
-      if (common.checkMode !== levelObj.checkMode) {
-        common.level.setCheckMode(levelObj.checkMode);
-        updateCheckMode(levelObj.checkMode);
-      }
-      if (editMode && independent !== common.level.hasIndependentTargets()) updateEditElems();
-      draw();
+      restoreHistoryBoard(undoInfo.redo());
     }
+  }
+
+  function restoreHistoryBoard(levelObj) {
+    const independent = common.level.hasIndependentTargets();
+    const resizeFlag = common.level.getW() !== levelObj.w || common.level.getH() !== levelObj.h;
+    common.level.applyObj(levelObj, resizeFlag);
+    common.level.applyAxis(levelObj.axis);
+    if (common.checkMode !== levelObj.checkMode) {
+      common.level.setCheckMode(levelObj.checkMode);
+      updateCheckMode(levelObj.checkMode);
+    }
+    if (editMode && independent !== common.level.hasIndependentTargets()) updateEditElems();
+    draw();
   }
 
   function createObjByNum(num_) {
