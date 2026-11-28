@@ -1746,42 +1746,18 @@
     return !common.level?.hasIndependentTargets() || !app.states.isTarget(state) || state === app.states.targetMin;
   }
 
-  function updateEditAxisButton() {
-    common.hideElem(elems.edit.buttons.axisL1);
-    common.hideElem(elems.edit.buttons.axisL2);
-    common.hideElem(elems.edit.buttons.axisL3);
-    common.hideElem(elems.edit.buttons.axisL4);
-    common.hideElem(elems.edit.buttons.axisP1);
-    common.hideElem(elems.edit.buttons.axisP2);
+  function updateAxisButtonIcons(buttons, axisType) {
+    const { LINE1, LINE2, LINE3, LINE4, POINT1, POINT2 } = app.Level.SYMMETRY_TYPE;
+    buttons.axisL1?.classList.toggle('hide', axisType !== LINE1);
+    buttons.axisL2?.classList.toggle('hide', axisType !== LINE2);
+    buttons.axisL3?.classList.toggle('hide', axisType !== LINE3);
+    buttons.axisL4?.classList.toggle('hide', axisType !== LINE4);
+    buttons.axisP1?.classList.toggle('hide', axisType !== POINT1);
+    buttons.axisP2?.classList.toggle('hide', axisType !== POINT2);
+  }
 
-    if (common.level?.hasAxis()) {
-      switch (common.level.getAxisType()) {
-        case app.Level.SYMMETRY_TYPE.LINE1: {
-          common.showElem(elems.edit.buttons.axisL1);
-          break;
-        }
-        case app.Level.SYMMETRY_TYPE.LINE2: {
-          common.showElem(elems.edit.buttons.axisL2);
-          break;
-        }
-        case app.Level.SYMMETRY_TYPE.LINE3: {
-          common.showElem(elems.edit.buttons.axisL3);
-          break;
-        }
-        case app.Level.SYMMETRY_TYPE.LINE4: {
-          common.showElem(elems.edit.buttons.axisL4);
-          break;
-        }
-        case app.Level.SYMMETRY_TYPE.POINT1: {
-          common.showElem(elems.edit.buttons.axisP1);
-          break;
-        }
-        case app.Level.SYMMETRY_TYPE.POINT2: {
-          common.showElem(elems.edit.buttons.axisP2);
-          break;
-        }
-      }
-    }
+  function updateEditAxisButton() {
+    updateAxisButtonIcons(elems.edit.buttons, common.level?.getAxisType());
   }
 
   // Editモード用
@@ -2201,39 +2177,11 @@
   function updateController() {
     if (common.level?.hasAxis()) {
       common.showElem(elems.controller.buttons.axis);
-      common.hideElem(elems.controller.buttons.axisL1);
-      common.hideElem(elems.controller.buttons.axisL2);
-      common.hideElem(elems.controller.buttons.axisL3);
-      common.hideElem(elems.controller.buttons.axisL4);
-      common.hideElem(elems.controller.buttons.axisP1);
-      common.hideElem(elems.controller.buttons.axisP2);
-      switch (common.level.getAxisType()) {
-        case app.Level.SYMMETRY_TYPE.LINE1: {
-          common.showElem(elems.controller.buttons.axisL1);
-          break;
-        }
-        case app.Level.SYMMETRY_TYPE.LINE2: {
-          common.showElem(elems.controller.buttons.axisL2);
-          break;
-        }
-        case app.Level.SYMMETRY_TYPE.LINE3: {
-          common.showElem(elems.controller.buttons.axisL3);
-          break;
-        }
-        case app.Level.SYMMETRY_TYPE.LINE4: {
-          common.showElem(elems.controller.buttons.axisL4);
-          break;
-        }
-        case app.Level.SYMMETRY_TYPE.POINT1: {
-          common.showElem(elems.controller.buttons.axisP1);
-          break;
-        }
-        case app.Level.SYMMETRY_TYPE.POINT2: {
-          elems.controller.buttons.axisP2.setAttribute('transform', common.level.isReverseRotation() ? 'scale(-1,1)' : 'scale(1)');
-          common.showElem(elems.controller.buttons.axisP2);
-          break;
-        }
+      const axisType = common.level.getAxisType();
+      if (axisType === app.Level.SYMMETRY_TYPE.POINT2) {
+        elems.controller.buttons.axisP2.setAttribute('transform', common.level.isReverseRotation() ? 'scale(-1,1)' : 'scale(1)');
       }
+      updateAxisButtonIcons(elems.controller.buttons, axisType);
     } else {
       common.hideElem(elems.controller.buttons.axis);
     }
