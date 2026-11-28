@@ -1173,7 +1173,7 @@
       }
       const r = Level.transformReplay(levelObj.r, true, 0);
       const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
-      const newLevelObj = { w, h, s, r };
+      const newLevelObj = { w, h, s, r, shapes: levelObj.shapes };
       if (levelObj.independent === true) newLevelObj.independent = true;
       const hint = levelObj.hint;
       if (hint) {
@@ -1219,7 +1219,7 @@
         const s = this.#getStateStrSub(statesTemp, 0, w, 0, h);
         const hint = newLevelObj.hint;
         const independent = newLevelObj.independent;
-        newLevelObj = { w, h, s, r };
+        newLevelObj = { w, h, s, r, shapes: newLevelObj.shapes };
         if (independent === true) newLevelObj.independent = true;
         if (hint) {
           newLevelObj.hint = transformHint(

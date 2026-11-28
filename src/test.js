@@ -271,15 +271,17 @@
 
   function testEditedLevelTransforms() {
     const assert = require('node:assert/strict');
-    const levelObj = { w: 5, h: 3, s: 's001-x211x', axis: 'p2-x3-y3' };
+    const levelObj = { w: 5, h: 3, s: 's001-x211x', axis: 'p2-x3-y3', shapes: 2 };
     const checkMode = app.Level.CHECK_MODE.POINT;
     for (const mirrorFlag of [false, true]) {
       for (const rotateNum of [0, 1, 2, 3]) {
         const level = new app.Level({ levelObj, checkMode, mirrorFlag, rotateNum });
+        assert.equal(level.getShapes(), levelObj.shapes);
         level.applyState(level.getW(), level.getH(), app.states.wall);
         level.normalize();
         const source = level.getSourceLevelObj(mirrorFlag, rotateNum);
         const restored = new app.Level({ levelObj: source, checkMode, mirrorFlag, rotateNum });
+        assert.equal(restored.getShapes(), undefined);
         assert.deepEqual(restored.getCurrentLevelObj(), level.getCurrentLevelObj());
         assert.equal(restored.isReverseRotation(), level.isReverseRotation());
       }
