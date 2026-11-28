@@ -270,6 +270,7 @@
         if (replay === undefined) {
           const note = app.svg.createText(1, { x: SELECT_WIDTH / 2, y: SELECT_HEIGHT - 6, text: '', fill: '#555555' });
           note.setAttribute('font-size', '13px');
+          note.setAttribute('font-weight', 'normal');
           note.classList.add('translatable-toggle');
           note.dataset.ja = '手順なし';
           note.dataset.en = 'No replay';
