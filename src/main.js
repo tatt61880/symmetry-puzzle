@@ -2298,9 +2298,11 @@
     common.hideElem(elems.controller.nextLevel);
     common.hideElem(elems.controller.prevLevel);
     common.hideElem(elems.controller.replay);
-    const isOfficialLevel = !common.isSeqMode && Number.isFinite(common.levelId) && common.levelNum === null;
+    const isNumberedLevel = common.isSeqMode
+      ? typeof common.levelId === 'bigint'
+      : Number.isFinite(common.levelId) && common.levelNum === null;
     const showShareLevel =
-      completeFlag && !editMode && (isOfficialLevel || (!common.isShownElem(elems.level.prev) && !common.isShownElem(elems.level.next)));
+      completeFlag && !editMode && (isNumberedLevel || (!common.isShownElem(elems.level.prev) && !common.isShownElem(elems.level.next)));
     elems.controller.shareLevel.classList.toggle('hide', !showShareLevel);
     if (!showShareLevel) elems.controller.shareLevel.open = false;
 
@@ -2322,18 +2324,20 @@
 
         const urlBase = 'https://tatt61880.github.io/symmetry-puzzle/?';
         let url;
-        if (isOfficialLevel) {
+        if (isNumberedLevel) {
           const mode = app.Level.getCheckModeStr(common.checkMode);
           const modeName = {
             line: { ja: '線対称パズル', en: 'Line Symmetry Puzzle' },
             point: { ja: '点対称パズル', en: 'Point Symmetry Puzzle' },
             special: { ja: '線対称＆点対称パズル', en: 'Line & Point Symmetry Puzzle' },
           }[mode];
-          textJa = `「${modeName.ja}」のレベル${common.levelId}を${completedStep}手でクリア！\n#対称パズル`;
-          textEn = `Cleared level ${common.levelId} of ${modeName.en} in ${completedStep} ${
-            completedStep === 1 ? 'step' : 'steps'
-          }!\n#SymmetryPuzzle`;
-          url = urlBase + getBoardUrlQuery();
+          const levelJa = common.isSeqMode ? `連番モード「${common.levelId}」` : `レベル${common.levelId}`;
+          const clearEn = common.isSeqMode
+            ? `${modeName.en} (Sequential Mode): cleared “${common.levelId}”`
+            : `Cleared level ${common.levelId} of ${modeName.en}`;
+          textJa = `「${modeName.ja}」の${levelJa}を${completedStep}手でクリア！\n#対称パズル`;
+          textEn = `${clearEn} in ${completedStep} ${completedStep === 1 ? 'step' : 'steps'}!\n#SymmetryPuzzle`;
+          url = urlBase + getLevelUrlQuery();
           if (settings.mirrorFlag) url += '&mirror';
           if (settings.rotateNum !== 0) url += `&rotate=${settings.rotateNum}`;
         } else {
@@ -2361,11 +2365,9 @@
         }
       }
 
-      if (!common.isSeqMode || !showShareLevel) {
-        const levelId = getLevelIdAfterCompletion();
-        if (levelId !== null) {
-          common.showElem(levelId < common.levelId ? elems.controller.prevLevel : elems.controller.nextLevel);
-        }
+      const levelId = getLevelIdAfterCompletion();
+      if (levelId !== null) {
+        common.showElem(levelId < common.levelId ? elems.controller.prevLevel : elems.controller.nextLevel);
       }
     }
   }
@@ -2775,7 +2777,11 @@
     history.replaceState(null, '', url);
   }
 
-  function getBoardUrlQuery() {
+  function getLevelUrlQuery() {
+    if (common.levelNum !== null || typeof common.levelId === 'bigint') {
+      const mode = app.Level.getCheckModeStr(common.checkMode);
+      return `mode=${mode}&num=${common.levelId}`;
+    }
     if (common.levelId === null) return common.level.getUrlQuery();
     // 公式面の鏡映・回転はURL引数で指定するため、変換前の初期盤面を使います。
     return common.level.getUrlQuery(common.levels.getLevelObj(common.levelId));
@@ -2789,14 +2795,7 @@
       return;
     }
     const base = location.href.split('?')[0];
-    let urlQuery;
-    if (common.levelNum === null) {
-      urlQuery = getBoardUrlQuery();
-    } else {
-      const mode = app.Level.getCheckModeStr(common.level.getCheckMode());
-      urlQuery = `mode=${mode}&num=${common.levelNum}`;
-    }
-    let url = `${base}?${urlQuery}`;
+    let url = `${base}?${getLevelUrlQuery()}`;
     if (settings.autoMode) url += '&auto';
     if (settings.debugFlag) url += '&debug';
     if (settings.mirrorFlag) url += '&mirror';
