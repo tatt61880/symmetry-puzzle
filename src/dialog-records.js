@@ -122,28 +122,12 @@
     dismissAlert();
   }
 
-  function getYyyymmdd() {
-    const yyyymmdd = (() => {
-      const date = new Date();
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return year + month + day;
-    })();
-    return yyyymmdd;
-  }
-
   async function backup() {
-    const backupData = app.savedata.getBackupData();
-    const yyyymmdd = getYyyymmdd();
-    const obj = {
-      yyyymmdd,
-      backupData,
-    };
-    const backupJsonText = JSON.stringify(obj);
+    const data = app.savedata.createBackup();
+    const backupJsonText = JSON.stringify(data);
     app.sound.playButton();
 
-    const filename = `symmetry-puzzle-backup-${yyyymmdd}.json`;
+    const filename = `symmetry-puzzle-backup-${data.yyyymmdd}.json`;
     const lang = app.savedata.getLang();
     const confirmed = await customAlert(
       lang === 'ja' ? `バックアップファイルを作成します。\n${filename}` : `Backup file will be created.\n${filename}`,

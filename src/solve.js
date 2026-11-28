@@ -180,29 +180,12 @@
   if (!isBrowser) {
     if (options.backup) {
       savedata.saveLang('ja');
-      const yyyymmdd = getYyyymmdd();
-
-      const data = {
-        yyyymmdd,
-        backupData: savedata.getBackupData(),
-      };
-
+      const data = savedata.createBackup();
       const savedataText = JSON.stringify(data);
 
       const fs = require('fs');
-      fs.writeFileSync(`symmetry-puzzle-solve-${yyyymmdd}.json`, savedataText);
+      fs.writeFileSync(`symmetry-puzzle-solve-${data.yyyymmdd}.json`, savedataText);
     }
-  }
-
-  function getYyyymmdd() {
-    const yyyymmdd = (() => {
-      const date = new Date();
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return year + month + day;
-    })();
-    return yyyymmdd;
   }
 
   function solveLevelObj(levelId, levelObj, checkMode) {
