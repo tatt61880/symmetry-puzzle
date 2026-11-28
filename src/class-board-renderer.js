@@ -23,6 +23,8 @@
   const dys = [-1, 0, 1, 0, -1, -1, 1, 1];
 
   const blockBorderWidth = 1 / 8;
+  const axisHighlightOffset = 0.05;
+  const diagonalHighlightOffset = axisHighlightOffset * Math.SQRT2;
 
   class BoardRenderer {
     #level;
@@ -483,16 +485,16 @@
       function createAxisLine1({ center, height, stroke = app.colors.symmetryAxis }) {
         const line = { x1: center.x, y1: 0, x2: center.x, y2: height };
         return createAxisLineGroup(stroke, line, [
-          { ...line, x1: line.x1 - 0.05, x2: line.x2 - 0.05 },
-          { ...line, x1: line.x1 + 0.05, x2: line.x2 + 0.05 },
+          { ...line, x1: line.x1 - axisHighlightOffset, x2: line.x2 - axisHighlightOffset },
+          { ...line, x1: line.x1 + axisHighlightOffset, x2: line.x2 + axisHighlightOffset },
         ]);
       }
 
       function createAxisLine2({ center, width, stroke = app.colors.symmetryAxis }) {
         const line = { x1: 0, y1: center.y, x2: width, y2: center.y };
         return createAxisLineGroup(stroke, line, [
-          { ...line, y1: line.y1 - 0.05, y2: line.y2 - 0.05 },
-          { ...line, y1: line.y1 + 0.05, y2: line.y2 + 0.05 },
+          { ...line, y1: line.y1 - axisHighlightOffset, y2: line.y2 - axisHighlightOffset },
+          { ...line, y1: line.y1 + axisHighlightOffset, y2: line.y2 + axisHighlightOffset },
         ]);
       }
 
@@ -511,8 +513,8 @@
 
         const line = { x1: x1 - dd, y1: y1 - dd, x2: x2 + dd, y2: y2 + dd };
         return createAxisLineGroup(stroke2, line, [
-          { ...line, x1: line.x1 - 0.07, y2: line.y2 + 0.07 },
-          { ...line, y1: line.y1 - 0.07, x2: line.x2 + 0.07 },
+          { ...line, x1: line.x1 - diagonalHighlightOffset, y2: line.y2 + diagonalHighlightOffset },
+          { ...line, y1: line.y1 - diagonalHighlightOffset, x2: line.x2 + diagonalHighlightOffset },
         ]);
       }
 
@@ -531,8 +533,8 @@
 
         const line = { x1: x1 + dd, y1: y1 - dd, x2: x2 - dd, y2: y2 + dd };
         return createAxisLineGroup(stroke2, line, [
-          { ...line, y1: line.y1 - 0.07, x2: line.x2 - 0.07 },
-          { ...line, x1: line.x1 + 0.07, y2: line.y2 + 0.07 },
+          { ...line, y1: line.y1 - diagonalHighlightOffset, x2: line.x2 - diagonalHighlightOffset },
+          { ...line, x1: line.x1 + diagonalHighlightOffset, y2: line.y2 + diagonalHighlightOffset },
         ]);
       }
 
